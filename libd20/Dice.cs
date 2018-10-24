@@ -131,6 +131,7 @@ namespace d20 {
             for(int i = 0; i < amount; i++) {
                 result += (int)Random.Get(1, dice);
             }
+            return result;
         }
     }
 }

@@ -6,7 +6,7 @@
             "command": "dotnet",
             "type": "process",
             "args": [
-                "test",
+                "build",
                 "${workspaceFolder}/libd20.tests/libd20.tests.csproj"
             ],
             "problemMatcher": "$msCompile"

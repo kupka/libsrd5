@@ -115,6 +115,7 @@ namespace d20 {
                             if(modifier != 0) {
                                 modifier *= 10;
                             }
+                            modifier += int.Parse(c.ToString());
                         } else {
                             throw new FormatException("Invalid input: " + toParse);
                         }

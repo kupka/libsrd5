@@ -2,5 +2,5 @@ language: csharp
 mono: none
 dotnet: 2.1.403
 script:
- - dotnet test
- 
+ - dotnet build
+ - dotnet test libd20.tests/libd20.tests.csproj

@@ -1,5 +1,5 @@
 namespace d20 {
-    public class Random {
+    internal class Random {
         private static uint state = 38911792;
 
         public static uint State {
@@ -21,7 +21,7 @@ namespace d20 {
             return x;
         }
 
-        public static uint Get(uint min, uint max) {
+        internal static uint Get(uint min, uint max) {
             if (max <= min) {
                 throw new System.ArgumentException("max must be greater than min.");
             }

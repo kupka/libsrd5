@@ -1,2 +1,6 @@
 language: csharp
-solution: d20.sln
+mono: none
+dotnet: 2.1.403
+script:
+ - dotnet test
+ 

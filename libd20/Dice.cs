@@ -2,59 +2,61 @@ using System;
 
 namespace d20 {
     public struct Dice {
+        public static Dice Get(uint max) {
+            switch(max) {
+                case 4:
+                case 6:
+                case 8:
+                case 10:
+                case 12:
+                case 20:
+                case 100:
+                    Dice dice = new Dice();
+                    dice.Value = Random.Get(1, max);
+                    return dice;
+                default:
+                    throw new ArgumentOutOfRangeException("No such dice d" + max);
+            }
+        }
         public static Dice D4 {
             get {
-                Dice dice = new Dice();
-                dice.Value = Random.Get(1, 4);
-                return dice;
+                return Get(4);
             }
         }
 
         public static Dice D6 {
             get {
-                Dice dice = new Dice();
-                dice.Value = Random.Get(1, 6);
-                return dice;
+                return Get(6);
             }
         }
 
         public static Dice D8 {
             get {
-                Dice dice = new Dice();
-                dice.Value = Random.Get(1, 8);
-                return dice;
+                return Get(8);
             }
         }
 
         public static Dice D10 {
             get {
-                Dice dice = new Dice();
-                dice.Value = Random.Get(1, 10);
-                return dice;
+                return Get(10);
             }
         }
 
         public static Dice D12 {
             get {
-                Dice dice = new Dice();
-                dice.Value = Random.Get(1, 12);
-                return dice;
+                return Get(12);
             }
         }
 
         public static Dice D20 {
             get {
-                Dice dice = new Dice();
-                dice.Value = Random.Get(1, 20);
-                return dice;
+                return Get(20);
             }
         }
 
         public static Dice D100 {
             get {
-                Dice dice = new Dice();
-                dice.Value = Random.Get(1, 100);
-                return dice;
+                return Get(100);
             }
         }
 

@@ -4,6 +4,8 @@ namespace d20 {
     public struct Dice {
         public static Dice Get(uint max) {
             switch(max) {
+                case 2:
+                case 3:
                 case 4:
                 case 6:
                 case 8:
@@ -18,6 +20,19 @@ namespace d20 {
                     throw new ArgumentOutOfRangeException("No such dice d" + max);
             }
         }
+
+        public static Dice D2 {
+            get {
+                return Get(2);
+            }
+        }
+
+        public static Dice D3 {
+            get {
+                return Get(3);
+            }
+        }
+        
         public static Dice D4 {
             get {
                 return Get(4);
@@ -51,6 +66,28 @@ namespace d20 {
         public static Dice D20 {
             get {
                 return Get(20);
+            }
+        }
+
+        public static Dice D20Advantage {
+            get {
+                Dice first = Get(20);
+                Dice second = Get(20);
+                if(first.Value >= second.Value)
+                    return first;
+                else
+                    return second;
+            }
+        }
+
+        public static Dice D20Disadvantage {
+            get {
+                Dice first = Get(20);
+                Dice second = Get(20);
+                if(first.Value <= second.Value)
+                    return first;
+                else
+                    return second;
             }
         }
 
@@ -127,7 +164,7 @@ namespace d20 {
             if(negativeModifier) {
                 modifier *= -1;
             }
-            if(dice != 4 && dice != 6 && dice != 8 && dice != 10 && dice != 12 && dice != 20 && dice != 100) {
+            if(dice != 2 && dice != 3 && dice != 4 && dice != 6 && dice != 8 && dice != 10 && dice != 12 && dice != 20 && dice != 100) {
                 throw new FormatException("Invalid input: " + toParse);
             }
             int result = modifier;

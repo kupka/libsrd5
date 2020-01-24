@@ -1,6 +1,6 @@
 namespace d20 {
     internal class Random {
-        private static uint state = 38911792;
+        private static uint state = 1838911792;
 
         public static uint State {
             get {

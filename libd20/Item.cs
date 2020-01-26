@@ -59,6 +59,15 @@ namespace d20 {
             20,
             60
         );
+
+        public static readonly Weapon GreatAxe = new Weapon(
+            "1d12",
+            DamageType.SLASHING,
+            new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY },
+            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.GREATAXE },
+            3000,
+            7
+        );
     }
 
     public class Armor : Item {

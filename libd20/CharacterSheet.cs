@@ -18,12 +18,12 @@ namespace d20 {
     }
 
     public class CharacterSheet {
-        public Ability Strength { get; internal set; }
-        public Ability Dexterity { get; internal set; }
-        public Ability Constitution { get; internal set; }
-        public Ability Intelligence { get; internal set; }
-        public Ability Wisdom { get; internal set; }
-        public Ability Charisma { get; internal set; }
+        public Ability Strength { get; internal set; } = new Ability();
+        public Ability Dexterity { get; internal set; } = new Ability();
+        public Ability Constitution { get; internal set; } = new Ability();
+        public Ability Intelligence { get; internal set; } = new Ability();
+        public Ability Wisdom { get; internal set; } = new Ability();
+        public Ability Charisma { get; internal set; } = new Ability();
         public string Name { get; internal set; }
         public CharacterRace Race { get; internal set; }
         public CharacterLevel[] Levels { get; internal set; }
@@ -31,25 +31,61 @@ namespace d20 {
         public uint HitPoints { get; internal set; }
         public Dice[] HitDiceSpent { get; internal set; }
         public CharacterInventory Inventory { get; internal set; } = new CharacterInventory();
+        public int ArmorClass { 
+            get {
+                int ac = 10 + Dexterity.Modifier;
+                if (Inventory.Armor != null) {
+                    ac = Inventory.Armor.Item.AC + Math.Min(Inventory.Armor.Item.MaxDexBonus, Dexterity.Modifier);
+                }
+                return ac;
+            }
+        }
 
         public void Equip(Thing<Weapon> thing) {
-            switch(thing.Item.Type) {
-                case ItemType.WEAPON:
-                    Weapon weapon = thing.Item;
-                    if (Array.IndexOf(weapon.Properties, WeaponProperty.TWO_HANDED) >= 0) {
-                        Unequip(Inventory.OffHand); 
-                        Unequip(Inventory.MainHand);
-                        Inventory.MainHand = thing;                       
-                    } else if(Inventory.MainHand == null) {
-                       Inventory.MainHand = thing;  
-                    } else if(Inventory.OffHand == null) {
-                        Inventory.OffHand = Thing<Item>.Cast<Weapon>(thing);
-                    } else {
-                        Unequip(Inventory.MainHand);
-                        Inventory.MainHand = thing;
-                    }
-                    break;
+            Weapon weapon = thing.Item;
+            if (Array.IndexOf(weapon.Properties, WeaponProperty.TWO_HANDED) >= 0) {
+                Unequip(Inventory.OffHand); 
+                Unequip(Inventory.MainHand);
+                Inventory.MainHand = thing;                       
+            } else if(Inventory.MainHand == null) {
+                Inventory.MainHand = thing;  
+            } else if(Inventory.OffHand == null) {
+                Inventory.OffHand = Thing<Item>.Cast<Weapon>(thing);
+            } else {
+                Unequip(Inventory.MainHand);
+                Inventory.MainHand = thing;
             }
+        }
+
+        public void Equip(Thing<Armor> armor) {
+            Unequip(Inventory.Armor);
+            Inventory.Armor = armor;
+        }
+
+        public void Equip(Thing<Ring> ring) {
+            if (Inventory.RingLeft == null)
+                Inventory.RingLeft = ring;
+            else if(Inventory.RingRight == null)
+                Inventory.RingRight = ring;
+            else {
+                Unequip(Inventory.RingLeft);
+                Inventory.RingLeft = ring;
+            }
+        }
+
+        public void Equip(Thing<Helmet> helmet) {
+            Unequip(Inventory.Helmet);
+            Inventory.Helmet = helmet;
+        }
+
+        public void Equip(Thing<Boots> boots) {
+            Unequip(Inventory.Boots);
+            Inventory.Boots = boots;
+        }
+
+        public void Equip(Thing<Amulet> amulet) {
+            Unequip(Inventory.Amulet);
+            Inventory.Amulet = amulet;
         }
 
         public void Unequip<T>(Thing<T> thing) where T : Item {

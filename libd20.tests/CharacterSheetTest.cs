@@ -22,6 +22,17 @@ namespace d20 {
             Assert.Null(sheet.Inventory.OffHand);
         }
 
+        [Fact]
+        public void EquipArmorTest() {
+            Thing<Armor> chainShirt = new Thing<Armor>(Armors.ChainShirt);
+            CharacterSheet sheet = new CharacterSheet();
+            sheet.Dexterity.Value = 18;
+            Assert.Equal(14, sheet.ArmorClass);
+            sheet.Equip(chainShirt);
+            Assert.Equal(15, sheet.ArmorClass);
+        }
+
+        [Fact]
         public void EquipFullTest() {
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             

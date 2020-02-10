@@ -70,8 +70,34 @@ namespace d20 {
         );
     }
 
-    public class Armor : Item {
+    public struct Armors {
+        public static readonly Armor ChainShirt = new Armor(13, 2, 0, Proficiency.MEDIUM_ARMOR, 50000, 20);
+    }
 
+    public class Armor : Item {
+        public int AC {
+            get;
+            internal set;
+        }
+
+        public int MaxDexBonus {
+            get;
+            internal set;
+        }
+
+        public uint Strength {
+            get;
+            internal set;
+        }
+
+        public Armor(int ac, int maxDexBonus, uint strength, Proficiency proficiency, uint value, uint weight) {
+            AC = ac;
+            MaxDexBonus = maxDexBonus;
+            Strength = Strength;
+            Proficiencies = new Proficiency[] { proficiency };
+            Value = value;
+            Weight = weight;
+        }
     }
 
     public class Helmet : Item {

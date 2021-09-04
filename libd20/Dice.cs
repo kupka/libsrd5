@@ -110,34 +110,70 @@ namespace d20 {
             return roll;
         }
 
-        public static int Roll(string toParse) {
-            int amount = 1;
-            uint dice = 0;
-            int modifier = 0;
+        public static long Roll(string diceString) {
+            ParsedDices parsed = new ParsedDices(diceString);
+            return parsed.Roll();
+        }
+    }
+
+    internal struct ParsedDices {
+        internal int Modifier {
+            get;
+            set;
+        }
+
+        internal int Amount {
+            get;
+            set;
+        }
+
+        internal uint Dice {
+            get;
+            set;
+        }
+
+        public long Min {
+            get {
+                return Amount + Modifier;
+            }
+        }
+
+        public long Max {
+            get {
+                return Amount * Dice + Modifier;
+            }
+        }
+
+        internal ParsedDices(string diceString) {
+            Amount = 1;
+            Dice = 0;
+            Modifier = 0;
             bool negativeModifier = false;
             int state = 0; // 0 = Start, 1 = Dice, 2 = Modifier
-            for(int i = 0; i < toParse.Length; i++) {
-                char c = toParse[i];
+            for(int i = 0; i < diceString.Length; i++) {
+                char c = diceString[i];
                 switch(state) {
                     case 0:
                         if(char.IsDigit(c)) {
-                            if(i > 0) {
-                                amount *= 10;
+                            if(i == 0) {
+                                Amount = 0;
+                            } else {
+                                Amount *= 10;
                             }
-                            amount += int.Parse(c.ToString());
+                            Amount += int.Parse(c.ToString());
                             break;
                         } else if (c == 'd') {
                             state = 1;
                             continue;
                         } else {
-                            throw new FormatException("Invalid input: " +  toParse);
+                            throw new FormatException("Invalid input: " +  diceString);
                         }
                     case 1:
                         if(char.IsDigit(c)) {
-                            if(dice > 0) {
-                                dice *= 10;
+                            if(Dice > 0) {
+                                Dice *= 10;
                             }
-                            dice += uint.Parse(c.ToString());
+                            Dice += uint.Parse(c.ToString());
                             break;
                         } else if (c == '+') {
                             state = 2;
@@ -147,31 +183,52 @@ namespace d20 {
                             state = 2;
                             continue;
                         } else {
-                            throw new FormatException("Invalid input: " + toParse);
+                            throw new FormatException("Invalid input: " + diceString);
                         }
                     case 2:
                         if(char.IsDigit(c)) {
-                            if(modifier != 0) {
-                                modifier *= 10;
+                            if(Modifier != 0) {
+                                Modifier *= 10;
                             }
-                            modifier += int.Parse(c.ToString());
+                            Modifier += int.Parse(c.ToString());
                         } else {
-                            throw new FormatException("Invalid input: " + toParse);
+                            throw new FormatException("Invalid input: " + diceString);
                         }
                         break;
                 }
             }
             if(negativeModifier) {
-                modifier *= -1;
+                Modifier *= -1;
             }
-            if(dice != 2 && dice != 3 && dice != 4 && dice != 6 && dice != 8 && dice != 10 && dice != 12 && dice != 20 && dice != 100) {
-                throw new FormatException("Invalid input: " + toParse);
+            switch(Dice) {
+                case 2:
+                case 3:
+                case 4:
+                case 6:
+                case 8:
+                case 10:
+                case 12:
+                case 20:
+                case 100:
+                    break;
+                default:
+                    throw new FormatException("Invalid input: " + diceString);
             }
-            int result = modifier;
-            for(int i = 0; i < amount; i++) {
-                result += (int)Random.Get(1, dice);
+        }
+
+        public long Roll() {
+            int result = Modifier;
+            for(int i = 0; i < Amount; i++) {
+                result += (int)Random.Get(1, Dice);
             }
             return result;
+        }
+    }
+
+    public struct Dices {
+
+        public Dices(string diceString) {
+
         }
     }
 }

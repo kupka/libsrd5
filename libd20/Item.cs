@@ -70,6 +70,24 @@ namespace d20 {
         );
     }
 
+    public struct Shields {
+        public static readonly Shield Buckler = new Shield(1, 100, 1);        
+    }
+
+    public class Shield : Item {
+        public int AC {
+            get;
+            internal set;
+        }
+
+        public Shield(int ac, uint value, uint weight) {
+            AC = ac;
+            Proficiencies = new Proficiency[] { Proficiency.SHIELDS };
+            Value = value;
+            Weight = weight;
+        }
+    }
+
     public struct Armors {
         public static readonly Armor ChainShirt = new Armor(13, 2, 0, Proficiency.MEDIUM_ARMOR, 50000, 20);
     }

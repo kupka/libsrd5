@@ -8,7 +8,7 @@ namespace d20 {
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             CharacterSheet sheet = new CharacterSheet();
             sheet.Equip(club);
-            Assert.Equal(sheet.Inventory.MainHand, club);
+            Assert.Equal(club, sheet.Inventory.MainHand);
         }
 
         [Fact]
@@ -18,7 +18,7 @@ namespace d20 {
             CharacterSheet sheet = new CharacterSheet();
             sheet.Equip(club);
             sheet.Equip(greatAxe);
-            Assert.Equal(sheet.Inventory.MainHand, greatAxe);
+            Assert.Equal(greatAxe, sheet.Inventory.MainHand);
             Assert.Null(sheet.Inventory.OffHand);
         }
 
@@ -35,7 +35,12 @@ namespace d20 {
         [Fact]
         public void EquipFullTest() {
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
-            
+            Thing<Shield> buckler = new Thing<Shield>(Shields.Buckler);
+            CharacterSheet sheet = new CharacterSheet();
+            sheet.Equip(club);
+            sheet.Equip(buckler);
+            Assert.Equal(club, sheet.Inventory.MainHand);
+            Assert.Equal(buckler, sheet.Inventory.OffHand);
         }
     }
 }

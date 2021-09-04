@@ -57,6 +57,15 @@ namespace d20 {
             }
         }
 
+        public void Equip(Thing<Shield> thing) {
+            Shield shield = thing.Item;
+            if (Inventory.MainHand != null && Array.IndexOf(Inventory.MainHand.Item.Properties, WeaponProperty.TWO_HANDED) >= 0) {
+                Unequip(Inventory.MainHand);
+            }
+            Unequip(Inventory.OffHand);
+            Inventory.OffHand = Thing<Item>.Cast<Shield>(thing);
+        }
+
         public void Equip(Thing<Armor> armor) {
             Unequip(Inventory.Armor);
             Inventory.Armor = armor;

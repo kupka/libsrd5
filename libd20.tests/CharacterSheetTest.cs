@@ -40,7 +40,7 @@ namespace d20 {
             sheet.Equip(club);
             sheet.Equip(buckler);
             Assert.Equal(club, sheet.Inventory.MainHand);
-            Assert.Equal(buckler, sheet.Inventory.OffHand);
+            Assert.True(buckler.Equals(sheet.Inventory.OffHand));
         }
     }
 }

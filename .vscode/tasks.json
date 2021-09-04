@@ -10,6 +10,16 @@
                 "${workspaceFolder}/libd20.tests/libd20.tests.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "test",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "${workspaceFolder}/libd20.tests/libd20.tests.csproj"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }

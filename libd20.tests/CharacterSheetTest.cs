@@ -42,5 +42,14 @@ namespace d20 {
             Assert.Equal(club, sheet.Inventory.MainHand);
             Assert.True(buckler.Equals(sheet.Inventory.OffHand));
         }
+
+        [Fact]
+        public void BarbarianTest() {
+            CharacterSheet sheet = new CharacterSheet();
+            sheet.AddLevel(CharacterClass.Barbarian);
+            sheet.AddLevel(CharacterClass.Barbarian);
+            sheet.AddLevel(CharacterClass.Barbarian);
+            Assert.Equal(3, sheet.AttackBonus);
+        }
     }
 }

@@ -1,22 +1,46 @@
 using System;
 
 namespace d20 {
-    public class Barbarian : CharacterClass {
-        public Barbarian() {
-            HitDice = 12;
-            Proficiencies = new Proficiency[]{
-                            Proficiency.LIGHT_ARMOR,
-                            Proficiency.MEDIUM_ARMOR,
-                            Proficiency.SHIELDS,
-                            Proficiency.SIMPLE_MELEE_WEAPONS,
-                            Proficiency.SIMPLE_RANGED_WEAPONS,
-                            Proficiency.MARTIAL_MELEE_WEAPONS,
-                            Proficiency.MARTIAL_RANGED_WEAPONS
-                        };
-        }
+    public enum Class {
+        BARBARIAN,
+        BARD,
+        CLERIC,
+        DRUID,
+        FIGHTER,
+        MONK,
+        PALADIN,
+        RANGER,
+        ROGUE,
+        SORCEROR,
+        WARLOCK,
+        WIZARD
     }
+    public class CharacterClass {
 
-    public abstract class CharacterClass {
+        public static CharacterClass Barbarian {
+            get {
+                CharacterClass barbarian = new CharacterClass();
+                barbarian.Class = Class.BARBARIAN;
+                barbarian.HitDice = 12;
+                barbarian.Proficiencies = new Proficiency[]{
+                                Proficiency.LIGHT_ARMOR,
+                                Proficiency.MEDIUM_ARMOR,
+                                Proficiency.SHIELDS,
+                                Proficiency.SIMPLE_MELEE_WEAPONS,
+                                Proficiency.SIMPLE_RANGED_WEAPONS,
+                                Proficiency.MARTIAL_MELEE_WEAPONS,
+                                Proficiency.MARTIAL_RANGED_WEAPONS
+                            };
+                barbarian.BaseAttackBonus = 1;
+                return barbarian;
+            }
+        }
+
+        public Class Class {
+            get;
+            internal set;
+        }
+
         public uint HitDice {
             get;
             internal set;
@@ -34,6 +58,11 @@ namespace d20 {
                 }
             }
             return false;
+        }
+
+        public float BaseAttackBonus {
+            get;
+            internal set;
         }
     }
 }

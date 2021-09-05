@@ -26,7 +26,12 @@ namespace d20 {
         public Ability Charisma { get; internal set; } = new Ability();
         public string Name { get; internal set; }
         public CharacterRace Race { get; internal set; }
-        public CharacterLevel[] Levels { get; internal set; }
+        public CharacterLevel[] Levels {
+            get {
+                return levels;
+            }
+        }
+        private CharacterLevel[] levels = new CharacterLevel[0];
         public uint HitPointsMax { get; internal set; }
         public uint HitPoints { get; internal set; }
         public Dice[] HitDiceSpent { get; internal set; }
@@ -38,6 +43,16 @@ namespace d20 {
                     ac = Inventory.Armor.Item.AC + Math.Min(Inventory.Armor.Item.MaxDexBonus, Dexterity.Modifier);
                 }
                 return ac;
+            }
+        }
+
+        public int AttackBonus {
+            get {
+                float bonus = 0;
+                foreach (CharacterLevel level in levels) {
+                    bonus += level.Levels * level.Class.BaseAttackBonus;
+                }
+                return (int)Math.Floor(bonus);
             }
         }
 
@@ -109,6 +124,18 @@ namespace d20 {
             }
         }
 
-        
+        public void AddLevel(CharacterClass characterClass) {
+            foreach (CharacterLevel level in levels) {
+                if (level.Class.Class == characterClass.Class) {
+                    level.Levels++;
+                    return;
+                }
+            }
+            CharacterLevel newLevel = new CharacterLevel();
+            newLevel.Class = characterClass;
+            newLevel.Levels = 1;
+            Array.Resize(ref levels, levels.Length + 1);
+            levels[levels.GetUpperBound(0)] = newLevel;
+        }        
     }
 }

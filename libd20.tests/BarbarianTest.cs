@@ -5,7 +5,7 @@ namespace d20 {
     public class BarbarianTest {
         [Fact]
         public void TestProficiency() {
-            Assert.True(new Barbarian().IsProficientIn(Weapons.Club));
+            Assert.True(CharacterClass.Barbarian.IsProficientIn(Weapons.Club));
         }
     }
 }

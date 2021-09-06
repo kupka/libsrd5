@@ -78,11 +78,16 @@ namespace d20 {
             Thing<Weapon> greatAxe = new Thing<Weapon>(Weapons.GreatAxe);
             sheet.Equip(greatAxe);
             Assert.Equal(-1, sheet.AttackProficiency);
-            sheet.Unequip(greatAxe);
             Thing<Weapon> dagger = new Thing<Weapon>(Weapons.Dagger);
             sheet.Equip(dagger);
             Console.WriteLine(sheet.AttackProficiency);
             Assert.Equal(4, sheet.AttackProficiency);
+            sheet.AddLevel(CharacterClasses.Druid);
+            sheet.AddLevel(CharacterClasses.Druid);  
+            sheet.AddLevel(CharacterClasses.Druid);     
+            Assert.Equal(4, sheet.AttackProficiency);
+            sheet.AddLevel(CharacterClasses.Druid);     
+            Assert.Equal(5, sheet.AttackProficiency);
         }
     }
 }

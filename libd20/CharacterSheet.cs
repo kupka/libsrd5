@@ -62,7 +62,7 @@ namespace d20 {
                     foreach (CharacterLevel level in levels) {
                         totalLevel += level.Levels;
                     }
-                    bonus = (int)(2 + (totalLevel / 5));
+                    bonus = (int)(2 + ((totalLevel - 1) / 4));
                 }
                 // get bonus from strength or dex
                 if (mainhand == null) { // unarmed, use strength
@@ -89,9 +89,12 @@ namespace d20 {
                 Unequip(Inventory.OffHand); 
                 Unequip(Inventory.MainHand);
                 Inventory.MainHand = thing;                       
-            } else if(Inventory.MainHand == null) {
+            } else if (Inventory.MainHand == null) {
                 Inventory.MainHand = thing;  
-            } else if(Inventory.OffHand == null) {
+            } else if (Array.IndexOf(Inventory.MainHand.Item.Properties, WeaponProperty.TWO_HANDED) >= 0) {
+                Unequip(Inventory.MainHand);
+                Inventory.MainHand = thing;
+            } else if (Inventory.OffHand == null) {
                 Inventory.OffHand = Thing<Item>.Cast<Weapon>(thing);
             } else {
                 Unequip(Inventory.MainHand);

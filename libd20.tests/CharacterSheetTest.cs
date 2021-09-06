@@ -46,12 +46,12 @@ namespace d20 {
         [Fact]
         public void BarbarianTest() {
             CharacterSheet sheet = new CharacterSheet();
-            sheet.AddLevel(CharacterClass.Barbarian);
-            sheet.AddLevel(CharacterClass.Barbarian);
-            sheet.AddLevel(CharacterClass.Barbarian);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            sheet.AddLevel(CharacterClasses.Barbarian);
             Assert.Equal(2, sheet.AttackProficiency);
-            sheet.AddLevel(CharacterClass.Barbarian);
-            sheet.AddLevel(CharacterClass.Barbarian);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            sheet.AddLevel(CharacterClasses.Barbarian);
             Assert.Equal(3, sheet.AttackProficiency);            
             sheet.Strength.Value = 18;
             sheet.Dexterity.Value = 14;
@@ -68,12 +68,12 @@ namespace d20 {
             CharacterSheet sheet = new CharacterSheet();
             sheet.Strength.Value = 8;
             sheet.Dexterity.Value = 12;
-            sheet.AddLevel(CharacterClass.Druid);
-            sheet.AddLevel(CharacterClass.Druid);
-            sheet.AddLevel(CharacterClass.Druid);
+            sheet.AddLevel(CharacterClasses.Druid);
+            sheet.AddLevel(CharacterClasses.Druid);
+            sheet.AddLevel(CharacterClasses.Druid);
             Assert.Equal(1, sheet.AttackProficiency);
-            sheet.AddLevel(CharacterClass.Druid);
-            sheet.AddLevel(CharacterClass.Druid);       
+            sheet.AddLevel(CharacterClasses.Druid);
+            sheet.AddLevel(CharacterClasses.Druid);       
             Assert.Equal(2, sheet.AttackProficiency);  
             Thing<Weapon> greatAxe = new Thing<Weapon>(Weapons.GreatAxe);
             sheet.Equip(greatAxe);

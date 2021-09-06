@@ -9,7 +9,7 @@ namespace d20 {
         [InlineData(15, 2)]
         [InlineData(26, 8)]
         public void TestModifier(uint value, int expected) {
-            Ability ability = new Ability();
+            Ability ability = new Ability(AbilityType.Strength, value);
             ability.Value = value;
             Assert.Equal(expected, ability.Modifier);
         }

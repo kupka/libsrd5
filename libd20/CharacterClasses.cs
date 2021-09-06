@@ -30,9 +30,33 @@ namespace d20 {
                                 Proficiency.SIMPLE_RANGED_WEAPONS,
                                 Proficiency.MARTIAL_MELEE_WEAPONS,
                                 Proficiency.MARTIAL_RANGED_WEAPONS
-                            };
-                barbarian.BaseAttackBonus = 1;
+                            };                
                 return barbarian;
+            }
+        }
+
+        public static CharacterClass Druid {
+            get {
+                CharacterClass druid = new CharacterClass();
+                druid.Class = Class.DRUID;
+                druid.HitDice = 8;
+                druid.Proficiencies = new Proficiency[]{
+                                Proficiency.CLUB,
+                                Proficiency.DAGGER,
+                                Proficiency.DARTS,
+                                Proficiency.JAVELIN,
+                                Proficiency.MACE,
+                                Proficiency.QUARTERSTAFF,
+                                Proficiency.SCIMITAR,
+                                Proficiency.SICKLE,
+                                Proficiency.SLING,
+                                Proficiency.SPEAR,
+                                Proficiency.HERBALISM_KIT,
+                                Proficiency.LIGHT_ARMOR,
+                                Proficiency.MEDIUM_ARMOR,
+                                Proficiency.SHIELDS
+                            };
+                return druid;
             }
         }
 
@@ -58,11 +82,6 @@ namespace d20 {
                 }
             }
             return false;
-        }
-
-        public float BaseAttackBonus {
-            get;
-            internal set;
         }
     }
 }

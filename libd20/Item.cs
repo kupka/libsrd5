@@ -7,7 +7,9 @@ namespace d20 {
         HEAVY,
         LIGHT,
         LOADING,
+        RANGED,
         REACH,
+        SPECIAL,
         THROWN,
         TWO_HANDED,
         VERSATILE
@@ -44,7 +46,7 @@ namespace d20 {
             "1d4", 
             DamageType.BLUDGEONING, 
             new WeaponProperty[] { WeaponProperty.LIGHT },
-            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.CLUB},
+            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.CLUB },
             10,
             2
         );
@@ -53,7 +55,7 @@ namespace d20 {
             "1d4",
             DamageType.PIERCING,
             new WeaponProperty[] { WeaponProperty.LIGHT, WeaponProperty.FINESSE, WeaponProperty.THROWN},
-            new Proficiency[] {Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.DAGGER},
+            new Proficiency[] {Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.DAGGER },
             200,
             1,
             20,
@@ -67,6 +69,15 @@ namespace d20 {
             new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.GREATAXE },
             3000,
             7
+        );
+
+            public static readonly Weapon Longbow = new Weapon(
+            "1d8",
+            DamageType.PIERCING,
+            new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY, WeaponProperty.AMMUNITION },
+            new Proficiency[] { Proficiency.MARTIAL_RANGED_WEAPONS, Proficiency.LONGBOW },
+            5000,
+            2
         );
     }
 

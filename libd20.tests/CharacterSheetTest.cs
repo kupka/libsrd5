@@ -49,7 +49,39 @@ namespace d20 {
             sheet.AddLevel(CharacterClass.Barbarian);
             sheet.AddLevel(CharacterClass.Barbarian);
             sheet.AddLevel(CharacterClass.Barbarian);
-            Assert.Equal(3, sheet.AttackBonus);
+            Assert.Equal(2, sheet.AttackProficiency);
+            sheet.AddLevel(CharacterClass.Barbarian);
+            sheet.AddLevel(CharacterClass.Barbarian);
+            Assert.Equal(3, sheet.AttackProficiency);            
+            sheet.Strength.Value = 18;
+            sheet.Dexterity.Value = 14;
+            Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
+            sheet.Equip(club);
+            Assert.Equal(7, sheet.AttackProficiency);
+            Thing<Weapon> longbow = new Thing<Weapon>(Weapons.Longbow);
+            sheet.Equip(longbow);
+            Assert.Equal(5, sheet.AttackProficiency);
+        }
+
+        [Fact]
+        public void DruidTest() {
+            CharacterSheet sheet = new CharacterSheet();
+            sheet.Strength.Value = 8;
+            sheet.Dexterity.Value = 12;
+            sheet.AddLevel(CharacterClass.Druid);
+            sheet.AddLevel(CharacterClass.Druid);
+            sheet.AddLevel(CharacterClass.Druid);
+            Assert.Equal(1, sheet.AttackProficiency);
+            sheet.AddLevel(CharacterClass.Druid);
+            sheet.AddLevel(CharacterClass.Druid);       
+            Assert.Equal(2, sheet.AttackProficiency);  
+            Thing<Weapon> greatAxe = new Thing<Weapon>(Weapons.GreatAxe);
+            sheet.Equip(greatAxe);
+            Assert.Equal(-1, sheet.AttackProficiency);
+            Thing<Weapon> dagger = new Thing<Weapon>(Weapons.Dagger);
+            sheet.Equip(dagger);
+            Console.WriteLine(sheet.AttackProficiency);
+            Assert.Equal(3, sheet.AttackProficiency);
         }
     }
 }

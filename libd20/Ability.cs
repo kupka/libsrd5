@@ -27,5 +27,10 @@ namespace d20 {
             get;
             internal set;
         }
+
+        internal Ability(AbilityType type, uint value) {
+            Type = type;
+            Value = value;
+        }
     }
 }

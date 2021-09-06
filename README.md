@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/kupka/libd20.svg?branch=master)](https://travis-ci.org/kupka/libd20)
+[![Build Status](https://app.travis-ci.com/kupka/libd20.svg?branch=main)](https://app.travis-ci.com/github/kupka/libd20)
 
 # libd20
 

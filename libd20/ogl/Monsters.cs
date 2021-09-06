@@ -5,6 +5,6 @@ namespace d20 {
     }
 
     public struct Monsters {
-        public static readonly Monster Ogre = new Monster("Ogre", 19, 8, 16, 5, 7, 7, 11, "7d10+21", 40, 2);
+        public static readonly Monster Ogre = new Monster("Ogre", 19, 8, 16, 5, 7, 7, 11, "7d10+21", 40, 2, new Attack[]{Attacks.OgreGreatclub}, new Attack[]{Attacks.OgreJavelin});
     }
 } 

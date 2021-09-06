@@ -2,7 +2,7 @@ using System;
 
 namespace d20 {
     public struct Dice {
-        public static Dice Get(uint max) {
+        public static Dice Get(int max) {
             switch(max) {
                 case 2:
                 case 3:
@@ -98,17 +98,17 @@ namespace d20 {
             }
         }
 
-        public uint Value {
+        public int Value {
             get;
             internal set;
         }
 
-        public uint MaxValue {
+        public int MaxValue {
             get;
             private set;
         }
 
-        public uint MinValue {
+        public int MinValue {
             get {
                 return 1;
             }
@@ -117,7 +117,7 @@ namespace d20 {
         public static int Roll(int modifier, params Dice[] dices) {
             int roll = modifier;
             foreach (Dice dice in dices) {
-                roll += (int)dice.Value;
+                roll += dice.Value;
             }
             return roll;
         }
@@ -139,7 +139,7 @@ namespace d20 {
             set;
         }
 
-        internal uint Dice {
+        internal int Dice {
             get;
             set;
         }
@@ -185,7 +185,7 @@ namespace d20 {
                             if(Dice > 0) {
                                 Dice *= 10;
                             }
-                            Dice += uint.Parse(c.ToString());
+                            Dice += int.Parse(c.ToString());
                             break;
                         } else if (c == '+') {
                             state = 2;
@@ -228,10 +228,10 @@ namespace d20 {
             }
         }
 
-        public long Roll() {
+        public int Roll() {
             int result = Modifier;
             for(int i = 0; i < Amount; i++) {
-                result += (int)Random.Get(1, Dice);
+                result += Random.Get(1, Dice);
             }
             return result;
         }

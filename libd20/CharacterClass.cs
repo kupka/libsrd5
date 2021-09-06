@@ -7,7 +7,7 @@ namespace d20 {
             internal set;
         }
 
-        public uint HitDice {
+        public int HitDice {
             get;
             internal set;
         }

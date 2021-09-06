@@ -21,15 +21,18 @@ namespace d20 {
             return x;
         }
 
-        internal static uint Get(uint min, uint max) {
+        internal static int Get(int min, int max) {
+            if (min < 0) {
+                throw new System.ArgumentException("min must be greater or equal than 0.");
+            }
             if (max <= min) {
                 throw new System.ArgumentException("max must be greater than min.");
             }
             uint r = xorshift32();
-            uint diff = max - min;
+            uint diff = (uint)(max - min);
             r = r % (diff+1);
-            r += min;
-            return r;
+            r += (uint)min;
+            return (int)r;
         }
     }
 }

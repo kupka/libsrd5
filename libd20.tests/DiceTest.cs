@@ -6,7 +6,7 @@ namespace d20 {
         [Fact]
         public void D20Test() {
             Dice d20 = Dice.D20;
-            Assert.InRange<uint>(d20.Value, 1, 20);
+            Assert.InRange<int>(d20.Value, 1, 20);
         }
 
         [Theory]

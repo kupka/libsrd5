@@ -8,7 +8,7 @@ namespace d20 {
         [InlineData(8, -1)]
         [InlineData(15, 2)]
         [InlineData(26, 8)]
-        public void TestModifier(uint value, int expected) {
+        public void TestModifier(int value, int expected) {
             Ability ability = new Ability(AbilityType.STRENGTH, value);
             ability.Value = value;
             Assert.Equal(expected, ability.Modifier);

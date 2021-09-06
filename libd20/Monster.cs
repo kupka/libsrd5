@@ -21,7 +21,7 @@ namespace d20 {
 
 
 
-    public class Monster {
+    public class Monster : Combattant {
         public Ability Strength { get; internal set; } = new Ability(AbilityType.STRENGTH, 10);
         public Ability Dexterity { get; internal set; } = new Ability(AbilityType.DEXTERITY, 10);
         public Ability Constitution { get; internal set; } = new Ability(AbilityType.CONSTITUTION, 10);
@@ -29,15 +29,13 @@ namespace d20 {
         public Ability Wisdom { get; internal set; } = new Ability(AbilityType.WISDOM, 10);
         public Ability Charisma { get; internal set; } = new Ability(AbilityType.CHARISMA, 10);
         public string Name { get; internal set; }
-        public int ArmorClass { get; internal set; } = 10;
         public int Speed { get; internal set; } = 30;
         public int Challenge { get; internal set; } = 1;
         public Attack[] MeleeAttacks { get; internal set; } = new Attack[0];
-        public Attack[] RangedAttacks { get; internal set; } = new Attack[0];
-        public uint HitPointsMax { get; internal set; }
-        public uint HitPoints { get; internal set; }        
+        public Attack[] RangedAttacks { get; internal set; } = new Attack[0];        
 
-        public Monster(string name, uint strength, uint dexterity, uint constitution, uint intelligence, uint wisdom, uint charisma, int armorClass, string hitDice, int speed, int challenge) {
+        public Monster(string name, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma, 
+                        int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks) {
             Name = name;
             Strength.Value = strength;
             Dexterity.Value = dexterity;
@@ -46,11 +44,13 @@ namespace d20 {
             Wisdom.Value = wisdom;
             Charisma.Value = charisma;            
             ArmorClass = armorClass;
-            uint hp = (uint)new Dices(hitDice).Roll();
+            int hp = new Dices(hitDice).Roll();
             HitPointsMax = hp;
             HitPoints = hp;
             Speed = speed;
             Challenge = challenge;
+            MeleeAttacks = meleeAttacks;
+            RangedAttacks = rangedAttacks;
         }
     }
 }

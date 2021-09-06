@@ -5,7 +5,7 @@ namespace d20 {
         [Fact]
         public void OgreTest() {
             Monster ogre = Monsters.Ogre;
-            Assert.InRange<uint>(ogre.HitPoints, 28, 91);
+            Assert.InRange(ogre.HitPoints, 28, 91);
         }
     }
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace d20 {
     public class CharacterLevel {
-        public uint Levels { get; internal set; }
+        public int Levels { get; internal set; }
         public CharacterClass Class { get; internal set; }
     }
 
@@ -17,7 +17,7 @@ namespace d20 {
         public Thing<Boots> Boots { get; internal set; }
     }
 
-    public class CharacterSheet {
+    public class CharacterSheet : Combattant {
         public Ability Strength { get; internal set; } = new Ability(AbilityType.STRENGTH, 10);
         public Ability Dexterity { get; internal set; } = new Ability(AbilityType.DEXTERITY, 10);
         public Ability Constitution { get; internal set; } = new Ability(AbilityType.CONSTITUTION, 10);
@@ -38,8 +38,7 @@ namespace d20 {
             }
         }
         private Proficiency[] proficiencies = new Proficiency[0];
-        public uint HitPointsMax { get; internal set; }
-        public uint HitPoints { get; internal set; }
+
         public Dice[] HitDiceSpent { 
             get {
                 return hitDiceSpent;
@@ -48,7 +47,7 @@ namespace d20 {
         private Dice[] hitDiceSpent = new Dice[0];
 
         public CharacterInventory Inventory { get; internal set; } = new CharacterInventory();
-        public int ArmorClass { 
+        public new int ArmorClass { 
             get {
                 int ac = 10 + Dexterity.Modifier;
                 if (Inventory.Armor != null) {
@@ -64,11 +63,11 @@ namespace d20 {
                 int bonus = 0;
                 // calculate base proficiency bonus if character is proficient
                 if (mainhand == null || IsProficient(mainhand.Item)) {
-                    uint totalLevel = 0;
+                    int totalLevel = 0;
                     foreach (CharacterLevel level in levels) {
                         totalLevel += level.Levels;
                     }
-                    bonus = (int)(2 + ((totalLevel - 1) / 4));
+                    bonus = (2 + ((totalLevel - 1) / 4));
                 }
                 // get bonus from strength or dex
                 if (mainhand == null) { // unarmed, use strength

@@ -7,7 +7,7 @@ namespace d20 {
             internal set;
         }
 
-        public Shield(int ac, uint value, uint weight) {
+        public Shield(int ac, int value, int weight) {
             AC = ac;
             Proficiencies = new Proficiency[] { Proficiency.SHIELDS };
             Value = value;
@@ -26,12 +26,12 @@ namespace d20 {
             internal set;
         }
 
-        public uint Strength {
+        public int Strength {
             get;
             internal set;
         }
 
-        public Armor(int ac, int maxDexBonus, uint strength, Proficiency proficiency, uint value, uint weight) {
+        public Armor(int ac, int maxDexBonus, int strength, Proficiency proficiency, int value, int weight) {
             AC = ac;
             MaxDexBonus = maxDexBonus;
             Strength = Strength;
@@ -59,7 +59,7 @@ namespace d20 {
 
     public class Weapon : Item {
         internal Weapon(string damage, DamageType damageType, WeaponProperty[] properties, Proficiency[] proficiencies, 
-                        uint value, uint weight, uint rangeNormal = 0, uint rangeLong = 0) {
+                        int value, int weight, int rangeNormal = 0, int rangeLong = 0) {
             Type = ItemType.WEAPON;
             Damage = damage;
             this.DamageType = damageType;
@@ -77,9 +77,9 @@ namespace d20 {
 
         public WeaponProperty[] Properties { get; internal set; }
 
-        public uint RangeNormal { get; internal set; }
+        public int RangeNormal { get; internal set; }
 
-        public uint RangeLong { get; internal set; }
+        public int RangeLong { get; internal set; }
     }
 
     public abstract class Item {
@@ -87,20 +87,20 @@ namespace d20 {
 
         public Proficiency[] Proficiencies { get; internal set; }
 
-        public uint Weight { get; internal set; }
+        public int Weight { get; internal set; }
 
-        public uint Value { get; internal set; }
+        public int Value { get; internal set; }
     }
 
     public class Thing<T> where T : Item {
-        private uint id = Random.Get(1, uint.MaxValue);
+        private int id = Random.Get(1, int.MaxValue);
 
         public Thing(T item) {
             Item = item;
         }
 
         public override int GetHashCode() {
-            return (int)id;
+            return id;
         }
 
         public override bool Equals(object obj) {

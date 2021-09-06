@@ -9,12 +9,12 @@ namespace d20 {
                 } else if (Value >= 30) {
                     return 10;
                 } else {
-                    return (int)(Value / 2) - 5;
+                    return (Value / 2) - 5;
                 }
             }
         }
 
-        public uint Value {
+        public int Value {
             get;
             internal set;
         }
@@ -24,7 +24,7 @@ namespace d20 {
             internal set;
         }
 
-        internal Ability(AbilityType type, uint value) {
+        internal Ability(AbilityType type, int value) {
             Type = type;
             Value = value;
         }

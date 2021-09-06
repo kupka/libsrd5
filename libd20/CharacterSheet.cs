@@ -18,12 +18,12 @@ namespace d20 {
     }
 
     public class CharacterSheet {
-        public Ability Strength { get; internal set; } = new Ability(AbilityType.Strength, 10);
-        public Ability Dexterity { get; internal set; } = new Ability(AbilityType.Dexterity, 10);
-        public Ability Constitution { get; internal set; } = new Ability(AbilityType.Constitution, 10);
-        public Ability Intelligence { get; internal set; } = new Ability(AbilityType.Intelligence, 10);
-        public Ability Wisdom { get; internal set; } = new Ability(AbilityType.Wisdom, 10);
-        public Ability Charisma { get; internal set; } = new Ability(AbilityType.Charisma, 10);
+        public Ability Strength { get; internal set; } = new Ability(AbilityType.STRENGTH, 10);
+        public Ability Dexterity { get; internal set; } = new Ability(AbilityType.DEXTERITY, 10);
+        public Ability Constitution { get; internal set; } = new Ability(AbilityType.CONSTITUTION, 10);
+        public Ability Intelligence { get; internal set; } = new Ability(AbilityType.INTELLIGENCE, 10);
+        public Ability Wisdom { get; internal set; } = new Ability(AbilityType.WISDOM, 10);
+        public Ability Charisma { get; internal set; } = new Ability(AbilityType.CHARISMA, 10);
         public string Name { get; internal set; }
         public CharacterRace Race { get; internal set; }
         public CharacterLevel[] Levels {

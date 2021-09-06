@@ -14,6 +14,7 @@ namespace d20 {
                 case 20:
                 case 100:
                     Dice dice = new Dice();
+                    dice.MaxValue = max;
                     dice.Value = Random.Get(1, max);
                     return dice;
                 default:
@@ -99,7 +100,18 @@ namespace d20 {
 
         public uint Value {
             get;
+            internal set;
+        }
+
+        public uint MaxValue {
+            get;
             private set;
+        }
+
+        public uint MinValue {
+            get {
+                return 1;
+            }
         }
 
         public static int Roll(int modifier, params Dice[] dices) {
@@ -111,12 +123,12 @@ namespace d20 {
         }
 
         public static long Roll(string diceString) {
-            ParsedDices parsed = new ParsedDices(diceString);
+            Dices parsed = new Dices(diceString);
             return parsed.Roll();
         }
     }
 
-    internal struct ParsedDices {
+    internal struct Dices {
         internal int Modifier {
             get;
             set;
@@ -144,7 +156,7 @@ namespace d20 {
             }
         }
 
-        internal ParsedDices(string diceString) {
+        internal Dices(string diceString) {
             Amount = 1;
             Dice = 0;
             Modifier = 0;
@@ -197,7 +209,7 @@ namespace d20 {
                         break;
                 }
             }
-            if(negativeModifier) {
+            if (negativeModifier) {
                 Modifier *= -1;
             }
             switch(Dice) {
@@ -222,13 +234,6 @@ namespace d20 {
                 result += (int)Random.Get(1, Dice);
             }
             return result;
-        }
-    }
-
-    public struct Dices {
-
-        public Dices(string diceString) {
-
         }
     }
 }

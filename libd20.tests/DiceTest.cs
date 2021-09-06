@@ -15,8 +15,9 @@ namespace d20 {
         [InlineData("d4-5", -4, -1)]
         [InlineData("d2-1", 0, 1)]
         [InlineData("5d3+10", 15, 25)]
-        public void ParseTest1(string diceString, int min, int max) {
-            ParsedDices parsed = new ParsedDices(diceString);
+        [InlineData("1111d12+889", 2000, 14221)]
+        public void ParseTest(string diceString, int min, int max) {
+            Dices parsed = new Dices(diceString);
             Assert.Equal(min, parsed.Min);
             Assert.Equal(max, parsed.Max);
             long result = Dice.Roll(diceString);

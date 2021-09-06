@@ -40,7 +40,13 @@ namespace d20 {
         private Proficiency[] proficiencies = new Proficiency[0];
         public uint HitPointsMax { get; internal set; }
         public uint HitPoints { get; internal set; }
-        public Dice[] HitDiceSpent { get; internal set; }
+        public Dice[] HitDiceSpent { 
+            get {
+                return hitDiceSpent;
+            } 
+        }
+        private Dice[] hitDiceSpent = new Dice[0];
+
         public CharacterInventory Inventory { get; internal set; } = new CharacterInventory();
         public int ArmorClass { 
             get {
@@ -175,21 +181,29 @@ namespace d20 {
 
         public void AddLevel(CharacterClass characterClass) {
             if (characterClass == null) return;
+            Dice dice = Dice.Get(characterClass.HitDice);
             foreach (CharacterLevel level in levels) {
                 if (level.Class.Class == characterClass.Class) {
-                    level.Levels++;
+                    level.Levels++;                    
+                    Utils.Push<Dice>(ref hitDiceSpent, dice);
+                    HitPointsMax += dice.Value;
+                    HitPoints += dice.Value;                    
                     return;
                 }
             }
             CharacterLevel newLevel = new CharacterLevel();
             newLevel.Class = characterClass;
-            newLevel.Levels = 1;
-            Array.Resize(ref levels, levels.Length + 1);
-            levels[levels.GetUpperBound(0)] = newLevel;
+            newLevel.Levels = 1;                        
+            if (levels.Length == 0) { // maximum hitpoints when this is the first level
+                dice.Value = dice.MaxValue;
+            }            
+            Utils.Push(ref levels, newLevel);
+            Utils.Push<Dice>(ref hitDiceSpent, dice);
+            HitPointsMax += dice.Value;
+            HitPoints += dice.Value;                    
             foreach (Proficiency proficiency in characterClass.Proficiencies) {
                 if (!IsProficient(proficiency)) {
-                    Array.Resize(ref proficiencies, proficiencies.Length + 1);
-                    Proficiencies[Proficiencies.GetUpperBound(0)] = proficiency;
+                    Utils.Push<Proficiency>(ref proficiencies, proficiency);
                 }
             }
         }        

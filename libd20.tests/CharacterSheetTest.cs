@@ -80,7 +80,6 @@ namespace d20 {
             Assert.Equal(-1, sheet.AttackProficiency);
             Thing<Weapon> dagger = new Thing<Weapon>(Weapons.Dagger);
             sheet.Equip(dagger);
-            Console.WriteLine(sheet.AttackProficiency);
             Assert.Equal(4, sheet.AttackProficiency);
             sheet.AddLevel(CharacterClasses.Druid);
             sheet.AddLevel(CharacterClasses.Druid);  
@@ -88,6 +87,17 @@ namespace d20 {
             Assert.Equal(4, sheet.AttackProficiency);
             sheet.AddLevel(CharacterClasses.Druid);     
             Assert.Equal(5, sheet.AttackProficiency);
+        }
+
+        [Fact]
+        public void HitPointsTest() {
+            CharacterSheet sheet = new CharacterSheet();
+            sheet.AddLevel(CharacterClasses.Druid);
+            Assert.Equal(CharacterClasses.Druid.HitDice, sheet.HitPoints);
+            Assert.Equal(CharacterClasses.Druid.HitDice, sheet.HitPointsMax);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            Assert.InRange(sheet.HitPoints, CharacterClasses.Druid.HitDice + 1, CharacterClasses.Druid.HitDice + CharacterClasses.Barbarian.HitDice);
+            Assert.InRange(sheet.HitPointsMax, CharacterClasses.Druid.HitDice + 1, CharacterClasses.Druid.HitDice + CharacterClasses.Barbarian.HitDice);            
         }
     }
 }

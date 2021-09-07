@@ -128,7 +128,7 @@ namespace d20 {
         }
     }
 
-    internal struct Dices {
+    public struct Dices {
         internal int Modifier {
             get;
             set;
@@ -156,7 +156,13 @@ namespace d20 {
             }
         }
 
+        private string diceString;
+        public override string ToString() {
+            return diceString;
+        }
+
         internal Dices(string diceString) {
+            this.diceString = diceString;
             Amount = 1;
             Dice = 0;
             Modifier = 0;

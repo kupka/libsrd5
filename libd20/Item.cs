@@ -57,12 +57,22 @@ namespace d20 {
 
     }
 
+    public class Damage {
+        public DamageType Type { get; internal set; }
+        public Dices Value { get; internal set; }
+        
+        public Damage(DamageType type, string diceString) {
+            Type = type;
+            Value = new Dices(diceString);
+        }
+    }
+
+
     public class Weapon : Item {
         internal Weapon(string damage, DamageType damageType, WeaponProperty[] properties, Proficiency[] proficiencies, 
                         int value, int weight, int rangeNormal = 0, int rangeLong = 0) {
             Type = ItemType.WEAPON;
-            Damage = damage;
-            this.DamageType = damageType;
+            Damage = new Damage(damageType, damage);
             Proficiencies = proficiencies;
             Properties = properties;
             Value = value;
@@ -71,9 +81,7 @@ namespace d20 {
             RangeLong = rangeLong;
         }
 
-        public string Damage { get; internal set; }
-
-        public DamageType DamageType { get; internal set; }
+        public Damage Damage { get; internal set; }
 
         public WeaponProperty[] Properties { get; internal set; }
 

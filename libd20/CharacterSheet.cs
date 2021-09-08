@@ -187,7 +187,6 @@ namespace d20 {
         }
 
         public void AddLevel(CharacterClass characterClass) {
-            if (characterClass == null) return;
             Dice dice = Dice.Get(characterClass.HitDice);
             int additionalHp = HasEffect(EffectType.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
             foreach (CharacterLevel level in levels) {

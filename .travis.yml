@@ -4,7 +4,7 @@ mono: none
 dotnet: 3.1.412
 script:
  - dotnet tool install --global coveralls.net --version 2.0.0
- - dotnet tool install -g dotnet-reportgenerator-globaltool
+ - dotnet tool install --global dotnet-reportgenerator-globaltool
  - dotnet build
  - dotnet test libd20.tests/libd20.tests.csproj --collect:"XPlat Code Coverage"
  - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
@@ -16,5 +16,5 @@ script:
  - echo $REPO_COMMIT_AUTHOR_EMAIL
  - echo $REPO_COMMIT_MESSAGE
  - echo $TRAVIS_JOB_ID
- - reportgenerator -reports:libd20.tests/TestResults/*/coverage.cobertura.xml -targetdir:"libd20.tests/TestResults" -reporttypes:Xml
- - csmacnz.Coveralls --reportgenerator -i libd20.tests/TestResults/ --repoToken $COVERALLS_REPO_TOKEN --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci  --useRelativePaths
+ - $HOME/.dotnet/tools/reportgenerator -reports:libd20.tests/TestResults/*/coverage.cobertura.xml -targetdir:"libd20.tests/TestResults" -reporttypes:Xml
+ - $HOME/.dotnet/tools/csmacnz.Coveralls --reportgenerator -i libd20.tests/TestResults/ --repoToken $COVERALLS_REPO_TOKEN --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci  --useRelativePaths

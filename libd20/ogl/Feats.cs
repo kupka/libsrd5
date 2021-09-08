@@ -81,7 +81,7 @@ namespace d20 {
     public class FeyAncestry : RacialFeat {
         public override void Apply(CharacterSheet sheet) {
             sheet.AddEffect(new Effect(EffectType.IMMUNITY_SLEEP));
-            sheet.AddEffect(new Effect(EffectType.ADVANTAGE_CHARM_SAVE));
+            sheet.AddEffect(new Effect(EffectType.ADVANTAGE_SAVE_CHARM));
         }
     }
 

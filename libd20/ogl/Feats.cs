@@ -21,7 +21,7 @@ namespace d20 {
     public class DwarvenResilience : RacialFeat {
         public override void Apply(CharacterSheet sheet) {
             sheet.AddEffect(new Effect(EffectType.RESISTANCE_POISON));
-            sheet.AddEffect(new Effect(EffectType.ADVANTAGE_POISON_SAVE));
+            sheet.AddEffect(new Effect(EffectType.ADVANTAGE_SAVE_POISON));
         }
     }
 

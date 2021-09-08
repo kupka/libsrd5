@@ -1,4 +1,4 @@
-[![Build Status](https://app.travis-ci.com/kupka/libd20.svg?branch=main)](https://app.travis-ci.com/github/kupka/libd20)
+[![Build Status](https://app.travis-ci.com/kupka/libd20.svg?branch=main)](https://app.travis-ci.com/github/kupka/libd20) [![Coverage Status](https://coveralls.io/repos/github/kupka/libd20/badge.svg)](https://coveralls.io/github/kupka/libd20)
 
 # libd20
 

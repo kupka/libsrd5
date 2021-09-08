@@ -41,6 +41,8 @@ namespace d20 {
         private Proficiency[] proficiencies = new Proficiency[0];
         public Feat[] Feats { get; }
         private Feat[] feats = new Feat[0];
+        public Effect[] Effects { get; }
+        private Effect[] effects = new Effect[0];
         public Dice[] HitDiceSpent {
             get {
                 return hitDiceSpent;
@@ -88,6 +90,10 @@ namespace d20 {
                 // get bonus from feats etc.                
                 return bonus;
             }
+        }
+
+        public CharacterSheet(CharacterRace race) {
+            SetRace(race);
         }
 
         public void Equip(Thing<Weapon> thing) {
@@ -183,12 +189,13 @@ namespace d20 {
         public void AddLevel(CharacterClass characterClass) {
             if (characterClass == null) return;
             Dice dice = Dice.Get(characterClass.HitDice);
+            int additionalHp = HasEffect(EffectType.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
             foreach (CharacterLevel level in levels) {
                 if (level.Class.Class == characterClass.Class) {
                     level.Levels++;
                     Utils.Push<Dice>(ref hitDiceSpent, dice);
-                    HitPointsMax += dice.Value;
-                    HitPoints += dice.Value;
+                    HitPointsMax += dice.Value + additionalHp;
+                    HitPoints += dice.Value + additionalHp;
                     return;
                 }
             }
@@ -200,8 +207,8 @@ namespace d20 {
             }
             Utils.Push(ref levels, newLevel);
             Utils.Push<Dice>(ref hitDiceSpent, dice);
-            HitPointsMax += dice.Value;
-            HitPoints += dice.Value;
+            HitPointsMax += dice.Value + additionalHp;
+            HitPoints += dice.Value + additionalHp;
             foreach (Proficiency proficiency in characterClass.Proficiencies) {
                 if (!IsProficient(proficiency)) {
                     Utils.Push<Proficiency>(ref proficiencies, proficiency);
@@ -209,11 +216,18 @@ namespace d20 {
             }
         }
 
+        public bool HasEffect(EffectType type) {
+            foreach (Effect effect in effects) {
+                if (effect.Type == type) return true;
+            }
+            return false;
+        }
+
         public void AddProficiency(Proficiency proficiency) {
             Utils.PushUnique<Proficiency>(ref proficiencies, proficiency);
         }
 
-        public void SetRace(CharacterRace race) {
+        private void SetRace(CharacterRace race) {
             this.race = race;
             foreach (Feat feat in race.RacialFeats) {
                 AddFeat(feat);
@@ -223,6 +237,10 @@ namespace d20 {
         public void AddFeat(Feat feat) {
             Utils.PushUnique<Feat>(ref feats, feat);
             feat.Apply(this);
+        }
+
+        public void AddEffect(Effect effect) {
+            Utils.PushUnique<Effect>(ref effects, effect);
         }
     }
 }

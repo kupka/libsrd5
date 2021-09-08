@@ -1,19 +1,11 @@
 using System;
 
 namespace d20 {
-    public class Effect {
+    public struct Effect {
+        public EffectType Type { get; internal set; }
 
-        public object Source { get; private set; }
-        public CharacterSheet Character { get; private set; }
-        public EffectType[] Types { get; private set; }
-
-        public Effect(object source, CharacterSheet character, params EffectType[] types) {
-            Source = source;
-            Character = character;
-            Types = types;
-
+        public Effect(EffectType type) {
+            Type = type;
         }
-
-
     }
 }

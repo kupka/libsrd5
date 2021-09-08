@@ -6,7 +6,7 @@ namespace d20 {
         [Fact]
         public void EquipOneHandTest() {
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
-            CharacterSheet sheet = new CharacterSheet();
+            CharacterSheet sheet = new CharacterSheet(CharacterRaces.Human);
             sheet.Equip(club);
             Assert.Equal(club, sheet.Inventory.MainHand);
         }
@@ -15,7 +15,7 @@ namespace d20 {
         public void EquipTwoHandTest() {
             Thing<Weapon> greatAxe = new Thing<Weapon>(Weapons.GreatAxe);
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
-            CharacterSheet sheet = new CharacterSheet();
+            CharacterSheet sheet = new CharacterSheet(CharacterRaces.Human);
             sheet.Equip(club);
             sheet.Equip(greatAxe);
             Assert.Equal(greatAxe, sheet.Inventory.MainHand);
@@ -25,7 +25,7 @@ namespace d20 {
         [Fact]
         public void EquipArmorTest() {
             Thing<Armor> chainShirt = new Thing<Armor>(Armors.ChainShirt);
-            CharacterSheet sheet = new CharacterSheet();
+            CharacterSheet sheet = new CharacterSheet(CharacterRaces.Human);
             sheet.Dexterity.Value = 18;
             Assert.Equal(14, sheet.ArmorClass);
             sheet.Equip(chainShirt);
@@ -36,7 +36,7 @@ namespace d20 {
         public void EquipFullTest() {
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             Thing<Shield> buckler = new Thing<Shield>(Shields.Buckler);
-            CharacterSheet sheet = new CharacterSheet();
+            CharacterSheet sheet = new CharacterSheet(CharacterRaces.Human);
             sheet.Equip(club);
             sheet.Equip(buckler);
             Assert.Equal(club, sheet.Inventory.MainHand);
@@ -45,7 +45,7 @@ namespace d20 {
 
         [Fact]
         public void BarbarianTest() {
-            CharacterSheet sheet = new CharacterSheet();
+            CharacterSheet sheet = new CharacterSheet(CharacterRaces.Human);
             sheet.AddLevel(CharacterClasses.Barbarian);
             sheet.AddLevel(CharacterClasses.Barbarian);
             sheet.AddLevel(CharacterClasses.Barbarian);
@@ -65,7 +65,7 @@ namespace d20 {
 
         [Fact]
         public void DruidTest() {
-            CharacterSheet sheet = new CharacterSheet();
+            CharacterSheet sheet = new CharacterSheet(CharacterRaces.Human);
             sheet.Strength.Value = 8;
             sheet.Dexterity.Value = 12;
             sheet.AddLevel(CharacterClasses.Druid);
@@ -91,7 +91,7 @@ namespace d20 {
 
         [Fact]
         public void HitPointsTest() {
-            CharacterSheet sheet = new CharacterSheet();
+            CharacterSheet sheet = new CharacterSheet(CharacterRaces.Human);
             sheet.AddLevel(CharacterClasses.Druid);
             Assert.Equal(CharacterClasses.Druid.HitDice, sheet.HitPoints);
             Assert.Equal(CharacterClasses.Druid.HitDice, sheet.HitPointsMax);
@@ -102,11 +102,12 @@ namespace d20 {
 
         [Fact]
         public void DwarfTest() {
-            CharacterSheet sheet = new CharacterSheet();
-            sheet.SetRace(CharacterRaces.Dwarf);
-            Assert.Equal(Race.DWARF, sheet.Race.Race);
+            CharacterSheet sheet = new CharacterSheet(CharacterRaces.HillDwarf);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            Assert.Equal(Race.HILL_DWARF, sheet.Race.Race);
             Assert.Equal(12, sheet.Constitution.Value);
             Assert.True(sheet.IsProficient(Proficiency.WARHAMMER));
+            Assert.Equal(13, sheet.HitPoints);
         }
     }
 }

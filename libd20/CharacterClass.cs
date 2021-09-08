@@ -18,9 +18,9 @@ namespace d20 {
         }
 
         public bool IsProficientIn(Item item) {
-            foreach(Proficiency needs in item.Proficiencies) {
-                foreach(Proficiency has in Proficiencies) {
-                    if(needs == has) return true;
+            foreach (Proficiency needs in item.Proficiencies) {
+                foreach (Proficiency has in Proficiencies) {
+                    if (needs == has) return true;
                 }
             }
             return false;

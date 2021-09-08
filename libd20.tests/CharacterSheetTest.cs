@@ -3,7 +3,7 @@ using Xunit;
 
 namespace d20 {
     public class CharacterSheetTest {
-        [Fact]        
+        [Fact]
         public void EquipOneHandTest() {
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             CharacterSheet sheet = new CharacterSheet();
@@ -52,7 +52,7 @@ namespace d20 {
             Assert.Equal(2, sheet.AttackProficiency);
             sheet.AddLevel(CharacterClasses.Barbarian);
             sheet.AddLevel(CharacterClasses.Barbarian);
-            Assert.Equal(3, sheet.AttackProficiency);            
+            Assert.Equal(3, sheet.AttackProficiency);
             sheet.Strength.Value = 18;
             sheet.Dexterity.Value = 14;
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
@@ -73,8 +73,8 @@ namespace d20 {
             sheet.AddLevel(CharacterClasses.Druid);
             Assert.Equal(1, sheet.AttackProficiency);
             sheet.AddLevel(CharacterClasses.Druid);
-            sheet.AddLevel(CharacterClasses.Druid);       
-            Assert.Equal(2, sheet.AttackProficiency);  
+            sheet.AddLevel(CharacterClasses.Druid);
+            Assert.Equal(2, sheet.AttackProficiency);
             Thing<Weapon> greatAxe = new Thing<Weapon>(Weapons.GreatAxe);
             sheet.Equip(greatAxe);
             Assert.Equal(-1, sheet.AttackProficiency);
@@ -82,10 +82,10 @@ namespace d20 {
             sheet.Equip(dagger);
             Assert.Equal(4, sheet.AttackProficiency);
             sheet.AddLevel(CharacterClasses.Druid);
-            sheet.AddLevel(CharacterClasses.Druid);  
-            sheet.AddLevel(CharacterClasses.Druid);     
+            sheet.AddLevel(CharacterClasses.Druid);
+            sheet.AddLevel(CharacterClasses.Druid);
             Assert.Equal(4, sheet.AttackProficiency);
-            sheet.AddLevel(CharacterClasses.Druid);     
+            sheet.AddLevel(CharacterClasses.Druid);
             Assert.Equal(5, sheet.AttackProficiency);
         }
 
@@ -97,7 +97,7 @@ namespace d20 {
             Assert.Equal(CharacterClasses.Druid.HitDice, sheet.HitPointsMax);
             sheet.AddLevel(CharacterClasses.Barbarian);
             Assert.InRange(sheet.HitPoints, CharacterClasses.Druid.HitDice + 1, CharacterClasses.Druid.HitDice + CharacterClasses.Barbarian.HitDice);
-            Assert.InRange(sheet.HitPointsMax, CharacterClasses.Druid.HitDice + 1, CharacterClasses.Druid.HitDice + CharacterClasses.Barbarian.HitDice);            
+            Assert.InRange(sheet.HitPointsMax, CharacterClasses.Druid.HitDice + 1, CharacterClasses.Druid.HitDice + CharacterClasses.Barbarian.HitDice);
         }
 
         [Fact]

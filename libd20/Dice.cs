@@ -3,7 +3,7 @@ using System;
 namespace d20 {
     public struct Dice {
         public static Dice Get(int max) {
-            switch(max) {
+            switch (max) {
                 case 2:
                 case 3:
                 case 4:
@@ -33,7 +33,7 @@ namespace d20 {
                 return Get(3);
             }
         }
-        
+
         public static Dice D4 {
             get {
                 return Get(4);
@@ -74,7 +74,7 @@ namespace d20 {
             get {
                 Dice first = Get(20);
                 Dice second = Get(20);
-                if(first.Value >= second.Value)
+                if (first.Value >= second.Value)
                     return first;
                 else
                     return second;
@@ -85,7 +85,7 @@ namespace d20 {
             get {
                 Dice first = Get(20);
                 Dice second = Get(20);
-                if(first.Value <= second.Value)
+                if (first.Value <= second.Value)
                     return first;
                 else
                     return second;
@@ -168,12 +168,12 @@ namespace d20 {
             Modifier = 0;
             bool negativeModifier = false;
             int state = 0; // 0 = Start, 1 = Dice, 2 = Modifier
-            for(int i = 0; i < diceString.Length; i++) {
+            for (int i = 0; i < diceString.Length; i++) {
                 char c = diceString[i];
-                switch(state) {
+                switch (state) {
                     case 0:
-                        if(char.IsDigit(c)) {
-                            if(i == 0) {
+                        if (char.IsDigit(c)) {
+                            if (i == 0) {
                                 Amount = 0;
                             } else {
                                 Amount *= 10;
@@ -184,11 +184,11 @@ namespace d20 {
                             state = 1;
                             continue;
                         } else {
-                            throw new FormatException("Invalid input: " +  diceString);
+                            throw new FormatException("Invalid input: " + diceString);
                         }
                     case 1:
-                        if(char.IsDigit(c)) {
-                            if(Dice > 0) {
+                        if (char.IsDigit(c)) {
+                            if (Dice > 0) {
                                 Dice *= 10;
                             }
                             Dice += int.Parse(c.ToString());
@@ -204,8 +204,8 @@ namespace d20 {
                             throw new FormatException("Invalid input: " + diceString);
                         }
                     case 2:
-                        if(char.IsDigit(c)) {
-                            if(Modifier != 0) {
+                        if (char.IsDigit(c)) {
+                            if (Modifier != 0) {
                                 Modifier *= 10;
                             }
                             Modifier += int.Parse(c.ToString());
@@ -218,7 +218,7 @@ namespace d20 {
             if (negativeModifier) {
                 Modifier *= -1;
             }
-            switch(Dice) {
+            switch (Dice) {
                 case 2:
                 case 3:
                 case 4:
@@ -236,7 +236,7 @@ namespace d20 {
 
         public int Roll() {
             int result = Modifier;
-            for(int i = 0; i < Amount; i++) {
+            for (int i = 0; i < Amount; i++) {
                 result += Random.Get(1, Dice);
             }
             return result;

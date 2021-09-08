@@ -4,7 +4,7 @@ namespace d20 {
     public class Ability {
         public int Modifier {
             get {
-                if(Value <= 1) {
+                if (Value <= 1) {
                     return -5;
                 } else if (Value >= 30) {
                     return 10;

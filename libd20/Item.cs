@@ -60,7 +60,7 @@ namespace d20 {
     public class Damage {
         public DamageType Type { get; internal set; }
         public Dices Value { get; internal set; }
-        
+
         public Damage(DamageType type, string diceString) {
             Type = type;
             Value = new Dices(diceString);
@@ -69,7 +69,7 @@ namespace d20 {
 
 
     public class Weapon : Item {
-        internal Weapon(string damage, DamageType damageType, WeaponProperty[] properties, Proficiency[] proficiencies, 
+        internal Weapon(string damage, DamageType damageType, WeaponProperty[] properties, Proficiency[] proficiencies,
                         int value, int weight, int rangeNormal = 0, int rangeLong = 0) {
             Type = ItemType.WEAPON;
             Damage = new Damage(damageType, damage);
@@ -112,7 +112,7 @@ namespace d20 {
         }
 
         public override bool Equals(object obj) {
-            if(obj == null)
+            if (obj == null)
                 return false;
             return this.GetHashCode() == obj.GetHashCode();
         }

@@ -9,7 +9,7 @@ namespace d20 {
     public class CharacterInventory {
         public Thing<Weapon> MainHand { get; internal set; }
         public Thing<Item> OffHand { get; internal set; }
-        public Thing<Armor> Armor  { get; internal set; }
+        public Thing<Armor> Armor { get; internal set; }
         public Thing<Helmet> Helmet { get; internal set; }
         public Thing<Amulet> Amulet { get; internal set; }
         public Thing<Ring> RingRight { get; internal set; }
@@ -41,15 +41,15 @@ namespace d20 {
         private Proficiency[] proficiencies = new Proficiency[0];
         public Feat[] Feats { get; }
         private Feat[] feats = new Feat[0];
-        public Dice[] HitDiceSpent { 
+        public Dice[] HitDiceSpent {
             get {
                 return hitDiceSpent;
-            } 
+            }
         }
         private Dice[] hitDiceSpent = new Dice[0];
 
         public CharacterInventory Inventory { get; internal set; } = new CharacterInventory();
-        public new int ArmorClass { 
+        public new int ArmorClass {
             get {
                 int ac = 10 + Dexterity.Modifier;
                 if (Inventory.Armor != null) {
@@ -79,8 +79,8 @@ namespace d20 {
                         bonus += Strength.Modifier;
                     else
                         bonus += Dexterity.Modifier;
-                // ranged weapons use dex
-                } else if (Array.IndexOf(mainhand.Item.Properties, WeaponProperty.AMMUNITION) >= 0 ) {
+                    // ranged weapons use dex
+                } else if (Array.IndexOf(mainhand.Item.Properties, WeaponProperty.AMMUNITION) >= 0) {
                     bonus += Dexterity.Modifier;
                 } else {
                     bonus += Strength.Modifier;
@@ -89,15 +89,15 @@ namespace d20 {
                 return bonus;
             }
         }
-        
+
         public void Equip(Thing<Weapon> thing) {
             Weapon weapon = thing.Item;
             if (Array.IndexOf(weapon.Properties, WeaponProperty.TWO_HANDED) >= 0) {
-                Unequip(Inventory.OffHand); 
+                Unequip(Inventory.OffHand);
                 Unequip(Inventory.MainHand);
-                Inventory.MainHand = thing;                       
+                Inventory.MainHand = thing;
             } else if (Inventory.MainHand == null) {
-                Inventory.MainHand = thing;  
+                Inventory.MainHand = thing;
             } else if (Array.IndexOf(Inventory.MainHand.Item.Properties, WeaponProperty.TWO_HANDED) >= 0) {
                 Unequip(Inventory.MainHand);
                 Inventory.MainHand = thing;
@@ -129,7 +129,7 @@ namespace d20 {
             if (ring == null) return;
             if (Inventory.RingLeft == null)
                 Inventory.RingLeft = ring;
-            else if(Inventory.RingRight == null)
+            else if (Inventory.RingRight == null)
                 Inventory.RingRight = ring;
             else {
                 Unequip(Inventory.RingLeft);
@@ -159,9 +159,9 @@ namespace d20 {
             if (thing == null) return;
             switch (thing.Item.Type) {
                 case ItemType.WEAPON:
-                    if(Inventory.MainHand.Equals(thing))
+                    if (Inventory.MainHand.Equals(thing))
                         Inventory.MainHand = null;
-                    else if(Inventory.OffHand.Equals(thing))
+                    else if (Inventory.OffHand.Equals(thing))
                         Inventory.OffHand = null;
                     break;
             }
@@ -174,7 +174,7 @@ namespace d20 {
         public bool IsProficient(Item item) {
             if (item == null) return true;
             foreach (Proficiency proficiency in item.Proficiencies) {
-                if(IsProficient(proficiency))
+                if (IsProficient(proficiency))
                     return true;
             }
             return false;
@@ -185,23 +185,23 @@ namespace d20 {
             Dice dice = Dice.Get(characterClass.HitDice);
             foreach (CharacterLevel level in levels) {
                 if (level.Class.Class == characterClass.Class) {
-                    level.Levels++;                    
+                    level.Levels++;
                     Utils.Push<Dice>(ref hitDiceSpent, dice);
                     HitPointsMax += dice.Value;
-                    HitPoints += dice.Value;                    
+                    HitPoints += dice.Value;
                     return;
                 }
             }
             CharacterLevel newLevel = new CharacterLevel();
             newLevel.Class = characterClass;
-            newLevel.Levels = 1;                        
+            newLevel.Levels = 1;
             if (levels.Length == 0) { // maximum hitpoints when this is the first level
                 dice.Value = dice.MaxValue;
-            }            
+            }
             Utils.Push(ref levels, newLevel);
             Utils.Push<Dice>(ref hitDiceSpent, dice);
             HitPointsMax += dice.Value;
-            HitPoints += dice.Value;                    
+            HitPoints += dice.Value;
             foreach (Proficiency proficiency in characterClass.Proficiencies) {
                 if (!IsProficient(proficiency)) {
                     Utils.Push<Proficiency>(ref proficiencies, proficiency);
@@ -211,11 +211,11 @@ namespace d20 {
 
         public void AddProficiency(Proficiency proficiency) {
             Utils.PushUnique<Proficiency>(ref proficiencies, proficiency);
-        }        
+        }
 
         public void SetRace(CharacterRace race) {
             this.race = race;
-            foreach(Feat feat in race.RacialFeats) {
+            foreach (Feat feat in race.RacialFeats) {
                 AddFeat(feat);
             }
         }

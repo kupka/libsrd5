@@ -41,8 +41,8 @@ namespace d20 {
 
     public struct Weapons {
         public static readonly Weapon Club = new Weapon(
-            "1d4", 
-            DamageType.BLUDGEONING, 
+            "1d4",
+            DamageType.BLUDGEONING,
             new WeaponProperty[] { WeaponProperty.LIGHT },
             new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.CLUB },
             10,
@@ -52,8 +52,8 @@ namespace d20 {
         public static readonly Weapon Dagger = new Weapon(
             "1d4",
             DamageType.PIERCING,
-            new WeaponProperty[] { WeaponProperty.LIGHT, WeaponProperty.FINESSE, WeaponProperty.THROWN},
-            new Proficiency[] {Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.DAGGER },
+            new WeaponProperty[] { WeaponProperty.LIGHT, WeaponProperty.FINESSE, WeaponProperty.THROWN },
+            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.DAGGER },
             200,
             1,
             20,
@@ -69,7 +69,7 @@ namespace d20 {
             7
         );
 
-            public static readonly Weapon Longbow = new Weapon(
+        public static readonly Weapon Longbow = new Weapon(
             "1d8",
             DamageType.PIERCING,
             new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY, WeaponProperty.AMMUNITION },
@@ -80,7 +80,7 @@ namespace d20 {
     }
 
     public struct Shields {
-        public static readonly Shield Buckler = new Shield(1, 100, 1);        
+        public static readonly Shield Buckler = new Shield(1, 100, 1);
     }
 
     public struct Armors {

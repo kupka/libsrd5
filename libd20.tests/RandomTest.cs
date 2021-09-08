@@ -12,8 +12,8 @@ namespace d20 {
         [Fact]
         public void TestRandomDistribution() {
             int[] c = new int[10];
-            for(int i = 0; i < 1000; i++) {
-                int r = Random.Get(0,9);
+            for (int i = 0; i < 1000; i++) {
+                int r = Random.Get(0, 9);
                 c[r]++;
             }
             Assert.InRange<int>(c[0], 80, 120);

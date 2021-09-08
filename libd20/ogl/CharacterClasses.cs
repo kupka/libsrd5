@@ -27,7 +27,7 @@ namespace d20 {
                                 Proficiency.SIMPLE_RANGED_WEAPONS,
                                 Proficiency.MARTIAL_MELEE_WEAPONS,
                                 Proficiency.MARTIAL_RANGED_WEAPONS
-                            };                
+                            };
                 return barbarian;
             }
         }

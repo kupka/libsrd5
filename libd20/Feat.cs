@@ -21,7 +21,7 @@ namespace d20 {
         }
 
         public override void Apply(CharacterSheet sheet) {
-            
+
         }
     }
 }

@@ -11,7 +11,7 @@ namespace d20 {
         }
     }
 
-    public class DarkVision : RacialFeat {}
+    public class DarkVision : RacialFeat { }
 
     public class DwarvenCombatTraining : RacialFeat {
         public override void Apply(CharacterSheet sheet) {

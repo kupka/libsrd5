@@ -20,10 +20,10 @@ namespace d20 {
 
     public struct ChallengeRating {
         public static readonly int QUARTER = -2;
-        public static readonly int HALF = -1;      
+        public static readonly int HALF = -1;
     }
 
-    public class Monster : Combattant {  
+    public class Monster : Combattant {
         public Ability Strength { get; internal set; } = new Ability(AbilityType.STRENGTH, 10);
         public Ability Dexterity { get; internal set; } = new Ability(AbilityType.DEXTERITY, 10);
         public Ability Constitution { get; internal set; } = new Ability(AbilityType.CONSTITUTION, 10);
@@ -34,9 +34,9 @@ namespace d20 {
         public int Speed { get; internal set; } = 30;
         public int Challenge { get; internal set; } = 1;
         public Attack[] MeleeAttacks { get; internal set; } = new Attack[0];
-        public Attack[] RangedAttacks { get; internal set; } = new Attack[0];        
+        public Attack[] RangedAttacks { get; internal set; } = new Attack[0];
 
-        public Monster(string name, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma, 
+        public Monster(string name, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
                         int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks) {
             Name = name;
             Strength.Value = strength;
@@ -44,7 +44,7 @@ namespace d20 {
             Constitution.Value = constitution;
             Intelligence.Value = intelligence;
             Wisdom.Value = wisdom;
-            Charisma.Value = charisma;            
+            Charisma.Value = charisma;
             ArmorClass = armorClass;
             int hp = new Dices(hitDice).Roll();
             HitPointsMax = hp;

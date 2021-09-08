@@ -9,7 +9,14 @@ namespace d20 {
     }
 
     public struct Monsters {
-        public static readonly Monster GiantBadger = new Monster("Giant Badger", 13, 10, 15, 2, 12, 5, 10, "2d8+4", 30, ChallengeRating.QUARTER, new Attack[]{Attacks.GiantBadgerBite, Attacks.GiantBadgerClaws}, Attacks.None);
-        public static readonly Monster Ogre = new Monster("Ogre", 19, 8, 16, 5, 7, 7, 11, "7d10+21", 40, 2, new Attack[]{Attacks.OgreGreatclub}, new Attack[]{Attacks.OgreJavelin});
+        public static readonly Monster GiantBadger = new Monster(
+            "Giant Badger", 13, 10, 15, 2, 12, 5, 10, "2d8+4", 30, ChallengeRating.QUARTER,
+            new Attack[] { Attacks.GiantBadgerBite, Attacks.GiantBadgerClaws }, Attacks.None
+        );
+
+        public static readonly Monster Ogre = new Monster(
+            "Ogre", 19, 8, 16, 5, 7, 7, 11, "7d10+21", 40, 2,
+            new Attack[] { Attacks.OgreGreatclub }, new Attack[] { Attacks.OgreJavelin }
+        );
     }
-} 
+}

@@ -30,7 +30,7 @@ namespace d20 {
             }
             uint r = xorshift32();
             uint diff = (uint)(max - min);
-            r = r % (diff+1);
+            r = r % (diff + 1);
             r += (uint)min;
             return (int)r;
         }

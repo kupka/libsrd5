@@ -22,12 +22,12 @@ namespace d20 {
     public struct Skills {
         public static readonly Skill Athletics = new Skill(SkillType.ATHLETICS, AbilityType.STRENGTH);
         public static readonly Skill Acrobatics = new Skill(SkillType.ACROBATICS, AbilityType.DEXTERITY);
-        public static readonly Skill SlightOfHand = new Skill(SkillType.SLIGHT_OF_HAND, AbilityType.DEXTERITY);        
+        public static readonly Skill SlightOfHand = new Skill(SkillType.SLIGHT_OF_HAND, AbilityType.DEXTERITY);
         public static readonly Skill Stealth = new Skill(SkillType.STEALTH, AbilityType.DEXTERITY);
         public static readonly Skill Arcana = new Skill(SkillType.ARCANA, AbilityType.INTELLIGENCE);
         public static readonly Skill History = new Skill(SkillType.HISTORY, AbilityType.INTELLIGENCE);
         public static readonly Skill Investigation = new Skill(SkillType.INVESTIGATION, AbilityType.INTELLIGENCE);
-        public static readonly Skill Nature = new Skill(SkillType.NATURE, AbilityType.INTELLIGENCE);   
+        public static readonly Skill Nature = new Skill(SkillType.NATURE, AbilityType.INTELLIGENCE);
         public static readonly Skill Religion = new Skill(SkillType.RELIGION, AbilityType.INTELLIGENCE);
         public static readonly Skill AnimalHandling = new Skill(SkillType.ANIMAL_HANDLING, AbilityType.WISDOM);
         public static readonly Skill Insight = new Skill(SkillType.INSIGHT, AbilityType.WISDOM);

@@ -99,5 +99,14 @@ namespace d20 {
             Assert.InRange(sheet.HitPoints, CharacterClasses.Druid.HitDice + 1, CharacterClasses.Druid.HitDice + CharacterClasses.Barbarian.HitDice);
             Assert.InRange(sheet.HitPointsMax, CharacterClasses.Druid.HitDice + 1, CharacterClasses.Druid.HitDice + CharacterClasses.Barbarian.HitDice);            
         }
+
+        [Fact]
+        public void DwarfTest() {
+            CharacterSheet sheet = new CharacterSheet();
+            sheet.SetRace(CharacterRaces.Dwarf);
+            Assert.Equal(Race.DWARF, sheet.Race.Race);
+            Assert.Equal(12, sheet.Constitution.Value);
+            Assert.True(sheet.IsProficient(Proficiency.WARHAMMER));
+        }
     }
 }

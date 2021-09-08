@@ -25,7 +25,8 @@ namespace d20 {
         public Ability Wisdom { get; internal set; } = new Ability(AbilityType.WISDOM, 10);
         public Ability Charisma { get; internal set; } = new Ability(AbilityType.CHARISMA, 10);
         public string Name { get; internal set; }
-        public CharacterRace Race { get; internal set; }
+        public CharacterRace Race { get { return race; } }
+        private CharacterRace race;
         public CharacterLevel[] Levels {
             get {
                 return levels;
@@ -38,7 +39,8 @@ namespace d20 {
             }
         }
         private Proficiency[] proficiencies = new Proficiency[0];
-
+        public Feat[] Feats { get; }
+        private Feat[] feats = new Feat[0];
         public Dice[] HitDiceSpent { 
             get {
                 return hitDiceSpent;
@@ -205,6 +207,22 @@ namespace d20 {
                     Utils.Push<Proficiency>(ref proficiencies, proficiency);
                 }
             }
+        }
+
+        public void AddProficiency(Proficiency proficiency) {
+            Utils.PushUnique<Proficiency>(ref proficiencies, proficiency);
         }        
+
+        public void SetRace(CharacterRace race) {
+            this.race = race;
+            foreach(Feat feat in race.RacialFeats) {
+                AddFeat(feat);
+            }
+        }
+
+        public void AddFeat(Feat feat) {
+            Utils.PushUnique<Feat>(ref feats, feat);
+            feat.Apply(this);
+        }
     }
 }

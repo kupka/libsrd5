@@ -109,5 +109,14 @@ namespace d20 {
             Assert.True(sheet.IsProficient(Proficiency.WARHAMMER));
             Assert.Equal(13, sheet.HitPoints);
         }
+
+        [Fact]
+        public void BlindedTest() {
+            CharacterSheet sheet = new CharacterSheet(CharacterRaces.Gnome);
+            sheet.AddCondition(ConditionType.BLINDED);
+            Assert.True(Array.IndexOf(sheet.Effects, new Effect(EffectType.DISADVANTAGE_ON_ATTACK)) >= 0);
+            sheet.RemoveCondition(ConditionType.BLINDED);
+            Assert.True(Array.IndexOf(sheet.Effects, new Effect(EffectType.DISADVANTAGE_ON_ATTACK)) == -1);
+        }
     }
 }

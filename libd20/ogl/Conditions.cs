@@ -23,23 +23,32 @@ namespace d20 {
         UNCONSCIOUS // Paralyzed & Fully Disarmed
     }
 
-    public class Blinded : Condition {
-        public Blinded(ConditionType type) : base(type) {
-
+    public static class ConditionsExtension {
+        public static void Apply(this ConditionType type, CharacterSheet sheet) {
+            switch (type) {
+                case ConditionType.BLINDED:
+                    ApplyBlinded(sheet);
+                    break;
+            }
         }
 
-        public override void Apply(CharacterSheet sheet) {
+        public static void Unapply(this ConditionType type, CharacterSheet sheet) {
+            switch (type) {
+                case ConditionType.BLINDED:
+                    UnapplyBlinded(sheet);
+                    break;
+            }
+        }
+
+        private static void ApplyBlinded(CharacterSheet sheet) {
             sheet.AddEffect(new Effect(EffectType.ADVANTAGE_ON_BEING_ATTACKED));
             sheet.AddEffect(new Effect(EffectType.DISADVANTAGE_ON_ATTACK));
         }
 
-        public override void Unapply(CharacterSheet sheet) {
+        private static void UnapplyBlinded(CharacterSheet sheet) {
             sheet.RemoveEffect(new Effect(EffectType.ADVANTAGE_ON_BEING_ATTACKED));
             sheet.RemoveEffect(new Effect(EffectType.DISADVANTAGE_ON_ATTACK));
         }
-    }
 
-    public struct Conditions {
-        public static Blinded Blinded = new Blinded(ConditionType.BLINDED);
     }
 }

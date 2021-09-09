@@ -41,7 +41,11 @@ namespace d20 {
         private Proficiency[] proficiencies = new Proficiency[0];
         public Feat[] Feats { get; }
         private Feat[] feats = new Feat[0];
-        public Effect[] Effects { get; }
+        public Effect[] Effects {
+            get {
+                return effects;
+            }
+        }
         private Effect[] effects = new Effect[0];
         public Dice[] HitDiceSpent {
             get {
@@ -49,8 +53,8 @@ namespace d20 {
             }
         }
         private Dice[] hitDiceSpent = new Dice[0];
-        public Condition[] Conditions { get; }
-        private Condition[] conditions = new Condition[0];
+        public ConditionType[] Conditions { get; }
+        private ConditionType[] conditions = new ConditionType[0];
         public CharacterInventory Inventory { get; internal set; } = new CharacterInventory();
         public new int ArmorClass {
             get {
@@ -247,12 +251,12 @@ namespace d20 {
             Utils.Remove<Effect>(ref effects, effect);
         }
 
-        public void AddCondition(Condition condition) {
-            Utils.PushUnique<Condition>(ref conditions, condition);
+        public void AddCondition(ConditionType condition) {
+            Utils.PushUnique<ConditionType>(ref conditions, condition);
             condition.Apply(this);
         }
-        public void RemoveCondition(Condition condition) {
-            Utils.Remove<Condition>(ref conditions, condition);
+        public void RemoveCondition(ConditionType condition) {
+            Utils.Remove<ConditionType>(ref conditions, condition);
             condition.Unapply(this);
         }
 

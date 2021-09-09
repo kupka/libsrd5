@@ -41,13 +41,13 @@ namespace d20 {
         }
 
         private static void ApplyBlinded(CharacterSheet sheet) {
-            sheet.AddEffect(new Effect(EffectType.ADVANTAGE_ON_BEING_ATTACKED));
-            sheet.AddEffect(new Effect(EffectType.DISADVANTAGE_ON_ATTACK));
+            sheet.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            sheet.AddEffect(Effect.DISADVANTAGE_ON_ATTACK);
         }
 
         private static void UnapplyBlinded(CharacterSheet sheet) {
-            sheet.RemoveEffect(new Effect(EffectType.ADVANTAGE_ON_BEING_ATTACKED));
-            sheet.RemoveEffect(new Effect(EffectType.DISADVANTAGE_ON_ATTACK));
+            sheet.RemoveEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            sheet.RemoveEffect(Effect.DISADVANTAGE_ON_ATTACK);
         }
 
     }

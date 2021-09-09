@@ -14,14 +14,14 @@ namespace d20 {
 
     public class Darkvision : RacialFeat {
         public override void Apply(CharacterSheet sheet) {
-            sheet.AddEffect(new Effect(EffectType.DARKVISION));
+            sheet.AddEffect(Effect.DARKVISION);
         }
     }
 
     public class DwarvenResilience : RacialFeat {
         public override void Apply(CharacterSheet sheet) {
-            sheet.AddEffect(new Effect(EffectType.RESISTANCE_POISON));
-            sheet.AddEffect(new Effect(EffectType.ADVANTAGE_SAVE_POISON));
+            sheet.AddEffect(Effect.RESISTANCE_POISON);
+            sheet.AddEffect(Effect.ADVANTAGE_SAVE_POISON);
         }
     }
 
@@ -55,13 +55,13 @@ namespace d20 {
     public class Stonecunning : RacialFeat {
         public override void Apply(CharacterSheet sheet) {
             sheet.AddProficiency(Proficiency.HISTORY);
-            sheet.AddEffect(new Effect(EffectType.DOUBLE_PROFICIENCY_BONUS_HISTORY));
+            sheet.AddEffect(Effect.DOUBLE_PROFICIENCY_BONUS_HISTORY);
         }
     }
 
     public class DwarvenToughness : RacialFeat {
         public override void Apply(CharacterSheet sheet) {
-            sheet.AddEffect(new Effect(EffectType.ADDITIONAL_HP_PER_LEVEL));
+            sheet.AddEffect(Effect.ADDITIONAL_HP_PER_LEVEL);
         }
     }
 
@@ -80,8 +80,8 @@ namespace d20 {
 
     public class FeyAncestry : RacialFeat {
         public override void Apply(CharacterSheet sheet) {
-            sheet.AddEffect(new Effect(EffectType.IMMUNITY_SLEEP));
-            sheet.AddEffect(new Effect(EffectType.ADVANTAGE_SAVE_CHARM));
+            sheet.AddEffect(Effect.IMMUNITY_SLEEP);
+            sheet.AddEffect(Effect.ADVANTAGE_SAVE_CHARM);
         }
     }
 

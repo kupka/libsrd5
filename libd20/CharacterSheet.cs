@@ -193,7 +193,7 @@ namespace d20 {
 
         public void AddLevel(CharacterClass characterClass) {
             Dice dice = Dice.Get(characterClass.HitDice);
-            int additionalHp = HasEffect(EffectType.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
+            int additionalHp = HasEffect(d20.Effect.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
             foreach (CharacterLevel level in levels) {
                 if (level.Class.Class == characterClass.Class) {
                     level.Levels++;
@@ -220,11 +220,8 @@ namespace d20 {
             }
         }
 
-        public bool HasEffect(EffectType type) {
-            foreach (Effect effect in effects) {
-                if (effect.Type == type) return true;
-            }
-            return false;
+        public bool HasEffect(Effect type) {
+            return Array.IndexOf(effects, type) >= 0;
         }
 
         public void AddProficiency(Proficiency proficiency) {

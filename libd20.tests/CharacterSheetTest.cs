@@ -114,9 +114,9 @@ namespace d20 {
         public void BlindedTest() {
             CharacterSheet sheet = new CharacterSheet(CharacterRaces.Gnome);
             sheet.AddCondition(ConditionType.BLINDED);
-            Assert.True(Array.IndexOf(sheet.Effects, new Effect(EffectType.DISADVANTAGE_ON_ATTACK)) >= 0);
+            Assert.True(sheet.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
             sheet.RemoveCondition(ConditionType.BLINDED);
-            Assert.True(Array.IndexOf(sheet.Effects, new Effect(EffectType.DISADVANTAGE_ON_ATTACK)) == -1);
+            Assert.False(sheet.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
         }
     }
 }

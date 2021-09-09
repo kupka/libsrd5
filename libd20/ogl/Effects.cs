@@ -1,5 +1,5 @@
 namespace d20 {
-    public enum EffectType {
+    public enum Effect {
         // Resistances against d20.DamageType
         RESISTANCE_POISON,
 

@@ -6,9 +6,9 @@ script:
  - dotnet tool install --global coveralls.net --version 2.0.0
  - dotnet tool install --global dotnet-reportgenerator-globaltool
  - dotnet build
- - dotnet test libd20.tests/libd20.tests.csproj --collect:"XPlat Code Coverage"
+ - dotnet test libsrd5.tests/libsrd5.tests.csproj --collect:"XPlat Code Coverage"
  - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
  - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
  - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
- - $HOME/.dotnet/tools/reportgenerator -reports:libd20.tests/TestResults/*/coverage.cobertura.xml -targetdir:"libd20.tests/TestResults" -reporttypes:Xml
- - $HOME/.dotnet/tools/csmacnz.Coveralls --reportgenerator -i libd20.tests/TestResults/ --repoToken $COVERALLS_REPO_TOKEN --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci  --useRelativePaths
+ - $HOME/.dotnet/tools/reportgenerator -reports:libsrd5.tests/TestResults/*/coverage.cobertura.xml -targetdir:"libsrd5.tests/TestResults" -reporttypes:Xml
+ - $HOME/.dotnet/tools/csmacnz.Coveralls --reportgenerator -i libsrd5.tests/TestResults/ --repoToken $COVERALLS_REPO_TOKEN --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci  --useRelativePaths

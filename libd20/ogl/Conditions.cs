@@ -22,4 +22,24 @@ namespace d20 {
         STUNNED, // Incapacitated & fail STR/DEX checks, Advantage on being attacked
         UNCONSCIOUS // Paralyzed & Fully Disarmed
     }
+
+    public class Blinded : Condition {
+        public Blinded(ConditionType type) : base(type) {
+
+        }
+
+        public override void Apply(CharacterSheet sheet) {
+            sheet.AddEffect(new Effect(EffectType.ADVANTAGE_ON_BEING_ATTACKED));
+            sheet.AddEffect(new Effect(EffectType.DISADVANTAGE_ON_ATTACK));
+        }
+
+        public override void Unapply(CharacterSheet sheet) {
+            sheet.RemoveEffect(new Effect(EffectType.ADVANTAGE_ON_BEING_ATTACKED));
+            sheet.RemoveEffect(new Effect(EffectType.DISADVANTAGE_ON_ATTACK));
+        }
+    }
+
+    public struct Conditions {
+        public static Blinded Blinded = new Blinded(ConditionType.BLINDED);
+    }
 }

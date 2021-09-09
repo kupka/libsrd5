@@ -12,5 +12,14 @@ namespace d20 {
                 Push<T>(ref array, element);
             }
         }
+
+        public static void Remove<T>(ref T[] array, T element) {
+            int index = Array.IndexOf(array, element);
+            if (index == -1) return;
+            for (int i = index; i < array.Length - 1; i++) {
+                array[i] = array[i + 1];
+            }
+            Array.Resize(ref array, array.Length - 1);
+        }
     }
 }

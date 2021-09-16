@@ -51,4 +51,4 @@ jobs:
       shell: bash
       run: printf '::set-output name=nupkg_path::%s\n' libsrd5/bin/Release/libsrd5*.nupkg
     - name: Publish package 
-      run: dotnet nuget push "${{ steps.get_nupkg_path.outputs.nupkg_path }}"" --source github
+      run: dotnet nuget push "${{ steps.get_nupkg_path.outputs.nupkg_path }}" --source github

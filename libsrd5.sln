@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libd20", "libd20\libd20.csproj", "{EC146218-A3C2-4589-B77A-530C3A0760A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libsrd5", "libsrd5\libsrd5.csproj", "{EC146218-A3C2-4589-B77A-530C3A0760A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libd20.tests", "libd20.tests\libd20.tests.csproj", "{1B23C536-919E-4BEC-88A9-32C2080E46DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libsrd5.tests", "libsrd5.tests\libsrd5.tests.csproj", "{1B23C536-919E-4BEC-88A9-32C2080E46DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

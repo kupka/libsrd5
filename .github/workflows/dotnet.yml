@@ -28,3 +28,14 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: ${{ steps.get_lcov_path.outputs.lcov_path }}
+    - name: Pack NuGet Package
+      run: dotnet pack --configuration Release
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Authenticate for Registry
+        run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/kupka/index.json"
+      - name: Publish package
+        run: dotnet nuget push "libsrd5/bin/Release/libsrd5.0.1.0.nupkg" --source github

@@ -43,8 +43,6 @@ jobs:
       run: dotnet restore
     - name: Pack NuGet Package
       run: dotnet pack --configuration Release
-    - name: Authenticate for Registry
-      run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/kupka/index.json"
     - name: Get path to nupkg file
       id: get_nupkg_version
       shell: bash

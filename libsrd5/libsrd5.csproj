@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageId>libsrd5</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Thomas Kupka</Authors>
     <RepositoryUrl>https://github.com/kupka/libsrd5</RepositoryUrl>
   </PropertyGroup>

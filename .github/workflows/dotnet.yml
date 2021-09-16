@@ -30,10 +30,31 @@ jobs:
         path-to-lcov: ${{ steps.get_lcov_path.outputs.lcov_path }}
     - name: Pack NuGet Package
       run: dotnet pack --configuration Release
-  publish:
+  versioncheck:
     runs-on: ubuntu-latest
     needs: build
-#    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Pack NuGet Package
+      run: dotnet pack --configuration Release
+    - name: Authenticate for Registry
+      run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/kupka/index.json"
+    - name: Get path to nupkg file
+      id: get_nupkg_version
+      shell: bash
+      run: printf '::set-output name=nupkg_version::%s\n' libsrd5/bin/Release/libsrd5*.nupkg | sed -E 's/libsrd5\/bin\/Release\/libsrd5\.(.*)\.nupkg/\1/g'
+    - name: Fail if package version exists
+      run: curl https://nuget.pkg.github.com/kupka/libsrd5/${{ steps.get_nupkg_version.outputs.nupkg_version }}.json -u USERNAME:${{ secrets.GITHUB_TOKEN }} --silent --fail && exit 1 || exit 0
+  publish:
+    runs-on: ubuntu-latest
+    needs: versioncheck
+    if: github.ref == 'refs/heads/main'
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET

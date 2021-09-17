@@ -58,5 +58,32 @@ namespace srd5 {
             ground.NextPhase();
             Assert.Equal(2, ground.Turn);
         }
+
+        [Fact]
+        public void AttackTest2D() {
+            Battleground2D ground = new Battleground2D(5, 5);
+            CharacterSheet hero = new CharacterSheet(CharacterRaces.HillDwarf);
+            hero.Strength.Value = 18;
+            hero.Dexterity.Value = 10;
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.HitPoints = hero.HitPointsMax;
+            hero.Equip(new Thing<Weapon>(Weapons.Greataxe));
+            Random.State = 1; // Fix deterministic random so that badger goes first
+            ground.AddCombattant(hero, 1, 1);
+            Monster badger = Monsters.GiantBadger;
+            ground.AddCombattant(badger, 1, 2);
+            ground.Initialize();
+            ground.NextPhase(); // skip move
+            Assert.True(ground.MeleeAttackAction(hero));
+            Assert.Equal(hero, ground.CurrentCombattant);
+            ground.NextPhase(); // skip move
+            Random.State = 11; // Fix deterministic random to guarantee critical hit
+            Assert.True(ground.MeleeAttackAction(badger));
+
+        }
     }
 }

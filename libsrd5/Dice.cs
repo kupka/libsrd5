@@ -132,13 +132,13 @@ namespace srd5 {
 
         public long Min {
             get {
-                return Amount + Modifier;
+                return Math.Max(0, Amount + Modifier);
             }
         }
 
         public long Max {
             get {
-                return Amount * Dice + Modifier;
+                return Math.Max(0, Amount * Dice + Modifier);
             }
         }
 
@@ -226,7 +226,17 @@ namespace srd5 {
             for (int i = 0; i < Amount; i++) {
                 result += Random.Get(1, Dice);
             }
-            return result;
+            return Math.Max(0, result);
+        }
+
+        // Crticial hits roll each dice twice
+        public int RollCritical() {
+            int result = Modifier;
+            for (int i = 0; i < Amount; i++) {
+                result += Random.Get(1, Dice);
+                result += Random.Get(1, Dice);
+            }
+            return Math.Max(0, result);
         }
     }
 }

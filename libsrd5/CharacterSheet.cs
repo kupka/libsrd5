@@ -117,8 +117,8 @@ namespace srd5 {
             }
         }
 
-        public CharacterSheet(CharacterRace race) {
-            SetRace(race);
+        public CharacterSheet(Race race) {
+            SetRace(race.CharacterRace());
         }
 
         public void Equip(Thing<Weapon> thing) {
@@ -155,6 +155,13 @@ namespace srd5 {
             Weapon weapon = Inventory.MainHand.Item;
             int modifier = calculateModifier(weapon);
             dmgString = concatDamageString(weapon.Damage.Dices.ToString(), modifier);
+            if (weapon.HasProperty(WeaponProperty.VERSATILE) && Inventory.OffHand == null) {
+                // increase damage dice because versatile weapon is used two-handed
+                dmgString = dmgString.Replace("d10", "d12");
+                dmgString = dmgString.Replace("d8", "d10");
+                dmgString = dmgString.Replace("d6", "d8");
+                dmgString = dmgString.Replace("d4", "d6");
+            }
             if (weapon.HasProperty(WeaponProperty.AMMUNITION)) {
                 RangedAttacks = Utils.Expand<Attack>(Attack.FromWeapon(AttackProficiency, dmgString, weapon), Attacks);
                 MeleeAttacks = new Attack[0];
@@ -197,6 +204,7 @@ namespace srd5 {
             }
             Unequip(Inventory.OffHand);
             Inventory.OffHand = Thing<Item>.Cast<Shield>(thing);
+            RecalculateAttacks();
         }
 
         public void Equip(Thing<Armor> armor) {

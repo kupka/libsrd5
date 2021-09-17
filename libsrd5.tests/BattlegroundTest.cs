@@ -7,7 +7,7 @@ namespace srd5 {
         [Fact]
         public void Setup2DTest() {
             Battleground2D ground = new Battleground2D(100, 100);
-            CharacterSheet hero = new CharacterSheet(CharacterRaces.Human);
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             hero.Name = "Bob";
             Monster badguy = Monsters.Ogre;
             Random.State = 7; // Fix deterministic random so that ogre wins initiative
@@ -45,7 +45,7 @@ namespace srd5 {
 
         [Fact]
         public void MoveTest() {
-            CharacterSheet sheet = new CharacterSheet(CharacterRaces.HillDwarf);
+            CharacterSheet sheet = new CharacterSheet(Race.HILL_DWARF);
             Battleground2D ground = new Battleground2D(50, 50);
             ground.AddCombattant(sheet, 10, 10);
             ground.Initialize();
@@ -57,6 +57,35 @@ namespace srd5 {
             Assert.Equal(1, ground.Turn);
             ground.NextPhase();
             Assert.Equal(2, ground.Turn);
+        }
+
+        [Fact]
+        public void AttackTest2D() {
+            Battleground2D ground = new Battleground2D(5, 5);
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
+            hero.Strength.Value = 18;
+            hero.Dexterity.Value = 10;
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.HitPoints = hero.HitPointsMax;
+            hero.Equip(new Thing<Weapon>(Weapons.Greataxe));
+            Random.State = 1; // Fix deterministic random so that badger goes first
+            ground.AddCombattant(hero, 1, 1);
+            Monster badger = Monsters.GiantBadger;
+            ground.AddCombattant(badger, 1, 2);
+            ground.Initialize();
+            ground.NextPhase(); // skip move
+            Assert.True(ground.MeleeAttackAction(hero));
+            Assert.Equal(hero, ground.CurrentCombattant);
+            ground.NextPhase(); // skip move
+            hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"));
+            Random.State = 11; // Fix deterministic random to guarantee critical hit
+            Assert.True(ground.MeleeAttackAction(badger));
+            Assert.True(ground.MeleeAttackAction(badger));
+            Assert.False(ground.MeleeAttackAction(hero));
         }
     }
 }

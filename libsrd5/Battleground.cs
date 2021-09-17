@@ -123,8 +123,6 @@ namespace srd5 {
         protected int remainingSpeed = 0;
         protected TurnPhase currentPhase = TurnPhase.MOVE;
 
-        protected TurnPhase phase = TurnPhase.MOVE;
-
         public virtual void Initialize() {
             if (Turn > 0) return;
             // Sort Combattants and Coords according to Initiative Rolls
@@ -132,7 +130,7 @@ namespace srd5 {
             Array.Copy(initiativeRolls, backup, initiativeRolls.Length);
             Array.Sort(backup, combattants, new ReverseComparer());
             currentCombattant = 0;
-            phase = TurnPhase.MOVE;
+            currentPhase = TurnPhase.MOVE;
             remainingSpeed = CurrentCombattant.Speed;
         }
 
@@ -141,7 +139,7 @@ namespace srd5 {
             currentCombattant %= combattants.Length;
             if (currentCombattant == 0)
                 Turn++;
-            phase = TurnPhase.MOVE;
+            currentPhase = TurnPhase.MOVE;
             remainingSpeed = CurrentCombattant.Speed;
         }
 
@@ -176,6 +174,61 @@ namespace srd5 {
             remainingSpeed -= distance;
             SetCurrentLocation(destination);
             return true;
+        }
+
+        public bool MeleeAttackAction(Combattant target) {
+            if (currentPhase == TurnPhase.MOVE) return false;
+            if (target == null) throw new ArgumentException("target cannot be null");
+            if (target == CurrentCombattant) throw new ArgumentException("cannot attack self");
+            bool success = false;
+            if (currentPhase == TurnPhase.ACTION)
+                success = doFullMeleeAttack(target);
+            else
+                success = doBonusMeleeAttack(target);
+            if (success) NextPhase();
+            return success;
+        }
+
+        private bool doBonusMeleeAttack(Combattant target) {
+            bool success = false;
+            int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
+            Attack attack = CurrentCombattant.BonusAttack;
+            if (distance > attack.Reach) return false;
+            success = true;
+            doAttack(attack, target);
+            return success;
+        }
+
+        private bool doFullMeleeAttack(Combattant target) {
+            bool success = false;
+            int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
+            foreach (Attack attack in CurrentCombattant.MeleeAttacks) {
+                if (distance > attack.Reach) // skip attack when out of reach
+                    continue;
+                success = true;
+                doAttack(attack, target);
+            }
+            return success;
+        }
+
+        private void doAttack(Attack attack, Combattant target) {
+            int attackRoll = Dice.D20.Value;
+            bool criticalHit = attackRoll == 20;
+            bool criticalMiss = attackRoll == 1;
+            if (criticalMiss) return;
+            int modifiedAttack = attackRoll + attack.AttackBonus;
+            if (!criticalHit && modifiedAttack < target.ArmorClass) return;
+            int damage = 0;
+            if (criticalHit) {
+                damage = attack.Damage.Dices.RollCritical();
+                if (attack.AdditionalDamage != null)
+                    damage += attack.AdditionalDamage.Dices.RollCritical();
+            } else {
+                damage = attack.Damage.Dices.Roll();
+                if (attack.AdditionalDamage != null)
+                    damage += attack.AdditionalDamage.Dices.Roll();
+            }
+            target.HitPoints -= damage;
         }
 
         public abstract Location LocateCombattant(Combattant combattant);

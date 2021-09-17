@@ -84,7 +84,7 @@ namespace srd5 {
         [Theory]
         [InlineData("3d6+3", 6, 21)]
         [InlineData("d20", 1, 20)]
-        [InlineData("d4-5", -4, -1)]
+        [InlineData("d4-5", 0, 0)]
         [InlineData("d2-1", 0, 1)]
         [InlineData("5d3+10", 15, 25)]
         [InlineData("1111d12+889", 2000, 14221)]

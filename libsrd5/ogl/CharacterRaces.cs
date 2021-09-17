@@ -1,3 +1,5 @@
+using System;
+
 namespace srd5 {
     public enum Race {
         HILL_DWARF,
@@ -9,6 +11,32 @@ namespace srd5 {
         HALF_ELF,
         HALF_ORC,
         TIEFLING
+    }
+
+    public static class RaceExtension {
+        public static CharacterRace CharacterRace(this Race race) {
+            switch (race) {
+                case Race.HILL_DWARF:
+                    return CharacterRaces.HillDwarf;
+                case Race.HIGH_ELF:
+                    return CharacterRaces.HighElf;
+                case Race.HALFLING:
+                    return CharacterRaces.Halfling;
+                case Race.HUMAN:
+                    return CharacterRaces.Human;
+                case Race.DRAGONBORN:
+                    return CharacterRaces.Dragonborn;
+                case Race.GNOME:
+                    return CharacterRaces.Gnome;
+                case Race.HALF_ELF:
+                    return CharacterRaces.HalfElf;
+                case Race.HALF_ORC:
+                    return CharacterRaces.HalfOrc;
+                case Race.TIEFLING:
+                    return CharacterRaces.Tiefling;
+            }
+            throw new ArgumentException("Unknown race");
+        }
     }
 
     public struct CharacterRaces {

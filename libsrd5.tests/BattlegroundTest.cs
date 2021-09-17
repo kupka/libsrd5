@@ -7,7 +7,7 @@ namespace srd5 {
         [Fact]
         public void Setup2DTest() {
             Battleground2D ground = new Battleground2D(100, 100);
-            CharacterSheet hero = new CharacterSheet(CharacterRaces.Human);
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             hero.Name = "Bob";
             Monster badguy = Monsters.Ogre;
             Random.State = 7; // Fix deterministic random so that ogre wins initiative
@@ -45,7 +45,7 @@ namespace srd5 {
 
         [Fact]
         public void MoveTest() {
-            CharacterSheet sheet = new CharacterSheet(CharacterRaces.HillDwarf);
+            CharacterSheet sheet = new CharacterSheet(Race.HILL_DWARF);
             Battleground2D ground = new Battleground2D(50, 50);
             ground.AddCombattant(sheet, 10, 10);
             ground.Initialize();
@@ -62,7 +62,7 @@ namespace srd5 {
         [Fact]
         public void AttackTest2D() {
             Battleground2D ground = new Battleground2D(5, 5);
-            CharacterSheet hero = new CharacterSheet(CharacterRaces.HillDwarf);
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
             hero.Strength.Value = 18;
             hero.Dexterity.Value = 10;
             hero.AddLevel(CharacterClasses.Barbarian);

@@ -51,38 +51,59 @@ namespace srd5 {
         );
 
         public static readonly Weapon Dagger = new Weapon(
-            "Dagger",
-            "1d4",
-            DamageType.PIERCING,
+            "Dagger", "1d4", DamageType.PIERCING,
             new WeaponProperty[] { WeaponProperty.LIGHT, WeaponProperty.FINESSE, WeaponProperty.THROWN },
             new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.DAGGER },
-            200,
-            1,
-            20,
-            60
+            200, 1, 20, 60
+        );
+
+        public static readonly Weapon Greatclub = new Weapon(
+            "Greatclub", "1d8", DamageType.BLUDGEONING,
+            new WeaponProperty[] { WeaponProperty.TWO_HANDED },
+            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.GREATCLUB },
+            20, 10
+        );
+
+        public static readonly Weapon Handaxe = new Weapon(
+            "Handaxe", "1d6", DamageType.SLASHING,
+            new WeaponProperty[] { WeaponProperty.LIGHT, WeaponProperty.THROWN },
+            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.HANDAXE },
+            500, 2, 5, 20, 60
+        );
+
+        public static readonly Weapon Javelin = new Weapon(
+            "Javelin", "1d6", DamageType.PIERCING,
+            new WeaponProperty[] { WeaponProperty.THROWN },
+            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.JAVELIN },
+            200, 2, 30, 120
+        );
+
+        public static readonly Weapon Mace = new Weapon(
+            "Mace", "1d6", DamageType.BLUDGEONING,
+            new WeaponProperty[] { },
+            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.MACE },
+            500, 4
+        );
+
+        public static readonly Weapon Quarterstaff = new Weapon(
+            "Quarterstaff", "1d6", DamageType.BLUDGEONING,
+            new WeaponProperty[] { WeaponProperty.VERSATILE },
+            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.QUARTERSTAFF },
+            20, 4
         );
 
         public static readonly Weapon Greataxe = new Weapon(
-            "Greataxe",
-            "1d12",
-            DamageType.SLASHING,
+            "Greataxe", "1d12", DamageType.SLASHING,
             new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY },
             new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.GREATAXE },
-            3000,
-            7
+            3000, 7
         );
 
         public static readonly Weapon Longbow = new Weapon(
-            "Longbow",
-            "1d8",
-            DamageType.PIERCING,
+            "Longbow", "1d8", DamageType.PIERCING,
             new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY, WeaponProperty.AMMUNITION },
             new Proficiency[] { Proficiency.MARTIAL_RANGED_WEAPONS, Proficiency.LONGBOW },
-            5000,
-            2,
-            0,
-            150,
-            600
+            5000, 2, 0, 150, 600
         );
     }
 

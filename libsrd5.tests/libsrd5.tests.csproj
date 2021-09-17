@@ -1,32 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>libsrd5</PackageId>
-    <Version>0.1.3</Version>
-    <Authors>Thomas Kupka</Authors>
-    <Company>Thomas Kupka</Company>
-    <RepositoryUrl>https://github.com/kupka/libsrd5</RepositoryUrl>
-    <PackageTags>game dnd dungeons-and-dragons dnd5e srd</PackageTags>
-    <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
-    <Description>
-        An open source SRD 5.1 library in C#. It aims to implement most of the rules of the 5.1 SRD 
-        with zero dependencies other than the .NET framework itself. Very few modern .NET framework features are used, 
-        in order to maximize portability.
+    <TargetFramework>netcoreapp3.1</TargetFramework>
 
-        The library contains races, classes, equipment, skills, feats, spells and game mechanics from the official SRD5. 
-        Please note, particularly for skills and spellsl that while the library contains all entries from the SRD5, 
-        not all of them have a useful implementation. For example, it is perfectly possible to have a character
-        prepare and cast a "Thaumaturgy" cantrip. The library will not, however, provide you the semantics of what happens
-        in your game when  "Your voice booms up to three times as loud as normal for 1 minute". On the other hand, when a 
-        character or monster casts a "Magic Missile" spell, the library will correctly determine whether the target is in 
-        range, and how much damage it takes, if any.    
-    </Description>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-      <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-        <_Parameter1>$(MSBuildProjectName).tests</_Parameter1>
-      </AssemblyAttribute>
+    <PackageReference Include="coverlet.collector" Version="3.1.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\libsrd5\libsrd5.csproj" />
+  </ItemGroup>
+
 </Project>

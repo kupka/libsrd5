@@ -81,9 +81,10 @@ namespace srd5 {
             Assert.True(ground.MeleeAttackAction(hero));
             Assert.Equal(hero, ground.CurrentCombattant);
             ground.NextPhase(); // skip move
+            hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"));
             Random.State = 11; // Fix deterministic random to guarantee critical hit
             Assert.True(ground.MeleeAttackAction(badger));
-
+            Assert.True(ground.MeleeAttackAction(badger));
         }
     }
 }

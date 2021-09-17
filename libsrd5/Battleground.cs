@@ -179,6 +179,7 @@ namespace srd5 {
         public bool MeleeAttackAction(Combattant target) {
             if (currentPhase == TurnPhase.MOVE) return false;
             if (target == null) throw new ArgumentException("target cannot be null");
+            if (target == CurrentCombattant) throw new ArgumentException("cannot attack self");
             bool success = false;
             if (currentPhase == TurnPhase.ACTION)
                 success = doFullMeleeAttack(target);

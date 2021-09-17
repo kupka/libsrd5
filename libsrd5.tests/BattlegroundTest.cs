@@ -85,6 +85,7 @@ namespace srd5 {
             Random.State = 11; // Fix deterministic random to guarantee critical hit
             Assert.True(ground.MeleeAttackAction(badger));
             Assert.True(ground.MeleeAttackAction(badger));
+            Assert.False(ground.MeleeAttackAction(hero));
         }
     }
 }

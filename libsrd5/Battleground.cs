@@ -185,7 +185,7 @@ namespace srd5 {
                 success = doFullMeleeAttack(target);
             else
                 success = doBonusMeleeAttack(target);
-            NextPhase();
+            if (success) NextPhase();
             return success;
         }
 
@@ -196,7 +196,6 @@ namespace srd5 {
             if (distance > attack.Reach) return false;
             success = true;
             doAttack(attack, target);
-            NextPhase();
             return success;
         }
 

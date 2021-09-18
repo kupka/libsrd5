@@ -89,7 +89,7 @@ namespace srd5 {
 
     public class Weapon : Item {
         internal Weapon(string name, string damage, DamageType damageType, WeaponProperty[] properties, Proficiency[] proficiencies,
-                        int value, int weight, int reach = 5, int rangeNormal = 0, int rangeLong = 0) {
+                        int value, float weight, int reach = 5, int rangeNormal = 0, int rangeLong = 0) {
             Name = name;
             Type = ItemType.WEAPON;
             Damage = new Damage(damageType, damage);
@@ -123,7 +123,7 @@ namespace srd5 {
 
         public Proficiency[] Proficiencies { get; internal set; }
 
-        public int Weight { get; internal set; }
+        public float Weight { get; internal set; }
 
         public int Value { get; internal set; }
     }

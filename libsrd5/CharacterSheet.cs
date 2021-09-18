@@ -20,37 +20,17 @@ namespace srd5 {
     public class CharacterSheet : Combattant {
         public CharacterRace Race { get { return race; } }
         private CharacterRace race;
-        public CharacterLevel[] Levels {
-            get {
-                return levels;
-            }
-        }
+        public CharacterLevel[] Levels { get { return levels; } }
         private CharacterLevel[] levels = new CharacterLevel[0];
-        public Proficiency[] Proficiencies {
-            get {
-                return proficiencies;
-            }
-        }
+        public Proficiency[] Proficiencies { get { return proficiencies; } }
         private Proficiency[] proficiencies = new Proficiency[0];
         public Feat[] Feats { get; }
         private Feat[] feats = new Feat[0];
-        public Effect[] Effects {
-            get {
-                return effects;
-            }
-        }
+        public Effect[] Effects { get { return effects; } }
         private Effect[] effects = new Effect[0];
-        public Dice[] HitDiceSpent {
-            get {
-                return hitDiceSpent;
-            }
-        }
-        private Dice[] hitDiceSpent = new Dice[0];
-        public ConditionType[] Conditions {
-            get {
-                return conditions;
-            }
-        }
+        public Dice[] HitDice { get { return hitDice; } }
+        private Dice[] hitDice = new Dice[0];
+        public ConditionType[] Conditions { get { return conditions; } }
         private ConditionType[] conditions = new ConditionType[0];
         public CharacterInventory Inventory { get; internal set; } = new CharacterInventory();
         public int Attacks {
@@ -79,7 +59,7 @@ namespace srd5 {
             get {
                 int hp = 0;
                 int additionalHp = HasEffect(Effect.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
-                foreach (Dice dice in hitDiceSpent) {
+                foreach (Dice dice in hitDice) {
                     hp += dice.Value + Constitution.Modifier + additionalHp;
                 }
                 return hp;
@@ -319,7 +299,7 @@ namespace srd5 {
             foreach (CharacterLevel level in levels) {
                 if (level.Class.Class == characterClass.Class) {
                     level.Levels++;
-                    Utils.Push<Dice>(ref hitDiceSpent, dice);
+                    Utils.Push<Dice>(ref hitDice, dice);
                     HitPoints += dice.Value + additionalHp + Constitution.Modifier;
                     return;
                 }
@@ -331,7 +311,7 @@ namespace srd5 {
                 dice.Value = dice.MaxValue;
             }
             Utils.Push(ref levels, newLevel);
-            Utils.Push<Dice>(ref hitDiceSpent, dice);
+            Utils.Push<Dice>(ref hitDice, dice);
             HitPoints += dice.Value + additionalHp + Constitution.Modifier;
             foreach (Proficiency proficiency in characterClass.Proficiencies) {
                 if (!IsProficient(proficiency)) {

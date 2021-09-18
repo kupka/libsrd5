@@ -23,11 +23,17 @@ jobs:
       id: get_lcov_path
       shell: bash
       run: printf '::set-output name=lcov_path::%s\n' TestResults/*/coverage.info
-    - name: Publish coverage report to coveralls.io
-      uses: coverallsapp/github-action@master
+    - name: Publish coverage report to codecov
+      uses: codecov/codecov-action@v2
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ${{ steps.get_lcov_path.outputs.lcov_path }}
+        files: ${{ steps.get_lcov_path.outputs.lcov_path }}
+        fail_ci_if_error: true 
+        verbose: true
+#    - name: Publish coverage report to coveralls.io
+#      uses: coverallsapp/github-action@master
+#      with:
+#        github-token: ${{ secrets.GITHUB_TOKEN }}
+#        path-to-lcov: ${{ steps.get_lcov_path.outputs.lcov_path }}
     - name: Pack NuGet Package
       run: dotnet pack --configuration Release
   versioncheck:

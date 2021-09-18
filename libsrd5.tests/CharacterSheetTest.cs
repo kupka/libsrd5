@@ -221,7 +221,7 @@ namespace srd5 {
             Assert.Single(sheet.Levels);
             Assert.NotEmpty(sheet.Proficiencies);
             Assert.NotEmpty(sheet.Effects);
-            Assert.Single(sheet.HitDiceSpent);
+            Assert.Single(sheet.HitDice);
             Assert.Empty(sheet.Conditions);
         }
 

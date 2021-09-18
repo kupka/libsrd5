@@ -18,16 +18,23 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test libsrd5.tests/libsrd5.tests.csproj -r TestResults --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=lcov
+#      run: dotnet test libsrd5.tests/libsrd5.tests.csproj -r TestResults --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=lcov
+      run: dotnet test libsrd5.tests/libsrd5.tests.csproj -r TestResults --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
     - name: Get path to lcov file
       id: get_lcov_path
       shell: bash
-      run: printf '::set-output name=lcov_path::%s\n' TestResults/*/coverage.info
-    - name: Publish coverage report to coveralls.io
-      uses: coverallsapp/github-action@master
+#      run: printf '::set-output name=lcov_path::%s\n' TestResults/*/coverage.info
+      run: printf '::set-output name=lcov_path::%s\n' TestResults/*/coverage.opencover.xml
+    - name: Publish coverage report to codecov
+      uses: codecov/codecov-action@v2
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ${{ steps.get_lcov_path.outputs.lcov_path }}
+        files: ${{ steps.get_lcov_path.outputs.lcov_path }}
+        fail_ci_if_error: true 
+#    - name: Publish coverage report to coveralls.io
+#      uses: coverallsapp/github-action@master
+#      with:
+#        github-token: ${{ secrets.GITHUB_TOKEN }}
+#        path-to-lcov: ${{ steps.get_lcov_path.outputs.lcov_path }}
     - name: Pack NuGet Package
       run: dotnet pack --configuration Release
   versioncheck:

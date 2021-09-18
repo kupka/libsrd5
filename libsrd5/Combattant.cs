@@ -1,6 +1,6 @@
 namespace srd5 {
     public class Attack {
-        public string Name { get; internal set; }
+        public string Name { get; set; }
         public int AttackBonus { get; internal set; }
         public Damage Damage { get; internal set; }
         public Damage AdditionalDamage { get; internal set; }

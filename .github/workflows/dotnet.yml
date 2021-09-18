@@ -30,7 +30,6 @@ jobs:
       with:
         files: ${{ steps.get_lcov_path.outputs.lcov_path }}
         fail_ci_if_error: true 
-        verbose: true
 #    - name: Publish coverage report to coveralls.io
 #      uses: coverallsapp/github-action@master
 #      with:

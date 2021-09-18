@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/kupka/libsrd5/badge.svg)](https://coveralls.io/github/kupka/libsrd5)
+[![codecov](https://codecov.io/gh/kupka/libsrd5/branch/main/graph/badge.svg?token=541OS360LT)](https://codecov.io/gh/kupka/libsrd5)
 
 # libsrd5
 

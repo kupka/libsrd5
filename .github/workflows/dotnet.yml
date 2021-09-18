@@ -18,11 +18,13 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test libsrd5.tests/libsrd5.tests.csproj -r TestResults --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=lcov
+#      run: dotnet test libsrd5.tests/libsrd5.tests.csproj -r TestResults --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=lcov
+      run: dotnet test libsrd5.tests/libsrd5.tests.csproj -r TestResults --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
     - name: Get path to lcov file
       id: get_lcov_path
       shell: bash
-      run: printf '::set-output name=lcov_path::%s\n' TestResults/*/coverage.info
+#      run: printf '::set-output name=lcov_path::%s\n' TestResults/*/coverage.info
+      run: printf '::set-output name=lcov_path::%s\n' TestResults/*/coverage.opencover.xml
     - name: Publish coverage report to codecov
       uses: codecov/codecov-action@v2
       with:

@@ -43,55 +43,55 @@ namespace srd5 {
         public static readonly CharacterRace HillDwarf = new CharacterRace(
             Race.HILL_DWARF,
             25,
-            new RacialFeat[] { RacialFeats.DwarvenCombatTraining, RacialFeats.DwarvenAbilityIncrease, RacialFeats.DwarvenResilience, RacialFeats.Darkvision, RacialFeats.Stonecunning, RacialFeats.DwarvenToughness }
+            new Feat[] { Feat.DWARVEN_COMBAT_TRAINING, Feat.DWARVEN_ABILITY_INCREASE, Feat.HILL_DWARVEN_ABILITY_INCREASE, Feat.DWARVEN_RESILIENCE, Feat.DWARVEN_DARKVISION, Feat.STONECUNNING, Feat.DWARVEN_TOUGHNESS }
         );
 
         public static readonly CharacterRace HighElf = new CharacterRace(
             Race.HIGH_ELF,
             30,
-            new RacialFeat[] { RacialFeats.ElvenAbilityIncrease, RacialFeats.Darkvision, RacialFeats.KeenSenses, RacialFeats.FeyAncestry, RacialFeats.ElvenWeaponTraining, RacialFeats.Cantrip }
+            new Feat[] { Feat.ELVEN_ABILITY_INCREASE, Feat.HIGH_ELVEN_ABILITY_INCREASE, Feat.ELVEN_DARKVISION, Feat.KEEN_SENSES, Feat.FEY_ANCESTRY, Feat.HIGH_ELVEN_WEAPON_TRAINING, Feat.HIGH_ELVEN_CANTRIP }
         );
 
         public static readonly CharacterRace Halfling = new CharacterRace(
             Race.HALFLING,
             25,
-            new RacialFeat[] { }
+            new Feat[] { }
         );
 
         public static readonly CharacterRace Human = new CharacterRace(
             Race.HUMAN,
             30,
-            new RacialFeat[] { }
+            new Feat[] { }
         );
 
         public static readonly CharacterRace Dragonborn = new CharacterRace(
             Race.DRAGONBORN,
             30,
-            new RacialFeat[] { }
+            new Feat[] { }
         );
 
         public static readonly CharacterRace Gnome = new CharacterRace(
             Race.GNOME,
             25,
-            new RacialFeat[] { }
+            new Feat[] { }
         );
 
         public static readonly CharacterRace HalfElf = new CharacterRace(
             Race.HALF_ELF,
             30,
-            new RacialFeat[] { }
+            new Feat[] { }
         );
 
         public static readonly CharacterRace HalfOrc = new CharacterRace(
             Race.HALF_ORC,
             30,
-            new RacialFeat[] { }
+            new Feat[] { }
         );
 
         public static readonly CharacterRace Tiefling = new CharacterRace(
             Race.TIEFLING,
             30,
-            new RacialFeat[] { }
+            new Feat[] { }
         );
     }
 }

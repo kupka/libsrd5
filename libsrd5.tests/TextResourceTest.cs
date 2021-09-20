@@ -17,5 +17,13 @@ namespace srd5 {
                 Assert.NotNull(effect.Name());
             }
         }
+
+        [Fact]
+        public void FeatTextTest() {
+            foreach (Feat feat in Enum.GetValues(typeof(Feat))) {
+                Assert.NotNull(feat.Name());
+                Assert.NotNull(feat.Description());
+            }
+        }
     }
 }

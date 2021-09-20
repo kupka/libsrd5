@@ -124,6 +124,7 @@ namespace srd5 {
         [Fact]
         public void DwarfTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HILL_DWARF);
+            Assert.Contains(Feat.DWARVEN_TOUGHNESS, sheet.Feats);
             sheet.AddLevel(CharacterClasses.Barbarian);
             Assert.Equal(Race.HILL_DWARF, sheet.Race.Race);
             Assert.Equal(12, sheet.Constitution.Value);

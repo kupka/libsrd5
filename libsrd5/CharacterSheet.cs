@@ -24,7 +24,7 @@ namespace srd5 {
         private CharacterLevel[] levels = new CharacterLevel[0];
         public Proficiency[] Proficiencies { get { return proficiencies; } }
         private Proficiency[] proficiencies = new Proficiency[0];
-        public Feat[] Feats { get; }
+        public Feat[] Feats { get { return feats; } }
         private Feat[] feats = new Feat[0];
         public Effect[] Effects { get { return effects; } }
         private Effect[] effects = new Effect[0];

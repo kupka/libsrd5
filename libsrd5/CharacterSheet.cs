@@ -334,6 +334,7 @@ namespace srd5 {
                 AddFeat(feat);
             }
             Speed = race.Speed;
+            Size = race.Size;
         }
 
         public void AddFeat(Feat feat) {

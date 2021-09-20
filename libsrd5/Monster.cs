@@ -8,7 +8,7 @@ namespace srd5 {
         public int Challenge { get; internal set; } = 1;
 
         public Monster(string name, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
-                        int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks) {
+                        int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks, Size size) {
             Name = name;
             Strength.Value = strength;
             Dexterity.Value = dexterity;
@@ -24,6 +24,7 @@ namespace srd5 {
             Challenge = challenge;
             MeleeAttacks = meleeAttacks;
             RangedAttacks = rangedAttacks;
+            Size = size;
         }
 
         public override void AddEffect(Effect effect) {

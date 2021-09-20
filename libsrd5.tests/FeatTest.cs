@@ -1,14 +1,14 @@
 using Xunit;
+using System;
 
 namespace srd5 {
     public class FeatTest {
         [Fact]
-        public void EqualsTest() {
-            DwarvenAbilityIncrease const1 = new DwarvenAbilityIncrease();
-            DwarvenAbilityIncrease const2 = new DwarvenAbilityIncrease();
-            Darkvision darkVision = new Darkvision();
-            Assert.True(const1.Equals(const2));
-            Assert.False(const1.Equals(darkVision));
+        public void IterationTest() {
+            CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
+            foreach (Feat feat in Enum.GetValues(typeof(Feat))) {
+                sheet.AddFeat(feat);
+            }
         }
     }
 }

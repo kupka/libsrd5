@@ -39,6 +39,7 @@ namespace srd5 {
         public Attack[] MeleeAttacks { get; internal set; } = new Attack[0];
         public Attack[] RangedAttacks { get; internal set; } = new Attack[0];
         public Attack BonusAttack { get; internal set; }
+        public Size Size { get; internal set; }
         public abstract void AddEffect(Effect effect);
         public abstract void RemoveEffect(Effect effect);
     }

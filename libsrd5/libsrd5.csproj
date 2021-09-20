@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>libsrd5</PackageId>
-    <Version>0.1.3</Version>
+    <Version>0.1.4</Version>
     <Authors>Thomas Kupka</Authors>
     <Company>Thomas Kupka</Company>
     <RepositoryUrl>https://github.com/kupka/libsrd5</RepositoryUrl>
@@ -13,7 +13,6 @@
         An open source SRD 5.1 library in C#. It aims to implement most of the rules of the 5.1 SRD 
         with zero dependencies other than the .NET framework itself. Very few modern .NET framework features are used, 
         in order to maximize portability.
-
         The library contains races, classes, equipment, skills, feats, spells and game mechanics from the official SRD5. 
         Please note, particularly for skills and spellsl that while the library contains all entries from the SRD5, 
         not all of them have a useful implementation. For example, it is perfectly possible to have a character

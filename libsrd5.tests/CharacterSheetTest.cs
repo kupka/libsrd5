@@ -149,6 +149,7 @@ namespace srd5 {
         [Fact]
         public void BlindedTest() {
             CharacterSheet sheet = new CharacterSheet(Race.GNOME);
+            Assert.Equal(Size.SMALL, sheet.Size);
             sheet.AddCondition(ConditionType.BLINDED);
             Assert.True(sheet.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
             sheet.RemoveCondition(ConditionType.BLINDED);

@@ -73,7 +73,8 @@ namespace srd5 {
         public static readonly CharacterRace Gnome = new CharacterRace(
             Race.GNOME,
             25,
-            new Feat[] { }
+            new Feat[] { },
+            Size.SMALL
         );
 
         public static readonly CharacterRace HalfElf = new CharacterRace(

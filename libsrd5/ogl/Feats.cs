@@ -20,7 +20,16 @@ namespace srd5 {
         FEY_ANCESTRY,
         HIGH_ELVEN_ABILITY_INCREASE,
         HIGH_ELVEN_WEAPON_TRAINING,
-        HIGH_ELVEN_CANTRIP
+        HIGH_ELVEN_CANTRIP,
+
+        // Class Feats
+        // Barbarian
+        RAGE,
+        UNARMORED_DEFENSE,
+        RECKLESS_ATTACK,
+        DANGER_SENSE,
+        FRENZY,
+
     }
 
     public static class FeatExtension {

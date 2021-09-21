@@ -28,6 +28,28 @@ namespace srd5 {
                                 Proficiency.MARTIAL_MELEE_WEAPONS,
                                 Proficiency.MARTIAL_RANGED_WEAPONS
                             };
+                barbarian.Feats = new Feat[][] {
+                    new Feat[]{ Feat.RAGE, Feat.UNARMORED_DEFENSE },
+                    new Feat[]{ Feat.RECKLESS_ATTACK, Feat.DANGER_SENSE },
+                    new Feat[]{ Feat.FRENZY },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                };
                 return barbarian;
             }
         }
@@ -53,6 +75,28 @@ namespace srd5 {
                                 Proficiency.MEDIUM_ARMOR,
                                 Proficiency.SHIELDS
                             };
+                druid.Feats = new Feat[][] {
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                };
                 return druid;
             }
         }

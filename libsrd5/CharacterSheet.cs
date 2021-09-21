@@ -24,7 +24,7 @@ namespace srd5 {
         private CharacterLevel[] levels = new CharacterLevel[0];
         public Proficiency[] Proficiencies { get { return proficiencies; } }
         private Proficiency[] proficiencies = new Proficiency[0];
-        public Feat[] Feats { get; }
+        public Feat[] Feats { get { return feats; } }
         private Feat[] feats = new Feat[0];
         public Effect[] Effects { get { return effects; } }
         private Effect[] effects = new Effect[0];
@@ -298,6 +298,9 @@ namespace srd5 {
             int additionalHp = HasEffect(Effect.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
             foreach (CharacterLevel level in levels) {
                 if (level.Class.Class == characterClass.Class) {
+                    foreach (Feat feat in characterClass.Feats[level.Levels]) {
+                        AddFeat(feat);
+                    }
                     level.Levels++;
                     Utils.Push<Dice>(ref hitDice, dice);
                     HitPoints += dice.Value + additionalHp + Constitution.Modifier;
@@ -306,6 +309,9 @@ namespace srd5 {
             }
             CharacterLevel newLevel = new CharacterLevel();
             newLevel.Class = characterClass;
+            foreach (Feat feat in characterClass.Feats[0]) {
+                AddFeat(feat);
+            }
             newLevel.Levels = 1;
             if (levels.Length == 0) { // maximum hitpoints when this is the first level
                 dice.Value = dice.MaxValue;

@@ -66,7 +66,10 @@ namespace srd5 {
         public void BarbarianTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             sheet.AddLevel(CharacterClasses.Barbarian);
+            Assert.Contains(Feat.RAGE, sheet.Feats);
+            Assert.DoesNotContain(Feat.RECKLESS_ATTACK, sheet.Feats);
             sheet.AddLevel(CharacterClasses.Barbarian);
+            Assert.Contains(Feat.RECKLESS_ATTACK, sheet.Feats);
             sheet.AddLevel(CharacterClasses.Barbarian);
             Assert.Equal(2, sheet.AttackProficiency);
             sheet.AddLevel(CharacterClasses.Barbarian);
@@ -124,6 +127,7 @@ namespace srd5 {
         [Fact]
         public void DwarfTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HILL_DWARF);
+            Assert.Contains(Feat.DWARVEN_TOUGHNESS, sheet.Feats);
             sheet.AddLevel(CharacterClasses.Barbarian);
             Assert.Equal(Race.HILL_DWARF, sheet.Race.Race);
             Assert.Equal(12, sheet.Constitution.Value);

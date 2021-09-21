@@ -71,6 +71,16 @@ namespace srd5 {
                     return "Elf Weapon Training";
                 case Feat.HIGH_ELVEN_CANTRIP:
                     return "Cantrip";
+                case Feat.RAGE:
+                    return "Rage";
+                case Feat.UNARMORED_DEFENSE:
+                    return "Unarmored Defense";
+                case Feat.RECKLESS_ATTACK:
+                    return "Reckless Attack";
+                case Feat.DANGER_SENSE:
+                    return "Danger Sense";
+                case Feat.FRENZY:
+                    return "Frenzy";
                 default:
                     return Enum.GetName(typeof(Feat), feat) + ": (Name missing)";
             }
@@ -108,6 +118,24 @@ namespace srd5 {
                     return "You have proficiency with the longsword, shortsword, shortbow, and longbow.";
                 case Feat.HIGH_ELVEN_CANTRIP:
                     return "You know one cantrip of your choice from the wizard spell list. Intelligence is your spellcasting ability for it.";
+                case Feat.RAGE:
+                    return
+@"In battle, you fight with primal ferocity. On your turn, you can enter a rage as a bonus action.
+While raging, you gain the following benefits if you aren’t wearing heavy armor:
+    You have advantage on Strength checks and Strength saving throws.
+    When you make a melee weapon attack using Strength, you gain a bonus to the damage roll that increases as you gain levels as a barbarian.
+    You have resistance to bludgeoning, piercing, and slashing damage.
+If you are able to cast spells, you can’t cast them or concentrate on them while raging.
+Your rage lasts for 1 minute. It ends early if you are knocked unconscious or if your turn ends and you haven’t attacked a hostile creature since your last turn or taken damage since then. You can also end your rage on your turn as a bonus action.
+Once you have raged the number of times available for your barbarian level, you must finish a long rest before you can rage again";
+                case Feat.UNARMORED_DEFENSE:
+                    return "While you are not wearing any armor, your Armor Class equals 10 + your Dexterity modifier + your Constitution modifier. You can use a shield and still gain this benefit.";
+                case Feat.RECKLESS_ATTACK:
+                    return "Starting at 2nd level, you can throw aside all concern for defense to attack with fierce desperation. When you make your first attack on your turn, you can decide to attack recklessly. Doing so gives you advantage on melee weapon attack rolls using Strength during this turn, but attack rolls against you have advantage until your next turn.";
+                case Feat.DANGER_SENSE:
+                    return "At 2nd level, you gain an uncanny sense of when things nearby aren’t as they should be, giving you an edge when you dodge away from danger.\nYou have advantage on Dexterity saving throws against effects that you can see, such as traps and spells. To gain this benefit, you can’t be blinded, deafened, or incapacitated.";
+                case Feat.FRENZY:
+                    return "You can go into a frenzy when you rage. If you do so, for the duration of your rage you can make a single melee weapon attack as a bonus action on each of your turns after this one. When your rage ends, you suffer one level of exhaustion.";
                 default:
                     return Enum.GetName(typeof(Feat), feat) + ": (Description missing)";
             }

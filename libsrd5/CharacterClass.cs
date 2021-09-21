@@ -7,5 +7,7 @@ namespace srd5 {
         public int HitDice { get; internal set; }
 
         public Proficiency[] Proficiencies { get; internal set; }
+
+        public Feat[][] Feats;
     }
 }

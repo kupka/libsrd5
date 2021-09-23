@@ -114,8 +114,8 @@ namespace srd5 {
                 case AbilityType.STRENGTH:
                     modifier += Strength.Modifier;
                     break;
-                case AbilityType.CONSTITUTION:
-                    modifier += Constitution.Modifier;
+                case AbilityType.CHARISMA:
+                    modifier += Charisma.Modifier;
                     break;
                 case AbilityType.DEXTERITY:
                     modifier += Dexterity.Modifier;

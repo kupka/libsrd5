@@ -1,8 +1,10 @@
+using System;
+
 namespace srd5 {
-    public enum SkillType {
+    public enum Skill {
         ATHLETICS,
         ACROBATICS,
-        SLIGHT_OF_HAND,
+        SLEIGHT_OF_HAND,
         STEALTH,
         ARCANA,
         HISTORY,
@@ -19,24 +21,40 @@ namespace srd5 {
         PERFORMANCE,
         PERSUASION
     }
-    public struct Skills {
-        public static readonly Skill Athletics = new Skill(SkillType.ATHLETICS, AbilityType.STRENGTH);
-        public static readonly Skill Acrobatics = new Skill(SkillType.ACROBATICS, AbilityType.DEXTERITY);
-        public static readonly Skill SlightOfHand = new Skill(SkillType.SLIGHT_OF_HAND, AbilityType.DEXTERITY);
-        public static readonly Skill Stealth = new Skill(SkillType.STEALTH, AbilityType.DEXTERITY);
-        public static readonly Skill Arcana = new Skill(SkillType.ARCANA, AbilityType.INTELLIGENCE);
-        public static readonly Skill History = new Skill(SkillType.HISTORY, AbilityType.INTELLIGENCE);
-        public static readonly Skill Investigation = new Skill(SkillType.INVESTIGATION, AbilityType.INTELLIGENCE);
-        public static readonly Skill Nature = new Skill(SkillType.NATURE, AbilityType.INTELLIGENCE);
-        public static readonly Skill Religion = new Skill(SkillType.RELIGION, AbilityType.INTELLIGENCE);
-        public static readonly Skill AnimalHandling = new Skill(SkillType.ANIMAL_HANDLING, AbilityType.WISDOM);
-        public static readonly Skill Insight = new Skill(SkillType.INSIGHT, AbilityType.WISDOM);
-        public static readonly Skill Medicine = new Skill(SkillType.MEDICINE, AbilityType.WISDOM);
-        public static readonly Skill Perception = new Skill(SkillType.PERCEPTION, AbilityType.WISDOM);
-        public static readonly Skill Survival = new Skill(SkillType.SURVIVAL, AbilityType.WISDOM);
-        public static readonly Skill Deception = new Skill(SkillType.DECEPTION, AbilityType.CHARISMA);
-        public static readonly Skill Intimidation = new Skill(SkillType.INTIMIDATION, AbilityType.CHARISMA);
-        public static readonly Skill Performance = new Skill(SkillType.PERFORMANCE, AbilityType.CHARISMA);
-        public static readonly Skill Persuasion = new Skill(SkillType.PERSUASION, AbilityType.CHARISMA);
+
+    public static class SkillExtension {
+        public static AbilityType Ability(this Skill skill) {
+            switch (skill) {
+                case Skill.ATHLETICS:
+                    return AbilityType.STRENGTH;
+                case Skill.ACROBATICS:
+                case Skill.SLEIGHT_OF_HAND:
+                case Skill.STEALTH:
+                    return AbilityType.DEXTERITY;
+                case Skill.ARCANA:
+                case Skill.HISTORY:
+                case Skill.INVESTIGATION:
+                case Skill.NATURE:
+                case Skill.RELIGION:
+                    return AbilityType.INTELLIGENCE;
+                case Skill.ANIMAL_HANDLING:
+                case Skill.INSIGHT:
+                case Skill.MEDICINE:
+                case Skill.PERCEPTION:
+                case Skill.SURVIVAL:
+                    return AbilityType.WISDOM;
+                case Skill.DECEPTION:
+                case Skill.INTIMIDATION:
+                case Skill.PERFORMANCE:
+                case Skill.PERSUASION:
+                default:
+                    return AbilityType.CHARISMA;
+            }
+        }
+
+        public static Proficiency Proficiency(this Skill skill) {
+            return (Proficiency)Enum.Parse(typeof(Proficiency), skill.ToString());
+        }
+
     }
 }

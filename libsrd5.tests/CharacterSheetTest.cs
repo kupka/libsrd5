@@ -296,5 +296,25 @@ namespace srd5 {
             Assert.Equal(6, sheet.MeleeAttacks[0].Damage.Dices.Dice);
         }
 
+        [Fact]
+        public void SkillModifierTest() {
+            CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
+            sheet.Strength.Value = 8;
+            sheet.Wisdom.Value = 14;
+            sheet.Charisma.Value = 10;
+            sheet.Dexterity.Value = 16;
+            sheet.Intelligence.Value = 1;
+            Assert.Equal(3, sheet.GetSkillModifier(Skill.STEALTH));
+            Assert.Equal(-1, sheet.GetSkillModifier(Skill.ATHLETICS));
+            Assert.Equal(0, sheet.GetSkillModifier(Skill.PERFORMANCE));
+            Assert.Equal(-5, sheet.GetSkillModifier(Skill.HISTORY));
+            Assert.Equal(2, sheet.GetSkillModifier(Skill.PERCEPTION));
+            sheet.AddProficiency(Proficiency.STEALTH);
+            sheet.AddProficiency(Proficiency.HISTORY);
+            sheet.AddEffect(Effect.DOUBLE_PROFICIENCY_BONUS_HISTORY);
+            Assert.Equal(5, sheet.GetSkillModifier(Skill.STEALTH));
+            Assert.Equal(-1, sheet.GetSkillModifier(Skill.HISTORY));
+        }
+
     }
 }

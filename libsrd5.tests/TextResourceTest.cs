@@ -25,5 +25,13 @@ namespace srd5 {
                 Assert.NotNull(feat.Description());
             }
         }
+
+        [Fact]
+        public void SkillTextTest() {
+            foreach (Skill skill in Enum.GetValues(typeof(Skill))) {
+                Assert.NotNull(skill.Name());
+                Assert.NotNull(skill.Description());
+            }
+        }
     }
 }

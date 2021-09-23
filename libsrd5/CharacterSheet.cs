@@ -66,17 +66,23 @@ namespace srd5 {
             }
         }
 
+        public int Proficiency {
+            get {
+                int totalLevel = 0;
+                foreach (CharacterLevel level in levels) {
+                    totalLevel += level.Levels;
+                }
+                return (2 + ((totalLevel - 1) / 4));
+            }
+        }
+
         public int AttackProficiency {
             get {
                 Thing<Weapon> mainhand = Inventory.MainHand;
                 int bonus = 0;
                 // calculate base proficiency bonus if character is proficient
                 if (mainhand == null || IsProficient(mainhand.Item)) {
-                    int totalLevel = 0;
-                    foreach (CharacterLevel level in levels) {
-                        totalLevel += level.Levels;
-                    }
-                    bonus = (2 + ((totalLevel - 1) / 4));
+                    bonus += Proficiency;
                 }
                 // get bonus from strength or dex
                 if (mainhand == null) { // unarmed, use strength
@@ -99,6 +105,33 @@ namespace srd5 {
 
         public CharacterSheet(Race race) {
             SetRace(race.CharacterRace());
+        }
+
+
+        public int GetSkillModifier(Skill skill) {
+            int modifier = 0;
+            switch (skill.Ability()) {
+                case AbilityType.STRENGTH:
+                    modifier += Strength.Modifier;
+                    break;
+                case AbilityType.CHARISMA:
+                    modifier += Charisma.Modifier;
+                    break;
+                case AbilityType.DEXTERITY:
+                    modifier += Dexterity.Modifier;
+                    break;
+                case AbilityType.INTELLIGENCE:
+                    modifier += Intelligence.Modifier;
+                    break;
+                case AbilityType.WISDOM:
+                    modifier += Wisdom.Modifier;
+                    break;
+            }
+            if (IsProficient(skill.Proficiency()))
+                modifier += Proficiency;
+            if (IsDoubleProficient(skill.Proficiency()))
+                modifier += Proficiency;
+            return modifier;
         }
 
         public void Equip(Thing<Weapon> thing) {
@@ -282,6 +315,16 @@ namespace srd5 {
 
         public bool IsProficient(Proficiency proficiency) {
             return Array.IndexOf(proficiencies, proficiency) > -1;
+        }
+
+        public bool IsDoubleProficient(Proficiency proficiency) {
+            try {
+                Effect doubleProficiency = (Effect)Enum.Parse(typeof(Effect), "DOUBLE_PROFICIENCY_BONUS_" + proficiency.ToString());
+                return HasEffect(doubleProficiency);
+            } catch (ArgumentException) {
+                return false;
+            }
+
         }
 
         public bool IsProficient(Item item) {

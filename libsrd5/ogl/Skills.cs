@@ -1,3 +1,5 @@
+using System;
+
 namespace srd5 {
     public enum Skill {
         ATHLETICS,
@@ -49,5 +51,10 @@ namespace srd5 {
                     return AbilityType.CHARISMA;
             }
         }
+
+        public static Proficiency Proficiency(this Skill skill) {
+            return (Proficiency)Enum.Parse(typeof(Proficiency), skill.ToString());
+        }
+
     }
 }

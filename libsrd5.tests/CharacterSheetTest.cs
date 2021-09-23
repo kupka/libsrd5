@@ -296,5 +296,14 @@ namespace srd5 {
             Assert.Equal(6, sheet.MeleeAttacks[0].Damage.Dices.Dice);
         }
 
+        [Fact]
+        public void SkillModifierTest() {
+            CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
+            sheet.Dexterity.Value = 16;
+            Assert.Equal(3, sheet.GetSkillModifier(Skill.STEALTH));
+            sheet.AddProficiency(Proficiency.STEALTH);
+            Assert.Equal(5, sheet.GetSkillModifier(Skill.STEALTH));
+        }
+
     }
 }

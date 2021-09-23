@@ -66,17 +66,23 @@ namespace srd5 {
             }
         }
 
+        public int Proficiency {
+            get {
+                int totalLevel = 0;
+                foreach (CharacterLevel level in levels) {
+                    totalLevel += level.Levels;
+                }
+                return (2 + ((totalLevel - 1) / 4));
+            }
+        }
+
         public int AttackProficiency {
             get {
                 Thing<Weapon> mainhand = Inventory.MainHand;
                 int bonus = 0;
                 // calculate base proficiency bonus if character is proficient
                 if (mainhand == null || IsProficient(mainhand.Item)) {
-                    int totalLevel = 0;
-                    foreach (CharacterLevel level in levels) {
-                        totalLevel += level.Levels;
-                    }
-                    bonus = (2 + ((totalLevel - 1) / 4));
+                    bonus += Proficiency;
                 }
                 // get bonus from strength or dex
                 if (mainhand == null) { // unarmed, use strength
@@ -99,6 +105,31 @@ namespace srd5 {
 
         public CharacterSheet(Race race) {
             SetRace(race.CharacterRace());
+        }
+
+
+        public int GetSkillModifier(Skill skill) {
+            int modifier = 0;
+            switch (skill.Ability()) {
+                case AbilityType.STRENGTH:
+                    modifier += Strength.Modifier;
+                    break;
+                case AbilityType.CONSTITUTION:
+                    modifier += Constitution.Modifier;
+                    break;
+                case AbilityType.DEXTERITY:
+                    modifier += Dexterity.Modifier;
+                    break;
+                case AbilityType.INTELLIGENCE:
+                    modifier += Intelligence.Modifier;
+                    break;
+                case AbilityType.WISDOM:
+                    modifier += Wisdom.Modifier;
+                    break;
+            }
+            if (IsProficient(skill.Proficiency()))
+                modifier += Proficiency;
+            return modifier;
         }
 
         public void Equip(Thing<Weapon> thing) {

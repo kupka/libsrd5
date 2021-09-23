@@ -307,9 +307,13 @@ namespace srd5 {
             Assert.Equal(3, sheet.GetSkillModifier(Skill.STEALTH));
             Assert.Equal(-1, sheet.GetSkillModifier(Skill.ATHLETICS));
             Assert.Equal(0, sheet.GetSkillModifier(Skill.PERFORMANCE));
-            Assert.Equal(-5, sheet.GetSkillModifier(Skill.ARCANA));
+            Assert.Equal(-5, sheet.GetSkillModifier(Skill.HISTORY));
+            Assert.Equal(2, sheet.GetSkillModifier(Skill.PERCEPTION));
             sheet.AddProficiency(Proficiency.STEALTH);
+            sheet.AddProficiency(Proficiency.HISTORY);
+            sheet.AddEffect(Effect.DOUBLE_PROFICIENCY_BONUS_HISTORY);
             Assert.Equal(5, sheet.GetSkillModifier(Skill.STEALTH));
+            Assert.Equal(-1, sheet.GetSkillModifier(Skill.HISTORY));
         }
 
     }

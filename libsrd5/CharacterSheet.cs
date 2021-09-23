@@ -129,6 +129,8 @@ namespace srd5 {
             }
             if (IsProficient(skill.Proficiency()))
                 modifier += Proficiency;
+            if (IsDoubleProficient(skill.Proficiency()))
+                modifier += Proficiency;
             return modifier;
         }
 
@@ -313,6 +315,16 @@ namespace srd5 {
 
         public bool IsProficient(Proficiency proficiency) {
             return Array.IndexOf(proficiencies, proficiency) > -1;
+        }
+
+        public bool IsDoubleProficient(Proficiency proficiency) {
+            try {
+                Effect doubleProficiency = (Effect)Enum.Parse(typeof(Effect), "DOUBLE_PROFICIENCY_BONUS_" + proficiency.ToString());
+                return HasEffect(doubleProficiency);
+            } catch (ArgumentException) {
+                return false;
+            }
+
         }
 
         public bool IsProficient(Item item) {

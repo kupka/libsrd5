@@ -106,5 +106,17 @@ namespace srd5 {
         public void InvalidDiceTest(string diceString) {
             Assert.Throws<FormatException>(delegate { new Dices(diceString); });
         }
+
+        [Fact]
+        public void DiceRolledEventTest() {
+            int receivedValue = 0;
+            Dices.DiceRolled += delegate (object sender, DiceRolledEvent e) {
+                receivedValue += e.Value;
+            };
+            int value = Dice.Roll("2d6+5");
+            Assert.Equal(value, receivedValue);
+            value += Dice.D20.Value;
+            Assert.Equal(value, receivedValue);
+        }
     }
 }

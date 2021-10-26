@@ -331,7 +331,14 @@ namespace srd5 {
         [Fact]
         public void AbilitiyIncreaseTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
-
+            int points = sheet.AbilityPoints;
+            sheet.IncreaseAbility(AbilityType.STRENGTH);
+            sheet.IncreaseAbility(AbilityType.DEXTERITY);
+            sheet.IncreaseAbility(AbilityType.CONSTITUTION);
+            sheet.IncreaseAbility(AbilityType.INTELLIGENCE);
+            sheet.IncreaseAbility(AbilityType.WISDOM);
+            sheet.IncreaseAbility(AbilityType.CHARISMA);
+            Assert.Equal(points - 6, sheet.AbilityPoints);
         }
 
     }

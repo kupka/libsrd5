@@ -61,7 +61,7 @@ namespace srd5 {
         public static readonly CharacterRace Human = new CharacterRace(
             Race.HUMAN,
             30,
-            new Feat[] { }
+            new Feat[] { Feat.HUMAN_ABILITY_INCREASE }
         );
 
         public static readonly CharacterRace Dragonborn = new CharacterRace(

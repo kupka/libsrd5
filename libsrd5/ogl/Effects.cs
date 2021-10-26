@@ -83,16 +83,10 @@ namespace srd5 {
         private static void applyAbilityEffect(Effect effect, Combattant combattant) {
             switch (effect) {
                 case Effect.INTELLIGENCE_19:
-                    if (combattant.Intelligence.Value < 19) {
-                        // TODO: BaseValue logic
-                        combattant.Intelligence.Value = 19;
-                    }
+                    combattant.Intelligence.AddMinimumBaseValue(19);
                     break;
                 case Effect.CONSTITUION_19:
-                    if (combattant.Constitution.Value < 19) {
-                        // TODO: BaseValue logic
-                        combattant.Constitution.Value = 19;
-                    }
+                    combattant.Constitution.AddMinimumBaseValue(19);
                     break;
             }
         }
@@ -100,14 +94,10 @@ namespace srd5 {
         private static void unapplyAbilityEffect(Effect effect, Combattant combattant) {
             switch (effect) {
                 case Effect.INTELLIGENCE_19:
-                    if (combattant.Intelligence.Value == 19 && combattant.Intelligence.BaseValue < 19) {
-                        combattant.Intelligence.Value = combattant.Intelligence.BaseValue;
-                    }
+                    combattant.Intelligence.RemoveMinimumBaseValue(19);
                     break;
                 case Effect.CONSTITUION_19:
-                    if (combattant.Constitution.Value == 19 && combattant.Constitution.BaseValue < 19) {
-                        combattant.Constitution.Value = combattant.Constitution.BaseValue;
-                    }
+                    combattant.Constitution.RemoveMinimumBaseValue(19);
                     break;
             }
         }

@@ -10,12 +10,12 @@ namespace srd5 {
         public Monster(string name, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
                         int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks, Size size) {
             Name = name;
-            Strength.Value = strength;
-            Dexterity.Value = dexterity;
-            Constitution.Value = constitution;
-            Intelligence.Value = intelligence;
-            Wisdom.Value = wisdom;
-            Charisma.Value = charisma;
+            Strength.BaseValue = strength;
+            Dexterity.BaseValue = dexterity;
+            Constitution.BaseValue = constitution;
+            Intelligence.BaseValue = intelligence;
+            Wisdom.BaseValue = wisdom;
+            Charisma.BaseValue = charisma;
             ArmorClass = armorClass;
             int hp = new Dices(hitDice).Roll();
             HitPointsMax = hp;

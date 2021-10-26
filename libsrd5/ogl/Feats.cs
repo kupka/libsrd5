@@ -21,6 +21,8 @@ namespace srd5 {
         HIGH_ELVEN_ABILITY_INCREASE,
         HIGH_ELVEN_WEAPON_TRAINING,
         HIGH_ELVEN_CANTRIP,
+        // Humans
+        HUMAN_ABILITY_INCREASE,
 
         // Class Feats
         // Barbarian
@@ -36,7 +38,7 @@ namespace srd5 {
         public static void Apply(this Feat feat, CharacterSheet sheet) {
             switch (feat) {
                 case Feat.DWARVEN_ABILITY_INCREASE:
-                    sheet.Constitution.Value += 2;
+                    sheet.Constitution.BaseValue += 2;
                     break;
                 case Feat.DWARVEN_DARKVISION:
                 case Feat.ELVEN_DARKVISION:
@@ -67,13 +69,13 @@ namespace srd5 {
                     sheet.AddEffect(Effect.DOUBLE_PROFICIENCY_BONUS_HISTORY);
                     break;
                 case Feat.HILL_DWARVEN_ABILITY_INCREASE:
-                    sheet.Wisdom.Value += 1;
+                    sheet.Wisdom.BaseValue += 1;
                     break;
                 case Feat.DWARVEN_TOUGHNESS:
                     sheet.AddEffect(Effect.ADDITIONAL_HP_PER_LEVEL);
                     break;
                 case Feat.ELVEN_ABILITY_INCREASE:
-                    sheet.Dexterity.Value += 2;
+                    sheet.Dexterity.BaseValue += 2;
                     break;
                 case Feat.KEEN_SENSES:
                     sheet.AddProficiency(Proficiency.PERCEPTION);
@@ -83,7 +85,7 @@ namespace srd5 {
                     sheet.AddEffect(Effect.ADVANTAGE_SAVE_CHARM);
                     break;
                 case Feat.HIGH_ELVEN_ABILITY_INCREASE:
-                    sheet.Intelligence.Value += 1;
+                    sheet.Intelligence.BaseValue += 1;
                     break;
                 case Feat.HIGH_ELVEN_WEAPON_TRAINING:
                     sheet.AddProficiency(Proficiency.SHORTBOW);
@@ -92,6 +94,14 @@ namespace srd5 {
                     sheet.AddProficiency(Proficiency.LONGSWORD);
                     break;
                 case Feat.HIGH_ELVEN_CANTRIP:
+                    break;
+                case Feat.HUMAN_ABILITY_INCREASE:
+                    sheet.Strength.BaseValue++;
+                    sheet.Constitution.BaseValue++;
+                    sheet.Dexterity.BaseValue++;
+                    sheet.Wisdom.BaseValue++;
+                    sheet.Intelligence.BaseValue++;
+                    sheet.Charisma.BaseValue++;
                     break;
             }
         }

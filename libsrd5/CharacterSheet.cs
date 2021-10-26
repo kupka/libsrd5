@@ -33,6 +33,7 @@ namespace srd5 {
         public ConditionType[] Conditions { get { return conditions; } }
         private ConditionType[] conditions = new ConditionType[0];
         public CharacterInventory Inventory { get; internal set; } = new CharacterInventory();
+        public int AbilityPoints { get; internal set; }
         public int Attacks {
             get {
                 if (HasEffect(Effect.THREE_EXTRA_ATTACKS))
@@ -103,8 +104,19 @@ namespace srd5 {
             }
         }
 
-        public CharacterSheet(Race race) {
+        public CharacterSheet(Race race, bool classic = false) {
             SetRace(race.CharacterRace());
+            if (classic) {
+                Dices dices = new Dices("3d6");
+                Strength.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+                Constitution.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+                Dexterity.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+                Wisdom.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+                Intelligence.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+                Charisma.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+            } else {
+                AbilityPoints = 14;
+            }
         }
 
 
@@ -412,6 +424,31 @@ namespace srd5 {
             RemoveResult result = Utils.RemoveSingle<ConditionType>(ref conditions, condition);
             if (result == RemoveResult.REMOVED_AND_GONE)
                 condition.Unapply(this);
+        }
+
+        public void IncreaseAbility(AbilityType type) {
+            if (AbilityPoints == 0) return;
+            AbilityPoints--;
+            switch (type) {
+                case AbilityType.STRENGTH:
+                    Strength.BaseValue++;
+                    break;
+                case AbilityType.DEXTERITY:
+                    Dexterity.BaseValue++;
+                    break;
+                case AbilityType.CONSTITUTION:
+                    Constitution.BaseValue++;
+                    break;
+                case AbilityType.WISDOM:
+                    Wisdom.BaseValue++;
+                    break;
+                case AbilityType.INTELLIGENCE:
+                    Intelligence.BaseValue++;
+                    break;
+                case AbilityType.CHARISMA:
+                    Charisma.BaseValue++;
+                    break;
+            }
         }
 
     }

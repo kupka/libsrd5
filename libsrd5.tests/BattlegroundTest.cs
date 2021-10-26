@@ -63,8 +63,8 @@ namespace srd5 {
         public void AttackTest2D() {
             Battleground2D ground = new Battleground2D(5, 5);
             CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
-            hero.Strength.Value = 18;
-            hero.Dexterity.Value = 10;
+            hero.Strength.BaseValue = 18;
+            hero.Dexterity.BaseValue = 10;
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.AddLevel(CharacterClasses.Barbarian);

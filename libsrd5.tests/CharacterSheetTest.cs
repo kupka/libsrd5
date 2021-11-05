@@ -86,6 +86,42 @@ namespace srd5 {
         }
 
         [Fact]
+        public void MagicWeaponTest() {
+            CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            Assert.Contains(Feat.RAGE, sheet.Feats);
+            Assert.DoesNotContain(Feat.RECKLESS_ATTACK, sheet.Feats);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            Assert.Contains(Feat.RECKLESS_ATTACK, sheet.Feats);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            Assert.Equal(2, sheet.AttackProficiency);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            Assert.Equal(3, sheet.AttackProficiency);
+            sheet.Strength.BaseValue = 18;
+            sheet.Dexterity.BaseValue = 14;
+            Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
+            sheet.Equip(club);
+            Assert.Equal(7, sheet.AttackProficiency);
+            Assert.Equal("1d4+4", sheet.MeleeAttacks[0].Damage.Dices.ToString());
+            Thing<Weapon> clubPlus1 = new Thing<Weapon>(Weapons.CreatePlus1Weapon(Weapons.Club));
+            sheet.Unequip(club);
+            sheet.Equip(clubPlus1);
+            Assert.Equal(8, sheet.AttackProficiency);
+            Assert.Equal("1d4+5", sheet.MeleeAttacks[0].Damage.Dices.ToString());
+            Thing<Weapon> clubPlus2 = new Thing<Weapon>(Weapons.CreatePlus2Weapon(Weapons.Club));
+            sheet.Unequip(clubPlus1);
+            sheet.Equip(clubPlus2);
+            Assert.Equal(9, sheet.AttackProficiency);
+            Assert.Equal("1d4+6", sheet.MeleeAttacks[0].Damage.Dices.ToString());
+            Thing<Weapon> clubPlus3 = new Thing<Weapon>(Weapons.CreatePlus3Weapon(Weapons.Club));
+            sheet.Unequip(clubPlus2);
+            sheet.Equip(clubPlus3);
+            Assert.Equal(10, sheet.AttackProficiency);
+            Assert.Equal("1d4+7", sheet.MeleeAttacks[0].Damage.Dices.ToString());
+        }
+
+        [Fact]
         public void DruidTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             sheet.Strength.BaseValue = 8;

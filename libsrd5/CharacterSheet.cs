@@ -99,6 +99,14 @@ namespace srd5 {
                 } else {
                     bonus += Strength.Modifier;
                 }
+                // bonus from magic weapons +1/+2/+3
+                if (mainhand != null && mainhand.Item.HasProperty(WeaponProperty.PLUS_3))
+                    bonus += 3;
+                else if (mainhand != null && mainhand.Item.HasProperty(WeaponProperty.PLUS_2))
+                    bonus += 2;
+                else if (mainhand != null && mainhand.Item.HasProperty(WeaponProperty.PLUS_1))
+                    bonus += 1;
+
                 // get bonus from feats etc.                
                 return bonus;
             }
@@ -210,6 +218,13 @@ namespace srd5 {
             } else if (weapon.HasProperty(WeaponProperty.AMMUNITION)) {
                 modifier = Dexterity.Modifier;
             }
+            // Modifier for magic weapons +1/+2/+3
+            if (weapon.HasProperty(WeaponProperty.PLUS_3))
+                modifier += 3;
+            else if (weapon.HasProperty(WeaponProperty.PLUS_2))
+                modifier += 2;
+            else if (weapon.HasProperty(WeaponProperty.PLUS_1))
+                modifier += 1;
             return modifier;
         }
 

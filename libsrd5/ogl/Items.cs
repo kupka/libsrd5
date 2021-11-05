@@ -11,8 +11,13 @@ namespace srd5 {
         SPECIAL_NET,
         THROWN,
         TWO_HANDED,
-        VERSATILE
+        VERSATILE,
+        MAGIC,
+        PLUS_1,
+        PLUS_2,
+        PLUS_3
     }
+
     public enum ItemType {
         ARMOR,
         SHIELD,
@@ -41,6 +46,39 @@ namespace srd5 {
     }
 
     public struct Weapons {
+        private static Weapon createMagicWeapon(Weapon input, string name, WeaponProperty[] props) {
+            return new Weapon(
+                name,
+                input.Damage.Dices.ToString(),
+                input.Damage.Type,
+                props,
+                input.Proficiencies,
+                input.Value,
+                input.Weight
+            );
+        }
+
+        public static Weapon CreatePlus1Weapon(Weapon input) {
+            WeaponProperty[] props = input.Properties;
+            Utils.Push<WeaponProperty>(ref props, WeaponProperty.MAGIC);
+            Utils.Push<WeaponProperty>(ref props, WeaponProperty.PLUS_1);
+            return createMagicWeapon(input, input.Name + " +1", props);
+        }
+
+        public static Weapon CreatePlus2Weapon(Weapon input) {
+            WeaponProperty[] props = input.Properties;
+            Utils.Push<WeaponProperty>(ref props, WeaponProperty.MAGIC);
+            Utils.Push<WeaponProperty>(ref props, WeaponProperty.PLUS_2);
+            return createMagicWeapon(input, input.Name + " +2", props);
+        }
+
+        public static Weapon CreatePlus3Weapon(Weapon input) {
+            WeaponProperty[] props = input.Properties;
+            Utils.Push<WeaponProperty>(ref props, WeaponProperty.MAGIC);
+            Utils.Push<WeaponProperty>(ref props, WeaponProperty.PLUS_3);
+            return createMagicWeapon(input, input.Name + " +3", props);
+        }
+
         // Simple Meelee Weapons
         public static readonly Weapon Club = new Weapon(
             "Club",

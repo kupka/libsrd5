@@ -14,14 +14,31 @@ namespace srd5 {
             }
         }
 
-        public int Value { get; internal set; }
+        public int Value {
+            get {
+                return Math.Max(BaseValue, ModifiedMinimumBaseValue) + ValueModifier;
+            }
+        }
         public AbilityType Type { get; internal set; }
 
         public int BaseValue { get; internal set; }
+        public int ModifiedMinimumBaseValue { get; private set; }
+        public int ValueModifier { get; internal set; }
+
+        private int[] minimumBaseValues = new int[0];
+        public void AddMinimumBaseValue(int value) {
+            Utils.Push<int>(ref minimumBaseValues, value);
+            ModifiedMinimumBaseValue = Utils.Max<int>(minimumBaseValues);
+        }
+
+        public void RemoveMinimumBaseValue(int value) {
+            Utils.RemoveSingle<int>(ref minimumBaseValues, value);
+            ModifiedMinimumBaseValue = Utils.Max<int>(minimumBaseValues);
+        }
+
 
         internal Ability(AbilityType type, int value) {
             Type = type;
-            Value = value;
             BaseValue = value;
         }
     }

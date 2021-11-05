@@ -45,7 +45,7 @@ namespace srd5 {
         public void EquipArmorTest() {
             Thing<Armor> chainShirt = new Thing<Armor>(Armors.ChainShirt);
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
-            sheet.Dexterity.Value = 18;
+            sheet.Dexterity.BaseValue = 18;
             Assert.Equal(14, sheet.ArmorClass);
             sheet.Equip(chainShirt);
             Assert.Equal(15, sheet.ArmorClass);
@@ -75,8 +75,8 @@ namespace srd5 {
             sheet.AddLevel(CharacterClasses.Barbarian);
             sheet.AddLevel(CharacterClasses.Barbarian);
             Assert.Equal(3, sheet.AttackProficiency);
-            sheet.Strength.Value = 18;
-            sheet.Dexterity.Value = 14;
+            sheet.Strength.BaseValue = 18;
+            sheet.Dexterity.BaseValue = 14;
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             sheet.Equip(club);
             Assert.Equal(7, sheet.AttackProficiency);
@@ -86,10 +86,46 @@ namespace srd5 {
         }
 
         [Fact]
+        public void MagicWeaponTest() {
+            CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            Assert.Contains(Feat.RAGE, sheet.Feats);
+            Assert.DoesNotContain(Feat.RECKLESS_ATTACK, sheet.Feats);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            Assert.Contains(Feat.RECKLESS_ATTACK, sheet.Feats);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            Assert.Equal(2, sheet.AttackProficiency);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            Assert.Equal(3, sheet.AttackProficiency);
+            sheet.Strength.BaseValue = 18;
+            sheet.Dexterity.BaseValue = 14;
+            Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
+            sheet.Equip(club);
+            Assert.Equal(7, sheet.AttackProficiency);
+            Assert.Equal("1d4+4", sheet.MeleeAttacks[0].Damage.Dices.ToString());
+            Thing<Weapon> clubPlus1 = new Thing<Weapon>(Weapons.CreatePlus1Weapon(Weapons.Club));
+            sheet.Unequip(club);
+            sheet.Equip(clubPlus1);
+            Assert.Equal(8, sheet.AttackProficiency);
+            Assert.Equal("1d4+5", sheet.MeleeAttacks[0].Damage.Dices.ToString());
+            Thing<Weapon> clubPlus2 = new Thing<Weapon>(Weapons.CreatePlus2Weapon(Weapons.Club));
+            sheet.Unequip(clubPlus1);
+            sheet.Equip(clubPlus2);
+            Assert.Equal(9, sheet.AttackProficiency);
+            Assert.Equal("1d4+6", sheet.MeleeAttacks[0].Damage.Dices.ToString());
+            Thing<Weapon> clubPlus3 = new Thing<Weapon>(Weapons.CreatePlus3Weapon(Weapons.Club));
+            sheet.Unequip(clubPlus2);
+            sheet.Equip(clubPlus3);
+            Assert.Equal(10, sheet.AttackProficiency);
+            Assert.Equal("1d4+7", sheet.MeleeAttacks[0].Damage.Dices.ToString());
+        }
+
+        [Fact]
         public void DruidTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
-            sheet.Strength.Value = 8;
-            sheet.Dexterity.Value = 12;
+            sheet.Strength.BaseValue = 8;
+            sheet.Dexterity.BaseValue = 12;
             sheet.AddLevel(CharacterClasses.Druid);
             sheet.AddLevel(CharacterClasses.Druid);
             sheet.AddLevel(CharacterClasses.Druid);
@@ -103,7 +139,7 @@ namespace srd5 {
             Thing<Weapon> dagger = new Thing<Weapon>(Weapons.Dagger);
             sheet.Equip(dagger);
             Assert.Equal(4, sheet.AttackProficiency); // Dex bonus because finesse
-            sheet.Strength.Value = 14;
+            sheet.Strength.BaseValue = 14;
             Assert.Equal(5, sheet.AttackProficiency); // Str bonus because greater
             sheet.AddLevel(CharacterClasses.Druid);
             sheet.AddLevel(CharacterClasses.Druid);
@@ -233,7 +269,7 @@ namespace srd5 {
         [Fact]
         public void UnarmedTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HALF_ELF);
-            sheet.Strength.Value = 14;
+            sheet.Strength.BaseValue = 14;
             sheet.AddLevel(CharacterClasses.Barbarian);
             sheet.RecalculateAttacks();
             Assert.Single(sheet.MeleeAttacks);
@@ -247,7 +283,7 @@ namespace srd5 {
         [Fact]
         public void MultiAttacksMeleeTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HALF_ELF);
-            sheet.Strength.Value = 14;
+            sheet.Strength.BaseValue = 14;
             sheet.AddLevel(CharacterClasses.Barbarian);
             sheet.AddEffect(Effect.ONE_EXTRA_ATTACK);
             sheet.AddEffect(Effect.TWO_EXTRA_ATTACKS);
@@ -269,7 +305,7 @@ namespace srd5 {
         [Fact]
         public void MultiAttacksRangedTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HALF_ELF);
-            sheet.Dexterity.Value = 14;
+            sheet.Dexterity.BaseValue = 14;
             sheet.AddLevel(CharacterClasses.Barbarian);
             sheet.AddEffect(Effect.ONE_EXTRA_ATTACK);
             sheet.AddEffect(Effect.TWO_EXTRA_ATTACKS);
@@ -299,11 +335,11 @@ namespace srd5 {
         [Fact]
         public void SkillModifierTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
-            sheet.Strength.Value = 8;
-            sheet.Wisdom.Value = 14;
-            sheet.Charisma.Value = 10;
-            sheet.Dexterity.Value = 16;
-            sheet.Intelligence.Value = 1;
+            sheet.Strength.BaseValue = 8;
+            sheet.Wisdom.BaseValue = 14;
+            sheet.Charisma.BaseValue = 10;
+            sheet.Dexterity.BaseValue = 16;
+            sheet.Intelligence.BaseValue = 1;
             Assert.Equal(3, sheet.GetSkillModifier(Skill.STEALTH));
             Assert.Equal(-1, sheet.GetSkillModifier(Skill.ATHLETICS));
             Assert.Equal(0, sheet.GetSkillModifier(Skill.PERFORMANCE));
@@ -314,6 +350,31 @@ namespace srd5 {
             sheet.AddEffect(Effect.DOUBLE_PROFICIENCY_BONUS_HISTORY);
             Assert.Equal(5, sheet.GetSkillModifier(Skill.STEALTH));
             Assert.Equal(-1, sheet.GetSkillModifier(Skill.HISTORY));
+        }
+
+
+        [Fact]
+        public void ClassCreationTest() {
+            CharacterSheet sheet = new CharacterSheet(Race.HUMAN, true);
+            Assert.InRange<int>(sheet.Strength.Value, 4, 19);
+            Assert.InRange<int>(sheet.Constitution.Value, 4, 19);
+            Assert.InRange<int>(sheet.Dexterity.Value, 4, 19);
+            Assert.InRange<int>(sheet.Wisdom.Value, 4, 19);
+            Assert.InRange<int>(sheet.Intelligence.Value, 4, 19);
+            Assert.InRange<int>(sheet.Charisma.Value, 4, 19);
+        }
+
+        [Fact]
+        public void AbilitiyIncreaseTest() {
+            CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
+            int points = sheet.AbilityPoints;
+            sheet.IncreaseAbility(AbilityType.STRENGTH);
+            sheet.IncreaseAbility(AbilityType.DEXTERITY);
+            sheet.IncreaseAbility(AbilityType.CONSTITUTION);
+            sheet.IncreaseAbility(AbilityType.INTELLIGENCE);
+            sheet.IncreaseAbility(AbilityType.WISDOM);
+            sheet.IncreaseAbility(AbilityType.CHARISMA);
+            Assert.Equal(points - 6, sheet.AbilityPoints);
         }
 
     }

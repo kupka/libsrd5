@@ -41,6 +41,16 @@ namespace srd5 {
             }
         }
 
+        public static T Max<T>(T[] array) where T : IComparable {
+            if (array == null || array.Length == 0) return default(T);
+            T max = array[0];
+            for (int i = 0; i < array.Length; i++) {
+                if (array[i].CompareTo(max) > 0)
+                    max = array[i];
+            }
+            return max;
+        }
+
         // 
         public static T[] Expand<T>(T element, int n) {
             T[] elements = new T[n];

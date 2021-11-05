@@ -16,6 +16,7 @@ namespace srd5 {
                     Dice dice = new Dice();
                     dice.MaxValue = max;
                     dice.Value = Random.Get(1, max);
+                    Dices.onDiceRolled(dice);
                     return dice;
                 default:
                     throw new ArgumentOutOfRangeException("No such dice d" + max);
@@ -108,9 +109,31 @@ namespace srd5 {
             private set;
         }
 
-        public static long Roll(string diceString) {
+        public static int Roll(string diceString) {
             Dices parsed = new Dices(diceString);
             return parsed.Roll();
+        }
+
+        public override string ToString() {
+            return "d" + MaxValue;
+        }
+    }
+
+    public abstract class DiceRolledEventSource {
+
+    }
+
+    public class DiceRolledEvent : EventArgs {
+        internal static DiceRolledEventSource source { get; set; }
+        public Dices Dices { get; private set; }
+        public int Value { get; private set; }
+        public DiceRolledEventSource Source { get; private set; }
+
+        public DiceRolledEvent(Dices dices, int value) {
+            Dices = dices;
+            Value = value;
+            Source = source;
+            source = null;
         }
     }
 
@@ -226,7 +249,9 @@ namespace srd5 {
             for (int i = 0; i < Amount; i++) {
                 result += Random.Get(1, Dice);
             }
-            return Math.Max(0, result);
+            int value = Math.Max(0, result);
+            onDiceRolled(this, value);
+            return value;
         }
 
         // Crticial hits roll each dice twice
@@ -236,7 +261,25 @@ namespace srd5 {
                 result += Random.Get(1, Dice);
                 result += Random.Get(1, Dice);
             }
-            return Math.Max(0, result);
+            int value = Math.Max(0, result);
+            onDiceRolled(this, value);
+            return value;
+        }
+
+        // Event Handling
+        public static event EventHandler<DiceRolledEvent> DiceRolled;
+
+        internal static void onDiceRolled(Dices dices, int value) {
+            if (DiceRolled == null) return;
+            DiceRolledEvent diceRolledEvent = new DiceRolledEvent(dices, value);
+            DiceRolled(dices, diceRolledEvent);
+        }
+
+        internal static void onDiceRolled(Dice dice) {
+            if (DiceRolled == null) return;
+            Dices dices = new Dices(dice.ToString());
+            DiceRolledEvent diceRolledEvent = new DiceRolledEvent(dices, dice.Value);
+            DiceRolled(dices, diceRolledEvent);
         }
     }
 }

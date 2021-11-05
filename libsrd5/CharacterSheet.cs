@@ -33,6 +33,7 @@ namespace srd5 {
         public ConditionType[] Conditions { get { return conditions; } }
         private ConditionType[] conditions = new ConditionType[0];
         public CharacterInventory Inventory { get; internal set; } = new CharacterInventory();
+        public int AbilityPoints { get; internal set; }
         public int Attacks {
             get {
                 if (HasEffect(Effect.THREE_EXTRA_ATTACKS))
@@ -98,13 +99,32 @@ namespace srd5 {
                 } else {
                     bonus += Strength.Modifier;
                 }
+                // bonus from magic weapons +1/+2/+3
+                if (mainhand != null && mainhand.Item.HasProperty(WeaponProperty.PLUS_3))
+                    bonus += 3;
+                else if (mainhand != null && mainhand.Item.HasProperty(WeaponProperty.PLUS_2))
+                    bonus += 2;
+                else if (mainhand != null && mainhand.Item.HasProperty(WeaponProperty.PLUS_1))
+                    bonus += 1;
+
                 // get bonus from feats etc.                
                 return bonus;
             }
         }
 
-        public CharacterSheet(Race race) {
+        public CharacterSheet(Race race, bool classic = false) {
             SetRace(race.CharacterRace());
+            if (classic) {
+                Dices dices = new Dices("3d6");
+                Strength.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+                Constitution.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+                Dexterity.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+                Wisdom.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+                Intelligence.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+                Charisma.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+            } else {
+                AbilityPoints = 14;
+            }
         }
 
 
@@ -198,6 +218,13 @@ namespace srd5 {
             } else if (weapon.HasProperty(WeaponProperty.AMMUNITION)) {
                 modifier = Dexterity.Modifier;
             }
+            // Modifier for magic weapons +1/+2/+3
+            if (weapon.HasProperty(WeaponProperty.PLUS_3))
+                modifier += 3;
+            else if (weapon.HasProperty(WeaponProperty.PLUS_2))
+                modifier += 2;
+            else if (weapon.HasProperty(WeaponProperty.PLUS_1))
+                modifier += 1;
             return modifier;
         }
 
@@ -412,6 +439,31 @@ namespace srd5 {
             RemoveResult result = Utils.RemoveSingle<ConditionType>(ref conditions, condition);
             if (result == RemoveResult.REMOVED_AND_GONE)
                 condition.Unapply(this);
+        }
+
+        public void IncreaseAbility(AbilityType type) {
+            if (AbilityPoints == 0) return;
+            AbilityPoints--;
+            switch (type) {
+                case AbilityType.STRENGTH:
+                    Strength.BaseValue++;
+                    break;
+                case AbilityType.DEXTERITY:
+                    Dexterity.BaseValue++;
+                    break;
+                case AbilityType.CONSTITUTION:
+                    Constitution.BaseValue++;
+                    break;
+                case AbilityType.WISDOM:
+                    Wisdom.BaseValue++;
+                    break;
+                case AbilityType.INTELLIGENCE:
+                    Intelligence.BaseValue++;
+                    break;
+                case AbilityType.CHARISMA:
+                    Charisma.BaseValue++;
+                    break;
+            }
         }
 
     }

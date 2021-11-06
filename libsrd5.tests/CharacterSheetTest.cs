@@ -170,7 +170,7 @@ namespace srd5 {
             Assert.True(sheet.IsProficient(Proficiency.WARHAMMER));
             Assert.Equal(14, sheet.HitPoints); // 12 barbarian + 1 constituion + 1 racial feat
             Assert.Equal(14, sheet.HitPointsMax); // 12 barbarian + 1 constituion + 1 racial feat
-            sheet.Equip(new Thing<Armor>(Armors.Plate));
+            sheet.Equip(new Thing<Armor>(Armors.PlateArmor));
             Assert.Equal(18, sheet.ArmorClass);
             Assert.Equal(25, sheet.Speed);
         }
@@ -179,7 +179,7 @@ namespace srd5 {
         public void HeavyArmorTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             Assert.Equal(30, sheet.Speed);
-            Thing<Armor> plate = new Thing<Armor>(Armors.Plate);
+            Thing<Armor> plate = new Thing<Armor>(Armors.PlateArmor);
             sheet.Equip(plate);
             Assert.Equal(20, sheet.Speed);
             sheet.Unequip(plate);

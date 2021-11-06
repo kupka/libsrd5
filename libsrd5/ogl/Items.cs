@@ -345,8 +345,21 @@ namespace srd5 {
     }
 
     public struct Armors {
-        public static readonly Armor ChainShirt = new Armor("Chain shirt", 13, 2, 0, Proficiency.MEDIUM_ARMOR, 50000, 20);
-        public static readonly Armor Plate = new Armor("Plate armor", 18, 0, 15, Proficiency.HEAVY_ARMOR, 1500000, 65);
+        // Light Armor
+        public static readonly Armor PaddedArmor = new Armor("Padded armor", 11, 20, 0, Proficiency.LIGHT_ARMOR, 500, 8);
+        public static readonly Armor LeatherArmor = new Armor("Leather armor", 11, 20, 0, Proficiency.LIGHT_ARMOR, 1000, 10);
+        public static readonly Armor StuddedLeatherArmor = new Armor("Studded leather armor", 12, 20, 0, Proficiency.LIGHT_ARMOR, 4500, 13);
+        // Medium Armor
+        public static readonly Armor HideArmor = new Armor("Hide armor", 12, 2, 0, Proficiency.MEDIUM_ARMOR, 1000, 12);
+        public static readonly Armor ChainShirt = new Armor("Chain shirt", 13, 2, 0, Proficiency.MEDIUM_ARMOR, 5000, 20);
+        public static readonly Armor ScaleMailArmor = new Armor("Scale mail armor", 14, 2, 0, Proficiency.MEDIUM_ARMOR, 5000, 45);
+        public static readonly Armor Breastplate = new Armor("Breastplate", 14, 2, 0, Proficiency.MEDIUM_ARMOR, 40000, 20);
+        public static readonly Armor HalfPlateArmor = new Armor("Half plate armor", 15, 2, 0, Proficiency.MEDIUM_ARMOR, 75000, 40);
+        // Heavy Armor
+        public static readonly Armor RingMailArmor = new Armor("Ring mail armor", 14, 0, 0, Proficiency.HEAVY_ARMOR, 3000, 40);
+        public static readonly Armor ChainMailArmor = new Armor("Chain mail armor", 16, 0, 13, Proficiency.HEAVY_ARMOR, 7500, 65);
+        public static readonly Armor SplintArmor = new Armor("Splint armor", 17, 0, 15, Proficiency.HEAVY_ARMOR, 20000, 60);
+        public static readonly Armor PlateArmor = new Armor("Plate armor", 18, 0, 15, Proficiency.HEAVY_ARMOR, 150000, 65);
     }
 
     public struct Rings {

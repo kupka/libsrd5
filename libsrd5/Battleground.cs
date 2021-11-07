@@ -137,8 +137,7 @@ namespace srd5 {
         private void NextCombattant() {
             currentCombattant++;
             currentCombattant %= combattants.Length;
-            if (currentCombattant == 0)
-                Turn++;
+            if (currentCombattant == 0) Turn++;
             currentPhase = TurnPhase.MOVE;
             remainingSpeed = CurrentCombattant.Speed;
         }
@@ -203,8 +202,7 @@ namespace srd5 {
             bool success = false;
             int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
             foreach (Attack attack in CurrentCombattant.MeleeAttacks) {
-                if (distance > attack.Reach) // skip attack when out of reach
-                    continue;
+                if (distance > attack.Reach) continue; // skip attack when out of reach
                 success = true;
                 doAttack(attack, target);
             }

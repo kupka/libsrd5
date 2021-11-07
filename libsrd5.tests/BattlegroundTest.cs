@@ -84,8 +84,56 @@ namespace srd5 {
             hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"));
             Random.State = 11; // Fix deterministic random to guarantee critical hit
             Assert.True(ground.MeleeAttackAction(badger));
+            Random.State = 10; // Fix deterministic random to guarantee normal hit            
             Assert.True(ground.MeleeAttackAction(badger));
             Assert.False(ground.MeleeAttackAction(hero));
+        }
+
+        [Fact]
+        public void AttackTest2DWithBonusDamage() {
+            Battleground2D ground = new Battleground2D(5, 5);
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
+            hero.Strength.BaseValue = 18;
+            hero.Dexterity.BaseValue = 10;
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.HitPoints = hero.HitPointsMax;
+            hero.Equip(new Thing<Weapon>(Weapons.Greataxe));
+            Random.State = 3; // Fix deterministic random so that ogre goes first
+            ground.AddCombattant(hero, 1, 1);
+            Monster ogre = Monsters.Ogre;
+            ground.AddCombattant(ogre, 1, 2);
+            ground.Initialize();
+            ground.NextPhase(); // skip move
+            Assert.True(ground.MeleeAttackAction(hero));
+            Assert.Equal(hero, ground.CurrentCombattant);
+            ground.NextPhase(); // skip move
+            hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"), 5, 0, 0, new Damage(DamageType.COLD, "1d4+1"));
+            Random.State = 10; // Fix deterministic random to guarantee normal hit
+            Assert.True(ground.MeleeAttackAction(ogre));
+            Random.State = 11; // Fix deterministic random to guarantee critical hit
+            Assert.True(ground.MeleeAttackAction(ogre));
+            Assert.False(ground.MeleeAttackAction(hero));
+        }
+
+        [Fact]
+        public void OutOfRangeTest() {
+            Battleground2D ground = new Battleground2D(5, 5);
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
+            hero.Strength.BaseValue = 18;
+            hero.Dexterity.BaseValue = 10;
+            hero.AddLevel(CharacterClasses.Barbarian);
+            Random.State = 1; // Fix deterministic random so that hero goes first
+            ground.AddCombattant(hero, 1, 1);
+            Monster ogre = Monsters.Ogre;
+            ground.AddCombattant(ogre, 4, 4);
+            ground.Initialize();
+            ground.NextPhase(); // skip move  
+            Assert.Equal(hero, ground.CurrentCombattant);
+            Assert.False(ground.MeleeAttackAction(ogre));
         }
     }
 }

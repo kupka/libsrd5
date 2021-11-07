@@ -18,6 +18,18 @@ namespace srd5 {
         PLUS_3
     }
 
+    public enum ArmorProperty {
+        STEALTH_DISADVANTAGE,
+        LIGHT,
+        MEDIUM,
+        MAGIC,
+        HEAVY,
+        METAL,
+        PLUS_1,
+        PLUS_2,
+        PLUS_3
+    }
+
     public enum ItemType {
         ARMOR,
         SHIELD,
@@ -345,8 +357,58 @@ namespace srd5 {
     }
 
     public struct Armors {
-        public static readonly Armor ChainShirt = new Armor("Chain shirt", 13, 2, 0, Proficiency.MEDIUM_ARMOR, 50000, 20);
-        public static readonly Armor Plate = new Armor("Plate armor", 18, 0, 15, Proficiency.HEAVY_ARMOR, 1500000, 65);
+        private static Armor createMagicArmor(Armor armor, string name, int ac, ArmorProperty[] properties) {
+            return new Armor(name, ac, armor.MaxDexBonus, armor.Strength, armor.Proficiencies[0], properties, armor.Value, armor.Weight);
+        }
+
+        public static Armor CreatePlus1Armor(Armor armor) {
+            ArmorProperty[] properties = armor.Properties;
+            Utils.Push<ArmorProperty>(ref properties, ArmorProperty.PLUS_1);
+            Utils.Push<ArmorProperty>(ref properties, ArmorProperty.MAGIC);
+            return createMagicArmor(armor, armor.Name + " +1", armor.AC + 1, properties);
+        }
+
+        public static Armor CreatePlus2Armor(Armor armor) {
+            ArmorProperty[] properties = armor.Properties;
+            Utils.Push<ArmorProperty>(ref properties, ArmorProperty.PLUS_2);
+            Utils.Push<ArmorProperty>(ref properties, ArmorProperty.MAGIC);
+            return createMagicArmor(armor, armor.Name + " +2", armor.AC + 2, properties);
+        }
+
+        public static Armor CreatePlus3Armor(Armor armor) {
+            ArmorProperty[] properties = armor.Properties;
+            Utils.Push<ArmorProperty>(ref properties, ArmorProperty.PLUS_3);
+            Utils.Push<ArmorProperty>(ref properties, ArmorProperty.MAGIC);
+            return createMagicArmor(armor, armor.Name + " +3", armor.AC + 3, properties);
+        }
+
+        // Light Armor
+        public static readonly Armor PaddedArmor = new Armor("Padded armor", 11, 20, 0, Proficiency.LIGHT_ARMOR,
+            new ArmorProperty[] { ArmorProperty.LIGHT, ArmorProperty.STEALTH_DISADVANTAGE }, 500, 8);
+        public static readonly Armor LeatherArmor = new Armor("Leather armor", 11, 20, 0, Proficiency.LIGHT_ARMOR,
+            new ArmorProperty[] { ArmorProperty.LIGHT }, 1000, 10);
+        public static readonly Armor StuddedLeatherArmor = new Armor("Studded leather armor", 12, 20, 0, Proficiency.LIGHT_ARMOR,
+            new ArmorProperty[] { ArmorProperty.LIGHT }, 4500, 13);
+        // Medium Armor
+        public static readonly Armor HideArmor = new Armor("Hide armor", 12, 2, 0, Proficiency.MEDIUM_ARMOR,
+             new ArmorProperty[] { ArmorProperty.MEDIUM }, 1000, 12);
+        public static readonly Armor ChainShirt = new Armor("Chain shirt", 13, 2, 0, Proficiency.MEDIUM_ARMOR,
+            new ArmorProperty[] { ArmorProperty.MEDIUM, ArmorProperty.METAL }, 5000, 20);
+        public static readonly Armor ScaleMailArmor = new Armor("Scale mail armor", 14, 2, 0, Proficiency.MEDIUM_ARMOR,
+            new ArmorProperty[] { ArmorProperty.MEDIUM, ArmorProperty.STEALTH_DISADVANTAGE, ArmorProperty.METAL }, 5000, 45);
+        public static readonly Armor Breastplate = new Armor("Breastplate", 14, 2, 0, Proficiency.MEDIUM_ARMOR,
+            new ArmorProperty[] { ArmorProperty.MEDIUM, ArmorProperty.METAL }, 40000, 20);
+        public static readonly Armor HalfPlateArmor = new Armor("Half plate armor", 15, 2, 0, Proficiency.MEDIUM_ARMOR,
+            new ArmorProperty[] { ArmorProperty.MEDIUM, ArmorProperty.STEALTH_DISADVANTAGE, ArmorProperty.METAL }, 75000, 40);
+        // Heavy Armor
+        public static readonly Armor RingMailArmor = new Armor("Ring mail armor", 14, 0, 0, Proficiency.HEAVY_ARMOR,
+            new ArmorProperty[] { ArmorProperty.HEAVY, ArmorProperty.STEALTH_DISADVANTAGE, ArmorProperty.METAL }, 3000, 40);
+        public static readonly Armor ChainMailArmor = new Armor("Chain mail armor", 16, 0, 13, Proficiency.HEAVY_ARMOR,
+            new ArmorProperty[] { ArmorProperty.HEAVY, ArmorProperty.STEALTH_DISADVANTAGE, ArmorProperty.METAL }, 7500, 65);
+        public static readonly Armor SplintArmor = new Armor("Splint armor", 17, 0, 15, Proficiency.HEAVY_ARMOR,
+            new ArmorProperty[] { ArmorProperty.HEAVY, ArmorProperty.STEALTH_DISADVANTAGE, ArmorProperty.METAL }, 20000, 60);
+        public static readonly Armor PlateArmor = new Armor("Plate armor", 18, 0, 15, Proficiency.HEAVY_ARMOR,
+            new ArmorProperty[] { ArmorProperty.HEAVY, ArmorProperty.STEALTH_DISADVANTAGE, ArmorProperty.METAL }, 150000, 65);
     }
 
     public struct Rings {

@@ -17,27 +17,18 @@ namespace srd5 {
     }
 
     public class Armor : Item {
-        public int AC {
-            get;
-            internal set;
-        }
+        public int AC { get; private set; }
+        public int MaxDexBonus { get; private set; }
+        public int Strength { get; private set; }
+        public ArmorProperty[] Properties { get; private set; }
 
-        public int MaxDexBonus {
-            get;
-            internal set;
-        }
-
-        public int Strength {
-            get;
-            internal set;
-        }
-
-        public Armor(string name, int ac, int maxDexBonus, int strength, Proficiency proficiency, int value, int weight) {
+        public Armor(string name, int ac, int maxDexBonus, int strength, Proficiency proficiency, ArmorProperty[] properties, int value, float weight) {
             Name = name;
             AC = ac;
             MaxDexBonus = maxDexBonus;
             Strength = strength;
             Proficiencies = new Proficiency[] { proficiency };
+            Properties = properties;
             Value = value;
             Weight = weight;
         }
@@ -102,15 +93,15 @@ namespace srd5 {
             Reach = reach;
         }
 
-        public Damage Damage { get; internal set; }
+        public Damage Damage { get; private set; }
 
-        public WeaponProperty[] Properties { get; internal set; }
+        public WeaponProperty[] Properties { get; private set; }
 
-        public int RangeNormal { get; internal set; }
+        public int RangeNormal { get; private set; }
 
-        public int RangeLong { get; internal set; }
+        public int RangeLong { get; private set; }
 
-        public int Reach { get; internal set; }
+        public int Reach { get; private set; }
 
         public bool HasProperty(WeaponProperty property) {
             return Array.IndexOf(Properties, property) >= 0;
@@ -118,12 +109,12 @@ namespace srd5 {
     }
 
     public abstract class Item {
-        public string Name { get; internal set; }
-        public ItemType Type { get; internal set; }
+        public string Name { get; protected set; }
+        public ItemType Type { get; protected set; }
 
-        public Proficiency[] Proficiencies { get; internal set; }
+        public Proficiency[] Proficiencies { get; protected set; }
 
-        public float Weight { get; internal set; }
+        public float Weight { get; protected set; }
 
         public int Value { get; internal set; }
     }

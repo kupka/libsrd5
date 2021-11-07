@@ -52,6 +52,25 @@ namespace srd5 {
         }
 
         [Fact]
+        public void EquipMagicArmorTest() {
+            Thing<Armor> chainShirt = new Thing<Armor>(Armors.ChainShirt);
+            CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
+            sheet.Dexterity.BaseValue = 18;
+            Assert.Equal(14, sheet.ArmorClass);
+            sheet.Equip(chainShirt);
+            Assert.Equal(15, sheet.ArmorClass);
+            Thing<Armor> chainShirtPlus1 = new Thing<Armor>(Armors.CreatePlus1Armor(Armors.ChainShirt));
+            sheet.Equip(chainShirtPlus1);
+            Assert.Equal(16, sheet.ArmorClass);
+            Thing<Armor> chainShirtPlus2 = new Thing<Armor>(Armors.CreatePlus2Armor(Armors.ChainShirt));
+            sheet.Equip(chainShirtPlus2);
+            Assert.Equal(17, sheet.ArmorClass);
+            Thing<Armor> chainShirtPlus3 = new Thing<Armor>(Armors.CreatePlus3Armor(Armors.ChainShirt));
+            sheet.Equip(chainShirtPlus3);
+            Assert.Equal(18, sheet.ArmorClass);
+        }
+
+        [Fact]
         public void EquipFullTest() {
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             Thing<Shield> buckler = new Thing<Shield>(Shields.Buckler);

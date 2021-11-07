@@ -2,10 +2,7 @@ using System;
 
 namespace srd5 {
     public class Shield : Item {
-        public int AC {
-            get;
-            internal set;
-        }
+        public int AC { get; private set; }
 
         public Shield(string name, int ac, int value, int weight) {
             Name = name;
@@ -136,14 +133,7 @@ namespace srd5 {
             return this.GetHashCode() == obj.GetHashCode();
         }
 
-        public T Item {
-            get;
-            private set;
-        }
-
-        public static implicit operator Thing<T>(Thing<Item> v) {
-            return (Thing<T>)v;
-        }
+        public T Item { get; private set; }
 
         public static Thing<Item> Cast<V>(Thing<V> thing) where V : Item {
             Item item = thing.Item;

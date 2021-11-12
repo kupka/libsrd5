@@ -33,5 +33,11 @@ namespace srd5 {
                 Assert.NotNull(skill.Description());
             }
         }
+
+        [Fact]
+        public void NullTest() {
+            Assert.NotNull(SkillTextResource.Description((Skill)(-1)));
+            Assert.NotNull(SkillTextResource.Name((Skill)(-1)));
+        }
     }
 }

@@ -22,17 +22,10 @@ namespace srd5 {
             HitPoints = hp;
             Speed = speed;
             Challenge = challenge;
+            EffectiveLevel = challenge;
             MeleeAttacks = meleeAttacks;
             RangedAttacks = rangedAttacks;
             Size = size;
-        }
-
-        public override void AddEffect(Effect effect) {
-            throw new System.NotImplementedException();
-        }
-
-        public override void RemoveEffect(Effect effect) {
-            throw new System.NotImplementedException();
         }
     }
 }

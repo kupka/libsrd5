@@ -1,8 +1,50 @@
+using System;
+
 namespace srd5 {
     public enum Effect {
+        // Vulnerability against DamageType
+        VULNERABILITY_ACID,
+        VULNERABILITY_BLUDGEONING,
+        VULNERABILITY_COLD,
+        VULNERABILITY_FIRE,
+        VULNERABILITY_FORCE,
+        VULNERABILITY_LIGHTNING,
+        VULNERABILITY_NECROTIC,
+        VULNERABILITY_PIERCING,
+        VULNERABILITY_POISON,
+        VULNERABILITY_PSYCHIC,
+        VULNERABILITY_RADIANT,
+        VULNERABILITY_SLASHING,
+        VULNERABILITY_THUNDER,
         // Resistances against DamageType
-        RESISTANCE_POISON,
+        RESISTANCE_ACID,
+        RESISTANCE_BLUDGEONING,
         RESISTANCE_COLD,
+        RESISTANCE_FIRE,
+        RESISTANCE_FORCE,
+        RESISTANCE_LIGHTNING,
+        RESISTANCE_NECROTIC,
+        RESISTANCE_PIERCING,
+        RESISTANCE_POISON,
+        RESISTANCE_PSYCHIC,
+        RESISTANCE_RADIANT,
+        RESISTANCE_SLASHING,
+        RESISTANCE_THUNDER,
+
+        // Immunities against DamageType
+        IMMUNITY_ACID,
+        IMMUNITY_BLUDGEONING,
+        IMMUNITY_COLD,
+        IMMUNITY_FIRE,
+        IMMUNITY_FORCE,
+        IMMUNITY_LIGHTNING,
+        IMMUNITY_NECROTIC,
+        IMMUNITY_PIERCING,
+        IMMUNITY_POISON,
+        IMMUNITY_PSYCHIC,
+        IMMUNITY_RADIANT,
+        IMMUNITY_SLASHING,
+        IMMUNITY_THUNDER,
 
         // Immunities against Condition
         IMMUNITY_SLEEP,
@@ -37,6 +79,23 @@ namespace srd5 {
         ADDITIONAL_HP_PER_LEVEL,
         DARKVISION,
         PROTECTION
+    }
+
+    public static class Effects {
+        public static Effect Resistance(DamageType type) {
+            string name = "RESISTANCE_" + Enum.GetName(typeof(DamageType), type);
+            return (Effect)Enum.Parse(typeof(Effect), name);
+        }
+
+        public static Effect Immunity(DamageType type) {
+            string name = "IMMUNITY_" + Enum.GetName(typeof(DamageType), type);
+            return (Effect)Enum.Parse(typeof(Effect), name);
+        }
+
+        public static Effect Vulnerability(DamageType type) {
+            string name = "VULNERABILITY_" + Enum.GetName(typeof(DamageType), type);
+            return (Effect)Enum.Parse(typeof(Effect), name);
+        }
     }
 
     public static class EffectExtension {

@@ -90,7 +90,7 @@ namespace srd5 {
         }
 
         [Fact]
-        public void AttackTest2DWithBonusDamage() {
+        public void AttackTest2DWithBonusDamageCritical() {
             Battleground2D ground = new Battleground2D(5, 5);
             CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
             hero.Strength.BaseValue = 18;
@@ -117,7 +117,14 @@ namespace srd5 {
             Random.State = 11; // Fix deterministic random to guarantee critical hit
             Assert.True(ground.MeleeAttackAction(ogre));
             Assert.False(ground.MeleeAttackAction(hero));
+            ground.NextPhase(); // End hero turn
+            ground.NextPhase(); // Skip ogre move
+            ground.NextPhase(); // Skip ogre attack
+            Assert.True(ground.MeleeAttackAction(ogre));
+            Random.State = 10; // Fix deterministic random to guarantee normal hit
+            Assert.True(ground.MeleeAttackAction(ogre));
         }
+
 
         [Fact]
         public void OutOfRangeTest() {

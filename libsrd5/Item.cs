@@ -10,6 +10,7 @@ namespace srd5 {
             Proficiencies = new Proficiency[] { Proficiency.SHIELDS };
             Value = value;
             Weight = weight;
+            Type = ItemType.SHIELD;
         }
     }
 
@@ -28,6 +29,7 @@ namespace srd5 {
             Properties = properties;
             Value = value;
             Weight = weight;
+            Type = ItemType.ARMOR;
         }
     }
 

@@ -72,13 +72,19 @@ namespace srd5 {
 
         [Fact]
         public void EquipFullTest() {
+            Thing<Weapon> twoHander = new Thing<Weapon>(Weapons.Greatsword);
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             Thing<Shield> buckler = new Thing<Shield>(Shields.Buckler);
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
-            sheet.Equip(club);
+            sheet.Equip(twoHander);
             sheet.Equip(buckler);
+            sheet.Equip(club);
             Assert.Equal(club, sheet.Inventory.MainHand);
             Assert.True(buckler.Equals(sheet.Inventory.OffHand));
+            sheet.Unequip<Shield>(buckler);
+            Assert.Null(sheet.Inventory.OffHand);
+            sheet.Equip(twoHander);
+            Assert.Equal(twoHander, sheet.Inventory.MainHand);
         }
 
         [Fact]

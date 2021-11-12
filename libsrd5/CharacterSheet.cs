@@ -300,6 +300,7 @@ namespace srd5 {
             if (thing == null) return;
             switch (thing.Item.Type) {
                 case ItemType.WEAPON:
+                case ItemType.SHIELD:
                     if (thing.Equals(Inventory.MainHand))
                         Inventory.MainHand = null;
                     else if (thing.Equals(Inventory.OffHand))

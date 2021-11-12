@@ -226,7 +226,7 @@ namespace srd5 {
                 if (attack.AdditionalDamage != null)
                     damage += attack.AdditionalDamage.Dices.Roll();
             }
-            target.HitPoints -= damage;
+            target.TakeDamage(attack.Damage.Type, damage);
         }
 
         public abstract Location LocateCombattant(Combattant combattant);

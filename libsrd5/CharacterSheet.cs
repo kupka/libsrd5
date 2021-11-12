@@ -26,8 +26,6 @@ namespace srd5 {
         private Proficiency[] proficiencies = new Proficiency[0];
         public Feat[] Feats { get { return feats; } }
         private Feat[] feats = new Feat[0];
-        public Effect[] Effects { get { return effects; } }
-        private Effect[] effects = new Effect[0];
         public Dice[] HitDice { get { return hitDice; } }
         private Dice[] hitDice = new Dice[0];
         public ConditionType[] Conditions { get { return conditions; } }
@@ -127,6 +125,9 @@ namespace srd5 {
             }
         }
 
+        public override int EffectiveLevel() {
+            return Levels.Length;
+        }
 
         public int GetSkillModifier(Skill skill) {
             int modifier = 0;
@@ -396,10 +397,6 @@ namespace srd5 {
             }
         }
 
-        public bool HasEffect(Effect type) {
-            return Array.IndexOf(effects, type) >= 0;
-        }
-
         public void AddProficiency(Proficiency proficiency) {
             Utils.PushUnique<Proficiency>(ref proficiencies, proficiency);
         }
@@ -416,19 +413,6 @@ namespace srd5 {
         public void AddFeat(Feat feat) {
             if (Utils.PushUnique<Feat>(ref feats, feat))
                 feat.Apply(this);
-        }
-
-        public override void AddEffect(Effect effect) {
-            bool pushed = Utils.PushUnique<Effect>(ref effects, effect);
-            if (pushed)
-                effect.Apply(this);
-        }
-
-        public override void RemoveEffect(Effect effect) {
-            RemoveResult result = Utils.RemoveSingle<Effect>(ref effects, effect);
-            if (result == RemoveResult.NOT_FOUND) return;
-            if (result == RemoveResult.REMOVED_AND_GONE)
-                effect.Unapply(this);
         }
 
         public void AddCondition(ConditionType condition) {

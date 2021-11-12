@@ -1,3 +1,5 @@
+using System;
+
 namespace srd5 {
     public class Attack {
         public string Name { get; set; }
@@ -40,7 +42,42 @@ namespace srd5 {
         public Attack[] RangedAttacks { get; internal set; } = new Attack[0];
         public Attack BonusAttack { get; internal set; }
         public Size Size { get; internal set; }
-        public abstract void AddEffect(Effect effect);
-        public abstract void RemoveEffect(Effect effect);
+        public Effect[] Effects { get { return effects; } }
+        private Effect[] effects = new Effect[0];
+        public abstract int EffectiveLevel();
+        public void AddEffect(Effect effect) {
+            bool pushed = Utils.PushUnique<Effect>(ref effects, effect);
+            if (pushed)
+                effect.Apply(this);
+        }
+
+        public void RemoveEffect(Effect effect) {
+            RemoveResult result = Utils.RemoveSingle<Effect>(ref effects, effect);
+            if (result == RemoveResult.NOT_FOUND) return;
+            if (result == RemoveResult.REMOVED_AND_GONE)
+                effect.Unapply(this);
+        }
+
+        public bool HasEffect(Effect type) {
+            return Array.IndexOf(effects, type) >= 0;
+        }
+        public bool IsImmune(DamageType type) {
+            return HasEffect(srd5.Effects.Immunity(type));
+        }
+
+        public bool IsResistant(DamageType type) {
+            return HasEffect(srd5.Effects.Resistance(type));
+        }
+
+        public bool IsVulnerable(DamageType type) {
+            return HasEffect(srd5.Effects.Vulnerability(type));
+        }
+
+        public void TakeDamage(DamageType type, int amount) {
+            if (IsImmune(type)) return;
+            if (IsResistant(type)) amount /= 2;
+            if (IsVulnerable(type)) amount *= 2;
+            HitPoints -= amount;
+        }
     }
 }

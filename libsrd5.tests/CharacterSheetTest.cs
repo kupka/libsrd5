@@ -82,6 +82,15 @@ namespace srd5 {
         }
 
         [Fact]
+        public void IllegalRaceTest() {
+            Assert.Throws<ArgumentException>(
+                delegate {
+                    CharacterRace race = RaceExtension.CharacterRace((Race)(-1));
+                }
+            );
+        }
+
+        [Fact]
         public void BarbarianTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             sheet.AddLevel(CharacterClasses.Barbarian);

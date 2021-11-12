@@ -44,7 +44,7 @@ namespace srd5 {
         public Size Size { get; internal set; }
         public Effect[] Effects { get { return effects; } }
         private Effect[] effects = new Effect[0];
-        public abstract int EffectiveLevel();
+        public int EffectiveLevel { get; protected set; }
         public void AddEffect(Effect effect) {
             bool pushed = Utils.PushUnique<Effect>(ref effects, effect);
             if (pushed)

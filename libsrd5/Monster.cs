@@ -6,9 +6,6 @@ namespace srd5 {
 
     public class Monster : Combattant {
         public int Challenge { get; internal set; } = 1;
-        public override int EffectiveLevel() {
-            return Challenge;
-        }
 
         public Monster(string name, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
                         int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks, Size size) {
@@ -25,6 +22,7 @@ namespace srd5 {
             HitPoints = hp;
             Speed = speed;
             Challenge = challenge;
+            EffectiveLevel = challenge;
             MeleeAttacks = meleeAttacks;
             RangedAttacks = rangedAttacks;
             Size = size;

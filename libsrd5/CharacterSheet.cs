@@ -67,11 +67,7 @@ namespace srd5 {
 
         public int Proficiency {
             get {
-                int totalLevel = 0;
-                foreach (CharacterLevel level in levels) {
-                    totalLevel += level.Levels;
-                }
-                return (2 + ((totalLevel - 1) / 4));
+                return (2 + ((EffectiveLevel - 1) / 4));
             }
         }
 
@@ -123,10 +119,6 @@ namespace srd5 {
             } else {
                 AbilityPoints = 14;
             }
-        }
-
-        public override int EffectiveLevel() {
-            return Levels.Length;
         }
 
         public int GetSkillModifier(Skill skill) {
@@ -367,6 +359,7 @@ namespace srd5 {
         public void AddLevel(CharacterClass characterClass) {
             Dice dice = Dice.Get(characterClass.HitDice);
             int additionalHp = HasEffect(Effect.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
+            EffectiveLevel++;
             foreach (CharacterLevel level in levels) {
                 if (level.Class.Class == characterClass.Class) {
                     foreach (Feat feat in characterClass.Feats[level.Levels]) {

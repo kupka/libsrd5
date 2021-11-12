@@ -50,11 +50,11 @@ namespace srd5 {
             "Acid Splash", SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
             SpellDuration.INSTANTANEOUS, 5, 2, delegate (Combattant caster, SpellLevel slot, Combattant[] targets) {
                 Damage damage = new Damage(DamageType.FORCE, "1d6");
-                if (caster.EffectiveLevel() > 16)
+                if (caster.EffectiveLevel > 16)
                     damage = new Damage(DamageType.FORCE, "4d6");
-                else if (caster.EffectiveLevel() > 10)
+                else if (caster.EffectiveLevel > 10)
                     damage = new Damage(DamageType.FORCE, "3d6");
-                else if (caster.EffectiveLevel() > 4)
+                else if (caster.EffectiveLevel > 4)
                     damage = new Damage(DamageType.FORCE, "2d6");
                 foreach (Combattant target in targets) {
                     target.TakeDamage(damage.Type, damage.Dices.Roll());

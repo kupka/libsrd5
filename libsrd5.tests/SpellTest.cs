@@ -28,9 +28,9 @@ namespace srd5 {
             Monster ogre5 = Monsters.Ogre;
             Spells.MagicMissile.Cast(hero, 8 + hero.Proficiency + hero.Intelligence.Modifier, SpellLevel.SECOND, ogre1, ogre2, ogre3, ogre4, ogre5);
             Assert.True(ogre1.HitPoints < ogre1.HitPointsMax);
-            Assert.True(ogre2.HitPoints < ogre1.HitPointsMax);
-            Assert.True(ogre3.HitPoints < ogre1.HitPointsMax);
-            Assert.True(ogre4.HitPoints < ogre1.HitPointsMax);
+            Assert.True(ogre2.HitPoints < ogre2.HitPointsMax);
+            Assert.True(ogre3.HitPoints < ogre3.HitPointsMax);
+            Assert.True(ogre4.HitPoints < ogre4.HitPointsMax);
             Assert.Equal(ogre5.HitPointsMax, ogre5.HitPoints);
         }
     }

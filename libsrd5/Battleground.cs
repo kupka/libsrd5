@@ -97,7 +97,7 @@ namespace srd5 {
             Utils.Push<Coord>(ref coords, new Coord(x, y));
         }
 
-        public override void SetCurrentLocation(Location location) {
+        protected override void SetCurrentLocation(Location location) {
             coords[currentCombattant] = (Coord)location;
         }
     }
@@ -142,12 +142,18 @@ namespace srd5 {
             remainingSpeed = CurrentCombattant.Speed;
         }
 
+        /// <summary>
+        /// Add a combattant to the battlefield and roll initiative
+        /// </summary>
         public void AddCombattant(Combattant combattant) {
             if (Array.IndexOf(combattants, combattant) >= 0) return;
             Utils.Push<Combattant>(ref combattants, combattant);
             Utils.Push<int>(ref initiativeRolls, Dice.D20.Value + combattant.Dexterity.Modifier);
         }
 
+        /// <summary>
+        /// Move on to the next phase (MOVE -> ACTION -> BONUS ACTION -> Next Combattant)
+        /// </summary>
         public void NextPhase() {
             switch (currentPhase) {
                 case TurnPhase.MOVE:
@@ -166,6 +172,9 @@ namespace srd5 {
             }
         }
 
+        /// <summary>
+        /// Move the current combattant to the target destination if able
+        /// </summary>
         public bool MoveAction(Location destination) {
             if (destination == null) throw new ArgumentException("destination cannot be null");
             int distance = destination.Distance(LocateCombattant(CurrentCombattant));
@@ -175,6 +184,9 @@ namespace srd5 {
             return true;
         }
 
+        /// <summary>
+        /// Current combattant melee attacks a target if able
+        /// </summary>
         public bool MeleeAttackAction(Combattant target) {
             if (currentPhase == TurnPhase.MOVE) return false;
             if (target == null) throw new ArgumentException("target cannot be null");
@@ -186,6 +198,13 @@ namespace srd5 {
                 success = doBonusMeleeAttack(target);
             if (success) NextPhase();
             return success;
+        }
+
+        /// <summary>
+        /// Current combattant casts a spell if able
+        /// <summary>
+        public bool SpellCastAction() {
+            throw new NotImplementedException();
         }
 
         private bool doBonusMeleeAttack(Combattant target) {
@@ -221,7 +240,14 @@ namespace srd5 {
                 target.TakeDamage(attack.AdditionalDamage, criticalHit);
         }
 
+        /// <summary>
+        /// Returns the Location of the given combattant
+        /// </summary>
         public abstract Location LocateCombattant(Combattant combattant);
-        public abstract void SetCurrentLocation(Location location);
+
+        /// <summary>
+        /// Set the location of the current active combattant
+        /// </summary>
+        protected abstract void SetCurrentLocation(Location location);
     }
 }

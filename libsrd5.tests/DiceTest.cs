@@ -95,7 +95,7 @@ namespace srd5 {
             Assert.Equal(diceString, parsed.ToString());
             Assert.Equal(min, parsed.Min);
             Assert.Equal(max, parsed.Max);
-            long result = Dice.Roll(diceString);
+            int result = Dice.Roll(diceString);
             Assert.InRange<long>(result, min, max);
         }
 

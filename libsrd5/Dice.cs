@@ -153,13 +153,13 @@ namespace srd5 {
             set;
         }
 
-        public long Min {
+        public int Min {
             get {
                 return Math.Max(0, Amount + Modifier);
             }
         }
 
-        public long Max {
+        public int Max {
             get {
                 return Math.Max(0, Amount * Dice + Modifier);
             }

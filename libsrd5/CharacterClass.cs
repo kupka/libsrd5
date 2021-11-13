@@ -8,6 +8,8 @@ namespace srd5 {
 
         public Proficiency[] Proficiencies { get; internal set; }
 
-        public Feat[][] Feats;
+        public Feat[][] Feats { get; internal set; }
+
+        public int[][] SpellSlots { get; internal set; }
     }
 }

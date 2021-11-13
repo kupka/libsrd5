@@ -25,6 +25,13 @@ namespace srd5 {
         }
     }
 
+    public abstract class AvailableSpells {
+        public CharacterClass CharacterClass { get; private set; }
+        public Spell[][] Spells { get; internal set; }
+        public int[] SlotsMax { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        public int[] SlotsCurrent { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    }
+
     public abstract class Combattant {
         public int Speed { get; internal set; } = 30;
         public string Name { get; internal set; }
@@ -45,6 +52,7 @@ namespace srd5 {
         public Effect[] Effects { get { return effects; } }
         private Effect[] effects = new Effect[0];
         public int EffectiveLevel { get; protected set; }
+        public AvailableSpells[] AvailableSpells { get; protected set; }
         public void AddEffect(Effect effect) {
             bool pushed = Utils.PushUnique<Effect>(ref effects, effect);
             if (pushed)

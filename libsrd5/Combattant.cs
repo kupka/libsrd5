@@ -61,6 +61,7 @@ namespace srd5 {
         public bool HasEffect(Effect type) {
             return Array.IndexOf(effects, type) >= 0;
         }
+
         public bool IsImmune(DamageType type) {
             return HasEffect(srd5.Effects.Immunity(type));
         }
@@ -73,6 +74,9 @@ namespace srd5 {
             return HasEffect(srd5.Effects.Vulnerability(type));
         }
 
+        /// <summary>
+        /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
+        /// </summary>
         public void TakeDamage(DamageType type, int amount) {
             if (IsImmune(type)) return;
             if (IsResistant(type)) amount /= 2;

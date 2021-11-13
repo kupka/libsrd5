@@ -12,8 +12,8 @@ namespace srd5 {
                 hero.AddLevel(CharacterClasses.Druid);
                 if (i == 1 || i == 4 || i == 10 || i == 16) {
                     hpBefore = ogre.HitPoints;
-                    Spells.AcidSplash.Cast(hero, SpellLevel.CANTRIP, ogre);
-                    Assert.True(ogre.HitPoints < hpBefore);
+                    Spells.AcidSplash.Cast(hero, 8 + hero.Proficiency + hero.Intelligence.Modifier, SpellLevel.CANTRIP, ogre);
+                    Assert.True(ogre.HitPoints <= hpBefore);
                 }
             }
         }

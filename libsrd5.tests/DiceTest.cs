@@ -120,5 +120,20 @@ namespace srd5 {
             value += Dice.D20.Value;
             Assert.Equal(value, receivedValue);
         }
+
+        [Fact]
+        public void CriticalDCTest() {
+            bool criticalSuccess = false;
+            bool criticalFail = false;
+            for (int i = 0; i < 1000; i++) {
+                if (Dices.DC(35, new Ability(AbilityType.STRENGTH, 15)))
+                    criticalSuccess = true;
+            }
+            for (int i = 0; i < 1000; i++) {
+                if (!Dices.DC(0, new Ability(AbilityType.STRENGTH, 15)))
+                    criticalFail = true;
+            }
+            Assert.True(criticalFail && criticalSuccess);
+        }
     }
 }

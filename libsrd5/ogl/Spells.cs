@@ -1,3 +1,5 @@
+using System;
+
 namespace srd5 {
     public enum SpellSchool {
         ABJURATION,
@@ -43,12 +45,17 @@ namespace srd5 {
         CONCENTRATION_ONE_DAY
     }
 
-    public delegate void SpellCastEffect(Combattant caster, SpellLevel slot, params Combattant[] targets);
+    public delegate void SpellCastEffect(Combattant caster, int dc, SpellLevel slot, params Combattant[] targets);
 
     public struct Spells {
+        public enum ID {
+            DEFAULT,
+            ACID_SPLASH
+        }
+
         public static readonly Spell AcidSplash = new Spell(
-            "Acid Splash", SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
-            SpellDuration.INSTANTANEOUS, 5, 2, delegate (Combattant caster, SpellLevel slot, Combattant[] targets) {
+            ID.ACID_SPLASH, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
+            SpellDuration.INSTANTANEOUS, 5, 2, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
                 Damage damage = new Damage(DamageType.FORCE, "1d6");
                 if (caster.EffectiveLevel > 16)
                     damage = new Damage(DamageType.FORCE, "4d6");
@@ -57,7 +64,8 @@ namespace srd5 {
                 else if (caster.EffectiveLevel > 4)
                     damage = new Damage(DamageType.FORCE, "2d6");
                 foreach (Combattant target in targets) {
-                    target.TakeDamage(damage.Type, damage.Dices.Roll());
+                    if (!Dices.DC(dc, target.Dexterity))
+                        target.TakeDamage(damage.Type, damage.Dices.Roll());
                 }
             });
     };

@@ -266,6 +266,17 @@ namespace srd5 {
             return value;
         }
 
+        /// <summary>
+        /// Roll a D20 dice to check against a DC (difficulty check) with the given Ability as its modifier
+        /// </summary>
+        public static bool DC(int dc, Ability ability) {
+            Dice d20 = srd5.Dice.D20;
+            onDiceRolled(d20);
+            if (d20.Value == 20) return true;
+            if (d20.Value == 1) return false;
+            return d20.Value + ability.Modifier >= dc;
+        }
+
         // Event Handling
         public static event EventHandler<DiceRolledEvent> DiceRolled;
 

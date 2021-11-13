@@ -1,6 +1,6 @@
 namespace srd5 {
     public class Spell {
-        public string Name { get; private set; }
+        public Spells.ID ID { get; private set; }
         public SpellSchool School { get; private set; }
         public SpellLevel Level { get; private set; }
         public CastingTime CastingTime { get; private set; }
@@ -11,10 +11,10 @@ namespace srd5 {
         public int MaximumTargets { get; private set; }
         private SpellCastEffect cast;
 
-        public Spell(string name, SpellSchool school, SpellLevel level, CastingTime castingTime,
+        public Spell(Spells.ID id, SpellSchool school, SpellLevel level, CastingTime castingTime,
                      int range, SpellComponent[] components, SpellDuration duration,
                      int areaOfEffect, int maximumTargets, SpellCastEffect effect) {
-            Name = name;
+            ID = id;
             School = school;
             Level = level;
             CastingTime = castingTime;
@@ -26,8 +26,8 @@ namespace srd5 {
             cast = effect;
         }
 
-        public void Cast(Combattant caster, SpellLevel slot, params Combattant[] targets) {
-            cast(caster, slot, targets);
+        public void Cast(Combattant caster, int dc, SpellLevel slot, params Combattant[] targets) {
+            cast(caster, dc, slot, targets);
         }
     }
 }

@@ -39,5 +39,13 @@ namespace srd5 {
             Assert.NotNull(SkillTextResource.Description((Skill)(-1)));
             Assert.NotNull(SkillTextResource.Name((Skill)(-1)));
         }
+
+        [Fact]
+        public void SpellTextTest() {
+            foreach (Spells.ID id in Enum.GetValues(typeof(Spells.ID))) {
+                Assert.NotNull(id.Name());
+                Assert.NotNull(id.Description());
+            }
+        }
     }
 }

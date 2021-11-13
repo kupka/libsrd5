@@ -77,7 +77,9 @@ namespace srd5 {
         /// <summary>
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
-        public void TakeDamage(DamageType type, int amount) {
+        public void TakeDamage(Damage damage, bool critical = false) {
+            int amount = critical ? damage.Dices.RollCritical() : damage.Dices.Roll();
+            DamageType type = damage.Type;
             if (IsImmune(type)) return;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;

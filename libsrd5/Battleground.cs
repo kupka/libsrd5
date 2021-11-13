@@ -216,17 +216,9 @@ namespace srd5 {
             if (criticalMiss) return;
             int modifiedAttack = attackRoll + attack.AttackBonus;
             if (!criticalHit && modifiedAttack < target.ArmorClass) return;
-            int damage = 0;
-            if (criticalHit) {
-                damage = attack.Damage.Dices.RollCritical();
-                if (attack.AdditionalDamage != null)
-                    damage += attack.AdditionalDamage.Dices.RollCritical();
-            } else {
-                damage = attack.Damage.Dices.Roll();
-                if (attack.AdditionalDamage != null)
-                    damage += attack.AdditionalDamage.Dices.Roll();
-            }
-            target.TakeDamage(attack.Damage.Type, damage);
+            target.TakeDamage(attack.Damage, criticalHit);
+            if (attack.AdditionalDamage != null)
+                target.TakeDamage(attack.AdditionalDamage, criticalHit);
         }
 
         public abstract Location LocateCombattant(Combattant combattant);

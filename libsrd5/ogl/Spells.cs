@@ -56,16 +56,28 @@ namespace srd5 {
         public static readonly Spell AcidSplash = new Spell(
             ID.ACID_SPLASH, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
             SpellDuration.INSTANTANEOUS, 5, 2, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
-                Damage damage = new Damage(DamageType.FORCE, "1d6");
+                Damage damage;
                 if (caster.EffectiveLevel > 16)
-                    damage = new Damage(DamageType.FORCE, "4d6");
+                    damage = new Damage(DamageType.ACID, "4d6");
                 else if (caster.EffectiveLevel > 10)
-                    damage = new Damage(DamageType.FORCE, "3d6");
+                    damage = new Damage(DamageType.ACID, "3d6");
                 else if (caster.EffectiveLevel > 4)
-                    damage = new Damage(DamageType.FORCE, "2d6");
+                    damage = new Damage(DamageType.ACID, "2d6");
+                else
+                    damage = new Damage(DamageType.ACID, "1d6");
                 foreach (Combattant target in targets) {
                     if (!Dices.DC(dc, target.Dexterity))
-                        target.TakeDamage(damage.Type, damage.Dices.Roll());
+                        target.TakeDamage(damage);
+                }
+            });
+        public static readonly Spell MagicMissile = new Spell(
+            ID.ACID_SPLASH, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
+            SpellDuration.INSTANTANEOUS, 0, 20, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
+                Damage damage = new Damage(DamageType.FORCE, "1d4+1");
+                int missiles = (int)slot + 2;
+                for (int i = 0; i < missiles; i++) {
+                    Combattant target = targets[i % targets.Length];
+                    target.TakeDamage(damage);
                 }
             });
     };

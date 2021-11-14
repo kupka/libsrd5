@@ -395,14 +395,21 @@ namespace srd5 {
 
         private void updateAvailableSpells(CharacterLevel level) {
             if (level.Class.SpellCastingAbility == AbilityType.NONE) return;
-            AvailableSpells spells = new AvailableSpells();
+            AvailableSpells spells = null;
             foreach (AvailableSpells available in AvailableSpells) {
                 if (available.CharacterClass.Equals(level.Class)) {
                     spells = available;
                 }
             }
-            spells.CharacterClass = level.Class;
+            if (spells == null) {
+                spells = new AvailableSpells();
+                spells.CharacterClass = level.Class;
+                AvailableSpells[] existing = AvailableSpells;
+                Utils.Push<AvailableSpells>(ref existing, spells);
+                AvailableSpells = existing;
+            }
             spells.SlotsMax = level.Class.SpellSlots[level.Levels];
+
         }
 
         public void AddProficiency(Proficiency proficiency) {

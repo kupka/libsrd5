@@ -54,7 +54,7 @@ namespace srd5 {
             }
         }
 
-        public new int HitPointsMax {
+        public override int HitPointsMax {
             get {
                 int hp = 0;
                 int additionalHp = HasEffect(Effect.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
@@ -369,6 +369,7 @@ namespace srd5 {
                     level.Levels++;
                     Utils.Push<Dice>(ref hitDice, dice);
                     HitPoints += dice.Value + additionalHp + Constitution.Modifier;
+                    updateAvailableSpells(level);
                     return;
                 }
             }
@@ -381,7 +382,7 @@ namespace srd5 {
             if (levels.Length == 0) { // maximum hitpoints when this is the first level
                 dice.Value = dice.MaxValue;
             }
-            Utils.Push(ref levels, newLevel);
+            Utils.Push<CharacterLevel>(ref levels, newLevel);
             Utils.Push<Dice>(ref hitDice, dice);
             HitPoints += dice.Value + additionalHp + Constitution.Modifier;
             foreach (Proficiency proficiency in characterClass.Proficiencies) {
@@ -389,6 +390,19 @@ namespace srd5 {
                     Utils.Push<Proficiency>(ref proficiencies, proficiency);
                 }
             }
+            updateAvailableSpells(newLevel);
+        }
+
+        private void updateAvailableSpells(CharacterLevel level) {
+            if (level.Class.SpellCastingAbility == AbilityType.NONE) return;
+            AvailableSpells spells = new AvailableSpells();
+            foreach (AvailableSpells available in AvailableSpells) {
+                if (available.CharacterClass.Equals(level.Class)) {
+                    spells = available;
+                }
+            }
+            spells.CharacterClass = level.Class;
+            spells.SlotsMax = level.Class.SpellSlots[level.Levels];
         }
 
         public void AddProficiency(Proficiency proficiency) {

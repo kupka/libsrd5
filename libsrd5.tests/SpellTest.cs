@@ -33,5 +33,14 @@ namespace srd5 {
             Assert.True(ogre4.HitPoints < ogre4.HitPointsMax);
             Assert.Equal(ogre5.HitPointsMax, ogre5.HitPoints);
         }
+
+        [Fact]
+        public void CureWoundsTest() {
+            CharacterSheet hero = new CharacterSheet(Race.GNOME);
+            hero.AddLevel(CharacterClasses.Druid);
+            hero.HitPoints = 1;
+            Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero);
+            Assert.Equal(hero.HitPointsMax, hero.HitPoints);
+        }
     }
 }

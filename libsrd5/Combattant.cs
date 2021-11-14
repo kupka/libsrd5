@@ -25,9 +25,10 @@ namespace srd5 {
         }
     }
 
-    public abstract class AvailableSpells {
-        public CharacterClass CharacterClass { get; private set; }
-        public Spell[][] Spells { get; internal set; }
+    public class AvailableSpells {
+        public CharacterClass CharacterClass { get; internal set; }
+        public Spell[] KnownSpells { get; internal set; }
+        public Spell[] PreparedSpells { get; internal set; }
         public int[] SlotsMax { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public int[] SlotsCurrent { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     }
@@ -44,7 +45,7 @@ namespace srd5 {
         public int ArmorClass { get; internal set; }
         public int ArmorClassModifier { get; internal set; }
         public int HitPoints { get; set; }
-        public int HitPointsMax { get; internal set; }
+        public virtual int HitPointsMax { get; internal set; }
         public Attack[] MeleeAttacks { get; internal set; } = new Attack[0];
         public Attack[] RangedAttacks { get; internal set; } = new Attack[0];
         public Attack BonusAttack { get; internal set; }
@@ -52,7 +53,7 @@ namespace srd5 {
         public Effect[] Effects { get { return effects; } }
         private Effect[] effects = new Effect[0];
         public int EffectiveLevel { get; protected set; }
-        public AvailableSpells[] AvailableSpells { get; protected set; }
+        public AvailableSpells[] AvailableSpells { get; protected set; } = new AvailableSpells[0];
         public void AddEffect(Effect effect) {
             bool pushed = Utils.PushUnique<Effect>(ref effects, effect);
             if (pushed)
@@ -92,6 +93,13 @@ namespace srd5 {
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;
             HitPoints -= amount;
+        }
+
+        /// <summary>
+        /// Heals the specified amount of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combattant.
+        /// </summary>
+        public void HealDamage(int amount) {
+            HitPoints = Math.Min(HitPoints + amount, HitPointsMax);
         }
     }
 }

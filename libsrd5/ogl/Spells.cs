@@ -50,7 +50,9 @@ namespace srd5 {
     public struct Spells {
         public enum ID {
             DEFAULT,
-            ACID_SPLASH
+            ACID_SPLASH,
+            CURE_WOUNDS,
+            MAGIC_MISSILE,
         }
 
         public static readonly Spell AcidSplash = new Spell(
@@ -69,7 +71,9 @@ namespace srd5 {
                     if (!Dices.DC(dc, target.Dexterity))
                         target.TakeDamage(damage);
                 }
-            });
+            }
+        );
+
         public static readonly Spell MagicMissile = new Spell(
             ID.ACID_SPLASH, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
             SpellDuration.INSTANTANEOUS, 0, 20, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
@@ -79,6 +83,16 @@ namespace srd5 {
                     Combattant target = targets[i % targets.Length];
                     target.TakeDamage(damage);
                 }
-            });
+            }
+        );
+
+        public static readonly Spell CureWounds = new Spell(
+            ID.CURE_WOUNDS, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 5, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
+            SpellDuration.INSTANTANEOUS, 0, 1, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
+                int dices = (int)slot;
+                Dices healed = new Dices(dices + "d8");
+                targets[0].HealDamage(healed.Roll());
+            }
+        );
     };
 }

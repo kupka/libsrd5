@@ -22,7 +22,8 @@ namespace srd5 {
             double dX = this.X - anotherCoord.X;
             double dY = this.Y - anotherCoord.Y;
             double distance = Math.Sqrt(dX * dX + dY * dY);
-            return (int)Math.Round(distance * 5); // one tile is 5ft x 5ft
+            // one tile is 5ft x 5ft - round before multiply to have distance % 5 == 0
+            return (int)Math.Round(distance) * 5;
         }
     }
 
@@ -120,6 +121,11 @@ namespace srd5 {
             }
         }
         protected int currentCombattant = 0;
+        public int RemainingSpeed {
+            get {
+                return remainingSpeed;
+            }
+        }
         protected int remainingSpeed = 0;
         protected TurnPhase currentPhase = TurnPhase.MOVE;
 
@@ -201,10 +207,36 @@ namespace srd5 {
         }
 
         /// <summary>
-        /// Current combattant casts a spell if able
+        /// Current combattant casts a spell if able. Checks all relevant constraints, such as range and if the spell is prepared
         /// <summary>
-        public bool SpellCastAction() {
-            throw new NotImplementedException();
+        public bool SpellCastAction(Spell spell, SpellLevel slot, AvailableSpells availableSpells, params Combattant[] targets) {
+            if (currentPhase != TurnPhase.ACTION) return false;
+            // check if spell is prepared
+            if (availableSpells.CharacterClass.MustPrepareSpells == true
+                    && Array.IndexOf(availableSpells.PreparedSpells, spell) == -1
+                    && Array.IndexOf(availableSpells.BonusPreparedSpells, spell) == -1)
+                return false;
+            // check if spell allows amount of targets
+            if (spell.MaximumTargets < targets.Length) return false;
+            // check if targets are in range
+            foreach (Combattant target in targets) {
+                int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
+                if (distance > spell.Range) return false;
+            }
+            // if the spell has an area of effect, check that all targets are within this area of the first target
+            if (spell.AreaOfEffect > 0) {
+                for (int i = 1; i < targets.Length; i++) {
+                    int distance = LocateCombattant(targets[0]).Distance(LocateCombattant(targets[i]));
+                    if (distance > spell.AreaOfEffect) return false;
+                }
+            }
+            // Check if slot is available
+            if (availableSpells.SlotsCurrent[(int)slot] == 0) return false;
+            // Expend slot
+            availableSpells.SlotsCurrent[(int)slot]--;
+            // Cast Spell
+            spell.Cast(CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, targets);
+            return true;
         }
 
         private bool doBonusMeleeAttack(Combattant target) {
@@ -236,8 +268,7 @@ namespace srd5 {
             int modifiedAttack = attackRoll + attack.AttackBonus;
             if (!criticalHit && modifiedAttack < target.ArmorClass) return;
             target.TakeDamage(attack.Damage, criticalHit);
-            if (attack.AdditionalDamage != null)
-                target.TakeDamage(attack.AdditionalDamage, criticalHit);
+            if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage, criticalHit);
         }
 
         /// <summary>

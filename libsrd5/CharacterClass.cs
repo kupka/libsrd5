@@ -12,7 +12,7 @@ namespace srd5 {
 
         public AbilityType SpellCastingAbility { get; internal set; }
 
-        public int[] KnownSpells { get; internal set; }
+        public int[] KnownSpellsLimit { get; internal set; }
 
         public int[][] SpellSlots { get; internal set; }
 

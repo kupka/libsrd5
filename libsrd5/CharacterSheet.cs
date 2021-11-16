@@ -396,20 +396,31 @@ namespace srd5 {
         private void updateAvailableSpells(CharacterLevel level) {
             if (level.Class.SpellCastingAbility == AbilityType.NONE) return;
             AvailableSpells spells = null;
+            // find the applicable entry for this class
             foreach (AvailableSpells available in AvailableSpells) {
                 if (available.CharacterClass.Equals(level.Class)) {
                     spells = available;
                 }
             }
+            // If no such entry is available yet, add one
             if (spells == null) {
                 spells = new AvailableSpells();
                 spells.CharacterClass = level.Class;
-                AvailableSpells[] existing = AvailableSpells;
-                Utils.Push<AvailableSpells>(ref existing, spells);
-                AvailableSpells = existing;
+                AddAvailableSpells(spells);
             }
+            // Set the slots according to the new level
             spells.SlotsMax = level.Class.SpellSlots[level.Levels];
+            // update cantrip count
+            spells.SlotsCurrent[0] = spells.SlotsMax[0];
+        }
 
+        public void LongRest() {
+            // replenish spell slots
+            foreach (AvailableSpells availableSpells in AvailableSpells) {
+                for (int i = 0; i < 10; i++) {
+                    availableSpells.SlotsCurrent[i] = availableSpells.SlotsMax[i];
+                }
+            }
         }
 
         public void AddProficiency(Proficiency proficiency) {

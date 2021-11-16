@@ -27,10 +27,49 @@ namespace srd5 {
 
     public class AvailableSpells {
         public CharacterClass CharacterClass { get; internal set; }
-        public Spell[] KnownSpells { get; internal set; }
-        public Spell[] PreparedSpells { get; internal set; }
+        public Spell[] KnownSpells {
+            get {
+                return knownSpells;
+            }
+        }
+        private Spell[] knownSpells = new Spell[0];
+        public Spell[] PreparedSpells {
+            get {
+                return preparedSpells;
+            }
+        }
+        private Spell[] preparedSpells = new Spell[0];
+        public Spell[] BonusPreparedSpells { get; internal set; } = new Spell[0];
         public int[] SlotsMax { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public int[] SlotsCurrent { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        public void AddKnownSpell(Spell spell) {
+            Utils.Push<Spell>(ref knownSpells, spell);
+        }
+
+        public void AddPreparedSpell(Spell spell) {
+            if (Array.IndexOf(knownSpells, spell) == -1) return;
+            Utils.Push<Spell>(ref preparedSpells, spell);
+        }
+
+        /// <summary>
+        /// Calculates the spell cast DC for the sheet. Assumes that this object belongs to this sheet.
+        /// </summary>
+        public int GetSpellCastDC(CharacterSheet sheet) {
+            int dc = 8;
+            dc += sheet.GetAbility(CharacterClass.SpellCastingAbility).Modifier;
+            dc += sheet.Proficiency;
+            return dc;
+        }
+
+        /// <summary>
+        /// Calculates the spell cast DC for the Monster. Assumes that this object belongs to this Monster.
+        /// </summary>
+        public int GetSpellCastDC(Combattant combattant) {
+            if (combattant is CharacterSheet) return GetSpellCastDC((CharacterSheet)combattant);
+            Monster monster = (Monster)combattant;
+            return monster.SpellCastDC;
+        }
+
     }
 
     public abstract class Combattant {
@@ -53,7 +92,13 @@ namespace srd5 {
         public Effect[] Effects { get { return effects; } }
         private Effect[] effects = new Effect[0];
         public int EffectiveLevel { get; protected set; }
-        public AvailableSpells[] AvailableSpells { get; protected set; } = new AvailableSpells[0];
+        public AvailableSpells[] AvailableSpells {
+            get {
+                return availableSpells;
+            }
+        }
+        private AvailableSpells[] availableSpells = new AvailableSpells[0];
+
         public void AddEffect(Effect effect) {
             bool pushed = Utils.PushUnique<Effect>(ref effects, effect);
             if (pushed)
@@ -65,6 +110,10 @@ namespace srd5 {
             if (result == RemoveResult.NOT_FOUND) return;
             if (result == RemoveResult.REMOVED_AND_GONE)
                 effect.Unapply(this);
+        }
+
+        internal void AddAvailableSpells(AvailableSpells spells) {
+            Utils.Push<AvailableSpells>(ref availableSpells, spells);
         }
 
         public bool HasEffect(Effect type) {
@@ -100,6 +149,28 @@ namespace srd5 {
         /// </summary>
         public void HealDamage(int amount) {
             HitPoints = Math.Min(HitPoints + amount, HitPointsMax);
+        }
+
+        /// <summary>
+        /// Retrieves the Ability value by AbilityType.
+        /// </summary>
+        public Ability GetAbility(AbilityType type) {
+            switch (type) {
+                case AbilityType.STRENGTH:
+                    return Strength;
+                case AbilityType.CONSTITUTION:
+                    return Constitution;
+                case AbilityType.DEXTERITY:
+                    return Dexterity;
+                case AbilityType.INTELLIGENCE:
+                    return Intelligence;
+                case AbilityType.WISDOM:
+                    return Wisdom;
+                case AbilityType.CHARISMA:
+                    return Charisma;
+                default:
+                    throw new ArgumentException("No value for this AbilityType");
+            }
         }
     }
 }

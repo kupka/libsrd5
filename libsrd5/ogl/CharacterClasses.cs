@@ -98,7 +98,7 @@ namespace srd5 {
                     new Feat[] { },
                 };
                 druid.SpellCastingAbility = AbilityType.WISDOM;
-                druid.KnownSpells = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+                druid.KnownSpellsLimit = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
                 druid.SpellSlots = new int[][] {
                     new int[]{ 2, 2, 0, 0, 0, 0, 0, 0, 0, 0},
                     new int[]{ 2, 3, 0, 0, 0, 0, 0, 0, 0, 0},

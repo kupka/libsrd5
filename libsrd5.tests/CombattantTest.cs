@@ -21,7 +21,20 @@ namespace srd5 {
             Damage lightning = new Damage(DamageType.LIGHTNING, "1d12");
             ogre.TakeDamage(lightning, true);
             Assert.InRange<int>(ogre.HitPoints, hp - 12, hp - 1);
+        }
 
+        [Fact]
+        public void GetAbilityTest() {
+            Combattant ogre = Monsters.Ogre;
+            Assert.Equal(ogre.Strength.Value, ogre.GetAbility(AbilityType.STRENGTH).Value);
+            Assert.Equal(ogre.Constitution.Value, ogre.GetAbility(AbilityType.CONSTITUTION).Value);
+            Assert.Equal(ogre.Dexterity.Value, ogre.GetAbility(AbilityType.DEXTERITY).Value);
+            Assert.Equal(ogre.Intelligence.Value, ogre.GetAbility(AbilityType.INTELLIGENCE).Value);
+            Assert.Equal(ogre.Wisdom.Value, ogre.GetAbility(AbilityType.WISDOM).Value);
+            Assert.Equal(ogre.Charisma.Value, ogre.GetAbility(AbilityType.CHARISMA).Value);
+            Assert.Throws<ArgumentException>(delegate {
+                ogre.GetAbility(AbilityType.NONE);
+            });
         }
     }
 }

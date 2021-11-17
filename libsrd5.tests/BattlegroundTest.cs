@@ -157,6 +157,8 @@ namespace srd5 {
             while (ground.CurrentCombattant != hero) {
                 ground.NextPhase();
             }
+            // wrong phase
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
             ground.NextPhase();
             // not known
             Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
@@ -201,15 +203,19 @@ namespace srd5 {
             Monster ogre = Monsters.Ogre;
             Monster ogre2 = Monsters.Ogre;
             Monster ogre3 = Monsters.Ogre;
+            Monster ogre4 = Monsters.Ogre;
             ground.AddCombattant(ogre, 6, 6);
             ground.AddCombattant(ogre2, 6, 7);
             ground.AddCombattant(ogre3, 7, 6);
+            ground.AddCombattant(ogre4, 8, 8);
             while (ground.CurrentCombattant != hero) {
                 ground.NextPhase();
             }
             ground.NextPhase();
             // Too many targets
             Assert.False(ground.SpellCastAction(Spells.AcidSplash, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre, ogre2, ogre3));
+            // Target outside area of effect
+            Assert.False(ground.SpellCastAction(Spells.AcidSplash, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre, ogre4));
             Random.State = 5; // Fix random so one ogre fails DC
             Assert.True(ground.SpellCastAction(Spells.AcidSplash, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre, ogre2));
             Assert.True(ogre.HitPointsMax > ogre.HitPoints);

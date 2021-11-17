@@ -158,9 +158,11 @@ namespace srd5 {
                 ground.NextPhase();
             }
             ground.NextPhase();
-            // not prepared
+            // not known
             Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
             hero.AvailableSpells[0].AddKnownSpell(Spells.MagicMissile);
+            // not prepared
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
             hero.AvailableSpells[0].AddPreparedSpell(Spells.MagicMissile);
             // out of range
             Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre2));
@@ -169,6 +171,21 @@ namespace srd5 {
             hero.LongRest();
             // All good
             Assert.True(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
+            Assert.True(ogre.HitPointsMax > ogre.HitPoints);
+        }
+
+        [Fact]
+        public void MonsterMagicTest() {
+            Battleground2D ground = new Battleground2D(10, 10);
+            Monster hag = Monsters.NightHag;
+            Monster ogre = Monsters.Ogre;
+            ground.AddCombattant(hag, 5, 5);
+            ground.AddCombattant(ogre, 8, 8);
+            while (ground.CurrentCombattant != hag) {
+                ground.NextPhase();
+            }
+            ground.NextPhase();
+            Assert.True(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hag.AvailableSpells[0], ogre));
             Assert.True(ogre.HitPointsMax > ogre.HitPoints);
         }
 

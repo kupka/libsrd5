@@ -42,6 +42,13 @@ namespace srd5 {
         public Spell[] BonusPreparedSpells { get; internal set; } = new Spell[0];
         public int[] SlotsMax { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public int[] SlotsCurrent { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+        public AvailableSpells() {
+            CharacterClass clazz = new CharacterClass();
+            clazz.MustPrepareSpells = false;
+            CharacterClass = clazz;
+        }
+
         public void AddKnownSpell(Spell spell) {
             Utils.Push<Spell>(ref knownSpells, spell);
         }

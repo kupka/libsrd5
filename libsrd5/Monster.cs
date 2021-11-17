@@ -10,7 +10,7 @@ namespace srd5 {
         public int SpellCastDC { get; private set; } = 0;
 
         public Monster(string name, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
-                        int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks, Size size) {
+                        int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks, Size size, int spellCastDC = 0) {
             Name = name;
             Strength.BaseValue = strength;
             Dexterity.BaseValue = dexterity;
@@ -28,6 +28,7 @@ namespace srd5 {
             MeleeAttacks = meleeAttacks;
             RangedAttacks = rangedAttacks;
             Size = size;
+            SpellCastDC = spellCastDC;
         }
     }
 }

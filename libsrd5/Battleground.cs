@@ -211,6 +211,8 @@ namespace srd5 {
         /// <summary>
         public bool SpellCastAction(Spell spell, SpellLevel slot, AvailableSpells availableSpells, params Combattant[] targets) {
             if (currentPhase != TurnPhase.ACTION) return false;
+            // check if spell is known
+            if (Array.IndexOf(availableSpells.KnownSpells, spell) == -1) return false;
             // check if spell is prepared
             if (availableSpells.CharacterClass.MustPrepareSpells == true
                     && Array.IndexOf(availableSpells.PreparedSpells, spell) == -1

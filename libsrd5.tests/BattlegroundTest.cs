@@ -17,7 +17,7 @@ namespace srd5 {
             Assert.Equal(ground.LocateCombattant(hero), ground.LocateCombattant2D(hero));
             Assert.Equal(10, ground.LocateCombattant2D(hero).X);
             Assert.Equal(30, ground.LocateCombattant2D(badguy).Y);
-            Assert.Equal(141, ground.LocateCombattant(hero).Distance(ground.LocateCombattant(badguy)));
+            Assert.Equal(140, ground.LocateCombattant(hero).Distance(ground.LocateCombattant(badguy)));
             Assert.Throws<ArgumentException>(delegate {
                 ground.LocateCombattant(hero).Distance(new ClassicLocation(ClassicLocation.Row.FRONT));
             });
@@ -49,9 +49,10 @@ namespace srd5 {
             Battleground2D ground = new Battleground2D(50, 50);
             ground.AddCombattant(sheet, 10, 10);
             ground.Initialize();
-            Assert.True(ground.MoveAction(new Coord(13, 13))); // distance 21 => remaining speed = 4
+            Assert.True(ground.MoveAction(new Coord(13, 13))); // distance 20 => remaining speed = 5
+            Assert.Equal(5, ground.RemainingSpeed);
             Assert.Equal(13, ground.LocateCombattant2D(sheet).X);
-            Assert.False(ground.MoveAction(new Coord(14, 13))); // distance 5 => can't move
+            Assert.False(ground.MoveAction(new Coord(15, 13))); // distance 5 => can't move
             Assert.Equal(13, ground.LocateCombattant2D(sheet).X);
             ground.NextPhase();
             Assert.Equal(1, ground.Turn);
@@ -141,6 +142,84 @@ namespace srd5 {
             ground.NextPhase(); // skip move  
             Assert.Equal(hero, ground.CurrentCombattant);
             Assert.False(ground.MeleeAttackAction(ogre));
+        }
+
+        [Fact]
+        public void CastMagicMissileTest() {
+            Battleground2D ground = new Battleground2D(30, 30);
+            CharacterSheet hero = new CharacterSheet(Race.TIEFLING, true);
+            ground.AddCombattant(hero, 0, 0);
+            hero.AddLevel(CharacterClasses.Druid);
+            Monster ogre = Monsters.Ogre;
+            Monster ogre2 = Monsters.Ogre;
+            ground.AddCombattant(ogre, 10, 10);
+            ground.AddCombattant(ogre2, 30, 30);
+            while (ground.CurrentCombattant != hero) {
+                ground.NextPhase();
+            }
+            // wrong phase
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
+            ground.NextPhase();
+            // not known
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
+            hero.AvailableSpells[0].AddKnownSpell(Spells.MagicMissile);
+            // not prepared
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
+            hero.AvailableSpells[0].AddPreparedSpell(Spells.MagicMissile);
+            // out of range
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre2));
+            // no slot available
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
+            hero.LongRest();
+            // All good
+            Assert.True(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
+            Assert.True(ogre.HitPointsMax > ogre.HitPoints);
+        }
+
+        [Fact]
+        public void MonsterMagicTest() {
+            Battleground2D ground = new Battleground2D(10, 10);
+            Monster hag = Monsters.NightHag;
+            Monster ogre = Monsters.Ogre;
+            ground.AddCombattant(hag, 5, 5);
+            ground.AddCombattant(ogre, 8, 8);
+            while (ground.CurrentCombattant != hag) {
+                ground.NextPhase();
+            }
+            ground.NextPhase();
+            Assert.True(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hag.AvailableSpells[0], ogre));
+            Assert.True(ogre.HitPointsMax > ogre.HitPoints);
+        }
+
+        [Fact]
+        public void CastAreaEffectTest() {
+            Battleground2D ground = new Battleground2D(20, 20);
+            CharacterSheet hero = new CharacterSheet(Race.TIEFLING, true);
+            ground.AddCombattant(hero, 0, 0);
+            hero.AddLevel(CharacterClasses.Druid);
+            hero.LongRest();
+            hero.AvailableSpells[0].AddKnownSpell(Spells.AcidSplash);
+            hero.AvailableSpells[0].AddPreparedSpell(Spells.AcidSplash);
+            Monster ogre = Monsters.Ogre;
+            Monster ogre2 = Monsters.Ogre;
+            Monster ogre3 = Monsters.Ogre;
+            Monster ogre4 = Monsters.Ogre;
+            ground.AddCombattant(ogre, 6, 6);
+            ground.AddCombattant(ogre2, 6, 7);
+            ground.AddCombattant(ogre3, 7, 6);
+            ground.AddCombattant(ogre4, 8, 8);
+            while (ground.CurrentCombattant != hero) {
+                ground.NextPhase();
+            }
+            ground.NextPhase();
+            // Too many targets
+            Assert.False(ground.SpellCastAction(Spells.AcidSplash, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre, ogre2, ogre3));
+            // Target outside area of effect
+            Assert.False(ground.SpellCastAction(Spells.AcidSplash, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre, ogre4));
+            Random.State = 5; // Fix random so one ogre fails DC
+            Assert.True(ground.SpellCastAction(Spells.AcidSplash, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre, ogre2));
+            Assert.True(ogre.HitPointsMax > ogre.HitPoints);
+            Assert.True(ogre2.HitPointsMax == ogre2.HitPoints);
         }
     }
 }

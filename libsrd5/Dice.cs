@@ -153,13 +153,13 @@ namespace srd5 {
             set;
         }
 
-        public long Min {
+        public int Min {
             get {
                 return Math.Max(0, Amount + Modifier);
             }
         }
 
-        public long Max {
+        public int Max {
             get {
                 return Math.Max(0, Amount * Dice + Modifier);
             }
@@ -264,6 +264,17 @@ namespace srd5 {
             int value = Math.Max(0, result);
             onDiceRolled(this, value);
             return value;
+        }
+
+        /// <summary>
+        /// Roll a D20 dice to check against a DC (difficulty check) with the given Ability as its modifier
+        /// </summary>
+        public static bool DC(int dc, Ability ability) {
+            Dice d20 = srd5.Dice.D20;
+            onDiceRolled(d20);
+            if (d20.Value == 20) return true;
+            if (d20.Value == 1) return false;
+            return d20.Value + ability.Modifier >= dc;
         }
 
         // Event Handling

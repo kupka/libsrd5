@@ -8,6 +8,23 @@ namespace srd5 {
 
         public Proficiency[] Proficiencies { get; internal set; }
 
-        public Feat[][] Feats;
+        public Feat[][] Feats { get; internal set; }
+
+        public AbilityType SpellCastingAbility { get; internal set; }
+
+        public int[] KnownSpellsLimit { get; internal set; }
+
+        public int[][] SpellSlots { get; internal set; }
+
+        public bool MustPrepareSpells { get; internal set; }
+
+        public override bool Equals(object obj) {
+            if (!(obj is CharacterClass)) return false;
+            return GetHashCode() == obj.GetHashCode();
+        }
+
+        public override int GetHashCode() {
+            return (int)Class;
+        }
     }
 }

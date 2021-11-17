@@ -228,7 +228,25 @@ Once you have raged the number of times available for your barbarian level, you 
                     return Enum.GetName(typeof(Skill), skill) + ": (Name missing)";
             }
         }
+    }
 
+    public static class SpellTextResource {
+        public static string Name(this Spells.ID spell) {
+            switch (spell) {
+                case Spells.ID.ACID_SPLASH:
+                    return "Acid Splash";
+                default:
+                    return Enum.GetName(typeof(Spells.ID), spell) + ": (Name missing)";
+            }
+        }
 
+        public static string Description(this Spells.ID spell) {
+            switch (spell) {
+                case Spells.ID.ACID_SPLASH:
+                    return "You hurl a bubble of acid. Choose one creature within range, or choose two creatures within range that are within 5 feet of each other. A target must succeed on a Dexterity saving throw or take 1d6 acid damage.\nThis spell’s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).";
+                default:
+                    return Enum.GetName(typeof(Spells.ID), spell) + ": (Description missing)";
+            }
+        }
     }
 }

@@ -1,3 +1,5 @@
+using System;
+
 namespace srd5 {
     public enum SpellSchool {
         ABJURATION,
@@ -43,22 +45,54 @@ namespace srd5 {
         CONCENTRATION_ONE_DAY
     }
 
-    public delegate void SpellCastEffect(Combattant caster, SpellLevel slot, params Combattant[] targets);
+    public delegate void SpellCastEffect(Combattant caster, int dc, SpellLevel slot, params Combattant[] targets);
 
     public struct Spells {
+        public enum ID {
+            DEFAULT,
+            ACID_SPLASH,
+            CURE_WOUNDS,
+            MAGIC_MISSILE,
+        }
+
         public static readonly Spell AcidSplash = new Spell(
-            "Acid Splash", SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
-            SpellDuration.INSTANTANEOUS, 5, 2, delegate (Combattant caster, SpellLevel slot, Combattant[] targets) {
-                Damage damage = new Damage(DamageType.FORCE, "1d6");
+            ID.ACID_SPLASH, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
+            SpellDuration.INSTANTANEOUS, 5, 2, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
+                Damage damage;
                 if (caster.EffectiveLevel > 16)
-                    damage = new Damage(DamageType.FORCE, "4d6");
+                    damage = new Damage(DamageType.ACID, "4d6");
                 else if (caster.EffectiveLevel > 10)
-                    damage = new Damage(DamageType.FORCE, "3d6");
+                    damage = new Damage(DamageType.ACID, "3d6");
                 else if (caster.EffectiveLevel > 4)
-                    damage = new Damage(DamageType.FORCE, "2d6");
+                    damage = new Damage(DamageType.ACID, "2d6");
+                else
+                    damage = new Damage(DamageType.ACID, "1d6");
                 foreach (Combattant target in targets) {
-                    target.TakeDamage(damage.Type, damage.Dices.Roll());
+                    if (!Dices.DC(dc, target.Dexterity))
+                        target.TakeDamage(damage);
                 }
-            });
+            }
+        );
+
+        public static readonly Spell MagicMissile = new Spell(
+            ID.ACID_SPLASH, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
+            SpellDuration.INSTANTANEOUS, 0, 20, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
+                Damage damage = new Damage(DamageType.FORCE, "1d4+1");
+                int missiles = (int)slot + 2;
+                for (int i = 0; i < missiles; i++) {
+                    Combattant target = targets[i % targets.Length];
+                    target.TakeDamage(damage);
+                }
+            }
+        );
+
+        public static readonly Spell CureWounds = new Spell(
+            ID.CURE_WOUNDS, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 5, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
+            SpellDuration.INSTANTANEOUS, 0, 1, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
+                int dices = (int)slot;
+                Dices healed = new Dices(dices + "d8");
+                targets[0].HealDamage(healed.Roll());
+            }
+        );
     };
 }

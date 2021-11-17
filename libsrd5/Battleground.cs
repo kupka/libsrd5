@@ -232,8 +232,8 @@ namespace srd5 {
             }
             // Check if slot is available
             if (availableSpells.SlotsCurrent[(int)slot] == 0) return false;
-            // Expend slot
-            availableSpells.SlotsCurrent[(int)slot]--;
+            // Expend slot if not Cantrip
+            if (slot != SpellLevel.CANTRIP) availableSpells.SlotsCurrent[(int)slot]--;
             // Cast Spell
             spell.Cast(CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, targets);
             return true;

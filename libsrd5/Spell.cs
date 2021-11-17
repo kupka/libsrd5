@@ -29,5 +29,14 @@ namespace srd5 {
         public void Cast(Combattant caster, int dc, SpellLevel slot, params Combattant[] targets) {
             cast(caster, dc, slot, targets);
         }
+
+        public override bool Equals(object obj) {
+            if (!(obj is Spell)) return false;
+            return obj.GetHashCode() == this.GetHashCode();
+        }
+
+        public override int GetHashCode() {
+            return (int)ID;
+        }
     }
 }

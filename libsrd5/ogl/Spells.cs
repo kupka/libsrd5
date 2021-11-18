@@ -39,19 +39,23 @@ namespace srd5 {
     }
 
     public enum SpellDuration {
-        INSTANTANEOUS,
-        CONCENTRATION_ONE_MINUTE,
-        CONCENTRATION_ONE_HOUR,
-        CONCENTRATION_ONE_DAY
+        INSTANTANEOUS = 0,
+        CONCENTRATION_ONE_MINUTE = 1,
+        CONCENTRATION_TEN_MINUTES = 10,
+        CONCENTRATION_ONE_HOUR = 60,
+        CONCENTRATION_ONE_DAY = 1440
     }
 
     public delegate void SpellCastEffect(Combattant caster, int dc, SpellLevel slot, params Combattant[] targets);
 
     public struct Spells {
+        private static SpellCastEffect doNothing = delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) { };
+
         public enum ID {
             DEFAULT,
             ACID_SPLASH,
             CURE_WOUNDS,
+            DETECT_MAGIC,
             MAGIC_MISSILE,
         }
 
@@ -75,7 +79,7 @@ namespace srd5 {
         );
 
         public static readonly Spell MagicMissile = new Spell(
-            ID.ACID_SPLASH, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
+            ID.MAGIC_MISSILE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
             SpellDuration.INSTANTANEOUS, 0, 20, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
                 Damage damage = new Damage(DamageType.FORCE, "1d4+1");
                 int missiles = (int)slot + 2;
@@ -93,6 +97,11 @@ namespace srd5 {
                 Dices healed = new Dices(dices + "d8");
                 targets[0].HealDamage(healed.Roll());
             }
+        );
+
+        public static readonly Spell DetectMagic = new Spell(
+            ID.DETECT_MAGIC, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, new SpellComponent[] { SpellComponent.VERBAL, SpellComponent.SOMATIC },
+            SpellDuration.CONCENTRATION_TEN_MINUTES, 30, 0, doNothing
         );
     };
 }

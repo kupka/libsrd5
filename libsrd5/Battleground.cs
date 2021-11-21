@@ -109,6 +109,13 @@ namespace srd5 {
         BONUS_ACTION
     }
 
+    public class CombattantChangedEvent : BattlegroundEvent {
+        public Combattant CurrentCombattant { get; internal set; }
+    }
+
+    public class BattlegroundEvent : EventArgs {
+    }
+
     public abstract class Battleground {
 
         protected Combattant[] combattants = new Combattant[0];
@@ -146,6 +153,7 @@ namespace srd5 {
             if (currentCombattant == 0) Turn++;
             currentPhase = TurnPhase.MOVE;
             remainingSpeed = CurrentCombattant.Speed;
+            onCurrentCombattantChanged();
         }
 
         /// <summary>
@@ -282,5 +290,16 @@ namespace srd5 {
         /// Set the location of the current active combattant
         /// </summary>
         protected abstract void SetCurrentLocation(Location location);
+
+
+
+        // Events
+        public event EventHandler<BattlegroundEvent> EventSubscription;
+        private void onCurrentCombattantChanged() {
+            if (EventSubscription == null) return;
+            CombattantChangedEvent bgEvent = new CombattantChangedEvent();
+            bgEvent.CurrentCombattant = this.CurrentCombattant;
+            EventSubscription(this, bgEvent);
+        }
     }
 }

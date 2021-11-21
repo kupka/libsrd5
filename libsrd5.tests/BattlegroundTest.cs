@@ -195,6 +195,12 @@ namespace srd5 {
         public void CastAreaEffectTest() {
             Battleground2D ground = new Battleground2D(20, 20);
             CharacterSheet hero = new CharacterSheet(Race.TIEFLING, true);
+            Combattant currentCombattant = null;
+            ground.EventSubscription += delegate (object sender, BattlegroundEvent bgEvent) {
+                if (bgEvent is CombattantChangedEvent) {
+                    currentCombattant = ((CombattantChangedEvent)bgEvent).CurrentCombattant;
+                }
+            };
             ground.AddCombattant(hero, 0, 0);
             hero.AddLevel(CharacterClasses.Druid);
             hero.LongRest();
@@ -208,7 +214,7 @@ namespace srd5 {
             ground.AddCombattant(ogre2, 6, 7);
             ground.AddCombattant(ogre3, 7, 6);
             ground.AddCombattant(ogre4, 8, 8);
-            while (ground.CurrentCombattant != hero) {
+            while (currentCombattant != hero) {
                 ground.NextPhase();
             }
             ground.NextPhase();

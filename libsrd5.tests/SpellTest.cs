@@ -45,15 +45,23 @@ namespace srd5 {
 
         [Fact]
         public void ShillelaghTest() {
+            CharacterSheet hero;
             // Execute this multiple times because of random character generation
             for (int i = 0; i < 10; i++) {
-                CharacterSheet hero = new CharacterSheet(Race.HALF_ELF, true);
+                hero = new CharacterSheet(Race.HALF_ELF, true);
                 hero.AddLevel(CharacterClasses.Druid);
                 hero.Equip(new Thing<Weapon>(Weapons.Club));
                 Assert.Equal(hero.Proficiency + hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
                 Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP);
                 Assert.Equal(hero.Proficiency + hero.Wisdom.Modifier, hero.MeleeAttacks[0].AttackBonus);
             }
+            // Also check with wrong weapon
+            hero = new CharacterSheet(Race.HALF_ELF, true);
+            hero.AddLevel(CharacterClasses.Druid);
+            hero.Equip(new Thing<Weapon>(Weapons.Greataxe));
+            Assert.Equal(hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
+            Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP);
+            Assert.Equal(hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
         }
     }
 }

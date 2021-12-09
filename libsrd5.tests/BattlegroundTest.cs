@@ -178,6 +178,12 @@ namespace srd5 {
             // All good
             Assert.True(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
             Assert.True(ogre.HitPointsMax > ogre.HitPoints);
+            // wrong phase (Bonus)
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
+            // Add Shillelagh and cast as bonus action
+            hero.AvailableSpells[0].AddKnownSpell(Spells.Shillelagh);
+            hero.AvailableSpells[0].AddPreparedSpell(Spells.Shillelagh);
+            Assert.True(ground.SpellCastAction(Spells.Shillelagh, SpellLevel.CANTRIP, hero.AvailableSpells[0]));
         }
 
         [Fact]

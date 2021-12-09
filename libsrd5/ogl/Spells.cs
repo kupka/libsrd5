@@ -125,7 +125,8 @@ namespace srd5 {
                 if (!(caster is CharacterSheet)) return;
                 CharacterSheet sheet = (CharacterSheet)caster;
                 // spell requires a quarterstaff or club
-                if (!sheet.Inventory.MainHand.Equals(Weapons.Club) && sheet.Inventory.MainHand.Equals(Weapons.Quarterstaff)) return;
+                if (sheet.Inventory.MainHand == null) return;
+                if (!sheet.Inventory.MainHand.Item.Equals(Weapons.Club) && !sheet.Inventory.MainHand.Item.Equals(Weapons.Quarterstaff)) return;
                 // assume caster is a druid, therefore spellcasting ability is wisdom
                 int bonus = sheet.Wisdom.Modifier;
                 // replace melee attacks by shillelagh attacks

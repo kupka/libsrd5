@@ -218,7 +218,7 @@ namespace srd5 {
             // check if phase is valid for spell
             if (currentPhase == TurnPhase.BONUS_ACTION && spell.CastingTime != CastingTime.BONUS_ACTION)
                 return false;
-            else if (currentPhase != TurnPhase.ACTION)
+            else if (currentPhase == TurnPhase.MOVE)
                 return false;
             // check if spell is known
             if (Array.IndexOf(availableSpells.KnownSpells, spell) == -1) return false;
@@ -247,6 +247,7 @@ namespace srd5 {
             if (slot != SpellLevel.CANTRIP) availableSpells.SlotsCurrent[(int)slot]--;
             // Cast Spell
             spell.Cast(CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, targets);
+            NextPhase();
             return true;
         }
 

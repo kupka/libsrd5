@@ -19,6 +19,13 @@ namespace srd5 {
         }
 
         [Fact]
+        public void EqualTest() {
+            Spell spell = Spells.AcidSplash;
+            Assert.True(Spells.AcidSplash.Equals(spell));
+            Assert.False(spell.Equals("foo"));
+        }
+
+        [Fact]
         public void MagicMissileTest() {
             CharacterSheet hero = new CharacterSheet(Race.HUMAN, true);
             Monster ogre1 = Monsters.Ogre;

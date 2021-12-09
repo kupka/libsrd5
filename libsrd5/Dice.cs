@@ -140,17 +140,17 @@ namespace srd5 {
     public struct Dices {
         internal int Modifier {
             get;
-            set;
+            private set;
         }
 
         internal int Amount {
             get;
-            set;
+            private set;
         }
 
         internal int Dice {
             get;
-            set;
+            private set;
         }
 
         public int Min {
@@ -168,6 +168,18 @@ namespace srd5 {
         private string diceString;
         public override string ToString() {
             return diceString;
+        }
+
+        internal Dices(int amount, int dice, int modifier) {
+            Amount = amount;
+            Dice = dice;
+            Modifier = modifier;
+            string modifierString = "";
+            if (modifier > 0)
+                modifierString = "+" + modifier;
+            else if (modifier < 0)
+                modifierString += modifier;
+            diceString = amount + "d" + dice + modifierString;
         }
 
         internal Dices(string diceString) {

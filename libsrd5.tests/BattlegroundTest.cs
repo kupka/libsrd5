@@ -57,6 +57,7 @@ namespace srd5 {
             ground.NextPhase();
             Assert.Equal(1, ground.Turn);
             ground.NextPhase();
+            ground.NextPhase();
             Assert.Equal(2, ground.Turn);
         }
 
@@ -80,6 +81,7 @@ namespace srd5 {
             ground.Initialize();
             ground.NextPhase(); // skip move
             Assert.True(ground.MeleeAttackAction(hero));
+            ground.NextPhase(); // skip bonus action
             Assert.Equal(hero, ground.CurrentCombattant);
             ground.NextPhase(); // skip move
             hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"));
@@ -110,6 +112,7 @@ namespace srd5 {
             ground.Initialize();
             ground.NextPhase(); // skip move
             Assert.True(ground.MeleeAttackAction(hero));
+            ground.NextPhase();
             Assert.Equal(hero, ground.CurrentCombattant);
             ground.NextPhase(); // skip move
             hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"), 5, 0, 0, new Damage(DamageType.COLD, "1d4+1"));
@@ -121,6 +124,7 @@ namespace srd5 {
             ground.NextPhase(); // End hero turn
             ground.NextPhase(); // Skip ogre move
             ground.NextPhase(); // Skip ogre attack
+            ground.NextPhase(); // Skip ogre bonus attack
             Assert.True(ground.MeleeAttackAction(ogre));
             Random.State = 10; // Fix deterministic random to guarantee normal hit
             Assert.True(ground.MeleeAttackAction(ogre));

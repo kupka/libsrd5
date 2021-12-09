@@ -175,10 +175,7 @@ namespace srd5 {
                     currentPhase = TurnPhase.ACTION;
                     break;
                 case TurnPhase.ACTION:
-                    if (CurrentCombattant.BonusAttack != null)
-                        currentPhase = TurnPhase.BONUS_ACTION;
-                    else
-                        NextCombattant();
+                    currentPhase = TurnPhase.BONUS_ACTION;
                     break;
                 case TurnPhase.BONUS_ACTION:
                     NextCombattant();
@@ -218,7 +215,11 @@ namespace srd5 {
         /// Current combattant casts a spell if able. Checks all relevant constraints, such as range and if the spell is prepared
         /// <summary>
         public bool SpellCastAction(Spell spell, SpellLevel slot, AvailableSpells availableSpells, params Combattant[] targets) {
-            if (currentPhase != TurnPhase.ACTION) return false;
+            // check if phase is valid for spell
+            if (currentPhase == TurnPhase.BONUS_ACTION && spell.CastingTime != CastingTime.BONUS_ACTION)
+                return false;
+            else if (currentPhase != TurnPhase.ACTION)
+                return false;
             // check if spell is known
             if (Array.IndexOf(availableSpells.KnownSpells, spell) == -1) return false;
             // check if spell is prepared

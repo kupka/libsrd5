@@ -244,6 +244,8 @@ Once you have raged the number of times available for your barbarian level, you 
             switch (spell) {
                 case Spells.ID.ACID_SPLASH:
                     return "You hurl a bubble of acid. Choose one creature within range, or choose two creatures within range that are within 5 feet of each other. A target must succeed on a Dexterity saving throw or take 1d6 acid damage.\nThis spell’s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).";
+                case Spells.ID.SHILLELAGH:
+                    return "The wood of a club or quarterstaff you are holding is imbued with nature’s power. For the duration, you can use your spellcasting ability instead of Strength for the attack and damage rolls of melee attacks using that weapon, and the weapon’s damage die becomes a d8. The weapon also becomes magical, if it isn’t already. The spell ends if you cast it again or if you let go of the weapon.";
                 default:
                     return Enum.GetName(typeof(Spells.ID), spell) + ": (Description missing)";
             }

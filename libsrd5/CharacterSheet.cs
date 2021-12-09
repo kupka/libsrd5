@@ -106,6 +106,10 @@ namespace srd5 {
             }
         }
 
+        /// <summary>
+        /// Creates a Charactersheet from the given race. If classic is true, the all abilities are rolled with advantage. 
+        /// Otherwise, abilitypoints for spending are assigned.
+        /// </summary>
         public CharacterSheet(Race race, bool classic = false) {
             SetRace(race.CharacterRace());
             if (classic) {

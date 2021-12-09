@@ -109,6 +109,13 @@ namespace srd5 {
         BONUS_ACTION
     }
 
+    public class CombattantChangedEvent : BattlegroundEvent {
+        public Combattant CurrentCombattant { get; internal set; }
+    }
+
+    public class BattlegroundEvent : EventArgs {
+    }
+
     public abstract class Battleground {
 
         protected Combattant[] combattants = new Combattant[0];
@@ -146,6 +153,7 @@ namespace srd5 {
             if (currentCombattant == 0) Turn++;
             currentPhase = TurnPhase.MOVE;
             remainingSpeed = CurrentCombattant.Speed;
+            onCurrentCombattantChanged();
         }
 
         /// <summary>
@@ -160,22 +168,20 @@ namespace srd5 {
         /// <summary>
         /// Move on to the next phase (MOVE -> ACTION -> BONUS ACTION -> Next Combattant)
         /// </summary>
-        public void NextPhase() {
+        public TurnPhase NextPhase() {
             switch (currentPhase) {
                 case TurnPhase.MOVE:
                     remainingSpeed = 0;
                     currentPhase = TurnPhase.ACTION;
                     break;
                 case TurnPhase.ACTION:
-                    if (CurrentCombattant.BonusAttack != null)
-                        currentPhase = TurnPhase.BONUS_ACTION;
-                    else
-                        NextCombattant();
+                    currentPhase = TurnPhase.BONUS_ACTION;
                     break;
                 case TurnPhase.BONUS_ACTION:
                     NextCombattant();
                     break;
             }
+            return currentPhase;
         }
 
         /// <summary>
@@ -210,7 +216,11 @@ namespace srd5 {
         /// Current combattant casts a spell if able. Checks all relevant constraints, such as range and if the spell is prepared
         /// <summary>
         public bool SpellCastAction(Spell spell, SpellLevel slot, AvailableSpells availableSpells, params Combattant[] targets) {
-            if (currentPhase != TurnPhase.ACTION) return false;
+            // check if phase is valid for spell
+            if (currentPhase == TurnPhase.BONUS_ACTION && spell.CastingTime != CastingTime.BONUS_ACTION)
+                return false;
+            else if (currentPhase == TurnPhase.MOVE)
+                return false;
             // check if spell is known
             if (Array.IndexOf(availableSpells.KnownSpells, spell) == -1) return false;
             // check if spell is prepared
@@ -238,6 +248,7 @@ namespace srd5 {
             if (slot != SpellLevel.CANTRIP) availableSpells.SlotsCurrent[(int)slot]--;
             // Cast Spell
             spell.Cast(CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, targets);
+            NextPhase();
             return true;
         }
 
@@ -282,5 +293,16 @@ namespace srd5 {
         /// Set the location of the current active combattant
         /// </summary>
         protected abstract void SetCurrentLocation(Location location);
+
+
+
+        // Events
+        public event EventHandler<BattlegroundEvent> EventSubscription;
+        private void onCurrentCombattantChanged() {
+            if (EventSubscription == null) return;
+            CombattantChangedEvent bgEvent = new CombattantChangedEvent();
+            bgEvent.CurrentCombattant = this.CurrentCombattant;
+            EventSubscription(this, bgEvent);
+        }
     }
 }

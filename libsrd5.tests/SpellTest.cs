@@ -19,6 +19,13 @@ namespace srd5 {
         }
 
         [Fact]
+        public void EqualTest() {
+            Spell spell = Spells.AcidSplash;
+            Assert.True(Spells.AcidSplash.Equals(spell));
+            Assert.False(spell.Equals("foo"));
+        }
+
+        [Fact]
         public void MagicMissileTest() {
             CharacterSheet hero = new CharacterSheet(Race.HUMAN, true);
             Monster ogre1 = Monsters.Ogre;
@@ -41,6 +48,27 @@ namespace srd5 {
             hero.HitPoints = 1;
             Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero);
             Assert.Equal(hero.HitPointsMax, hero.HitPoints);
+        }
+
+        [Fact]
+        public void ShillelaghTest() {
+            CharacterSheet hero;
+            // Execute this multiple times because of random character generation
+            for (int i = 0; i < 10; i++) {
+                hero = new CharacterSheet(Race.HALF_ELF, true);
+                hero.AddLevel(CharacterClasses.Druid);
+                hero.Equip(new Thing<Weapon>(Weapons.Club));
+                Assert.Equal(hero.Proficiency + hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
+                Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP);
+                Assert.Equal(hero.Proficiency + hero.Wisdom.Modifier, hero.MeleeAttacks[0].AttackBonus);
+            }
+            // Also check with wrong weapon
+            hero = new CharacterSheet(Race.HALF_ELF, true);
+            hero.AddLevel(CharacterClasses.Druid);
+            hero.Equip(new Thing<Weapon>(Weapons.Greataxe));
+            Assert.Equal(hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
+            Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP);
+            Assert.Equal(hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
         }
     }
 }

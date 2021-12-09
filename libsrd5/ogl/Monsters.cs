@@ -44,7 +44,7 @@ namespace srd5 {
                     new Attack[] { Attacks.NightHagClaws }, Attacks.None, Size.MEDIUM
                 );
                 AvailableSpells spells = new AvailableSpells();
-                spells.AddKnownSpell(Spells.MagicMissile);
+                spells.AddKnownSpell(Spells.MagicMissile, Spells.DetectMagic);
                 spells.SlotsCurrent[1] = 999;
                 hag.AddAvailableSpells(spells);
                 return hag;

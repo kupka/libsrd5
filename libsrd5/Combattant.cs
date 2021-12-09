@@ -49,13 +49,14 @@ namespace srd5 {
             CharacterClass = clazz;
         }
 
-        public void AddKnownSpell(Spell spell) {
-            Utils.Push<Spell>(ref knownSpells, spell);
+        public void AddKnownSpell(params Spell[] spells) {
+            Utils.Push<Spell>(ref knownSpells, spells);
         }
 
-        public void AddPreparedSpell(Spell spell) {
-            if (Array.IndexOf(knownSpells, spell) == -1) return;
-            Utils.Push<Spell>(ref preparedSpells, spell);
+        public void AddPreparedSpell(params Spell[] spells) {
+            foreach (Spell spell in spells)
+                if (Array.IndexOf(knownSpells, spell) == -1) return;
+            Utils.Push<Spell>(ref preparedSpells, spells);
         }
 
         /// <summary>

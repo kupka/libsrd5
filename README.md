@@ -7,7 +7,7 @@ with zero dependencies other than the .NET framework itself. Very few modern .NE
 
 The library contains races, classes, equipment, skills, feats, spells and game mechanics from the official SRD5. Please note, particularly for skills and spells,
 that while the library contains all entries from the SRD5, not all of them have a useful implementation. For example, it is perfectly possible to have a character
-prepare and cast a `Thaumaturgy` cantrip. The library will not, however, provide you the semantics of what happens in your game when 
+learn and cast a `Thaumaturgy` cantrip. The library will not, however, provide you the semantics of what happens in your game when 
 `"Your voice booms up to three times as loud as normal for 1 minute"`. On the other hand, when a character or monster casts a `Magic Missile` spell, the library
 will correctly determine whether the target is in range, and how much damage it takes, if any.
 

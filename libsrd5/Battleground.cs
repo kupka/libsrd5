@@ -168,7 +168,7 @@ namespace srd5 {
         /// <summary>
         /// Move on to the next phase (MOVE -> ACTION -> BONUS ACTION -> Next Combattant)
         /// </summary>
-        public void NextPhase() {
+        public TurnPhase NextPhase() {
             switch (currentPhase) {
                 case TurnPhase.MOVE:
                     remainingSpeed = 0;
@@ -181,6 +181,7 @@ namespace srd5 {
                     NextCombattant();
                     break;
             }
+            return currentPhase;
         }
 
         /// <summary>

@@ -91,11 +91,18 @@ namespace srd5 {
             Assert.True(buckler.Equals(sheet.Inventory.OffHand));
             sheet.Unequip<Shield>(buckler);
             sheet.Equip(club);
+            sheet.Equip(club);
+            sheet.Equip(club2);
             sheet.Equip(club2);
             sheet.Unequip<Weapon>(club);
             sheet.Equip(club2);
             Assert.Null(sheet.Inventory.MainHand);
             Assert.True(club2.Equals(sheet.Inventory.OffHand));
+            Assert.False(club.Equals(sheet.Inventory.OffHand));
+            sheet.Equip(club);
+            sheet.Equip(buckler);
+            Assert.True(club.Equals(sheet.Inventory.MainHand));
+            Assert.True(buckler.Equals(sheet.Inventory.OffHand));
         }
 
         [Fact]

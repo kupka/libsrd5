@@ -41,6 +41,9 @@ namespace srd5 {
             Assert.True(front.Distance(back) == back.Distance(front));
             Assert.True(back.Distance(front) > front.Distance(front));
             Assert.True(back.Distance(back) > back.Distance(front));
+            Assert.Throws<ArgumentException>(delegate {
+                front.Distance(new Coord(2, 3));
+            });
         }
 
         [Fact]
@@ -49,6 +52,9 @@ namespace srd5 {
             Battleground2D ground = new Battleground2D(50, 50);
             ground.AddCombattant(sheet, 10, 10);
             ground.Initialize();
+            Assert.Throws<ArgumentException>(delegate {
+                ground.MoveAction(null);
+            });
             Assert.True(ground.MoveAction(new Coord(13, 13))); // distance 20 => remaining speed = 5
             Assert.Equal(5, ground.RemainingSpeed);
             Assert.Equal(13, ground.LocateCombattant2D(sheet).X);
@@ -87,9 +93,37 @@ namespace srd5 {
             hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"));
             Random.State = 11; // Fix deterministic random to guarantee critical hit
             Assert.True(ground.MeleeAttackAction(badger));
-            Random.State = 10; // Fix deterministic random to guarantee normal hit            
+            Random.State = 10; // Fix deterministic random to guarantee normal hit     
+            Assert.Throws<ArgumentException>(delegate {
+                ground.MeleeAttackAction(null);
+            });
+            Assert.Throws<ArgumentException>(delegate {
+                ground.MeleeAttackAction(hero);
+            });
             Assert.True(ground.MeleeAttackAction(badger));
             Assert.False(ground.MeleeAttackAction(hero));
+        }
+
+        [Fact]
+        public void TooFarTest() {
+            Battleground2D ground = new Battleground2D(5, 5);
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
+            hero.Strength.BaseValue = 18;
+            hero.Dexterity.BaseValue = 10;
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.HitPoints = hero.HitPointsMax;
+            hero.Equip(new Thing<Weapon>(Weapons.Greataxe));
+            hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"));
+            Monster badger = Monsters.GiantBadger;
+            ground.AddCombattant(hero, 1, 1);
+            ground.AddCombattant(badger, 5, 5);
+            while (ground.CurrentCombattant != hero) {
+                ground.NextPhase();
+            }
+            Assert.Equal(TurnPhase.ACTION, ground.NextPhase()); // skip move            
+            Assert.False(ground.MeleeAttackAction(badger));
+            Assert.Equal(TurnPhase.BONUS_ACTION, ground.NextPhase()); // skip action            
+            Assert.False(ground.MeleeAttackAction(badger));
         }
 
         [Fact]

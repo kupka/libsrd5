@@ -74,6 +74,7 @@ namespace srd5 {
         public void EquipFullTest() {
             Thing<Weapon> twoHander = new Thing<Weapon>(Weapons.Greatsword);
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
+            Thing<Weapon> club2 = new Thing<Weapon>(Weapons.Club);
             Thing<Shield> buckler = new Thing<Shield>(Shields.Buckler);
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             sheet.Equip(twoHander);
@@ -85,6 +86,16 @@ namespace srd5 {
             Assert.Null(sheet.Inventory.OffHand);
             sheet.Equip(twoHander);
             Assert.Equal(twoHander, sheet.Inventory.MainHand);
+            sheet.Equip(buckler);
+            Assert.Null(sheet.Inventory.MainHand);
+            Assert.True(buckler.Equals(sheet.Inventory.OffHand));
+            sheet.Unequip<Shield>(buckler);
+            sheet.Equip(club);
+            sheet.Equip(club2);
+            sheet.Unequip<Weapon>(club);
+            sheet.Equip(club2);
+            Assert.Null(sheet.Inventory.MainHand);
+            Assert.True(club2.Equals(sheet.Inventory.OffHand));
         }
 
         [Fact]
@@ -201,6 +212,7 @@ namespace srd5 {
             sheet.AddLevel(CharacterClasses.Barbarian);
             Assert.Equal(Race.HILL_DWARF, sheet.Race.Race);
             Assert.Equal(12, sheet.Constitution.Value);
+            Assert.True(sheet.IsProficient(null));
             Assert.True(sheet.IsProficient(Proficiency.WARHAMMER));
             Assert.Equal(14, sheet.HitPoints); // 12 barbarian + 1 constituion + 1 racial feat
             Assert.Equal(14, sheet.HitPointsMax); // 12 barbarian + 1 constituion + 1 racial feat

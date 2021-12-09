@@ -99,8 +99,8 @@ namespace srd5 {
             Assert.Null(sheet.Inventory.MainHand);
             Assert.True(club2.Equals(sheet.Inventory.OffHand));
             Assert.False(club.Equals(sheet.Inventory.OffHand));
-            sheet.Equip(club);
             sheet.Equip(buckler);
+            sheet.Equip(club);
             Assert.True(club.Equals(sheet.Inventory.MainHand));
             Assert.True(buckler.Equals(sheet.Inventory.OffHand));
         }

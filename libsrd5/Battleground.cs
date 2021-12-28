@@ -276,11 +276,21 @@ namespace srd5 {
 
         private void doAttack(Attack attack, Combattant target) {
             int attackRoll = Dice.D20.Value;
+            // Determine advantage and disadvantage
+            bool hasAdvantage = CurrentCombattant.HasEffect(Effect.ADVANTAGE_ON_ATTACK) || target.HasEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            bool hasDisadvantage = CurrentCombattant.HasEffect(Effect.DISADVANTAGE_ON_ATTACK) || target.HasEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
+            if (hasAdvantage && !hasDisadvantage)
+                attackRoll = Dice.D20Advantage.Value;
+            else if (hasDisadvantage && !hasAdvantage)
+                attackRoll = Dice.D20Disadvantage.Value;
             bool criticalHit = attackRoll == 20;
             bool criticalMiss = attackRoll == 1;
             if (criticalMiss) return;
             int modifiedAttack = attackRoll + attack.AttackBonus;
             if (!criticalHit && modifiedAttack < target.ArmorClass) return;
+            // Check if auto critical hit conditions apply
+            if (CurrentCombattant.HasEffect(Effect.AUTOMATIC_CRIT_ON_HIT)) criticalHit = true;
+            if (target.HasEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT)) criticalHit = true;
             target.TakeDamage(attack.Damage, criticalHit);
             if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage, criticalHit);
         }

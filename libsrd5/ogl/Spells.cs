@@ -73,6 +73,7 @@ namespace srd5 {
         public enum ID {
             DEFAULT,
             ACID_SPLASH,
+            CHARM_PERSON,
             CURE_WOUNDS,
             DETECT_MAGIC,
             HEALING_WORD,
@@ -150,5 +151,24 @@ namespace srd5 {
                 targets[0].HealDamage(healed.Roll());
             }
         );
-    };
+
+        public static readonly Spell CharmPerson = new Spell(
+            ID.CHARM_PERSON, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VS,
+            SpellDuration.CONCENTRATION_ONE_HOUR, 0, 20, delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                // one target per slot
+                for (int i = 0; i < (int)slot; i++) {
+                    Combattant target = targets[i];
+                    // only affect humanoid monsters
+                    if (target is Monster) {
+                        Monster monster = (Monster)target;
+                        if (monster.Type != MonsterType.HUMANOID) continue;
+                    }
+                    // Wisdom save with advantage since we assume a fight
+                    if (!Dices.DC(dc, target.Wisdom, true)) {
+                        target.AddCondition(ConditionType.CHARMED);
+                    }
+                }
+            }
+        );
+    }
 }

@@ -47,5 +47,13 @@ namespace srd5 {
                 Assert.NotNull(id.Description());
             }
         }
+
+        [Fact]
+        public void MonsterTypeTest() {
+            foreach (MonsterType type in Enum.GetValues(typeof(MonsterType))) {
+                Assert.NotNull(type.Name());
+                Assert.NotNull(type.Description());
+            }
+        }
     }
 }

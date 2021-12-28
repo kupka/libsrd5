@@ -79,5 +79,22 @@ namespace srd5 {
             Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP, hero.Wisdom.Modifier);
             Assert.Equal(hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
         }
+
+        [Fact]
+        public void CharmPersonTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HIGH_ELF, true);
+            Monster badger = Monsters.GiantBadger;
+            Monster orc1 = Monsters.Orc;
+            Monster orc2 = Monsters.Orc;
+            Monster orc3 = Monsters.Orc;
+            Monster orc4 = Monsters.Orc;
+            Monster orc5 = Monsters.Orc;
+            Monster orc6 = Monsters.Orc;
+            Spells.CharmPerson.Cast(hero, 12, SpellLevel.SIXTH, 0, badger, orc1, orc2, orc3, orc4, orc5, orc6);
+            Assert.False(badger.HasCondition(ConditionType.CHARMED));
+            Assert.False(orc6.HasCondition(ConditionType.CHARMED));
+            Assert.True(orc1.HasCondition(ConditionType.CHARMED) || orc2.HasCondition(ConditionType.CHARMED)
+                || orc3.HasCondition(ConditionType.CHARMED) || orc4.HasCondition(ConditionType.CHARMED) || orc5.HasCondition(ConditionType.CHARMED));
+        }
     }
 }

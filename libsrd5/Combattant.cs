@@ -111,6 +111,8 @@ namespace srd5 {
         public Size Size { get; internal set; }
         public Effect[] Effects { get { return effects; } }
         private Effect[] effects = new Effect[0];
+        public ConditionType[] Conditions { get { return conditions; } }
+        private ConditionType[] conditions = new ConditionType[0];
         public int EffectiveLevel { get; protected set; }
         public AvailableSpells[] AvailableSpells {
             get {
@@ -130,6 +132,20 @@ namespace srd5 {
             if (result == RemoveResult.NOT_FOUND) return;
             if (result == RemoveResult.REMOVED_AND_GONE)
                 effect.Unapply(this);
+        }
+
+        public void AddCondition(ConditionType condition) {
+            if (Utils.PushUnique<ConditionType>(ref conditions, condition))
+                condition.Apply(this);
+        }
+        public void RemoveCondition(ConditionType condition) {
+            RemoveResult result = Utils.RemoveSingle<ConditionType>(ref conditions, condition);
+            if (result == RemoveResult.REMOVED_AND_GONE)
+                condition.Unapply(this);
+        }
+
+        public bool HasCondition(ConditionType condition) {
+            return Array.IndexOf(conditions, condition) >= 0;
         }
 
         internal void AddAvailableSpells(AvailableSpells spells) {

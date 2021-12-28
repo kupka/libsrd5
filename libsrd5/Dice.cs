@@ -281,8 +281,13 @@ namespace srd5 {
         /// <summary>
         /// Roll a D20 dice to check against a DC (difficulty check) with the given Ability as its modifier
         /// </summary>
-        public static bool DC(int dc, Ability ability) {
+        public static bool DC(int dc, Ability ability, bool advantage = false) {
             Dice d20 = srd5.Dice.D20;
+            if (advantage) {
+                Dice second = srd5.Dice.D20;
+                if (second.Value > d20.Value)
+                    d20 = second;
+            }
             onDiceRolled(d20);
             if (d20.Value == 20) return true;
             if (d20.Value == 1) return false;

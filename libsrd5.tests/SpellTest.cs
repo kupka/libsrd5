@@ -12,7 +12,7 @@ namespace srd5 {
                 hero.AddLevel(CharacterClasses.Druid);
                 if (i == 1 || i == 4 || i == 10 || i == 16) {
                     hpBefore = ogre.HitPoints;
-                    Spells.AcidSplash.Cast(hero, 8 + hero.Proficiency + hero.Intelligence.Modifier, SpellLevel.CANTRIP, ogre);
+                    Spells.AcidSplash.Cast(hero, 8 + hero.Proficiency + hero.Intelligence.Modifier, SpellLevel.CANTRIP, hero.Intelligence.Modifier, ogre);
                     Assert.True(ogre.HitPoints <= hpBefore);
                 }
             }
@@ -33,7 +33,7 @@ namespace srd5 {
             Monster ogre3 = Monsters.Ogre;
             Monster ogre4 = Monsters.Ogre;
             Monster ogre5 = Monsters.Ogre;
-            Spells.MagicMissile.Cast(hero, 8 + hero.Proficiency + hero.Intelligence.Modifier, SpellLevel.SECOND, ogre1, ogre2, ogre3, ogre4, ogre5);
+            Spells.MagicMissile.Cast(hero, 8 + hero.Proficiency + hero.Intelligence.Modifier, SpellLevel.SECOND, hero.Intelligence.Modifier, ogre1, ogre2, ogre3, ogre4, ogre5);
             Assert.True(ogre1.HitPoints < ogre1.HitPointsMax);
             Assert.True(ogre2.HitPoints < ogre2.HitPointsMax);
             Assert.True(ogre3.HitPoints < ogre3.HitPointsMax);
@@ -46,7 +46,16 @@ namespace srd5 {
             CharacterSheet hero = new CharacterSheet(Race.GNOME);
             hero.AddLevel(CharacterClasses.Druid);
             hero.HitPoints = 1;
-            Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero);
+            Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, hero);
+            Assert.Equal(hero.HitPointsMax, hero.HitPoints);
+        }
+
+        [Fact]
+        public void HealingWordTest() {
+            CharacterSheet hero = new CharacterSheet(Race.GNOME);
+            hero.AddLevel(CharacterClasses.Druid);
+            hero.HitPoints = 1;
+            Spells.HealingWord.Cast(hero, 0, SpellLevel.SEVENTH, hero.Wisdom.Modifier, hero);
             Assert.Equal(hero.HitPointsMax, hero.HitPoints);
         }
 
@@ -59,7 +68,7 @@ namespace srd5 {
                 hero.AddLevel(CharacterClasses.Druid);
                 hero.Equip(new Thing<Weapon>(Weapons.Club));
                 Assert.Equal(hero.Proficiency + hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
-                Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP);
+                Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP, hero.Wisdom.Modifier);
                 Assert.Equal(hero.Proficiency + hero.Wisdom.Modifier, hero.MeleeAttacks[0].AttackBonus);
             }
             // Also check with wrong weapon
@@ -67,7 +76,7 @@ namespace srd5 {
             hero.AddLevel(CharacterClasses.Druid);
             hero.Equip(new Thing<Weapon>(Weapons.Greataxe));
             Assert.Equal(hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
-            Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP);
+            Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP, hero.Wisdom.Modifier);
             Assert.Equal(hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
         }
     }

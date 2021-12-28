@@ -47,10 +47,16 @@ namespace srd5 {
         CONCENTRATION_ONE_DAY = 1440
     }
 
-    public delegate void SpellCastEffect(Combattant caster, int dc, SpellLevel slot, params Combattant[] targets);
+    public delegate void SpellCastEffect(Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);
 
     public struct Spells {
-        private static SpellCastEffect doNothing = delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) { };
+        private static SpellCastEffect doNothing = delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) { };
+
+        private static SpellComponent[] V {
+            get {
+                return new SpellComponent[] { SpellComponent.VERBAL };
+            }
+        }
 
         private static SpellComponent[] VS {
             get {
@@ -69,13 +75,14 @@ namespace srd5 {
             ACID_SPLASH,
             CURE_WOUNDS,
             DETECT_MAGIC,
+            HEALING_WORD,
             MAGIC_MISSILE,
             SHILLELAGH
         }
 
         public static readonly Spell AcidSplash = new Spell(
             ID.ACID_SPLASH, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS,
-            SpellDuration.INSTANTANEOUS, 5, 2, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
+            SpellDuration.INSTANTANEOUS, 5, 2, delegate (Combattant caster, int dc, SpellLevel slot, int modifer, Combattant[] targets) {
                 Damage damage;
                 if (caster.EffectiveLevel > 16)
                     damage = new Damage(DamageType.ACID, "4d6");
@@ -94,7 +101,7 @@ namespace srd5 {
 
         public static readonly Spell MagicMissile = new Spell(
             ID.MAGIC_MISSILE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, VS,
-            SpellDuration.INSTANTANEOUS, 0, 20, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
+            SpellDuration.INSTANTANEOUS, 0, 20, delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Damage damage = new Damage(DamageType.FORCE, "1d4+1");
                 int missiles = (int)slot + 2;
                 for (int i = 0; i < missiles; i++) {
@@ -106,9 +113,9 @@ namespace srd5 {
 
         public static readonly Spell CureWounds = new Spell(
             ID.CURE_WOUNDS, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 5, VS,
-            SpellDuration.INSTANTANEOUS, 0, 1, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
+            SpellDuration.INSTANTANEOUS, 0, 1, delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 int dices = (int)slot;
-                Dices healed = new Dices(dices + "d8");
+                Dices healed = new Dices(dices, 8, modifier);
                 targets[0].HealDamage(healed.Roll());
             }
         );
@@ -120,20 +127,27 @@ namespace srd5 {
 
         public static readonly Spell Shillelagh = new Spell(
             ID.SHILLELAGH, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.BONUS_ACTION, 0, VSM,
-            SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 0, delegate (Combattant caster, int dc, SpellLevel slot, Combattant[] targets) {
+            SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 0, delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 // can only be cast by PCs or NPCs
                 if (!(caster is CharacterSheet)) return;
                 CharacterSheet sheet = (CharacterSheet)caster;
                 // spell requires a quarterstaff or club
                 if (sheet.Inventory.MainHand == null) return;
                 if (!sheet.Inventory.MainHand.Item.Equals(Weapons.Club) && !sheet.Inventory.MainHand.Item.Equals(Weapons.Quarterstaff)) return;
-                // assume caster is a druid, therefore spellcasting ability is wisdom
-                int bonus = sheet.Wisdom.Modifier;
                 // replace melee attacks by shillelagh attacks
                 foreach (Attack attack in sheet.MeleeAttacks) {
-                    attack.Damage.Dices = new Dices(1, 8, bonus);
-                    attack.AttackBonus = bonus + sheet.Proficiency;
+                    attack.Damage.Dices = new Dices(1, 8, modifier);
+                    attack.AttackBonus = modifier + sheet.Proficiency;
                 }
+            }
+        );
+
+        public static readonly Spell HealingWord = new Spell(
+            ID.HEALING_WORD, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 60, V,
+            SpellDuration.INSTANTANEOUS, 0, 1, delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                int dices = (int)slot;
+                Dices healed = new Dices(dices, 4, modifier);
+                targets[0].HealDamage(healed.Roll());
             }
         );
     };

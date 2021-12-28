@@ -43,9 +43,13 @@ namespace srd5 {
         public int[] SlotsMax { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public int[] SlotsCurrent { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        public AvailableSpells() {
+        public AvailableSpells(AbilityType abilityType) {
             CharacterClass clazz = new CharacterClass();
+            clazz.SpellCastingAbility = abilityType;
             clazz.MustPrepareSpells = false;
+            CharacterClass = clazz;
+        }
+        public AvailableSpells(CharacterClass clazz) {
             CharacterClass = clazz;
         }
 
@@ -76,6 +80,14 @@ namespace srd5 {
             if (combattant is CharacterSheet) return GetSpellCastDC((CharacterSheet)combattant);
             Monster monster = (Monster)combattant;
             return monster.SpellCastDC;
+        }
+
+        /// <summary>
+        /// Get the spellcasting modifier for the Combattant. Assumes that this object belongs to this sheet.
+        /// <summary>
+        public int GetSpellcastingModifier(Combattant combattant) {
+            AbilityType spellAbility = CharacterClass.SpellCastingAbility;
+            return combattant.GetAbility(spellAbility).Modifier;
         }
 
     }

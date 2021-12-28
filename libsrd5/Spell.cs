@@ -26,8 +26,8 @@ namespace srd5 {
             cast = effect;
         }
 
-        public void Cast(Combattant caster, int dc, SpellLevel slot, params Combattant[] targets) {
-            cast(caster, dc, slot, targets);
+        public void Cast(Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets) {
+            cast(caster, dc, slot, modifier, targets);
         }
 
         public override bool Equals(object obj) {

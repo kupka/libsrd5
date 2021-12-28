@@ -247,7 +247,8 @@ namespace srd5 {
             // Expend slot if not Cantrip
             if (slot != SpellLevel.CANTRIP) availableSpells.SlotsCurrent[(int)slot]--;
             // Cast Spell
-            spell.Cast(CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, targets);
+            int modifier = availableSpells.GetSpellcastingModifier(CurrentCombattant);
+            spell.Cast(CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, modifier, targets);
             NextPhase();
             return true;
         }

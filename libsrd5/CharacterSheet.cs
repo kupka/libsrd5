@@ -408,7 +408,7 @@ namespace srd5 {
             }
             // If no such entry is available yet, add one
             if (spells == null) {
-                spells = new AvailableSpells();
+                spells = new AvailableSpells(level.Class);
                 spells.CharacterClass = level.Class;
                 AddAvailableSpells(spells);
             }

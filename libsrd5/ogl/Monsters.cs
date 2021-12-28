@@ -41,9 +41,9 @@ namespace srd5 {
             get {
                 Monster hag = new Monster(
                     "Night Hag", 18, 15, 16, 16, 14, 16, 17, "15d8+45", 30, 5,
-                    new Attack[] { Attacks.NightHagClaws }, Attacks.None, Size.MEDIUM
+                    new Attack[] { Attacks.NightHagClaws }, Attacks.None, Size.MEDIUM, 14
                 );
-                AvailableSpells spells = new AvailableSpells();
+                AvailableSpells spells = new AvailableSpells(AbilityType.CHARISMA);
                 spells.AddKnownSpell(Spells.MagicMissile, Spells.DetectMagic);
                 spells.SlotsCurrent[1] = 999;
                 hag.AddAvailableSpells(spells);

@@ -58,6 +58,11 @@ namespace srd5 {
             golem.HitPoints = golem.HitPointsMax - 1;
             Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, golem);
             Assert.Equal(golem.HitPointsMax - 1, golem.HitPoints);
+            // affects giants
+            Monster ogre = Monsters.Ogre;
+            ogre.HitPoints = ogre.HitPointsMax - 10;
+            Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, ogre);
+            Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
         }
 
         [Fact]
@@ -77,6 +82,11 @@ namespace srd5 {
             golem.HitPoints = golem.HitPointsMax - 1;
             Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, golem);
             Assert.Equal(golem.HitPointsMax - 1, golem.HitPoints);
+            // affects giants
+            Monster ogre = Monsters.Ogre;
+            ogre.HitPoints = ogre.HitPointsMax - 10;
+            Spells.HealingWord.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, ogre);
+            Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
         }
 
         [Fact]

@@ -77,6 +77,7 @@ namespace srd5 {
             CURE_WOUNDS,
             DETECT_MAGIC,
             HEALING_WORD,
+            HOLD_PERSON,
             MAGIC_MISSILE,
             SHILLELAGH
         }
@@ -94,7 +95,7 @@ namespace srd5 {
                 else
                     damage = new Damage(DamageType.ACID, "1d6");
                 foreach (Combattant target in targets) {
-                    if (!Dices.DC(dc, target.Dexterity))
+                    if (!target.DC(dc, AbilityType.DEXTERITY))
                         target.TakeDamage(damage);
                 }
             }
@@ -115,6 +116,10 @@ namespace srd5 {
         public static readonly Spell CureWounds = new Spell(
             ID.CURE_WOUNDS, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 5, VS,
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                if (targets[0] is Monster) {
+                    Monster monster = (Monster)targets[0];
+                    if (monster.Type == MonsterType.CONSTRUCT || monster.Type == MonsterType.UNDEAD) return;
+                }
                 int dices = (int)slot;
                 Dices healed = new Dices(dices, 8, modifier);
                 targets[0].HealDamage(healed.Roll());
@@ -146,6 +151,10 @@ namespace srd5 {
         public static readonly Spell HealingWord = new Spell(
             ID.HEALING_WORD, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 60, V,
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                if (targets[0] is Monster) {
+                    Monster monster = (Monster)targets[0];
+                    if (monster.Type == MonsterType.CONSTRUCT || monster.Type == MonsterType.UNDEAD) return;
+                }
                 int dices = (int)slot;
                 Dices healed = new Dices(dices, 4, modifier);
                 targets[0].HealDamage(healed.Roll());
@@ -164,11 +173,38 @@ namespace srd5 {
                         if (monster.Type != MonsterType.HUMANOID) continue;
                     }
                     // Wisdom save with advantage since we assume a fight
-                    if (!Dices.DC(dc, target.Wisdom, true)) {
+                    if (!target.DC(dc, AbilityType.WISDOM, true)) {
                         target.AddCondition(ConditionType.CHARMED);
                     }
                 }
             }
         );
+
+        public static readonly Spell HoldPerson = new Spell(
+            ID.HOLD_PERSON, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM,
+            SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 20, delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                // one target per slot above 2nd
+                for (int i = 0; i < (int)slot - 1; i++) {
+                    Combattant target = targets[i];
+                    // only affect humanoid monsters
+                    if (target is Monster) {
+                        Monster monster = (Monster)target;
+                        if (monster.Type != MonsterType.HUMANOID) continue;
+                    }
+                    // Wisdom save
+                    if (!target.DC(dc, AbilityType.WISDOM)) {
+                        target.AddCondition(ConditionType.PARALYZED);
+                        target.AddEndOfTurnEvent(delegate (Combattant combattant) {
+                            bool success = combattant.DC(dc, AbilityType.WISDOM);
+                            if (success) {
+                                target.RemoveCondition(ConditionType.PARALYZED);
+                            }
+                            return success;
+                        });
+                    }
+                }
+            }
+        );
+
     }
 }

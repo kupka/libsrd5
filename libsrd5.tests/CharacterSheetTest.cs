@@ -430,5 +430,24 @@ namespace srd5 {
             Assert.Equal(points - 6, sheet.AbilityPoints);
         }
 
+        [Fact]
+        public void EndOfTurnEventTest() {
+            CharacterSheet sheet = new CharacterSheet(Race.HALFLING, true);
+            int i = 0;
+            EndOfTurnEvent endOfTurnEventTrue = delegate (Combattant combattant) {
+                i++;
+                return true;
+            };
+            EndOfTurnEvent endOfTurnEventFalse = delegate (Combattant combattant) {
+                i++;
+                return false;
+            };
+            sheet.AddEndOfTurnEvent(endOfTurnEventFalse);
+            sheet.AddEndOfTurnEvent(endOfTurnEventTrue);
+            sheet.OnEndOfTurn();
+            sheet.OnEndOfTurn();
+            Assert.Equal(3, i);
+        }
+
     }
 }

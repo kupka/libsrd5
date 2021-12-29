@@ -208,5 +208,35 @@ namespace srd5 {
                     throw new ArgumentException("No value for this AbilityType");
             }
         }
+
+        /// <summary>
+        /// Roll a DC (difficulty check) against the specified Ability
+        /// </summary>
+        public bool DC(int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
+            if (type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) return false;
+            if (type == AbilityType.DEXTERITY && HasEffect(Effect.FAIL_DEXERITY_CHECK)) return false;
+            return Dices.DC(dc, GetAbility(type), advantage, disadvantage);
+        }
+
+
+        private EndOfTurnEvent[] endOfTurnEvents = new EndOfTurnEvent[0];
+
+        /// <summary>
+        /// Adds a piece of code to be evaluated at the end of this combattatant's turn
+        /// </summary>
+        public void AddEndOfTurnEvent(EndOfTurnEvent endOfTurnEvent) {
+            Utils.Push<EndOfTurnEvent>(ref endOfTurnEvents, endOfTurnEvent);
+        }
+
+        public void OnEndOfTurn() {
+            for (int i = 0; i < endOfTurnEvents.Length; i++) {
+                if (endOfTurnEvents[i] == null) continue;
+                if (endOfTurnEvents[i](this)) {
+                    endOfTurnEvents[i] = null;
+                }
+            }
+        }
+
     }
+    public delegate bool EndOfTurnEvent(Combattant combattant);
 }

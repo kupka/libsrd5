@@ -96,5 +96,31 @@ namespace srd5 {
             Assert.True(orc1.HasCondition(ConditionType.CHARMED) || orc2.HasCondition(ConditionType.CHARMED)
                 || orc3.HasCondition(ConditionType.CHARMED) || orc4.HasCondition(ConditionType.CHARMED) || orc5.HasCondition(ConditionType.CHARMED));
         }
+
+        [Fact]
+        public void HoldPersonTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HIGH_ELF, true);
+            Monster badger = Monsters.GiantBadger;
+            Monster orc1 = Monsters.Orc;
+            Monster orc2 = Monsters.Orc;
+            Monster orc3 = Monsters.Orc;
+            Monster orc4 = Monsters.Orc;
+            Monster orc5 = Monsters.Orc;
+            Monster orc6 = Monsters.Orc;
+            Spells.HoldPerson.Cast(hero, 12, SpellLevel.SEVENTH, 0, badger, orc1, orc2, orc3, orc4, orc5, orc6);
+            Assert.False(badger.HasCondition(ConditionType.PARALYZED));
+            Assert.False(orc6.HasCondition(ConditionType.PARALYZED));
+            Assert.True(orc1.HasCondition(ConditionType.PARALYZED) || orc2.HasCondition(ConditionType.PARALYZED)
+                || orc3.HasCondition(ConditionType.PARALYZED) || orc4.HasCondition(ConditionType.PARALYZED) || orc5.HasCondition(ConditionType.PARALYZED));
+            for (int i = 0; i < 100; i++) {
+                orc1.OnEndOfTurn();
+                orc2.OnEndOfTurn();
+                orc3.OnEndOfTurn();
+                orc4.OnEndOfTurn();
+                orc5.OnEndOfTurn();
+            }
+            Assert.False(orc1.HasCondition(ConditionType.PARALYZED) || orc2.HasCondition(ConditionType.PARALYZED)
+               || orc3.HasCondition(ConditionType.PARALYZED) || orc4.HasCondition(ConditionType.PARALYZED) || orc5.HasCondition(ConditionType.PARALYZED));
+        }
     }
 }

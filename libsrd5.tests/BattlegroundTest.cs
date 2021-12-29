@@ -55,6 +55,9 @@ namespace srd5 {
             Assert.Throws<ArgumentException>(delegate {
                 ground.MoveAction(null);
             });
+            sheet.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
+            Assert.False(ground.MoveAction(new Coord(13, 13))); // incapacitated
+            sheet.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
             Assert.True(ground.MoveAction(new Coord(13, 13))); // distance 20 => remaining speed = 5
             Assert.Equal(5, ground.RemainingSpeed);
             Assert.Equal(13, ground.LocateCombattant2D(sheet).X);
@@ -233,6 +236,11 @@ namespace srd5 {
             ogre.AddEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT);
             hero.AddEffect(Effect.AUTOMATIC_CRIT_ON_HIT);
             Assert.True(ground.MeleeAttackAction(ogre));
+            // Incapacitated
+            setupBattleField2D(ref ground, ref hero, ref ogre);
+            ground.NextPhase(); // skip move
+            hero.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
+            Assert.False(ground.MeleeAttackAction(ogre));
         }
 
         [Fact]
@@ -248,6 +256,10 @@ namespace srd5 {
             while (ground.CurrentCombattant != hero) {
                 ground.NextPhase();
             }
+            // incapacitated
+            hero.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
+            hero.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
             // wrong phase
             Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
             ground.NextPhase();

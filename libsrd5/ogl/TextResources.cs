@@ -235,6 +235,18 @@ Once you have raged the number of times available for your barbarian level, you 
             switch (spell) {
                 case Spells.ID.ACID_SPLASH:
                     return "Acid Splash";
+                case Spells.ID.CHARM_PERSON:
+                    return "Charm Person";
+                case Spells.ID.CURE_WOUNDS:
+                    return "Cure Wounds";
+                case Spells.ID.HEALING_WORD:
+                    return "Healing Word";
+                case Spells.ID.HOLD_PERSON:
+                    return "Hold Person";
+                case Spells.ID.MAGIC_MISSILE:
+                    return "Magic Missile";
+                case Spells.ID.SHILLELAGH:
+                    return "Shillelagh";
                 default:
                     return Enum.GetName(typeof(Spells.ID), spell) + ": (Name missing)";
             }
@@ -246,6 +258,14 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "You hurl a bubble of acid. Choose one creature within range, or choose two creatures within range that are within 5 feet of each other. A target must succeed on a Dexterity saving throw or take 1d6 acid damage.\nThis spell’s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).";
                 case Spells.ID.CHARM_PERSON:
                     return "You attempt to charm a humanoid you can see within range. It must make a Wisdom saving throw, and does so with advantage if you or your companions are fighting it. If it fails the saving throw, it is charmed by you until the spell ends or until you or your companions do anything harmful to it. The charmed creature regards you as a friendly acquaintance. When the spell ends, the creature knows it was charmed by you.\nWhen you cast this spell using a spell slot of 2nd level or higher, you can target one additional creature for each slot level above 1st. The creatures must be within 30 feet of each other when you target them.";
+                case Spells.ID.CURE_WOUNDS:
+                    return "A creature you touch regains a number of hit points equal to 1d8 + your spellcasting ability modifier.\nThis spell has no effect on undead or constructs.\nWhen you cast this spell using a spell slot of 2nd level or higher, the healing increases by 1d8 for each slot level above 1st.";
+                case Spells.ID.HEALING_WORD:
+                    return "A creature of your choice that you can see within range regains hit points equal to 1d4 + your spellcasting ability modifier.\nThis spell has no effect on undead or constructs.\nAt Higher Levels: When you cast this spell using a spell slot of 2nd level or higher, the healing increases by 1d4 for each slot level above 1st.";
+                case Spells.ID.HOLD_PERSON:
+                    return "Choose a humanoid that you can see within range. The target must succeed on a Wisdom saving throw or be paralyzed for the duration. At the end of each of its turns, the target can make another Wisdom saving throw. On a success, the spell ends on the target.\nWhen you cast this spell using a spell slot of 3rd level or higher, you can target one additional humanoid for each slot level above 2nd. The humanoids must be within 30 feet of each other when you target them.";
+                case Spells.ID.MAGIC_MISSILE:
+                    return "You create three glowing darts of magical force. Each dart hits a creature of your choice that you can see within range. A dart deals 1d4 + 1 force damage to its target. The darts all strike simultaneously, and you can direct them to hit one creature or several.\nWhen you cast this spell using a spell slot of 2nd level or higher, the spell creates one more dart for each slot level above 1st.";
                 case Spells.ID.SHILLELAGH:
                     return "The wood of a club or quarterstaff you are holding is imbued with nature’s power. For the duration, you can use your spellcasting ability instead of Strength for the attack and damage rolls of melee attacks using that weapon, and the weapon’s damage die becomes a d8. The weapon also becomes magical, if it isn’t already. The spell ends if you cast it again or if you let go of the weapon.";
                 default:

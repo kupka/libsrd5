@@ -63,6 +63,7 @@ namespace srd5 {
         ONE_EXTRA_ATTACK,
         TWO_EXTRA_ATTACKS,
         THREE_EXTRA_ATTACKS,
+
         // Movement
         NO_SPEED_PENALITY_FOR_HEAVY_ARMOR,
         HEAVY_ARMOR_SPEED_PENALITY,
@@ -78,7 +79,10 @@ namespace srd5 {
         DOUBLE_PROFICIENCY_BONUS_HISTORY,
         ADDITIONAL_HP_PER_LEVEL,
         DARKVISION,
-        PROTECTION
+        PROTECTION,
+        CANNOT_TAKE_ACTIONS,
+        FAIL_STRENGTH_CHECK,
+        FAIL_DEXERITY_CHECK
     }
 
     public static class Effects {

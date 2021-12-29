@@ -28,8 +28,6 @@ namespace srd5 {
         private Feat[] feats = new Feat[0];
         public Dice[] HitDice { get { return hitDice; } }
         private Dice[] hitDice = new Dice[0];
-        public ConditionType[] Conditions { get { return conditions; } }
-        private ConditionType[] conditions = new ConditionType[0];
         public CharacterInventory Inventory { get; internal set; } = new CharacterInventory();
         public int AbilityPoints { get; internal set; }
         public int Attacks {
@@ -408,7 +406,7 @@ namespace srd5 {
             }
             // If no such entry is available yet, add one
             if (spells == null) {
-                spells = new AvailableSpells();
+                spells = new AvailableSpells(level.Class);
                 spells.CharacterClass = level.Class;
                 AddAvailableSpells(spells);
             }
@@ -443,16 +441,6 @@ namespace srd5 {
         public void AddFeat(Feat feat) {
             if (Utils.PushUnique<Feat>(ref feats, feat))
                 feat.Apply(this);
-        }
-
-        public void AddCondition(ConditionType condition) {
-            if (Utils.PushUnique<ConditionType>(ref conditions, condition))
-                condition.Apply(this);
-        }
-        public void RemoveCondition(ConditionType condition) {
-            RemoveResult result = Utils.RemoveSingle<ConditionType>(ref conditions, condition);
-            if (result == RemoveResult.REMOVED_AND_GONE)
-                condition.Unapply(this);
         }
 
         public void IncreaseAbility(AbilityType type) {

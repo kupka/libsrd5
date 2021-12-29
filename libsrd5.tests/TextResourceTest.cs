@@ -38,6 +38,8 @@ namespace srd5 {
         public void NullTest() {
             Assert.NotNull(SkillTextResource.Description((Skill)(-1)));
             Assert.NotNull(SkillTextResource.Name((Skill)(-1)));
+            Assert.NotNull(MonsterTextResource.Description((MonsterType)(-1)));
+            Assert.NotNull(MonsterTextResource.Name((MonsterType)(-1)));
         }
 
         [Fact]
@@ -45,6 +47,14 @@ namespace srd5 {
             foreach (Spells.ID id in Enum.GetValues(typeof(Spells.ID))) {
                 Assert.NotNull(id.Name());
                 Assert.NotNull(id.Description());
+            }
+        }
+
+        [Fact]
+        public void MonsterTypeTest() {
+            foreach (MonsterType type in Enum.GetValues(typeof(MonsterType))) {
+                Assert.NotNull(type.Name());
+                Assert.NotNull(type.Description());
             }
         }
     }

@@ -24,30 +24,52 @@ namespace srd5 {
     }
 
     public static class ConditionsExtension {
-        public static void Apply(this ConditionType type, Combattant sheet) {
+        public static void Apply(this ConditionType type, Combattant combattant) {
             switch (type) {
                 case ConditionType.BLINDED:
-                    applyBlinded(sheet);
+                    applyBlinded(combattant);
+                    break;
+                case ConditionType.PARALYZED:
+                    applyParalyzed(combattant);
                     break;
             }
         }
 
-        public static void Unapply(this ConditionType type, Combattant sheet) {
+        public static void Unapply(this ConditionType type, Combattant combattant) {
             switch (type) {
                 case ConditionType.BLINDED:
-                    unapplyBlinded(sheet);
+                    unapplyBlinded(combattant);
+                    break;
+                case ConditionType.PARALYZED:
+                    unapplyParalyzed(combattant);
                     break;
             }
         }
 
-        private static void applyBlinded(Combattant sheet) {
-            sheet.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
-            sheet.AddEffect(Effect.DISADVANTAGE_ON_ATTACK);
+        private static void applyBlinded(Combattant combattant) {
+            combattant.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            combattant.AddEffect(Effect.DISADVANTAGE_ON_ATTACK);
         }
 
-        private static void unapplyBlinded(Combattant sheet) {
-            sheet.RemoveEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
-            sheet.RemoveEffect(Effect.DISADVANTAGE_ON_ATTACK);
+        private static void unapplyBlinded(Combattant combattant) {
+            combattant.RemoveEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            combattant.RemoveEffect(Effect.DISADVANTAGE_ON_ATTACK);
+        }
+
+        private static void applyParalyzed(Combattant combattant) {
+            combattant.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
+            combattant.AddEffect(Effect.FAIL_STRENGTH_CHECK);
+            combattant.AddEffect(Effect.FAIL_DEXERITY_CHECK);
+            combattant.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            combattant.AddEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT);
+        }
+
+        private static void unapplyParalyzed(Combattant combattant) {
+            combattant.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
+            combattant.RemoveEffect(Effect.FAIL_STRENGTH_CHECK);
+            combattant.RemoveEffect(Effect.FAIL_DEXERITY_CHECK);
+            combattant.RemoveEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            combattant.RemoveEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT);
         }
 
     }

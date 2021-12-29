@@ -30,7 +30,7 @@ namespace srd5 {
         RESISTANCE_RADIANT,
         RESISTANCE_SLASHING,
         RESISTANCE_THUNDER,
-
+        RESISTANCE_NONMAGIC,
         // Immunities against DamageType
         IMMUNITY_ACID,
         IMMUNITY_BLUDGEONING,
@@ -45,8 +45,19 @@ namespace srd5 {
         IMMUNITY_RADIANT,
         IMMUNITY_SLASHING,
         IMMUNITY_THUNDER,
+        IMMUNITY_NONMAGIC,
 
         // Immunities against Condition
+        IMMUNITY_BLINDED,
+        IMMUNITY_CHARMED,
+        IMMUNITY_EXHAUSTION,
+        IMMUNITY_FRIGHTENED,
+        IMMUNITY_GRAPPLED,
+        IMMUNITY_PARALYZED,
+        IMMUNITY_PETRIFIED,
+        IMMUNITY_POISONED,
+        IMMUNITY_PRONE,
+        IMMUNITY_RESTRAINED,
         IMMUNITY_SLEEP,
 
         // Advantage on Save Throws
@@ -58,11 +69,12 @@ namespace srd5 {
         DISADVANTAGE_ON_ATTACK,
         ADVANTAGE_ON_BEING_ATTACKED,
         DISADVANTAGE_ON_BEING_ATTACKED,
-        AUTOMATIC_CRIT_ON_ATTACK,
-        AUTOMATIC_CRIT_ON_BEING_ATTACKED,
+        AUTOMATIC_CRIT_ON_HIT,
+        AUTOMATIC_CRIT_ON_BEING_HIT,
         ONE_EXTRA_ATTACK,
         TWO_EXTRA_ATTACKS,
         THREE_EXTRA_ATTACKS,
+
         // Movement
         NO_SPEED_PENALITY_FOR_HEAVY_ARMOR,
         HEAVY_ARMOR_SPEED_PENALITY,
@@ -78,22 +90,30 @@ namespace srd5 {
         DOUBLE_PROFICIENCY_BONUS_HISTORY,
         ADDITIONAL_HP_PER_LEVEL,
         DARKVISION,
-        PROTECTION
+        PROTECTION,
+        CANNOT_TAKE_ACTIONS,
+        FAIL_STRENGTH_CHECK,
+        FAIL_DEXERITY_CHECK
     }
 
     public static class Effects {
-        public static Effect Resistance(DamageType type) {
-            string name = "RESISTANCE_" + Enum.GetName(typeof(DamageType), type);
+        public static Effect Resistance(DamageType damage) {
+            string name = "RESISTANCE_" + Enum.GetName(typeof(DamageType), damage);
             return (Effect)Enum.Parse(typeof(Effect), name);
         }
 
-        public static Effect Immunity(DamageType type) {
-            string name = "IMMUNITY_" + Enum.GetName(typeof(DamageType), type);
+        public static Effect Immunity(DamageType damage) {
+            string name = "IMMUNITY_" + Enum.GetName(typeof(DamageType), damage);
             return (Effect)Enum.Parse(typeof(Effect), name);
         }
 
-        public static Effect Vulnerability(DamageType type) {
-            string name = "VULNERABILITY_" + Enum.GetName(typeof(DamageType), type);
+        public static Effect Vulnerability(DamageType damage) {
+            string name = "VULNERABILITY_" + Enum.GetName(typeof(DamageType), damage);
+            return (Effect)Enum.Parse(typeof(Effect), name);
+        }
+
+        public static Effect Immunity(ConditionType condition) {
+            string name = "IMMUNITY_" + Enum.GetName(typeof(ConditionType), condition);
             return (Effect)Enum.Parse(typeof(Effect), name);
         }
     }

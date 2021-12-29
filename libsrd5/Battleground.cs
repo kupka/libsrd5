@@ -188,6 +188,7 @@ namespace srd5 {
         /// Move the current combattant to the target destination if able
         /// </summary>
         public bool MoveAction(Location destination) {
+            if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) return false;
             if (destination == null) throw new ArgumentException("destination cannot be null");
             int distance = destination.Distance(LocateCombattant(CurrentCombattant));
             if (distance > remainingSpeed) return false;
@@ -200,6 +201,7 @@ namespace srd5 {
         /// Current combattant melee attacks a target if able
         /// </summary>
         public bool MeleeAttackAction(Combattant target) {
+            if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) return false;
             if (currentPhase == TurnPhase.MOVE) return false;
             if (target == null) throw new ArgumentException("target cannot be null");
             if (target == CurrentCombattant) throw new ArgumentException("cannot attack self");
@@ -216,6 +218,7 @@ namespace srd5 {
         /// Current combattant casts a spell if able. Checks all relevant constraints, such as range and if the spell is prepared
         /// <summary>
         public bool SpellCastAction(Spell spell, SpellLevel slot, AvailableSpells availableSpells, params Combattant[] targets) {
+            if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) return false;
             // check if phase is valid for spell
             if (currentPhase == TurnPhase.BONUS_ACTION && spell.CastingTime != CastingTime.BONUS_ACTION)
                 return false;
@@ -247,7 +250,8 @@ namespace srd5 {
             // Expend slot if not Cantrip
             if (slot != SpellLevel.CANTRIP) availableSpells.SlotsCurrent[(int)slot]--;
             // Cast Spell
-            spell.Cast(CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, targets);
+            int modifier = availableSpells.GetSpellcastingModifier(CurrentCombattant);
+            spell.Cast(CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, modifier, targets);
             NextPhase();
             return true;
         }
@@ -275,11 +279,21 @@ namespace srd5 {
 
         private void doAttack(Attack attack, Combattant target) {
             int attackRoll = Dice.D20.Value;
+            // Determine advantage and disadvantage
+            bool hasAdvantage = CurrentCombattant.HasEffect(Effect.ADVANTAGE_ON_ATTACK) || target.HasEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            bool hasDisadvantage = CurrentCombattant.HasEffect(Effect.DISADVANTAGE_ON_ATTACK) || target.HasEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
+            if (hasAdvantage && !hasDisadvantage)
+                attackRoll = Dice.D20Advantage.Value;
+            else if (hasDisadvantage && !hasAdvantage)
+                attackRoll = Dice.D20Disadvantage.Value;
             bool criticalHit = attackRoll == 20;
             bool criticalMiss = attackRoll == 1;
             if (criticalMiss) return;
             int modifiedAttack = attackRoll + attack.AttackBonus;
             if (!criticalHit && modifiedAttack < target.ArmorClass) return;
+            // Check if auto critical hit conditions apply
+            if (CurrentCombattant.HasEffect(Effect.AUTOMATIC_CRIT_ON_HIT)) criticalHit = true;
+            if (target.HasEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT)) criticalHit = true;
             target.TakeDamage(attack.Damage, criticalHit);
             if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage, criticalHit);
         }

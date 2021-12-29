@@ -43,9 +43,13 @@ namespace srd5 {
         public int[] SlotsMax { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public int[] SlotsCurrent { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        public AvailableSpells() {
+        public AvailableSpells(AbilityType abilityType) {
             CharacterClass clazz = new CharacterClass();
+            clazz.SpellCastingAbility = abilityType;
             clazz.MustPrepareSpells = false;
+            CharacterClass = clazz;
+        }
+        public AvailableSpells(CharacterClass clazz) {
             CharacterClass = clazz;
         }
 
@@ -78,6 +82,14 @@ namespace srd5 {
             return monster.SpellCastDC;
         }
 
+        /// <summary>
+        /// Get the spellcasting modifier for the Combattant. Assumes that this object belongs to this sheet.
+        /// <summary>
+        public int GetSpellcastingModifier(Combattant combattant) {
+            AbilityType spellAbility = CharacterClass.SpellCastingAbility;
+            return combattant.GetAbility(spellAbility).Modifier;
+        }
+
     }
 
     public abstract class Combattant {
@@ -99,6 +111,8 @@ namespace srd5 {
         public Size Size { get; internal set; }
         public Effect[] Effects { get { return effects; } }
         private Effect[] effects = new Effect[0];
+        public ConditionType[] Conditions { get { return conditions; } }
+        private ConditionType[] conditions = new ConditionType[0];
         public int EffectiveLevel { get; protected set; }
         public AvailableSpells[] AvailableSpells {
             get {
@@ -113,11 +127,34 @@ namespace srd5 {
                 effect.Apply(this);
         }
 
+        public void AddEffects(params Effect[] effects) {
+            foreach (Effect effect in effects) {
+                AddEffect(effect);
+            }
+        }
+
         public void RemoveEffect(Effect effect) {
             RemoveResult result = Utils.RemoveSingle<Effect>(ref effects, effect);
             if (result == RemoveResult.NOT_FOUND) return;
             if (result == RemoveResult.REMOVED_AND_GONE)
                 effect.Unapply(this);
+        }
+
+        public bool AddCondition(ConditionType condition) {
+            // don't add if immune
+            if (HasEffect(srd5.Effects.Immunity(condition))) return false;
+            if (Utils.PushUnique<ConditionType>(ref conditions, condition))
+                condition.Apply(this);
+            return true;
+        }
+        public void RemoveCondition(ConditionType condition) {
+            RemoveResult result = Utils.RemoveSingle<ConditionType>(ref conditions, condition);
+            if (result == RemoveResult.REMOVED_AND_GONE)
+                condition.Unapply(this);
+        }
+
+        public bool HasCondition(ConditionType condition) {
+            return Array.IndexOf(conditions, condition) >= 0;
         }
 
         internal void AddAvailableSpells(AvailableSpells spells) {
@@ -180,5 +217,35 @@ namespace srd5 {
                     throw new ArgumentException("No value for this AbilityType");
             }
         }
+
+        /// <summary>
+        /// Roll a DC (difficulty check) against the specified Ability
+        /// </summary>
+        public bool DC(int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
+            if (type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) return false;
+            if (type == AbilityType.DEXTERITY && HasEffect(Effect.FAIL_DEXERITY_CHECK)) return false;
+            return Dices.DC(dc, GetAbility(type), advantage, disadvantage);
+        }
+
+
+        private EndOfTurnEvent[] endOfTurnEvents = new EndOfTurnEvent[0];
+
+        /// <summary>
+        /// Adds a piece of code to be evaluated at the end of this combattatant's turn
+        /// </summary>
+        public void AddEndOfTurnEvent(EndOfTurnEvent endOfTurnEvent) {
+            Utils.Push<EndOfTurnEvent>(ref endOfTurnEvents, endOfTurnEvent);
+        }
+
+        public void OnEndOfTurn() {
+            for (int i = 0; i < endOfTurnEvents.Length; i++) {
+                if (endOfTurnEvents[i] == null) continue;
+                if (endOfTurnEvents[i](this)) {
+                    endOfTurnEvents[i] = null;
+                }
+            }
+        }
+
     }
+    public delegate bool EndOfTurnEvent(Combattant combattant);
 }

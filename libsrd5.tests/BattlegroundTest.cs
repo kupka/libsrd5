@@ -55,6 +55,9 @@ namespace srd5 {
             Assert.Throws<ArgumentException>(delegate {
                 ground.MoveAction(null);
             });
+            sheet.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
+            Assert.False(ground.MoveAction(new Coord(13, 13))); // incapacitated
+            sheet.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
             Assert.True(ground.MoveAction(new Coord(13, 13))); // distance 20 => remaining speed = 5
             Assert.Equal(5, ground.RemainingSpeed);
             Assert.Equal(13, ground.LocateCombattant2D(sheet).X);
@@ -172,6 +175,7 @@ namespace srd5 {
             hero.Strength.BaseValue = 18;
             hero.Dexterity.BaseValue = 10;
             hero.AddLevel(CharacterClasses.Barbarian);
+            hero.Equip(new Thing<Weapon>(Weapons.Battleaxe));
             Random.State = 1; // Fix deterministic random so that hero goes first
             ground.AddCombattant(hero, 1, 1);
             Monster ogre = Monsters.Ogre;
@@ -179,6 +183,63 @@ namespace srd5 {
             ground.Initialize();
             ground.NextPhase(); // skip move  
             Assert.Equal(hero, ground.CurrentCombattant);
+            Assert.False(ground.MeleeAttackAction(ogre));
+        }
+
+        private void setupBattleField2D(ref Battleground2D ground, ref CharacterSheet hero, ref Monster ogre) {
+            ground = new Battleground2D(5, 5);
+            hero = new CharacterSheet(Race.HILL_DWARF);
+            hero.Strength.BaseValue = 18;
+            hero.Dexterity.BaseValue = 10;
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.Equip(new Thing<Weapon>(Weapons.Battleaxe));
+            Random.State = 1; // Fix deterministic random so that hero goes first
+            ground.AddCombattant(hero, 1, 1);
+            ogre = Monsters.Ogre;
+            ground.AddCombattant(ogre, 1, 2);
+            ground.Initialize();
+
+        }
+
+        [Fact]
+        public void SpecialConditionTest() {
+            Battleground2D ground = null;
+            CharacterSheet hero = null;
+            Monster ogre = null;
+            // Advantage on attack
+            setupBattleField2D(ref ground, ref hero, ref ogre);
+            ground.NextPhase(); // skip move
+            ogre.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            Assert.True(ground.MeleeAttackAction(ogre));
+            setupBattleField2D(ref ground, ref hero, ref ogre);
+            ground.NextPhase(); // skip move
+            hero.AddEffect(Effect.ADVANTAGE_ON_ATTACK);
+            Assert.True(ground.MeleeAttackAction(ogre));
+            // Disadvantage on attack
+            setupBattleField2D(ref ground, ref hero, ref ogre);
+            ground.NextPhase(); // skip move
+            ogre.AddEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
+            Assert.True(ground.MeleeAttackAction(ogre));
+            setupBattleField2D(ref ground, ref hero, ref ogre);
+            ground.NextPhase(); // skip move
+            hero.AddEffect(Effect.DISADVANTAGE_ON_ATTACK);
+            Assert.True(ground.MeleeAttackAction(ogre));
+            // Nullify advtange and disadvantage
+            setupBattleField2D(ref ground, ref hero, ref ogre);
+            ground.NextPhase(); // skip move
+            ogre.AddEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
+            hero.AddEffect(Effect.ADVANTAGE_ON_ATTACK);
+            Assert.True(ground.MeleeAttackAction(ogre));
+            // Auto Crit
+            setupBattleField2D(ref ground, ref hero, ref ogre);
+            ground.NextPhase(); // skip move
+            ogre.AddEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT);
+            hero.AddEffect(Effect.AUTOMATIC_CRIT_ON_HIT);
+            Assert.True(ground.MeleeAttackAction(ogre));
+            // Incapacitated
+            setupBattleField2D(ref ground, ref hero, ref ogre);
+            ground.NextPhase(); // skip move
+            hero.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
             Assert.False(ground.MeleeAttackAction(ogre));
         }
 
@@ -195,6 +256,10 @@ namespace srd5 {
             while (ground.CurrentCombattant != hero) {
                 ground.NextPhase();
             }
+            // incapacitated
+            hero.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
+            hero.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
             // wrong phase
             Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
             ground.NextPhase();

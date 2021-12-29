@@ -48,9 +48,14 @@ namespace srd5 {
             hero.HitPoints = 1;
             Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, hero);
             Assert.Equal(hero.HitPointsMax, hero.HitPoints);
+            // doesn't affect undead
+            Monster shadow = Monsters.Shadow;
+            shadow.HitPoints = shadow.HitPointsMax - 1;
+            Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, shadow);
+            Assert.Equal(shadow.HitPointsMax - 1, shadow.HitPoints);
+            // doesn't affect constructs
             Monster golem = Monsters.ClayGolem;
             golem.HitPoints = golem.HitPointsMax - 1;
-            // doesn't affect constructs
             Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, golem);
             Assert.Equal(golem.HitPointsMax - 1, golem.HitPoints);
         }
@@ -62,11 +67,16 @@ namespace srd5 {
             hero.HitPoints = 1;
             Spells.HealingWord.Cast(hero, 0, SpellLevel.SEVENTH, hero.Wisdom.Modifier, hero);
             Assert.Equal(hero.HitPointsMax, hero.HitPoints);
+            // doesn't affect undead
             Monster shadow = Monsters.Shadow;
             shadow.HitPoints = shadow.HitPointsMax - 1;
-            // doesn't affect undead
-            Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, shadow);
+            Spells.HealingWord.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, shadow);
             Assert.Equal(shadow.HitPointsMax - 1, shadow.HitPoints);
+            // doesn't affect constructs
+            Monster golem = Monsters.ClayGolem;
+            golem.HitPoints = golem.HitPointsMax - 1;
+            Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, golem);
+            Assert.Equal(golem.HitPointsMax - 1, golem.HitPoints);
         }
 
         [Fact]
@@ -100,7 +110,7 @@ namespace srd5 {
             Monster orc4 = Monsters.Orc;
             Monster orc5 = Monsters.Orc;
             Monster orc6 = Monsters.Orc;
-            Spells.CharmPerson.Cast(hero, 12, SpellLevel.SIXTH, 0, badger, orc1, orc2, orc3, orc4, orc5, orc6);
+            Spells.CharmPerson.Cast(hero, 14, SpellLevel.SIXTH, 0, badger, orc1, orc2, orc3, orc4, orc5, orc6);
             Assert.False(badger.HasCondition(ConditionType.CHARMED));
             Assert.False(orc6.HasCondition(ConditionType.CHARMED));
             Assert.True(orc1.HasCondition(ConditionType.CHARMED) || orc2.HasCondition(ConditionType.CHARMED)
@@ -117,7 +127,7 @@ namespace srd5 {
             Monster orc4 = Monsters.Orc;
             Monster orc5 = Monsters.Orc;
             Monster orc6 = Monsters.Orc;
-            Spells.HoldPerson.Cast(hero, 12, SpellLevel.SEVENTH, 0, badger, orc1, orc2, orc3, orc4, orc5, orc6);
+            Spells.HoldPerson.Cast(hero, 14, SpellLevel.SEVENTH, 0, badger, orc1, orc2, orc3, orc4, orc5, orc6);
             Assert.False(badger.HasCondition(ConditionType.PARALYZED));
             Assert.False(orc6.HasCondition(ConditionType.PARALYZED));
             Assert.True(orc1.HasCondition(ConditionType.PARALYZED) || orc2.HasCondition(ConditionType.PARALYZED)

@@ -30,7 +30,7 @@ namespace srd5 {
         RESISTANCE_RADIANT,
         RESISTANCE_SLASHING,
         RESISTANCE_THUNDER,
-
+        RESISTANCE_NONMAGIC,
         // Immunities against DamageType
         IMMUNITY_ACID,
         IMMUNITY_BLUDGEONING,
@@ -45,8 +45,19 @@ namespace srd5 {
         IMMUNITY_RADIANT,
         IMMUNITY_SLASHING,
         IMMUNITY_THUNDER,
+        IMMUNITY_NONMAGIC,
 
         // Immunities against Condition
+        IMMUNITY_BLINDED,
+        IMMUNITY_CHARMED,
+        IMMUNITY_EXHAUSTION,
+        IMMUNITY_FRIGHTENED,
+        IMMUNITY_GRAPPLED,
+        IMMUNITY_PARALYZED,
+        IMMUNITY_PETRIFIED,
+        IMMUNITY_POISONED,
+        IMMUNITY_PRONE,
+        IMMUNITY_RESTRAINED,
         IMMUNITY_SLEEP,
 
         // Advantage on Save Throws
@@ -86,18 +97,23 @@ namespace srd5 {
     }
 
     public static class Effects {
-        public static Effect Resistance(DamageType type) {
-            string name = "RESISTANCE_" + Enum.GetName(typeof(DamageType), type);
+        public static Effect Resistance(DamageType damage) {
+            string name = "RESISTANCE_" + Enum.GetName(typeof(DamageType), damage);
             return (Effect)Enum.Parse(typeof(Effect), name);
         }
 
-        public static Effect Immunity(DamageType type) {
-            string name = "IMMUNITY_" + Enum.GetName(typeof(DamageType), type);
+        public static Effect Immunity(DamageType damage) {
+            string name = "IMMUNITY_" + Enum.GetName(typeof(DamageType), damage);
             return (Effect)Enum.Parse(typeof(Effect), name);
         }
 
-        public static Effect Vulnerability(DamageType type) {
-            string name = "VULNERABILITY_" + Enum.GetName(typeof(DamageType), type);
+        public static Effect Vulnerability(DamageType damage) {
+            string name = "VULNERABILITY_" + Enum.GetName(typeof(DamageType), damage);
+            return (Effect)Enum.Parse(typeof(Effect), name);
+        }
+
+        public static Effect Immunity(ConditionType condition) {
+            string name = "IMMUNITY_" + Enum.GetName(typeof(ConditionType), condition);
             return (Effect)Enum.Parse(typeof(Effect), name);
         }
     }

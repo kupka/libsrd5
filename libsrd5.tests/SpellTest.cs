@@ -48,6 +48,11 @@ namespace srd5 {
             hero.HitPoints = 1;
             Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, hero);
             Assert.Equal(hero.HitPointsMax, hero.HitPoints);
+            Monster golem = Monsters.ClayGolem;
+            golem.HitPoints = golem.HitPointsMax - 1;
+            // doesn't affect constructs
+            Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, golem);
+            Assert.Equal(golem.HitPointsMax - 1, golem.HitPoints);
         }
 
         [Fact]
@@ -57,6 +62,11 @@ namespace srd5 {
             hero.HitPoints = 1;
             Spells.HealingWord.Cast(hero, 0, SpellLevel.SEVENTH, hero.Wisdom.Modifier, hero);
             Assert.Equal(hero.HitPointsMax, hero.HitPoints);
+            Monster shadow = Monsters.Shadow;
+            shadow.HitPoints = shadow.HitPointsMax - 1;
+            // doesn't affect undead
+            Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, shadow);
+            Assert.Equal(shadow.HitPointsMax - 1, shadow.HitPoints);
         }
 
         [Fact]

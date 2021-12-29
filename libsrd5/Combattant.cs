@@ -127,6 +127,12 @@ namespace srd5 {
                 effect.Apply(this);
         }
 
+        public void AddEffects(params Effect[] effects) {
+            foreach (Effect effect in effects) {
+                AddEffect(effect);
+            }
+        }
+
         public void RemoveEffect(Effect effect) {
             RemoveResult result = Utils.RemoveSingle<Effect>(ref effects, effect);
             if (result == RemoveResult.NOT_FOUND) return;
@@ -134,9 +140,12 @@ namespace srd5 {
                 effect.Unapply(this);
         }
 
-        public void AddCondition(ConditionType condition) {
+        public bool AddCondition(ConditionType condition) {
+            // don't add if immune
+            if (HasEffect(srd5.Effects.Immunity(condition))) return false;
             if (Utils.PushUnique<ConditionType>(ref conditions, condition))
                 condition.Apply(this);
+            return true;
         }
         public void RemoveCondition(ConditionType condition) {
             RemoveResult result = Utils.RemoveSingle<ConditionType>(ref conditions, condition);

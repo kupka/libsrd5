@@ -15,7 +15,7 @@ namespace srd5 {
         }
 
         /*
-        Adds a new element to an array if the array does not contain it.
+        Adds a new element to an array.
         Returns whether the element is new in the array or already contained.
         */
         public static bool PushUnique<T>(ref T[] array, T element) {

@@ -80,7 +80,7 @@ namespace srd5 {
             // doesn't affect constructs
             Monster golem = Monsters.ClayGolem;
             golem.HitPoints = golem.HitPointsMax - 1;
-            Spells.CureWounds.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, golem);
+            Spells.HealingWord.Cast(hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, golem);
             Assert.Equal(golem.HitPointsMax - 1, golem.HitPoints);
             // affects giants
             Monster ogre = Monsters.Ogre;

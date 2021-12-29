@@ -40,6 +40,9 @@ namespace srd5 {
                 case ConditionType.BLINDED:
                     unapplyBlinded(combattant);
                     break;
+                case ConditionType.PARALYZED:
+                    unapplyParalyzed(combattant);
+                    break;
             }
         }
 

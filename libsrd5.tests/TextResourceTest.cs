@@ -57,5 +57,12 @@ namespace srd5 {
                 Assert.NotNull(type.Description());
             }
         }
+
+        [Fact]
+        public void ClassTest() {
+            foreach (Class clazz in Enum.GetValues(typeof(Class))) {
+                Assert.NotNull(clazz.Name());
+            }
+        }
     }
 }

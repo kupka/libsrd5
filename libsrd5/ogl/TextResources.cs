@@ -25,6 +25,19 @@ namespace srd5 {
         }
     }
 
+    public static class ClassTextResource {
+        public static string Name(this Class clazz) {
+            switch (clazz) {
+                case Class.DRUID:
+                    return "Druid";
+                case Class.BARBARIAN:
+                    return "Barbarian";
+                default:
+                    return Enum.GetName(typeof(Class), clazz) + ": (Name missing)";
+            }
+        }
+    }
+
     public static class EffectTextResource {
         public static string Name(this Effect effect) {
             string name = Enum.GetName(typeof(Effect), effect);

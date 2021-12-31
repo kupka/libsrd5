@@ -7,6 +7,8 @@ namespace srd5 {
         public void EquipOneHandTest() {
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
+            sheet.SetName("Foo Bar");
+            Assert.Equal("Foo Bar", sheet.Name);
             sheet.Equip(club);
             Assert.Equal(club, sheet.Inventory.MainHand);
         }

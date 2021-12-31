@@ -438,6 +438,10 @@ namespace srd5 {
             Size = race.Size;
         }
 
+        public void SetName(string name) {
+            Name = name;
+        }
+
         public void AddFeat(Feat feat) {
             if (Utils.PushUnique<Feat>(ref feats, feat))
                 feat.Apply(this);

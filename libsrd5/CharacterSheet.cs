@@ -109,7 +109,6 @@ namespace srd5 {
         /// Otherwise, abilitypoints for spending are assigned.
         /// </summary>
         public CharacterSheet(Race race, bool classic = false) {
-            SetRace(race.CharacterRace());
             if (classic) {
                 Dices dices = new Dices("3d6");
                 Strength.BaseValue = Math.Max(dices.Roll(), dices.Roll());
@@ -121,6 +120,7 @@ namespace srd5 {
             } else {
                 AbilityPoints = 14;
             }
+            SetRace(race.CharacterRace());
         }
 
         public int GetSkillModifier(Skill skill) {

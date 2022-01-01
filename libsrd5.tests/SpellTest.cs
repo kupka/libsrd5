@@ -2,6 +2,8 @@ using System;
 using Xunit;
 
 namespace srd5 {
+    [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
+    [Collection("SingleThreaded")]
     public class SpellTest {
         [Fact]
         public void AcidSplashTest() {
@@ -120,6 +122,7 @@ namespace srd5 {
             Monster orc4 = Monsters.Orc;
             Monster orc5 = Monsters.Orc;
             Monster orc6 = Monsters.Orc;
+            Random.State = 1;
             Spells.CharmPerson.Cast(hero, 14, SpellLevel.SIXTH, 0, badger, orc1, orc2, orc3, orc4, orc5, orc6);
             Assert.False(badger.HasCondition(ConditionType.CHARMED));
             Assert.False(orc6.HasCondition(ConditionType.CHARMED));
@@ -137,6 +140,7 @@ namespace srd5 {
             Monster orc4 = Monsters.Orc;
             Monster orc5 = Monsters.Orc;
             Monster orc6 = Monsters.Orc;
+            Random.State = 1;
             Spells.HoldPerson.Cast(hero, 14, SpellLevel.SEVENTH, 0, badger, orc1, orc2, orc3, orc4, orc5, orc6);
             Assert.False(badger.HasCondition(ConditionType.PARALYZED));
             Assert.False(orc6.HasCondition(ConditionType.PARALYZED));

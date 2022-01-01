@@ -247,5 +247,10 @@ namespace srd5 {
         }
 
     }
+
+    /// <summary>
+    /// Describes an event that shall be executed at the end of this combattant's turn. 
+    /// The event is considered finished when the delegate returns true.
+    /// </summary>
     public delegate bool EndOfTurnEvent(Combattant combattant);
 }

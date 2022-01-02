@@ -8,7 +8,7 @@ namespace srd5 {
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             Assert.Equal(Race.HUMAN.Name(), sheet.Race.Name);
-            sheet.SetName("Foo Bar");
+            sheet.Name = "Foo Bar";
             Assert.Equal("Foo Bar", sheet.Name);
             sheet.Equip(club);
             Assert.Equal(club, sheet.Inventory.MainHand);

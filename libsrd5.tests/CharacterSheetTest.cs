@@ -328,7 +328,6 @@ namespace srd5 {
             CharacterSheet sheet = new CharacterSheet(Race.HALF_ELF);
             sheet.Strength.BaseValue = 14;
             sheet.AddLevel(CharacterClasses.Barbarian);
-            sheet.RecalculateAttacks();
             Assert.Single(sheet.MeleeAttacks);
             Assert.Empty(sheet.RangedAttacks);
             Attack unarmed = sheet.MeleeAttacks[0];
@@ -347,8 +346,10 @@ namespace srd5 {
             sheet.AddEffect(Effect.THREE_EXTRA_ATTACKS);
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             Thing<Weapon> dagger = new Thing<Weapon>(Weapons.Dagger);
+            int ac = sheet.ArmorClass;
             sheet.Equip(club);
             sheet.Equip(dagger);
+            Assert.Equal(ac, sheet.ArmorClass);
             Assert.Equal(4, sheet.MeleeAttacks.Length);
             Assert.Equal(dagger.Item.Name, sheet.BonusAttack.Name);
             sheet.RemoveEffect(Effect.THREE_EXTRA_ATTACKS);
@@ -384,8 +385,10 @@ namespace srd5 {
             Thing<Weapon> quarterstaff = new Thing<Weapon>(Weapons.Quarterstaff);
             sheet.Equip(quarterstaff);
             Assert.Equal(8, sheet.MeleeAttacks[0].Damage.Dices.Dice);
+            int ac = sheet.ArmorClass;
             Thing<Shield> buckler = new Thing<Shield>(Shields.Buckler);
             sheet.Equip(buckler);
+            Assert.Equal(ac + buckler.Item.AC, sheet.ArmorClass);
             Assert.Equal(6, sheet.MeleeAttacks[0].Damage.Dices.Dice);
         }
 

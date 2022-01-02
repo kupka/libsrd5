@@ -457,4 +457,39 @@ Once you have raged the number of times available for your barbarian level, you 
             }
         }
     }
+
+    public static class DamageTypeTextResource {
+        public static string Name(this DamageType damageType) {
+            switch (damageType) {
+                case DamageType.ACID:
+                    return "Acid";
+                case DamageType.BLUDGEONING:
+                    return "Bludgeoning";
+                case DamageType.COLD:
+                    return "Cold";
+                case DamageType.FIRE:
+                    return "Fire";
+                case DamageType.FORCE:
+                    return "Force";
+                case DamageType.LIGHTNING:
+                    return "Lightning";
+                case DamageType.NECROTIC:
+                    return "Necrotic";
+                case DamageType.PIERCING:
+                    return "Piercing";
+                case DamageType.POISON:
+                    return "Poison";
+                case DamageType.PSYCHIC:
+                    return "Psychic";
+                case DamageType.RADIANT:
+                    return "Radiant";
+                case DamageType.SLASHING:
+                    return "Slashing";
+                case DamageType.THUNDER:
+                    return "Thunder";
+                default:
+                    return Enum.GetName(typeof(DamageType), damageType) + ": (Name missing)";
+            }
+        }
+    }
 }

@@ -25,6 +25,7 @@ namespace srd5 {
             Spell spell = Spells.AcidSplash;
             Assert.True(Spells.AcidSplash.Equals(spell));
             Assert.False(spell.Equals("foo"));
+            Assert.Equal(Spells.ID.ACID_SPLASH.Name(), spell.Name);
         }
 
         [Fact]

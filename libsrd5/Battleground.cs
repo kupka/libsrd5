@@ -66,6 +66,29 @@ namespace srd5 {
         }
     }
 
+    public class BattleGroundClassic : Battleground {
+        private ClassicLocation[] locations = new ClassicLocation[0];
+
+        public override void Initialize() {
+            base.Initialize();
+            Array.Sort(initiativeRolls, locations, new ReverseComparer());
+            Turn = 1;
+        }
+
+        public override Location LocateCombattant(Combattant combattant) {
+            return locations[Array.IndexOf(combattants, combattant)];
+        }
+
+        protected override void SetCurrentLocation(Location location) {
+            locations[currentCombattant] = (ClassicLocation)location;
+        }
+
+        public void AddCombattant(Combattant combattant, ClassicLocation.Row row) {
+            AddCombattant(combattant);
+            Utils.Push<ClassicLocation>(ref locations, new ClassicLocation(row));
+        }
+    }
+
     public class Battleground2D : Battleground {
         public Tile[,] Tiles { get; internal set; }
         private Coord[] coords = new Coord[0];
@@ -162,7 +185,9 @@ namespace srd5 {
         public void AddCombattant(Combattant combattant) {
             if (Array.IndexOf(combattants, combattant) >= 0) return;
             Utils.Push<Combattant>(ref combattants, combattant);
-            Utils.Push<int>(ref initiativeRolls, Dice.D20.Value + combattant.Dexterity.Modifier);
+            int roll = Dice.D20.Value + combattant.Dexterity.Modifier;
+            Utils.Push<int>(ref initiativeRolls, roll);
+            GlobalEvents.RolledInitiative(combattant, roll);
         }
 
         /// <summary>
@@ -288,12 +313,19 @@ namespace srd5 {
                 attackRoll = Dice.D20Disadvantage.Value;
             bool criticalHit = attackRoll == 20;
             bool criticalMiss = attackRoll == 1;
-            if (criticalMiss) return;
+            if (criticalMiss) {
+                GlobalEvents.RolledAttack(CurrentCombattant, target, attackRoll, false);
+                return;
+            }
             int modifiedAttack = attackRoll + attack.AttackBonus;
-            if (!criticalHit && modifiedAttack < target.ArmorClass) return;
+            if (!criticalHit && modifiedAttack < target.ArmorClass) {
+                GlobalEvents.RolledAttack(CurrentCombattant, target, attackRoll, false);
+                return;
+            }
             // Check if auto critical hit conditions apply
             if (CurrentCombattant.HasEffect(Effect.AUTOMATIC_CRIT_ON_HIT)) criticalHit = true;
             if (target.HasEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT)) criticalHit = true;
+            GlobalEvents.RolledAttack(CurrentCombattant, target, attackRoll, true, criticalHit);
             target.TakeDamage(attack.Damage, criticalHit);
             if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage, criticalHit);
         }

@@ -186,6 +186,7 @@ namespace srd5 {
             if (IsImmune(type)) return;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;
+            GlobalEvents.ReceivedDamage(this, amount, damage.Type);
             HitPoints -= amount;
         }
 
@@ -193,6 +194,7 @@ namespace srd5 {
         /// Heals the specified amount of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combattant.
         /// </summary>
         public void HealDamage(int amount) {
+            GlobalEvents.ReceivedHealing(this, amount);
             HitPoints = Math.Min(HitPoints + amount, HitPointsMax);
         }
 

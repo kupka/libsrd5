@@ -7,6 +7,7 @@ namespace srd5 {
         public void EquipOneHandTest() {
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
+            Assert.Equal(Race.HUMAN.Name(), sheet.Race.Name);
             sheet.SetName("Foo Bar");
             Assert.Equal("Foo Bar", sheet.Name);
             sheet.Equip(club);
@@ -183,6 +184,7 @@ namespace srd5 {
             sheet.AddLevel(CharacterClasses.Druid);
             sheet.AddLevel(CharacterClasses.Druid);
             sheet.AddLevel(CharacterClasses.Druid);
+            Assert.Equal(Class.DRUID.Name(), sheet.Levels[0].Class.Name);
             Assert.Equal(1, sheet.AttackProficiency);
             sheet.AddLevel(CharacterClasses.Druid);
             sheet.AddLevel(CharacterClasses.Druid);

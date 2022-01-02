@@ -7,6 +7,12 @@ namespace srd5 {
         public Feat[] RacialFeats { get; internal set; }
         public Size Size { get; internal set; }
 
+        public string Name {
+            get {
+                return this.Race.Name();
+            }
+        }
+
         public CharacterRace(Race race, int speed, Feat[] racialFeats, Size size = Size.MEDIUM) {
             Race = race;
             Speed = speed;

@@ -18,6 +18,12 @@ namespace srd5 {
 
         public bool MustPrepareSpells { get; internal set; }
 
+        public string Name {
+            get {
+                return this.Class.Name();
+            }
+        }
+
         public override bool Equals(object obj) {
             if (!(obj is CharacterClass)) return false;
             return GetHashCode() == obj.GetHashCode();

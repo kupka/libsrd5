@@ -353,7 +353,7 @@ namespace srd5 {
     }
 
     public struct Shields {
-        public static readonly Shield Buckler = new Shield("Buckler", 1, 100, 1);
+        public static readonly Shield Shield = new Shield("Shield", 2, 1000, 6);
     }
 
     public struct Armors {

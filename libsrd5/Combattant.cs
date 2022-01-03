@@ -101,7 +101,7 @@ namespace srd5 {
         public Ability Intelligence { get; internal set; } = new Ability(AbilityType.INTELLIGENCE, 10);
         public Ability Wisdom { get; internal set; } = new Ability(AbilityType.WISDOM, 10);
         public Ability Charisma { get; internal set; } = new Ability(AbilityType.CHARISMA, 10);
-        public int ArmorClass { get; internal set; }
+        public virtual int ArmorClass { get; internal set; }
         public int ArmorClassModifier { get; internal set; }
         public int HitPoints { get; set; }
         public virtual int HitPointsMax { get; internal set; }

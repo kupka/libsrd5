@@ -42,7 +42,7 @@ namespace srd5 {
                     return 1;
             }
         }
-        public new int ArmorClass {
+        public override int ArmorClass {
             get {
                 int ac = 10 + Dexterity.Modifier;
                 if (Inventory.Armor != null) {

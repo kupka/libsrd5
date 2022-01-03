@@ -336,5 +336,28 @@ namespace srd5 {
             Assert.True(ogre.HitPointsMax > ogre.HitPoints);
             Assert.True(ogre2.HitPointsMax == ogre2.HitPoints);
         }
+
+        [Fact]
+        public void ClassicBattlegroundTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF, true);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.Name = "Boldo";
+            hero.Equip(new Thing<Shield>(Shields.Shield));
+            hero.Equip(new Thing<Weapon>(Weapons.Longsword));
+            hero.Equip(new Thing<Armor>(Armors.StuddedLeatherArmor));
+            Monster boar = Monsters.Orc;
+            BattleGroundClassic battle = new BattleGroundClassic();
+            battle.AddCombattant(hero, ClassicLocation.Row.FRONT);
+            battle.AddCombattant(boar, ClassicLocation.Row.FRONT);
+            battle.Initialize();
+            while (battle.CurrentCombattant.HitPoints > 0) {
+                if (battle.NextPhase() == TurnPhase.ACTION) {
+                    if (battle.CurrentCombattant == hero)
+                        battle.MeleeAttackAction(boar);
+                    else
+                        battle.MeleeAttackAction(hero);
+                }
+            }
+        }
     }
 }

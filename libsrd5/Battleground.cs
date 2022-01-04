@@ -31,10 +31,15 @@ namespace srd5 {
         public abstract int Distance(Location another);
     }
 
+    /// <summary>
+    /// Has front and back lines for left (usually heroes) and right (enemies) side of the screen. Classic JRPG-style.
+    /// </summary>
     public class ClassicLocation : Location {
         public enum Row {
-            FRONT,
-            BACK
+            BACK_LEFT = 0,
+            FRONT_LEFT = 25,
+            FRONT_RIGHT = 30,
+            BACK_RIGHT = 55
         }
 
         public Row Location { get; internal set; }
@@ -46,17 +51,7 @@ namespace srd5 {
         public override int Distance(Location another) {
             if (!(another is ClassicLocation)) throw new ArgumentException("another must be a ClassicLocation.");
             ClassicLocation classicAnother = (ClassicLocation)another;
-            if (this.Location == Row.FRONT) {
-                if (classicAnother.Location == Row.FRONT)
-                    return 5;
-                else
-                    return 25;
-            } else {
-                if (classicAnother.Location == Row.FRONT)
-                    return 25;
-                else
-                    return 45;
-            }
+            return Math.Max(Math.Abs((int)classicAnother.Location - (int)this.Location), 5);
         }
     }
 

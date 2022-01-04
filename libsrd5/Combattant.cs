@@ -188,6 +188,7 @@ namespace srd5 {
             if (IsVulnerable(type)) amount *= 2;
             GlobalEvents.ReceivedDamage(this, amount, damage.Type);
             HitPoints -= amount;
+            if (HitPoints <= 0) AddCondition(ConditionType.UNCONSCIOUS);
         }
 
         /// <summary>

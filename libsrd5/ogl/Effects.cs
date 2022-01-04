@@ -50,15 +50,20 @@ namespace srd5 {
         // Immunities against Condition
         IMMUNITY_BLINDED,
         IMMUNITY_CHARMED,
+        IMMUNITY_DEAFENED,
         IMMUNITY_EXHAUSTION,
         IMMUNITY_FRIGHTENED,
         IMMUNITY_GRAPPLED,
+        IMMUNITY_INCAPACITATED,
+        IMMUNITY_INVISIBLE,
         IMMUNITY_PARALYZED,
         IMMUNITY_PETRIFIED,
         IMMUNITY_POISONED,
         IMMUNITY_PRONE,
         IMMUNITY_RESTRAINED,
         IMMUNITY_SLEEP,
+        IMMUNITY_STUNNED,
+        IMMUNITY_UNCONSCIOUS,
 
         // Advantage on Save Throws
         ADVANTAGE_SAVE_POISON,
@@ -113,6 +118,8 @@ namespace srd5 {
         }
 
         public static Effect Immunity(ConditionType condition) {
+            if (condition >= ConditionType.EXHAUSTED_1 && condition <= ConditionType.EXHAUSTED_6)
+                return Effect.IMMUNITY_EXHAUSTION;
             string name = "IMMUNITY_" + Enum.GetName(typeof(ConditionType), condition);
             return (Effect)Enum.Parse(typeof(Effect), name);
         }

@@ -19,7 +19,7 @@ namespace srd5 {
             Assert.Equal(30, ground.LocateCombattant2D(badguy).Y);
             Assert.Equal(140, ground.LocateCombattant(hero).Distance(ground.LocateCombattant(badguy)));
             Assert.Throws<ArgumentException>(delegate {
-                ground.LocateCombattant(hero).Distance(new ClassicLocation(ClassicLocation.Row.FRONT));
+                ground.LocateCombattant(hero).Distance(new ClassicLocation(ClassicLocation.Row.FRONT_LEFT));
             });
             ground.Initialize();
             Assert.Equal(badguy.Name, ground.CurrentCombattant.Name);
@@ -36,13 +36,16 @@ namespace srd5 {
 
         [Fact]
         public void ClassicDistanceTest() {
-            ClassicLocation front = new ClassicLocation(ClassicLocation.Row.FRONT);
-            ClassicLocation back = new ClassicLocation(ClassicLocation.Row.BACK);
-            Assert.True(front.Distance(back) == back.Distance(front));
-            Assert.True(back.Distance(front) > front.Distance(front));
-            Assert.True(back.Distance(back) > back.Distance(front));
+            ClassicLocation backLeft = new ClassicLocation(ClassicLocation.Row.BACK_LEFT);
+            ClassicLocation frontLeft = new ClassicLocation(ClassicLocation.Row.FRONT_LEFT);
+            ClassicLocation frontRight = new ClassicLocation(ClassicLocation.Row.FRONT_RIGHT);
+            ClassicLocation backRight = new ClassicLocation(ClassicLocation.Row.BACK_RIGHT);
+            Assert.Equal(5, backRight.Distance(backRight));
+            Assert.True(frontLeft.Distance(backLeft) == backLeft.Distance(frontLeft));
+            Assert.True(backLeft.Distance(frontLeft) < backLeft.Distance(frontRight));
+            Assert.True(backLeft.Distance(frontRight) < backLeft.Distance(backRight));
             Assert.Throws<ArgumentException>(delegate {
-                front.Distance(new Coord(2, 3));
+                frontLeft.Distance(new Coord(2, 3));
             });
         }
 
@@ -347,8 +350,8 @@ namespace srd5 {
             hero.Equip(new Thing<Armor>(Armors.StuddedLeatherArmor));
             Monster boar = Monsters.Orc;
             BattleGroundClassic battle = new BattleGroundClassic();
-            battle.AddCombattant(hero, ClassicLocation.Row.FRONT);
-            battle.AddCombattant(boar, ClassicLocation.Row.FRONT);
+            battle.AddCombattant(hero, ClassicLocation.Row.FRONT_LEFT);
+            battle.AddCombattant(boar, ClassicLocation.Row.FRONT_LEFT);
             battle.Initialize();
             while (battle.CurrentCombattant.HitPoints > 0) {
                 if (battle.NextPhase() == TurnPhase.ACTION) {

@@ -1,5 +1,5 @@
 using Xunit;
-using System;
+using System.Reflection;
 
 namespace srd5 {
     public class MonsterTest {
@@ -13,6 +13,13 @@ namespace srd5 {
         public void ImmunityTest() {
             Monster shadow = Monsters.Shadow;
             Assert.False(shadow.AddCondition(ConditionType.PARALYZED));
+        }
+
+        [Fact]
+        public void AllMonsterTest() {
+            foreach (PropertyInfo property in typeof(Monsters).GetProperties()) {
+                object o = property.GetMethod.Invoke(null, null);
+            }
         }
 
         [Fact]

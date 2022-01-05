@@ -332,7 +332,7 @@ namespace srd5 {
         private bool doFullRangedAttack(Combattant target) {
             bool success = false;
             int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
-            foreach (Attack attack in CurrentCombattant.MeleeAttacks) {
+            foreach (Attack attack in CurrentCombattant.RangedAttacks) {
                 if (distance > attack.RangeLong) continue; // skip attack when out of range
                 success = true;
                 doAttack(attack, target, distance, true);

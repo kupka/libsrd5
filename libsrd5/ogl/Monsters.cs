@@ -61,7 +61,7 @@ namespace srd5 {
             }
         }
 
-        public static Monster Gobline {
+        public static Monster Goblin {
             get {
                 return new Monster(
                     MonsterType.HUMANOID, "Goblin", 8, 14, 10, 10, 8, 8, 15, "2d6", 30, ChallengeRating.QUARTER,

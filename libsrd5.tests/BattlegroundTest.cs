@@ -369,5 +369,22 @@ namespace srd5 {
                 }
             }
         }
+
+        [Fact]
+        public void RangedTest() {
+            Monster ogre = Monsters.Ogre;
+            Monster goblin = Monsters.Goblin;
+            BattleGroundClassic battle = new BattleGroundClassic();
+            battle.AddCombattant(ogre, ClassicLocation.Row.BACK_LEFT);
+            battle.AddCombattant(goblin, ClassicLocation.Row.BACK_RIGHT);
+            battle.Initialize();
+            while (goblin.HitPoints > 0) {
+                while (battle.NextPhase() != TurnPhase.ACTION) ;
+                if (battle.CurrentCombattant == ogre)
+                    Assert.True(battle.RangedAttackAction(goblin));
+                else
+                    Assert.True(battle.RangedAttackAction(ogre));
+            }
+        }
     }
 }

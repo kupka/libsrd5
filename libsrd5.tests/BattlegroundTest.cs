@@ -32,7 +32,12 @@ namespace srd5 {
 
         [Fact]
         public void SetupClassicTest() {
-
+            BattleGroundClassic classic = new BattleGroundClassic();
+            Monster monster = Monsters.Boar;
+            classic.AddCombattant(monster, ClassicLocation.Row.BACK_RIGHT);
+            classic.Initialize();
+            classic.NextPhase();
+            classic.MoveAction(ClassicLocation.FrontRight);
         }
 
         [Fact]

@@ -42,6 +42,11 @@ namespace srd5 {
             BACK_RIGHT = 55
         }
 
+        public static readonly ClassicLocation BackLeft = new ClassicLocation(Row.BACK_LEFT);
+        public static readonly ClassicLocation FrontLeft = new ClassicLocation(Row.FRONT_LEFT);
+        public static readonly ClassicLocation FrontRight = new ClassicLocation(Row.FRONT_RIGHT);
+        public static readonly ClassicLocation BackRight = new ClassicLocation(Row.BACK_RIGHT);
+
         public Row Location { get; internal set; }
 
         public ClassicLocation(Row row) {

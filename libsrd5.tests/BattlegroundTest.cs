@@ -2,6 +2,7 @@ using Xunit;
 using System;
 
 namespace srd5 {
+    [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
     [Collection("SingleThreaded")]
     public class BattlegroundTest {
         [Fact]
@@ -86,11 +87,11 @@ namespace srd5 {
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.HitPoints = hero.HitPointsMax;
             hero.Equip(new Thing<Weapon>(Weapons.Greataxe));
-            Random.State = 1; // Fix deterministic random so that badger goes first
             ground.AddCombattant(hero, 1, 1);
             Monster badger = Monsters.GiantBadger;
             ground.AddCombattant(badger, 1, 2);
             ground.Initialize();
+            while (ground.CurrentCombattant == hero) ground.NextPhase();
             ground.NextPhase(); // skip move
             Assert.True(ground.MeleeAttackAction(hero));
             ground.NextPhase(); // skip bonus action

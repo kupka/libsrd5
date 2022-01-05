@@ -240,6 +240,23 @@ namespace srd5 {
         }
 
         /// <summary>
+        /// Current combattant uses their ranged attack against the target if able
+        /// </summary>
+        public bool RangedAttackAction(Combattant target) {
+            if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) return false;
+            if (currentPhase == TurnPhase.MOVE) return false;
+            if (target == null) throw new ArgumentException("target cannot be null");
+            if (target == CurrentCombattant) throw new ArgumentException("cannot attack self");
+            bool success = false;
+            if (currentPhase == TurnPhase.ACTION)
+                success = doFullRangedAttack(target);
+            else
+                success = doBonusRangedAttack(target);
+            if (success) NextPhase();
+            return success;
+        }
+
+        /// <summary>
         /// Current combattant casts a spell if able. Checks all relevant constraints, such as range and if the spell is prepared
         /// <summary>
         public bool SpellCastAction(Spell spell, SpellLevel slot, AvailableSpells availableSpells, params Combattant[] targets) {
@@ -285,9 +302,19 @@ namespace srd5 {
             bool success = false;
             int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
             Attack attack = CurrentCombattant.BonusAttack;
-            if (distance > attack.Reach) return false;
+            if (attack == null || distance > attack.Reach) return false;
             success = true;
-            doAttack(attack, target);
+            doAttack(attack, target, distance);
+            return success;
+        }
+
+        private bool doBonusRangedAttack(Combattant target) {
+            bool success = false;
+            int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
+            Attack attack = CurrentCombattant.BonusAttack;
+            if (attack == null || distance > attack.RangeLong) return false;
+            success = true;
+            doAttack(attack, target, distance, true);
             return success;
         }
 
@@ -297,16 +324,30 @@ namespace srd5 {
             foreach (Attack attack in CurrentCombattant.MeleeAttacks) {
                 if (distance > attack.Reach) continue; // skip attack when out of reach
                 success = true;
-                doAttack(attack, target);
+                doAttack(attack, target, distance);
             }
             return success;
         }
 
-        private void doAttack(Attack attack, Combattant target) {
+        private bool doFullRangedAttack(Combattant target) {
+            bool success = false;
+            int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
+            foreach (Attack attack in CurrentCombattant.MeleeAttacks) {
+                if (distance > attack.RangeLong) continue; // skip attack when out of range
+                success = true;
+                doAttack(attack, target, distance, true);
+            }
+            return success;
+        }
+
+        private void doAttack(Attack attack, Combattant target, int distance, bool ranged = false) {
             int attackRoll = Dice.D20.Value;
             // Determine advantage and disadvantage
-            bool hasAdvantage = CurrentCombattant.HasEffect(Effect.ADVANTAGE_ON_ATTACK) || target.HasEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
-            bool hasDisadvantage = CurrentCombattant.HasEffect(Effect.DISADVANTAGE_ON_ATTACK) || target.HasEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
+            bool hasAdvantage = CurrentCombattant.HasEffect(Effect.ADVANTAGE_ON_ATTACK)
+                                || target.HasEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            bool hasDisadvantage = CurrentCombattant.HasEffect(Effect.DISADVANTAGE_ON_ATTACK)
+                                || target.HasEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED)
+                                || (ranged && (distance <= 5 || distance >= attack.RangeNormal));
             if (hasAdvantage && !hasDisadvantage)
                 attackRoll = Dice.D20Advantage.Value;
             else if (hasDisadvantage && !hasAdvantage)
@@ -324,7 +365,7 @@ namespace srd5 {
             }
             // Check if auto critical hit conditions apply
             if (CurrentCombattant.HasEffect(Effect.AUTOMATIC_CRIT_ON_HIT)) criticalHit = true;
-            if (target.HasEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT)) criticalHit = true;
+            if (target.HasEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT) && distance <= 5) criticalHit = true;
             GlobalEvents.RolledAttack(CurrentCombattant, target, attackRoll, true, criticalHit);
             target.TakeDamage(attack.Damage, criticalHit);
             if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage, criticalHit);

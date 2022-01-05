@@ -86,12 +86,12 @@ namespace srd5 {
 
         private static void applyParalyzed(Combattant combattant) {
             applyStunned(combattant);
-            combattant.AddEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT);
+            combattant.AddEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
         }
 
         private static void unapplyParalyzed(Combattant combattant) {
             unapplyStunned(combattant);
-            combattant.RemoveEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT);
+            combattant.RemoveEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
         }
 
         private static void applyStunned(Combattant combattant) {

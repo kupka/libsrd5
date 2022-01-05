@@ -243,7 +243,7 @@ namespace srd5 {
             // Auto Crit
             setupBattleField2D(ref ground, ref hero, ref ogre);
             ground.NextPhase(); // skip move
-            ogre.AddEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT);
+            ogre.AddEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
             hero.AddEffect(Effect.AUTOMATIC_CRIT_ON_HIT);
             Assert.True(ground.MeleeAttackAction(ogre));
             // Incapacitated

@@ -36,5 +36,18 @@ namespace srd5 {
                 ogre.GetAbility(AbilityType.NONE);
             });
         }
+
+        [Fact]
+        public void ConditionTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            Assert.Empty(hero.Conditions);
+            Assert.Empty(hero.Effects);
+            foreach (ConditionType condition in Enum.GetValues(typeof(ConditionType))) {
+                hero.AddCondition(condition);
+                hero.RemoveCondition(condition);
+                Assert.Empty(hero.Conditions);
+                Assert.Empty(hero.Effects);
+            }
+        }
     }
 }

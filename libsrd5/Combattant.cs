@@ -94,14 +94,14 @@ namespace srd5 {
 
     public abstract class Combattant {
         public int Speed { get; internal set; } = 30;
-        public string Name { get; internal set; }
+        public string Name { get; set; }
         public Ability Strength { get; internal set; } = new Ability(AbilityType.STRENGTH, 10);
         public Ability Dexterity { get; internal set; } = new Ability(AbilityType.DEXTERITY, 10);
         public Ability Constitution { get; internal set; } = new Ability(AbilityType.CONSTITUTION, 10);
         public Ability Intelligence { get; internal set; } = new Ability(AbilityType.INTELLIGENCE, 10);
         public Ability Wisdom { get; internal set; } = new Ability(AbilityType.WISDOM, 10);
         public Ability Charisma { get; internal set; } = new Ability(AbilityType.CHARISMA, 10);
-        public int ArmorClass { get; internal set; }
+        public virtual int ArmorClass { get; internal set; }
         public int ArmorClassModifier { get; internal set; }
         public int HitPoints { get; set; }
         public virtual int HitPointsMax { get; internal set; }
@@ -186,13 +186,16 @@ namespace srd5 {
             if (IsImmune(type)) return;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;
+            GlobalEvents.ReceivedDamage(this, amount, damage.Type);
             HitPoints -= amount;
+            if (HitPoints <= 0) AddCondition(ConditionType.UNCONSCIOUS);
         }
 
         /// <summary>
         /// Heals the specified amount of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combattant.
         /// </summary>
         public void HealDamage(int amount) {
+            GlobalEvents.ReceivedHealing(this, amount);
             HitPoints = Math.Min(HitPoints + amount, HitPointsMax);
         }
 
@@ -247,5 +250,10 @@ namespace srd5 {
         }
 
     }
+
+    /// <summary>
+    /// Describes an event that shall be executed at the end of this combattant's turn. 
+    /// The event is considered finished when the delegate returns true.
+    /// </summary>
     public delegate bool EndOfTurnEvent(Combattant combattant);
 }

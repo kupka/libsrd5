@@ -197,7 +197,7 @@ namespace srd5 {
                         target.AddEndOfTurnEvent(delegate (Combattant combattant) {
                             bool success = combattant.DC(dc, AbilityType.WISDOM);
                             if (success) {
-                                target.RemoveCondition(ConditionType.PARALYZED);
+                                combattant.RemoveCondition(ConditionType.PARALYZED);
                             }
                             return success;
                         });

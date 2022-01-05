@@ -9,6 +9,11 @@ namespace srd5 {
         public SpellDuration Duration { get; private set; }
         public int AreaOfEffect { get; private set; }
         public int MaximumTargets { get; private set; }
+        public string Name {
+            get {
+                return ID.Name();
+            }
+        }
         private SpellCastEffect cast;
 
         public Spell(Spells.ID id, SpellSchool school, SpellLevel level, CastingTime castingTime,

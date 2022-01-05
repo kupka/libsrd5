@@ -31,11 +31,21 @@ namespace srd5 {
         public abstract int Distance(Location another);
     }
 
+    /// <summary>
+    /// Has front and back lines for left (usually heroes) and right (enemies) side of the screen. Classic JRPG-style.
+    /// </summary>
     public class ClassicLocation : Location {
         public enum Row {
-            FRONT,
-            BACK
+            BACK_LEFT = 0,
+            FRONT_LEFT = 25,
+            FRONT_RIGHT = 30,
+            BACK_RIGHT = 55
         }
+
+        public static readonly ClassicLocation BackLeft = new ClassicLocation(Row.BACK_LEFT);
+        public static readonly ClassicLocation FrontLeft = new ClassicLocation(Row.FRONT_LEFT);
+        public static readonly ClassicLocation FrontRight = new ClassicLocation(Row.FRONT_RIGHT);
+        public static readonly ClassicLocation BackRight = new ClassicLocation(Row.BACK_RIGHT);
 
         public Row Location { get; internal set; }
 
@@ -46,23 +56,36 @@ namespace srd5 {
         public override int Distance(Location another) {
             if (!(another is ClassicLocation)) throw new ArgumentException("another must be a ClassicLocation.");
             ClassicLocation classicAnother = (ClassicLocation)another;
-            if (this.Location == Row.FRONT) {
-                if (classicAnother.Location == Row.FRONT)
-                    return 5;
-                else
-                    return 25;
-            } else {
-                if (classicAnother.Location == Row.FRONT)
-                    return 25;
-                else
-                    return 45;
-            }
+            return Math.Max(Math.Abs((int)classicAnother.Location - (int)this.Location), 5);
         }
     }
 
     internal class ReverseComparer : System.Collections.IComparer {
         int IComparer.Compare(object x, object y) {
             return new CaseInsensitiveComparer().Compare(y, x);
+        }
+    }
+
+    public class BattleGroundClassic : Battleground {
+        private ClassicLocation[] locations = new ClassicLocation[0];
+
+        public override void Initialize() {
+            base.Initialize();
+            Array.Sort(initiativeRolls, locations, new ReverseComparer());
+            Turn = 1;
+        }
+
+        public override Location LocateCombattant(Combattant combattant) {
+            return locations[Array.IndexOf(combattants, combattant)];
+        }
+
+        protected override void SetCurrentLocation(Location location) {
+            locations[currentCombattant] = (ClassicLocation)location;
+        }
+
+        public void AddCombattant(Combattant combattant, ClassicLocation.Row row) {
+            AddCombattant(combattant);
+            Utils.Push<ClassicLocation>(ref locations, new ClassicLocation(row));
         }
     }
 
@@ -162,7 +185,9 @@ namespace srd5 {
         public void AddCombattant(Combattant combattant) {
             if (Array.IndexOf(combattants, combattant) >= 0) return;
             Utils.Push<Combattant>(ref combattants, combattant);
-            Utils.Push<int>(ref initiativeRolls, Dice.D20.Value + combattant.Dexterity.Modifier);
+            int roll = Dice.D20.Value + combattant.Dexterity.Modifier;
+            Utils.Push<int>(ref initiativeRolls, roll);
+            GlobalEvents.RolledInitiative(combattant, roll);
         }
 
         /// <summary>
@@ -288,12 +313,19 @@ namespace srd5 {
                 attackRoll = Dice.D20Disadvantage.Value;
             bool criticalHit = attackRoll == 20;
             bool criticalMiss = attackRoll == 1;
-            if (criticalMiss) return;
+            if (criticalMiss) {
+                GlobalEvents.RolledAttack(CurrentCombattant, target, attackRoll, false);
+                return;
+            }
             int modifiedAttack = attackRoll + attack.AttackBonus;
-            if (!criticalHit && modifiedAttack < target.ArmorClass) return;
+            if (!criticalHit && modifiedAttack < target.ArmorClass) {
+                GlobalEvents.RolledAttack(CurrentCombattant, target, attackRoll, false);
+                return;
+            }
             // Check if auto critical hit conditions apply
             if (CurrentCombattant.HasEffect(Effect.AUTOMATIC_CRIT_ON_HIT)) criticalHit = true;
             if (target.HasEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT)) criticalHit = true;
+            GlobalEvents.RolledAttack(CurrentCombattant, target, attackRoll, true, criticalHit);
             target.TakeDamage(attack.Damage, criticalHit);
             if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage, criticalHit);
         }

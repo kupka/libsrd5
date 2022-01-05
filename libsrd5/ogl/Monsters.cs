@@ -27,9 +27,12 @@ namespace srd5 {
 
     public struct Attacks {
         public static readonly Attack[] None = new Attack[0];
+        public static readonly Attack BoarTusk = new Attack("Tusk", 3, new Damage(DamageType.SLASHING, "1d6+1"));
         public static readonly Attack ClayGolemSlam = new Attack("Slam", 8, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5);
         public static readonly Attack GiantBadgerBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"));
         public static readonly Attack GiantBadgerClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+1"));
+        public static readonly Attack GoblinScimitar = new Attack("Scimitar", 4, new Damage(DamageType.SLASHING, "1d6+2"));
+        public static readonly Attack GoblinShortbow = new Attack("Shortbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 80, 320);
         public static readonly Attack NightHagClaws = new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d8+4"));
         public static readonly Attack OgreGreatclub = new Attack("Greatclub", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"));
         public static readonly Attack OgreJavelin = new Attack("Javelin", 6, new Damage(DamageType.PIERCING, "2d6+4"), 5, 30, 120);
@@ -40,11 +43,29 @@ namespace srd5 {
     }
 
     public struct Monsters {
+        public static Monster Boar {
+            get {
+                return new Monster(
+                    MonsterType.BEAST, "Boar", 13, 11, 12, 2, 9, 5, 11, "2d8+2", 40, ChallengeRating.QUARTER,
+                    new Attack[] { Attacks.BoarTusk }, Attacks.None, Size.MEDIUM
+                );
+            }
+        }
+
         public static Monster GiantBadger {
             get {
                 return new Monster(
                     MonsterType.BEAST, "Giant Badger", 13, 10, 15, 2, 12, 5, 10, "2d8+4", 30, ChallengeRating.QUARTER,
                     new Attack[] { Attacks.GiantBadgerBite, Attacks.GiantBadgerClaws }, Attacks.None, Size.MEDIUM
+                );
+            }
+        }
+
+        public static Monster Gobline {
+            get {
+                return new Monster(
+                    MonsterType.HUMANOID, "Goblin", 8, 14, 10, 10, 8, 8, 15, "2d6", 30, ChallengeRating.QUARTER,
+                    new Attack[] { Attacks.GoblinScimitar }, new Attack[] { Attacks.GoblinShortbow }, Size.SMALL
                 );
             }
         }
@@ -75,7 +96,7 @@ namespace srd5 {
         public static Monster Orc {
             get {
                 Monster orc = new Monster(
-                    MonsterType.HUMANOID, "Orc", 16, 12, 16, 7, 11, 10, 13, "2d8+6", 30, -2,
+                    MonsterType.HUMANOID, "Orc", 16, 12, 16, 7, 11, 10, 13, "2d8+6", 30, ChallengeRating.HALF,
                     new Attack[] { Attacks.OrcGreataxe }, new Attack[] { Attacks.OrcJavelin }, Size.MEDIUM, 0
                 );
                 return orc;
@@ -97,7 +118,7 @@ namespace srd5 {
         public static Monster Shadow {
             get {
                 Monster shadow = new Monster(
-                    MonsterType.UNDEAD, "Shadow", 6, 14, 13, 6, 10, 8, 12, "3d8+3", 40, -2,
+                    MonsterType.UNDEAD, "Shadow", 6, 14, 13, 6, 10, 8, 12, "3d8+3", 40, ChallengeRating.HALF,
                     new Attack[] { Attacks.ShadowStrengthDrain }, Attacks.None, Size.MEDIUM, 0
                 );
                 shadow.AddEffects(Effect.VULNERABILITY_RADIANT);

@@ -1,3 +1,5 @@
+using System;
+
 namespace srd5 {
     public enum ConditionType {
         BLINDED, // Disadvantage on attacks, Advantage on being attacked
@@ -13,9 +15,8 @@ namespace srd5 {
         GRAPPLED, // Speed = 0
         INCAPACITATED, // Cannot take actions and reactions
         INVISIBLE, // Advantage on attacks, Disadvantage on being attacked
-        PARALYZED, // Incapacitated & fail STR/DEX checks, advantage on being attacked, takes auto crits
-        PETRIFIED, // Incapacitated & fail STR/DEX checks, advantage on being attacked,
-                   // resistance against all damage, immune against poison and disease
+        PARALYZED, // Stunned & takes auto crits
+        PETRIFIED, // Stunned & resistance against all damage, immune against poison and disease
         POISONED,  // Disadvantage on ability and attack
         PRONE, // Disadvantage on attack, Advantage on being melee attacked, Disadvantage on being ranged attacked
         RESTRAINED, // Speed = 0, Disadvantage on attacks, Advantage on being attacked, Disadvantage on DEX saves
@@ -29,8 +30,17 @@ namespace srd5 {
                 case ConditionType.BLINDED:
                     applyBlinded(combattant);
                     break;
+                case ConditionType.INCAPACITATED:
+                    applyIncapacitated(combattant);
+                    break;
                 case ConditionType.PARALYZED:
                     applyParalyzed(combattant);
+                    break;
+                case ConditionType.STUNNED:
+                    applyStunned(combattant);
+                    break;
+                case ConditionType.UNCONSCIOUS:
+                    applyUnconcious(combattant);
                     break;
             }
         }
@@ -40,8 +50,17 @@ namespace srd5 {
                 case ConditionType.BLINDED:
                     unapplyBlinded(combattant);
                     break;
+                case ConditionType.INCAPACITATED:
+                    unapplyIncapacitated(combattant);
+                    break;
                 case ConditionType.PARALYZED:
                     unapplyParalyzed(combattant);
+                    break;
+                case ConditionType.STUNNED:
+                    unapplyStunned(combattant);
+                    break;
+                case ConditionType.UNCONSCIOUS:
+                    unapplyUnconcious(combattant);
                     break;
             }
         }
@@ -56,20 +75,51 @@ namespace srd5 {
             combattant.RemoveEffect(Effect.DISADVANTAGE_ON_ATTACK);
         }
 
-        private static void applyParalyzed(Combattant combattant) {
+        private static void applyIncapacitated(Combattant combattant) {
             combattant.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
-            combattant.AddEffect(Effect.FAIL_STRENGTH_CHECK);
-            combattant.AddEffect(Effect.FAIL_DEXERITY_CHECK);
-            combattant.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+        }
+
+        private static void unapplyIncapacitated(Combattant combattant) {
+            combattant.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
+        }
+
+
+        private static void applyParalyzed(Combattant combattant) {
+            applyStunned(combattant);
             combattant.AddEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT);
         }
 
         private static void unapplyParalyzed(Combattant combattant) {
-            combattant.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
+            unapplyStunned(combattant);
+            combattant.RemoveEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT);
+        }
+
+        private static void applyStunned(Combattant combattant) {
+            applyIncapacitated(combattant);
+            combattant.AddEffect(Effect.FAIL_STRENGTH_CHECK);
+            combattant.AddEffect(Effect.FAIL_DEXERITY_CHECK);
+            combattant.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+        }
+
+        private static void unapplyStunned(Combattant combattant) {
+            unapplyIncapacitated(combattant);
             combattant.RemoveEffect(Effect.FAIL_STRENGTH_CHECK);
             combattant.RemoveEffect(Effect.FAIL_DEXERITY_CHECK);
             combattant.RemoveEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
-            combattant.RemoveEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT);
+
+        }
+
+        private static void applyUnconcious(Combattant combattant) {
+            applyParalyzed(combattant);
+            if (combattant is CharacterSheet) {
+                CharacterSheet sheet = (CharacterSheet)combattant;
+                if (sheet.Inventory.MainHand != null) sheet.Unequip(sheet.Inventory.MainHand);
+                if (sheet.Inventory.OffHand != null) sheet.Unequip(sheet.Inventory.OffHand);
+            }
+        }
+
+        private static void unapplyUnconcious(Combattant combattant) {
+            unapplyParalyzed(combattant);
         }
 
     }

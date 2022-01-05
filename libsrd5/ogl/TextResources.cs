@@ -25,6 +25,19 @@ namespace srd5 {
         }
     }
 
+    public static class ClassTextResource {
+        public static string Name(this Class clazz) {
+            switch (clazz) {
+                case Class.DRUID:
+                    return "Druid";
+                case Class.BARBARIAN:
+                    return "Barbarian";
+                default:
+                    return Enum.GetName(typeof(Class), clazz) + ": (Name missing)";
+            }
+        }
+    }
+
     public static class EffectTextResource {
         public static string Name(this Effect effect) {
             string name = Enum.GetName(typeof(Effect), effect);
@@ -230,6 +243,105 @@ Once you have raged the number of times available for your barbarian level, you 
         }
     }
 
+    public static class ProficiencyTextResource {
+        public static string Name(this Proficiency proficiency) {
+            switch (proficiency) {
+                case Proficiency.LIGHT_ARMOR:
+                    return "Light Armor";
+                case Proficiency.MEDIUM_ARMOR:
+                    return "Medium Armor";
+                case Proficiency.HEAVY_ARMOR:
+                    return "Heavy Armor";
+                case Proficiency.SHIELDS:
+                    return "Shields";
+                case Proficiency.SIMPLE_MELEE_WEAPONS:
+                    return "Simple Melee Weapons";
+                case Proficiency.CLUB:
+                    return "Club";
+                case Proficiency.DAGGER:
+                    return "Dagger";
+                case Proficiency.GREATCLUB:
+                    return "Greatclub";
+                case Proficiency.HANDAXE:
+                    return "Handaxe";
+                case Proficiency.JAVELIN:
+                    return "Javelin";
+                case Proficiency.LIGHT_HAMMER:
+                    return "Light Hammer";
+                case Proficiency.MACE:
+                    return "Mace";
+                case Proficiency.QUARTERSTAFF:
+                    return "Quarterstaff";
+                case Proficiency.SICKLE:
+                    return "Sickle";
+                case Proficiency.SPEAR:
+                    return "Spear";
+                case Proficiency.SIMPLE_RANGED_WEAPONS:
+                    return "Simple Ranged Weapons";
+                case Proficiency.CROSSBOW_LIGHT:
+                    return "Light Crossbow";
+                case Proficiency.DARTS:
+                    return "Darts";
+                case Proficiency.SHORTBOW:
+                    return "Shortbow";
+                case Proficiency.SLING:
+                    return "Sling";
+                case Proficiency.MARTIAL_MELEE_WEAPONS:
+                    return "Martial Melee Weapons";
+                case Proficiency.BATTLEAXE:
+                    return "Battleaxe";
+                case Proficiency.FLAIL:
+                    return "Flail";
+                case Proficiency.GLAIVE:
+                    return "Glaive";
+                case Proficiency.GREATAXE:
+                    return "Greataxe";
+                case Proficiency.GREATSWORD:
+                    return "Greatsword";
+                case Proficiency.HALBERD:
+                    return "Halberd";
+                case Proficiency.LANCE:
+                    return "Lance";
+                case Proficiency.LONGSWORD:
+                    return "Longsword";
+                case Proficiency.MAUL:
+                    return "Maul";
+                case Proficiency.MORNINGSTAR:
+                    return "Morningstar";
+                case Proficiency.PIKE:
+                    return "Pike";
+                case Proficiency.RAPIER:
+                    return "Rapier";
+                case Proficiency.SCIMITAR:
+                    return "Scimitar";
+                case Proficiency.SHORTSWORD:
+                    return "Shortsword";
+                case Proficiency.TRIDENT:
+                    return "Trident";
+                case Proficiency.WAR_PICK:
+                    return "War Pick";
+                case Proficiency.WARHAMMER:
+                    return "Warhammer";
+                case Proficiency.WHIP:
+                    return "Whip";
+                case Proficiency.MARTIAL_RANGED_WEAPONS:
+                    return "Martial Ranged Weapons";
+                case Proficiency.BLOWGUN:
+                    return "Blowgun";
+                case Proficiency.CROSSBOW_HAND:
+                    return "Hand Crossbow";
+                case Proficiency.CROSSBOW_HEAVY:
+                    return "Heavy Crossbow";
+                case Proficiency.LONGBOW:
+                    return "Longbow";
+                case Proficiency.NET:
+                    return "Net";
+                default:
+                    return Enum.GetName(typeof(Proficiency), proficiency) + ": (Name missing)";
+            }
+        }
+    }
+
     public static class SpellTextResource {
         public static string Name(this Spells.ID spell) {
             switch (spell) {
@@ -342,6 +454,41 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Undead are once - living creatures brought to a horrifying state of undeath through the practice of necromantic magic or some unholy curse. Undead include walking corpses, such as vampires and zombies, as well as bodiless spirits, such as ghosts and specters.";
                 default:
                     return Enum.GetName(typeof(MonsterType), type) + ": (Description missing)";
+            }
+        }
+    }
+
+    public static class DamageTypeTextResource {
+        public static string Name(this DamageType damageType) {
+            switch (damageType) {
+                case DamageType.ACID:
+                    return "Acid";
+                case DamageType.BLUDGEONING:
+                    return "Bludgeoning";
+                case DamageType.COLD:
+                    return "Cold";
+                case DamageType.FIRE:
+                    return "Fire";
+                case DamageType.FORCE:
+                    return "Force";
+                case DamageType.LIGHTNING:
+                    return "Lightning";
+                case DamageType.NECROTIC:
+                    return "Necrotic";
+                case DamageType.PIERCING:
+                    return "Piercing";
+                case DamageType.POISON:
+                    return "Poison";
+                case DamageType.PSYCHIC:
+                    return "Psychic";
+                case DamageType.RADIANT:
+                    return "Radiant";
+                case DamageType.SLASHING:
+                    return "Slashing";
+                case DamageType.THUNDER:
+                    return "Thunder";
+                default:
+                    return Enum.GetName(typeof(DamageType), damageType) + ": (Name missing)";
             }
         }
     }

@@ -42,11 +42,15 @@ namespace srd5 {
                     return 1;
             }
         }
-        public new int ArmorClass {
+        public override int ArmorClass {
             get {
                 int ac = 10 + Dexterity.Modifier;
                 if (Inventory.Armor != null) {
                     ac = Inventory.Armor.Item.AC + Math.Min(Inventory.Armor.Item.MaxDexBonus, Dexterity.Modifier);
+                }
+                if (Inventory.OffHand != null && Inventory.OffHand.Item is Shield) {
+                    Shield shield = (Shield)Inventory.OffHand.Item;
+                    ac += shield.AC;
                 }
                 return ac + ArmorClassModifier;
             }
@@ -109,7 +113,6 @@ namespace srd5 {
         /// Otherwise, abilitypoints for spending are assigned.
         /// </summary>
         public CharacterSheet(Race race, bool classic = false) {
-            SetRace(race.CharacterRace());
             if (classic) {
                 Dices dices = new Dices("3d6");
                 Strength.BaseValue = Math.Max(dices.Roll(), dices.Roll());
@@ -121,6 +124,7 @@ namespace srd5 {
             } else {
                 AbilityPoints = 14;
             }
+            SetRace(race.CharacterRace());
         }
 
         public int GetSkillModifier(Skill skill) {
@@ -372,6 +376,7 @@ namespace srd5 {
                     Utils.Push<Dice>(ref hitDice, dice);
                     HitPoints += dice.Value + additionalHp + Constitution.Modifier;
                     updateAvailableSpells(level);
+                    RecalculateAttacks();
                     return;
                 }
             }
@@ -393,6 +398,7 @@ namespace srd5 {
                 }
             }
             updateAvailableSpells(newLevel);
+            RecalculateAttacks();
         }
 
         private void updateAvailableSpells(CharacterLevel level) {

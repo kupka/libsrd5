@@ -7,6 +7,9 @@ namespace srd5 {
         public void EquipOneHandTest() {
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
+            Assert.Equal(Race.HUMAN.Name(), sheet.Race.Name);
+            sheet.Name = "Foo Bar";
+            Assert.Equal("Foo Bar", sheet.Name);
             sheet.Equip(club);
             Assert.Equal(club, sheet.Inventory.MainHand);
         }
@@ -75,21 +78,21 @@ namespace srd5 {
             Thing<Weapon> twoHander = new Thing<Weapon>(Weapons.Greatsword);
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             Thing<Weapon> club2 = new Thing<Weapon>(Weapons.Club);
-            Thing<Shield> buckler = new Thing<Shield>(Shields.Buckler);
+            Thing<Shield> shield = new Thing<Shield>(Shields.Shield);
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             sheet.Equip(twoHander);
-            sheet.Equip(buckler);
+            sheet.Equip(shield);
             sheet.Equip(club);
             Assert.Equal(club, sheet.Inventory.MainHand);
-            Assert.True(buckler.Equals(sheet.Inventory.OffHand));
-            sheet.Unequip<Shield>(buckler);
+            Assert.True(shield.Equals(sheet.Inventory.OffHand));
+            sheet.Unequip<Shield>(shield);
             Assert.Null(sheet.Inventory.OffHand);
             sheet.Equip(twoHander);
             Assert.Equal(twoHander, sheet.Inventory.MainHand);
-            sheet.Equip(buckler);
+            sheet.Equip(shield);
             Assert.Null(sheet.Inventory.MainHand);
-            Assert.True(buckler.Equals(sheet.Inventory.OffHand));
-            sheet.Unequip<Shield>(buckler);
+            Assert.True(shield.Equals(sheet.Inventory.OffHand));
+            sheet.Unequip<Shield>(shield);
             sheet.Equip(club);
             sheet.Equip(club);
             sheet.Equip(club2);
@@ -99,10 +102,10 @@ namespace srd5 {
             Assert.Null(sheet.Inventory.MainHand);
             Assert.True(club2.Equals(sheet.Inventory.OffHand));
             Assert.False(club.Equals(sheet.Inventory.OffHand));
-            sheet.Equip(buckler);
+            sheet.Equip(shield);
             sheet.Equip(club);
             Assert.True(club.Equals(sheet.Inventory.MainHand));
-            Assert.True(buckler.Equals(sheet.Inventory.OffHand));
+            Assert.True(shield.Equals(sheet.Inventory.OffHand));
         }
 
         [Fact]
@@ -181,6 +184,7 @@ namespace srd5 {
             sheet.AddLevel(CharacterClasses.Druid);
             sheet.AddLevel(CharacterClasses.Druid);
             sheet.AddLevel(CharacterClasses.Druid);
+            Assert.Equal(Class.DRUID.Name(), sheet.Levels[0].Class.Name);
             Assert.Equal(1, sheet.AttackProficiency);
             sheet.AddLevel(CharacterClasses.Druid);
             sheet.AddLevel(CharacterClasses.Druid);
@@ -324,7 +328,6 @@ namespace srd5 {
             CharacterSheet sheet = new CharacterSheet(Race.HALF_ELF);
             sheet.Strength.BaseValue = 14;
             sheet.AddLevel(CharacterClasses.Barbarian);
-            sheet.RecalculateAttacks();
             Assert.Single(sheet.MeleeAttacks);
             Assert.Empty(sheet.RangedAttacks);
             Attack unarmed = sheet.MeleeAttacks[0];
@@ -343,8 +346,10 @@ namespace srd5 {
             sheet.AddEffect(Effect.THREE_EXTRA_ATTACKS);
             Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
             Thing<Weapon> dagger = new Thing<Weapon>(Weapons.Dagger);
+            int ac = sheet.ArmorClass;
             sheet.Equip(club);
             sheet.Equip(dagger);
+            Assert.Equal(ac, sheet.ArmorClass);
             Assert.Equal(4, sheet.MeleeAttacks.Length);
             Assert.Equal(dagger.Item.Name, sheet.BonusAttack.Name);
             sheet.RemoveEffect(Effect.THREE_EXTRA_ATTACKS);
@@ -380,8 +385,10 @@ namespace srd5 {
             Thing<Weapon> quarterstaff = new Thing<Weapon>(Weapons.Quarterstaff);
             sheet.Equip(quarterstaff);
             Assert.Equal(8, sheet.MeleeAttacks[0].Damage.Dices.Dice);
-            Thing<Shield> buckler = new Thing<Shield>(Shields.Buckler);
-            sheet.Equip(buckler);
+            int ac = sheet.ArmorClass;
+            Thing<Shield> shield = new Thing<Shield>(Shields.Shield);
+            sheet.Equip(shield);
+            Assert.Equal(ac + shield.Item.AC, sheet.ArmorClass);
             Assert.Equal(6, sheet.MeleeAttacks[0].Damage.Dices.Dice);
         }
 

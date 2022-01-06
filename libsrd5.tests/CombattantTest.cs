@@ -5,7 +5,6 @@ namespace srd5 {
     public class CombattantTest {
         [Fact]
         public void TakeDamageTest() {
-
             Combattant ogre = Monsters.Ogre;
             ogre.AddEffect(Effect.VULNERABILITY_COLD);
             ogre.AddEffect(Effect.IMMUNITY_ACID);
@@ -20,7 +19,17 @@ namespace srd5 {
             Assert.Equal(hp, ogre.HitPoints);
             Damage lightning = new Damage(DamageType.LIGHTNING, "1d12");
             ogre.TakeDamage(lightning.Type, lightning.Dices.Roll());
-            Assert.InRange<int>(ogre.HitPoints, hp - 12, hp - 1);
+            Assert.InRange<int>(ogre.HitPoints, hp - 6, hp - 1);
+            Assert.Throws<ArgumentException>(delegate {
+                ogre.TakeDamage(DamageType.ACID, -100);
+            });
+            Assert.Throws<ArgumentException>(delegate {
+                ogre.HealDamage(-100);
+            });
+            ogre.TakeDamage(DamageType.PIERCING, ogre.HitPoints);
+            Assert.True(ogre.HasCondition(ConditionType.UNCONSCIOUS));
+            ogre.HealDamage(1);
+            Assert.False(ogre.HasCondition(ConditionType.UNCONSCIOUS));
         }
 
         [Fact]

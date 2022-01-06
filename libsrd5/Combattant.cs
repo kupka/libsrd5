@@ -181,6 +181,7 @@ namespace srd5 {
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
         public void TakeDamage(DamageType type, int amount) {
+            if (amount <= 0) throw new ArgumentException("Amount must be a positive integer");
             if (IsImmune(type)) return;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;

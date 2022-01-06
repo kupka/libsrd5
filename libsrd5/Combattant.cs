@@ -180,21 +180,21 @@ namespace srd5 {
         /// <summary>
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
-        public void TakeDamage(Damage damage, bool critical = false) {
-            int amount = critical ? damage.Dices.RollCritical() : damage.Dices.Roll();
-            DamageType type = damage.Type;
+        public void TakeDamage(DamageType type, int amount) {
             if (IsImmune(type)) return;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;
-            GlobalEvents.ReceivedDamage(this, amount, damage.Type);
-            HitPoints -= amount;
-            if (HitPoints <= 0) AddCondition(ConditionType.UNCONSCIOUS);
+            GlobalEvents.ReceivedDamage(this, amount, type);
+            HitPoints = Math.Max(0, HitPoints - amount);
+            if (HitPoints == 0) AddCondition(ConditionType.UNCONSCIOUS);
         }
 
         /// <summary>
         /// Heals the specified amount of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combattant.
         /// </summary>
         public void HealDamage(int amount) {
+            if (amount <= 0) throw new ArgumentException("Amount must be a positive integer");
+            if (HitPoints == 0) RemoveCondition(ConditionType.UNCONSCIOUS);
             GlobalEvents.ReceivedHealing(this, amount);
             HitPoints = Math.Min(HitPoints + amount, HitPointsMax);
         }

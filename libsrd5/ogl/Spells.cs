@@ -95,8 +95,9 @@ namespace srd5 {
                 else
                     damage = new Damage(DamageType.ACID, "1d6");
                 foreach (Combattant target in targets) {
+                    int amount = damage.Dices.Roll();
                     if (!target.DC(dc, AbilityType.DEXTERITY))
-                        target.TakeDamage(damage);
+                        target.TakeDamage(damage.Type, amount);
                 }
             }
         );
@@ -108,7 +109,7 @@ namespace srd5 {
                 int missiles = (int)slot + 2;
                 for (int i = 0; i < missiles; i++) {
                     Combattant target = targets[i % targets.Length];
-                    target.TakeDamage(damage);
+                    target.TakeDamage(damage.Type, damage.Dices.Roll());
                 }
             }
         );

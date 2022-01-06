@@ -367,8 +367,13 @@ namespace srd5 {
             if (CurrentCombattant.HasEffect(Effect.AUTOMATIC_CRIT_ON_HIT)) criticalHit = true;
             if (target.HasEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT) && distance <= 5) criticalHit = true;
             GlobalEvents.RolledAttack(CurrentCombattant, target, attackRoll, true, criticalHit);
-            target.TakeDamage(attack.Damage, criticalHit);
-            if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage, criticalHit);
+            if (criticalHit) {
+                target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.RollCritical());
+                if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.RollCritical());
+            } else {
+                target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll());
+                if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.Roll());
+            }
         }
 
         /// <summary>

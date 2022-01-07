@@ -492,4 +492,43 @@ Once you have raged the number of times available for your barbarian level, you 
             }
         }
     }
+
+    public static class AbilityTextResource {
+        public static string Name(this AbilityType ability) {
+            switch (ability) {
+                case AbilityType.STRENGTH:
+                    return "Strength";
+                case AbilityType.DEXTERITY:
+                    return "Dexterity";
+                case AbilityType.CONSTITUTION:
+                    return "Constitution";
+                case AbilityType.INTELLIGENCE:
+                    return "Intelligence";
+                case AbilityType.WISDOM:
+                    return "Wisdom";
+                case AbilityType.CHARISMA:
+                    return "Charisma";
+                default:
+                    return Enum.GetName(typeof(AbilityType), ability) + ": (Name missing)";
+            }
+        }
+        public static string Description(this AbilityType ability) {
+            switch (ability) {
+                case AbilityType.STRENGTH:
+                    return "Strength measures bodily power, athletic training, and the extent to which you can exert raw physical force.";
+                case AbilityType.DEXTERITY:
+                    return "Dexterity measures agility, reflexes, and balance.";
+                case AbilityType.CONSTITUTION:
+                    return "Constitution measures health, stamina, and vital force.";
+                case AbilityType.INTELLIGENCE:
+                    return "Intelligence measures mental acuity, accuracy of recall, and the ability to reason.";
+                case AbilityType.WISDOM:
+                    return "Wisdom reflects how attuned you are to the world around you and represents perceptiveness and intuition.";
+                case AbilityType.CHARISMA:
+                    return "Charisma measures your ability to interact effectively with others. It includes such factors as confidence and eloquence, and it can represent a charming or commanding personality.";
+                default:
+                    return Enum.GetName(typeof(AbilityType), ability) + ": (Description missing)";
+            }
+        }
+    }
 }

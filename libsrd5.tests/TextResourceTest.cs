@@ -80,5 +80,14 @@ namespace srd5 {
                 Assert.NotNull(type.Name());
             }
         }
+
+
+        [Fact]
+        public void AbilityTypeTest() {
+            foreach (AbilityType type in Enum.GetValues(typeof(AbilityType))) {
+                Assert.NotNull(type.Name());
+                Assert.NotNull(type.Description());
+            }
+        }
     }
 }

@@ -2,6 +2,8 @@ using System;
 using Xunit;
 
 namespace srd5 {
+    [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
+    [Collection("SingleThreaded")]
     public class CombattantTest {
         [Fact]
         public void TakeDamageTest() {

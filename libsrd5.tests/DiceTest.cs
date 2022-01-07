@@ -122,31 +122,10 @@ namespace srd5 {
         }
 
         [Fact]
-        public void CriticalDCTest() {
-            bool criticalSuccess = false;
-            bool criticalFail = false;
-            for (int i = 0; i < 1000; i++) {
-                if (Dices.DC(35, new Ability(AbilityType.STRENGTH, 15)))
-                    criticalSuccess = true;
-            }
-            for (int i = 0; i < 1000; i++) {
-                if (!Dices.DC(0, new Ability(AbilityType.STRENGTH, 15)))
-                    criticalFail = true;
-            }
-            Assert.True(criticalFail && criticalSuccess);
-        }
-
-        [Fact]
         public void DicesConstructorTest() {
             Assert.Equal("2d6+3", new Dices(2, 6, 3).ToString());
             Assert.Equal("1d12", new Dices(1, 12, 0).ToString());
             Assert.Equal("3d8-2", new Dices(3, 8, -2).ToString());
-        }
-
-        [Fact]
-        public void DCTest() {
-            Assert.True(Dices.DC(2, new Ability(AbilityType.WISDOM, 14), true, false));
-            Assert.False(Dices.DC(19, new Ability(AbilityType.STRENGTH, 8), false, true));
         }
     }
 }

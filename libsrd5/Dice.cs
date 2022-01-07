@@ -278,23 +278,6 @@ namespace srd5 {
             return value;
         }
 
-        /// <summary>
-        /// Roll a D20 dice to check against a DC (difficulty check) with the given Ability as its modifier
-        /// </summary>
-        internal static bool DC(int dc, Ability ability, bool advantage = false, bool disadvantage = false) {
-            Dice d20 = srd5.Dice.D20;
-            if (advantage && !disadvantage) {
-                d20 = srd5.Dice.D20Advantage;
-            }
-            if (disadvantage && !advantage) {
-                d20 = srd5.Dice.D20Disadvantage;
-            }
-            onDiceRolled(d20);
-            if (d20.Value == 20) return true;
-            if (d20.Value == 1) return false;
-            return d20.Value + ability.Modifier >= dc;
-        }
-
         // Event Handling
         public static event EventHandler<DiceRolledEvent> DiceRolled;
 

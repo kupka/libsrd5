@@ -96,8 +96,12 @@ namespace srd5 {
                     damage = new Damage(DamageType.ACID, "1d6");
                 foreach (Combattant target in targets) {
                     int amount = damage.Dices.Roll();
-                    if (!target.DC(dc, AbilityType.DEXTERITY))
+                    if (!target.DC(dc, AbilityType.DEXTERITY)) {
+                        GlobalEvents.AffectBySpell(caster, target, true);
                         target.TakeDamage(damage.Type, amount);
+                    } else {
+                        GlobalEvents.AffectBySpell(caster, target, false);
+                    }
                 }
             }
         );
@@ -109,6 +113,7 @@ namespace srd5 {
                 int missiles = (int)slot + 2;
                 for (int i = 0; i < missiles; i++) {
                     Combattant target = targets[i % targets.Length];
+                    GlobalEvents.AffectBySpell(caster, target, true);
                     target.TakeDamage(damage.Type, damage.Dices.Roll());
                 }
             }
@@ -119,9 +124,13 @@ namespace srd5 {
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 if (targets[0] is Monster) {
                     Monster monster = (Monster)targets[0];
-                    if (monster.Type == MonsterType.CONSTRUCT || monster.Type == MonsterType.UNDEAD) return;
+                    if (monster.Type == MonsterType.CONSTRUCT || monster.Type == MonsterType.UNDEAD) {
+                        GlobalEvents.AffectBySpell(caster, monster, false);
+                        return;
+                    }
                 }
                 int dices = (int)slot;
+                GlobalEvents.AffectBySpell(caster, targets[0], true);
                 Dices healed = new Dices(dices, 8, modifier);
                 targets[0].HealDamage(healed.Roll());
             }
@@ -136,12 +145,22 @@ namespace srd5 {
             ID.SHILLELAGH, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.BONUS_ACTION, 0, VSM,
             SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 0, delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 // can only be cast by PCs or NPCs
-                if (!(caster is CharacterSheet)) return;
+                if (!(caster is CharacterSheet)) {
+                    GlobalEvents.AffectBySpell(caster, caster, false);
+                    return;
+                };
                 CharacterSheet sheet = (CharacterSheet)caster;
                 // spell requires a quarterstaff or club
-                if (sheet.Inventory.MainHand == null) return;
-                if (!sheet.Inventory.MainHand.Item.Equals(Weapons.Club) && !sheet.Inventory.MainHand.Item.Equals(Weapons.Quarterstaff)) return;
+                if (sheet.Inventory.MainHand == null) {
+                    GlobalEvents.AffectBySpell(caster, caster, false);
+                    return;
+                }
+                if (!sheet.Inventory.MainHand.Item.Equals(Weapons.Club) && !sheet.Inventory.MainHand.Item.Equals(Weapons.Quarterstaff)) {
+                    GlobalEvents.AffectBySpell(caster, caster, false);
+                    return;
+                }
                 // replace melee attacks by shillelagh attacks
+                GlobalEvents.AffectBySpell(caster, caster, true);
                 foreach (Attack attack in sheet.MeleeAttacks) {
                     attack.Damage.Dices = new Dices(1, 8, modifier);
                     attack.AttackBonus = modifier + sheet.Proficiency;
@@ -154,10 +173,14 @@ namespace srd5 {
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 if (targets[0] is Monster) {
                     Monster monster = (Monster)targets[0];
-                    if (monster.Type == MonsterType.CONSTRUCT || monster.Type == MonsterType.UNDEAD) return;
+                    if (monster.Type == MonsterType.CONSTRUCT || monster.Type == MonsterType.UNDEAD) {
+                        GlobalEvents.AffectBySpell(caster, monster, false);
+                        return;
+                    };
                 }
                 int dices = (int)slot;
                 Dices healed = new Dices(dices, 4, modifier);
+                GlobalEvents.AffectBySpell(caster, targets[0], true);
                 targets[0].HealDamage(healed.Roll());
             }
         );
@@ -171,10 +194,14 @@ namespace srd5 {
                     // only affect humanoid monsters
                     if (target is Monster) {
                         Monster monster = (Monster)target;
-                        if (monster.Type != MonsterType.HUMANOID) continue;
+                        if (monster.Type != MonsterType.HUMANOID) {
+                            GlobalEvents.AffectBySpell(caster, monster, false);
+                            continue;
+                        }
                     }
                     // Wisdom save with advantage since we assume a fight
                     if (!target.DC(dc, AbilityType.WISDOM, true)) {
+                        GlobalEvents.AffectBySpell(caster, target, true);
                         target.AddCondition(ConditionType.CHARMED);
                     }
                 }
@@ -190,10 +217,14 @@ namespace srd5 {
                     // only affect humanoid monsters
                     if (target is Monster) {
                         Monster monster = (Monster)target;
-                        if (monster.Type != MonsterType.HUMANOID) continue;
+                        if (monster.Type != MonsterType.HUMANOID) {
+                            GlobalEvents.AffectBySpell(caster, monster, false);
+                            continue;
+                        }
                     }
                     // Wisdom save
                     if (!target.DC(dc, AbilityType.WISDOM)) {
+                        GlobalEvents.AffectBySpell(caster, target, true);
                         target.AddCondition(ConditionType.PARALYZED);
                         target.AddEndOfTurnEvent(delegate (Combattant combattant) {
                             bool success = combattant.DC(dc, AbilityType.WISDOM);

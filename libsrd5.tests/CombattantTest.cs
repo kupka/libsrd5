@@ -58,5 +58,28 @@ namespace srd5 {
                 Assert.Empty(hero.Effects);
             }
         }
+
+        [Fact]
+        public void CriticalDCTest() {
+            Combattant ogre = Monsters.Ogre;
+            bool criticalSuccess = false;
+            bool criticalFail = false;
+            for (int i = 0; i < 1000; i++) {
+                if (ogre.DC(35, AbilityType.STRENGTH))
+                    criticalSuccess = true;
+            }
+            for (int i = 0; i < 1000; i++) {
+                if (!ogre.DC(0, AbilityType.STRENGTH))
+                    criticalFail = true;
+            }
+            Assert.True(criticalFail && criticalSuccess);
+        }
+
+        [Fact]
+        public void DCTest() {
+            Combattant orc = Monsters.Orc;
+            Assert.True(orc.DC(2, AbilityType.WISDOM, true, false));
+            Assert.False(orc.DC(19, AbilityType.STRENGTH, false, true));
+        }
     }
 }

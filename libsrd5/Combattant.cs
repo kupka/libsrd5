@@ -145,12 +145,14 @@ namespace srd5 {
             if (HasEffect(srd5.Effects.Immunity(condition))) return false;
             if (Utils.PushUnique<ConditionType>(ref conditions, condition))
                 condition.Apply(this);
+            GlobalEvents.ChangedCondition(this, condition);
             return true;
         }
         public void RemoveCondition(ConditionType condition) {
             RemoveResult result = Utils.RemoveSingle<ConditionType>(ref conditions, condition);
             if (result == RemoveResult.REMOVED_AND_GONE)
                 condition.Unapply(this);
+            GlobalEvents.ChangedCondition(this, condition, true);
         }
 
         public bool HasCondition(ConditionType condition) {
@@ -226,9 +228,22 @@ namespace srd5 {
         /// Roll a DC (difficulty check) against the specified Ability
         /// </summary>
         public bool DC(int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
-            if (type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) return false;
-            if (type == AbilityType.DEXTERITY && HasEffect(Effect.FAIL_DEXERITY_CHECK)) return false;
-            return Dices.DC(dc, GetAbility(type), advantage, disadvantage);
+            Ability ability = GetAbility(type);
+            Dice d20 = srd5.Dice.D20;
+            if (advantage && !disadvantage) {
+                d20 = srd5.Dice.D20Advantage;
+            }
+            if (disadvantage && !advantage) {
+                d20 = srd5.Dice.D20Disadvantage;
+            }
+            Dices.onDiceRolled(d20);
+            bool success = d20.Value + ability.Modifier >= dc;
+            if (d20.Value == 20) success = true;
+            if (d20.Value == 1) success = false;
+            if (type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) success = false;
+            if (type == AbilityType.DEXTERITY && HasEffect(Effect.FAIL_DEXERITY_CHECK)) success = false;
+            GlobalEvents.RolledDC(this, ability, dc, d20.Value, success);
+            return success;
         }
 
 

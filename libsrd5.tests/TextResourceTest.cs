@@ -42,6 +42,8 @@ namespace srd5 {
             Assert.NotNull(MonsterTextResource.Name((MonsterType)(-1)));
             Assert.NotNull(ProficiencyTextResource.Name((Proficiency)(-1)));
             Assert.NotNull(DamageTypeTextResource.Name((DamageType)(-1)));
+            Assert.NotNull(ConditionTypeTextResource.Name((ConditionType)(-1)));
+            Assert.NotNull(ConditionTypeTextResource.Description((ConditionType)(-1)));
         }
 
         [Fact]
@@ -85,6 +87,14 @@ namespace srd5 {
         [Fact]
         public void AbilityTypeTest() {
             foreach (AbilityType type in Enum.GetValues(typeof(AbilityType))) {
+                Assert.NotNull(type.Name());
+                Assert.NotNull(type.Description());
+            }
+        }
+
+        [Fact]
+        public void ConditionTypeTest() {
+            foreach (ConditionType type in Enum.GetValues(typeof(ConditionType))) {
                 Assert.NotNull(type.Name());
                 Assert.NotNull(type.Description());
             }

@@ -120,19 +120,21 @@ namespace srd5 {
 
         public class SpellAffection : EventArgs {
             public Combattant Caster { get; private set; }
+            public Spells.ID Spell { get; private set; }
             public Combattant Target { get; private set; }
             public bool Affected { get; private set; }
 
-            public SpellAffection(Combattant caster, Combattant target, bool affected) {
+            public SpellAffection(Combattant caster, Spells.ID spell, Combattant target, bool affected) {
                 Caster = caster;
+                Spell = spell;
                 Target = target;
                 Affected = affected;
             }
         }
 
-        internal static void AffectBySpell(Combattant caster, Combattant target, bool affected) {
+        internal static void AffectBySpell(Combattant caster, Spells.ID spell, Combattant target, bool affected) {
             if (Handlers == null) return;
-            Handlers(EventTypes.SPELL, new SpellAffection(caster, target, affected));
+            Handlers(EventTypes.SPELL, new SpellAffection(caster, spell, target, affected));
         }
     }
 }

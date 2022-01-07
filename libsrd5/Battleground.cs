@@ -386,7 +386,19 @@ namespace srd5 {
         /// </summary>
         protected abstract void SetCurrentLocation(Location location);
 
+        /// <summary>
+        /// Get the location of the current active combattant
+        /// </summary>
+        protected Location GetCurrentLocation() {
+            return LocateCombattant(CurrentCombattant);
+        }
 
+        /// <summary>
+        /// Returns the distance between the current combattant and the target.
+        /// </summary>
+        public int Distance(Combattant target) {
+            return GetCurrentLocation().Distance(LocateCombattant(target));
+        }
 
         // Events
         public event EventHandler<BattlegroundEvent> EventSubscription;

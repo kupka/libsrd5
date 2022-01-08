@@ -3,6 +3,7 @@ using System;
 namespace srd5 {
     public static class GlobalEvents {
         public enum EventTypes {
+            ACTION_FAILED,
             INITIATIVE,
             ATTACKED,
             DAMAGED,
@@ -30,13 +31,15 @@ namespace srd5 {
 
         public class AttackRolled : EventArgs {
             public Combattant Attacker { get; private set; }
+            public Attack Attack { get; private set; }
             public Combattant Target { get; private set; }
             public int Roll { get; private set; }
             public bool Hit { get; private set; }
             public bool CriticalHit { get; private set; }
 
-            public AttackRolled(Combattant attacker, Combattant target, int roll, bool hit, bool criticalHit) {
+            public AttackRolled(Combattant attacker, Attack attack, Combattant target, int roll, bool hit, bool criticalHit) {
                 Attacker = attacker;
+                Attack = attack;
                 Target = target;
                 Roll = roll;
                 Hit = hit;
@@ -44,9 +47,9 @@ namespace srd5 {
             }
         }
 
-        internal static void RolledAttack(Combattant attacker, Combattant target, int roll, bool hit, bool criticalHit = false) {
+        internal static void RolledAttack(Combattant attacker, Attack attack, Combattant target, int roll, bool hit, bool criticalHit = false) {
             if (Handlers == null) return;
-            Handlers(EventTypes.ATTACKED, new AttackRolled(attacker, target, roll, hit, criticalHit));
+            Handlers(EventTypes.ATTACKED, new AttackRolled(attacker, attack, target, roll, hit, criticalHit));
         }
 
         public class DamageReceived : EventArgs {
@@ -135,6 +138,31 @@ namespace srd5 {
         internal static void AffectBySpell(Combattant caster, Spells.ID spell, Combattant target, bool affected) {
             if (Handlers == null) return;
             Handlers(EventTypes.SPELL, new SpellAffection(caster, spell, target, affected));
+        }
+
+        public class ActionFailed : EventArgs {
+            public enum Reasons {
+                CANNOT_TAKE_ACTIONS,
+                WRONG_PHASE,
+                TARGET_OUT_OF_RANGE,
+                WRONG_NUMBER_OF_TARGETS,
+                SPELL_NOT_KNOWN,
+                SPELL_NOT_PREPARED,
+                SPELLSLOT_EMPTY,
+
+            }
+            public Combattant Initiator { get; private set; }
+            public Reasons Reason { get; private set; }
+
+            public ActionFailed(Combattant initiator, Reasons reason) {
+                Initiator = initiator;
+                Reason = reason;
+            }
+        }
+
+        internal static void FailAction(Combattant initiator, ActionFailed.Reasons reason) {
+            if (Handlers == null) return;
+            Handlers(EventTypes.ACTION_FAILED, new ActionFailed(initiator, reason));
         }
     }
 }

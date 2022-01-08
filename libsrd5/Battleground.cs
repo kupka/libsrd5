@@ -243,8 +243,14 @@ namespace srd5 {
         /// Current combattant uses their ranged attack against the target if able
         /// </summary>
         public bool RangedAttackAction(Combattant target) {
-            if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) return false;
-            if (currentPhase == TurnPhase.MOVE) return false;
+            if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) {
+                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.CANNOT_TAKE_ACTIONS);
+                return false;
+            }
+            if (currentPhase == TurnPhase.MOVE) {
+                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_PHASE);
+                return false;
+            }
             if (target == null) throw new ArgumentException("target cannot be null");
             if (target == CurrentCombattant) throw new ArgumentException("cannot attack self");
             bool success = false;
@@ -252,6 +258,9 @@ namespace srd5 {
                 success = doFullRangedAttack(target);
             else
                 success = doBonusRangedAttack(target);
+            if (!success) {
+                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.TARGET_OUT_OF_RANGE);
+            }
             if (success) NextPhase();
             return success;
         }
@@ -260,35 +269,58 @@ namespace srd5 {
         /// Current combattant casts a spell if able. Checks all relevant constraints, such as range and if the spell is prepared
         /// <summary>
         public bool SpellCastAction(Spell spell, SpellLevel slot, AvailableSpells availableSpells, params Combattant[] targets) {
-            if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) return false;
+            if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) {
+                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.CANNOT_TAKE_ACTIONS);
+                return false;
+            }
             // check if phase is valid for spell
-            if (currentPhase == TurnPhase.BONUS_ACTION && spell.CastingTime != CastingTime.BONUS_ACTION)
+            if (currentPhase == TurnPhase.BONUS_ACTION && spell.CastingTime != CastingTime.BONUS_ACTION) {
+                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_PHASE);
                 return false;
-            else if (currentPhase == TurnPhase.MOVE)
+            } else if (currentPhase == TurnPhase.MOVE) {
+                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_PHASE);
                 return false;
+            }
             // check if spell is known
-            if (Array.IndexOf(availableSpells.KnownSpells, spell) == -1) return false;
+            if (Array.IndexOf(availableSpells.KnownSpells, spell) == -1) {
+                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.SPELL_NOT_KNOWN);
+                return false;
+            }
             // check if spell is prepared
             if (availableSpells.CharacterClass.MustPrepareSpells == true
                     && Array.IndexOf(availableSpells.PreparedSpells, spell) == -1
-                    && Array.IndexOf(availableSpells.BonusPreparedSpells, spell) == -1)
+                    && Array.IndexOf(availableSpells.BonusPreparedSpells, spell) == -1) {
+                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.SPELL_NOT_PREPARED);
                 return false;
+            }
             // check if spell allows amount of targets
-            if (spell.MaximumTargets < targets.Length) return false;
+            if (spell.MaximumTargets < targets.Length) {
+                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_NUMBER_OF_TARGETS);
+                return false;
+            }
             // check if targets are in range
             foreach (Combattant target in targets) {
                 int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
-                if (distance > spell.Range) return false;
+                if (distance > spell.Range) {
+                    GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.TARGET_OUT_OF_RANGE);
+                    return false;
+                }
             }
             // if the spell has an area of effect, check that all targets are within this area of the first target
             if (spell.AreaOfEffect > 0) {
                 for (int i = 1; i < targets.Length; i++) {
                     int distance = LocateCombattant(targets[0]).Distance(LocateCombattant(targets[i]));
-                    if (distance > spell.AreaOfEffect) return false;
+                    if (distance > spell.AreaOfEffect) {
+                        GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.TARGET_OUT_OF_RANGE);
+                        return false;
+                    }
                 }
             }
             // Check if slot is available
-            if (availableSpells.SlotsCurrent[(int)slot] == 0) return false;
+            if (availableSpells.SlotsCurrent[(int)slot] <= 0) {
+                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.SPELLSLOT_EMPTY);
+                return false;
+            }
             // Expend slot if not Cantrip
             if (slot != SpellLevel.CANTRIP) availableSpells.SlotsCurrent[(int)slot]--;
             // Cast Spell
@@ -355,18 +387,18 @@ namespace srd5 {
             bool criticalHit = attackRoll == 20;
             bool criticalMiss = attackRoll == 1;
             if (criticalMiss) {
-                GlobalEvents.RolledAttack(CurrentCombattant, target, attackRoll, false);
+                GlobalEvents.RolledAttack(CurrentCombattant, attack, target, attackRoll, false);
                 return;
             }
             int modifiedAttack = attackRoll + attack.AttackBonus;
             if (!criticalHit && modifiedAttack < target.ArmorClass) {
-                GlobalEvents.RolledAttack(CurrentCombattant, target, attackRoll, false);
+                GlobalEvents.RolledAttack(CurrentCombattant, attack, target, attackRoll, false);
                 return;
             }
             // Check if auto critical hit conditions apply
             if (CurrentCombattant.HasEffect(Effect.AUTOMATIC_CRIT_ON_HIT)) criticalHit = true;
             if (target.HasEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT) && distance <= 5) criticalHit = true;
-            GlobalEvents.RolledAttack(CurrentCombattant, target, attackRoll, true, criticalHit);
+            GlobalEvents.RolledAttack(CurrentCombattant, attack, target, attackRoll, true, criticalHit);
             if (criticalHit) {
                 target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.RollCritical());
                 if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.RollCritical());

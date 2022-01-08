@@ -6,7 +6,7 @@ namespace srd5 {
     [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
     [Collection("SingleThreaded")]
     public class GlobalEventsTest {
-        private int initiative = 0, attacked = 0, healed = 0, damaged = 0, dc = 0, conditions = 0, spells = 0, unkown = 0;
+        private int initiative = 0, attacked = 0, healed = 0, damaged = 0, dc = 0, conditions = 0, spells = 0, failedAction = 0, unkown = 0;
         private void eventListener(object sender, EventArgs args) {
             if (GlobalEvents.EventTypes.INITIATIVE.Equals(sender)) {
                 initiative++;
@@ -22,6 +22,8 @@ namespace srd5 {
                 conditions++;
             } else if (GlobalEvents.EventTypes.SPELL.Equals(sender)) {
                 spells++;
+            } else if (GlobalEvents.EventTypes.ACTION_FAILED.Equals(sender)) {
+                failedAction++;
             } else {
                 unkown++;
             }
@@ -45,6 +47,7 @@ namespace srd5 {
             Assert.False(dc == 0);
             Assert.False(conditions == 0);
             Assert.False(spells == 0);
+            Assert.False(failedAction == 0);
             Assert.True(unkown == 0);
         }
     }

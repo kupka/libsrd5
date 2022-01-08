@@ -92,7 +92,7 @@ namespace srd5 {
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.HitPoints = hero.HitPointsMax;
-            hero.Equip(new Thing<Weapon>(Weapons.Greataxe));
+            hero.Equip(Weapons.Greataxe);
             ground.AddCombattant(hero, 1, 1);
             Monster badger = Monsters.GiantBadger;
             ground.AddCombattant(badger, 1, 2);
@@ -125,7 +125,7 @@ namespace srd5 {
             hero.Dexterity.BaseValue = 10;
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.HitPoints = hero.HitPointsMax;
-            hero.Equip(new Thing<Weapon>(Weapons.Greataxe));
+            hero.Equip(Weapons.Greataxe);
             hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"));
             Monster badger = Monsters.GiantBadger;
             ground.AddCombattant(hero, 1, 1);
@@ -151,7 +151,7 @@ namespace srd5 {
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.HitPoints = hero.HitPointsMax;
-            hero.Equip(new Thing<Weapon>(Weapons.Greataxe));
+            hero.Equip(Weapons.Greataxe);
             Random.State = 3; // Fix deterministic random so that ogre goes first
             ground.AddCombattant(hero, 1, 1);
             Monster ogre = Monsters.Ogre;
@@ -185,7 +185,7 @@ namespace srd5 {
             hero.Strength.BaseValue = 18;
             hero.Dexterity.BaseValue = 10;
             hero.AddLevel(CharacterClasses.Barbarian);
-            hero.Equip(new Thing<Weapon>(Weapons.Battleaxe));
+            hero.Equip(Weapons.Battleaxe);
             Random.State = 1; // Fix deterministic random so that hero goes first
             ground.AddCombattant(hero, 1, 1);
             Monster ogre = Monsters.Ogre;
@@ -202,7 +202,7 @@ namespace srd5 {
             hero.Strength.BaseValue = 18;
             hero.Dexterity.BaseValue = 10;
             hero.AddLevel(CharacterClasses.Barbarian);
-            hero.Equip(new Thing<Weapon>(Weapons.Battleaxe));
+            hero.Equip(Weapons.Battleaxe);
             Random.State = 1; // Fix deterministic random so that hero goes first
             ground.AddCombattant(hero, 1, 1);
             ogre = Monsters.Ogre;
@@ -352,9 +352,9 @@ namespace srd5 {
             CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF, true);
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.Name = "Boldo";
-            hero.Equip(new Thing<Shield>(Shields.Shield));
-            hero.Equip(new Thing<Weapon>(Weapons.Longsword));
-            hero.Equip(new Thing<Armor>(Armors.StuddedLeatherArmor));
+            hero.Equip(Shields.Shield);
+            hero.Equip(Weapons.Longsword);
+            hero.Equip(Armors.StuddedLeatherArmor);
             Monster boar = Monsters.Orc;
             BattleGroundClassic battle = new BattleGroundClassic();
             battle.AddCombattant(hero, ClassicLocation.Row.FRONT_LEFT);

@@ -99,7 +99,10 @@ namespace srd5 {
             for (int i = 0; i < 10; i++) {
                 hero = new CharacterSheet(Race.HALF_ELF, true);
                 hero.AddLevel(CharacterClasses.Druid);
-                hero.Equip(new Thing<Weapon>(Weapons.Club));
+                if (i % 2 == 0)
+                    hero.Equip(Weapons.Club);
+                else
+                    hero.Equip(Weapons.Quarterstaff);
                 Assert.Equal(hero.Proficiency + hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
                 Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP, hero.Wisdom.Modifier);
                 Assert.Equal(hero.Proficiency + hero.Wisdom.Modifier, hero.MeleeAttacks[0].AttackBonus);
@@ -107,7 +110,7 @@ namespace srd5 {
             // Also check with wrong weapon
             hero = new CharacterSheet(Race.HALF_ELF, true);
             hero.AddLevel(CharacterClasses.Druid);
-            hero.Equip(new Thing<Weapon>(Weapons.Greataxe));
+            hero.Equip(Weapons.Greataxe);
             Assert.Equal(hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
             Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP, hero.Wisdom.Modifier);
             Assert.Equal(hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);

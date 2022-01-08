@@ -4,10 +4,10 @@ using Xunit;
 namespace srd5 {
     public class ItemTest {
         [Fact]
-        public void EqualTest() {
+        public void NameEqualTest() {
             Weapon club1 = Weapons.Club;
             Weapon club2 = Weapons.Club;
-            Assert.Equal(club1, club2);
+            Assert.Equal(club1.Name, club2.Name);
         }
 
         [Fact]
@@ -19,8 +19,8 @@ namespace srd5 {
 
         [Fact]
         public void ThingsUnEqualTest() {
-            Thing<Weapon> club1 = new Thing<Weapon>(Weapons.Club);
-            Thing<Weapon> club2 = new Thing<Weapon>(Weapons.Club);
+            Weapon club1 = Weapons.Club;
+            Weapon club2 = Weapons.Club;
             Assert.NotEqual(club1, club2);
         }
     }

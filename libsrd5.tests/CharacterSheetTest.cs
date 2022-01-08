@@ -5,7 +5,7 @@ namespace srd5 {
     public class CharacterSheetTest {
         [Fact]
         public void EquipOneHandTest() {
-            Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
+            Weapon club = Weapons.Club;
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             Assert.Equal(Race.HUMAN.Name(), sheet.Race.Name);
             sheet.Name = "Foo Bar";
@@ -16,8 +16,8 @@ namespace srd5 {
 
         [Fact]
         public void EquipTwoHandTest() {
-            Thing<Weapon> greatAxe = new Thing<Weapon>(Weapons.Greataxe);
-            Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
+            Weapon greatAxe = Weapons.Greataxe;
+            Weapon club = Weapons.Club;
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             sheet.Equip(club);
             sheet.Equip(greatAxe);
@@ -27,10 +27,10 @@ namespace srd5 {
 
         [Fact]
         public void EquipDualWieldTest() {
-            Thing<Weapon> greatAxe = new Thing<Weapon>(Weapons.Greataxe);
-            Thing<Weapon> club1 = new Thing<Weapon>(Weapons.Club);
-            Thing<Weapon> club2 = new Thing<Weapon>(Weapons.Club);
-            Thing<Weapon> club3 = new Thing<Weapon>(Weapons.Club);
+            Weapon greatAxe = Weapons.Greataxe;
+            Weapon club1 = Weapons.Club;
+            Weapon club2 = Weapons.Club;
+            Weapon club3 = Weapons.Club;
             CharacterSheet sheet = new CharacterSheet(Race.DRAGONBORN);
             sheet.Equip(greatAxe);
             sheet.Equip(club1);
@@ -46,7 +46,7 @@ namespace srd5 {
 
         [Fact]
         public void EquipArmorTest() {
-            Thing<Armor> chainShirt = new Thing<Armor>(Armors.ChainShirt);
+            Armor chainShirt = Armors.ChainShirt;
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             sheet.Dexterity.BaseValue = 18;
             Assert.Equal(14, sheet.ArmorClass);
@@ -56,29 +56,29 @@ namespace srd5 {
 
         [Fact]
         public void EquipMagicArmorTest() {
-            Thing<Armor> chainShirt = new Thing<Armor>(Armors.ChainShirt);
+            Armor chainShirt = Armors.ChainShirt;
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             sheet.Dexterity.BaseValue = 18;
             Assert.Equal(14, sheet.ArmorClass);
             sheet.Equip(chainShirt);
             Assert.Equal(15, sheet.ArmorClass);
-            Thing<Armor> chainShirtPlus1 = new Thing<Armor>(Armors.CreatePlus1Armor(Armors.ChainShirt));
+            Armor chainShirtPlus1 = Armors.CreatePlus1Armor(Armors.ChainShirt);
             sheet.Equip(chainShirtPlus1);
             Assert.Equal(16, sheet.ArmorClass);
-            Thing<Armor> chainShirtPlus2 = new Thing<Armor>(Armors.CreatePlus2Armor(Armors.ChainShirt));
+            Armor chainShirtPlus2 = Armors.CreatePlus2Armor(Armors.ChainShirt);
             sheet.Equip(chainShirtPlus2);
             Assert.Equal(17, sheet.ArmorClass);
-            Thing<Armor> chainShirtPlus3 = new Thing<Armor>(Armors.CreatePlus3Armor(Armors.ChainShirt));
+            Armor chainShirtPlus3 = Armors.CreatePlus3Armor(Armors.ChainShirt);
             sheet.Equip(chainShirtPlus3);
             Assert.Equal(18, sheet.ArmorClass);
         }
 
         [Fact]
         public void EquipFullTest() {
-            Thing<Weapon> twoHander = new Thing<Weapon>(Weapons.Greatsword);
-            Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
-            Thing<Weapon> club2 = new Thing<Weapon>(Weapons.Club);
-            Thing<Shield> shield = new Thing<Shield>(Shields.Shield);
+            Weapon twoHander = Weapons.Greatsword;
+            Weapon club = Weapons.Club;
+            Weapon club2 = Weapons.Club;
+            Shield shield = Shields.Shield;
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             sheet.Equip(twoHander);
             sheet.Equip(shield);
@@ -132,10 +132,10 @@ namespace srd5 {
             Assert.Equal(3, sheet.AttackProficiency);
             sheet.Strength.BaseValue = 18;
             sheet.Dexterity.BaseValue = 14;
-            Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
+            Weapon club = Weapons.Club;
             sheet.Equip(club);
             Assert.Equal(7, sheet.AttackProficiency);
-            Thing<Weapon> longbow = new Thing<Weapon>(Weapons.Longbow);
+            Weapon longbow = Weapons.Longbow;
             sheet.Equip(longbow);
             Assert.Equal(5, sheet.AttackProficiency);
         }
@@ -155,21 +155,21 @@ namespace srd5 {
             Assert.Equal(3, sheet.AttackProficiency);
             sheet.Strength.BaseValue = 18;
             sheet.Dexterity.BaseValue = 14;
-            Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
+            Weapon club = Weapons.Club;
             sheet.Equip(club);
             Assert.Equal(7, sheet.AttackProficiency);
             Assert.Equal("1d4+4", sheet.MeleeAttacks[0].Damage.Dices.ToString());
-            Thing<Weapon> clubPlus1 = new Thing<Weapon>(Weapons.CreatePlus1Weapon(Weapons.Club));
+            Weapon clubPlus1 = Weapons.CreatePlus1Weapon(Weapons.Club);
             sheet.Unequip(club);
             sheet.Equip(clubPlus1);
             Assert.Equal(8, sheet.AttackProficiency);
             Assert.Equal("1d4+5", sheet.MeleeAttacks[0].Damage.Dices.ToString());
-            Thing<Weapon> clubPlus2 = new Thing<Weapon>(Weapons.CreatePlus2Weapon(Weapons.Club));
+            Weapon clubPlus2 = Weapons.CreatePlus2Weapon(Weapons.Club);
             sheet.Unequip(clubPlus1);
             sheet.Equip(clubPlus2);
             Assert.Equal(9, sheet.AttackProficiency);
             Assert.Equal("1d4+6", sheet.MeleeAttacks[0].Damage.Dices.ToString());
-            Thing<Weapon> clubPlus3 = new Thing<Weapon>(Weapons.CreatePlus3Weapon(Weapons.Club));
+            Weapon clubPlus3 = Weapons.CreatePlus3Weapon(Weapons.Club);
             sheet.Unequip(clubPlus2);
             sheet.Equip(clubPlus3);
             Assert.Equal(10, sheet.AttackProficiency);
@@ -189,10 +189,10 @@ namespace srd5 {
             sheet.AddLevel(CharacterClasses.Druid);
             sheet.AddLevel(CharacterClasses.Druid);
             Assert.Equal(2, sheet.AttackProficiency);
-            Thing<Weapon> greatAxe = new Thing<Weapon>(Weapons.Greataxe);
+            Weapon greatAxe = Weapons.Greataxe;
             sheet.Equip(greatAxe);
             Assert.Equal(-1, sheet.AttackProficiency);
-            Thing<Weapon> dagger = new Thing<Weapon>(Weapons.Dagger);
+            Weapon dagger = Weapons.Dagger;
             sheet.Equip(dagger);
             Assert.Equal(4, sheet.AttackProficiency); // Dex bonus because finesse
             sheet.Strength.BaseValue = 14;
@@ -227,7 +227,7 @@ namespace srd5 {
             Assert.True(sheet.IsProficient(Proficiency.WARHAMMER));
             Assert.Equal(14, sheet.HitPoints); // 12 barbarian + 1 constituion + 1 racial feat
             Assert.Equal(14, sheet.HitPointsMax); // 12 barbarian + 1 constituion + 1 racial feat
-            sheet.Equip(new Thing<Armor>(Armors.PlateArmor));
+            sheet.Equip(Armors.PlateArmor);
             Assert.Equal(18, sheet.ArmorClass);
             Assert.Equal(25, sheet.Speed);
         }
@@ -236,7 +236,7 @@ namespace srd5 {
         public void HeavyArmorTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             Assert.Equal(30, sheet.Speed);
-            Thing<Armor> plate = new Thing<Armor>(Armors.PlateArmor);
+            Armor plate = Armors.PlateArmor;
             sheet.Equip(plate);
             Assert.Equal(20, sheet.Speed);
             sheet.Unequip(plate);
@@ -257,7 +257,7 @@ namespace srd5 {
         public void HeadbandOfIntellectTest() {
             CharacterSheet sheet = new CharacterSheet(Race.TIEFLING);
             Assert.Equal(10, sheet.Intelligence.Value);
-            Thing<Helmet> headband = new Thing<Helmet>(Helmets.HeadbandOfIntellect);
+            Helmet headband = Helmets.HeadbandOfIntellect;
             sheet.Equip(headband);
             Assert.Equal(19, sheet.Intelligence.Value);
             sheet.Unequip(headband);
@@ -268,9 +268,9 @@ namespace srd5 {
         public void RingTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HALF_ELF);
             Assert.Equal(10, sheet.ArmorClass);
-            Thing<Ring> ring1 = new Thing<Ring>(Rings.RingOfSwimming);
-            Thing<Ring> ring2 = new Thing<Ring>(Rings.RingOfProtection);
-            Thing<Ring> ring3 = new Thing<Ring>(Rings.RingOfProtection);
+            Ring ring1 = Rings.RingOfSwimming;
+            Ring ring2 = Rings.RingOfProtection;
+            Ring ring3 = Rings.RingOfProtection;
             sheet.Equip(ring1);
             sheet.Equip(ring2);
             Assert.Equal(ring2, sheet.Inventory.RingRight);
@@ -293,7 +293,7 @@ namespace srd5 {
             CharacterSheet sheet = new CharacterSheet(Race.HALF_ORC);
             sheet.AddLevel(CharacterClasses.Druid);
             Assert.Equal(8, sheet.HitPointsMax);
-            Thing<Amulet> amulet = new Thing<Amulet>(Amulets.AmuletOfHealth);
+            Amulet amulet = Amulets.AmuletOfHealth;
             sheet.Equip(amulet);
             Assert.Equal(19, sheet.Constitution.Value);
             Assert.Equal(12, sheet.HitPointsMax);
@@ -304,7 +304,7 @@ namespace srd5 {
         [Fact]
         public void BootsTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HIGH_ELF);
-            Thing<Boots> boots = new Thing<Boots>(Bootss.BootsOfTheWinterland);
+            Boots boots = Bootss.BootsOfTheWinterland;
             sheet.Equip(boots);
             Assert.Equal(boots, sheet.Inventory.Boots);
             Assert.True(sheet.HasEffect(Effect.RESISTANCE_COLD));
@@ -344,14 +344,14 @@ namespace srd5 {
             sheet.AddEffect(Effect.ONE_EXTRA_ATTACK);
             sheet.AddEffect(Effect.TWO_EXTRA_ATTACKS);
             sheet.AddEffect(Effect.THREE_EXTRA_ATTACKS);
-            Thing<Weapon> club = new Thing<Weapon>(Weapons.Club);
-            Thing<Weapon> dagger = new Thing<Weapon>(Weapons.Dagger);
+            Weapon club = Weapons.Club;
+            Weapon dagger = Weapons.Dagger;
             int ac = sheet.ArmorClass;
             sheet.Equip(club);
             sheet.Equip(dagger);
             Assert.Equal(ac, sheet.ArmorClass);
             Assert.Equal(4, sheet.MeleeAttacks.Length);
-            Assert.Equal(dagger.Item.Name, sheet.BonusAttack.Name);
+            Assert.Equal(dagger.Name, sheet.BonusAttack.Name);
             sheet.RemoveEffect(Effect.THREE_EXTRA_ATTACKS);
             Assert.Equal(3, sheet.MeleeAttacks.Length);
             sheet.RemoveEffect(Effect.TWO_EXTRA_ATTACKS);
@@ -368,7 +368,7 @@ namespace srd5 {
             sheet.AddEffect(Effect.ONE_EXTRA_ATTACK);
             sheet.AddEffect(Effect.TWO_EXTRA_ATTACKS);
             sheet.AddEffect(Effect.THREE_EXTRA_ATTACKS);
-            Thing<Weapon> longbow = new Thing<Weapon>(Weapons.Longbow);
+            Weapon longbow = Weapons.Longbow;
             sheet.Equip(longbow);
             Assert.Equal(4, sheet.RangedAttacks.Length);
             sheet.RemoveEffect(Effect.THREE_EXTRA_ATTACKS);
@@ -382,13 +382,14 @@ namespace srd5 {
         [Fact]
         public void VersatileTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HALFLING);
-            Thing<Weapon> quarterstaff = new Thing<Weapon>(Weapons.Quarterstaff);
+            Weapon quarterstaff = Weapons.Quarterstaff;
             sheet.Equip(quarterstaff);
             Assert.Equal(8, sheet.MeleeAttacks[0].Damage.Dices.Dice);
             int ac = sheet.ArmorClass;
-            Thing<Shield> shield = new Thing<Shield>(Shields.Shield);
+            Shield shield = Shields.Shield;
+            Assert.Equal(quarterstaff, sheet.Inventory.MainHand);
             sheet.Equip(shield);
-            Assert.Equal(ac + shield.Item.AC, sheet.ArmorClass);
+            Assert.Equal(ac + shield.AC, sheet.ArmorClass);
             Assert.Equal(6, sheet.MeleeAttacks[0].Damage.Dices.Dice);
         }
 

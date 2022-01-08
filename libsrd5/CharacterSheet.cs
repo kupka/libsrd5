@@ -446,6 +446,8 @@ namespace srd5 {
                     availableSpells.SlotsCurrent[i] = availableSpells.SlotsMax[i];
                 }
             }
+            if (HitPoints < HitPointsMax) HealDamage(HitPointsMax - HitPoints);
+            RecalculateAttacks();
         }
 
         public void AddProficiency(Proficiency proficiency) {

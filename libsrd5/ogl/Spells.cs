@@ -162,8 +162,14 @@ namespace srd5 {
                 // replace melee attacks by shillelagh attacks
                 GlobalEvents.AffectBySpell(caster, ID.SHILLELAGH, caster, true);
                 foreach (Attack attack in sheet.MeleeAttacks) {
+                    attack.Name = ID.SHILLELAGH.Name();
                     attack.Damage.Dices = new Dices(1, 8, modifier);
                     attack.AttackBonus = modifier + sheet.Proficiency;
+                }
+                if (caster.BonusAttack != null) {
+                    caster.BonusAttack.Name = ID.SHILLELAGH.Name();
+                    caster.BonusAttack.Damage.Dices = new Dices(1, 8, modifier);
+                    caster.BonusAttack.AttackBonus = modifier + sheet.Proficiency;
                 }
             }
         );

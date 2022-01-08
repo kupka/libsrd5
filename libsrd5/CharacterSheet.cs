@@ -15,7 +15,16 @@ namespace srd5 {
         public Ring RingRight { get; internal set; }
         public Ring RingLeft { get; internal set; }
         public Boots Boots { get; internal set; }
-        public Item[] Bag { get; internal set; }
+        public Item[] Bag { get { return bag; } }
+        private Item[] bag = new Item[0];
+
+        public void AddToBag(params Item[] items) {
+            Utils.Push<Item>(ref bag, items);
+        }
+
+        public void RemoveFromBag(Item item) {
+            Utils.RemoveSingle<Item>(ref bag, item);
+        }
     }
 
     public class CharacterSheet : Combattant {
@@ -154,24 +163,24 @@ namespace srd5 {
             return modifier;
         }
 
-        public void Equip(Weapon thing) {
-            Weapon weapon = thing;
+        public void Equip(Weapon weapon) {
             // don't equip a weapon that is already equipped in one hand
-            if (thing.Equals(Inventory.MainHand) || thing.Equals(Inventory.OffHand)) return;
+            if (weapon.Equals(Inventory.MainHand) || weapon.Equals(Inventory.OffHand)) return;
+            GlobalEvents.ChangeEquipment(this, weapon, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
             if (weapon.HasProperty(WeaponProperty.TWO_HANDED)) {
                 Unequip(Inventory.OffHand);
                 Unequip(Inventory.MainHand);
-                Inventory.MainHand = thing;
+                Inventory.MainHand = weapon;
             } else if (Inventory.MainHand == null) {
-                Inventory.MainHand = thing;
+                Inventory.MainHand = weapon;
             } else if (Inventory.MainHand.HasProperty(WeaponProperty.TWO_HANDED)) {
                 Unequip(Inventory.MainHand);
-                Inventory.MainHand = thing;
+                Inventory.MainHand = weapon;
             } else if (Inventory.OffHand == null && weapon.HasProperty(WeaponProperty.LIGHT)) {
-                Inventory.OffHand = thing;
+                Inventory.OffHand = weapon;
             } else {
                 Unequip(Inventory.MainHand);
-                Inventory.MainHand = thing;
+                Inventory.MainHand = weapon;
             }
             RecalculateAttacks();
         }
@@ -236,19 +245,21 @@ namespace srd5 {
             return damageString;
         }
 
-        public void Equip(Shield thing) {
-            if (thing == null) return;
+        public void Equip(Shield shield) {
+            if (shield == null) return;
             if (Inventory.MainHand != null && Inventory.MainHand.HasProperty(WeaponProperty.TWO_HANDED)) {
                 Unequip(Inventory.MainHand);
             }
             Unequip(Inventory.OffHand);
-            Inventory.OffHand = thing;
+            GlobalEvents.ChangeEquipment(this, shield, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
+            Inventory.OffHand = shield;
             RecalculateAttacks();
         }
 
         public void Equip(Armor armor) {
             if (armor == null) return;
             Unequip(Inventory.Armor);
+            GlobalEvents.ChangeEquipment(this, armor, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
             Inventory.Armor = armor;
             // calculate speed penality if applicable
             if (!HasEffect(Effect.NO_SPEED_PENALITY_FOR_HEAVY_ARMOR) && armor.Strength > Strength.Value) {
@@ -266,12 +277,14 @@ namespace srd5 {
                 Unequip(Inventory.RingLeft);
                 Inventory.RingLeft = ring;
             }
+            GlobalEvents.ChangeEquipment(this, ring, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
             addEffects(ring);
         }
 
         public void Equip(Helmet helmet) {
             if (helmet == null) return;
             Unequip(Inventory.Helmet);
+            GlobalEvents.ChangeEquipment(this, helmet, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
             Inventory.Helmet = helmet;
             addEffects(helmet);
         }
@@ -279,12 +292,14 @@ namespace srd5 {
         public void Equip(Boots boots) {
             if (boots == null) return;
             Unequip(Inventory.Boots);
+            GlobalEvents.ChangeEquipment(this, boots, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
             Inventory.Boots = boots;
             addEffects(boots);
         }
 
         public void Equip(Amulet amulet) {
             if (amulet == null) return;
+            GlobalEvents.ChangeEquipment(this, amulet, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
             Unequip(Inventory.Amulet);
             Inventory.Amulet = amulet;
             addEffects(amulet);
@@ -302,14 +317,15 @@ namespace srd5 {
             }
         }
 
-        public void Unequip<T>(T thing) where T : Item {
-            if (thing == null) return;
-            switch (thing.Type) {
+        public void Unequip(Item item) {
+            if (item == null) return;
+            GlobalEvents.ChangeEquipment(this, item, GlobalEvents.EquipmentChanged.Events.UNEQUIPPED);
+            switch (item.Type) {
                 case ItemType.WEAPON:
                 case ItemType.SHIELD:
-                    if (thing.Equals(Inventory.MainHand))
+                    if (item.Equals(Inventory.MainHand))
                         Inventory.MainHand = null;
-                    else if (thing.Equals(Inventory.OffHand))
+                    else if (item.Equals(Inventory.OffHand))
                         Inventory.OffHand = null;
                     break;
                 case ItemType.ARMOR:
@@ -320,10 +336,10 @@ namespace srd5 {
                     Inventory.Helmet = null;
                     break;
                 case ItemType.RING:
-                    if (thing.Equals(Inventory.RingLeft)) {
+                    if (item.Equals(Inventory.RingLeft)) {
                         Inventory.RingLeft = null;
 
-                    } else if (thing.Equals(Inventory.RingRight)) {
+                    } else if (item.Equals(Inventory.RingRight)) {
                         Inventory.RingRight = null;
                     }
                     break;
@@ -334,8 +350,8 @@ namespace srd5 {
                     Inventory.Boots = null;
                     break;
             }
-            if (thing is MagicItem) {
-                MagicItem magicItem = (MagicItem)(object)thing;
+            if (item is MagicItem) {
+                MagicItem magicItem = (MagicItem)(object)item;
                 removeEffects(magicItem);
             }
             RecalculateAttacks();

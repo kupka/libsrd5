@@ -10,7 +10,8 @@ namespace srd5 {
             HEALED,
             CONDITION,
             DC,
-            SPELL
+            SPELL,
+            EQUIPMENT
         }
         public static event EventHandler<EventArgs> Handlers;
 
@@ -163,6 +164,31 @@ namespace srd5 {
         internal static void FailAction(Combattant initiator, ActionFailed.Reasons reason) {
             if (Handlers == null) return;
             Handlers(EventTypes.ACTION_FAILED, new ActionFailed(initiator, reason));
+        }
+
+        public class EquipmentChanged : EventArgs {
+            public enum Events {
+                EQUIPPED,
+                UNEQUIPPED,
+                DESTROYED,
+                USED,
+                PUT_IN_BAG
+            }
+
+            public CharacterSheet Hero { get; private set; }
+            public Item Item { get; private set; }
+            public Events Event { get; private set; }
+
+            public EquipmentChanged(CharacterSheet hero, Item item, Events evnt) {
+                Hero = Hero;
+                Item = Item;
+                Event = evnt;
+            }
+        }
+
+        public static void ChangeEquipment(CharacterSheet hero, Item item, EquipmentChanged.Events evnt) {
+            if (Handlers == null) return;
+            Handlers(EventTypes.EQUIPMENT, new EquipmentChanged(hero, item, evnt));
         }
     }
 }

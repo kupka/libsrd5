@@ -426,7 +426,7 @@ namespace srd5 {
         /// <summary>
         /// Get the location of the current active combattant
         /// </summary>
-        protected Location GetCurrentLocation() {
+        public virtual Location GetCurrentLocation() {
             return LocateCombattant(CurrentCombattant);
         }
 

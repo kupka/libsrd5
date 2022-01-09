@@ -25,6 +25,8 @@ namespace srd5 {
             ground.Initialize();
             Assert.Equal(badguy.Name, ground.CurrentCombattant.Name);
             Assert.Equal(30, ground.LocateCombattant2D(badguy).X);
+            Assert.Equal(30, ((Coord)ground.GetCurrentLocation()).X);
+            Assert.Equal(140, ground.Distance(hero));
             ground.Initialize(); // nothing should happen
             Assert.Equal(badguy.Name, ground.CurrentCombattant.Name);
             Assert.Equal(10, ground.LocateCombattant2D(hero).X);

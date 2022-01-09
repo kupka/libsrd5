@@ -101,11 +101,16 @@ namespace srd5 {
                 hero.AddLevel(CharacterClasses.Druid);
                 if (i % 2 == 0)
                     hero.Equip(Weapons.Club);
-                else
+                else {
                     hero.Equip(Weapons.Quarterstaff);
+                    hero.BonusAttack = Attack.FromWeapon(hero.AttackProficiency, "1d6", Weapons.Quarterstaff);
+                }
                 Assert.Equal(hero.Proficiency + hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
                 Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP, hero.Wisdom.Modifier);
                 Assert.Equal(hero.Proficiency + hero.Wisdom.Modifier, hero.MeleeAttacks[0].AttackBonus);
+                if (hero.Inventory.MainHand.IsThisA(Weapons.Quarterstaff)) {
+                    Assert.Equal(Spells.ID.SHILLELAGH.Name(), hero.BonusAttack.Name);
+                }
             }
             // Also check with wrong weapon
             hero = new CharacterSheet(Race.HALF_ELF, true);
@@ -114,6 +119,8 @@ namespace srd5 {
             Assert.Equal(hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
             Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP, hero.Wisdom.Modifier);
             Assert.Equal(hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
+            // Monster test (cannot cast Shillelagh yet)
+            Spells.Shillelagh.Cast(Monsters.Goblin, 0, SpellLevel.CANTRIP, 3);
         }
 
         [Fact]

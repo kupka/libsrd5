@@ -9,20 +9,25 @@ namespace srd5 {
             Weapon club1 = Weapons.Club;
             Weapon club2 = Weapons.Club;
             Assert.Equal(club1.Name, club2.Name);
+            Assert.NotEqual(club1.ToString(), club2.ToString());
+            Assert.NotEqual(club1.GetHashCode(), club2.GetHashCode());
         }
 
         [Fact]
         public void UnEqualTest() {
             Weapon club = Weapons.Club;
             Weapon dagger = Weapons.Dagger;
-            Assert.NotEqual(club, dagger);
+            Assert.False(club.Equals(dagger));
+            Assert.False(club.Equals(null));
+            Assert.False(club.Equals(Armors.HideArmor));
         }
 
         [Fact]
         public void ThingsUnEqualTest() {
             Weapon club1 = Weapons.Club;
             Weapon club2 = Weapons.Club;
-            Assert.NotEqual(club1, club2);
+            Assert.False(club1.Equals(club2));
+            Assert.True(club1.IsThisA(club2));
         }
 
         [Fact]

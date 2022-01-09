@@ -457,5 +457,25 @@ namespace srd5 {
             Assert.Equal(3, i);
         }
 
+        [Fact]
+        public void BagTest() {
+            CharacterSheet sheet = new CharacterSheet(Race.HALFLING);
+            Weapon club = Weapons.Club;
+            sheet.Inventory.AddToBag(club);
+            Assert.NotEmpty(sheet.Inventory.Bag);
+            sheet.Inventory.RemoveFromBag(club);
+            Assert.Empty(sheet.Inventory.Bag);
+        }
+
+        [Fact]
+        public void LongRestTest() {
+            CharacterSheet sheet = new CharacterSheet(Race.HALFLING);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            sheet.TakeDamage(DamageType.SLASHING, 2);
+            Assert.True(sheet.HitPointsMax > sheet.HitPoints);
+            sheet.LongRest();
+            Assert.Equal(sheet.HitPointsMax, sheet.HitPoints);
+        }
+
     }
 }

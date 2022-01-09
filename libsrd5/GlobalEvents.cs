@@ -181,8 +181,8 @@ namespace srd5 {
             public Events Event { get; private set; }
 
             public EquipmentChanged(CharacterSheet hero, Item item, Events evnt) {
-                Hero = Hero;
-                Item = Item;
+                Hero = hero;
+                Item = item;
                 Event = evnt;
             }
         }

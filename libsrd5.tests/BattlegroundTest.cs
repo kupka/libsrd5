@@ -251,6 +251,7 @@ namespace srd5 {
             ground.NextPhase(); // skip move
             hero.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
             Assert.False(ground.MeleeAttackAction(ogre));
+            Assert.False(ground.RangedAttackAction(ogre));
         }
 
         [Fact]
@@ -379,13 +380,21 @@ namespace srd5 {
             BattleGroundClassic battle = new BattleGroundClassic();
             battle.AddCombattant(ogre, ClassicLocation.Row.BACK_LEFT);
             battle.AddCombattant(goblin, ClassicLocation.Row.BACK_RIGHT);
+            goblin.BonusAttack = Attacks.GoblinShortbow;
             battle.Initialize();
+            if (battle.CurrentCombattant == ogre)
+                Assert.False(battle.RangedAttackAction(goblin));
+            else
+                Assert.False(battle.RangedAttackAction(ogre));
             while (goblin.HitPoints > 0) {
                 while (battle.NextPhase() != TurnPhase.ACTION) ;
+                Assert.Throws<ArgumentException>(delegate { battle.RangedAttackAction(null); });
                 if (battle.CurrentCombattant == ogre)
                     Assert.True(battle.RangedAttackAction(goblin));
-                else
+                else {
+                    Assert.Throws<ArgumentException>(delegate { battle.RangedAttackAction(goblin); });
                     Assert.True(battle.RangedAttackAction(ogre));
+                }
             }
         }
     }

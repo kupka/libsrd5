@@ -286,6 +286,8 @@ namespace srd5 {
             Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
             hero.LongRest();
             int slots = ground.CurrentCombattant.AvailableSpells[0].SlotsCurrent[(int)SpellLevel.FIRST];
+            // slot invalid
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre));
             // All good
             Assert.True(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
             Assert.Equal(slots - 1, ground.CurrentCombattant.AvailableSpells[0].SlotsCurrent[(int)SpellLevel.FIRST]);
@@ -394,7 +396,37 @@ namespace srd5 {
                 else {
                     Assert.Throws<ArgumentException>(delegate { battle.RangedAttackAction(goblin); });
                     Assert.True(battle.RangedAttackAction(ogre));
+                    // Bonus Attack
+                    Assert.True(battle.RangedAttackAction(ogre));
                 }
+            }
+        }
+
+        [Fact]
+        public void RangedDifferentRangesTest() {
+            Monster ogre = Monsters.Ogre;
+            Monster[] orcs = new Monster[4];
+            orcs[0] = Monsters.Orc;
+            orcs[1] = Monsters.Orc;
+            orcs[2] = Monsters.Orc;
+            orcs[3] = Monsters.Orc;
+            Battleground2D battle = new Battleground2D(30, 1);
+            battle.AddCombattant(ogre, 0, 0);
+            battle.AddCombattant(orcs[0], 1, 0); // next to ogre => Disadvantage
+            battle.AddCombattant(orcs[1], 3, 0); // normal range
+            battle.AddCombattant(orcs[2], 15, 0); // long range
+            battle.AddCombattant(orcs[3], 28, 0); // out of range
+            battle.Initialize();
+            for (int i = 0; i < orcs.Length; i++) {
+                while (battle.CurrentCombattant != ogre) {
+                    battle.NextPhase();
+                }
+                battle.NextPhase(); // skip move
+                if (i < orcs.Length - 1)
+                    Assert.True(battle.RangedAttackAction(orcs[i])); // in range
+                else
+                    Assert.False(battle.RangedAttackAction(orcs[i])); // out of range
+                battle.NextPhase(); // skip bonus attack
             }
         }
     }

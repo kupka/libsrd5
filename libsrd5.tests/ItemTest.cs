@@ -19,6 +19,8 @@ namespace srd5 {
             Weapon dagger = Weapons.Dagger;
             Assert.False(club.Equals(dagger));
             Assert.False(club.Equals(null));
+            Assert.False(club.Equals("not an item"));
+            Assert.False(club.IsThisA(null));
             Assert.False(club.Equals(Armors.HideArmor));
         }
 

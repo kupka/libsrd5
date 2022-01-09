@@ -108,6 +108,7 @@ namespace srd5 {
     }
 
     public abstract class Item {
+        private int id = Random.Get(1, int.MaxValue);
         public string Name { get; protected set; }
         public ItemType Type { get; protected set; }
 
@@ -116,32 +117,24 @@ namespace srd5 {
         public float Weight { get; protected set; }
 
         public int Value { get; internal set; }
-    }
 
-    public class Thing<T> where T : Item {
-        private int id = Random.Get(1, int.MaxValue);
+        public override bool Equals(object other) {
+            if (other == null) return false;
+            if (!(other is Item)) return false;
+            return id == ((Item)other).id;
+        }
 
-        public Thing(T item) {
-            Item = item;
+        public bool IsThisA(Item other) {
+            if (other == null) return false;
+            return Name == other.Name;
         }
 
         public override int GetHashCode() {
             return id;
         }
 
-        public override bool Equals(object obj) {
-            if (obj == null)
-                return false;
-            return this.GetHashCode() == obj.GetHashCode();
-        }
-
-        public T Item { get; private set; }
-
-        public static Thing<Item> Cast<V>(Thing<V> thing) where V : Item {
-            Item item = thing.Item;
-            Thing<Item> newthing = new Thing<Item>(item);
-            newthing.id = thing.id;
-            return newthing;
+        public override string ToString() {
+            return Name + "#" + id;
         }
     }
 }

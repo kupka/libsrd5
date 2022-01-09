@@ -145,12 +145,14 @@ namespace srd5 {
             if (HasEffect(srd5.Effects.Immunity(condition))) return false;
             if (Utils.PushUnique<ConditionType>(ref conditions, condition))
                 condition.Apply(this);
+            GlobalEvents.ChangedCondition(this, condition);
             return true;
         }
         public void RemoveCondition(ConditionType condition) {
             RemoveResult result = Utils.RemoveSingle<ConditionType>(ref conditions, condition);
             if (result == RemoveResult.REMOVED_AND_GONE)
                 condition.Unapply(this);
+            GlobalEvents.ChangedCondition(this, condition, true);
         }
 
         public bool HasCondition(ConditionType condition) {
@@ -180,21 +182,22 @@ namespace srd5 {
         /// <summary>
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
-        public void TakeDamage(Damage damage, bool critical = false) {
-            int amount = critical ? damage.Dices.RollCritical() : damage.Dices.Roll();
-            DamageType type = damage.Type;
+        public void TakeDamage(DamageType type, int amount) {
+            if (amount <= 0) throw new ArgumentException("Amount must be a positive integer");
             if (IsImmune(type)) return;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;
-            GlobalEvents.ReceivedDamage(this, amount, damage.Type);
-            HitPoints -= amount;
-            if (HitPoints <= 0) AddCondition(ConditionType.UNCONSCIOUS);
+            GlobalEvents.ReceivedDamage(this, amount, type);
+            HitPoints = Math.Max(0, HitPoints - amount);
+            if (HitPoints == 0) AddCondition(ConditionType.UNCONSCIOUS);
         }
 
         /// <summary>
         /// Heals the specified amount of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combattant.
         /// </summary>
         public void HealDamage(int amount) {
+            if (amount <= 0) throw new ArgumentException("Amount must be a positive integer");
+            if (HitPoints == 0) RemoveCondition(ConditionType.UNCONSCIOUS);
             GlobalEvents.ReceivedHealing(this, amount);
             HitPoints = Math.Min(HitPoints + amount, HitPointsMax);
         }
@@ -225,9 +228,22 @@ namespace srd5 {
         /// Roll a DC (difficulty check) against the specified Ability
         /// </summary>
         public bool DC(int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
-            if (type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) return false;
-            if (type == AbilityType.DEXTERITY && HasEffect(Effect.FAIL_DEXERITY_CHECK)) return false;
-            return Dices.DC(dc, GetAbility(type), advantage, disadvantage);
+            Ability ability = GetAbility(type);
+            Dice d20 = srd5.Dice.D20;
+            if (advantage && !disadvantage) {
+                d20 = srd5.Dice.D20Advantage;
+            }
+            if (disadvantage && !advantage) {
+                d20 = srd5.Dice.D20Disadvantage;
+            }
+            Dices.onDiceRolled(d20);
+            bool success = d20.Value + ability.Modifier >= dc;
+            if (d20.Value == 20) success = true;
+            if (d20.Value == 1) success = false;
+            if (type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) success = false;
+            if (type == AbilityType.DEXTERITY && HasEffect(Effect.FAIL_DEXERITY_CHECK)) success = false;
+            GlobalEvents.RolledDC(this, ability, dc, d20.Value, success);
+            return success;
         }
 
 

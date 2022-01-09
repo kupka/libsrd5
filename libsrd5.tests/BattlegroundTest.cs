@@ -369,10 +369,13 @@ namespace srd5 {
             battle.Initialize();
             while (battle.CurrentCombattant.HitPoints > 0) {
                 if (battle.NextPhase() == TurnPhase.ACTION) {
-                    if (battle.CurrentCombattant == hero)
-                        battle.MeleeAttackAction(boar);
-                    else
-                        battle.MeleeAttackAction(hero);
+                    if (battle.CurrentCombattant == hero) {
+                        Assert.True(battle.MeleeAttackAction(boar));
+                        Assert.False(battle.MeleeAttackAction(boar)); // no bonus attack
+                    } else {
+                        Assert.True(battle.MeleeAttackAction(hero));
+                        Assert.False(battle.MeleeAttackAction(hero)); // no bonus attack
+                    }
                 }
             }
         }
@@ -426,8 +429,11 @@ namespace srd5 {
                 battle.NextPhase(); // skip move
                 if (i < orcs.Length - 1)
                     Assert.True(battle.RangedAttackAction(orcs[i])); // in range
-                else
+                else {
                     Assert.False(battle.RangedAttackAction(orcs[i])); // out of range
+                    battle.NextPhase();
+                }
+                Assert.False(battle.RangedAttackAction(orcs[i])); // no bonus attack
                 battle.NextPhase(); // skip bonus attack
             }
         }

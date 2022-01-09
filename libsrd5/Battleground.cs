@@ -316,6 +316,11 @@ namespace srd5 {
                     }
                 }
             }
+            // Check if slot is sufficient for spell
+            if (slot < spell.Level) {
+                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.SPELLSLOT_INVALID);
+                return false;
+            }
             // Check if slot is available
             if (availableSpells.SlotsCurrent[(int)slot] <= 0) {
                 GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.SPELLSLOT_EMPTY);

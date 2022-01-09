@@ -284,8 +284,10 @@ namespace srd5 {
             // no slot available
             Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
             hero.LongRest();
+            int slots = ground.CurrentCombattant.AvailableSpells[0].SlotsCurrent[(int)SpellLevel.FIRST];
             // All good
             Assert.True(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
+            Assert.Equal(slots - 1, ground.CurrentCombattant.AvailableSpells[0].SlotsCurrent[(int)SpellLevel.FIRST]);
             Assert.True(ogre.HitPointsMax > ogre.HitPoints);
             // wrong phase (Bonus)
             Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));

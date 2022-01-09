@@ -173,29 +173,6 @@ namespace srd5 {
             return modifier;
         }
 
-        public void Equip(Weapon weapon) {
-            // don't equip a weapon that is already equipped in one hand
-            if (weapon.Equals(Inventory.MainHand) || weapon.Equals(Inventory.OffHand)) return;
-            GlobalEvents.ChangeEquipment(this, weapon, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
-            Inventory.RemoveFromBag(weapon);
-            if (weapon.HasProperty(WeaponProperty.TWO_HANDED)) {
-                Unequip(Inventory.OffHand);
-                Unequip(Inventory.MainHand);
-                Inventory.MainHand = weapon;
-            } else if (Inventory.MainHand == null) {
-                Inventory.MainHand = weapon;
-            } else if (Inventory.MainHand.HasProperty(WeaponProperty.TWO_HANDED)) {
-                Unequip(Inventory.MainHand);
-                Inventory.MainHand = weapon;
-            } else if (Inventory.OffHand == null && weapon.HasProperty(WeaponProperty.LIGHT)) {
-                Inventory.OffHand = weapon;
-            } else {
-                Unequip(Inventory.MainHand);
-                Inventory.MainHand = weapon;
-            }
-            RecalculateAttacks();
-        }
-
         internal void RecalculateAttacks() {
             string dmgString;
             if (Inventory.MainHand == null) {
@@ -256,8 +233,31 @@ namespace srd5 {
             return damageString;
         }
 
+        public void Equip(Weapon weapon) {
+            // don't equip a weapon that is already equipped in one hand
+            if (weapon == null || weapon.Destroyed || weapon.Equals(Inventory.MainHand) || weapon.Equals(Inventory.OffHand)) return;
+            GlobalEvents.ChangeEquipment(this, weapon, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
+            Inventory.RemoveFromBag(weapon);
+            if (weapon.HasProperty(WeaponProperty.TWO_HANDED)) {
+                Unequip(Inventory.OffHand);
+                Unequip(Inventory.MainHand);
+                Inventory.MainHand = weapon;
+            } else if (Inventory.MainHand == null) {
+                Inventory.MainHand = weapon;
+            } else if (Inventory.MainHand.HasProperty(WeaponProperty.TWO_HANDED)) {
+                Unequip(Inventory.MainHand);
+                Inventory.MainHand = weapon;
+            } else if (Inventory.OffHand == null && weapon.HasProperty(WeaponProperty.LIGHT)) {
+                Inventory.OffHand = weapon;
+            } else {
+                Unequip(Inventory.MainHand);
+                Inventory.MainHand = weapon;
+            }
+            RecalculateAttacks();
+        }
+
         public void Equip(Shield shield) {
-            if (shield == null) return;
+            if (shield == null || shield.Destroyed || shield.Equals(Inventory.OffHand)) return;
             if (Inventory.MainHand != null && Inventory.MainHand.HasProperty(WeaponProperty.TWO_HANDED)) {
                 Unequip(Inventory.MainHand);
             }
@@ -269,7 +269,7 @@ namespace srd5 {
         }
 
         public void Equip(Armor armor) {
-            if (armor == null) return;
+            if (armor == null || armor.Destroyed || armor.Equals(Inventory.Armor)) return;
             Unequip(Inventory.Armor);
             GlobalEvents.ChangeEquipment(this, armor, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
             Inventory.RemoveFromBag(armor);
@@ -281,7 +281,7 @@ namespace srd5 {
         }
 
         public void Equip(Ring ring) {
-            if (ring == null) return;
+            if (ring == null || ring.Destroyed || ring.Equals(Inventory.RingLeft) || ring.Equals(Inventory.RingRight)) return;
             if (Inventory.RingLeft == null)
                 Inventory.RingLeft = ring;
             else if (Inventory.RingRight == null)
@@ -296,7 +296,7 @@ namespace srd5 {
         }
 
         public void Equip(Helmet helmet) {
-            if (helmet == null) return;
+            if (helmet == null || helmet.Destroyed || helmet.Equals(Inventory.Helmet)) return;
             Unequip(Inventory.Helmet);
             GlobalEvents.ChangeEquipment(this, helmet, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
             Inventory.RemoveFromBag(helmet);
@@ -305,7 +305,7 @@ namespace srd5 {
         }
 
         public void Equip(Boots boots) {
-            if (boots == null) return;
+            if (boots == null || boots.Destroyed || boots.Equals(Inventory.Boots)) return;
             Unequip(Inventory.Boots);
             GlobalEvents.ChangeEquipment(this, boots, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
             Inventory.RemoveFromBag(boots);
@@ -314,7 +314,7 @@ namespace srd5 {
         }
 
         public void Equip(Amulet amulet) {
-            if (amulet == null) return;
+            if (amulet == null || amulet.Destroyed || amulet.Equals(Inventory.Amulet)) return;
             GlobalEvents.ChangeEquipment(this, amulet, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
             Unequip(Inventory.Amulet);
             Inventory.RemoveFromBag(amulet);
@@ -512,5 +512,20 @@ namespace srd5 {
             }
         }
 
+        public void Consume(Consumable item) {
+            if (item == null || item.Charges == 0 || item.Destroyed) return;
+            GlobalEvents.ChangeEquipment(this, item, GlobalEvents.EquipmentChanged.Events.USED);
+            item.ConsumableEffect(this, item);
+            if (item.Destroyed)
+                Inventory.RemoveFromBag(item);
+        }
+
+        public void Use(Usable item, int expendedCharges, params Combattant[] targets) {
+            if (item == null || item.Charges < expendedCharges || item.Destroyed) return;
+            GlobalEvents.ChangeEquipment(this, item, GlobalEvents.EquipmentChanged.Events.USED);
+            item.UsableEffect(this, item, expendedCharges, targets);
+            if (item.Destroyed)
+                Inventory.RemoveFromBag(item);
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace srd5 {
                 case Race.TIEFLING:
                     return CharacterRaces.Tiefling;
             }
-            throw new ArgumentException("Unknown race");
+            throw new Srd5ArgumentException("Unknown race");
         }
     }
 

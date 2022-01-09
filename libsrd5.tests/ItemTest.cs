@@ -59,5 +59,31 @@ namespace srd5 {
                 Assert.True(o is Helmet);
             }
         }
+
+        [Fact]
+        public void HealingPotionTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HALFLING);
+            hero.AddLevel(CharacterClasses.Druid);
+            Consumable[] potions = new Consumable[] { Potions.PotionOfHealing, Potions.PotionOfGreaterHealing,
+                                    Potions.PotionOfSuperiorHealing, Potions.PotionOfSupremeHealing };
+            foreach (Consumable potion in potions) {
+                hero.TakeDamage(DamageType.SLASHING, 15);
+                Assert.True(hero.HasCondition(ConditionType.UNCONSCIOUS));
+                hero.Consume(potion);
+                Assert.False(hero.HasCondition(ConditionType.UNCONSCIOUS));
+            }
+        }
+
+        [Fact]
+        public void WandOfMagicMissilesTest() {
+            Monster ogre = Monsters.Ogre;
+            Monster shadow = Monsters.Shadow;
+            Usable wand = Wands.WandOfMagicMissiles;
+            while (!wand.Destroyed) {
+                wand.UsableEffect(ogre, wand, 7, shadow);
+                wand.Charges = 7;
+            }
+            Assert.True(wand.Destroyed);
+        }
     }
 }

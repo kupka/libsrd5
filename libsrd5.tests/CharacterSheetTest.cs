@@ -110,7 +110,7 @@ namespace srd5 {
 
         [Fact]
         public void IllegalRaceTest() {
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<Srd5ArgumentException>(
                 delegate {
                     CharacterRace race = RaceExtension.CharacterRace((Race)(-1));
                 }

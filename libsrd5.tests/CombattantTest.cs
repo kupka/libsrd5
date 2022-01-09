@@ -22,10 +22,10 @@ namespace srd5 {
             Damage lightning = new Damage(DamageType.LIGHTNING, "1d12");
             ogre.TakeDamage(lightning.Type, lightning.Dices.Roll());
             Assert.InRange<int>(ogre.HitPoints, hp - 6, hp - 1);
-            Assert.Throws<ArgumentException>(delegate {
+            Assert.Throws<Srd5ArgumentException>(delegate {
                 ogre.TakeDamage(DamageType.ACID, -100);
             });
-            Assert.Throws<ArgumentException>(delegate {
+            Assert.Throws<Srd5ArgumentException>(delegate {
                 ogre.HealDamage(-100);
             });
             ogre.TakeDamage(DamageType.PIERCING, ogre.HitPoints);
@@ -43,7 +43,7 @@ namespace srd5 {
             Assert.Equal(ogre.Intelligence.Value, ogre.GetAbility(AbilityType.INTELLIGENCE).Value);
             Assert.Equal(ogre.Wisdom.Value, ogre.GetAbility(AbilityType.WISDOM).Value);
             Assert.Equal(ogre.Charisma.Value, ogre.GetAbility(AbilityType.CHARISMA).Value);
-            Assert.Throws<ArgumentException>(delegate {
+            Assert.Throws<Srd5ArgumentException>(delegate {
                 ogre.GetAbility(AbilityType.NONE);
             });
         }

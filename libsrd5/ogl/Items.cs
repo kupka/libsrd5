@@ -38,7 +38,9 @@ namespace srd5 {
         HELMET,
         RING,
         AMULET,
-        BOOTS
+        BOOTS,
+        POTION,
+        WAND
     }
 
     public enum DamageType {
@@ -55,6 +57,13 @@ namespace srd5 {
         RADIANT,
         SLASHING,
         THUNDER
+    }
+
+    public enum ItemRarity {
+        COMMON,
+        UNCOMMON,
+        RARE,
+        VERY_RARE
     }
 
     public struct Weapons {
@@ -619,5 +628,68 @@ namespace srd5 {
 
     public struct Bootss { // additional s because double plural ^_^
         public static Boots BootsOfTheWinterland { get { return new Boots("Boots of the Winterland", new Effect[] { Effect.RESISTANCE_COLD, Effect.IGNORE_SNOW_PENALITY }); } }
+    }
+
+    public struct Potions {
+        public static Consumable PotionOfHealing {
+            get {
+                return new Consumable("Potion of Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
+                    Dices healing = new Dices("2d4+2");
+                    consumer.HealDamage(healing.Roll());
+                    potion.Charges = 0;
+                    potion.Destroyed = true;
+                });
+            }
+        }
+
+        public static Consumable PotionOfGreaterHealing {
+            get {
+                return new Consumable("Potion of Greater Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
+                    Dices healing = new Dices("4d4+4");
+                    consumer.HealDamage(healing.Roll());
+                    potion.Charges = 0;
+                    potion.Destroyed = true;
+                }, ItemRarity.UNCOMMON);
+            }
+        }
+
+        public static Consumable PotionOfSuperiorHealing {
+            get {
+                return new Consumable("Potion of Superior Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
+                    Dices healing = new Dices("8d4+8");
+                    consumer.HealDamage(healing.Roll());
+                    potion.Charges = 0;
+                    potion.Destroyed = true;
+                }, ItemRarity.RARE);
+            }
+        }
+
+        public static Consumable PotionOfSupremeHealing {
+            get {
+                return new Consumable("Potion of Supreme Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
+                    Dices healing = new Dices("10d4+20");
+                    consumer.HealDamage(healing.Roll());
+                    potion.Charges = 0;
+                    potion.Destroyed = true;
+                }, ItemRarity.VERY_RARE);
+            }
+        }
+    }
+
+    public struct Wands {
+        public static Usable WandOfMagicMissiles {
+            get {
+                return new Usable("Wand of Magic Missiles", ItemType.WAND, delegate (Combattant user, Usable item, int expendedCharges, Combattant[] targets) {
+                    Spells.MagicMissile.Cast(user, 0, (SpellLevel)expendedCharges, 0, targets);
+                    item.Charges -= expendedCharges;
+                    if (item.Charges == 0) {
+                        int roll = Dice.D20.Value;
+                        if (roll == 1) {
+                            item.Destroyed = true;
+                        }
+                    }
+                }, ItemRarity.UNCOMMON, 7, 7);
+            }
+        }
     }
 }

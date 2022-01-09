@@ -17,7 +17,7 @@ namespace srd5 {
         }
 
         public override int Distance(Location another) {
-            if (!(another is Coord)) throw new ArgumentException("another must be a Coord.");
+            if (!(another is Coord)) throw new Srd5ArgumentException("another must be a Coord.");
             Coord anotherCoord = (Coord)another;
             double dX = this.X - anotherCoord.X;
             double dY = this.Y - anotherCoord.Y;
@@ -54,7 +54,7 @@ namespace srd5 {
         }
 
         public override int Distance(Location another) {
-            if (!(another is ClassicLocation)) throw new ArgumentException("another must be a ClassicLocation.");
+            if (!(another is ClassicLocation)) throw new Srd5ArgumentException("another must be a ClassicLocation.");
             ClassicLocation classicAnother = (ClassicLocation)another;
             return Math.Max(Math.Abs((int)classicAnother.Location - (int)this.Location), 5);
         }
@@ -214,7 +214,7 @@ namespace srd5 {
         /// </summary>
         public bool MoveAction(Location destination) {
             if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) return false;
-            if (destination == null) throw new ArgumentException("destination cannot be null");
+            if (destination == null) throw new Srd5ArgumentException("destination cannot be null");
             int distance = destination.Distance(LocateCombattant(CurrentCombattant));
             if (distance > remainingSpeed) return false;
             remainingSpeed -= distance;
@@ -228,8 +228,8 @@ namespace srd5 {
         public bool MeleeAttackAction(Combattant target) {
             if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) return false;
             if (currentPhase == TurnPhase.MOVE) return false;
-            if (target == null) throw new ArgumentException("target cannot be null");
-            if (target == CurrentCombattant) throw new ArgumentException("cannot attack self");
+            if (target == null) throw new Srd5ArgumentException("target cannot be null");
+            if (target == CurrentCombattant) throw new Srd5ArgumentException("cannot attack self");
             bool success = false;
             if (currentPhase == TurnPhase.ACTION)
                 success = doFullMeleeAttack(target);
@@ -251,8 +251,8 @@ namespace srd5 {
                 GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_PHASE);
                 return false;
             }
-            if (target == null) throw new ArgumentException("target cannot be null");
-            if (target == CurrentCombattant) throw new ArgumentException("cannot attack self");
+            if (target == null) throw new Srd5ArgumentException("target cannot be null");
+            if (target == CurrentCombattant) throw new Srd5ArgumentException("cannot attack self");
             bool success = false;
             if (currentPhase == TurnPhase.ACTION)
                 success = doFullRangedAttack(target);

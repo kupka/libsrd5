@@ -52,8 +52,8 @@ namespace srd5 {
 
         [Fact]
         public void WrongUsageTest() {
-            Assert.Throws<ArgumentException>(delegate { Random.Get(-1, 5); });
-            Assert.Throws<ArgumentException>(delegate { Random.Get(5, 1); });
+            Assert.Throws<Srd5ArgumentException>(delegate { Random.Get(-1, 5); });
+            Assert.Throws<Srd5ArgumentException>(delegate { Random.Get(5, 1); });
         }
     }
 }

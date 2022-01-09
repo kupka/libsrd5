@@ -61,14 +61,14 @@ namespace srd5 {
 
         [Fact]
         public void NotADiceTest() {
-            Assert.Throws<ArgumentOutOfRangeException>(delegate {
+            Assert.Throws<Srd5ArgumentException>(delegate {
                 Dice.Get(21);
             });
         }
 
         [Fact]
         public void AnotherNotADiceTest() {
-            Assert.Throws<FormatException>(delegate {
+            Assert.Throws<Srd5FormatException>(delegate {
                 new Dices("3d7+3");
             });
         }
@@ -106,7 +106,7 @@ namespace srd5 {
         [InlineData("3d6+x")]
         [InlineData("3d6-41n")]
         public void InvalidDiceTest(string diceString) {
-            Assert.Throws<FormatException>(delegate { new Dices(diceString); });
+            Assert.Throws<Srd5FormatException>(delegate { new Dices(diceString); });
         }
 
         [Fact]

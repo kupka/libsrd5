@@ -209,6 +209,8 @@ namespace srd5 {
                     if (!target.DC(dc, AbilityType.WISDOM, true)) {
                         GlobalEvents.AffectBySpell(caster, ID.CHARM_PERSON, target, true);
                         target.AddCondition(ConditionType.CHARMED);
+                    } else {
+                        GlobalEvents.AffectBySpell(caster, ID.CHARM_PERSON, target, false);
                     }
                 }
             }
@@ -239,6 +241,8 @@ namespace srd5 {
                             }
                             return success;
                         });
+                    } else {
+                        GlobalEvents.AffectBySpell(caster, ID.HOLD_PERSON, target, false);
                     }
                 }
             }

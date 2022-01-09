@@ -183,7 +183,7 @@ namespace srd5 {
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
         public void TakeDamage(DamageType type, int amount) {
-            if (amount <= 0) throw new ArgumentException("Amount must be a positive integer");
+            if (amount <= 0) throw new Srd5ArgumentException("Amount must be a positive integer");
             if (IsImmune(type)) return;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;
@@ -196,7 +196,7 @@ namespace srd5 {
         /// Heals the specified amount of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combattant.
         /// </summary>
         public void HealDamage(int amount) {
-            if (amount <= 0) throw new ArgumentException("Amount must be a positive integer");
+            if (amount <= 0) throw new Srd5ArgumentException("Amount must be a positive integer");
             if (HitPoints == 0) RemoveCondition(ConditionType.UNCONSCIOUS);
             GlobalEvents.ReceivedHealing(this, amount);
             HitPoints = Math.Min(HitPoints + amount, HitPointsMax);
@@ -220,7 +220,7 @@ namespace srd5 {
                 case AbilityType.CHARISMA:
                     return Charisma;
                 default:
-                    throw new ArgumentException("No value for this AbilityType");
+                    throw new Srd5ArgumentException("No value for this AbilityType");
             }
         }
 
@@ -264,7 +264,6 @@ namespace srd5 {
                 }
             }
         }
-
     }
 
     /// <summary>

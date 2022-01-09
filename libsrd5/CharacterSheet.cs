@@ -17,13 +17,22 @@ namespace srd5 {
         public Boots Boots { get; internal set; }
         public Item[] Bag { get { return bag; } }
         private Item[] bag = new Item[0];
+        private CharacterSheet owner;
+
+        public CharacterInventory(CharacterSheet owner) {
+            this.owner = owner;
+        }
 
         public void AddToBag(params Item[] items) {
             Utils.Push<Item>(ref bag, items);
+            foreach (Item item in items)
+                GlobalEvents.ChangeEquipment(owner, item, GlobalEvents.EquipmentChanged.Events.PUT_IN_BAG);
         }
 
         public void RemoveFromBag(Item item) {
-            Utils.RemoveSingle<Item>(ref bag, item);
+            RemoveResult result = Utils.RemoveSingle<Item>(ref bag, item);
+            if (result == RemoveResult.REMOVED_AND_GONE)
+                GlobalEvents.ChangeEquipment(owner, item, GlobalEvents.EquipmentChanged.Events.REMOVED_FROM_BAG);
         }
     }
 
@@ -38,7 +47,7 @@ namespace srd5 {
         private Feat[] feats = new Feat[0];
         public Dice[] HitDice { get { return hitDice; } }
         private Dice[] hitDice = new Dice[0];
-        public CharacterInventory Inventory { get; internal set; } = new CharacterInventory();
+        public CharacterInventory Inventory { get; internal set; }
         public int AbilityPoints { get; internal set; }
         public int Attacks {
             get {
@@ -123,6 +132,7 @@ namespace srd5 {
         /// Otherwise, abilitypoints for spending are assigned.
         /// </summary>
         public CharacterSheet(Race race, bool classic = false) {
+            Inventory = new CharacterInventory(this);
             if (classic) {
                 Dices dices = new Dices("3d6");
                 Strength.BaseValue = Math.Max(dices.Roll(), dices.Roll());
@@ -167,6 +177,7 @@ namespace srd5 {
             // don't equip a weapon that is already equipped in one hand
             if (weapon.Equals(Inventory.MainHand) || weapon.Equals(Inventory.OffHand)) return;
             GlobalEvents.ChangeEquipment(this, weapon, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
+            Inventory.RemoveFromBag(weapon);
             if (weapon.HasProperty(WeaponProperty.TWO_HANDED)) {
                 Unequip(Inventory.OffHand);
                 Unequip(Inventory.MainHand);
@@ -252,6 +263,7 @@ namespace srd5 {
             }
             Unequip(Inventory.OffHand);
             GlobalEvents.ChangeEquipment(this, shield, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
+            Inventory.RemoveFromBag(shield);
             Inventory.OffHand = shield;
             RecalculateAttacks();
         }
@@ -260,6 +272,7 @@ namespace srd5 {
             if (armor == null) return;
             Unequip(Inventory.Armor);
             GlobalEvents.ChangeEquipment(this, armor, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
+            Inventory.RemoveFromBag(armor);
             Inventory.Armor = armor;
             // calculate speed penality if applicable
             if (!HasEffect(Effect.NO_SPEED_PENALITY_FOR_HEAVY_ARMOR) && armor.Strength > Strength.Value) {
@@ -278,6 +291,7 @@ namespace srd5 {
                 Inventory.RingLeft = ring;
             }
             GlobalEvents.ChangeEquipment(this, ring, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
+            Inventory.RemoveFromBag(ring);
             addEffects(ring);
         }
 
@@ -285,6 +299,7 @@ namespace srd5 {
             if (helmet == null) return;
             Unequip(Inventory.Helmet);
             GlobalEvents.ChangeEquipment(this, helmet, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
+            Inventory.RemoveFromBag(helmet);
             Inventory.Helmet = helmet;
             addEffects(helmet);
         }
@@ -293,6 +308,7 @@ namespace srd5 {
             if (boots == null) return;
             Unequip(Inventory.Boots);
             GlobalEvents.ChangeEquipment(this, boots, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
+            Inventory.RemoveFromBag(boots);
             Inventory.Boots = boots;
             addEffects(boots);
         }
@@ -301,6 +317,7 @@ namespace srd5 {
             if (amulet == null) return;
             GlobalEvents.ChangeEquipment(this, amulet, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
             Unequip(Inventory.Amulet);
+            Inventory.RemoveFromBag(amulet);
             Inventory.Amulet = amulet;
             addEffects(amulet);
         }
@@ -354,6 +371,8 @@ namespace srd5 {
                 MagicItem magicItem = (MagicItem)(object)item;
                 removeEffects(magicItem);
             }
+            // Put item into bag
+            Inventory.AddToBag(item);
             RecalculateAttacks();
         }
 

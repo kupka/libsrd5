@@ -6,7 +6,7 @@ namespace srd5 {
         internal ConsumableEffect ConsumableEffect;
         public int Charges { get; internal set; }
 
-        public Consumable(string name, ItemType type, ConsumableEffect effect, ItemRarity rarity = ItemRarity.COMMON, int charges = 1) {
+        public Consumable(string name, ItemType type, ConsumableEffect effect, ItemRarity rarity, int charges = 1) {
             Name = name;
             Type = type;
             ConsumableEffect = effect;
@@ -21,12 +21,14 @@ namespace srd5 {
         internal UsableEffect UsableEffect;
         public int Charges { get; internal set; }
         public int MaxChargePerUse { get; internal set; }
+        public int MaxTargets { get; internal set; }
 
-        public Usable(string name, ItemType type, UsableEffect effect, ItemRarity rarity = ItemRarity.COMMON, int maxChargePerUse = 1, int charges = 1) {
+        public Usable(string name, ItemType type, UsableEffect effect, ItemRarity rarity, int maxTargets, int maxChargePerUse, int charges) {
             Name = name;
             Type = type;
             UsableEffect = effect;
             Rarity = rarity;
+            MaxTargets = maxTargets;
             Charges = charges;
             MaxChargePerUse = maxChargePerUse;
         }

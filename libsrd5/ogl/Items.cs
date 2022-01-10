@@ -638,7 +638,7 @@ namespace srd5 {
                     consumer.HealDamage(healing.Roll());
                     potion.Charges = 0;
                     potion.Destroyed = true;
-                });
+                }, ItemRarity.COMMON);
             }
         }
 
@@ -688,7 +688,7 @@ namespace srd5 {
                             item.Destroyed = true;
                         }
                     }
-                }, ItemRarity.UNCOMMON, 7, 7);
+                }, ItemRarity.UNCOMMON, 20, 7, 7);
             }
         }
     }

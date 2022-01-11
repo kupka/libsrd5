@@ -113,8 +113,8 @@ namespace srd5 {
             applyParalyzed(combattant);
             if (combattant is CharacterSheet) {
                 CharacterSheet sheet = (CharacterSheet)combattant;
-                if (sheet.Inventory.MainHand != null) sheet.Unequip(sheet.Inventory.MainHand);
-                if (sheet.Inventory.OffHand != null) sheet.Unequip(sheet.Inventory.OffHand);
+                sheet.Unequip(sheet.Inventory.MainHand);
+                sheet.Unequip(sheet.Inventory.OffHand);
             }
         }
 

@@ -491,5 +491,22 @@ namespace srd5 {
             Assert.Equal(hide, sheet.Inventory.Armor);
         }
 
+        [Fact]
+        public void CannotEquipOrUseDestroyedItems() {
+            CharacterSheet sheet = new CharacterSheet(Race.HILL_DWARF);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            sheet.HitPoints = 1;
+            Armor chain = Armors.ChainMailArmor;
+            chain.Destroy();
+            Consumable potion = Potions.PotionOfSuperiorHealing;
+            potion.Destroy();
+            Usable wand = Wands.WandOfMagicMissiles;
+            wand.Destroy();
+            sheet.Equip(chain);
+            sheet.Consume(potion);
+            sheet.Use(wand, 7, sheet);
+            Assert.Null(sheet.Inventory.Armor);
+            Assert.Equal(1, sheet.HitPoints);
+        }
     }
 }

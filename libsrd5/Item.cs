@@ -20,17 +20,17 @@ namespace srd5 {
     public class Usable : Item {
         internal UsableEffect UsableEffect;
         public int Charges { get; internal set; }
-        public int MaxChargePerUse { get; internal set; }
-        public int MaxTargets { get; internal set; }
+        public int MaximumChargePerUse { get; internal set; }
+        public int MaximumTargets { get; internal set; }
 
         public Usable(string name, ItemType type, UsableEffect effect, ItemRarity rarity, int maxTargets, int maxChargePerUse, int charges) {
             Name = name;
             Type = type;
             UsableEffect = effect;
             Rarity = rarity;
-            MaxTargets = maxTargets;
+            MaximumTargets = maxTargets;
             Charges = charges;
-            MaxChargePerUse = maxChargePerUse;
+            MaximumChargePerUse = maxChargePerUse;
         }
     }
 

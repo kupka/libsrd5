@@ -110,11 +110,15 @@ namespace srd5 {
             ID.MAGIC_MISSILE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, VS,
             SpellDuration.INSTANTANEOUS, 0, 20, delegate (Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Damage damage = new Damage(DamageType.FORCE, "1d4+1");
-                int missiles = (int)slot + 2;
-                for (int i = 0; i < missiles; i++) {
-                    Combattant target = targets[i % targets.Length];
+                int missilesTotal = (int)slot + 2;
+                foreach (Combattant target in targets) {
                     GlobalEvents.AffectBySpell(caster, ID.MAGIC_MISSILE, target, true);
-                    target.TakeDamage(damage.Type, damage.Dices.Roll());
+                    int bonusMissiles = missilesTotal % targets.Length;
+                    bonusMissiles = Math.Min(1, bonusMissiles);
+                    missilesTotal -= bonusMissiles;
+                    for (int m = 0; m < missilesTotal / targets.Length + bonusMissiles; m++) {
+                        target.TakeDamage(damage.Type, damage.Dices.Roll());
+                    }
                 }
             }
         );

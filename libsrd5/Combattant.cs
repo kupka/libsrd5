@@ -187,6 +187,10 @@ namespace srd5 {
             if (IsImmune(type)) return;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;
+            if (HitPoints == 0) {
+                // TODO: Implement Death Saves
+                return;
+            }
             GlobalEvents.ReceivedDamage(this, amount, type);
             HitPoints = Math.Max(0, HitPoints - amount);
             if (HitPoints == 0) AddCondition(ConditionType.UNCONSCIOUS);

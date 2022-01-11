@@ -560,6 +560,7 @@ namespace srd5 {
         }
 
         public void Use(Usable item, int expendedCharges, params Combattant[] targets) {
+            expendedCharges = Math.Max(1, expendedCharges); // cannot expend less than a single charge
             if (item == null || item.Charges < expendedCharges || item.Destroyed) return;
             GlobalEvents.ChangeEquipment(this, item, GlobalEvents.EquipmentChanged.Events.USED);
             item.UsableEffect(this, item, expendedCharges, targets);

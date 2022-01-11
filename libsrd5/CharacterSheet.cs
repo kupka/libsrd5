@@ -15,6 +15,21 @@ namespace srd5 {
         public Ring RingRight { get; internal set; }
         public Ring RingLeft { get; internal set; }
         public Boots Boots { get; internal set; }
+        public Item[] Currentquipment {
+            get {
+                Item[] allSlots = new Item[] { MainHand, OffHand, Armor, Helmet, Amulet, RingRight, RingLeft, Boots };
+                int countNulls = 0;
+                foreach (Item item in allSlots) {
+                    if (item == null) countNulls++;
+                }
+                Item[] equiped = new Item[allSlots.Length - countNulls];
+                int i = 0;
+                foreach (Item item in allSlots) {
+                    if (item != null) equiped[i++] = item;
+                }
+                return equiped;
+            }
+        }
         public Item[] Bag { get { return bag; } }
         private Item[] bag = new Item[0];
         private CharacterSheet owner;
@@ -233,7 +248,7 @@ namespace srd5 {
             return damageString;
         }
 
-        public void Equip(Weapon weapon) {
+        private void equip(Weapon weapon) {
             // don't equip a weapon that is already equipped in one hand
             if (weapon == null || weapon.Destroyed || weapon.Equals(Inventory.MainHand) || weapon.Equals(Inventory.OffHand)) return;
             GlobalEvents.ChangeEquipment(this, weapon, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
@@ -256,7 +271,7 @@ namespace srd5 {
             RecalculateAttacks();
         }
 
-        public void Equip(Shield shield) {
+        private void equip(Shield shield) {
             if (shield == null || shield.Destroyed || shield.Equals(Inventory.OffHand)) return;
             if (Inventory.MainHand != null && Inventory.MainHand.HasProperty(WeaponProperty.TWO_HANDED)) {
                 Unequip(Inventory.MainHand);
@@ -268,7 +283,7 @@ namespace srd5 {
             RecalculateAttacks();
         }
 
-        public void Equip(Armor armor) {
+        private void equip(Armor armor) {
             if (armor == null || armor.Destroyed || armor.Equals(Inventory.Armor)) return;
             Unequip(Inventory.Armor);
             GlobalEvents.ChangeEquipment(this, armor, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
@@ -280,7 +295,7 @@ namespace srd5 {
             }
         }
 
-        public void Equip(Ring ring) {
+        private void equip(Ring ring) {
             if (ring == null || ring.Destroyed || ring.Equals(Inventory.RingLeft) || ring.Equals(Inventory.RingRight)) return;
             if (Inventory.RingLeft == null)
                 Inventory.RingLeft = ring;
@@ -295,7 +310,7 @@ namespace srd5 {
             addEffects(ring);
         }
 
-        public void Equip(Helmet helmet) {
+        private void equip(Helmet helmet) {
             if (helmet == null || helmet.Destroyed || helmet.Equals(Inventory.Helmet)) return;
             Unequip(Inventory.Helmet);
             GlobalEvents.ChangeEquipment(this, helmet, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
@@ -304,7 +319,7 @@ namespace srd5 {
             addEffects(helmet);
         }
 
-        public void Equip(Boots boots) {
+        private void equip(Boots boots) {
             if (boots == null || boots.Destroyed || boots.Equals(Inventory.Boots)) return;
             Unequip(Inventory.Boots);
             GlobalEvents.ChangeEquipment(this, boots, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
@@ -313,7 +328,7 @@ namespace srd5 {
             addEffects(boots);
         }
 
-        public void Equip(Amulet amulet) {
+        private void equip(Amulet amulet) {
             if (amulet == null || amulet.Destroyed || amulet.Equals(Inventory.Amulet)) return;
             GlobalEvents.ChangeEquipment(this, amulet, GlobalEvents.EquipmentChanged.Events.EQUIPPED);
             Unequip(Inventory.Amulet);
@@ -334,8 +349,32 @@ namespace srd5 {
             }
         }
 
+        /// <summary>
+        /// Equips an item in its appropriate inventory slot. If the slot is currently occupied, the item there is unequipped first.
+        /// </summary>
+        public void Equip(Item item) {
+            if (item is Weapon) {
+                equip((Weapon)item);
+            } else if (item is Armor) {
+                equip((Armor)item);
+            } else if (item is Shield) {
+                equip((Shield)item);
+            } else if (item is Ring) {
+                equip((Ring)item);
+            } else if (item is Amulet) {
+                equip((Amulet)item);
+            } else if (item is Helmet) {
+                equip((Helmet)item);
+            } else if (item is Boots) {
+                equip((Boots)item);
+            }
+        }
+
+        /// <summary>
+        /// Unequips an equipped item.
+        /// </summary>
         public void Unequip(Item item) {
-            if (item == null) return;
+            if (item == null || Array.IndexOf(Inventory.Currentquipment, item) == -1) return;
             GlobalEvents.ChangeEquipment(this, item, GlobalEvents.EquipmentChanged.Events.UNEQUIPPED);
             switch (item.Type) {
                 case ItemType.WEAPON:

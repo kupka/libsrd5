@@ -477,5 +477,19 @@ namespace srd5 {
             Assert.Equal(sheet.HitPointsMax, sheet.HitPoints);
         }
 
+        [Fact]
+        public void UnequipWrongItemTest() {
+            CharacterSheet sheet = new CharacterSheet(Race.HALFLING);
+            Armor hide = Armors.HideArmor;
+            Armor chain = Armors.ChainShirt;
+            Weapon dagger = Weapons.Dagger;
+            sheet.Equip(hide);
+            Assert.Equal(hide, sheet.Inventory.Armor);
+            sheet.Unequip(null);
+            sheet.Unequip(chain);
+            sheet.Unequip(dagger);
+            Assert.Equal(hide, sheet.Inventory.Armor);
+        }
+
     }
 }

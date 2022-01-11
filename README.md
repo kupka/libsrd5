@@ -1,5 +1,9 @@
 [![codecov](https://codecov.io/gh/kupka/libsrd5/branch/main/graph/badge.svg?token=541OS360LT)](https://codecov.io/gh/kupka/libsrd5)
 
+# tl;dr
+
+Want to see libsrd5 in action? [Checkout the live example](https://kupka.github.io/libsrd5-examples/unity/index.html) (only desktop browsers are supported).
+
 # libsrd5
 
 An open source SRD 5.1 library in C#. It aims to implement most of the rules of the [5.1 SRD](https://dnd.wizards.com/articles/features/systems-reference-document-srd) 

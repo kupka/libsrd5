@@ -19,7 +19,7 @@ namespace srd5 {
                     Dices.onDiceRolled(dice);
                     return dice;
                 default:
-                    throw new ArgumentOutOfRangeException("No such dice d" + max);
+                    throw new Srd5ArgumentException("No such dice d" + max);
             }
         }
 
@@ -205,7 +205,7 @@ namespace srd5 {
                             state = 1;
                             continue;
                         } else {
-                            throw new FormatException("Invalid input: " + diceString);
+                            throw new Srd5FormatException("Invalid input: " + diceString);
                         }
                     case 1:
                         if (char.IsDigit(c)) {
@@ -222,7 +222,7 @@ namespace srd5 {
                             state = 2;
                             continue;
                         } else {
-                            throw new FormatException("Invalid input: " + diceString);
+                            throw new Srd5FormatException("Invalid input: " + diceString);
                         }
                     case 2:
                         if (char.IsDigit(c)) {
@@ -231,7 +231,7 @@ namespace srd5 {
                             }
                             Modifier += int.Parse(c.ToString());
                         } else {
-                            throw new FormatException("Invalid input: " + diceString);
+                            throw new Srd5FormatException("Invalid input: " + diceString);
                         }
                         break;
                 }
@@ -252,7 +252,7 @@ namespace srd5 {
                 case 100:
                     break;
                 default:
-                    throw new FormatException("Invalid input: " + diceString);
+                    throw new Srd5FormatException("Invalid input: " + diceString);
             }
         }
 

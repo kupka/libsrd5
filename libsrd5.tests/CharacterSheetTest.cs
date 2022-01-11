@@ -110,7 +110,7 @@ namespace srd5 {
 
         [Fact]
         public void IllegalRaceTest() {
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<Srd5ArgumentException>(
                 delegate {
                     CharacterRace race = RaceExtension.CharacterRace((Race)(-1));
                 }
@@ -271,6 +271,8 @@ namespace srd5 {
             Ring ring1 = Rings.RingOfSwimming;
             Ring ring2 = Rings.RingOfProtection;
             Ring ring3 = Rings.RingOfProtection;
+            sheet.Equip(ring1);
+            sheet.Equip(ring2);
             sheet.Equip(ring1);
             sheet.Equip(ring2);
             Assert.Equal(ring2, sheet.Inventory.RingRight);
@@ -477,5 +479,42 @@ namespace srd5 {
             Assert.Equal(sheet.HitPointsMax, sheet.HitPoints);
         }
 
+        [Fact]
+        public void UnequipWrongItemTest() {
+            CharacterSheet sheet = new CharacterSheet(Race.HALFLING);
+            Armor hide = Armors.HideArmor;
+            Armor chain = Armors.ChainShirt;
+            Weapon dagger = Weapons.Dagger;
+            sheet.Equip(hide);
+            sheet.Equip((Armor)null);
+            Assert.Equal(hide, sheet.Inventory.Armor);
+            sheet.Unequip(null);
+            sheet.Unequip(chain);
+            sheet.Unequip(dagger);
+            Assert.Equal(hide, sheet.Inventory.Armor);
+        }
+
+        [Fact]
+        public void CannotEquipOrUseDestroyedItems() {
+            CharacterSheet sheet = new CharacterSheet(Race.HILL_DWARF);
+            sheet.AddLevel(CharacterClasses.Barbarian);
+            sheet.HitPoints = 1;
+            Armor chain = Armors.ChainMailArmor;
+            chain.Destroy();
+            Consumable potion = Potions.PotionOfSuperiorHealing;
+            potion.Destroy();
+            Usable wand = Wands.WandOfMagicMissiles;
+            sheet.Equip(chain);
+            sheet.Consume(null);
+            sheet.Consume(potion);
+            sheet.Use(null, 7, sheet);
+            int charges = wand.Charges;
+            sheet.Use(wand, charges + 1, sheet);
+            Assert.Equal(charges, wand.Charges);
+            wand.Destroy();
+            sheet.Use(wand, 7, sheet);
+            Assert.Null(sheet.Inventory.Armor);
+            Assert.Equal(1, sheet.HitPoints);
+        }
     }
 }

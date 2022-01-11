@@ -173,7 +173,8 @@ namespace srd5 {
                 UNEQUIPPED,
                 DESTROYED,
                 USED,
-                PUT_IN_BAG
+                PUT_IN_BAG,
+                REMOVED_FROM_BAG
             }
 
             public CharacterSheet Hero { get; private set; }

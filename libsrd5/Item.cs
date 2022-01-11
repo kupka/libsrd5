@@ -1,6 +1,39 @@
 using System;
 
 namespace srd5 {
+    public delegate void ConsumableEffect(Combattant consumer, Consumable item);
+    public class Consumable : Item {
+        internal ConsumableEffect ConsumableEffect;
+        public int Charges { get; internal set; }
+
+        public Consumable(string name, ItemType type, ConsumableEffect effect, ItemRarity rarity, int charges = 1) {
+            Name = name;
+            Type = type;
+            ConsumableEffect = effect;
+            Rarity = rarity;
+            Charges = charges;
+        }
+    }
+
+    public delegate void UsableEffect(Combattant user, Usable item, int expendedCharges, params Combattant[] targets);
+
+    public class Usable : Item {
+        internal UsableEffect UsableEffect;
+        public int Charges { get; internal set; }
+        public int MaximumChargePerUse { get; internal set; }
+        public int MaximumTargets { get; internal set; }
+
+        public Usable(string name, ItemType type, UsableEffect effect, ItemRarity rarity, int maxTargets, int maxChargePerUse, int charges) {
+            Name = name;
+            Type = type;
+            UsableEffect = effect;
+            Rarity = rarity;
+            MaximumTargets = maxTargets;
+            Charges = charges;
+            MaximumChargePerUse = maxChargePerUse;
+        }
+    }
+
     public class Shield : Item {
         public int AC { get; private set; }
 
@@ -118,6 +151,10 @@ namespace srd5 {
 
         public int Value { get; internal set; }
 
+        public bool Destroyed { get; internal set; } = false;
+
+        public ItemRarity Rarity { get; internal set; } = ItemRarity.COMMON;
+
         public override bool Equals(object other) {
             if (other == null) return false;
             if (!(other is Item)) return false;
@@ -135,6 +172,10 @@ namespace srd5 {
 
         public override string ToString() {
             return Name + "#" + id;
+        }
+
+        public void Destroy() {
+            Destroyed = true;
         }
     }
 }

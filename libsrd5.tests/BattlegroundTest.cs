@@ -19,7 +19,7 @@ namespace srd5 {
             Assert.Equal(10, ground.LocateCombattant2D(hero).X);
             Assert.Equal(30, ground.LocateCombattant2D(badguy).Y);
             Assert.Equal(140, ground.LocateCombattant(hero).Distance(ground.LocateCombattant(badguy)));
-            Assert.Throws<ArgumentException>(delegate {
+            Assert.Throws<Srd5ArgumentException>(delegate {
                 ground.LocateCombattant(hero).Distance(new ClassicLocation(ClassicLocation.Row.FRONT_LEFT));
             });
             ground.Initialize();
@@ -53,7 +53,7 @@ namespace srd5 {
             Assert.True(frontLeft.Distance(backLeft) == backLeft.Distance(frontLeft));
             Assert.True(backLeft.Distance(frontLeft) < backLeft.Distance(frontRight));
             Assert.True(backLeft.Distance(frontRight) < backLeft.Distance(backRight));
-            Assert.Throws<ArgumentException>(delegate {
+            Assert.Throws<Srd5ArgumentException>(delegate {
                 frontLeft.Distance(new Coord(2, 3));
             });
         }
@@ -64,7 +64,7 @@ namespace srd5 {
             Battleground2D ground = new Battleground2D(50, 50);
             ground.AddCombattant(sheet, 10, 10);
             ground.Initialize();
-            Assert.Throws<ArgumentException>(delegate {
+            Assert.Throws<Srd5ArgumentException>(delegate {
                 ground.MoveAction(null);
             });
             sheet.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
@@ -109,10 +109,10 @@ namespace srd5 {
             Random.State = 11; // Fix deterministic random to guarantee critical hit
             Assert.True(ground.MeleeAttackAction(badger));
             Random.State = 10; // Fix deterministic random to guarantee normal hit     
-            Assert.Throws<ArgumentException>(delegate {
+            Assert.Throws<Srd5ArgumentException>(delegate {
                 ground.MeleeAttackAction(null);
             });
-            Assert.Throws<ArgumentException>(delegate {
+            Assert.Throws<Srd5ArgumentException>(delegate {
                 ground.MeleeAttackAction(hero);
             });
             Assert.True(ground.MeleeAttackAction(badger));
@@ -395,11 +395,11 @@ namespace srd5 {
                 Assert.False(battle.RangedAttackAction(ogre));
             while (goblin.HitPoints > 0) {
                 while (battle.NextPhase() != TurnPhase.ACTION) ;
-                Assert.Throws<ArgumentException>(delegate { battle.RangedAttackAction(null); });
+                Assert.Throws<Srd5ArgumentException>(delegate { battle.RangedAttackAction(null); });
                 if (battle.CurrentCombattant == ogre)
                     Assert.True(battle.RangedAttackAction(goblin));
                 else {
-                    Assert.Throws<ArgumentException>(delegate { battle.RangedAttackAction(goblin); });
+                    Assert.Throws<Srd5ArgumentException>(delegate { battle.RangedAttackAction(goblin); });
                     Assert.True(battle.RangedAttackAction(ogre));
                     // Bonus Attack
                     Assert.True(battle.RangedAttackAction(ogre));

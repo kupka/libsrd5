@@ -1,5 +1,5 @@
 namespace srd5 {
-    internal class Random {
+    public class Random {
         public static uint State { get; set; } = 1838911792;
 
         private static uint xorshift32() {

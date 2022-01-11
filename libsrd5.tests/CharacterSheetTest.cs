@@ -484,6 +484,7 @@ namespace srd5 {
             Armor chain = Armors.ChainShirt;
             Weapon dagger = Weapons.Dagger;
             sheet.Equip(hide);
+            sheet.Equip((Armor)null);
             Assert.Equal(hide, sheet.Inventory.Armor);
             sheet.Unequip(null);
             sheet.Unequip(chain);
@@ -501,9 +502,14 @@ namespace srd5 {
             Consumable potion = Potions.PotionOfSuperiorHealing;
             potion.Destroy();
             Usable wand = Wands.WandOfMagicMissiles;
-            wand.Destroy();
             sheet.Equip(chain);
+            sheet.Consume(null);
             sheet.Consume(potion);
+            sheet.Use(null, 7, sheet);
+            int charges = wand.Charges;
+            sheet.Use(wand, charges + 1, sheet);
+            Assert.Equal(charges, wand.Charges);
+            wand.Destroy();
             sheet.Use(wand, 7, sheet);
             Assert.Null(sheet.Inventory.Armor);
             Assert.Equal(1, sheet.HitPoints);

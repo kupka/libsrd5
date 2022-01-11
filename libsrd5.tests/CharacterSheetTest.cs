@@ -273,6 +273,8 @@ namespace srd5 {
             Ring ring3 = Rings.RingOfProtection;
             sheet.Equip(ring1);
             sheet.Equip(ring2);
+            sheet.Equip(ring1);
+            sheet.Equip(ring2);
             Assert.Equal(ring2, sheet.Inventory.RingRight);
             Assert.Equal(11, sheet.ArmorClass);
             sheet.Unequip(ring2);

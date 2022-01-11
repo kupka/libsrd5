@@ -13,12 +13,6 @@ namespace srd5 {
         }
     }
 
-    public class Srd5StateException : Srd5Exception {
-        public Srd5StateException(string message) : base(message) {
-
-        }
-    }
-
     public class Srd5FormatException : Srd5Exception {
         public Srd5FormatException(string message) : base(message) {
 

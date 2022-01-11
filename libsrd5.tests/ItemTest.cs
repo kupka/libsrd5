@@ -76,14 +76,16 @@ namespace srd5 {
 
         [Fact]
         public void WandOfMagicMissilesTest() {
-            Monster ogre = Monsters.Ogre;
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             Monster shadow = Monsters.Shadow;
             Usable wand = Wands.WandOfMagicMissiles;
+            hero.Inventory.AddToBag(wand);
             while (!wand.Destroyed) {
-                wand.UsableEffect(ogre, wand, 7, shadow);
+                hero.Use(wand, 7, shadow);
                 wand.Charges = 7;
             }
             Assert.True(wand.Destroyed);
+            Assert.Empty(hero.Inventory.Bag);
         }
     }
 }

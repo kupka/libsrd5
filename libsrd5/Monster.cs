@@ -1,3 +1,5 @@
+using System;
+
 namespace srd5 {
     public struct ChallengeRating {
         public static readonly int QUARTER = -2;
@@ -10,6 +12,13 @@ namespace srd5 {
         public int Challenge { get; internal set; } = 1;
 
         public int SpellCastDC { get; private set; } = 0;
+
+        public override int ProficiencyBonus {
+            get {
+                if (Challenge <= 4) return 2;
+                return (int)Math.Ceiling((Challenge - 4) / 4.0f) + 2;
+            }
+        }
 
         public Monster(MonsterType type, string name, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
                         int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks, Size size, int spellCastDC = 0) {

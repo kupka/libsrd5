@@ -101,7 +101,7 @@ namespace srd5 {
             }
         }
 
-        public int Proficiency {
+        public override int ProficiencyBonus {
             get {
                 return (2 + ((EffectiveLevel - 1) / 4));
             }
@@ -113,7 +113,7 @@ namespace srd5 {
                 int bonus = 0;
                 // calculate base proficiency bonus if character is proficient
                 if (mainhand == null || IsProficient(mainhand)) {
-                    bonus += Proficiency;
+                    bonus += ProficiencyBonus;
                 }
                 // get bonus from strength or dex
                 if (mainhand == null) { // unarmed, use strength
@@ -182,9 +182,9 @@ namespace srd5 {
                     break;
             }
             if (IsProficient(skill.Proficiency()))
-                modifier += Proficiency;
+                modifier += ProficiencyBonus;
             if (IsDoubleProficient(skill.Proficiency()))
-                modifier += Proficiency;
+                modifier += ProficiencyBonus;
             return modifier;
         }
 
@@ -208,10 +208,10 @@ namespace srd5 {
                 dmgString = dmgString.Replace("d4", "d6");
             }
             if (weapon.HasProperty(WeaponProperty.AMMUNITION)) {
-                RangedAttacks = Utils.Expand<Attack>(Attack.FromWeapon(AttackProficiency, dmgString, weapon), Attacks);
+                RangedAttacks = Utils.Expand<Attack>(srd5.Attack.FromWeapon(AttackProficiency, dmgString, weapon), Attacks);
                 MeleeAttacks = new Attack[0];
             } else {
-                MeleeAttacks = Utils.Expand<Attack>(Attack.FromWeapon(AttackProficiency, dmgString, weapon), Attacks);
+                MeleeAttacks = Utils.Expand<Attack>(srd5.Attack.FromWeapon(AttackProficiency, dmgString, weapon), Attacks);
                 RangedAttacks = new Attack[0];
             }
             if (Inventory.OffHand == null || !(Inventory.OffHand is Weapon)) return;
@@ -219,7 +219,7 @@ namespace srd5 {
             modifier = calculateModifier(weapon);
             dmgString = concatDamageString(weapon.Damage.Dices.ToString(), modifier);
             if (modifier > 0) modifier = 0; // only negative modifiers for bonus action
-            BonusAttack = Attack.FromWeapon(AttackProficiency, dmgString, weapon);
+            BonusAttack = srd5.Attack.FromWeapon(AttackProficiency, dmgString, weapon);
         }
 
         private int calculateModifier(Weapon weapon) {

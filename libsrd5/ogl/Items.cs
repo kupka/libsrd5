@@ -680,7 +680,7 @@ namespace srd5 {
         public static Usable WandOfMagicMissiles {
             get {
                 return new Usable("Wand of Magic Missiles", ItemType.WAND, delegate (Combattant user, Usable item, int expendedCharges, Combattant[] targets) {
-                    Spells.MagicMissile.Cast(user, 0, (SpellLevel)expendedCharges, 0, targets);
+                    Spells.MagicMissile.Cast(null, user, 0, (SpellLevel)expendedCharges, 0, targets);
                     item.Charges -= expendedCharges;
                     if (item.Charges == 0) {
                         int roll = Dice.D20.Value;

@@ -32,7 +32,11 @@ namespace srd5 {
         }
 
         public void Cast(Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets) {
-            cast(caster, dc, slot, modifier, targets);
+            cast(null, caster, dc, slot, modifier, targets);
+        }
+
+        public void Cast(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets) {
+            cast(ground, caster, dc, slot, modifier, targets);
         }
 
         public override bool Equals(object obj) {

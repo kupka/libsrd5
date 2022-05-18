@@ -351,12 +351,18 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Charm Person";
                 case Spells.ID.CURE_WOUNDS:
                     return "Cure Wounds";
+                case Spells.ID.ENTANGLE:
+                    return "Entangle";
+                case Spells.ID.GUIDANCE:
+                    return "Guidance";
                 case Spells.ID.HEALING_WORD:
                     return "Healing Word";
                 case Spells.ID.HOLD_PERSON:
                     return "Hold Person";
                 case Spells.ID.MAGIC_MISSILE:
                     return "Magic Missile";
+                case Spells.ID.PRODUCE_FLAME:
+                    return "Produce Flame";
                 case Spells.ID.SHILLELAGH:
                     return "Shillelagh";
                 default:
@@ -372,12 +378,20 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "You attempt to charm a humanoid you can see within range. It must make a Wisdom saving throw, and does so with advantage if you or your companions are fighting it. If it fails the saving throw, it is charmed by you until the spell ends or until you or your companions do anything harmful to it. The charmed creature regards you as a friendly acquaintance. When the spell ends, the creature knows it was charmed by you.\nWhen you cast this spell using a spell slot of 2nd level or higher, you can target one additional creature for each slot level above 1st. The creatures must be within 30 feet of each other when you target them.";
                 case Spells.ID.CURE_WOUNDS:
                     return "A creature you touch regains a number of hit points equal to 1d8 + your spellcasting ability modifier.\nThis spell has no effect on undead or constructs.\nWhen you cast this spell using a spell slot of 2nd level or higher, the healing increases by 1d8 for each slot level above 1st.";
+                case Spells.ID.ENTANGLE:
+                    return "Grasping weeds and vines sprout from the ground in a 20-foot square starting from a point within range. For the duration, these plants turn the ground in the area into difficult terrain.\nA creature in the area when you cast the spell must succeed on a Strength saving throw or be restrained by the entangling plants until the spell ends. A creature restrained by the plants can use its action to make a Strength check against your spell save DC. On a success, it frees itself.\nWhen the spell ends, the conjured plants wilt away.";
+                case Spells.ID.GUIDANCE:
+                    return "You touch one willing creature. Once before the spell ends, the target can roll a d4 and add the number rolled to one ability check of its choice. It can roll the die before or after making the ability check. The spell then ends.";
                 case Spells.ID.HEALING_WORD:
                     return "A creature of your choice that you can see within range regains hit points equal to 1d4 + your spellcasting ability modifier.\nThis spell has no effect on undead or constructs.\nAt Higher Levels: When you cast this spell using a spell slot of 2nd level or higher, the healing increases by 1d4 for each slot level above 1st.";
                 case Spells.ID.HOLD_PERSON:
                     return "Choose a humanoid that you can see within range. The target must succeed on a Wisdom saving throw or be paralyzed for the duration. At the end of each of its turns, the target can make another Wisdom saving throw. On a success, the spell ends on the target.\nWhen you cast this spell using a spell slot of 3rd level or higher, you can target one additional humanoid for each slot level above 2nd. The humanoids must be within 30 feet of each other when you target them.";
                 case Spells.ID.MAGIC_MISSILE:
                     return "You create three glowing darts of magical force. Each dart hits a creature of your choice that you can see within range. A dart deals 1d4 + 1 force damage to its target. The darts all strike simultaneously, and you can direct them to hit one creature or several.\nWhen you cast this spell using a spell slot of 2nd level or higher, the spell creates one more dart for each slot level above 1st.";
+                case Spells.ID.MENDING:
+                    return "This spell repairs a single break or tear in an object you touch, such as a broken chain link, two halves of a broken key, a torn cloak, or a leaking wineskin. As long as the break or tear is no larger than 1 foot in any dimension, you mend it, leaving no trace of the former damage.\nThis spell can physically repair a magic item or construct, but the spell can't restore magic to such an object.";
+                case Spells.ID.PRODUCE_FLAME:
+                    return "A flickering flame appears in your hand. The flame remains there for the duration and harms neither you nor your equipment. The flame sheds bright light in a 10-foot radius and dim light for an additional 10 feet. The spell ends if you dismiss it as an action or if you cast it again.\nYou can also attack with the flame, although doing so ends the spell. When you cast this spell, or as an action on a later turn, you can hurl the flame at a creature within 30 feet of you. Make a ranged spell attack.On a hit, the target takes 1d8 fire damage.\nThis spell's damage increases by 1d8 when you reach 5th level(2d8), 11th level(3d8), and 17th level(4d8).";
                 case Spells.ID.SHILLELAGH:
                     return "The wood of a club or quarterstaff you are holding is imbued with nature's power. For the duration, you can use your spellcasting ability instead of Strength for the attack and damage rolls of melee attacks using that weapon, and the weapon's damage die becomes a d8. The weapon also becomes magical, if it isn't already. The spell ends if you cast it again or if you let go of the weapon.";
                 default:

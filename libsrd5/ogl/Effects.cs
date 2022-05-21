@@ -98,7 +98,8 @@ namespace srd5 {
         PROTECTION,
         CANNOT_TAKE_ACTIONS,
         FAIL_STRENGTH_CHECK,
-        FAIL_DEXERITY_CHECK
+        FAIL_DEXERITY_CHECK,
+        DC_BONUS_D4 // DC Bonus from Resistance cantrip
     }
 
     public static class Effects {

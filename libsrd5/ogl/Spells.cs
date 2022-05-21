@@ -74,15 +74,20 @@ namespace srd5 {
             DEFAULT,
             ACID_SPLASH,
             CHARM_PERSON,
+            CREATE_OR_DESTROY_WATER,
             CURE_WOUNDS,
             DETECT_MAGIC,
+            DETECT_POISON_AND_DISEASE,
             ENTANGLE,
+            FAIRIE_FIRE,
+            FOG_CLOUD,
             GUIDANCE,
             HEALING_WORD,
             HOLD_PERSON,
             MAGIC_MISSILE,
             MENDING,
             PRODUCE_FLAME,
+            RESISTANCE,
             SHILLELAGH
         }
 
@@ -135,6 +140,11 @@ namespace srd5 {
             }
         );
 
+        public static readonly Spell CreateOrDestroyWater = new Spell(
+            ID.CREATE_OR_DESTROY_WATER, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VS,
+            SpellDuration.INSTANTANEOUS, 0, 0, doNothing
+        );
+
         public static readonly Spell CureWounds = new Spell(
             ID.CURE_WOUNDS, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 5, VS,
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
@@ -157,6 +167,11 @@ namespace srd5 {
             SpellDuration.CONCENTRATION_TEN_MINUTES, 30, 0, doNothing
         );
 
+        public static readonly Spell DetectPoisonAndDisease = new Spell(
+            ID.DETECT_POISON_AND_DISEASE, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM,
+            SpellDuration.CONCENTRATION_TEN_MINUTES, 30, 0, doNothing
+        );
+
         public static readonly Spell Entangle = new Spell(
             ID.ENTANGLE, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VS,
             SpellDuration.CONCENTRATION_ONE_MINUTE, 20, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
@@ -169,6 +184,25 @@ namespace srd5 {
                     }
                 }
             }
+        );
+
+        public static readonly Spell FairieFire = new Spell(
+            ID.FAIRIE_FIRE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, V,
+            SpellDuration.CONCENTRATION_ONE_MINUTE, 20, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                foreach (Combattant target in targets) {
+                    if (target.DC(dc, AbilityType.DEXTERITY)) {
+                        GlobalEvents.AffectBySpell(caster, ID.FAIRIE_FIRE, target, false);
+                    } else {
+                        GlobalEvents.AffectBySpell(caster, ID.FAIRIE_FIRE, target, true);
+                        target.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+                    }
+                }
+            }
+        );
+
+        public static readonly Spell FogCloud = new Spell(
+            ID.FOG_CLOUD, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, VS,
+            SpellDuration.CONCENTRATION_ONE_HOUR, 20, 0, doNothing
         );
 
         public static readonly Spell Guidance = new Spell(
@@ -260,7 +294,16 @@ namespace srd5 {
                     diceString = "2d8";
                 Damage damage = new Damage(DamageType.FIRE, diceString);
                 Attack attack = new Attack(ID.PRODUCE_FLAME.Name(), bonus, damage, 0, 30, 30);
-                caster.Attack(attack, targets[0], 30, true);
+                int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(targets[0]));
+                caster.Attack(attack, targets[0], distance, true);
+            }
+        );
+
+        public static readonly Spell Resistance = new Spell(
+            ID.RESISTANCE, SpellSchool.ABJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VSM,
+            SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                GlobalEvents.AffectBySpell(caster, ID.RESISTANCE, targets[0], true);
+                targets[0].AddEffect(Effect.DC_BONUS_D4);
             }
         );
 

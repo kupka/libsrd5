@@ -237,6 +237,11 @@ namespace srd5 {
         public bool DC(int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
             Ability ability = GetAbility(type);
             Dice d20 = srd5.Dice.D20;
+            int additionalModifiers = 0;
+            if (HasEffect(Effect.DC_BONUS_D4)) {
+                additionalModifiers += Dice.D4.Value;
+                RemoveEffect(Effect.DC_BONUS_D4);
+            }
             if (advantage && !disadvantage) {
                 d20 = srd5.Dice.D20Advantage;
             }
@@ -244,7 +249,7 @@ namespace srd5 {
                 d20 = srd5.Dice.D20Disadvantage;
             }
             Dices.onDiceRolled(d20);
-            bool success = d20.Value + ability.Modifier >= dc;
+            bool success = d20.Value + ability.Modifier + additionalModifiers >= dc;
             if (d20.Value == 20) success = true;
             if (d20.Value == 1) success = false;
             if (type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) success = false;
@@ -272,6 +277,9 @@ namespace srd5 {
             }
         }
 
+        /// <summary>
+        /// Trys to attack the target Combattant with the specified attack. 
+        /// </summary>
         public void Attack(Attack attack, Combattant target, int distance, bool ranged = false) {
             int attackRoll = Dice.D20.Value;
             // Determine advantage and disadvantage

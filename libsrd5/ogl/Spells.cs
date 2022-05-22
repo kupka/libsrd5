@@ -84,9 +84,12 @@ namespace srd5 {
             GUIDANCE,
             HEALING_WORD,
             HOLD_PERSON,
+            JUMP,
+            LONGSTRIDER,
             MAGIC_MISSILE,
             MENDING,
             PRODUCE_FLAME,
+            PURIFY_FOOD_AND_DRINK,
             RESISTANCE,
             SHILLELAGH
         }
@@ -180,7 +183,15 @@ namespace srd5 {
                         GlobalEvents.AffectBySpell(caster, ID.ENTANGLE, target, false);
                     } else {
                         GlobalEvents.AffectBySpell(caster, ID.ENTANGLE, target, true);
-                        target.AddCondition(ConditionType.RESTRAINED);
+                        target.AddEffect(Effect.ENTANGLE);
+                        int rounds = 10;
+                        target.AddEndOfTurnEvent(delegate (Combattant combattant) {
+                            rounds--;
+                            bool done = rounds <= 0;
+                            if (done)
+                                combattant.RemoveEffect(Effect.ENTANGLE);
+                            return done;
+                        });
                     }
                 }
             }
@@ -194,7 +205,15 @@ namespace srd5 {
                         GlobalEvents.AffectBySpell(caster, ID.FAIRIE_FIRE, target, false);
                     } else {
                         GlobalEvents.AffectBySpell(caster, ID.FAIRIE_FIRE, target, true);
-                        target.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+                        target.AddEffect(Effect.FAIRIE_FIRE);
+                        int rounds = 10;
+                        target.AddEndOfTurnEvent(delegate (Combattant combattant) {
+                            rounds--;
+                            bool done = rounds <= 0;
+                            if (done)
+                                combattant.RemoveEffect(Effect.FAIRIE_FIRE);
+                            return done;
+                        });
                     }
                 }
             }
@@ -259,6 +278,25 @@ namespace srd5 {
             }
         );
 
+        public static readonly Spell Jump = new Spell(
+            ID.JUMP, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM,
+            SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                Combattant target = targets[0];
+                GlobalEvents.AffectBySpell(caster, ID.JUMP, target, false);
+                target.AddEffect(Effect.JUMP);
+            }
+        );
+
+        public static readonly Spell Longstrider = new Spell(
+            ID.LONGSTRIDER, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM,
+            SpellDuration.CONCENTRATION_ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                Combattant target = targets[0];
+                GlobalEvents.AffectBySpell(caster, ID.LONGSTRIDER, target, false);
+                target.AddEffect(Effect.LONGSTRIDER);
+            }
+        );
+
+
         public static readonly Spell MagicMissile = new Spell(
             ID.MAGIC_MISSILE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, VS,
             SpellDuration.INSTANTANEOUS, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
@@ -299,11 +337,16 @@ namespace srd5 {
             }
         );
 
+        public static readonly Spell PurifyFoodAndDrink = new Spell(
+            ID.PURIFY_FOOD_AND_DRINK, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 10, VS,
+            SpellDuration.INSTANTANEOUS, 5, 0, doNothing
+        );
+
         public static readonly Spell Resistance = new Spell(
             ID.RESISTANCE, SpellSchool.ABJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VSM,
             SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 GlobalEvents.AffectBySpell(caster, ID.RESISTANCE, targets[0], true);
-                targets[0].AddEffect(Effect.DC_BONUS_D4);
+                targets[0].AddEffect(Effect.RESISTANCE);
             }
         );
 

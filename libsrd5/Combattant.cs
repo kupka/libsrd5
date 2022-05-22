@@ -238,9 +238,9 @@ namespace srd5 {
             Ability ability = GetAbility(type);
             Dice d20 = srd5.Dice.D20;
             int additionalModifiers = 0;
-            if (HasEffect(Effect.DC_BONUS_D4)) {
+            if (HasEffect(Effect.RESISTANCE)) {
                 additionalModifiers += Dice.D4.Value;
-                RemoveEffect(Effect.DC_BONUS_D4);
+                RemoveEffect(Effect.RESISTANCE);
             }
             if (advantage && !disadvantage) {
                 d20 = srd5.Dice.D20Advantage;

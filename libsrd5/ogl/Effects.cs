@@ -99,7 +99,13 @@ namespace srd5 {
         CANNOT_TAKE_ACTIONS,
         FAIL_STRENGTH_CHECK,
         FAIL_DEXERITY_CHECK,
-        DC_BONUS_D4 // DC Bonus from Resistance cantrip
+
+        // Spell Effects
+        RESISTANCE,
+        LONGSTRIDER,
+        ENTANGLE,
+        FAIRIE_FIRE,
+        JUMP
     }
 
     public static class Effects {
@@ -144,6 +150,15 @@ namespace srd5 {
                 case Effect.THREE_EXTRA_ATTACKS:
                     ((CharacterSheet)combattant).RecalculateAttacks();
                     break;
+                case Effect.LONGSTRIDER:
+                    combattant.Speed += 10;
+                    break;
+                case Effect.ENTANGLE:
+                    combattant.AddCondition(ConditionType.RESTRAINED);
+                    break;
+                case Effect.FAIRIE_FIRE:
+                    combattant.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+                    break;
             }
         }
 
@@ -163,6 +178,15 @@ namespace srd5 {
                 case Effect.TWO_EXTRA_ATTACKS:
                 case Effect.THREE_EXTRA_ATTACKS:
                     ((CharacterSheet)combattant).RecalculateAttacks();
+                    break;
+                case Effect.LONGSTRIDER:
+                    combattant.Speed -= 10;
+                    break;
+                case Effect.ENTANGLE:
+                    combattant.RemoveCondition(ConditionType.RESTRAINED);
+                    break;
+                case Effect.FAIRIE_FIRE:
+                    combattant.RemoveEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
                     break;
             }
         }

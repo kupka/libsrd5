@@ -383,6 +383,10 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Resistance";
                 case Spells.ID.SHILLELAGH:
                     return "Shillelagh";
+                case Spells.ID.SPEAK_WITH_ANIMALS:
+                    return "Speak with Animals";
+                case Spells.ID.THUNDERWAVE:
+                    return "Thunderwave";
                 default:
                     return Enum.GetName(typeof(Spells.ID), spell) + ": (Name missing)";
             }
@@ -430,6 +434,10 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "You touch one willing creature. Once before the spell ends, the target can roll a d4 and add the number rolled to one saving throw of its choice. It can roll the die before or after making the saving throw. The spell then ends.";
                 case Spells.ID.SHILLELAGH:
                     return "The wood of a club or quarterstaff you are holding is imbued with nature's power. For the duration, you can use your spellcasting ability instead of Strength for the attack and damage rolls of melee attacks using that weapon, and the weapon's damage die becomes a d8. The weapon also becomes magical, if it isn't already. The spell ends if you cast it again or if you let go of the weapon.";
+                case Spells.ID.SPEAK_WITH_ANIMALS:
+                    return "You gain the ability to comprehend and verbally communicate with beasts for the duration. The knowledge and awareness of many beasts is limited by their intelligence, but at minimum, beasts can give you information about nearby locations and monsters, including whatever they can perceive or have perceived within the past day. You might be able to persuade a beast to perform a small favor for you, at the GM's discretion";
+                case Spells.ID.THUNDERWAVE:
+                    return "A wave of thunderous force sweeps out from you. Each creature in a 15-foot cube originating from you must make a Constitution saving throw. On a failed save, a creature takes 2d8 thunder damage and is pushed 10 feet away from you. On a successful save, the creature takes half as much damage and isn't pushed.\nIn addition, unsecured objects that are completely within the area of effect are automatically pushed 10 feet away from you by the spell's effect, and the spell emits a thunderous boom audible out to 300 feet.\nWhen you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d8 for each slot level above 1st.";
                 default:
                     return Enum.GetName(typeof(Spells.ID), spell) + ": (Description missing)";
             }

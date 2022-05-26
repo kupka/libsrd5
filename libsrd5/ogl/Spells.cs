@@ -91,7 +91,9 @@ namespace srd5 {
             PRODUCE_FLAME,
             PURIFY_FOOD_AND_DRINK,
             RESISTANCE,
-            SHILLELAGH
+            SHILLELAGH,
+            SPEAK_WITH_ANIMALS,
+            THUNDERWAVE
         }
 
         public static readonly Spell AcidSplash = new Spell(
@@ -379,6 +381,31 @@ namespace srd5 {
                     caster.BonusAttack.Name = ID.SHILLELAGH.Name();
                     caster.BonusAttack.Damage.Dices = new Dices(1, 8, modifier);
                     caster.BonusAttack.AttackBonus = modifier + sheet.ProficiencyBonus;
+                }
+            }
+        );
+
+        public static readonly Spell SpeakWithAnimals = new Spell(
+            ID.SPEAK_WITH_ANIMALS, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS,
+            SpellDuration.CONCENTRATION_TEN_MINUTES, 0, 0, doNothing
+        );
+
+        public static readonly Spell Thunderwave = new Spell(
+            ID.THUNDERWAVE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 15, VS,
+            SpellDuration.INSTANTANEOUS, 15, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                int dices = (int)slot + 1;
+                bool pushed = true;
+                foreach (Combattant target in targets) {
+                    GlobalEvents.AffectBySpell(caster, ID.THUNDERWAVE, caster, true);
+                    if (target.DC(dc, AbilityType.CONSTITUTION)) {
+                        dices = (int)(dices / 2);
+                        pushed = false;
+                    }
+                    Damage damage = new Damage(DamageType.THUNDER, dices + "d8");
+                    target.TakeDamage(damage.Type, damage.Dices.Roll());
+                    if (pushed) {
+                        ground.Push(ground.LocateCombattant(caster), target, 10);
+                    }
                 }
             }
         );

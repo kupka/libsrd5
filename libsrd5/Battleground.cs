@@ -79,13 +79,30 @@ namespace srd5 {
             return locations[Array.IndexOf(combattants, combattant)];
         }
 
+        public ClassicLocation LocateClassicCombattant(Combattant combattant) {
+            return locations[Array.IndexOf(combattants, combattant)];
+        }
+
+
         protected override void SetCurrentLocation(Location location) {
-            locations[currentCombattant] = (ClassicLocation)location;
+            SetLocation(CurrentCombattant, location);
+        }
+
+        protected override void SetLocation(Combattant combattant, Location location) {
+            locations[Array.IndexOf(combattants, combattant)] = (ClassicLocation)location;
         }
 
         public void AddCombattant(Combattant combattant, ClassicLocation.Row row) {
             AddCombattant(combattant);
             Utils.Push<ClassicLocation>(ref locations, new ClassicLocation(row));
+        }
+
+        public override void Push(Location source, Combattant target, int distance) {
+            if (LocateClassicCombattant(target) == ClassicLocation.FrontLeft) {
+                SetLocation(target, ClassicLocation.BackLeft);
+            } else if (LocateClassicCombattant(target) == ClassicLocation.FrontRight) {
+                SetLocation(target, ClassicLocation.BackRight);
+            }
         }
     }
 
@@ -122,7 +139,49 @@ namespace srd5 {
         }
 
         protected override void SetCurrentLocation(Location location) {
-            coords[currentCombattant] = (Coord)location;
+            SetLocation(CurrentCombattant, location);
+        }
+
+        protected override void SetLocation(Combattant combattant, Location location) {
+            coords[Array.IndexOf(combattants, combattant)] = (Coord)location;
+        }
+
+        public override void Push(Location source, Combattant target, int distance) {
+            // For simplicity, this assumes either a straight line or 45° angle. 
+            Coord sourceCoord = (Coord)source;
+            Coord targetCoord = LocateCombattant2D(target);
+            Coord destination = targetCoord;
+            distance /= 5;
+            if (targetCoord.X == sourceCoord.X) {
+                if (targetCoord.Y <= sourceCoord.Y) { // push down
+                    destination = new Coord(targetCoord.X, targetCoord.Y - distance);
+                } else { // push up
+                    destination = new Coord(targetCoord.X, targetCoord.Y + distance);
+                }
+            } else if (targetCoord.Y == sourceCoord.Y) {
+                if (targetCoord.X <= sourceCoord.X) { // push left
+                    destination = new Coord(targetCoord.X - distance, targetCoord.Y);
+                } else { // push right
+                    destination = new Coord(targetCoord.X + distance, targetCoord.Y);
+                }
+            } else if (targetCoord.X < sourceCoord.X) { // push left
+                distance /= 2;
+                if (distance == 0) distance = 1;
+                if (targetCoord.Y < sourceCoord.Y) { // push down
+                    destination = new Coord(targetCoord.X - distance, targetCoord.Y - distance);
+                } else if (targetCoord.Y > sourceCoord.Y) { // push up
+                    destination = new Coord(targetCoord.X - distance, targetCoord.Y + distance);
+                }
+            } else { // push right
+                distance /= 2;
+                if (distance == 0) distance = 1;
+                if (targetCoord.Y < sourceCoord.Y) { // push down
+                    destination = new Coord(targetCoord.X + distance, targetCoord.Y - distance);
+                } else if (targetCoord.Y > sourceCoord.Y) { // push up
+                    destination = new Coord(targetCoord.X + distance, targetCoord.Y + distance);
+                }
+            }
+            SetLocation(target, destination);
         }
     }
 
@@ -388,6 +447,12 @@ namespace srd5 {
         protected abstract void SetCurrentLocation(Location location);
 
         /// <summary>
+        /// Set the location of the combattant
+        /// </summary>
+        protected abstract void SetLocation(Combattant combattant, Location location);
+
+
+        /// <summary>
         /// Get the location of the current active combattant
         /// </summary>
         public virtual Location GetCurrentLocation() {
@@ -409,5 +474,10 @@ namespace srd5 {
             bgEvent.CurrentCombattant = this.CurrentCombattant;
             EventSubscription(this, bgEvent);
         }
+
+        /// <summary>
+        /// Pushes the target away from the source by the distance.
+        /// </summar>)
+        public abstract void Push(Location source, Combattant target, int distance);
     }
 }

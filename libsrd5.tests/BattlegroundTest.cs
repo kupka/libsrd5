@@ -437,5 +437,24 @@ namespace srd5 {
                 battle.NextPhase(); // skip bonus attack
             }
         }
+
+        [Fact]
+        public void PushTest2D() {
+            Battleground2D ground = new Battleground2D(10, 10);
+            Combattant ogre = Monsters.Ogre;
+            ground.AddCombattant(ogre, 5, 5);
+            ground.Initialize();
+            ground.Push(new Coord(5, 4), ogre, 10);
+            Assert.Equal(7, ground.LocateCombattant2D(ogre).Y);
+            ground.Push(new Coord(5, 8), ogre, 5);
+            Assert.Equal(6, ground.LocateCombattant2D(ogre).Y);
+            ground.Push(new Coord(4, 6), ogre, 15);
+            Assert.Equal(8, ground.LocateCombattant2D(ogre).X);
+            ground.Push(new Coord(9, 6), ogre, 15);
+            Assert.Equal(5, ground.LocateCombattant2D(ogre).X);
+            ground.Push(new Coord(4, 3), ogre, 10);
+            Assert.Equal(6, ground.LocateCombattant2D(ogre).X);
+            Assert.Equal(7, ground.LocateCombattant2D(ogre).Y);
+        }
     }
 }

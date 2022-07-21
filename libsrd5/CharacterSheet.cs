@@ -477,6 +477,12 @@ namespace srd5 {
             RecalculateAttacks();
         }
 
+        public void AddLevels(params CharacterClass[] classes) {
+            foreach (CharacterClass characterClass in classes) {
+                AddLevel(characterClass);
+            }
+        }
+
         private void updateAvailableSpells(CharacterLevel level) {
             if (level.Class.SpellCastingAbility == AbilityType.NONE) return;
             AvailableSpells spells = null;

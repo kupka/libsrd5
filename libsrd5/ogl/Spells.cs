@@ -284,7 +284,7 @@ namespace srd5 {
             ID.JUMP, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM,
             SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Combattant target = targets[0];
-                GlobalEvents.AffectBySpell(caster, ID.JUMP, target, false);
+                GlobalEvents.AffectBySpell(caster, ID.JUMP, target, true);
                 target.AddEffect(Effect.JUMP);
             }
         );
@@ -293,7 +293,7 @@ namespace srd5 {
             ID.LONGSTRIDER, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM,
             SpellDuration.CONCENTRATION_ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Combattant target = targets[0];
-                GlobalEvents.AffectBySpell(caster, ID.LONGSTRIDER, target, false);
+                GlobalEvents.AffectBySpell(caster, ID.LONGSTRIDER, target, true);
                 target.AddEffect(Effect.LONGSTRIDER);
             }
         );

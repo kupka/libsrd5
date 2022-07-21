@@ -123,10 +123,8 @@ namespace srd5 {
             Spells.Shillelagh.Cast(Monsters.Goblin, 0, SpellLevel.CANTRIP, 3);
         }
 
-        [Fact]
-        public void CharmPersonTest() {
-            CharacterSheet hero = new CharacterSheet(Race.HIGH_ELF, true);
-            Monster badger = Monsters.GiantBadger;
+        private void DefaultSpellTest(Spell spell, SpellLevel slot, ConditionType? checkForCondition, Effect? checkForEffect, int? simulateTurns) {
+            CharacterSheet hero = new CharacterSheet(Race.DRAGONBORN, true);
             Monster orc1 = Monsters.Orc;
             Monster orc2 = Monsters.Orc;
             Monster orc3 = Monsters.Orc;
@@ -134,38 +132,114 @@ namespace srd5 {
             Monster orc5 = Monsters.Orc;
             Monster orc6 = Monsters.Orc;
             Random.State = 1;
-            Spells.CharmPerson.Cast(hero, 14, SpellLevel.SIXTH, 0, badger, orc1, orc2, orc3, orc4, orc5, orc6);
-            Assert.False(badger.HasCondition(ConditionType.CHARMED));
-            Assert.False(orc6.HasCondition(ConditionType.CHARMED));
-            Assert.True(orc1.HasCondition(ConditionType.CHARMED) || orc2.HasCondition(ConditionType.CHARMED)
-                || orc3.HasCondition(ConditionType.CHARMED) || orc4.HasCondition(ConditionType.CHARMED) || orc5.HasCondition(ConditionType.CHARMED));
+            spell.Cast(hero, 14, slot, 0, orc1, orc2, orc3, orc4, orc5, orc6);
+            if (checkForCondition != null) {
+                ConditionType cond = (ConditionType)checkForCondition;
+                Assert.True(
+                    orc1.HasCondition(cond) || orc2.HasCondition(cond) || orc3.HasCondition(cond) || orc4.HasCondition(cond) || orc5.HasCondition(cond) || orc6.HasCondition(cond)
+                );
+            }
+            if (checkForEffect != null) {
+                Effect eff = (Effect)checkForEffect;
+                Assert.True(
+                    orc1.HasEffect(eff) || orc2.HasEffect(eff) || orc3.HasEffect(eff) || orc4.HasEffect(eff) || orc5.HasEffect(eff) || orc6.HasEffect(eff)
+                );
+            }
+            if (simulateTurns != null) {
+                int turns = (int)simulateTurns;
+                for (int i = 0; i < turns; i++) {
+                    orc1.OnEndOfTurn();
+                    orc2.OnEndOfTurn();
+                    orc3.OnEndOfTurn();
+                    orc4.OnEndOfTurn();
+                    orc5.OnEndOfTurn();
+                    orc6.OnEndOfTurn();
+                }
+                if (checkForCondition != null) {
+                    ConditionType cond = (ConditionType)checkForCondition;
+                    Assert.False(
+                        orc1.HasCondition(cond) || orc2.HasCondition(cond) || orc3.HasCondition(cond) || orc4.HasCondition(cond) || orc5.HasCondition(cond) || orc6.HasCondition(cond)
+                    );
+                }
+                if (checkForEffect != null) {
+                    Effect eff = (Effect)checkForEffect;
+                    Assert.False(
+                        orc1.HasEffect(eff) || orc2.HasEffect(eff) || orc3.HasEffect(eff) || orc4.HasEffect(eff) || orc5.HasEffect(eff) || orc6.HasEffect(eff)
+                    );
+                }
+            }
+        }
+
+        [Fact]
+        public void CharmPersonTest() {
+            DefaultSpellTest(Spells.CharmPerson, SpellLevel.SIXTH, ConditionType.CHARMED, null, null);
         }
 
         [Fact]
         public void HoldPersonTest() {
-            CharacterSheet hero = new CharacterSheet(Race.HIGH_ELF, true);
+            DefaultSpellTest(Spells.HoldPerson, SpellLevel.SEVENTH, ConditionType.PARALYZED, null, 100);
+        }
+
+        [Fact]
+        public void EntangleTest() {
+            DefaultSpellTest(Spells.Entangle, SpellLevel.FIRST, null, Effect.ENTANGLE, 100);
+        }
+
+        [Fact]
+        public void FairieFireTest() {
+            DefaultSpellTest(Spells.FairieFire, SpellLevel.SECOND, null, Effect.FAIRIE_FIRE, 100);
+        }
+
+        [Fact]
+        public void JumpTest() {
+            DefaultSpellTest(Spells.Jump, SpellLevel.THIRD, null, Effect.JUMP, null);
+        }
+
+        [Fact]
+        public void LongStriderTest() {
+            CharacterSheet hero = new CharacterSheet(Race.GNOME);
+            int speed = hero.Speed;
+            Spells.Longstrider.Cast(hero, 10, SpellLevel.FIRST, 0, hero);
+            Assert.True(hero.Speed > speed);
+            hero.RemoveEffect(Effect.LONGSTRIDER);
+            Assert.Equal(speed, hero.Speed);
+        }
+
+        [Fact]
+        public void ProduceFlameTest() {
+            CharacterSheet hero = new CharacterSheet(Race.GNOME);
+            hero.AddLevel(CharacterClasses.Druid);
             Monster badger = Monsters.GiantBadger;
-            Monster orc1 = Monsters.Orc;
-            Monster orc2 = Monsters.Orc;
-            Monster orc3 = Monsters.Orc;
-            Monster orc4 = Monsters.Orc;
-            Monster orc5 = Monsters.Orc;
-            Monster orc6 = Monsters.Orc;
+            int hps = badger.HitPoints;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(hero, 3, 3);
+            ground.AddCombattant(badger, 5, 5);
+            Spells.ProduceFlame.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
+            hero.AddLevels(CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid);
+            Spells.ProduceFlame.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
+            hero.AddLevels(CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid);
+            Spells.ProduceFlame.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
+            hero.AddLevels(CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid);
+            Spells.ProduceFlame.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
+            Assert.True(badger.HitPoints < hps);
+        }
+
+        [Fact]
+        public void ThunderwaveTest() {
+            CharacterSheet hero = new CharacterSheet(Race.GNOME);
+            hero.AddLevel(CharacterClasses.Druid);
+            Monster badger = Monsters.GiantBadger;
+            int hps = badger.HitPoints;
             Random.State = 1;
-            Spells.HoldPerson.Cast(hero, 14, SpellLevel.SEVENTH, 0, badger, orc1, orc2, orc3, orc4, orc5, orc6);
-            Assert.False(badger.HasCondition(ConditionType.PARALYZED));
-            Assert.False(orc6.HasCondition(ConditionType.PARALYZED));
-            Assert.True(orc1.HasCondition(ConditionType.PARALYZED) || orc2.HasCondition(ConditionType.PARALYZED)
-                || orc3.HasCondition(ConditionType.PARALYZED) || orc4.HasCondition(ConditionType.PARALYZED) || orc5.HasCondition(ConditionType.PARALYZED));
-            for (int i = 0; i < 100; i++) {
-                orc1.OnEndOfTurn();
-                orc2.OnEndOfTurn();
-                orc3.OnEndOfTurn();
-                orc4.OnEndOfTurn();
-                orc5.OnEndOfTurn();
-            }
-            Assert.False(orc1.HasCondition(ConditionType.PARALYZED) || orc2.HasCondition(ConditionType.PARALYZED)
-               || orc3.HasCondition(ConditionType.PARALYZED) || orc4.HasCondition(ConditionType.PARALYZED) || orc5.HasCondition(ConditionType.PARALYZED));
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(hero, 3, 3);
+            ground.AddCombattant(badger, 5, 5);
+            Assert.Equal(5, ground.LocateCombattant2D(badger).X);
+            Spells.Thunderwave.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
+            Assert.True(badger.HitPoints < hps);
+            Assert.True(ground.LocateCombattant2D(badger).X > 5);
         }
     }
 }

@@ -172,7 +172,7 @@ namespace srd5 {
 
         [Fact]
         public void CharmPersonTest() {
-            Spells.CharmPerson.Cast(Monsters.NightHag, 10, SpellLevel.FIRST, 10, Monsters.GiantBadger); // not affected
+            Spells.CharmPerson.Cast(Monsters.NightHag, 10, SpellLevel.SECOND, 10, Monsters.GiantBadger); // not affected
             DefaultSpellTest(Spells.CharmPerson, SpellLevel.SIXTH, ConditionType.CHARMED, null, null);
         }
 

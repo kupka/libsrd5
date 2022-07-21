@@ -178,7 +178,7 @@ namespace srd5 {
 
         [Fact]
         public void HoldPersonTest() {
-            Spells.CharmPerson.Cast(Monsters.NightHag, 10, SpellLevel.FIRST, 10, Monsters.GiantBadger); // not affected
+            Spells.HoldPerson.Cast(Monsters.NightHag, 10, SpellLevel.FIRST, 10, Monsters.GiantBadger); // not affected
             DefaultSpellTest(Spells.HoldPerson, SpellLevel.SEVENTH, ConditionType.PARALYZED, null, 100);
         }
 
@@ -242,6 +242,16 @@ namespace srd5 {
             Spells.Thunderwave.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
             Assert.True(badger.HitPoints < hps);
             Assert.True(ground.LocateCombattant2D(badger).X > 5);
+
+            BattleGroundClassic classic = new BattleGroundClassic();
+            badger.HealDamage(1000);
+            classic.AddCombattant(hero, ClassicLocation.Row.FRONT_LEFT);
+            classic.AddCombattant(badger, ClassicLocation.Row.FRONT_RIGHT);
+            Spells.Thunderwave.Cast(classic, hero, 10, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(classic, hero, 10, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(classic, hero, 10, SpellLevel.FIRST, 0, badger);
+            Assert.True(badger.HitPoints < hps);
+            Assert.Equal(ClassicLocation.Row.BACK_RIGHT, classic.LocateClassicCombattant(badger).Location);
         }
 
         [Fact]

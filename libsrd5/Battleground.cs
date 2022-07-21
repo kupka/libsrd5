@@ -98,9 +98,9 @@ namespace srd5 {
         }
 
         public override void Push(Location source, Combattant target, int distance) {
-            if (LocateClassicCombattant(target) == ClassicLocation.FrontLeft) {
+            if (LocateClassicCombattant(target).Location == ClassicLocation.Row.FRONT_LEFT) {
                 SetLocation(target, ClassicLocation.BackLeft);
-            } else if (LocateClassicCombattant(target) == ClassicLocation.FrontRight) {
+            } else if (LocateClassicCombattant(target).Location == ClassicLocation.Row.FRONT_RIGHT) {
                 SetLocation(target, ClassicLocation.BackRight);
             }
         }

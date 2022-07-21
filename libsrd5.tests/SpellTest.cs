@@ -172,11 +172,13 @@ namespace srd5 {
 
         [Fact]
         public void CharmPersonTest() {
+            Spells.CharmPerson.Cast(Monsters.NightHag, 10, SpellLevel.FIRST, 10, Monsters.GiantBadger); // not affected
             DefaultSpellTest(Spells.CharmPerson, SpellLevel.SIXTH, ConditionType.CHARMED, null, null);
         }
 
         [Fact]
         public void HoldPersonTest() {
+            Spells.CharmPerson.Cast(Monsters.NightHag, 10, SpellLevel.FIRST, 10, Monsters.GiantBadger); // not affected
             DefaultSpellTest(Spells.HoldPerson, SpellLevel.SEVENTH, ConditionType.PARALYZED, null, 100);
         }
 
@@ -240,6 +242,15 @@ namespace srd5 {
             Spells.Thunderwave.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
             Assert.True(badger.HitPoints < hps);
             Assert.True(ground.LocateCombattant2D(badger).X > 5);
+        }
+
+        [Fact]
+        public void ResistanceTest() {
+            CharacterSheet hero = new CharacterSheet(Race.GNOME);
+            Spells.Resistance.Cast(hero, 10, SpellLevel.FIRST, 0, hero);
+            Assert.True(hero.HasEffect(Effect.RESISTANCE));
+            hero.DC(10, AbilityType.STRENGTH);
+            Assert.False(hero.HasEffect(Effect.RESISTANCE));
         }
     }
 }

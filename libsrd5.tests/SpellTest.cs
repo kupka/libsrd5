@@ -178,7 +178,7 @@ namespace srd5 {
 
         [Fact]
         public void HoldPersonTest() {
-            Spells.HoldPerson.Cast(Monsters.NightHag, 10, SpellLevel.FIRST, 10, Monsters.GiantBadger); // not affected
+            Spells.HoldPerson.Cast(Monsters.NightHag, 10, SpellLevel.SECOND, 10, Monsters.GiantBadger); // not affected
             DefaultSpellTest(Spells.HoldPerson, SpellLevel.SEVENTH, ConditionType.PARALYZED, null, 100);
         }
 

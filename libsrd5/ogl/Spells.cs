@@ -124,7 +124,7 @@ namespace srd5 {
             ID.CHARM_PERSON, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VS,
             SpellDuration.CONCENTRATION_ONE_HOUR, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 // one target per slot
-                for (int i = 0; i < (int)slot; i++) {
+                for (int i = 0; i < (int)slot && i < targets.Length; i++) {
                     Combattant target = targets[i];
                     // only affect humanoid monsters
                     if (target is Monster) {
@@ -252,7 +252,7 @@ namespace srd5 {
             ID.HOLD_PERSON, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM,
             SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 // one target per slot above 2nd
-                for (int i = 0; i < (int)slot - 1; i++) {
+                for (int i = 0; i < (int)slot - 1 && i < targets.Length; i++) {
                     Combattant target = targets[i];
                     // only affect humanoid monsters
                     if (target is Monster) {

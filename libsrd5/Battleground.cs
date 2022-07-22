@@ -79,13 +79,30 @@ namespace srd5 {
             return locations[Array.IndexOf(combattants, combattant)];
         }
 
+        public ClassicLocation LocateClassicCombattant(Combattant combattant) {
+            return locations[Array.IndexOf(combattants, combattant)];
+        }
+
+
         protected override void SetCurrentLocation(Location location) {
-            locations[currentCombattant] = (ClassicLocation)location;
+            SetLocation(CurrentCombattant, location);
+        }
+
+        protected override void SetLocation(Combattant combattant, Location location) {
+            locations[Array.IndexOf(combattants, combattant)] = (ClassicLocation)location;
         }
 
         public void AddCombattant(Combattant combattant, ClassicLocation.Row row) {
             AddCombattant(combattant);
             Utils.Push<ClassicLocation>(ref locations, new ClassicLocation(row));
+        }
+
+        public override void Push(Location source, Combattant target, int distance) {
+            if (LocateClassicCombattant(target).Location == ClassicLocation.Row.FRONT_LEFT) {
+                SetLocation(target, ClassicLocation.BackLeft);
+            } else if (LocateClassicCombattant(target).Location == ClassicLocation.Row.FRONT_RIGHT) {
+                SetLocation(target, ClassicLocation.BackRight);
+            }
         }
     }
 
@@ -122,7 +139,49 @@ namespace srd5 {
         }
 
         protected override void SetCurrentLocation(Location location) {
-            coords[currentCombattant] = (Coord)location;
+            SetLocation(CurrentCombattant, location);
+        }
+
+        protected override void SetLocation(Combattant combattant, Location location) {
+            coords[Array.IndexOf(combattants, combattant)] = (Coord)location;
+        }
+
+        public override void Push(Location source, Combattant target, int distance) {
+            // For simplicity, this assumes either a straight line or 45° angle. 
+            Coord sourceCoord = (Coord)source;
+            Coord targetCoord = LocateCombattant2D(target);
+            Coord destination = targetCoord;
+            distance /= 5;
+            if (targetCoord.X == sourceCoord.X) {
+                if (targetCoord.Y <= sourceCoord.Y) { // push down
+                    destination = new Coord(targetCoord.X, targetCoord.Y - distance);
+                } else { // push up
+                    destination = new Coord(targetCoord.X, targetCoord.Y + distance);
+                }
+            } else if (targetCoord.Y == sourceCoord.Y) {
+                if (targetCoord.X <= sourceCoord.X) { // push left
+                    destination = new Coord(targetCoord.X - distance, targetCoord.Y);
+                } else { // push right
+                    destination = new Coord(targetCoord.X + distance, targetCoord.Y);
+                }
+            } else if (targetCoord.X < sourceCoord.X) { // push left
+                distance /= 2;
+                if (distance == 0) distance = 1;
+                if (targetCoord.Y < sourceCoord.Y) { // push down
+                    destination = new Coord(targetCoord.X - distance, targetCoord.Y - distance);
+                } else if (targetCoord.Y > sourceCoord.Y) { // push up
+                    destination = new Coord(targetCoord.X - distance, targetCoord.Y + distance);
+                }
+            } else { // push right
+                distance /= 2;
+                if (distance == 0) distance = 1;
+                if (targetCoord.Y < sourceCoord.Y) { // push down
+                    destination = new Coord(targetCoord.X + distance, targetCoord.Y - distance);
+                } else if (targetCoord.Y > sourceCoord.Y) { // push up
+                    destination = new Coord(targetCoord.X + distance, targetCoord.Y + distance);
+                }
+            }
+            SetLocation(target, destination);
         }
     }
 
@@ -330,7 +389,7 @@ namespace srd5 {
             if (slot != SpellLevel.CANTRIP) availableSpells.SlotsCurrent[(int)slot]--;
             // Cast Spell
             int modifier = availableSpells.GetSpellcastingModifier(CurrentCombattant);
-            spell.Cast(CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, modifier, targets);
+            spell.Cast(this, CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, modifier, targets);
             NextPhase();
             return true;
         }
@@ -341,7 +400,7 @@ namespace srd5 {
             Attack attack = CurrentCombattant.BonusAttack;
             if (attack == null || distance > attack.Reach) return false;
             success = true;
-            doAttack(attack, target, distance);
+            CurrentCombattant.Attack(attack, target, distance);
             return success;
         }
 
@@ -351,7 +410,7 @@ namespace srd5 {
             Attack attack = CurrentCombattant.BonusAttack;
             if (attack == null || distance > attack.RangeLong) return false;
             success = true;
-            doAttack(attack, target, distance, true);
+            CurrentCombattant.Attack(attack, target, distance, true);
             return success;
         }
 
@@ -361,7 +420,7 @@ namespace srd5 {
             foreach (Attack attack in CurrentCombattant.MeleeAttacks) {
                 if (distance > attack.Reach) continue; // skip attack when out of reach
                 success = true;
-                doAttack(attack, target, distance);
+                CurrentCombattant.Attack(attack, target, distance);
             }
             return success;
         }
@@ -372,45 +431,9 @@ namespace srd5 {
             foreach (Attack attack in CurrentCombattant.RangedAttacks) {
                 if (distance > attack.RangeLong) continue; // skip attack when out of range
                 success = true;
-                doAttack(attack, target, distance, true);
+                CurrentCombattant.Attack(attack, target, distance, true);
             }
             return success;
-        }
-
-        private void doAttack(Attack attack, Combattant target, int distance, bool ranged = false) {
-            int attackRoll = Dice.D20.Value;
-            // Determine advantage and disadvantage
-            bool hasAdvantage = CurrentCombattant.HasEffect(Effect.ADVANTAGE_ON_ATTACK)
-                                || target.HasEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
-            bool hasDisadvantage = CurrentCombattant.HasEffect(Effect.DISADVANTAGE_ON_ATTACK)
-                                || target.HasEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED)
-                                || (ranged && (distance <= 5 || distance >= attack.RangeNormal));
-            if (hasAdvantage && !hasDisadvantage)
-                attackRoll = Dice.D20Advantage.Value;
-            else if (hasDisadvantage && !hasAdvantage)
-                attackRoll = Dice.D20Disadvantage.Value;
-            bool criticalHit = attackRoll == 20;
-            bool criticalMiss = attackRoll == 1;
-            if (criticalMiss) {
-                GlobalEvents.RolledAttack(CurrentCombattant, attack, target, attackRoll, false);
-                return;
-            }
-            int modifiedAttack = attackRoll + attack.AttackBonus;
-            if (!criticalHit && modifiedAttack < target.ArmorClass) {
-                GlobalEvents.RolledAttack(CurrentCombattant, attack, target, attackRoll, false);
-                return;
-            }
-            // Check if auto critical hit conditions apply
-            if (CurrentCombattant.HasEffect(Effect.AUTOMATIC_CRIT_ON_HIT)) criticalHit = true;
-            if (target.HasEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT) && distance <= 5) criticalHit = true;
-            GlobalEvents.RolledAttack(CurrentCombattant, attack, target, attackRoll, true, criticalHit);
-            if (criticalHit) {
-                target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.RollCritical());
-                if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.RollCritical());
-            } else {
-                target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll());
-                if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.Roll());
-            }
         }
 
         /// <summary>
@@ -422,6 +445,12 @@ namespace srd5 {
         /// Set the location of the current active combattant
         /// </summary>
         protected abstract void SetCurrentLocation(Location location);
+
+        /// <summary>
+        /// Set the location of the combattant
+        /// </summary>
+        protected abstract void SetLocation(Combattant combattant, Location location);
+
 
         /// <summary>
         /// Get the location of the current active combattant
@@ -445,5 +474,10 @@ namespace srd5 {
             bgEvent.CurrentCombattant = this.CurrentCombattant;
             EventSubscription(this, bgEvent);
         }
+
+        /// <summary>
+        /// Pushes the target away from the source by the distance.
+        /// </summar>)
+        public abstract void Push(Location source, Combattant target, int distance);
     }
 }

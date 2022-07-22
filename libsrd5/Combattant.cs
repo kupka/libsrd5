@@ -69,7 +69,7 @@ namespace srd5 {
         public int GetSpellCastDC(CharacterSheet sheet) {
             int dc = 8;
             dc += sheet.GetAbility(CharacterClass.SpellCastingAbility).Modifier;
-            dc += sheet.Proficiency;
+            dc += sheet.ProficiencyBonus;
             return dc;
         }
 
@@ -120,6 +120,9 @@ namespace srd5 {
             }
         }
         private AvailableSpells[] availableSpells = new AvailableSpells[0];
+        public abstract int ProficiencyBonus {
+            get;
+        }
 
         public void AddEffect(Effect effect) {
             bool pushed = Utils.PushUnique<Effect>(ref effects, effect);
@@ -234,6 +237,11 @@ namespace srd5 {
         public bool DC(int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
             Ability ability = GetAbility(type);
             Dice d20 = srd5.Dice.D20;
+            int additionalModifiers = 0;
+            if (HasEffect(Effect.RESISTANCE)) {
+                additionalModifiers += Dice.D4.Value;
+                RemoveEffect(Effect.RESISTANCE);
+            }
             if (advantage && !disadvantage) {
                 d20 = srd5.Dice.D20Advantage;
             }
@@ -241,7 +249,7 @@ namespace srd5 {
                 d20 = srd5.Dice.D20Disadvantage;
             }
             Dices.onDiceRolled(d20);
-            bool success = d20.Value + ability.Modifier >= dc;
+            bool success = d20.Value + ability.Modifier + additionalModifiers >= dc;
             if (d20.Value == 20) success = true;
             if (d20.Value == 1) success = false;
             if (type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) success = false;
@@ -266,6 +274,45 @@ namespace srd5 {
                 if (endOfTurnEvents[i](this)) {
                     endOfTurnEvents[i] = null;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Trys to attack the target Combattant with the specified attack. 
+        /// </summary>
+        public void Attack(Attack attack, Combattant target, int distance, bool ranged = false) {
+            int attackRoll = Dice.D20.Value;
+            // Determine advantage and disadvantage
+            bool hasAdvantage = HasEffect(Effect.ADVANTAGE_ON_ATTACK)
+                                || target.HasEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            bool hasDisadvantage = HasEffect(Effect.DISADVANTAGE_ON_ATTACK)
+                                || target.HasEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED)
+                                || (ranged && (distance <= 5 || distance > attack.RangeNormal));
+            if (hasAdvantage && !hasDisadvantage)
+                attackRoll = Dice.D20Advantage.Value;
+            else if (hasDisadvantage && !hasAdvantage)
+                attackRoll = Dice.D20Disadvantage.Value;
+            bool criticalHit = attackRoll == 20;
+            bool criticalMiss = attackRoll == 1;
+            if (criticalMiss) {
+                GlobalEvents.RolledAttack(this, attack, target, attackRoll, false);
+                return;
+            }
+            int modifiedAttack = attackRoll + attack.AttackBonus;
+            if (!criticalHit && modifiedAttack < target.ArmorClass) {
+                GlobalEvents.RolledAttack(this, attack, target, attackRoll, false);
+                return;
+            }
+            // Check if auto critical hit conditions apply
+            if (HasEffect(Effect.AUTOMATIC_CRIT_ON_HIT)) criticalHit = true;
+            if (target.HasEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT) && distance <= 5) criticalHit = true;
+            GlobalEvents.RolledAttack(this, attack, target, attackRoll, true, criticalHit);
+            if (criticalHit) {
+                target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.RollCritical());
+                if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.RollCritical());
+            } else {
+                target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll());
+                if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.Roll());
             }
         }
     }

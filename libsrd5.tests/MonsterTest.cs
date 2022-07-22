@@ -29,5 +29,15 @@ namespace srd5 {
             Assert.False(orc.DC(2, AbilityType.STRENGTH, true));
             Assert.False(orc.DC(2, AbilityType.DEXTERITY));
         }
+
+        [Fact]
+        public void ProficiencyBonusTest() {
+            Monster orc = Monsters.Orc;
+            Assert.Equal(2, orc.ProficiencyBonus);
+            Monster hag = Monsters.NightHag;
+            Assert.Equal(3, hag.ProficiencyBonus);
+            Monster golem = Monsters.ClayGolem;
+            Assert.Equal(4, golem.ProficiencyBonus);
+        }
     }
 }

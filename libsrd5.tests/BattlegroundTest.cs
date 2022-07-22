@@ -456,5 +456,18 @@ namespace srd5 {
             Assert.Equal(6, ground.LocateCombattant2D(ogre).X);
             Assert.Equal(7, ground.LocateCombattant2D(ogre).Y);
         }
+
+        [Fact]
+        public void PushTestClassic() {
+            BattleGroundClassic classic = new BattleGroundClassic();
+            Combattant ogre = Monsters.Ogre;
+            Combattant goblin = Monsters.Goblin;
+            classic.AddCombattant(ogre, ClassicLocation.Row.FRONT_LEFT);
+            classic.AddCombattant(goblin, ClassicLocation.Row.FRONT_RIGHT);
+            classic.Push(classic.LocateClassicCombattant(ogre), goblin, 10);
+            classic.Push(classic.LocateClassicCombattant(goblin), ogre, 10);
+            Assert.Equal(ClassicLocation.Row.BACK_LEFT, classic.LocateClassicCombattant(ogre).Location);
+            Assert.Equal(ClassicLocation.Row.BACK_RIGHT, classic.LocateClassicCombattant(goblin).Location);
+        }
     }
 }

@@ -444,17 +444,26 @@ namespace srd5 {
             Combattant ogre = Monsters.Ogre;
             ground.AddCombattant(ogre, 5, 5);
             ground.Initialize();
-            ground.Push(new Coord(5, 4), ogre, 10);
+            ground.Push(new Coord(5, 4), ogre, 10); // push south
             Assert.Equal(7, ground.LocateCombattant2D(ogre).Y);
-            ground.Push(new Coord(5, 8), ogre, 5);
+            ground.Push(new Coord(5, 8), ogre, 5); // push north
             Assert.Equal(6, ground.LocateCombattant2D(ogre).Y);
-            ground.Push(new Coord(4, 6), ogre, 15);
+            ground.Push(new Coord(4, 6), ogre, 15); // push east
             Assert.Equal(8, ground.LocateCombattant2D(ogre).X);
-            ground.Push(new Coord(9, 6), ogre, 15);
+            ground.Push(new Coord(9, 6), ogre, 15); // push west
             Assert.Equal(5, ground.LocateCombattant2D(ogre).X);
-            ground.Push(new Coord(4, 3), ogre, 10);
+            ground.Push(new Coord(4, 3), ogre, 10); // push northeast
             Assert.Equal(6, ground.LocateCombattant2D(ogre).X);
             Assert.Equal(7, ground.LocateCombattant2D(ogre).Y);
+            ground.Push(new Coord(4, 9), ogre, 5); // push southeast
+            Assert.Equal(7, ground.LocateCombattant2D(ogre).X);
+            Assert.Equal(6, ground.LocateCombattant2D(ogre).Y);
+            ground.Push(new Coord(9, 2), ogre, 5); // push northwest
+            Assert.Equal(6, ground.LocateCombattant2D(ogre).X);
+            Assert.Equal(7, ground.LocateCombattant2D(ogre).Y);
+            ground.Push(new Coord(9, 9), ogre, 5); // push southwest
+            Assert.Equal(5, ground.LocateCombattant2D(ogre).X);
+            Assert.Equal(6, ground.LocateCombattant2D(ogre).Y);
         }
 
         [Fact]

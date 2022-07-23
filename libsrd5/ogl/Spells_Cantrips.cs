@@ -4,7 +4,7 @@ namespace srd5 {
     public partial struct Spells {
         public static readonly Spell AcidSplash = new Spell(
                     ID.ACID_SPLASH, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS,
-                    SpellDuration.INSTANTANEOUS, 5, 2, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifer, Combattant[] targets) {
+                    SpellDuration.INSTANTANEOUS, 5, 2, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         Damage damage;
                         if (caster.EffectiveLevel > 16)
                             damage = new Damage(DamageType.ACID, "4d6");
@@ -26,7 +26,35 @@ namespace srd5 {
                     }
                 );
 
-
+        public static readonly Spell ChillTouch = new Spell(
+                    ID.CHILL_TOUCH, SpellSchool.NECROMANCY, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS,
+                    SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                        Damage damage;
+                        int bonus = modifier + caster.ProficiencyBonus;
+                        if (caster.EffectiveLevel > 16)
+                            damage = new Damage(DamageType.NECROTIC, "4d8");
+                        else if (caster.EffectiveLevel > 10)
+                            damage = new Damage(DamageType.NECROTIC, "3d8");
+                        else if (caster.EffectiveLevel > 4)
+                            damage = new Damage(DamageType.NECROTIC, "2d8");
+                        else
+                            damage = new Damage(DamageType.NECROTIC, "1d8");
+                        Combattant target = targets[0];
+                        Attack attack = new Attack(ID.CHILL_TOUCH.Name(), bonus, damage, 0, 30, 30);
+                        int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(targets[0]));
+                        bool hit = caster.Attack(attack, target, distance, true);
+                        if (hit) {
+                            bool undead = (target is Monster) && ((Monster)target).Type == MonsterType.UNDEAD;
+                            target.AddEffect(Effect.CANNOT_REGENERATE_HITPOINTS);
+                            if (undead) target.AddEffect(Effect.DISADVANTAGE_ON_ATTACK);
+                            target.AddEndOfTurnEvent(delegate (Combattant combattant) {
+                                combattant.RemoveEffect(Effect.CANNOT_REGENERATE_HITPOINTS);
+                                if (undead) target.RemoveEffect(Effect.DISADVANTAGE_ON_ATTACK);
+                                return true;
+                            });
+                        }
+                    }
+                );
 
         public static readonly Spell Guidance = new Spell(
             ID.GUIDANCE, SpellSchool.DIVINATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VS,

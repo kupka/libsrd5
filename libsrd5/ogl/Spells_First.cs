@@ -162,9 +162,9 @@ namespace srd5 {
         );
 
         public static readonly Spell PurifyFoodAndDrink = new Spell(
-    ID.PURIFY_FOOD_AND_DRINK, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 10, VS,
-    SpellDuration.INSTANTANEOUS, 5, 0, doNothing
-);
+            ID.PURIFY_FOOD_AND_DRINK, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 10, VS,
+            SpellDuration.INSTANTANEOUS, 5, 0, doNothing
+        );
 
         public static readonly Spell SpeakWithAnimals = new Spell(
             ID.SPEAK_WITH_ANIMALS, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS,

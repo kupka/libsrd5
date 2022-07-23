@@ -99,6 +99,7 @@ namespace srd5 {
         CANNOT_TAKE_ACTIONS,
         FAIL_STRENGTH_CHECK,
         FAIL_DEXERITY_CHECK,
+        CANNOT_REGENERATE_HITPOINTS,
 
         // Spell Effects
         RESISTANCE,

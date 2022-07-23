@@ -353,6 +353,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Create or Destroy Water";
                 case Spells.ID.CURE_WOUNDS:
                     return "Cure Wounds";
+                case Spells.ID.CHILL_TOUCH:
+                    return "Chill Touch";
                 case Spells.ID.DETECT_MAGIC:
                     return "Detect Magic";
                 case Spells.ID.DETECT_POISON_AND_DISEASE:
@@ -402,6 +404,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "You either create or destroy water.\nCreate Water: You create up to 10 gallons of clean water within range in an open container. Alternatively, the water falls as rain in a 30-foot cube within range, extinguishing exposed flames in the area.\nDestroy Water: You destroy up to 10 gallons of water in an open container within range. Alternatively, you destroy fog in a 30-foot cube within range.\nWhen you cast this spell using a spell slot of 2nd level or higher, you create or destroy 10 additional gallons of water, or the size of the cube increases by 5 feet, for each slot level above 1st.";
                 case Spells.ID.CURE_WOUNDS:
                     return "A creature you touch regains a number of hit points equal to 1d8 + your spellcasting ability modifier.\nThis spell has no effect on undead or constructs.\nWhen you cast this spell using a spell slot of 2nd level or higher, the healing increases by 1d8 for each slot level above 1st.";
+                case Spells.ID.CHILL_TOUCH:
+                    return "You create a ghostly, skeletal hand in the space of a creature within range. Make a ranged spell attack against the creature to assail it with the chill of the grave. On a hit, the target takes 1d8 necrotic damage, and it can't regain hit points until the start of your next turn. Until then, the hand clings to the target.\nIf you hit an undead target, it also has disadvantage on attack rolls against you until the end of your next turn.\nThis spell's damage increases by 1d8 when you reach 5th level(2d8), 11th level(3d8), and 17th level(4d8).";
                 case Spells.ID.DETECT_MAGIC:
                     return "For the duration, you sense the presence of magic within 30 feet of you. If you sense magic in this way, you can use your action to see a faint aura around any visible creature or object in the area that bears magic, and you learn its school of magic, if any.\nThe spell can penetrate most barriers, but it is blocked by 1 foot of stone, 1 inch of common metal, a thin sheet of lead, or 3 feet of wood or dirt.";
                 case Spells.ID.DETECT_POISON_AND_DISEASE:

@@ -74,6 +74,7 @@ namespace srd5 {
             DEFAULT,
             ACID_SPLASH,
             CHARM_PERSON,
+            CHILL_TOUCH,
             CREATE_OR_DESTROY_WATER,
             CURE_WOUNDS,
             DETECT_MAGIC,

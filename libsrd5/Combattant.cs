@@ -278,9 +278,9 @@ namespace srd5 {
         }
 
         /// <summary>
-        /// Trys to attack the target Combattant with the specified attack. 
+        /// Trys to attack the target Combattant with the specified attack. Returns true on hit, false on miss.
         /// </summary>
-        public void Attack(Attack attack, Combattant target, int distance, bool ranged = false) {
+        public bool Attack(Attack attack, Combattant target, int distance, bool ranged = false) {
             int attackRoll = Dice.D20.Value;
             // Determine advantage and disadvantage
             bool hasAdvantage = HasEffect(Effect.ADVANTAGE_ON_ATTACK)
@@ -296,12 +296,12 @@ namespace srd5 {
             bool criticalMiss = attackRoll == 1;
             if (criticalMiss) {
                 GlobalEvents.RolledAttack(this, attack, target, attackRoll, false);
-                return;
+                return false;
             }
             int modifiedAttack = attackRoll + attack.AttackBonus;
             if (!criticalHit && modifiedAttack < target.ArmorClass) {
                 GlobalEvents.RolledAttack(this, attack, target, attackRoll, false);
-                return;
+                return false;
             }
             // Check if auto critical hit conditions apply
             if (HasEffect(Effect.AUTOMATIC_CRIT_ON_HIT)) criticalHit = true;
@@ -314,6 +314,7 @@ namespace srd5 {
                 target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll());
                 if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.Roll());
             }
+            return true;
         }
     }
 

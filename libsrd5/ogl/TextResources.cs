@@ -355,6 +355,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Cure Wounds";
                 case Spells.ID.CHILL_TOUCH:
                     return "Chill Touch";
+                case Spells.ID.DANCING_LIGHTS:
+                    return "Dancing Lights";
                 case Spells.ID.DETECT_MAGIC:
                     return "Detect Magic";
                 case Spells.ID.DETECT_POISON_AND_DISEASE:
@@ -363,6 +365,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Entangle";
                 case Spells.ID.FAIRIE_FIRE:
                     return "Fairie Fire";
+                case Spells.ID.FIRE_BOLT:
+                    return "Fire Bolt";
                 case Spells.ID.FOG_CLOUD:
                     return "Fog Cloud";
                 case Spells.ID.GUIDANCE:
@@ -406,6 +410,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "A creature you touch regains a number of hit points equal to 1d8 + your spellcasting ability modifier.\nThis spell has no effect on undead or constructs.\nWhen you cast this spell using a spell slot of 2nd level or higher, the healing increases by 1d8 for each slot level above 1st.";
                 case Spells.ID.CHILL_TOUCH:
                     return "You create a ghostly, skeletal hand in the space of a creature within range. Make a ranged spell attack against the creature to assail it with the chill of the grave. On a hit, the target takes 1d8 necrotic damage, and it can't regain hit points until the start of your next turn. Until then, the hand clings to the target.\nIf you hit an undead target, it also has disadvantage on attack rolls against you until the end of your next turn.\nThis spell's damage increases by 1d8 when you reach 5th level(2d8), 11th level(3d8), and 17th level(4d8).";
+                case Spells.ID.DANCING_LIGHTS:
+                    return "You create up to four torch-sized lights within range, making them appear as torches, lanterns, or glowing orbs that hover in the air for the duration. You can also combine the four lights into one glowing vaguely humanoid form of Medium size. Whichever form you choose, each light sheds dim light in a 10-foot radius.\nAs a bonus action on your turn, you can move the lights up to 60 feet to a new spot within range. A light must be within 20 feet of another light created by this spell, and a light winks out if it exceeds the spell's range.";
                 case Spells.ID.DETECT_MAGIC:
                     return "For the duration, you sense the presence of magic within 30 feet of you. If you sense magic in this way, you can use your action to see a faint aura around any visible creature or object in the area that bears magic, and you learn its school of magic, if any.\nThe spell can penetrate most barriers, but it is blocked by 1 foot of stone, 1 inch of common metal, a thin sheet of lead, or 3 feet of wood or dirt.";
                 case Spells.ID.DETECT_POISON_AND_DISEASE:
@@ -414,6 +420,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Grasping weeds and vines sprout from the ground in a 20-foot square starting from a point within range. For the duration, these plants turn the ground in the area into difficult terrain.\nA creature in the area when you cast the spell must succeed on a Strength saving throw or be restrained by the entangling plants until the spell ends. A creature restrained by the plants can use its action to make a Strength check against your spell save DC. On a success, it frees itself.\nWhen the spell ends, the conjured plants wilt away.";
                 case Spells.ID.FAIRIE_FIRE:
                     return "Each object in a 20-foot cube within range is outlined in blue, green, or violet light (your choice). Any creature in the area when the spell is cast is also outlined in light if it fails a Dexterity saving throw.\nFor the duration, objects and affected creatures shed dim light in a 10 - foot radius.\nAny attack roll against an affected creature or object has advantage if the attacker can see it, and the affected creature or object can't benefit from being invisible.";
+                case Spells.ID.FIRE_BOLT:
+                    return "You hurl a mote of fire at a creature or object within range. Make a ranged spell attack against the target. On a hit, the target takes 1d10 fire damage. A flammable object hit by this spell ignites if it isn't being worn or carried.\nThis spell's damage increases by 1d10 when you reach 5th level (2d10), 11th level (3d10), and 17th level (4d10).";
                 case Spells.ID.FOG_CLOUD:
                     return "You create a 20-foot-radius sphere of fog centered on a point within range. The sphere spreads around corners, and its area is heavily obscured. It lasts for the duration or until a wind of moderate or greater speed (at least 10 miles per hour) disperses it.";
                 case Spells.ID.GUIDANCE:

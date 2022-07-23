@@ -40,7 +40,7 @@ namespace srd5 {
                         else
                             damage = new Damage(DamageType.NECROTIC, "1d8");
                         Combattant target = targets[0];
-                        Attack attack = new Attack(ID.CHILL_TOUCH.Name(), bonus, damage, 0, 30, 30);
+                        Attack attack = new Attack(ID.CHILL_TOUCH.Name(), bonus, damage, 0, 120, 120);
                         int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(targets[0]));
                         bool hit = caster.Attack(attack, target, distance, true);
                         if (hit) {
@@ -53,8 +53,35 @@ namespace srd5 {
                                 return true;
                             });
                         }
+                        GlobalEvents.AffectBySpell(caster, ID.CHILL_TOUCH, caster, hit);
                     }
-                );
+        );
+
+        public static readonly Spell DancingLights = new Spell(
+                    ID.DANCING_LIGHTS, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_MINUTE, 120, VSM,
+                    SpellDuration.INSTANTANEOUS, 0, 1, doNothing
+        );
+
+        public static readonly Spell FireBolt = new Spell(
+                    ID.FIRE_BOLT, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS,
+                    SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                        Damage damage;
+                        int bonus = modifier + caster.ProficiencyBonus;
+                        if (caster.EffectiveLevel > 16)
+                            damage = new Damage(DamageType.NECROTIC, "4d10");
+                        else if (caster.EffectiveLevel > 10)
+                            damage = new Damage(DamageType.NECROTIC, "3d10");
+                        else if (caster.EffectiveLevel > 4)
+                            damage = new Damage(DamageType.NECROTIC, "2d10");
+                        else
+                            damage = new Damage(DamageType.NECROTIC, "1d10");
+                        Combattant target = targets[0];
+                        Attack attack = new Attack(ID.CHILL_TOUCH.Name(), bonus, damage, 0, 120, 120);
+                        int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(targets[0]));
+                        bool hit = caster.Attack(attack, target, distance, true);
+                        GlobalEvents.AffectBySpell(caster, ID.FIRE_BOLT, caster, hit);
+                    }
+        );
 
         public static readonly Spell Guidance = new Spell(
             ID.GUIDANCE, SpellSchool.DIVINATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VS,
@@ -80,7 +107,8 @@ namespace srd5 {
                 Damage damage = new Damage(DamageType.FIRE, diceString);
                 Attack attack = new Attack(ID.PRODUCE_FLAME.Name(), bonus, damage, 0, 30, 30);
                 int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(targets[0]));
-                caster.Attack(attack, targets[0], distance, true);
+                bool hit = caster.Attack(attack, targets[0], distance, true);
+                GlobalEvents.AffectBySpell(caster, ID.PRODUCE_FLAME, caster, hit);
             }
         );
 

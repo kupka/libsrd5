@@ -30,5 +30,24 @@ namespace srd5 {
             Assert.False(shadow.HasEffect(Effect.CANNOT_REGENERATE_HITPOINTS));
             Assert.False(shadow.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
         }
+
+        [Fact]
+        public void FireBoltTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.GNOME, true);
+            wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            Battleground2D ground = new Battleground2D(10, 10);
+            Random.State = 1;
+            ground.AddCombattant(wizard, 5, 5);
+            ground.AddCombattant(orc, 7, 7);
+            Spells.FireBolt.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
+            wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Spells.FireBolt.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
+            wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Spells.FireBolt.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
+            wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Spells.FireBolt.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
+            Assert.Equal(0, orc.HitPoints);
+        }
     }
 }

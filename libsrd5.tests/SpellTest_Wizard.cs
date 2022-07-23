@@ -6,7 +6,9 @@ namespace srd5 {
         [Fact]
         public void ChillTouchTest() {
             CharacterSheet wizard = new CharacterSheet(Race.GNOME, true);
-            wizard.AddLevel(CharacterClasses.Wizard);
+            wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard);
+            CharacterSheet barbarian = new CharacterSheet(Race.HALF_ORC, true);
+            wizard.AddLevel(CharacterClasses.Barbarian);
             Monster orc = Monsters.Orc;
             Monster shadow = Monsters.Shadow;
             Battleground2D ground = new Battleground2D(10, 10);
@@ -14,7 +16,8 @@ namespace srd5 {
             ground.AddCombattant(wizard, 5, 5);
             ground.AddCombattant(orc, 7, 7);
             ground.AddCombattant(shadow, 8, 8);
-            Spells.ChillTouch.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
+            ground.AddCombattant(barbarian, 9, 9);
+            Spells.ChillTouch.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, barbarian);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
             Spells.ChillTouch.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);

@@ -379,8 +379,16 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Jump";
                 case Spells.ID.LONGSTRIDER:
                     return "Longstrider";
+                case Spells.ID.LIGHT:
+                    return "Light";
+                case Spells.ID.MAGE_HAND:
+                    return "Mage Hand";
                 case Spells.ID.MAGIC_MISSILE:
                     return "Magic Missile";
+                case Spells.ID.MESSAGE:
+                    return "Message";
+                case Spells.ID.MINOR_ILLUSION:
+                    return "Minor Illusion";
                 case Spells.ID.PRODUCE_FLAME:
                     return "Produce Flame";
                 case Spells.ID.PURIFY_FOOD_AND_DRINK:
@@ -432,12 +440,20 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Choose a humanoid that you can see within range. The target must succeed on a Wisdom saving throw or be paralyzed for the duration. At the end of each of its turns, the target can make another Wisdom saving throw. On a success, the spell ends on the target.\nWhen you cast this spell using a spell slot of 3rd level or higher, you can target one additional humanoid for each slot level above 2nd. The humanoids must be within 30 feet of each other when you target them.";
                 case Spells.ID.JUMP:
                     return "You touch a creature. The creature's jump distance is tripled until the spell ends.";
+                case Spells.ID.LIGHT:
+                    return "You touch one object that is no larger than 10 feet in any dimension. Until the spell ends, the object sheds bright light in a 20-foot radius and dim light for an additional 20 feet. The light can be colored as you like. Completely covering the object with something opaque blocks the light. The spell ends if you cast it again or dismiss it as an action.\nIf you target an object held or worn by a hostile creature, that creature must succeed on a Dexterity saving throw to avoid the spell.";
                 case Spells.ID.LONGSTRIDER:
                     return "You touch a creature. The target's speed increases by 10 feet until the spell ends.";
+                case Spells.ID.MAGE_HAND:
+                    return "A spectral, floating hand appears at a point you choose within range. The hand lasts for the duration or until you dismiss it as an action. The hand vanishes if it is ever more than 30 feet away from you or if you cast this spell again.\nYou can use your action to control the hand. You can use the hand to manipulate an object, open an unlocked door or container, stow or retrieve an item from an open container, or pour the contents out of a vial. You can move the hand up to 30 feet each time you use it.\nThe hand can't attack, activate magic items, or carry more than 10 pounds.";
                 case Spells.ID.MAGIC_MISSILE:
                     return "You create three glowing darts of magical force. Each dart hits a creature of your choice that you can see within range. A dart deals 1d4 + 1 force damage to its target. The darts all strike simultaneously, and you can direct them to hit one creature or several.\nWhen you cast this spell using a spell slot of 2nd level or higher, the spell creates one more dart for each slot level above 1st.";
+                case Spells.ID.MESSAGE:
+                    return "You point your finger toward a creature within range and whisper a message. The target (and only the target) hears the message and can reply in a whisper that only you can hear.\nYou can cast this spell through solid objects if you are familiar with the target and know it is beyond the barrier.Magical silence, 1 foot of stone, 1 inch of common metal, a thin sheet of lead, or 3 feet of wood blocks the spell. The spell doesn't have to follow a straight line and can travel freely around corners or through openings.";
                 case Spells.ID.MENDING:
                     return "This spell repairs a single break or tear in an object you touch, such as a broken chain link, two halves of a broken key, a torn cloak, or a leaking wineskin. As long as the break or tear is no larger than 1 foot in any dimension, you mend it, leaving no trace of the former damage.\nThis spell can physically repair a magic item or construct, but the spell can't restore magic to such an object.";
+                case Spells.ID.MINOR_ILLUSION:
+                    return "You create a sound or an image of an object within range that lasts for the duration. The illusion also ends if you dismiss it as an action or cast this spell again.\nIf you create a sound, its volume can range from a whisper to a scream. It can be your voice, someone else's voice, a lion's roar, a beating of drums, or any other sound you choose. The sound continues unabated throughout the duration, or you can make discrete sounds at different times before the spell ends.\nIf you create an image of an object-such as a chair, muddy footprints, or a small chest - it must be no larger than a 5 - foot cube.The image can't create sound, light, smell, or any other sensory effect.\nPhysical interaction with the image reveals it to be an illusion, because things can pass through it.\nIf a creature uses its action to examine the sound or image, the creature can determine that it is an illusion with a successful Intelligence (Investigation) check against your spell save DC. If a creature discerns the illusion for what it is, the illusion becomes faint to the creature.";
                 case Spells.ID.PRODUCE_FLAME:
                     return "A flickering flame appears in your hand. The flame remains there for the duration and harms neither you nor your equipment. The flame sheds bright light in a 10-foot radius and dim light for an additional 10 feet. The spell ends if you dismiss it as an action or if you cast it again.\nYou can also attack with the flame, although doing so ends the spell. When you cast this spell, or as an action on a later turn, you can hurl the flame at a creature within 30 feet of you. Make a ranged spell attack.On a hit, the target takes 1d8 fire damage.\nThis spell's damage increases by 1d8 when you reach 5th level(2d8), 11th level(3d8), and 17th level(4d8).";
                 case Spells.ID.PURIFY_FOOD_AND_DRINK:

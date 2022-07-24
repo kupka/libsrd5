@@ -4,7 +4,7 @@ namespace srd5 {
     public partial struct Spells {
         public static readonly Spell CharmPerson = new Spell(
             ID.CHARM_PERSON, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VS,
-            SpellDuration.CONCENTRATION_ONE_HOUR, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            SpellDuration.ONE_HOUR, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 // one target per slot
                 for (int i = 0; i < (int)slot && i < targets.Length; i++) {
                     Combattant target = targets[i];
@@ -51,17 +51,17 @@ namespace srd5 {
 
         public static readonly Spell DetectMagic = new Spell(
             ID.DETECT_MAGIC, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS,
-            SpellDuration.CONCENTRATION_TEN_MINUTES, 30, 0, doNothing
+            SpellDuration.TEN_MINUTES, 30, 0, doNothing
         );
 
         public static readonly Spell DetectPoisonAndDisease = new Spell(
             ID.DETECT_POISON_AND_DISEASE, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM,
-            SpellDuration.CONCENTRATION_TEN_MINUTES, 30, 0, doNothing
+            SpellDuration.TEN_MINUTES, 30, 0, doNothing
         );
 
         public static readonly Spell Entangle = new Spell(
             ID.ENTANGLE, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VS,
-            SpellDuration.CONCENTRATION_ONE_MINUTE, 20, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            SpellDuration.ONE_MINUTE, 20, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 foreach (Combattant target in targets) {
                     if (target.DC(dc, AbilityType.STRENGTH)) {
                         GlobalEvents.AffectBySpell(caster, ID.ENTANGLE, target, false);
@@ -83,7 +83,7 @@ namespace srd5 {
 
         public static readonly Spell FairieFire = new Spell(
             ID.FAIRIE_FIRE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, V,
-            SpellDuration.CONCENTRATION_ONE_MINUTE, 20, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            SpellDuration.ONE_MINUTE, 20, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 foreach (Combattant target in targets) {
                     if (target.DC(dc, AbilityType.DEXTERITY)) {
                         GlobalEvents.AffectBySpell(caster, ID.FAIRIE_FIRE, target, false);
@@ -105,7 +105,7 @@ namespace srd5 {
 
         public static readonly Spell FogCloud = new Spell(
             ID.FOG_CLOUD, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, VS,
-            SpellDuration.CONCENTRATION_ONE_HOUR, 20, 0, doNothing
+            SpellDuration.ONE_HOUR, 20, 0, doNothing
         );
 
         public static readonly Spell HealingWord = new Spell(
@@ -127,7 +127,7 @@ namespace srd5 {
 
         public static readonly Spell Jump = new Spell(
             ID.JUMP, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM,
-            SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            SpellDuration.ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Combattant target = targets[0];
                 GlobalEvents.AffectBySpell(caster, ID.JUMP, target, true);
                 target.AddEffect(Effect.JUMP);
@@ -136,7 +136,7 @@ namespace srd5 {
 
         public static readonly Spell Longstrider = new Spell(
             ID.LONGSTRIDER, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM,
-            SpellDuration.CONCENTRATION_ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            SpellDuration.ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Combattant target = targets[0];
                 GlobalEvents.AffectBySpell(caster, ID.LONGSTRIDER, target, true);
                 target.AddEffect(Effect.LONGSTRIDER);
@@ -168,7 +168,7 @@ namespace srd5 {
 
         public static readonly Spell SpeakWithAnimals = new Spell(
             ID.SPEAK_WITH_ANIMALS, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS,
-            SpellDuration.CONCENTRATION_TEN_MINUTES, 0, 0, doNothing
+            SpellDuration.TEN_MINUTES, 0, 0, doNothing
         );
 
         public static readonly Spell Thunderwave = new Spell(
@@ -177,7 +177,7 @@ namespace srd5 {
                 int dices = (int)slot + 1;
                 bool pushed = true;
                 foreach (Combattant target in targets) {
-                    GlobalEvents.AffectBySpell(caster, ID.THUNDERWAVE, caster, true);
+                    GlobalEvents.AffectBySpell(caster, ID.THUNDERWAVE, target, true);
                     if (target.DC(dc, AbilityType.CONSTITUTION)) {
                         dices = (int)(dices / 2);
                         pushed = false;

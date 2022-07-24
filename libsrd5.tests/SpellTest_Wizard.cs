@@ -49,5 +49,10 @@ namespace srd5 {
             Spells.FireBolt.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
             Assert.Equal(0, orc.HitPoints);
         }
+
+        [Fact]
+        public void LightTest() {
+            DefaultSpellTest(Spells.Light, SpellLevel.CANTRIP, null, Effect.LIGHT, null);
+        }
     }
 }

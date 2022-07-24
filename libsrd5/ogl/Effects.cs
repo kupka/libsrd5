@@ -102,11 +102,12 @@ namespace srd5 {
         CANNOT_REGENERATE_HITPOINTS,
 
         // Spell Effects
-        RESISTANCE,
-        LONGSTRIDER,
         ENTANGLE,
         FAIRIE_FIRE,
-        JUMP
+        JUMP,
+        LIGHT,
+        LONGSTRIDER,
+        RESISTANCE
     }
 
     public static class Effects {

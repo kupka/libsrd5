@@ -4,7 +4,7 @@ namespace srd5 {
     public partial struct Spells {
         public static readonly Spell HoldPerson = new Spell(
             ID.HOLD_PERSON, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM,
-            SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            SpellDuration.ONE_MINUTE, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 // one target per slot above 2nd
                 for (int i = 0; i < (int)slot - 1 && i < targets.Length; i++) {
                     Combattant target = targets[i];

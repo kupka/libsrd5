@@ -53,7 +53,7 @@ namespace srd5 {
                                 return true;
                             });
                         }
-                        GlobalEvents.AffectBySpell(caster, ID.CHILL_TOUCH, caster, hit);
+                        GlobalEvents.AffectBySpell(caster, ID.CHILL_TOUCH, target, hit);
                     }
         );
 
@@ -79,19 +79,49 @@ namespace srd5 {
                         Attack attack = new Attack(ID.CHILL_TOUCH.Name(), bonus, damage, 0, 120, 120);
                         int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(targets[0]));
                         bool hit = caster.Attack(attack, target, distance, true);
-                        GlobalEvents.AffectBySpell(caster, ID.FIRE_BOLT, caster, hit);
+                        GlobalEvents.AffectBySpell(caster, ID.FIRE_BOLT, target, hit);
                     }
         );
 
         public static readonly Spell Guidance = new Spell(
             ID.GUIDANCE, SpellSchool.DIVINATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VS,
-            SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 1, doNothing
+            SpellDuration.ONE_MINUTE, 0, 1, doNothing
         );
+
+        public static readonly Spell Light = new Spell(
+            ID.LIGHT, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VM,
+            SpellDuration.ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                Combattant target = targets[0];
+                if (target.DC(dc, AbilityType.DEXTERITY)) {
+                    GlobalEvents.AffectBySpell(caster, ID.LIGHT, target, false);
+                } else {
+                    GlobalEvents.AffectBySpell(caster, ID.LIGHT, target, false);
+                    target.AddEffect(Effect.LIGHT);
+                }
+            }
+        );
+
+        public static readonly Spell MageHand = new Spell(
+            ID.MENDING, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS,
+            SpellDuration.ONE_MINUTE, 0, 0, doNothing
+        );
+
 
         public static readonly Spell Mending = new Spell(
             ID.MENDING, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_MINUTE, 0, VSM,
             SpellDuration.INSTANTANEOUS, 0, 1, doNothing
         );
+
+        public static readonly Spell Message = new Spell(
+            ID.MENDING, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ROUND, 120, VSM,
+            SpellDuration.ONE_ROUND, 0, 1, doNothing
+        );
+
+        public static readonly Spell MinorIllusion = new Spell(
+            ID.MINOR_ILLUSION, SpellSchool.ILLUSION, SpellLevel.CANTRIP, CastingTime.ONE_ROUND, 30, SM,
+            SpellDuration.ONE_MINUTE, 0, 0, doNothing
+        );
+
 
         public static readonly Spell ProduceFlame = new Spell(
             ID.PRODUCE_FLAME, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS,
@@ -106,15 +136,16 @@ namespace srd5 {
                     diceString = "2d8";
                 Damage damage = new Damage(DamageType.FIRE, diceString);
                 Attack attack = new Attack(ID.PRODUCE_FLAME.Name(), bonus, damage, 0, 30, 30);
-                int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(targets[0]));
-                bool hit = caster.Attack(attack, targets[0], distance, true);
-                GlobalEvents.AffectBySpell(caster, ID.PRODUCE_FLAME, caster, hit);
+                Combattant target = targets[0];
+                int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
+                bool hit = caster.Attack(attack, target, distance, true);
+                GlobalEvents.AffectBySpell(caster, ID.PRODUCE_FLAME, target, hit);
             }
         );
 
         public static readonly Spell Resistance = new Spell(
             ID.RESISTANCE, SpellSchool.ABJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VSM,
-            SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            SpellDuration.ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 GlobalEvents.AffectBySpell(caster, ID.RESISTANCE, targets[0], true);
                 targets[0].AddEffect(Effect.RESISTANCE);
             }
@@ -122,7 +153,7 @@ namespace srd5 {
 
         public static readonly Spell Shillelagh = new Spell(
             ID.SHILLELAGH, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.BONUS_ACTION, 0, VSM,
-            SpellDuration.CONCENTRATION_ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 // can only be cast by PCs or NPCs
                 if (!(caster is CharacterSheet)) {
                     GlobalEvents.AffectBySpell(caster, ID.SHILLELAGH, caster, false);

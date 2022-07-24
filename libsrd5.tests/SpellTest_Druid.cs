@@ -123,7 +123,7 @@ namespace srd5 {
             Spells.Shillelagh.Cast(Monsters.Goblin, 0, SpellLevel.CANTRIP, 3);
         }
 
-        private void DefaultSpellTest(Spell spell, SpellLevel slot, ConditionType? checkForCondition, Effect? checkForEffect, int? simulateTurns) {
+        private void DefaultSpellTest(Spell spell, int dc, SpellLevel slot, ConditionType? checkForCondition, Effect? checkForEffect, int? simulateTurns) {
             CharacterSheet hero = new CharacterSheet(Race.DRAGONBORN, true);
             Monster orc1 = Monsters.Orc;
             Monster orc2 = Monsters.Orc;
@@ -132,7 +132,18 @@ namespace srd5 {
             Monster orc5 = Monsters.Orc;
             Monster orc6 = Monsters.Orc;
             Random.State = 1;
-            spell.Cast(hero, 14, slot, 0, orc1, orc2, orc3, orc4, orc5, orc6);
+            if (spell.MaximumTargets > 1) {
+                spell.Cast(hero, dc, slot, 0, orc1, orc2);
+                spell.Cast(hero, dc, slot, 0, orc3, orc4);
+                spell.Cast(hero, dc, slot, 0, orc5, orc6);
+            } else {
+                spell.Cast(hero, dc, slot, 0, orc1);
+                spell.Cast(hero, dc, slot, 0, orc2);
+                spell.Cast(hero, dc, slot, 0, orc3);
+                spell.Cast(hero, dc, slot, 0, orc4);
+                spell.Cast(hero, dc, slot, 0, orc5);
+                spell.Cast(hero, dc, slot, 0, orc6);
+            }
             if (checkForCondition != null) {
                 ConditionType cond = (ConditionType)checkForCondition;
                 Assert.True(
@@ -173,28 +184,28 @@ namespace srd5 {
         [Fact]
         public void CharmPersonTest() {
             Spells.CharmPerson.Cast(Monsters.NightHag, 10, SpellLevel.SECOND, 10, Monsters.GiantBadger); // not affected
-            DefaultSpellTest(Spells.CharmPerson, SpellLevel.SIXTH, ConditionType.CHARMED, null, null);
+            DefaultSpellTest(Spells.CharmPerson, 14, SpellLevel.SIXTH, ConditionType.CHARMED, null, null);
         }
 
         [Fact]
         public void HoldPersonTest() {
             Spells.HoldPerson.Cast(Monsters.NightHag, 10, SpellLevel.SECOND, 10, Monsters.GiantBadger); // not affected
-            DefaultSpellTest(Spells.HoldPerson, SpellLevel.SEVENTH, ConditionType.PARALYZED, null, 100);
+            DefaultSpellTest(Spells.HoldPerson, 14, SpellLevel.SEVENTH, ConditionType.PARALYZED, null, 100);
         }
 
         [Fact]
         public void EntangleTest() {
-            DefaultSpellTest(Spells.Entangle, SpellLevel.FIRST, null, Effect.ENTANGLE, 100);
+            DefaultSpellTest(Spells.Entangle, 14, SpellLevel.FIRST, null, Effect.ENTANGLE, 100);
         }
 
         [Fact]
         public void FairieFireTest() {
-            DefaultSpellTest(Spells.FairieFire, SpellLevel.SECOND, null, Effect.FAIRIE_FIRE, 100);
+            DefaultSpellTest(Spells.FairieFire, 14, SpellLevel.SECOND, null, Effect.FAIRIE_FIRE, 100);
         }
 
         [Fact]
         public void JumpTest() {
-            DefaultSpellTest(Spells.Jump, SpellLevel.THIRD, null, Effect.JUMP, null);
+            DefaultSpellTest(Spells.Jump, 14, SpellLevel.THIRD, null, Effect.JUMP, null);
         }
 
         [Fact]

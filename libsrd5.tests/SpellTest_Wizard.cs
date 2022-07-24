@@ -52,7 +52,7 @@ namespace srd5 {
 
         [Fact]
         public void LightTest() {
-            DefaultSpellTest(Spells.Light, SpellLevel.CANTRIP, null, Effect.LIGHT, null);
+            DefaultSpellTest(Spells.Light, 12, SpellLevel.CANTRIP, null, Effect.LIGHT, null);
         }
     }
 }

@@ -83,5 +83,15 @@ namespace srd5 {
             Assert.True(orc.DC(2, AbilityType.WISDOM, true, false));
             Assert.False(orc.DC(19, AbilityType.STRENGTH, false, true));
         }
+
+        [Fact]
+        public void AbilityProficienciesTerst() {
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF, true);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            Assert.True(hero.IsProficient(AbilityType.CONSTITUTION));
+            hero.DC(10, AbilityType.CONSTITUTION);
+            Assert.False(hero.IsProficient(AbilityType.INTELLIGENCE));
+            hero.DC(10, AbilityType.INTELLIGENCE);
+        }
     }
 }

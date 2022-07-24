@@ -113,6 +113,8 @@ namespace srd5 {
         private Effect[] effects = new Effect[0];
         public ConditionType[] Conditions { get { return conditions; } }
         private ConditionType[] conditions = new ConditionType[0];
+        public Proficiency[] Proficiencies { get { return proficiencies; } }
+        protected Proficiency[] proficiencies = new Proficiency[0];
         public int EffectiveLevel { get; protected set; }
         public AvailableSpells[] AvailableSpells {
             get {
@@ -182,6 +184,34 @@ namespace srd5 {
             return HasEffect(srd5.Effects.Vulnerability(type));
         }
 
+        public bool IsProficient(Proficiency proficiency) {
+            return Array.IndexOf(proficiencies, proficiency) > -1;
+        }
+
+        public bool IsDoubleProficient(Proficiency proficiency) {
+            try {
+                Effect doubleProficiency = (Effect)Enum.Parse(typeof(Effect), "DOUBLE_PROFICIENCY_BONUS_" + proficiency.ToString());
+                return HasEffect(doubleProficiency);
+            } catch (ArgumentException) {
+                return false;
+            }
+        }
+
+        public bool IsProficient(Item item) {
+            if (item == null) return true;
+            foreach (Proficiency proficiency in item.Proficiencies) {
+                if (IsProficient(proficiency))
+                    return true;
+            }
+            return false;
+        }
+
+        public bool IsProficient(AbilityType abilityType) {
+            if (abilityType == AbilityType.NONE) return false;
+            Proficiency proficiency = (Proficiency)Enum.Parse(typeof(Proficiency), abilityType.ToString());
+            return IsProficient(proficiency);
+        }
+
         /// <summary>
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
@@ -241,6 +271,9 @@ namespace srd5 {
             if (HasEffect(Effect.RESISTANCE)) {
                 additionalModifiers += Dice.D4.Value;
                 RemoveEffect(Effect.RESISTANCE);
+            }
+            if (IsProficient(type)) {
+                additionalModifiers += ProficiencyBonus;
             }
             if (advantage && !disadvantage) {
                 d20 = srd5.Dice.D20Advantage;

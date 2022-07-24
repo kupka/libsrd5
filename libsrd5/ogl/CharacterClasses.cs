@@ -20,6 +20,8 @@ namespace srd5 {
                 barbarian.Class = Class.BARBARIAN;
                 barbarian.HitDice = 12;
                 barbarian.Proficiencies = new Proficiency[]{
+                                Proficiency.STRENGTH,
+                                Proficiency.CONSTITUTION,
                                 Proficiency.LIGHT_ARMOR,
                                 Proficiency.MEDIUM_ARMOR,
                                 Proficiency.SHIELDS,
@@ -60,6 +62,8 @@ namespace srd5 {
                 druid.Class = Class.DRUID;
                 druid.HitDice = 8;
                 druid.Proficiencies = new Proficiency[]{
+                                Proficiency.INTELLIGENCE,
+                                Proficiency.WISDOM,
                                 Proficiency.CLUB,
                                 Proficiency.DAGGER,
                                 Proficiency.DARTS,
@@ -132,6 +136,8 @@ namespace srd5 {
                 wizard.Class = Class.WIZARD;
                 wizard.HitDice = 6;
                 wizard.Proficiencies = new Proficiency[]{
+                                Proficiency.INTELLIGENCE,
+                                Proficiency.WISDOM,
                                 Proficiency.DAGGER,
                                 Proficiency.DARTS,
                                 Proficiency.QUARTERSTAFF,

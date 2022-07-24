@@ -56,8 +56,6 @@ namespace srd5 {
         private CharacterRace race;
         public CharacterLevel[] Levels { get { return levels; } }
         private CharacterLevel[] levels = new CharacterLevel[0];
-        public Proficiency[] Proficiencies { get { return proficiencies; } }
-        private Proficiency[] proficiencies = new Proficiency[0];
         public Feat[] Feats { get { return feats; } }
         private Feat[] feats = new Feat[0];
         public Dice[] HitDice { get { return hitDice; } }
@@ -414,29 +412,6 @@ namespace srd5 {
             // Put item into bag
             Inventory.AddToBag(item);
             RecalculateAttacks();
-        }
-
-        public bool IsProficient(Proficiency proficiency) {
-            return Array.IndexOf(proficiencies, proficiency) > -1;
-        }
-
-        public bool IsDoubleProficient(Proficiency proficiency) {
-            try {
-                Effect doubleProficiency = (Effect)Enum.Parse(typeof(Effect), "DOUBLE_PROFICIENCY_BONUS_" + proficiency.ToString());
-                return HasEffect(doubleProficiency);
-            } catch (ArgumentException) {
-                return false;
-            }
-
-        }
-
-        public bool IsProficient(Item item) {
-            if (item == null) return true;
-            foreach (Proficiency proficiency in item.Proficiencies) {
-                if (IsProficient(proficiency))
-                    return true;
-            }
-            return false;
         }
 
         public void AddLevel(CharacterClass characterClass) {

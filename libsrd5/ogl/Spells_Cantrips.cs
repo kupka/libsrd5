@@ -41,17 +41,24 @@ namespace srd5 {
                             damage = new Damage(DamageType.NECROTIC, "1d8");
                         Combattant target = targets[0];
                         Attack attack = new Attack(ID.CHILL_TOUCH.Name(), bonus, damage, 0, 120, 120);
-                        int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(targets[0]));
+                        int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
                         bool hit = caster.Attack(attack, target, distance, true);
                         if (hit) {
                             bool undead = (target is Monster) && ((Monster)target).Type == MonsterType.UNDEAD;
                             target.AddEffect(Effect.CANNOT_REGENERATE_HITPOINTS);
-                            if (undead) target.AddEffect(Effect.DISADVANTAGE_ON_ATTACK);
-                            target.AddEndOfTurnEvent(delegate (Combattant combattant) {
-                                combattant.RemoveEffect(Effect.CANNOT_REGENERATE_HITPOINTS);
-                                if (undead) target.RemoveEffect(Effect.DISADVANTAGE_ON_ATTACK);
+                            caster.AddStartOfTurnEvent(delegate (Combattant combattant) {
+                                target.RemoveEffect(Effect.CANNOT_REGENERATE_HITPOINTS);
                                 return true;
                             });
+                            if (undead) {
+                                target.AddEffect(Effect.DISADVANTAGE_ON_ATTACK);
+                                int rounds = 2;
+                                caster.AddEndOfTurnEvent(delegate (Combattant combattant) {
+                                    if (--rounds > 0) return false;
+                                    if (undead) target.RemoveEffect(Effect.DISADVANTAGE_ON_ATTACK);
+                                    return true;
+                                });
+                            }
                         }
                         GlobalEvents.AffectBySpell(caster, ID.CHILL_TOUCH, target, hit);
                     }
@@ -77,7 +84,7 @@ namespace srd5 {
                             damage = new Damage(DamageType.NECROTIC, "1d10");
                         Combattant target = targets[0];
                         Attack attack = new Attack(ID.CHILL_TOUCH.Name(), bonus, damage, 0, 120, 120);
-                        int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(targets[0]));
+                        int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
                         bool hit = caster.Attack(attack, target, distance, true);
                         GlobalEvents.AffectBySpell(caster, ID.FIRE_BOLT, target, hit);
                     }
@@ -122,6 +129,10 @@ namespace srd5 {
             SpellDuration.ONE_MINUTE, 0, 0, doNothing
         );
 
+        public static readonly Spell PRESTIDIGITATION = new Spell(
+            ID.PRESTIDIGITATION, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 10, VS,
+            SpellDuration.ONE_HOUR, 0, 0, doNothing
+        );
 
         public static readonly Spell ProduceFlame = new Spell(
             ID.PRODUCE_FLAME, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS,
@@ -141,6 +152,34 @@ namespace srd5 {
                 bool hit = caster.Attack(attack, target, distance, true);
                 GlobalEvents.AffectBySpell(caster, ID.PRODUCE_FLAME, target, hit);
             }
+        );
+
+        public static readonly Spell RayOfFrost = new Spell(
+                    ID.RAY_OF_FROST, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS,
+                    SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                        Damage damage;
+                        int bonus = modifier + caster.ProficiencyBonus;
+                        if (caster.EffectiveLevel > 16)
+                            damage = new Damage(DamageType.COLD, "4d8");
+                        else if (caster.EffectiveLevel > 10)
+                            damage = new Damage(DamageType.COLD, "3d8");
+                        else if (caster.EffectiveLevel > 4)
+                            damage = new Damage(DamageType.COLD, "2d8");
+                        else
+                            damage = new Damage(DamageType.COLD, "1d8");
+                        Combattant target = targets[0];
+                        Attack attack = new Attack(ID.RAY_OF_FROST.Name(), bonus, damage, 0, 60, 60);
+                        int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
+                        bool hit = caster.Attack(attack, target, distance, true);
+                        if (hit) {
+                            target.AddEffect(Effect.RAY_OF_FROST);
+                            caster.AddStartOfTurnEvent(delegate (Combattant combattant) {
+                                target.RemoveEffect(Effect.RAY_OF_FROST);
+                                return true;
+                            });
+                        }
+                        GlobalEvents.AffectBySpell(caster, ID.RAY_OF_FROST, target, hit);
+                    }
         );
 
         public static readonly Spell Resistance = new Spell(

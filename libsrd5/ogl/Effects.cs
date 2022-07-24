@@ -107,6 +107,7 @@ namespace srd5 {
         JUMP,
         LIGHT,
         LONGSTRIDER,
+        RAY_OF_FROST,
         RESISTANCE
     }
 

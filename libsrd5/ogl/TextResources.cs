@@ -389,10 +389,14 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Message";
                 case Spells.ID.MINOR_ILLUSION:
                     return "Minor Illusion";
+                case Spells.ID.PRESTIDIGITATION:
+                    return "Prestidigitation";
                 case Spells.ID.PRODUCE_FLAME:
                     return "Produce Flame";
                 case Spells.ID.PURIFY_FOOD_AND_DRINK:
                     return "Purify Food and Drink";
+                case Spells.ID.RAY_OF_FROST:
+                    return "Ray of Frost";
                 case Spells.ID.RESISTANCE:
                     return "Resistance";
                 case Spells.ID.SHILLELAGH:
@@ -454,6 +458,10 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "This spell repairs a single break or tear in an object you touch, such as a broken chain link, two halves of a broken key, a torn cloak, or a leaking wineskin. As long as the break or tear is no larger than 1 foot in any dimension, you mend it, leaving no trace of the former damage.\nThis spell can physically repair a magic item or construct, but the spell can't restore magic to such an object.";
                 case Spells.ID.MINOR_ILLUSION:
                     return "You create a sound or an image of an object within range that lasts for the duration. The illusion also ends if you dismiss it as an action or cast this spell again.\nIf you create a sound, its volume can range from a whisper to a scream. It can be your voice, someone else's voice, a lion's roar, a beating of drums, or any other sound you choose. The sound continues unabated throughout the duration, or you can make discrete sounds at different times before the spell ends.\nIf you create an image of an object-such as a chair, muddy footprints, or a small chest - it must be no larger than a 5 - foot cube.The image can't create sound, light, smell, or any other sensory effect.\nPhysical interaction with the image reveals it to be an illusion, because things can pass through it.\nIf a creature uses its action to examine the sound or image, the creature can determine that it is an illusion with a successful Intelligence (Investigation) check against your spell save DC. If a creature discerns the illusion for what it is, the illusion becomes faint to the creature.";
+                case Spells.ID.PRESTIDIGITATION:
+                    return "This spell is a minor magical trick that novice spellcasters use for practice. You create one of the following magical effects within range:\n- You create an instantaneous, harmless sensory effect, such as a shower of sparks, a puff of wind, faint musical notes, or an odd odor.\n- You instantaneously light or snuff out a candle, a torch, or a small campfire.\nYou instantaneously clean or soil an object no larger than 1 - cubic - foot.\n- You chill, warm, or flavor up to 1 - cubic - foot of nonliving material for 1 hour.\n- You make a color, a small mark, or a symbol appear on an object or a surface for 1 hour.\n- You create a nonmagical trinket or an illusory image that can fit in your hand and that lasts until the end of your next turn.\nIf you cast this spell multiple times, you can have up to three of its non - instantaneous effects active at a time, and you can dismiss such an effect as an action.";
+                case Spells.ID.RAY_OF_FROST:
+                    return "A frigid beam of blue-white light streaks toward a creature within range. Make a ranged spell attack against the target. On a hit, it takes 1d8 cold damage, and its speed is reduced by 10 feet until the start of your next turn.\nThe spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).";
                 case Spells.ID.PRODUCE_FLAME:
                     return "A flickering flame appears in your hand. The flame remains there for the duration and harms neither you nor your equipment. The flame sheds bright light in a 10-foot radius and dim light for an additional 10 feet. The spell ends if you dismiss it as an action or if you cast it again.\nYou can also attack with the flame, although doing so ends the spell. When you cast this spell, or as an action on a later turn, you can hurl the flame at a creature within 30 feet of you. Make a ranged spell attack.On a hit, the target takes 1d8 fire damage.\nThis spell's damage increases by 1d8 when you reach 5th level(2d8), 11th level(3d8), and 17th level(4d8).";
                 case Spells.ID.PURIFY_FOOD_AND_DRINK:

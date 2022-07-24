@@ -292,13 +292,13 @@ namespace srd5 {
         }
 
 
-        private EndOfTurnEvent[] endOfTurnEvents = new EndOfTurnEvent[0];
+        private TurnEvent[] endOfTurnEvents = new TurnEvent[0];
 
         /// <summary>
         /// Adds a piece of code to be evaluated at the end of this combattatant's turn
         /// </summary>
-        public void AddEndOfTurnEvent(EndOfTurnEvent endOfTurnEvent) {
-            Utils.Push<EndOfTurnEvent>(ref endOfTurnEvents, endOfTurnEvent);
+        public void AddEndOfTurnEvent(TurnEvent turnEvent) {
+            Utils.Push<TurnEvent>(ref endOfTurnEvents, turnEvent);
         }
 
         public void OnEndOfTurn() {
@@ -309,6 +309,25 @@ namespace srd5 {
                 }
             }
         }
+
+        private TurnEvent[] startOfTurnEvents = new TurnEvent[0];
+
+        /// <summary>
+        /// Adds a piece of code to be evaluated at the start of this combattatant's turn
+        /// </summary>
+        public void AddStartOfTurnEvent(TurnEvent turnEvent) {
+            Utils.Push<TurnEvent>(ref startOfTurnEvents, turnEvent);
+        }
+
+        public void OnStartOfTurn() {
+            for (int i = 0; i < startOfTurnEvents.Length; i++) {
+                if (startOfTurnEvents[i] == null) continue;
+                if (startOfTurnEvents[i](this)) {
+                    startOfTurnEvents[i] = null;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Trys to attack the target Combattant with the specified attack. Returns true on hit, false on miss.
@@ -355,5 +374,5 @@ namespace srd5 {
     /// Describes an event that shall be executed at the end of this combattant's turn. 
     /// The event is considered finished when the delegate returns true.
     /// </summary>
-    public delegate bool EndOfTurnEvent(Combattant combattant);
+    public delegate bool TurnEvent(Combattant combattant);
 }

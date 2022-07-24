@@ -92,6 +92,7 @@ namespace srd5 {
             hero.DC(10, AbilityType.CONSTITUTION);
             Assert.False(hero.IsProficient(AbilityType.INTELLIGENCE));
             hero.DC(10, AbilityType.INTELLIGENCE);
+            Assert.False(hero.IsProficient(AbilityType.NONE));
         }
     }
 }

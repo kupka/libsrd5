@@ -183,6 +183,7 @@ namespace srd5 {
 
         [Fact]
         public void CharmPersonTest() {
+            Spells.CharmPerson.Cast(Monsters.NightHag, 10, SpellLevel.CANTRIP, 10, new Combattant[0]);
             Spells.CharmPerson.Cast(Monsters.NightHag, 10, SpellLevel.SECOND, 10, Monsters.GiantBadger); // not affected
             DefaultSpellTest(Spells.CharmPerson, 14, SpellLevel.SIXTH, ConditionType.CHARMED, null, null);
         }

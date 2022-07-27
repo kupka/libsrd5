@@ -66,12 +66,12 @@ namespace srd5 {
             wizard.AddLevel(CharacterClasses.Barbarian);
             Monster orc = Monsters.Orc;
             Monster shadow = Monsters.Shadow;
-            Battleground2D ground = new Battleground2D(10, 10);
+            Battleground2D ground = new Battleground2D(10, 50);
             Random.State = 1;
             ground.AddCombattant(wizard, 5, 5);
             ground.AddCombattant(orc, 7, 7);
             ground.AddCombattant(shadow, 8, 8);
-            ground.AddCombattant(barbarian, 9, 9);
+            ground.AddCombattant(barbarian, 9, 49);
             Spells.RayOfFrost.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, barbarian);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
             Spells.RayOfFrost.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
@@ -82,6 +82,32 @@ namespace srd5 {
             Assert.True(shadow.HasEffect(Effect.RAY_OF_FROST));
             wizard.OnStartOfTurn();
             Assert.False(shadow.HasEffect(Effect.RAY_OF_FROST));
+        }
+
+        [Fact]
+        public void ShockingGraspTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.GNOME, true);
+            wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard);
+            CharacterSheet barbarian = new CharacterSheet(Race.HALF_ORC, true);
+            wizard.AddLevel(CharacterClasses.Barbarian);
+            Monster orc = Monsters.Orc;
+            Monster shadow = Monsters.Shadow;
+            Battleground2D ground = new Battleground2D(10, 10);
+            Random.State = 1;
+            ground.AddCombattant(wizard, 5, 5);
+            ground.AddCombattant(orc, 7, 7);
+            ground.AddCombattant(shadow, 5, 6);
+            ground.AddCombattant(barbarian, 9, 9);
+            Spells.ShockingGrasp.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, barbarian);
+            wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Spells.ShockingGrasp.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
+            wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Spells.ShockingGrasp.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, shadow);
+            wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Spells.ShockingGrasp.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, shadow);
+            Assert.True(shadow.HasEffect(Effect.CANNOT_TAKE_REACTIONS));
+            wizard.OnStartOfTurn();
+            Assert.False(shadow.HasEffect(Effect.CANNOT_TAKE_REACTIONS));
         }
     }
 }

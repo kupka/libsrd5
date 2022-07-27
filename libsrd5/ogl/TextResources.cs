@@ -401,6 +401,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Resistance";
                 case Spells.ID.SHILLELAGH:
                     return "Shillelagh";
+                case Spells.ID.SHOCKING_GRASP:
+                    return "Shocking Grasp";
                 case Spells.ID.SPEAK_WITH_ANIMALS:
                     return "Speak with Animals";
                 case Spells.ID.THUNDERWAVE:
@@ -470,6 +472,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "You touch one willing creature. Once before the spell ends, the target can roll a d4 and add the number rolled to one saving throw of its choice. It can roll the die before or after making the saving throw. The spell then ends.";
                 case Spells.ID.SHILLELAGH:
                     return "The wood of a club or quarterstaff you are holding is imbued with nature's power. For the duration, you can use your spellcasting ability instead of Strength for the attack and damage rolls of melee attacks using that weapon, and the weapon's damage die becomes a d8. The weapon also becomes magical, if it isn't already. The spell ends if you cast it again or if you let go of the weapon.";
+                case Spells.ID.SHOCKING_GRASP:
+                    return "Lightning springs from your hand to deliver a shock to a creature you try to touch. Make a melee spell attack against the target. You have advantage on the attack roll if the target is wearing armor made of metal. On a hit, the target takes 1d8 lightning damage, and it can't take reactions until the start of its next turn.\nThe spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).";
                 case Spells.ID.SPEAK_WITH_ANIMALS:
                     return "You gain the ability to comprehend and verbally communicate with beasts for the duration. The knowledge and awareness of many beasts is limited by their intelligence, but at minimum, beasts can give you information about nearby locations and monsters, including whatever they can perceive or have perceived within the past day. You might be able to persuade a beast to perform a small favor for you, at the GM's discretion";
                 case Spells.ID.THUNDERWAVE:

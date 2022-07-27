@@ -115,6 +115,7 @@ namespace srd5 {
             RAY_OF_FROST,
             RESISTANCE,
             SHILLELAGH,
+            SHOCKING_GRASP,
             SPEAK_WITH_ANIMALS,
             THUNDERWAVE
         }

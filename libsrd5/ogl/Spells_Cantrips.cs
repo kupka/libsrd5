@@ -155,31 +155,31 @@ namespace srd5 {
         );
 
         public static readonly Spell RayOfFrost = new Spell(
-                    ID.RAY_OF_FROST, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS,
-                    SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                        Damage damage;
-                        int bonus = modifier + caster.ProficiencyBonus;
-                        if (caster.EffectiveLevel > 16)
-                            damage = new Damage(DamageType.COLD, "4d8");
-                        else if (caster.EffectiveLevel > 10)
-                            damage = new Damage(DamageType.COLD, "3d8");
-                        else if (caster.EffectiveLevel > 4)
-                            damage = new Damage(DamageType.COLD, "2d8");
-                        else
-                            damage = new Damage(DamageType.COLD, "1d8");
-                        Combattant target = targets[0];
-                        Attack attack = new Attack(ID.RAY_OF_FROST.Name(), bonus, damage, 0, 60, 60);
-                        int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
-                        bool hit = caster.Attack(attack, target, distance, true, true);
-                        if (hit) {
-                            target.AddEffect(Effect.RAY_OF_FROST);
-                            caster.AddStartOfTurnEvent(delegate (Combattant combattant) {
-                                target.RemoveEffect(Effect.RAY_OF_FROST);
-                                return true;
-                            });
-                        }
-                        GlobalEvents.AffectBySpell(caster, ID.RAY_OF_FROST, target, hit);
-                    }
+            ID.RAY_OF_FROST, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS,
+            SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                Damage damage;
+                int bonus = modifier + caster.ProficiencyBonus;
+                if (caster.EffectiveLevel > 16)
+                    damage = new Damage(DamageType.COLD, "4d8");
+                else if (caster.EffectiveLevel > 10)
+                    damage = new Damage(DamageType.COLD, "3d8");
+                else if (caster.EffectiveLevel > 4)
+                    damage = new Damage(DamageType.COLD, "2d8");
+                else
+                    damage = new Damage(DamageType.COLD, "1d8");
+                Combattant target = targets[0];
+                Attack attack = new Attack(ID.RAY_OF_FROST.Name(), bonus, damage, 0, 60, 60);
+                int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
+                bool hit = caster.Attack(attack, target, distance, true, true);
+                if (hit) {
+                    target.AddEffect(Effect.RAY_OF_FROST);
+                    caster.AddStartOfTurnEvent(delegate (Combattant combattant) {
+                        target.RemoveEffect(Effect.RAY_OF_FROST);
+                        return true;
+                    });
+                }
+                GlobalEvents.AffectBySpell(caster, ID.RAY_OF_FROST, target, hit);
+            }
         );
 
         public static readonly Spell Resistance = new Spell(
@@ -220,6 +220,34 @@ namespace srd5 {
                     caster.BonusAttack.Damage.Dices = new Dices(1, 8, modifier);
                     caster.BonusAttack.AttackBonus = modifier + sheet.ProficiencyBonus;
                 }
+            }
+        );
+
+        public static readonly Spell ShockingGrasp = new Spell(
+            ID.SHOCKING_GRASP, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 5, VS,
+            SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                Damage damage;
+                int bonus = modifier + caster.ProficiencyBonus;
+                if (caster.EffectiveLevel > 16)
+                    damage = new Damage(DamageType.LIGHTNING, "4d8");
+                else if (caster.EffectiveLevel > 10)
+                    damage = new Damage(DamageType.LIGHTNING, "3d8");
+                else if (caster.EffectiveLevel > 4)
+                    damage = new Damage(DamageType.LIGHTNING, "2d8");
+                else
+                    damage = new Damage(DamageType.LIGHTNING, "1d8");
+                Combattant target = targets[0];
+                Attack attack = new Attack(ID.SHOCKING_GRASP.Name(), bonus, damage, 5);
+                int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
+                bool hit = caster.Attack(attack, target, distance, false, true);
+                if (hit) {
+                    target.AddEffect(Effect.CANNOT_TAKE_REACTIONS);
+                    caster.AddStartOfTurnEvent(delegate (Combattant combattant) {
+                        target.RemoveEffect(Effect.CANNOT_TAKE_REACTIONS);
+                        return true;
+                    });
+                }
+                GlobalEvents.AffectBySpell(caster, ID.SHOCKING_GRASP, target, hit);
             }
         );
     }

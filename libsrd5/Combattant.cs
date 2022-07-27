@@ -220,7 +220,7 @@ namespace srd5 {
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
         public void TakeDamage(DamageType type, int amount) {
-            if (amount <= 0) throw new Srd5ArgumentException("Amount must be a positive integer");
+            if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
             if (IsImmune(type)) return;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;
@@ -237,7 +237,7 @@ namespace srd5 {
         /// Heals the specified amount of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combattant.
         /// </summary>
         public void HealDamage(int amount) {
-            if (amount <= 0) throw new Srd5ArgumentException("Amount must be a positive integer");
+            if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
             if (HitPoints == 0) RemoveCondition(ConditionType.UNCONSCIOUS);
             GlobalEvents.ReceivedHealing(this, amount);
             HitPoints = Math.Min(HitPoints + amount, HitPointsMax);
@@ -347,6 +347,9 @@ namespace srd5 {
         /// Trys to attack the target Combattant with the specified attack. Returns true on hit, false on miss.
         /// </summary>
         public bool Attack(Attack attack, Combattant target, int distance, bool ranged = false, bool spell = false) {
+            // check range / reach
+            if (ranged && attack.RangeLong < distance) return false;
+            if (!ranged && attack.Reach < distance) return false;
             // special effects
             if (spell && ranged && target.HasEffect(Effect.REFLECTIVE_CARAPACE)) {
                 GlobalEvents.ActivateEffect(target, Effect.REFLECTIVE_CARAPACE);

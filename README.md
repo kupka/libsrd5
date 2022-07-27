@@ -25,7 +25,7 @@ You can find examples how to integrate libsrd5 in a Blazor and Unity3D project [
 
 ## Copyright
 
-libsrd5 Copyright 2021, Thomas Kupka
+libsrd5 Copyright 2021-2022, Thomas Kupka
 
 ## License
 

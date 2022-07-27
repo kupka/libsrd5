@@ -17,7 +17,7 @@ namespace srd5 {
                         }
                     }
                     // Wisdom save with advantage since we assume a fight
-                    if (!target.DC(dc, AbilityType.WISDOM, true)) {
+                    if (!target.DC(ID.CHARM_PERSON, dc, AbilityType.WISDOM, true)) {
                         GlobalEvents.AffectBySpell(caster, ID.CHARM_PERSON, target, true);
                         target.AddCondition(ConditionType.CHARMED);
                     } else {
@@ -63,7 +63,7 @@ namespace srd5 {
             ID.ENTANGLE, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VS,
             SpellDuration.ONE_MINUTE, 20, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 foreach (Combattant target in targets) {
-                    if (target.DC(dc, AbilityType.STRENGTH)) {
+                    if (target.DC(ID.ENTANGLE, dc, AbilityType.STRENGTH)) {
                         GlobalEvents.AffectBySpell(caster, ID.ENTANGLE, target, false);
                     } else {
                         GlobalEvents.AffectBySpell(caster, ID.ENTANGLE, target, true);
@@ -85,7 +85,7 @@ namespace srd5 {
             ID.FAIRIE_FIRE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, V,
             SpellDuration.ONE_MINUTE, 20, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 foreach (Combattant target in targets) {
-                    if (target.DC(dc, AbilityType.DEXTERITY)) {
+                    if (target.DC(ID.FAIRIE_FIRE, dc, AbilityType.DEXTERITY)) {
                         GlobalEvents.AffectBySpell(caster, ID.FAIRIE_FIRE, target, false);
                     } else {
                         GlobalEvents.AffectBySpell(caster, ID.FAIRIE_FIRE, target, true);
@@ -149,7 +149,15 @@ namespace srd5 {
             SpellDuration.INSTANTANEOUS, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Damage damage = new Damage(DamageType.FORCE, "1d4+1");
                 int missilesTotal = (int)slot + 2;
-                foreach (Combattant target in targets) {
+                foreach (Combattant possibleTarget in targets) {
+                    Combattant target = possibleTarget;
+                    if (target.HasEffect(Effect.REFLECTIVE_CARAPACE)) {
+                        GlobalEvents.ActivateEffect(target, Effect.REFLECTIVE_CARAPACE);
+                        GlobalEvents.AffectBySpell(caster, ID.MAGIC_MISSILE, target, false);
+                        if (Dice.D6.Value == 6) {
+                            target = caster;
+                        }
+                    }
                     GlobalEvents.AffectBySpell(caster, ID.MAGIC_MISSILE, target, true);
                     int bonusMissiles = missilesTotal % targets.Length;
                     bonusMissiles = Math.Min(1, bonusMissiles);
@@ -178,7 +186,7 @@ namespace srd5 {
                 bool pushed = true;
                 foreach (Combattant target in targets) {
                     GlobalEvents.AffectBySpell(caster, ID.THUNDERWAVE, target, true);
-                    if (target.DC(dc, AbilityType.CONSTITUTION)) {
+                    if (target.DC(ID.THUNDERWAVE, dc, AbilityType.CONSTITUTION)) {
                         dices = (int)(dices / 2);
                         pushed = false;
                     }

@@ -11,7 +11,8 @@ namespace srd5 {
             CONDITION,
             DC,
             SPELL,
-            EQUIPMENT
+            EQUIPMENT,
+            EFFECT_ACTIVATED
         }
         public static event EventHandler<EventArgs> Handlers;
 
@@ -191,6 +192,21 @@ namespace srd5 {
         public static void ChangeEquipment(CharacterSheet hero, Item item, EquipmentChanged.Events evnt) {
             if (Handlers == null) return;
             Handlers(EventTypes.EQUIPMENT, new EquipmentChanged(hero, item, evnt));
+        }
+
+        public class EffectActivated : EventArgs {
+            public Combattant Source { get; private set; }
+            public Effect Effect { get; private set; }
+
+            public EffectActivated(Combattant source, Effect effect) {
+                Source = source;
+                Effect = effect;
+            }
+        }
+
+        public static void ActivateEffect(Combattant source, Effect effect) {
+            if (Handlers == null) return;
+            Handlers(EventTypes.EFFECT_ACTIVATED, new EffectActivated(source, effect));
         }
     }
 }

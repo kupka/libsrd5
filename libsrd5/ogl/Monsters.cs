@@ -39,7 +39,10 @@ namespace srd5 {
         public static readonly Attack OrcGreataxe = new Attack("Greataxe", 5, new Damage(DamageType.SLASHING, "1d12+3"));
         public static readonly Attack OrcJavelin = new Attack("Javelin", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5, 30, 120);
         public static readonly Attack ShadowStrengthDrain = new Attack("Strength Drain", 4, new Damage(DamageType.NECROTIC, "2d6+2"));
-
+        public static readonly Attack TarrasqueBite = new Attack("Bite", 19, new Damage(DamageType.PIERCING, "4d12+10"), 10);
+        public static readonly Attack TarrasqueClaw = new Attack("Claw", 19, new Damage(DamageType.SLASHING, "4d8+10"), 15);
+        public static readonly Attack TarrasqueHorns = new Attack("Horns", 19, new Damage(DamageType.PIERCING, "4d10+10"), 10);
+        public static readonly Attack TarrasqueTail = new Attack("Tail", 19, new Damage(DamageType.BLUDGEONING, "4d6+10"), 20);
     }
 
     public struct Monsters {
@@ -126,6 +129,25 @@ namespace srd5 {
                 shadow.AddEffects(Effect.IMMUNITY_NECROTIC, Effect.IMMUNITY_POISON);
                 shadow.AddEffects(Effect.IMMUNITY_EXHAUSTION, Effect.IMMUNITY_FRIGHTENED, Effect.IMMUNITY_GRAPPLED, Effect.IMMUNITY_PARALYZED, Effect.IMMUNITY_PETRIFIED, Effect.IMMUNITY_POISONED, Effect.IMMUNITY_PRONE, Effect.IMMUNITY_RESTRAINED);
                 return shadow;
+            }
+        }
+
+        public static Monster Tarrasque {
+            get {
+                Monster tarrasque = new Monster(
+                    MonsterType.MONSTROSITY, "Tarrasque", 30, 11, 30, 3, 11, 11, 25, "33d20+330", 40, 30,
+                    new Attack[] { Attacks.TarrasqueBite, Attacks.TarrasqueHorns, Attacks.TarrasqueTail, Attacks.TarrasqueClaw, Attacks.TarrasqueClaw },
+                    Attacks.None, Size.GARGANTUAN, 0
+                );
+                tarrasque.AddEffects(Effect.LEGENDARY_RESISTANCE, Effect.LEGENDARY_RESISTANCE, Effect.LEGENDARY_RESISTANCE, Effect.MAGIC_RESISTANCE, Effect.REFLECTIVE_CARAPACE, Effect.SIEGE_MONSTER);
+                tarrasque.AddEffects(Effect.IMMUNITY_FIRE, Effect.IMMUNITY_POISON, Effect.IMMUNITY_NONMAGIC);
+                tarrasque.AddEffects(Effect.IMMUNITY_CHARMED, Effect.IMMUNITY_FRIGHTENED, Effect.IMMUNITY_PARALYZED, Effect.IMMUNITY_POISONED);
+
+                tarrasque.AddProficiency(Proficiency.INTELLIGENCE);
+                tarrasque.AddProficiency(Proficiency.WISDOM);
+                tarrasque.AddProficiency(Proficiency.CHARISMA);
+
+                return tarrasque;
             }
         }
     }

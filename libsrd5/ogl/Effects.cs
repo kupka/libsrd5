@@ -108,7 +108,13 @@ namespace srd5 {
         LIGHT,
         LONGSTRIDER,
         RAY_OF_FROST,
-        RESISTANCE
+        RESISTANCE,
+
+        // Monster Abilities
+        LEGENDARY_RESISTANCE,
+        MAGIC_RESISTANCE,
+        REFLECTIVE_CARAPACE,
+        SIEGE_MONSTER
     }
 
     public static class Effects {

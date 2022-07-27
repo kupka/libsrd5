@@ -490,10 +490,6 @@ namespace srd5 {
             RecalculateAttacks();
         }
 
-        public void AddProficiency(Proficiency proficiency) {
-            Utils.PushUnique<Proficiency>(ref proficiencies, proficiency);
-        }
-
         private void SetRace(CharacterRace race) {
             this.race = race;
             foreach (Feat feat in race.RacialFeats) {

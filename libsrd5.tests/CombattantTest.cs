@@ -67,11 +67,11 @@ namespace srd5 {
             bool criticalSuccess = false;
             bool criticalFail = false;
             for (int i = 0; i < 1000; i++) {
-                if (ogre.DC(35, AbilityType.STRENGTH))
+                if (ogre.DC(null, 35, AbilityType.STRENGTH))
                     criticalSuccess = true;
             }
             for (int i = 0; i < 1000; i++) {
-                if (!ogre.DC(0, AbilityType.STRENGTH))
+                if (!ogre.DC(null, 0, AbilityType.STRENGTH))
                     criticalFail = true;
             }
             Assert.True(criticalFail && criticalSuccess);
@@ -80,8 +80,8 @@ namespace srd5 {
         [Fact]
         public void DCTest() {
             Combattant orc = Monsters.Orc;
-            Assert.True(orc.DC(2, AbilityType.WISDOM, true, false));
-            Assert.False(orc.DC(19, AbilityType.STRENGTH, false, true));
+            Assert.True(orc.DC(null, 2, AbilityType.WISDOM, true, false));
+            Assert.False(orc.DC(null, 19, AbilityType.STRENGTH, false, true));
         }
 
         [Fact]
@@ -89,9 +89,9 @@ namespace srd5 {
             CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF, true);
             hero.AddLevel(CharacterClasses.Barbarian);
             Assert.True(hero.IsProficient(AbilityType.CONSTITUTION));
-            hero.DC(10, AbilityType.CONSTITUTION);
+            hero.DC(Spells.ID.CHARM_PERSON, 10, AbilityType.CONSTITUTION);
             Assert.False(hero.IsProficient(AbilityType.INTELLIGENCE));
-            hero.DC(10, AbilityType.INTELLIGENCE);
+            hero.DC(null, 10, AbilityType.INTELLIGENCE);
             Assert.False(hero.IsProficient(AbilityType.NONE));
         }
     }

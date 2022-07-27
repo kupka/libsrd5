@@ -271,7 +271,7 @@ namespace srd5 {
             CharacterSheet hero = new CharacterSheet(Race.GNOME);
             Spells.Resistance.Cast(hero, 10, SpellLevel.FIRST, 0, hero);
             Assert.True(hero.HasEffect(Effect.RESISTANCE));
-            hero.DC(10, AbilityType.STRENGTH);
+            hero.DC(null, 10, AbilityType.STRENGTH);
             Assert.False(hero.HasEffect(Effect.RESISTANCE));
         }
     }

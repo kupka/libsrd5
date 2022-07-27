@@ -184,6 +184,10 @@ namespace srd5 {
             return HasEffect(srd5.Effects.Vulnerability(type));
         }
 
+        public void AddProficiency(Proficiency proficiency) {
+            Utils.PushUnique<Proficiency>(ref proficiencies, proficiency);
+        }
+
         public bool IsProficient(Proficiency proficiency) {
             return Array.IndexOf(proficiencies, proficiency) > -1;
         }
@@ -264,13 +268,18 @@ namespace srd5 {
         /// <summary>
         /// Roll a DC (difficulty check) against the specified Ability
         /// </summary>
-        public bool DC(int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
+        public bool DC(object source, int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
+            if (source != null) {
+                if (source is Spells.ID && HasEffect(Effect.MAGIC_RESISTANCE))
+                    advantage = true;
+            }
             Ability ability = GetAbility(type);
             Dice d20 = srd5.Dice.D20;
             int additionalModifiers = 0;
             if (HasEffect(Effect.RESISTANCE)) {
                 additionalModifiers += Dice.D4.Value;
                 RemoveEffect(Effect.RESISTANCE);
+                GlobalEvents.ActivateEffect(this, Effect.RESISTANCE);
             }
             if (IsProficient(type)) {
                 additionalModifiers += ProficiencyBonus;
@@ -287,6 +296,11 @@ namespace srd5 {
             if (d20.Value == 1) success = false;
             if (type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) success = false;
             if (type == AbilityType.DEXTERITY && HasEffect(Effect.FAIL_DEXERITY_CHECK)) success = false;
+            if (HasEffect(Effect.LEGENDARY_RESISTANCE) && !success) { // Allow to turn fail into success
+                success = true;
+                RemoveEffect(Effect.LEGENDARY_RESISTANCE);
+                GlobalEvents.ActivateEffect(this, Effect.LEGENDARY_RESISTANCE);
+            }
             GlobalEvents.RolledDC(this, ability, dc, d20.Value, success);
             return success;
         }
@@ -332,7 +346,15 @@ namespace srd5 {
         /// <summary>
         /// Trys to attack the target Combattant with the specified attack. Returns true on hit, false on miss.
         /// </summary>
-        public bool Attack(Attack attack, Combattant target, int distance, bool ranged = false) {
+        public bool Attack(Attack attack, Combattant target, int distance, bool ranged = false, bool spell = false) {
+            // special effects
+            if (spell && ranged && target.HasEffect(Effect.REFLECTIVE_CARAPACE)) {
+                GlobalEvents.ActivateEffect(target, Effect.REFLECTIVE_CARAPACE);
+                if (Dice.D6.Value == 6) { // reflect back on 6
+                    this.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll());
+                }
+                return false;
+            }
             int attackRoll = Dice.D20.Value;
             // Determine advantage and disadvantage
             bool hasAdvantage = HasEffect(Effect.ADVANTAGE_ON_ATTACK)

@@ -16,7 +16,7 @@ namespace srd5 {
                             damage = new Damage(DamageType.ACID, "1d6");
                         foreach (Combattant target in targets) {
                             int amount = damage.Dices.Roll();
-                            if (!target.DC(dc, AbilityType.DEXTERITY)) {
+                            if (!target.DC(ID.ACID_SPLASH, dc, AbilityType.DEXTERITY)) {
                                 GlobalEvents.AffectBySpell(caster, ID.ACID_SPLASH, target, true);
                                 target.TakeDamage(damage.Type, amount);
                             } else {
@@ -42,7 +42,7 @@ namespace srd5 {
                         Combattant target = targets[0];
                         Attack attack = new Attack(ID.CHILL_TOUCH.Name(), bonus, damage, 0, 120, 120);
                         int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
-                        bool hit = caster.Attack(attack, target, distance, true);
+                        bool hit = caster.Attack(attack, target, distance, true, true);
                         if (hit) {
                             bool undead = (target is Monster) && ((Monster)target).Type == MonsterType.UNDEAD;
                             target.AddEffect(Effect.CANNOT_REGENERATE_HITPOINTS);
@@ -85,7 +85,7 @@ namespace srd5 {
                         Combattant target = targets[0];
                         Attack attack = new Attack(ID.CHILL_TOUCH.Name(), bonus, damage, 0, 120, 120);
                         int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
-                        bool hit = caster.Attack(attack, target, distance, true);
+                        bool hit = caster.Attack(attack, target, distance, true, true);
                         GlobalEvents.AffectBySpell(caster, ID.FIRE_BOLT, target, hit);
                     }
         );
@@ -99,7 +99,7 @@ namespace srd5 {
             ID.LIGHT, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VM,
             SpellDuration.ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Combattant target = targets[0];
-                if (target.DC(dc, AbilityType.DEXTERITY)) {
+                if (target.DC(ID.LIGHT, dc, AbilityType.DEXTERITY)) {
                     GlobalEvents.AffectBySpell(caster, ID.LIGHT, target, false);
                 } else {
                     GlobalEvents.AffectBySpell(caster, ID.LIGHT, target, false);
@@ -149,7 +149,7 @@ namespace srd5 {
                 Attack attack = new Attack(ID.PRODUCE_FLAME.Name(), bonus, damage, 0, 30, 30);
                 Combattant target = targets[0];
                 int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
-                bool hit = caster.Attack(attack, target, distance, true);
+                bool hit = caster.Attack(attack, target, distance, true, true);
                 GlobalEvents.AffectBySpell(caster, ID.PRODUCE_FLAME, target, hit);
             }
         );
@@ -170,7 +170,7 @@ namespace srd5 {
                         Combattant target = targets[0];
                         Attack attack = new Attack(ID.RAY_OF_FROST.Name(), bonus, damage, 0, 60, 60);
                         int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
-                        bool hit = caster.Attack(attack, target, distance, true);
+                        bool hit = caster.Attack(attack, target, distance, true, true);
                         if (hit) {
                             target.AddEffect(Effect.RAY_OF_FROST);
                             caster.AddStartOfTurnEvent(delegate (Combattant combattant) {

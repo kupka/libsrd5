@@ -97,15 +97,25 @@ namespace srd5 {
         DARKVISION,
         PROTECTION,
         CANNOT_TAKE_ACTIONS,
+        CANNOT_TAKE_REACTIONS,
         FAIL_STRENGTH_CHECK,
         FAIL_DEXERITY_CHECK,
+        CANNOT_REGENERATE_HITPOINTS,
 
         // Spell Effects
-        RESISTANCE,
-        LONGSTRIDER,
         ENTANGLE,
         FAIRIE_FIRE,
-        JUMP
+        JUMP,
+        LIGHT,
+        LONGSTRIDER,
+        RAY_OF_FROST,
+        RESISTANCE,
+
+        // Monster Abilities
+        LEGENDARY_RESISTANCE,
+        MAGIC_RESISTANCE,
+        REFLECTIVE_CARAPACE,
+        SIEGE_MONSTER
     }
 
     public static class Effects {

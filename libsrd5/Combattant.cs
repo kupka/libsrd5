@@ -113,6 +113,8 @@ namespace srd5 {
         private Effect[] effects = new Effect[0];
         public ConditionType[] Conditions { get { return conditions; } }
         private ConditionType[] conditions = new ConditionType[0];
+        public Proficiency[] Proficiencies { get { return proficiencies; } }
+        protected Proficiency[] proficiencies = new Proficiency[0];
         public int EffectiveLevel { get; protected set; }
         public AvailableSpells[] AvailableSpells {
             get {
@@ -182,11 +184,43 @@ namespace srd5 {
             return HasEffect(srd5.Effects.Vulnerability(type));
         }
 
+        public void AddProficiency(Proficiency proficiency) {
+            Utils.PushUnique<Proficiency>(ref proficiencies, proficiency);
+        }
+
+        public bool IsProficient(Proficiency proficiency) {
+            return Array.IndexOf(proficiencies, proficiency) > -1;
+        }
+
+        public bool IsDoubleProficient(Proficiency proficiency) {
+            try {
+                Effect doubleProficiency = (Effect)Enum.Parse(typeof(Effect), "DOUBLE_PROFICIENCY_BONUS_" + proficiency.ToString());
+                return HasEffect(doubleProficiency);
+            } catch (ArgumentException) {
+                return false;
+            }
+        }
+
+        public bool IsProficient(Item item) {
+            if (item == null) return true;
+            foreach (Proficiency proficiency in item.Proficiencies) {
+                if (IsProficient(proficiency))
+                    return true;
+            }
+            return false;
+        }
+
+        public bool IsProficient(AbilityType abilityType) {
+            if (abilityType == AbilityType.NONE) return false;
+            Proficiency proficiency = (Proficiency)Enum.Parse(typeof(Proficiency), abilityType.ToString());
+            return IsProficient(proficiency);
+        }
+
         /// <summary>
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
         public void TakeDamage(DamageType type, int amount) {
-            if (amount <= 0) throw new Srd5ArgumentException("Amount must be a positive integer");
+            if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
             if (IsImmune(type)) return;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;
@@ -203,7 +237,7 @@ namespace srd5 {
         /// Heals the specified amount of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combattant.
         /// </summary>
         public void HealDamage(int amount) {
-            if (amount <= 0) throw new Srd5ArgumentException("Amount must be a positive integer");
+            if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
             if (HitPoints == 0) RemoveCondition(ConditionType.UNCONSCIOUS);
             GlobalEvents.ReceivedHealing(this, amount);
             HitPoints = Math.Min(HitPoints + amount, HitPointsMax);
@@ -234,13 +268,21 @@ namespace srd5 {
         /// <summary>
         /// Roll a DC (difficulty check) against the specified Ability
         /// </summary>
-        public bool DC(int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
+        public bool DC(object source, int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
+            if (source != null) {
+                if (source is Spells.ID && HasEffect(Effect.MAGIC_RESISTANCE))
+                    advantage = true;
+            }
             Ability ability = GetAbility(type);
             Dice d20 = srd5.Dice.D20;
             int additionalModifiers = 0;
             if (HasEffect(Effect.RESISTANCE)) {
                 additionalModifiers += Dice.D4.Value;
                 RemoveEffect(Effect.RESISTANCE);
+                GlobalEvents.ActivateEffect(this, Effect.RESISTANCE);
+            }
+            if (IsProficient(type)) {
+                additionalModifiers += ProficiencyBonus;
             }
             if (advantage && !disadvantage) {
                 d20 = srd5.Dice.D20Advantage;
@@ -254,18 +296,23 @@ namespace srd5 {
             if (d20.Value == 1) success = false;
             if (type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) success = false;
             if (type == AbilityType.DEXTERITY && HasEffect(Effect.FAIL_DEXERITY_CHECK)) success = false;
+            if (HasEffect(Effect.LEGENDARY_RESISTANCE) && !success) { // Allow to turn fail into success
+                success = true;
+                RemoveEffect(Effect.LEGENDARY_RESISTANCE);
+                GlobalEvents.ActivateEffect(this, Effect.LEGENDARY_RESISTANCE);
+            }
             GlobalEvents.RolledDC(this, ability, dc, d20.Value, success);
             return success;
         }
 
 
-        private EndOfTurnEvent[] endOfTurnEvents = new EndOfTurnEvent[0];
+        private TurnEvent[] endOfTurnEvents = new TurnEvent[0];
 
         /// <summary>
         /// Adds a piece of code to be evaluated at the end of this combattatant's turn
         /// </summary>
-        public void AddEndOfTurnEvent(EndOfTurnEvent endOfTurnEvent) {
-            Utils.Push<EndOfTurnEvent>(ref endOfTurnEvents, endOfTurnEvent);
+        public void AddEndOfTurnEvent(TurnEvent turnEvent) {
+            Utils.Push<TurnEvent>(ref endOfTurnEvents, turnEvent);
         }
 
         public void OnEndOfTurn() {
@@ -277,17 +324,45 @@ namespace srd5 {
             }
         }
 
+        private TurnEvent[] startOfTurnEvents = new TurnEvent[0];
+
         /// <summary>
-        /// Trys to attack the target Combattant with the specified attack. 
+        /// Adds a piece of code to be evaluated at the start of this combattatant's turn
         /// </summary>
-        public void Attack(Attack attack, Combattant target, int distance, bool ranged = false) {
+        public void AddStartOfTurnEvent(TurnEvent turnEvent) {
+            Utils.Push<TurnEvent>(ref startOfTurnEvents, turnEvent);
+        }
+
+        public void OnStartOfTurn() {
+            for (int i = 0; i < startOfTurnEvents.Length; i++) {
+                if (startOfTurnEvents[i] == null) continue;
+                if (startOfTurnEvents[i](this)) {
+                    startOfTurnEvents[i] = null;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Trys to attack the target Combattant with the specified attack. Returns true on hit, false on miss.
+        /// </summary>
+        public bool Attack(Attack attack, Combattant target, int distance, bool ranged = false, bool spell = false) {
+            // check range / reach
+            if (ranged && attack.RangeLong < distance) return false;
+            if (!ranged && attack.Reach < distance) return false;
+            // special effects
+            if (spell && ranged && target.HasEffect(Effect.REFLECTIVE_CARAPACE)) {
+                GlobalEvents.ActivateEffect(target, Effect.REFLECTIVE_CARAPACE);
+                if (Dice.D6.Value == 6) { // reflect back on 6
+                    this.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll());
+                }
+                return false;
+            }
             int attackRoll = Dice.D20.Value;
             // Determine advantage and disadvantage
-            bool hasAdvantage = HasEffect(Effect.ADVANTAGE_ON_ATTACK)
-                                || target.HasEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
-            bool hasDisadvantage = HasEffect(Effect.DISADVANTAGE_ON_ATTACK)
-                                || target.HasEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED)
-                                || (ranged && (distance <= 5 || distance > attack.RangeNormal));
+            bool hasAdvantage = attackAdvantageEffect(attack, target, distance, ranged, spell);
+            bool hasDisadvantage = attackDisadvantageEffect(attack, target, distance, ranged, spell);
+            applyAttackModifyingEffects(ref hasAdvantage, ref hasDisadvantage, ref attack, ref target);
             if (hasAdvantage && !hasDisadvantage)
                 attackRoll = Dice.D20Advantage.Value;
             else if (hasDisadvantage && !hasAdvantage)
@@ -296,12 +371,12 @@ namespace srd5 {
             bool criticalMiss = attackRoll == 1;
             if (criticalMiss) {
                 GlobalEvents.RolledAttack(this, attack, target, attackRoll, false);
-                return;
+                return false;
             }
             int modifiedAttack = attackRoll + attack.AttackBonus;
             if (!criticalHit && modifiedAttack < target.ArmorClass) {
                 GlobalEvents.RolledAttack(this, attack, target, attackRoll, false);
-                return;
+                return false;
             }
             // Check if auto critical hit conditions apply
             if (HasEffect(Effect.AUTOMATIC_CRIT_ON_HIT)) criticalHit = true;
@@ -314,12 +389,56 @@ namespace srd5 {
                 target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll());
                 if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.Roll());
             }
+            return true;
+        }
+
+        private AttackModifyingEffect[] attackModifyingEffects = new AttackModifyingEffect[0];
+
+        public void AddAttackModifyingEffect(AttackModifyingEffect effect) {
+            Utils.Push<AttackModifyingEffect>(ref attackModifyingEffects, effect);
+        }
+
+        private void applyAttackModifyingEffects(ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combattant target) {
+            for (int i = 0; i < attackModifyingEffects.Length; i++) {
+                if (attackModifyingEffects[i] == null) continue;
+                if (attackModifyingEffects[i](ref advantage, ref disadvantage, ref attack, ref target)) {
+                    attackModifyingEffects[i] = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Function to return true or false if some specfic effect is in place that grants this
+        /// combattant advantage in their attack roll against the target.
+        /// </summary>
+        private bool attackAdvantageEffect(Attack attack, Combattant target, int distance, bool ranged, bool spell) {
+            bool advantage = HasEffect(Effect.ADVANTAGE_ON_ATTACK);
+            advantage = advantage || target.HasEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            return advantage;
+        }
+
+        /// <summary>
+        /// Function to return true or false if some specfic effect is in place that grants this
+        /// combattant disadvantage in their attack roll against the target.
+        /// </summary>
+        private bool attackDisadvantageEffect(Attack attack, Combattant target, int distance, bool ranged, bool spell) {
+            bool disadvantage = HasEffect(Effect.DISADVANTAGE_ON_ATTACK);
+            disadvantage = disadvantage || target.HasEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
+            disadvantage = disadvantage || (ranged && (distance <= 5 || distance > attack.RangeNormal));
+            return disadvantage;
         }
     }
 
     /// <summary>
-    /// Describes an event that shall be executed at the end of this combattant's turn. 
+    /// Describes an event that shall be executed at the end or beginning 
+    /// of this combattant's turn. 
     /// The event is considered finished when the delegate returns true.
     /// </summary>
-    public delegate bool EndOfTurnEvent(Combattant combattant);
+    public delegate bool TurnEvent(Combattant combattant);
+
+    /// <summary>
+    /// Describes an effect that modifies this combattant's attack roll. 
+    /// The effect is considered finished when the delegate returns true.
+    /// </summary>
+    public delegate bool AttackModifyingEffect(ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combattant target);
 }

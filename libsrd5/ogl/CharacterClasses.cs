@@ -20,6 +20,8 @@ namespace srd5 {
                 barbarian.Class = Class.BARBARIAN;
                 barbarian.HitDice = 12;
                 barbarian.Proficiencies = new Proficiency[]{
+                                Proficiency.STRENGTH,
+                                Proficiency.CONSTITUTION,
                                 Proficiency.LIGHT_ARMOR,
                                 Proficiency.MEDIUM_ARMOR,
                                 Proficiency.SHIELDS,
@@ -60,6 +62,8 @@ namespace srd5 {
                 druid.Class = Class.DRUID;
                 druid.HitDice = 8;
                 druid.Proficiencies = new Proficiency[]{
+                                Proficiency.INTELLIGENCE,
+                                Proficiency.WISDOM,
                                 Proficiency.CLUB,
                                 Proficiency.DAGGER,
                                 Proficiency.DARTS,
@@ -123,6 +127,71 @@ namespace srd5 {
                 };
                 druid.MustPrepareSpells = true;
                 return druid;
+            }
+        }
+
+        public static CharacterClass Wizard {
+            get {
+                CharacterClass wizard = new CharacterClass();
+                wizard.Class = Class.WIZARD;
+                wizard.HitDice = 6;
+                wizard.Proficiencies = new Proficiency[]{
+                                Proficiency.INTELLIGENCE,
+                                Proficiency.WISDOM,
+                                Proficiency.DAGGER,
+                                Proficiency.DARTS,
+                                Proficiency.QUARTERSTAFF,
+                                Proficiency.SLING,
+                                Proficiency.CROSSBOW_LIGHT
+                            };
+                wizard.Feats = new Feat[][] {
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                };
+                wizard.SpellCastingAbility = AbilityType.INTELLIGENCE;
+                wizard.KnownSpellsLimit = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+                wizard.SpellSlots = new int[][] {
+                    new int[]{ 3, 2, 0, 0, 0, 0, 0, 0, 0, 0},
+                    new int[]{ 3, 3, 0, 0, 0, 0, 0, 0, 0, 0},
+                    new int[]{ 3, 4, 2, 0, 0, 0, 0, 0, 0, 0},
+                    new int[]{ 4, 4, 3, 0, 0, 0, 0, 0, 0, 0},
+                    new int[]{ 4, 4, 3, 2, 0, 0, 0, 0, 0, 0},
+                    new int[]{ 4, 4, 3, 3, 0, 0, 0, 0, 0, 0},
+                    new int[]{ 4, 4, 3, 3, 1, 0, 0, 0, 0, 0},
+                    new int[]{ 4, 4, 3, 3, 2, 0, 0, 0, 0, 0},
+                    new int[]{ 4, 4, 3, 3, 3, 1, 0, 0, 0, 0},
+                    new int[]{ 5, 4, 3, 3, 3, 2, 0, 0, 0, 0},
+                    new int[]{ 5, 4, 3, 3, 3, 2, 1, 0, 0, 0},
+                    new int[]{ 5, 4, 3, 3, 3, 2, 1, 0, 0, 0},
+                    new int[]{ 5, 4, 3, 3, 3, 2, 1, 1, 0, 0},
+                    new int[]{ 5, 4, 3, 3, 3, 2, 1, 1, 0, 0},
+                    new int[]{ 5, 4, 3, 3, 3, 2, 1, 1, 1, 0},
+                    new int[]{ 5, 4, 3, 3, 3, 2, 1, 1, 1, 0},
+                    new int[]{ 5, 4, 3, 3, 3, 2, 1, 1, 1, 1},
+                    new int[]{ 5, 4, 3, 3, 3, 3, 1, 1, 1, 1},
+                    new int[]{ 5, 4, 3, 3, 3, 3, 2, 1, 1, 1},
+                    new int[]{ 5, 4, 3, 3, 3, 3, 2, 2, 1, 1}
+                };
+                wizard.MustPrepareSpells = true;
+                return wizard;
             }
         }
     }

@@ -229,7 +229,7 @@ namespace srd5 {
             remainingSpeed = CurrentCombattant.Speed;
         }
 
-        private void NextCombattant() {
+        private void nextCombattant() {
             currentCombattant++;
             currentCombattant %= combattants.Length;
             if (currentCombattant == 0) Turn++;
@@ -262,7 +262,7 @@ namespace srd5 {
                     currentPhase = TurnPhase.BONUS_ACTION;
                     break;
                 case TurnPhase.BONUS_ACTION:
-                    NextCombattant();
+                    nextCombattant();
                     break;
             }
             return currentPhase;

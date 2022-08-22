@@ -407,6 +407,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Speak with Animals";
                 case Spells.ID.THUNDERWAVE:
                     return "Thunderwave";
+                case Spells.ID.TRUE_STRIKE:
+                    return "True Strike";
                 default:
                     return Enum.GetName(typeof(Spells.ID), spell) + ": (Name missing)";
             }
@@ -478,6 +480,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "You gain the ability to comprehend and verbally communicate with beasts for the duration. The knowledge and awareness of many beasts is limited by their intelligence, but at minimum, beasts can give you information about nearby locations and monsters, including whatever they can perceive or have perceived within the past day. You might be able to persuade a beast to perform a small favor for you, at the GM's discretion";
                 case Spells.ID.THUNDERWAVE:
                     return "A wave of thunderous force sweeps out from you. Each creature in a 15-foot cube originating from you must make a Constitution saving throw. On a failed save, a creature takes 2d8 thunder damage and is pushed 10 feet away from you. On a successful save, the creature takes half as much damage and isn't pushed.\nIn addition, unsecured objects that are completely within the area of effect are automatically pushed 10 feet away from you by the spell's effect, and the spell emits a thunderous boom audible out to 300 feet.\nWhen you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d8 for each slot level above 1st.";
+                case Spells.ID.TRUE_STRIKE:
+                    return "You extend your hand and point a finger at a target in range. Your magic grants you a brief insight into the target's defenses. On your next turn, you gain advantage on your first attack roll against the target, provided that this spell hasn't ended.";
                 default:
                     return Enum.GetName(typeof(Spells.ID), spell) + ": (Description missing)";
             }

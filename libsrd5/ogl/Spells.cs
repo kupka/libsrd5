@@ -53,6 +53,11 @@ namespace srd5 {
     public partial struct Spells {
         private static SpellCastEffect doNothing = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) { };
 
+        private static SpellComponent[] S {
+            get {
+                return new SpellComponent[] { SpellComponent.SOMATIC };
+            }
+        }
 
         private static SpellComponent[] SM {
             get {
@@ -117,7 +122,8 @@ namespace srd5 {
             SHILLELAGH,
             SHOCKING_GRASP,
             SPEAK_WITH_ANIMALS,
-            THUNDERWAVE
+            THUNDERWAVE,
+            TRUE_STRIKE
         }
     }
 }

@@ -8,7 +8,7 @@ namespace srd5 {
             CharacterSheet wizard = new CharacterSheet(Race.GNOME, true);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard);
             CharacterSheet barbarian = new CharacterSheet(Race.HALF_ORC, true);
-            wizard.AddLevel(CharacterClasses.Barbarian);
+            barbarian.AddLevel(CharacterClasses.Barbarian);
             Monster orc = Monsters.Orc;
             Monster shadow = Monsters.Shadow;
             Battleground2D ground = new Battleground2D(10, 10);
@@ -63,7 +63,7 @@ namespace srd5 {
             CharacterSheet wizard = new CharacterSheet(Race.GNOME, true);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard);
             CharacterSheet barbarian = new CharacterSheet(Race.HALF_ORC, true);
-            wizard.AddLevel(CharacterClasses.Barbarian);
+            barbarian.AddLevel(CharacterClasses.Barbarian);
             Monster orc = Monsters.Orc;
             Monster shadow = Monsters.Shadow;
             Battleground2D ground = new Battleground2D(10, 50);
@@ -89,7 +89,7 @@ namespace srd5 {
             CharacterSheet wizard = new CharacterSheet(Race.GNOME, true);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard);
             CharacterSheet barbarian = new CharacterSheet(Race.HALF_ORC, true);
-            wizard.AddLevel(CharacterClasses.Barbarian);
+            barbarian.AddLevel(CharacterClasses.Barbarian);
             Monster orc = Monsters.Orc;
             Monster shadow = Monsters.Shadow;
             Battleground2D ground = new Battleground2D(10, 10);
@@ -108,6 +108,52 @@ namespace srd5 {
             Assert.True(shadow.HasEffect(Effect.CANNOT_TAKE_REACTIONS));
             wizard.OnStartOfTurn();
             Assert.False(shadow.HasEffect(Effect.CANNOT_TAKE_REACTIONS));
+        }
+
+        [Fact]
+        public void TrueStrikeTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.GNOME, true);
+            wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Monster orc1 = Monsters.Orc;
+            Monster orc2 = Monsters.Orc;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(wizard, 5, 5);
+            ground.AddCombattant(orc1, 5, 6);
+            ground.AddCombattant(orc2, 6, 5);
+            ground.Initialize();
+            Spells.TrueStrike.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc1);
+            wizard.Attack(Attacks.GiantBadgerBite, orc1, 5); // not yet active
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            wizard.Attack(Attacks.GiantBadgerBite, orc2, 5); // wrong target
+            wizard.Attack(Attacks.GiantBadgerBite, orc1, 5); // correct target and turn
+            Spells.TrueStrike.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc2);
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            ground.NextPhase();
+            wizard.Attack(Attacks.GiantBadgerBite, orc2, 5); // no longer active
         }
     }
 }

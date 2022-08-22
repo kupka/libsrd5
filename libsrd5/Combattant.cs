@@ -360,11 +360,9 @@ namespace srd5 {
             }
             int attackRoll = Dice.D20.Value;
             // Determine advantage and disadvantage
-            bool hasAdvantage = HasEffect(Effect.ADVANTAGE_ON_ATTACK)
-                                || target.HasEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
-            bool hasDisadvantage = HasEffect(Effect.DISADVANTAGE_ON_ATTACK)
-                                || target.HasEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED)
-                                || (ranged && (distance <= 5 || distance > attack.RangeNormal));
+            bool hasAdvantage = attackAdvantageEffect(attack, target, distance, ranged, spell);
+            bool hasDisadvantage = attackDisadvantageEffect(attack, target, distance, ranged, spell);
+            applyAttackModifyingEffects(ref hasAdvantage, ref hasDisadvantage, ref attack, ref target);
             if (hasAdvantage && !hasDisadvantage)
                 attackRoll = Dice.D20Advantage.Value;
             else if (hasDisadvantage && !hasAdvantage)
@@ -393,11 +391,54 @@ namespace srd5 {
             }
             return true;
         }
+
+        private AttackModifyingEffect[] attackModifyingEffects = new AttackModifyingEffect[0];
+
+        public void AddAttackModifyingEffect(AttackModifyingEffect effect) {
+            Utils.Push<AttackModifyingEffect>(ref attackModifyingEffects, effect);
+        }
+
+        private void applyAttackModifyingEffects(ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combattant target) {
+            for (int i = 0; i < attackModifyingEffects.Length; i++) {
+                if (attackModifyingEffects[i] == null) continue;
+                if (attackModifyingEffects[i](ref advantage, ref disadvantage, ref attack, ref target)) {
+                    attackModifyingEffects[i] = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Function to return true or false if some specfic effect is in place that grants this
+        /// combattant advantage in their attack roll against the target.
+        /// </summary>
+        private bool attackAdvantageEffect(Attack attack, Combattant target, int distance, bool ranged, bool spell) {
+            bool advantage = HasEffect(Effect.ADVANTAGE_ON_ATTACK);
+            advantage = advantage || target.HasEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            return advantage;
+        }
+
+        /// <summary>
+        /// Function to return true or false if some specfic effect is in place that grants this
+        /// combattant disadvantage in their attack roll against the target.
+        /// </summary>
+        private bool attackDisadvantageEffect(Attack attack, Combattant target, int distance, bool ranged, bool spell) {
+            bool disadvantage = HasEffect(Effect.DISADVANTAGE_ON_ATTACK);
+            disadvantage = disadvantage || target.HasEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
+            disadvantage = disadvantage || (ranged && (distance <= 5 || distance > attack.RangeNormal));
+            return disadvantage;
+        }
     }
 
     /// <summary>
-    /// Describes an event that shall be executed at the end of this combattant's turn. 
+    /// Describes an event that shall be executed at the end or beginning 
+    /// of this combattant's turn. 
     /// The event is considered finished when the delegate returns true.
     /// </summary>
     public delegate bool TurnEvent(Combattant combattant);
+
+    /// <summary>
+    /// Describes an effect that modifies this combattant's attack roll. 
+    /// The effect is considered finished when the delegate returns true.
+    /// </summary>
+    public delegate bool AttackModifyingEffect(ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combattant target);
 }

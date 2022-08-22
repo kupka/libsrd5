@@ -250,5 +250,23 @@ namespace srd5 {
                 GlobalEvents.AffectBySpell(caster, ID.SHOCKING_GRASP, target, hit);
             }
         );
+
+        public static readonly Spell TrueStrike = new Spell(
+            ID.TRUE_STRIKE, SpellSchool.DIVINATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, S,
+            SpellDuration.ONE_ROUND, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                int turn = ground.Turn;
+                caster.AddAttackModifyingEffect(delegate (ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combattant target) {
+                    if (ground.Turn > turn + 1) return true; // no longer active
+                    if (ground.Turn < turn + 1) return false; // not yet active
+                    if (target == targets[0]) {
+                        advantage = true;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                GlobalEvents.AffectBySpell(caster, ID.TRUE_STRIKE, targets[0], true);
+            }
+        );
     }
 }

@@ -82,13 +82,13 @@ namespace srd5 {
         );
 
         public static readonly Spell FairieFire = new Spell(
-            ID.FAIRIE_FIRE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, V,
+            ID.FAERIE_FIRE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, V,
             SpellDuration.ONE_MINUTE, 20, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 foreach (Combattant target in targets) {
-                    if (target.DC(ID.FAIRIE_FIRE, dc, AbilityType.DEXTERITY)) {
-                        GlobalEvents.AffectBySpell(caster, ID.FAIRIE_FIRE, target, false);
+                    if (target.DC(ID.FAERIE_FIRE, dc, AbilityType.DEXTERITY)) {
+                        GlobalEvents.AffectBySpell(caster, ID.FAERIE_FIRE, target, false);
                     } else {
-                        GlobalEvents.AffectBySpell(caster, ID.FAIRIE_FIRE, target, true);
+                        GlobalEvents.AffectBySpell(caster, ID.FAERIE_FIRE, target, true);
                         target.AddEffect(Effect.FAIRIE_FIRE);
                         int rounds = 10;
                         target.AddEndOfTurnEvent(delegate (Combattant combattant) {

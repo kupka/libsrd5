@@ -31,6 +31,7 @@ namespace srd5 {
         ONE_ACTION,
         ONE_ROUND,
         ONE_MINUTE,
+        TEN_MINUTES,
         ONE_HOUR
     }
 
@@ -48,7 +49,8 @@ namespace srd5 {
         ONE_HOUR = 3600,
         EIGHT_HOURS = 3600 * 8,
         ONE_DAY = 86400,
-        TEN_DAYS = 864000
+        TEN_DAYS = 864000,
+        UNTIL_DISPELLED = 99999999
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);

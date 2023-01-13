@@ -69,6 +69,11 @@ namespace srd5 {
                     SpellDuration.INSTANTANEOUS, 0, 1, doNothing
         );
 
+        /* TODO */
+        public static readonly Spell Druidcraft = new Spell(Spells.ID.DRUIDCRAFT, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell EldritchBlast = new Spell(Spells.ID.ELDRITCH_BLAST, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+
         public static readonly Spell FireBolt = new Spell(
                     ID.FIRE_BOLT, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS,
                     SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
@@ -129,10 +134,14 @@ namespace srd5 {
             SpellDuration.ONE_MINUTE, 0, 0, doNothing
         );
 
-        public static readonly Spell PRESTIDIGITATION = new Spell(
+        /* TODO */
+        public static readonly Spell PoisonSpray = new Spell(Spells.ID.POISON_SPRAY, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 10, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+
+        public static readonly Spell Prestidigitation = new Spell(
             ID.PRESTIDIGITATION, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 10, VS,
             SpellDuration.ONE_HOUR, 0, 0, doNothing
         );
+
 
         public static readonly Spell ProduceFlame = new Spell(
             ID.PRODUCE_FLAME, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS,
@@ -189,6 +198,9 @@ namespace srd5 {
                 targets[0].AddEffect(Effect.RESISTANCE);
             }
         );
+
+        /* TODO */
+        public static readonly Spell SacredFlame = new Spell(Spells.ID.SACRED_FLAME, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
 
         public static readonly Spell Shillelagh = new Spell(
             ID.SHILLELAGH, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.BONUS_ACTION, 0, VSM,
@@ -251,6 +263,12 @@ namespace srd5 {
             }
         );
 
+        /* TODO */
+        public static readonly Spell SparetheDying = new Spell(Spells.ID.SPARE_THE_DYING, SpellSchool.NECROMANCY, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+
+        /* TODO */
+        public static readonly Spell Thaumaturgy = new Spell(Spells.ID.THAUMATURGY, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, V, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+
         public static readonly Spell TrueStrike = new Spell(
             ID.TRUE_STRIKE, SpellSchool.DIVINATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, S,
             SpellDuration.ONE_ROUND, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
@@ -268,5 +286,8 @@ namespace srd5 {
                 GlobalEvents.AffectBySpell(caster, ID.TRUE_STRIKE, targets[0], true);
             }
         );
+
+        /* TODO */
+        public static readonly Spell ViciousMockery = new Spell(Spells.ID.VICIOUS_MOCKERY, SpellSchool.ENCHANTMENT, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, V, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
     }
 }

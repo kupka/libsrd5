@@ -27,6 +27,7 @@ namespace srd5 {
 
     public enum CastingTime {
         BONUS_ACTION,
+        REACTION,
         ONE_ACTION,
         ONE_ROUND,
         ONE_MINUTE,
@@ -45,7 +46,9 @@ namespace srd5 {
         ONE_MINUTE = 60,
         TEN_MINUTES = 600,
         ONE_HOUR = 3600,
-        ONE_DAY = 86400
+        EIGHT_HOURS = 3600 * 8,
+        ONE_DAY = 86400,
+        TEN_DAYS = 864000
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);

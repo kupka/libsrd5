@@ -201,7 +201,7 @@ namespace srd5 {
 
         [Fact]
         public void FairieFireTest() {
-            DefaultSpellTest(Spells.FairieFire, 14, SpellLevel.SECOND, null, Effect.FAIRIE_FIRE, 100);
+            DefaultSpellTest(Spells.FaerieFire, 14, SpellLevel.SECOND, null, Effect.FAIRIE_FIRE, 100);
         }
 
         [Fact]

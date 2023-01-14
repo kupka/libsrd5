@@ -2,6 +2,17 @@ using System;
 
 namespace srd5 {
     public partial struct Spells {
+        /* TODO */
+        public static readonly Spell Alarm = new Spell(Spells.ID.ALARM, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.ONE_MINUTE, 30, VSM, SpellDuration.EIGHT_HOURS, 20, 0, doNothing);
+        /* TODO */
+        public static readonly Spell AnimalFriendship = new Spell(Spells.ID.ANIMAL_FRIENDSHIP, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_DAY, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell Bane = new Spell(Spells.ID.BANE, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell Bless = new Spell(Spells.ID.BLESS, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell BurningHands = new Spell(Spells.ID.BURNING_HANDS, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 15, 0, doNothing);
+
         public static readonly Spell CharmPerson = new Spell(
             ID.CHARM_PERSON, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VS,
             SpellDuration.ONE_HOUR, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
@@ -27,7 +38,14 @@ namespace srd5 {
             }
         );
 
-        public static readonly Spell CreateOrDestroyWater = new Spell(
+        /* TODO */
+        public static readonly Spell ColorSpray = new Spell(Spells.ID.COLOR_SPRAY, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_ROUND, 15, 0, doNothing);
+        /* TODO */
+        public static readonly Spell Command = new Spell(Spells.ID.COMMAND, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, V, SpellDuration.ONE_ROUND, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell ComprehendLanguages = new Spell(Spells.ID.COMPREHEND_LANGUAGES, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+
+        public static readonly Spell CreateorDestroyWater = new Spell(
             ID.CREATE_OR_DESTROY_WATER, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VS,
             SpellDuration.INSTANTANEOUS, 0, 0, doNothing
         );
@@ -49,6 +67,9 @@ namespace srd5 {
             }
         );
 
+        /* TODO */
+        public static readonly Spell DetectEvilandGood = new Spell(Spells.ID.DETECT_EVIL_AND_GOOD, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS, SpellDuration.TEN_MINUTES, 30, 0, doNothing);
+
         public static readonly Spell DetectMagic = new Spell(
             ID.DETECT_MAGIC, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS,
             SpellDuration.TEN_MINUTES, 30, 0, doNothing
@@ -58,6 +79,11 @@ namespace srd5 {
             ID.DETECT_POISON_AND_DISEASE, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM,
             SpellDuration.TEN_MINUTES, 30, 0, doNothing
         );
+
+        /* TODO */
+        public static readonly Spell DisguiseSelf = new Spell(Spells.ID.DISGUISE_SELF, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell DivineFavor = new Spell(Spells.ID.DIVINE_FAVOR, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 0, VS, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
 
         public static readonly Spell Entangle = new Spell(
             ID.ENTANGLE, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VS,
@@ -81,14 +107,17 @@ namespace srd5 {
             }
         );
 
-        public static readonly Spell FairieFire = new Spell(
-            ID.FAIRIE_FIRE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, V,
+        /* TODO */
+        public static readonly Spell ExpeditiousRetreat = new Spell(Spells.ID.EXPEDITIOUS_RETREAT, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 0, VS, SpellDuration.TEN_MINUTES, 0, 0, doNothing);
+
+        public static readonly Spell FaerieFire = new Spell(
+            ID.FAERIE_FIRE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, V,
             SpellDuration.ONE_MINUTE, 20, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 foreach (Combattant target in targets) {
-                    if (target.DC(ID.FAIRIE_FIRE, dc, AbilityType.DEXTERITY)) {
-                        GlobalEvents.AffectBySpell(caster, ID.FAIRIE_FIRE, target, false);
+                    if (target.DC(ID.FAERIE_FIRE, dc, AbilityType.DEXTERITY)) {
+                        GlobalEvents.AffectBySpell(caster, ID.FAERIE_FIRE, target, false);
                     } else {
-                        GlobalEvents.AffectBySpell(caster, ID.FAIRIE_FIRE, target, true);
+                        GlobalEvents.AffectBySpell(caster, ID.FAERIE_FIRE, target, true);
                         target.AddEffect(Effect.FAIRIE_FIRE);
                         int rounds = 10;
                         target.AddEndOfTurnEvent(delegate (Combattant combattant) {
@@ -103,10 +132,26 @@ namespace srd5 {
             }
         );
 
+        /* TODO */
+        public static readonly Spell FalseLife = new Spell(Spells.ID.FALSE_LIFE, SpellSchool.NECROMANCY, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell FeatherFall = new Spell(Spells.ID.FEATHER_FALL, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.REACTION, 60, VM, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell FindFamiliar = new Spell(Spells.ID.FIND_FAMILIAR, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_HOUR, 10, VSM, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell FloatingDisk = new Spell(Spells.ID.FLOATING_DISK, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+
         public static readonly Spell FogCloud = new Spell(
             ID.FOG_CLOUD, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, VS,
             SpellDuration.ONE_HOUR, 20, 0, doNothing
         );
+
+        /* TODO */
+        public static readonly Spell Goodberry = new Spell(Spells.ID.GOODBERRY, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell Grease = new Spell(Spells.ID.GREASE, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.ONE_MINUTE, 10, 0, doNothing);
+        /* TODO */
+        public static readonly Spell GuidingBolt = new Spell(Spells.ID.GUIDING_BOLT, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, VS, SpellDuration.ONE_ROUND, 0, 0, doNothing);
 
         public static readonly Spell HealingWord = new Spell(
             ID.HEALING_WORD, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 60, V,
@@ -124,6 +169,21 @@ namespace srd5 {
                 targets[0].HealDamage(healed.Roll());
             }
         );
+
+        /* TODO */
+        public static readonly Spell HellishRebuke = new Spell(Spells.ID.HELLISH_REBUKE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.REACTION, 60, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell Heroism = new Spell(Spells.ID.HEROISM, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell HideousLaughter = new Spell(Spells.ID.HIDEOUS_LAUGHTER, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell HuntersMark = new Spell(Spells.ID.HUNTERS_MARK, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 90, V, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell Identify = new Spell(Spells.ID.IDENTIFY, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_MINUTE, 0, VSM, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell IllusoryScript = new Spell(Spells.ID.ILLUSORY_SCRIPT, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_MINUTE, 0, SM, SpellDuration.TEN_DAYS, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell InflictWounds = new Spell(Spells.ID.INFLICT_WOUNDS, SpellSchool.NECROMANCY, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
 
         public static readonly Spell Jump = new Spell(
             ID.JUMP, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM,
@@ -143,6 +203,8 @@ namespace srd5 {
             }
         );
 
+        /* TODO */
+        public static readonly Spell MageArmor = new Spell(Spells.ID.MAGE_ARMOR, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.EIGHT_HOURS, 0, 0, doNothing);
 
         public static readonly Spell MagicMissile = new Spell(
             ID.MAGIC_MISSILE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, VS,
@@ -169,10 +231,24 @@ namespace srd5 {
             }
         );
 
+        /* TODO */
+        public static readonly Spell ProtectionfromEvilandGood = new Spell(Spells.ID.PROTECTION_FROM_EVIL_AND_GOOD, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.TEN_MINUTES, 0, 0, doNothing);
+        /* TODO */
+
         public static readonly Spell PurifyFoodAndDrink = new Spell(
             ID.PURIFY_FOOD_AND_DRINK, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 10, VS,
             SpellDuration.INSTANTANEOUS, 5, 0, doNothing
         );
+
+        public static readonly Spell Sanctuary = new Spell(Spells.ID.SANCTUARY, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell Shield = new Spell(Spells.ID.SHIELD, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.REACTION, 0, VS, SpellDuration.ONE_ROUND, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell ShieldofFaith = new Spell(Spells.ID.SHIELD_OF_FAITH, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 60, VSM, SpellDuration.TEN_MINUTES, 0, 0, doNothing);
+        /* TODO */
+        public static readonly Spell SilentImage = new Spell(Spells.ID.SILENT_IMAGE, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.TEN_MINUTES, 15, 0, doNothing);
+        /* TODO */
+        public static readonly Spell Sleep = new Spell(Spells.ID.SLEEP, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VSM, SpellDuration.ONE_MINUTE, 20, 0, doNothing);
 
         public static readonly Spell SpeakWithAnimals = new Spell(
             ID.SPEAK_WITH_ANIMALS, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS,
@@ -198,5 +274,9 @@ namespace srd5 {
                 }
             }
         );
+
+        /* TODO */
+        public static readonly Spell UnseenServant = new Spell(Spells.ID.UNSEEN_SERVANT, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+
     }
 }

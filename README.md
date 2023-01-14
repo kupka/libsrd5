@@ -25,7 +25,12 @@ You can find examples how to integrate libsrd5 in a Blazor and Unity3D project [
 
 ## Copyright
 
-libsrd5 Copyright 2021-2022, Thomas Kupka
+libsrd5 Copyright 2021-2023, Thomas Kupka
+
+## Acknowledgements
+
+I would like to thank the creators of the [5e-database](https://github.com/5e-bits/5e-database). Their json
+formatted SRD data came in quite handy to automate some pretty tedious tasks.
 
 ## License
 
@@ -33,6 +38,6 @@ libsrd5 Copyright 2021-2022, Thomas Kupka
 
 libsrd5 is licensed under the GNU Affero General Public License (see LICENSE). 
 
-Any names, values and play mechanics inside the `ogl` subfolder are licensed under the terms of the Open Game License (see libsrd5/ogl/LICENSE-OGL). 
+Any names, values and play mechanics inside the `ogl` subfolder are licensed under the terms of the Open Game License 1.0a (see libsrd5/ogl/LICENSE-OGL). 
 
 By using and/or distributing libsrd5 in its full form, you must agree to and adhere to the terms of both licenses.

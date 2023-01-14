@@ -32,7 +32,10 @@ namespace srd5 {
         ONE_ROUND,
         ONE_MINUTE,
         TEN_MINUTES,
-        ONE_HOUR
+        ONE_HOUR,
+        EIGHT_HOURS,
+        TWELVE_HOURS,
+        ONE_DAY
     }
 
     public enum SpellComponent {
@@ -42,14 +45,18 @@ namespace srd5 {
     }
 
     public enum SpellDuration {
+        SPECIAL = -1,
         INSTANTANEOUS = 0,
         ONE_ROUND = 6,
         ONE_MINUTE = 60,
-        TEN_MINUTES = 600,
+        TEN_MINUTES = 60 * 10,
         ONE_HOUR = 3600,
+        TWO_HOURS = 3600 * 2,
         EIGHT_HOURS = 3600 * 8,
         ONE_DAY = 86400,
-        TEN_DAYS = 864000,
+        SEVEN_DAYS = 86400 * 7,
+        TEN_DAYS = 86400 * 10,
+        THIRTY_DAYS = 86400 * 30,
         UNTIL_DISPELLED = 99999999
     }
 

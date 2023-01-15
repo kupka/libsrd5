@@ -20,10 +20,11 @@ namespace srd5 {
             }
         }
 
-        public Monster(MonsterType type, string name, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
+        public Monster(MonsterType type, string name, Alignment alignment, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
                         int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks, Size size, int spellCastDC = 0) {
             Type = type;
             Name = name;
+            Alignment = alignment;
             Strength.BaseValue = strength;
             Dexterity.BaseValue = dexterity;
             Constitution.BaseValue = constitution;

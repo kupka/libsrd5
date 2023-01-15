@@ -9,12 +9,32 @@ namespace srd5 {
         public int Reach { get; internal set; }
         public int RangeNormal { get; internal set; }
         public int RangeLong { get; internal set; }
-        public Attack(string name, int attackBonus, Damage damage, int reach = 5, int rangeNormal = 0, int rangeLong = 0, Damage additionalDamage = null) {
+        public Attack(string name, int attackBonus, Damage damage, int reach, int rangeNormal, int rangeLong, Damage additionalDamage = null) {
             Name = name;
             AttackBonus = attackBonus;
             Damage = damage;
             AdditionalDamage = additionalDamage;
             Reach = reach;
+            RangeNormal = rangeNormal;
+            RangeLong = rangeLong;
+        }
+
+        public Attack(string name, int attackBonus, Damage damage, int reach = 5, Damage additionalDamage = null) {
+            Name = name;
+            AttackBonus = attackBonus;
+            Damage = damage;
+            AdditionalDamage = additionalDamage;
+            Reach = reach;
+            RangeNormal = 0;
+            RangeLong = 0;
+        }
+
+        public Attack(string name, int attackBonus, Damage damage, int rangeNormal, int rangeLong, Damage additionalDamage = null) {
+            Name = name;
+            AttackBonus = attackBonus;
+            Damage = damage;
+            AdditionalDamage = additionalDamage;
+            Reach = 0;
             RangeNormal = rangeNormal;
             RangeLong = rangeLong;
         }
@@ -95,6 +115,7 @@ namespace srd5 {
     public abstract class Combattant {
         public int Speed { get; internal set; } = 30;
         public string Name { get; set; }
+        public Alignment Alignment { get; set; }
         public Ability Strength { get; internal set; } = new Ability(AbilityType.STRENGTH, 10);
         public Ability Dexterity { get; internal set; } = new Ability(AbilityType.DEXTERITY, 10);
         public Ability Constitution { get; internal set; } = new Ability(AbilityType.CONSTITUTION, 10);

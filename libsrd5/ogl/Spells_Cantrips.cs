@@ -264,7 +264,7 @@ namespace srd5 {
         );
 
         /* TODO */
-        public static readonly Spell SparetheDying = new Spell(Spells.ID.SPARE_THE_DYING, SpellSchool.NECROMANCY, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        public static readonly Spell SpareTheDying = new Spell(Spells.ID.SPARE_THE_DYING, SpellSchool.NECROMANCY, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
 
         /* TODO */
         public static readonly Spell Thaumaturgy = new Spell(Spells.ID.THAUMATURGY, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, V, SpellDuration.ONE_MINUTE, 0, 0, doNothing);

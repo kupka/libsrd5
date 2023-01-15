@@ -31,6 +31,7 @@ namespace srd5 {
         RESISTANCE_SLASHING,
         RESISTANCE_THUNDER,
         RESISTANCE_NONMAGIC,
+        RESISTANCE_DAMAGE_FROM_SPELLS,
         // Immunities against DamageType
         IMMUNITY_ACID,
         IMMUNITY_BLUDGEONING,
@@ -46,7 +47,7 @@ namespace srd5 {
         IMMUNITY_SLASHING,
         IMMUNITY_THUNDER,
         IMMUNITY_NONMAGIC,
-
+        IMMUNITY_DAMAGE_FROM_SPELLS,
         // Immunities against Condition
         IMMUNITY_BLINDED,
         IMMUNITY_CHARMED,

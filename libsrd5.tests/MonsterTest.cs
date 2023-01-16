@@ -59,5 +59,20 @@ namespace srd5 {
             }
             Assert.True(hag.HitPoints == 0);
         }
+
+        [Fact]
+        public void GiantScorpionTest() {
+            Monster scorpion = Monsters.GiantScorpion;
+            Monster goblin1 = Monsters.Goblin;
+            goblin1.HitPoints = 13; // max normal damage of scorpion is 1d10+2=12
+            Monster goblin2 = Monsters.Goblin;
+            goblin2.HitPoints = 13; // max normal damage of scorpion is 1d10+2=12
+            Monster goblin3 = Monsters.Goblin;
+            goblin3.HitPoints = 13; // max normal damage of scorpion is 1d10+2=12
+            scorpion.Attack(Attacks.GiantScorpionSting, goblin1, 5);
+            scorpion.Attack(Attacks.GiantScorpionSting, goblin2, 5);
+            scorpion.Attack(Attacks.GiantScorpionSting, goblin3, 5);
+            Assert.True(goblin1.HitPoints <= 0 || goblin2.HitPoints <= 0 || goblin3.HitPoints <= 0);
+        }
     }
 }

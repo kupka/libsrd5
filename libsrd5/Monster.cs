@@ -7,7 +7,7 @@ namespace srd5 {
     }
 
     public class Monster : Combattant {
-        public MonsterType Type { get; internal set; }
+        public Monsters.Type Type { get; internal set; }
 
         public int Challenge { get; internal set; } = 1;
 
@@ -20,7 +20,7 @@ namespace srd5 {
             }
         }
 
-        public Monster(MonsterType type, string name, Alignment alignment, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
+        public Monster(Monsters.Type type, string name, Alignment alignment, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
                         int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks, Size size, int spellCastDC = 0) {
             Type = type;
             Name = name;

@@ -22,7 +22,7 @@ namespace srd5 {
                     // only affect humanoid monsters
                     if (target is Monster) {
                         Monster monster = (Monster)target;
-                        if (monster.Type != MonsterType.HUMANOID) {
+                        if (monster.Type != Monsters.Type.HUMANOID) {
                             GlobalEvents.AffectBySpell(caster, ID.CHARM_PERSON, monster, false);
                             continue;
                         }
@@ -55,7 +55,7 @@ namespace srd5 {
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 if (targets[0] is Monster) {
                     Monster monster = (Monster)targets[0];
-                    if (monster.Type == MonsterType.CONSTRUCT || monster.Type == MonsterType.UNDEAD) {
+                    if (monster.Type == Monsters.Type.CONSTRUCT || monster.Type == Monsters.Type.UNDEAD) {
                         GlobalEvents.AffectBySpell(caster, ID.CURE_WOUNDS, monster, false);
                         return;
                     }
@@ -158,7 +158,7 @@ namespace srd5 {
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 if (targets[0] is Monster) {
                     Monster monster = (Monster)targets[0];
-                    if (monster.Type == MonsterType.CONSTRUCT || monster.Type == MonsterType.UNDEAD) {
+                    if (monster.Type == Monsters.Type.CONSTRUCT || monster.Type == Monsters.Type.UNDEAD) {
                         GlobalEvents.AffectBySpell(caster, ID.HEALING_WORD, monster, false);
                         return;
                     };

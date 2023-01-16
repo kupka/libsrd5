@@ -105,7 +105,7 @@ namespace srd5 {
             ground.NextPhase(); // skip bonus action
             Assert.Equal(hero, ground.CurrentCombattant);
             ground.NextPhase(); // skip move
-            hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"));
+            hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"), 5);
             Random.State = 11; // Fix deterministic random to guarantee critical hit
             Assert.True(ground.MeleeAttackAction(badger));
             Random.State = 10; // Fix deterministic random to guarantee normal hit     
@@ -128,7 +128,7 @@ namespace srd5 {
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.HitPoints = hero.HitPointsMax;
             hero.Equip(Weapons.Greataxe);
-            hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"));
+            hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"), 5);
             Monster badger = Monsters.GiantBadger;
             ground.AddCombattant(hero, 1, 1);
             ground.AddCombattant(badger, 5, 5);

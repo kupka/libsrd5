@@ -191,7 +191,7 @@ namespace srd5 {
             if (Inventory.MainHand == null) {
                 // unarmed attack
                 dmgString = concatDamageString("1d1", Strength.Modifier);
-                MeleeAttacks = Utils.Expand<Attack>(new Attack("Unarmed", AttackProficiency, new Damage(DamageType.BLUDGEONING, dmgString)), Attacks);
+                MeleeAttacks = Utils.Expand<Attack>(new Attack("Unarmed", AttackProficiency, new Damage(DamageType.BLUDGEONING, dmgString), 5), Attacks);
                 RangedAttacks = new Attack[0];
                 return;
             }

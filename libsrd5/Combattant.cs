@@ -1,7 +1,10 @@
 using System;
 
 namespace srd5 {
+    public delegate void AttackEffect(Combattant attacker, Combattant target);
+
     public class Attack {
+        private static AttackEffect noEffect = delegate (Combattant attacker, Combattant target) { };
         public string Name { get; set; }
         public int AttackBonus { get; internal set; }
         public Damage Damage { get; internal set; }
@@ -9,7 +12,9 @@ namespace srd5 {
         public int Reach { get; internal set; }
         public int RangeNormal { get; internal set; }
         public int RangeLong { get; internal set; }
-        public Attack(string name, int attackBonus, Damage damage, int reach, int rangeNormal, int rangeLong, Damage additionalDamage = null) {
+        public AttackEffect EffectOnHit { get; internal set; }
+
+        public Attack(string name, int attackBonus, Damage damage, int reach, int rangeNormal, int rangeLong, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
             Name = name;
             AttackBonus = attackBonus;
             Damage = damage;
@@ -17,9 +22,10 @@ namespace srd5 {
             Reach = reach;
             RangeNormal = rangeNormal;
             RangeLong = rangeLong;
+            EffectOnHit = effectOnHit;
         }
 
-        public Attack(string name, int attackBonus, Damage damage, int reach = 5, Damage additionalDamage = null) {
+        public Attack(string name, int attackBonus, Damage damage, int reach, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
             Name = name;
             AttackBonus = attackBonus;
             Damage = damage;
@@ -27,9 +33,10 @@ namespace srd5 {
             Reach = reach;
             RangeNormal = 0;
             RangeLong = 0;
+            EffectOnHit = effectOnHit;
         }
 
-        public Attack(string name, int attackBonus, Damage damage, int rangeNormal, int rangeLong, Damage additionalDamage = null) {
+        public Attack(string name, int attackBonus, Damage damage, int rangeNormal, int rangeLong, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
             Name = name;
             AttackBonus = attackBonus;
             Damage = damage;
@@ -37,11 +44,17 @@ namespace srd5 {
             Reach = 0;
             RangeNormal = rangeNormal;
             RangeLong = rangeLong;
+            EffectOnHit = effectOnHit;
         }
 
         public static Attack FromWeapon(int attackBonus, string damageString, Weapon weapon, Damage additionalDamage = null) {
             return new Attack(weapon.Name, attackBonus,
                 new Damage(weapon.Damage.Type, damageString), weapon.Reach, weapon.RangeNormal, weapon.RangeLong, additionalDamage);
+        }
+
+        public void ApplyEffectOnHit(Combattant attacker, Combattant target) {
+            if (EffectOnHit == null) return;
+            EffectOnHit(attacker, target);
         }
     }
 
@@ -410,6 +423,8 @@ namespace srd5 {
                 target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll());
                 if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.Roll());
             }
+            // Hit effect
+            attack.ApplyEffectOnHit(this, target);
             return true;
         }
 

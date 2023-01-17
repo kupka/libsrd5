@@ -2,6 +2,8 @@ using Xunit;
 using System.Reflection;
 
 namespace srd5 {
+    [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
+    [Collection("SingleThreaded")]
     public class MonsterTest {
         [Fact]
         public void OgreTest() {
@@ -62,6 +64,7 @@ namespace srd5 {
 
         [Fact]
         public void GiantScorpionTest() {
+            Random.State = 1;
             Monster scorpion = Monsters.GiantScorpion;
             Monster goblin1 = Monsters.Goblin;
             goblin1.HitPoints = 13; // max normal damage of scorpion is 1d10+2=12

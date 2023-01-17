@@ -4,7 +4,6 @@ namespace srd5 {
     public delegate void AttackEffect(Combattant attacker, Combattant target);
 
     public class Attack {
-        private static AttackEffect noEffect = delegate (Combattant attacker, Combattant target) { };
         public string Name { get; set; }
         public int AttackBonus { get; internal set; }
         public Damage Damage { get; internal set; }

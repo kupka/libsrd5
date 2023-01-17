@@ -38,6 +38,8 @@ namespace srd5 {
         public void NullTest() {
             Assert.NotNull(SkillTextResource.Description((Skill)(-1)));
             Assert.NotNull(SkillTextResource.Name((Skill)(-1)));
+            Assert.NotNull(MonsterTextResource.Description((Monsters.ID)(-1)));
+            Assert.NotNull(MonsterTextResource.Name((Monsters.ID)(-1)));
             Assert.NotNull(MonsterTextResource.Description((Monsters.Type)(-1)));
             Assert.NotNull(MonsterTextResource.Name((Monsters.Type)(-1)));
             Assert.NotNull(ProficiencyTextResource.Name((Proficiency)(-1)));

@@ -2308,7 +2308,7 @@ Once you have raged the number of times available for your barbarian level, you 
                 case Monsters.ID.ZOMBIE:
                     return "Zombie";
                 default:
-                    return Enum.GetName(typeof(Monster), monster) + ": (Name missing)";
+                    return Enum.GetName(typeof(Monsters.ID), monster) + ": (Name missing)";
             }
         }
 

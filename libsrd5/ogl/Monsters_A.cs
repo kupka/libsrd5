@@ -80,9 +80,15 @@ namespace srd5 {
                     new Attack[] { Attacks.NightHagClaws }, Attacks.None, Size.MEDIUM, 14
                 );
                 AvailableSpells spells = new AvailableSpells(AbilityType.CHARISMA);
-                spells.AddKnownSpell(Spells.MagicMissile, Spells.DetectMagic);
-                spells.SlotsCurrent[1] = 999;
+                spells.AddKnownSpell(Spells.MagicMissile, Spells.DetectMagic, Spells.PlaneShift, Spells.RayofEnfeeblement, Spells.Sleep);
                 hag.AddAvailableSpells(spells);
+                hag.AddInnateSpellcasting(
+                    new InnateSpellcasting(Spells.MagicMissile, InnateSpellcasting.Frequencies.AT_WILL),
+                    new InnateSpellcasting(Spells.DetectMagic, InnateSpellcasting.Frequencies.AT_WILL),
+                    new InnateSpellcasting(Spells.PlaneShift, InnateSpellcasting.Frequencies.TWICE_PER_DAY),
+                    new InnateSpellcasting(Spells.RayofEnfeeblement, InnateSpellcasting.Frequencies.TWICE_PER_DAY),
+                    new InnateSpellcasting(Spells.Sleep, InnateSpellcasting.Frequencies.TWICE_PER_DAY)
+                );
                 return hag;
             }
         }

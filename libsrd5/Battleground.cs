@@ -380,13 +380,28 @@ namespace srd5 {
                 GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.SPELLSLOT_INVALID);
                 return false;
             }
-            // Check if slot is available
-            if (availableSpells.SlotsCurrent[(int)slot] <= 0) {
+            InnateSpellcasting innate = null;
+            if (CurrentCombattant is Monster) {
+                innate = ((Monster)CurrentCombattant).InnateSpellcastingBySpell(spell);
+            }
+            // Check if innate Spell casting is available
+            if (innate != null && innate.Frequency == InnateSpellcasting.Frequencies.AT_WILL) {
+                // can cast at will, nothing to do
+            } else if (innate != null) {
+                // requires available use
+                int maxUses = (int)(((Monster)CurrentCombattant).InnateSpellcastingBySpell(spell).Frequency);
+                if (maxUses == innate.Uses) {
+                    GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.INSUFFICIENT_USES);
+                    return false;
+                }
+                innate.Uses++;
+            } else if (availableSpells.SlotsCurrent[(int)slot] <= 0) { // otherwise, check if slot is available
                 GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.SPELLSLOT_EMPTY);
                 return false;
+            } else {
+                // Expend slot if not Cantrip
+                if (slot != SpellLevel.CANTRIP) availableSpells.SlotsCurrent[(int)slot]--;
             }
-            // Expend slot if not Cantrip
-            if (slot != SpellLevel.CANTRIP) availableSpells.SlotsCurrent[(int)slot]--;
             // Cast Spell
             int modifier = availableSpells.GetSpellcastingModifier(CurrentCombattant);
             spell.Cast(this, CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, modifier, targets);

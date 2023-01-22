@@ -9,6 +9,7 @@ namespace srd5 {
         public void OgreTest() {
             Monster ogre = Monsters.Ogre;
             Assert.InRange(ogre.HitPoints, 28, 91);
+            Assert.Equal(Experience.MonsterByCR(ogre.Challenge), ogre.Experience);
         }
 
         [Fact]
@@ -76,6 +77,13 @@ namespace srd5 {
             scorpion.Attack(Attacks.GiantScorpionSting, goblin2, 5);
             scorpion.Attack(Attacks.GiantScorpionSting, goblin3, 5);
             Assert.True(goblin1.HitPoints <= 0 || goblin2.HitPoints <= 0 || goblin3.HitPoints <= 0);
+        }
+
+        [Fact]
+        public void NightHagTest() {
+            Monster hag = Monsters.NightHag;
+            Assert.True(Spells.MagicMissile.Equals(hag.InnateSpellcastingBySpell(Spells.MagicMissile).Spell));
+            Assert.Null(hag.InnateSpellcastingBySpell(Spells.Wish));
         }
     }
 }

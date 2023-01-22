@@ -151,7 +151,8 @@ namespace srd5 {
                 SPELL_NOT_KNOWN,
                 SPELL_NOT_PREPARED,
                 SPELLSLOT_EMPTY,
-                SPELLSLOT_INVALID
+                SPELLSLOT_INVALID,
+                INSUFFICIENT_USES
 
             }
             public Combattant Initiator { get; private set; }

@@ -56,6 +56,7 @@ namespace srd5 {
         private CharacterRace race;
         public CharacterLevel[] Levels { get { return levels; } }
         private CharacterLevel[] levels = new CharacterLevel[0];
+        public int Experience { get; set; } = 0;
         public Feat[] Feats { get { return feats; } }
         private Feat[] feats = new Feat[0];
         public Dice[] HitDice { get { return hitDice; } }

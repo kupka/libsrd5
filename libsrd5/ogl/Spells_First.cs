@@ -248,7 +248,7 @@ namespace srd5 {
         /* TODO */
         public static readonly Spell SilentImage = new Spell(Spells.ID.SILENT_IMAGE, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.TEN_MINUTES, 15, 0, doNothing);
         /* TODO */
-        public static readonly Spell Sleep = new Spell(Spells.ID.SLEEP, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VSM, SpellDuration.ONE_MINUTE, 20, 0, doNothing);
+        public static readonly Spell Sleep = new Spell(Spells.ID.SLEEP, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VSM, SpellDuration.ONE_MINUTE, 20, 99, doNothing);
 
         public static readonly Spell SpeakWithAnimals = new Spell(
             ID.SPEAK_WITH_ANIMALS, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS,

@@ -303,7 +303,7 @@ namespace srd5 {
         }
 
         [Fact]
-        public void MonsterMagicTest() {
+        public void MonsterMagicTestInnateAtWill() {
             Battleground2D ground = new Battleground2D(10, 10);
             Monster hag = Monsters.NightHag;
             Monster ogre = Monsters.Ogre;
@@ -316,6 +316,33 @@ namespace srd5 {
             Assert.True(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hag.AvailableSpells[0], ogre));
             Assert.True(ogre.HitPointsMax > ogre.HitPoints);
         }
+
+        [Fact]
+        public void MonsterMagicTestInnateLimited() {
+            Battleground2D ground = new Battleground2D(10, 10);
+            Monster hag = Monsters.NightHag;
+            Monster ogre = Monsters.Ogre;
+            ground.AddCombattant(hag, 5, 5);
+            ground.AddCombattant(ogre, 8, 8);
+            while (ground.CurrentCombattant != hag) {
+                ground.NextPhase();
+            }
+            ground.NextPhase();
+            Assert.True(ground.SpellCastAction(Spells.Sleep, SpellLevel.FIRST, hag.AvailableSpells[0], ogre));
+            ground.NextPhase();
+            while (ground.CurrentCombattant != hag) {
+                ground.NextPhase();
+            }
+            ground.NextPhase();
+            Assert.True(ground.SpellCastAction(Spells.Sleep, SpellLevel.FIRST, hag.AvailableSpells[0], ogre));
+            ground.NextPhase();
+            while (ground.CurrentCombattant != hag) {
+                ground.NextPhase();
+            }
+            ground.NextPhase();
+            Assert.False(ground.SpellCastAction(Spells.Sleep, SpellLevel.FIRST, hag.AvailableSpells[0], ogre));
+        }
+
 
         [Fact]
         public void CastAreaEffectTest() {

@@ -38,6 +38,11 @@ formatted SRD data came in quite handy to automate some pretty tedious tasks.
 
 libsrd5 is licensed under the GNU Affero General Public License (see LICENSE). 
 
-Any names, values and play mechanics inside the `ogl` subfolder are licensed under the terms of the Open Game License 1.0a (see libsrd5/ogl/LICENSE-OGL). 
+Any names, values and play mechanics inside the `ogl` subfolder are dual-licensed under either the terms of the Open Game License 1.0a (see libsrd5/ogl/LICENSE-OGL) and the Create Commons Attribution 4.0 International License ("CC-BY-4.0").
 
-By using and/or distributing libsrd5 in its full form, you must agree to and adhere to the terms of both licenses.
+By using and/or distributing libsrd5 in its full form, you must agree to and adhere to the terms of the AGPL and any of the OGL 1.0a or CC-BY-4.0.
+
+> This work includes material taken from the System Reference Document 5.1 ("SRD 5.1") by Wizards of
+> the Coast LLC and available at https://dnd.wizards.com/resources/systems-reference-document. The
+> SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License available at
+> https://creativecommons.org/licenses/by/4.0/legalcode.

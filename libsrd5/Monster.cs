@@ -29,6 +29,8 @@ namespace srd5 {
     public class Monster : Combattant {
         public Monsters.Type Type { get; internal set; }
 
+        public Monsters.ID ID { get; internal set; }
+
         public int Challenge { get; internal set; } = 1;
 
         public int Experience {
@@ -46,9 +48,9 @@ namespace srd5 {
             }
         }
 
-        public new string Name {
+        public override string Name {
             get {
-                return Type.Name();
+                return ID.Name();
             }
         }
 
@@ -61,9 +63,10 @@ namespace srd5 {
             }
         }
 
-        public Monster(Monsters.Type type, Alignment alignment, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
+        public Monster(Monsters.Type type, Monsters.ID id, Alignment alignment, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
                         int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks, Size size, int spellCastDC = 0) {
             Type = type;
+            ID = id;
             Alignment = alignment;
             Strength.BaseValue = strength;
             Dexterity.BaseValue = dexterity;

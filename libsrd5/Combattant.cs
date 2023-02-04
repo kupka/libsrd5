@@ -126,7 +126,7 @@ namespace srd5 {
 
     public abstract class Combattant {
         public int Speed { get; internal set; } = 30;
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
         public Alignment Alignment { get; set; }
         public Ability Strength { get; internal set; } = new Ability(AbilityType.STRENGTH, 10);
         public Ability Dexterity { get; internal set; } = new Ability(AbilityType.DEXTERITY, 10);

@@ -30,7 +30,7 @@ namespace srd5 {
         public static Monster Boar {
             get {
                 return new Monster(
-                    Monsters.Type.BEAST, Alignment.UNALIGNED, 13, 11, 12, 2, 9, 5, 11, "2d8+2", 40, ChallengeRating.QUARTER,
+                    Monsters.Type.BEAST, Monsters.ID.BOAR, Alignment.UNALIGNED, 13, 11, 12, 2, 9, 5, 11, "2d8+2", 40, ChallengeRating.QUARTER,
                     new Attack[] { Attacks.BoarTusk }, Attacks.None, Size.MEDIUM
                 );
             }
@@ -39,7 +39,7 @@ namespace srd5 {
         public static Monster GiantBadger {
             get {
                 return new Monster(
-                    Monsters.Type.BEAST, Alignment.UNALIGNED, 13, 10, 15, 2, 12, 5, 10, "2d8+4", 30, ChallengeRating.QUARTER,
+                    Monsters.Type.BEAST, Monsters.ID.GIANT_BADGER, Alignment.UNALIGNED, 13, 10, 15, 2, 12, 5, 10, "2d8+4", 30, ChallengeRating.QUARTER,
                     new Attack[] { Attacks.GiantBadgerBite, Attacks.GiantBadgerClaws }, Attacks.None, Size.MEDIUM
                 );
             }
@@ -48,7 +48,7 @@ namespace srd5 {
         public static Monster GiantScorpion {
             get {
                 Monster giantScorpion = new Monster(
-                    Monsters.Type.BEAST, Alignment.UNALIGNED, 15, 13, 15, 1, 9, 3, 15, "7d10+14", 40, 3,
+                    Monsters.Type.BEAST, Monsters.ID.GIANT_SCORPION, Alignment.UNALIGNED, 15, 13, 15, 1, 9, 3, 15, "7d10+14", 40, 3,
                     new Attack[] { Attacks.GiantScorpionClaw, Attacks.GiantScorpionSting }, new Attack[] { }, Size.LARGE
                 );
                 return giantScorpion;
@@ -58,7 +58,7 @@ namespace srd5 {
         public static Monster Goblin {
             get {
                 return new Monster(
-                    Monsters.Type.HUMANOID, Alignment.NEUTRAL_EVIL, 8, 14, 10, 10, 8, 8, 15, "2d6", 30, ChallengeRating.QUARTER,
+                    Monsters.Type.HUMANOID, Monsters.ID.GOBLIN, Alignment.NEUTRAL_EVIL, 8, 14, 10, 10, 8, 8, 15, "2d6", 30, ChallengeRating.QUARTER,
                     new Attack[] { Attacks.GoblinScimitar }, new Attack[] { Attacks.GoblinShortbow }, Size.SMALL
                 );
             }
@@ -67,7 +67,7 @@ namespace srd5 {
         public static Monster Ogre {
             get {
                 return new Monster(
-                    Monsters.Type.GIANT, Alignment.CHAOTIC_EVIL, 19, 8, 16, 5, 7, 7, 11, "7d10+21", 40, 2,
+                    Monsters.Type.GIANT, Monsters.ID.OGRE, Alignment.CHAOTIC_EVIL, 19, 8, 16, 5, 7, 7, 11, "7d10+21", 40, 2,
                     new Attack[] { Attacks.OgreGreatclub }, new Attack[] { Attacks.OgreJavelin }, Size.LARGE
                 );
             }
@@ -76,7 +76,7 @@ namespace srd5 {
         public static Monster NightHag {
             get {
                 Monster hag = new Monster(
-                    Monsters.Type.FIEND, Alignment.NEUTRAL_EVIL, 18, 15, 16, 16, 14, 16, 17, "15d8+45", 30, 5,
+                    Monsters.Type.FIEND, Monsters.ID.NIGHT_HAG, Alignment.NEUTRAL_EVIL, 18, 15, 16, 16, 14, 16, 17, "15d8+45", 30, 5,
                     new Attack[] { Attacks.NightHagClaws }, Attacks.None, Size.MEDIUM, 14
                 );
                 AvailableSpells spells = new AvailableSpells(AbilityType.CHARISMA);
@@ -96,7 +96,7 @@ namespace srd5 {
         public static Monster Orc {
             get {
                 Monster orc = new Monster(
-                    Monsters.Type.HUMANOID, Alignment.CHAOTIC_EVIL, 16, 12, 16, 7, 11, 10, 13, "2d8+6", 30, ChallengeRating.HALF,
+                    Monsters.Type.HUMANOID, Monsters.ID.ORC, Alignment.CHAOTIC_EVIL, 16, 12, 16, 7, 11, 10, 13, "2d8+6", 30, ChallengeRating.HALF,
                     new Attack[] { Attacks.OrcGreataxe }, new Attack[] { Attacks.OrcJavelin }, Size.MEDIUM, 0
                 );
                 return orc;
@@ -106,7 +106,7 @@ namespace srd5 {
         public static Monster ClayGolem {
             get {
                 Monster golem = new Monster(
-                    Monsters.Type.CONSTRUCT, Alignment.UNALIGNED, 20, 9, 18, 3, 8, 1, 14, "14d10+56", 20, 9,
+                    Monsters.Type.CONSTRUCT, Monsters.ID.CLAY_GOLEM, Alignment.UNALIGNED, 20, 9, 18, 3, 8, 1, 14, "14d10+56", 20, 9,
                     new Attack[] { Attacks.ClayGolemSlam, Attacks.ClayGolemSlam }, Attacks.None, Size.LARGE, 0
                 );
                 golem.AddEffects(Effect.IMMUNITY_ACID, Effect.IMMUNITY_POISON, Effect.IMMUNITY_PSYCHIC, Effect.IMMUNITY_NONMAGIC);
@@ -118,7 +118,7 @@ namespace srd5 {
         public static Monster Shadow {
             get {
                 Monster shadow = new Monster(
-                    Monsters.Type.UNDEAD, Alignment.CHAOTIC_EVIL, 6, 14, 13, 6, 10, 8, 12, "3d8+3", 40, ChallengeRating.HALF,
+                    Monsters.Type.UNDEAD, Monsters.ID.SHADOW, Alignment.CHAOTIC_EVIL, 6, 14, 13, 6, 10, 8, 12, "3d8+3", 40, ChallengeRating.HALF,
                     new Attack[] { Attacks.ShadowStrengthDrain }, Attacks.None, Size.MEDIUM, 0
                 );
                 shadow.AddEffects(Effect.VULNERABILITY_RADIANT);
@@ -132,7 +132,7 @@ namespace srd5 {
         public static Monster Tarrasque {
             get {
                 Monster tarrasque = new Monster(
-                    Monsters.Type.MONSTROSITY, Alignment.UNALIGNED, 30, 11, 30, 3, 11, 11, 25, "33d20+330", 40, 30,
+                    Monsters.Type.MONSTROSITY, Monsters.ID.TARRASQUE, Alignment.UNALIGNED, 30, 11, 30, 3, 11, 11, 25, "33d20+330", 40, 30,
                     new Attack[] { Attacks.TarrasqueBite, Attacks.TarrasqueHorns, Attacks.TarrasqueTail, Attacks.TarrasqueClaw, Attacks.TarrasqueClaw },
                     Attacks.None, Size.GARGANTUAN, 0
                 );

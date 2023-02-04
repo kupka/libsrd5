@@ -38,7 +38,7 @@ formatted SRD data came in quite handy to automate some pretty tedious tasks.
 
 libsrd5 is licensed under the GNU Affero General Public License (see LICENSE). 
 
-Any names, values and play mechanics inside the `ogl` subfolder are dual-licensed under either the terms of the Open Game License 1.0a (see libsrd5/ogl/LICENSE-OGL) and the Create Commons Attribution 4.0 International License ("CC-BY-4.0").
+Any names, values and play mechanics inside the `ogl` subfolder are dual-licensed under either the terms of the Open Game License 1.0a (see libsrd5/ogl/LICENSE-OGL) and the Creative Commons Attribution 4.0 International License ("CC-BY-4.0").
 
 By using and/or distributing libsrd5 in its full form, you must agree to and adhere to the terms of the AGPL <ins>and one of</ins> either the OGL 1.0a or CC-BY-4.0.
 

@@ -46,6 +46,12 @@ namespace srd5 {
             }
         }
 
+        public new string Name {
+            get {
+                return Type.Name();
+            }
+        }
+
         // Abilities that can be cast like spell, but do not require any
         // Spell Slot to be expended. "Innate Spellcasting"
         private InnateSpellcasting[] innateSpellCasting = new InnateSpellcasting[0];
@@ -55,10 +61,9 @@ namespace srd5 {
             }
         }
 
-        public Monster(Monsters.Type type, string name, Alignment alignment, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
+        public Monster(Monsters.Type type, Alignment alignment, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
                         int armorClass, string hitDice, int speed, int challenge, Attack[] meleeAttacks, Attack[] rangedAttacks, Size size, int spellCastDC = 0) {
             Type = type;
-            Name = name;
             Alignment = alignment;
             Strength.BaseValue = strength;
             Dexterity.BaseValue = dexterity;

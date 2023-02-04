@@ -1,6 +1,8 @@
 using System;
 
 namespace srd5 {
+    public delegate void AttackEffect(Combattant attacker, Combattant target);
+
     public class Attack {
         public string Name { get; set; }
         public int AttackBonus { get; internal set; }
@@ -9,7 +11,9 @@ namespace srd5 {
         public int Reach { get; internal set; }
         public int RangeNormal { get; internal set; }
         public int RangeLong { get; internal set; }
-        public Attack(string name, int attackBonus, Damage damage, int reach = 5, int rangeNormal = 0, int rangeLong = 0, Damage additionalDamage = null) {
+        public AttackEffect EffectOnHit { get; internal set; }
+
+        public Attack(string name, int attackBonus, Damage damage, int reach, int rangeNormal, int rangeLong, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
             Name = name;
             AttackBonus = attackBonus;
             Damage = damage;
@@ -17,11 +21,39 @@ namespace srd5 {
             Reach = reach;
             RangeNormal = rangeNormal;
             RangeLong = rangeLong;
+            EffectOnHit = effectOnHit;
+        }
+
+        public Attack(string name, int attackBonus, Damage damage, int reach, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
+            Name = name;
+            AttackBonus = attackBonus;
+            Damage = damage;
+            AdditionalDamage = additionalDamage;
+            Reach = reach;
+            RangeNormal = 0;
+            RangeLong = 0;
+            EffectOnHit = effectOnHit;
+        }
+
+        public Attack(string name, int attackBonus, Damage damage, int rangeNormal, int rangeLong, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
+            Name = name;
+            AttackBonus = attackBonus;
+            Damage = damage;
+            AdditionalDamage = additionalDamage;
+            Reach = 0;
+            RangeNormal = rangeNormal;
+            RangeLong = rangeLong;
+            EffectOnHit = effectOnHit;
         }
 
         public static Attack FromWeapon(int attackBonus, string damageString, Weapon weapon, Damage additionalDamage = null) {
             return new Attack(weapon.Name, attackBonus,
                 new Damage(weapon.Damage.Type, damageString), weapon.Reach, weapon.RangeNormal, weapon.RangeLong, additionalDamage);
+        }
+
+        public void ApplyEffectOnHit(Combattant attacker, Combattant target) {
+            if (EffectOnHit == null) return;
+            EffectOnHit(attacker, target);
         }
     }
 
@@ -94,7 +126,8 @@ namespace srd5 {
 
     public abstract class Combattant {
         public int Speed { get; internal set; } = 30;
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
+        public Alignment Alignment { get; set; }
         public Ability Strength { get; internal set; } = new Ability(AbilityType.STRENGTH, 10);
         public Ability Dexterity { get; internal set; } = new Ability(AbilityType.DEXTERITY, 10);
         public Ability Constitution { get; internal set; } = new Ability(AbilityType.CONSTITUTION, 10);
@@ -389,6 +422,8 @@ namespace srd5 {
                 target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll());
                 if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.Roll());
             }
+            // Hit effect
+            attack.ApplyEffectOnHit(this, target);
             return true;
         }
 

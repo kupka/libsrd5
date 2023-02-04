@@ -44,7 +44,7 @@ namespace srd5 {
                         int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
                         bool hit = caster.Attack(attack, target, distance, true, true);
                         if (hit) {
-                            bool undead = (target is Monster) && ((Monster)target).Type == MonsterType.UNDEAD;
+                            bool undead = (target is Monster) && ((Monster)target).Type == Monsters.Type.UNDEAD;
                             target.AddEffect(Effect.CANNOT_REGENERATE_HITPOINTS);
                             caster.AddStartOfTurnEvent(delegate (Combattant combattant) {
                                 target.RemoveEffect(Effect.CANNOT_REGENERATE_HITPOINTS);
@@ -264,7 +264,7 @@ namespace srd5 {
         );
 
         /* TODO */
-        public static readonly Spell SparetheDying = new Spell(Spells.ID.SPARE_THE_DYING, SpellSchool.NECROMANCY, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        public static readonly Spell SpareTheDying = new Spell(Spells.ID.SPARE_THE_DYING, SpellSchool.NECROMANCY, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
 
         /* TODO */
         public static readonly Spell Thaumaturgy = new Spell(Spells.ID.THAUMATURGY, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, V, SpellDuration.ONE_MINUTE, 0, 0, doNothing);

@@ -64,7 +64,7 @@ namespace srd5 {
                     // only affect humanoid monsters
                     if (target is Monster) {
                         Monster monster = (Monster)target;
-                        if (monster.Type != MonsterType.HUMANOID) {
+                        if (monster.Type != Monsters.Type.HUMANOID) {
                             GlobalEvents.AffectBySpell(caster, ID.HOLD_PERSON, monster, false);
                             continue;
                         }

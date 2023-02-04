@@ -2,11 +2,14 @@ using Xunit;
 using System.Reflection;
 
 namespace srd5 {
+    [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
+    [Collection("SingleThreaded")]
     public class MonsterTest {
         [Fact]
         public void OgreTest() {
             Monster ogre = Monsters.Ogre;
             Assert.InRange(ogre.HitPoints, 28, 91);
+            Assert.Equal(Experience.MonsterByCR(ogre.Challenge), ogre.Experience);
         }
 
         [Fact]
@@ -58,6 +61,29 @@ namespace srd5 {
                 Spells.ChillTouch.Cast(ground, hag, 16, SpellLevel.SECOND, 0, tarrasque);
             }
             Assert.True(hag.HitPoints == 0);
+        }
+
+        [Fact]
+        public void GiantScorpionTest() {
+            Random.State = 1;
+            Monster scorpion = Monsters.GiantScorpion;
+            Monster goblin1 = Monsters.Goblin;
+            goblin1.HitPoints = 13; // max normal damage of scorpion is 1d10+2=12
+            Monster goblin2 = Monsters.Goblin;
+            goblin2.HitPoints = 13; // max normal damage of scorpion is 1d10+2=12
+            Monster goblin3 = Monsters.Goblin;
+            goblin3.HitPoints = 13; // max normal damage of scorpion is 1d10+2=12
+            scorpion.Attack(Attacks.GiantScorpionSting, goblin1, 5);
+            scorpion.Attack(Attacks.GiantScorpionSting, goblin2, 5);
+            scorpion.Attack(Attacks.GiantScorpionSting, goblin3, 5);
+            Assert.True(goblin1.HitPoints <= 0 || goblin2.HitPoints <= 0 || goblin3.HitPoints <= 0);
+        }
+
+        [Fact]
+        public void NightHagTest() {
+            Monster hag = Monsters.NightHag;
+            Assert.True(Spells.MagicMissile.Equals(hag.InnateSpellcastingBySpell(Spells.MagicMissile).Spell));
+            Assert.Null(hag.InnateSpellcastingBySpell(Spells.Wish));
         }
     }
 }

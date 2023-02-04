@@ -38,8 +38,10 @@ namespace srd5 {
         public void NullTest() {
             Assert.NotNull(SkillTextResource.Description((Skill)(-1)));
             Assert.NotNull(SkillTextResource.Name((Skill)(-1)));
-            Assert.NotNull(MonsterTextResource.Description((MonsterType)(-1)));
-            Assert.NotNull(MonsterTextResource.Name((MonsterType)(-1)));
+            Assert.NotNull(MonsterTextResource.Description((Monsters.ID)(-1)));
+            Assert.NotNull(MonsterTextResource.Name((Monsters.ID)(-1)));
+            Assert.NotNull(MonsterTextResource.Description((Monsters.Type)(-1)));
+            Assert.NotNull(MonsterTextResource.Name((Monsters.Type)(-1)));
             Assert.NotNull(ProficiencyTextResource.Name((Proficiency)(-1)));
             Assert.NotNull(DamageTypeTextResource.Name((DamageType)(-1)));
             Assert.NotNull(ConditionTypeTextResource.Name((ConditionType)(-1)));
@@ -53,10 +55,17 @@ namespace srd5 {
                 Assert.NotNull(id.Description());
             }
         }
+        [Fact]
+        public void MonsterTest() {
+            foreach (Monsters.ID monster in Enum.GetValues(typeof(Monsters.ID))) {
+                Assert.NotNull(monster.Name());
+                Assert.NotNull(monster.Description());
+            }
+        }
 
         [Fact]
         public void MonsterTypeTest() {
-            foreach (MonsterType type in Enum.GetValues(typeof(MonsterType))) {
+            foreach (Monsters.Type type in Enum.GetValues(typeof(Monsters.Type))) {
                 Assert.NotNull(type.Name());
                 Assert.NotNull(type.Description());
             }

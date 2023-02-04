@@ -1637,73 +1637,844 @@ Once you have raged the number of times available for your barbarian level, you 
     }
 
     public static class MonsterTextResource {
-        public static string Name(this MonsterType type) {
-            switch (type) {
-                case MonsterType.ABERRATION:
-                    return "Aberration";
-                case MonsterType.BEAST:
-                    return "Beast";
-                case MonsterType.CELESTIAL:
-                    return "Celestial";
-                case MonsterType.CONSTRUCT:
-                    return "Construct";
-                case MonsterType.DRAGON:
-                    return "Dragon";
-                case MonsterType.ELEMENTAL:
-                    return "Elemental";
-                case MonsterType.FEY:
-                    return "Fey";
-                case MonsterType.FIEND:
-                    return "Fiend";
-                case MonsterType.GIANT:
-                    return "Giant";
-                case MonsterType.HUMANOID:
-                    return "Humanoid";
-                case MonsterType.MONSTROSITY:
-                    return "Monstrosity";
-                case MonsterType.OOZE:
-                    return "Ooze";
-                case MonsterType.PLANT:
-                    return "Plant";
-                case MonsterType.UNDEAD:
-                    return "Undead";
+        public static string Name(this Monsters.ID monster) {
+            switch (monster) {
+                case Monsters.ID.ABOLETH:
+                    return "Aboleth";
+                case Monsters.ID.ACOLYTE:
+                    return "Acolyte";
+                case Monsters.ID.ADULT_BLACK_DRAGON:
+                    return "Adult Black Dragon";
+                case Monsters.ID.ADULT_BLUE_DRAGON:
+                    return "Adult Blue Dragon";
+                case Monsters.ID.ADULT_BRASS_DRAGON:
+                    return "Adult Brass Dragon";
+                case Monsters.ID.ADULT_BRONZE_DRAGON:
+                    return "Adult Bronze Dragon";
+                case Monsters.ID.ADULT_COPPER_DRAGON:
+                    return "Adult Copper Dragon";
+                case Monsters.ID.ADULT_GOLD_DRAGON:
+                    return "Adult Gold Dragon";
+                case Monsters.ID.ADULT_GREEN_DRAGON:
+                    return "Adult Green Dragon";
+                case Monsters.ID.ADULT_RED_DRAGON:
+                    return "Adult Red Dragon";
+                case Monsters.ID.ADULT_SILVER_DRAGON:
+                    return "Adult Silver Dragon";
+                case Monsters.ID.ADULT_WHITE_DRAGON:
+                    return "Adult White Dragon";
+                case Monsters.ID.AIR_ELEMENTAL:
+                    return "Air Elemental";
+                case Monsters.ID.ANCIENT_BLACK_DRAGON:
+                    return "Ancient Black Dragon";
+                case Monsters.ID.ANCIENT_BLUE_DRAGON:
+                    return "Ancient Blue Dragon";
+                case Monsters.ID.ANCIENT_BRASS_DRAGON:
+                    return "Ancient Brass Dragon";
+                case Monsters.ID.ANCIENT_BRONZE_DRAGON:
+                    return "Ancient Bronze Dragon";
+                case Monsters.ID.ANCIENT_COPPER_DRAGON:
+                    return "Ancient Copper Dragon";
+                case Monsters.ID.ANCIENT_GOLD_DRAGON:
+                    return "Ancient Gold Dragon";
+                case Monsters.ID.ANCIENT_GREEN_DRAGON:
+                    return "Ancient Green Dragon";
+                case Monsters.ID.ANCIENT_RED_DRAGON:
+                    return "Ancient Red Dragon";
+                case Monsters.ID.ANCIENT_SILVER_DRAGON:
+                    return "Ancient Silver Dragon";
+                case Monsters.ID.ANCIENT_WHITE_DRAGON:
+                    return "Ancient White Dragon";
+                case Monsters.ID.ANDROSPHINX:
+                    return "Androsphinx";
+                case Monsters.ID.ANIMATED_ARMOR:
+                    return "Animated Armor";
+                case Monsters.ID.ANKHEG:
+                    return "Ankheg";
+                case Monsters.ID.APE:
+                    return "Ape";
+                case Monsters.ID.ARCHMAGE:
+                    return "Archmage";
+                case Monsters.ID.ASSASSIN:
+                    return "Assassin";
+                case Monsters.ID.AWAKENED_SHRUB:
+                    return "Awakened Shrub";
+                case Monsters.ID.AWAKENED_TREE:
+                    return "Awakened Tree";
+                case Monsters.ID.AXE_BEAK:
+                    return "Axe Beak";
+                case Monsters.ID.AZER:
+                    return "Azer";
+                case Monsters.ID.BABOON:
+                    return "Baboon";
+                case Monsters.ID.BADGER:
+                    return "Badger";
+                case Monsters.ID.BALOR:
+                    return "Balor";
+                case Monsters.ID.BANDIT:
+                    return "Bandit";
+                case Monsters.ID.BANDIT_CAPTAIN:
+                    return "Bandit Captain";
+                case Monsters.ID.BARBED_DEVIL:
+                    return "Barbed Devil";
+                case Monsters.ID.BASILISK:
+                    return "Basilisk";
+                case Monsters.ID.BAT:
+                    return "Bat";
+                case Monsters.ID.BEARDED_DEVIL:
+                    return "Bearded Devil";
+                case Monsters.ID.BEHIR:
+                    return "Behir";
+                case Monsters.ID.BERSERKER:
+                    return "Berserker";
+                case Monsters.ID.BLACK_BEAR:
+                    return "Black Bear";
+                case Monsters.ID.BLACK_DRAGON_WYRMLING:
+                    return "Black Dragon Wyrmling";
+                case Monsters.ID.BLACK_PUDDING:
+                    return "Black Pudding";
+                case Monsters.ID.BLINK_DOG:
+                    return "Blink Dog";
+                case Monsters.ID.BLOOD_HAWK:
+                    return "Blood Hawk";
+                case Monsters.ID.BLUE_DRAGON_WYRMLING:
+                    return "Blue Dragon Wyrmling";
+                case Monsters.ID.BOAR:
+                    return "Boar";
+                case Monsters.ID.BONE_DEVIL:
+                    return "Bone Devil";
+                case Monsters.ID.BRASS_DRAGON_WYRMLING:
+                    return "Brass Dragon Wyrmling";
+                case Monsters.ID.BRONZE_DRAGON_WYRMLING:
+                    return "Bronze Dragon Wyrmling";
+                case Monsters.ID.BROWN_BEAR:
+                    return "Brown Bear";
+                case Monsters.ID.BUGBEAR:
+                    return "Bugbear";
+                case Monsters.ID.BULETTE:
+                    return "Bulette";
+                case Monsters.ID.CAMEL:
+                    return "Camel";
+                case Monsters.ID.CAT:
+                    return "Cat";
+                case Monsters.ID.CENTAUR:
+                    return "Centaur";
+                case Monsters.ID.CHAIN_DEVIL:
+                    return "Chain Devil";
+                case Monsters.ID.CHIMERA:
+                    return "Chimera";
+                case Monsters.ID.CHUUL:
+                    return "Chuul";
+                case Monsters.ID.CLAY_GOLEM:
+                    return "Clay Golem";
+                case Monsters.ID.CLOAKER:
+                    return "Cloaker";
+                case Monsters.ID.CLOUD_GIANT:
+                    return "Cloud Giant";
+                case Monsters.ID.COCKATRICE:
+                    return "Cockatrice";
+                case Monsters.ID.COMMONER:
+                    return "Commoner";
+                case Monsters.ID.CONSTRICTOR_SNAKE:
+                    return "Constrictor Snake";
+                case Monsters.ID.COPPER_DRAGON_WYRMLING:
+                    return "Copper Dragon Wyrmling";
+                case Monsters.ID.COUATL:
+                    return "Couatl";
+                case Monsters.ID.CRAB:
+                    return "Crab";
+                case Monsters.ID.CROCODILE:
+                    return "Crocodile";
+                case Monsters.ID.CULT_FANATIC:
+                    return "Cult Fanatic";
+                case Monsters.ID.CULTIST:
+                    return "Cultist";
+                case Monsters.ID.DARKMANTLE:
+                    return "Darkmantle";
+                case Monsters.ID.DEATH_DOG:
+                    return "Death Dog";
+                case Monsters.ID.DEEP_GNOME__SVIRFNEBLIN:
+                    return "Deep Gnome (Svirfneblin)";
+                case Monsters.ID.DEER:
+                    return "Deer";
+                case Monsters.ID.DEVA:
+                    return "Deva";
+                case Monsters.ID.DIRE_WOLF:
+                    return "Dire Wolf";
+                case Monsters.ID.DJINNI:
+                    return "Djinni";
+                case Monsters.ID.DOPPELGANGER:
+                    return "Doppelganger";
+                case Monsters.ID.DRAFT_HORSE:
+                    return "Draft Horse";
+                case Monsters.ID.DRAGON_TURTLE:
+                    return "Dragon Turtle";
+                case Monsters.ID.DRETCH:
+                    return "Dretch";
+                case Monsters.ID.DRIDER:
+                    return "Drider";
+                case Monsters.ID.DROW:
+                    return "Drow";
+                case Monsters.ID.DRUID:
+                    return "Druid";
+                case Monsters.ID.DRYAD:
+                    return "Dryad";
+                case Monsters.ID.DUERGAR:
+                    return "Duergar";
+                case Monsters.ID.DUST_MEPHIT:
+                    return "Dust Mephit";
+                case Monsters.ID.EAGLE:
+                    return "Eagle";
+                case Monsters.ID.EARTH_ELEMENTAL:
+                    return "Earth Elemental";
+                case Monsters.ID.EFREETI:
+                    return "Efreeti";
+                case Monsters.ID.ELEPHANT:
+                    return "Elephant";
+                case Monsters.ID.ELK:
+                    return "Elk";
+                case Monsters.ID.ERINYES:
+                    return "Erinyes";
+                case Monsters.ID.ETTERCAP:
+                    return "Ettercap";
+                case Monsters.ID.ETTIN:
+                    return "Ettin";
+                case Monsters.ID.FIRE_ELEMENTAL:
+                    return "Fire Elemental";
+                case Monsters.ID.FIRE_GIANT:
+                    return "Fire Giant";
+                case Monsters.ID.FLESH_GOLEM:
+                    return "Flesh Golem";
+                case Monsters.ID.FLYING_SNAKE:
+                    return "Flying Snake";
+                case Monsters.ID.FLYING_SWORD:
+                    return "Flying Sword";
+                case Monsters.ID.FROG:
+                    return "Frog";
+                case Monsters.ID.FROST_GIANT:
+                    return "Frost Giant";
+                case Monsters.ID.GARGOYLE:
+                    return "Gargoyle";
+                case Monsters.ID.GELATINOUS_CUBE:
+                    return "Gelatinous Cube";
+                case Monsters.ID.GHAST:
+                    return "Ghast";
+                case Monsters.ID.GHOST:
+                    return "Ghost";
+                case Monsters.ID.GHOUL:
+                    return "Ghoul";
+                case Monsters.ID.GIANT_APE:
+                    return "Giant Ape";
+                case Monsters.ID.GIANT_BADGER:
+                    return "Giant Badger";
+                case Monsters.ID.GIANT_BAT:
+                    return "Giant Bat";
+                case Monsters.ID.GIANT_BOAR:
+                    return "Giant Boar";
+                case Monsters.ID.GIANT_CENTIPEDE:
+                    return "Giant Centipede";
+                case Monsters.ID.GIANT_CONSTRICTOR_SNAKE:
+                    return "Giant Constrictor Snake";
+                case Monsters.ID.GIANT_CRAB:
+                    return "Giant Crab";
+                case Monsters.ID.GIANT_CROCODILE:
+                    return "Giant Crocodile";
+                case Monsters.ID.GIANT_EAGLE:
+                    return "Giant Eagle";
+                case Monsters.ID.GIANT_ELK:
+                    return "Giant Elk";
+                case Monsters.ID.GIANT_FIRE_BEETLE:
+                    return "Giant Fire Beetle";
+                case Monsters.ID.GIANT_FROG:
+                    return "Giant Frog";
+                case Monsters.ID.GIANT_GOAT:
+                    return "Giant Goat";
+                case Monsters.ID.GIANT_HYENA:
+                    return "Giant Hyena";
+                case Monsters.ID.GIANT_LIZARD:
+                    return "Giant Lizard";
+                case Monsters.ID.GIANT_OCTOPUS:
+                    return "Giant Octopus";
+                case Monsters.ID.GIANT_OWL:
+                    return "Giant Owl";
+                case Monsters.ID.GIANT_POISONOUS_SNAKE:
+                    return "Giant Poisonous Snake";
+                case Monsters.ID.GIANT_RAT:
+                    return "Giant Rat";
+                case Monsters.ID.GIANT_RAT__DISEASED:
+                    return "Giant Rat (Diseased)";
+                case Monsters.ID.GIANT_SCORPION:
+                    return "Giant Scorpion";
+                case Monsters.ID.GIANT_SEA_HORSE:
+                    return "Giant Sea Horse";
+                case Monsters.ID.GIANT_SHARK:
+                    return "Giant Shark";
+                case Monsters.ID.GIANT_SPIDER:
+                    return "Giant Spider";
+                case Monsters.ID.GIANT_TOAD:
+                    return "Giant Toad";
+                case Monsters.ID.GIANT_VULTURE:
+                    return "Giant Vulture";
+                case Monsters.ID.GIANT_WASP:
+                    return "Giant Wasp";
+                case Monsters.ID.GIANT_WEASEL:
+                    return "Giant Weasel";
+                case Monsters.ID.GIANT_WOLF_SPIDER:
+                    return "Giant Wolf Spider";
+                case Monsters.ID.GIBBERING_MOUTHER:
+                    return "Gibbering Mouther";
+                case Monsters.ID.GLABREZU:
+                    return "Glabrezu";
+                case Monsters.ID.GLADIATOR:
+                    return "Gladiator";
+                case Monsters.ID.GNOLL:
+                    return "Gnoll";
+                case Monsters.ID.GOAT:
+                    return "Goat";
+                case Monsters.ID.GOBLIN:
+                    return "Goblin";
+                case Monsters.ID.GOLD_DRAGON_WYRMLING:
+                    return "Gold Dragon Wyrmling";
+                case Monsters.ID.GORGON:
+                    return "Gorgon";
+                case Monsters.ID.GRAY_OOZE:
+                    return "Gray Ooze";
+                case Monsters.ID.GREEN_DRAGON_WYRMLING:
+                    return "Green Dragon Wyrmling";
+                case Monsters.ID.GREEN_HAG:
+                    return "Green Hag";
+                case Monsters.ID.GRICK:
+                    return "Grick";
+                case Monsters.ID.GRIFFON:
+                    return "Griffon";
+                case Monsters.ID.GRIMLOCK:
+                    return "Grimlock";
+                case Monsters.ID.GUARD:
+                    return "Guard";
+                case Monsters.ID.GUARDIAN_NAGA:
+                    return "Guardian Naga";
+                case Monsters.ID.GYNOSPHINX:
+                    return "Gynosphinx";
+                case Monsters.ID.HALF_RED_DRAGON_VETERAN:
+                    return "Half-Red Dragon Veteran";
+                case Monsters.ID.HARPY:
+                    return "Harpy";
+                case Monsters.ID.HAWK:
+                    return "Hawk";
+                case Monsters.ID.HELL_HOUND:
+                    return "Hell Hound";
+                case Monsters.ID.HEZROU:
+                    return "Hezrou";
+                case Monsters.ID.HILL_GIANT:
+                    return "Hill Giant";
+                case Monsters.ID.HIPPOGRIFF:
+                    return "Hippogriff";
+                case Monsters.ID.HOBGOBLIN:
+                    return "Hobgoblin";
+                case Monsters.ID.HOMUNCULUS:
+                    return "Homunculus";
+                case Monsters.ID.HORNED_DEVIL:
+                    return "Horned Devil";
+                case Monsters.ID.HUNTER_SHARK:
+                    return "Hunter Shark";
+                case Monsters.ID.HYDRA:
+                    return "Hydra";
+                case Monsters.ID.HYENA:
+                    return "Hyena";
+                case Monsters.ID.ICE_DEVIL:
+                    return "Ice Devil";
+                case Monsters.ID.ICE_MEPHIT:
+                    return "Ice Mephit";
+                case Monsters.ID.IMP:
+                    return "Imp";
+                case Monsters.ID.INVISIBLE_STALKER:
+                    return "Invisible Stalker";
+                case Monsters.ID.IRON_GOLEM:
+                    return "Iron Golem";
+                case Monsters.ID.JACKAL:
+                    return "Jackal";
+                case Monsters.ID.KILLER_WHALE:
+                    return "Killer Whale";
+                case Monsters.ID.KNIGHT:
+                    return "Knight";
+                case Monsters.ID.KOBOLD:
+                    return "Kobold";
+                case Monsters.ID.KRAKEN:
+                    return "Kraken";
+                case Monsters.ID.LAMIA:
+                    return "Lamia";
+                case Monsters.ID.LEMURE:
+                    return "Lemure";
+                case Monsters.ID.LICH:
+                    return "Lich";
+                case Monsters.ID.LION:
+                    return "Lion";
+                case Monsters.ID.LIZARD:
+                    return "Lizard";
+                case Monsters.ID.LIZARDFOLK:
+                    return "Lizardfolk";
+                case Monsters.ID.MAGE:
+                    return "Mage";
+                case Monsters.ID.MAGMA_MEPHIT:
+                    return "Magma Mephit";
+                case Monsters.ID.MAGMIN:
+                    return "Magmin";
+                case Monsters.ID.MAMMOTH:
+                    return "Mammoth";
+                case Monsters.ID.MANTICORE:
+                    return "Manticore";
+                case Monsters.ID.MARILITH:
+                    return "Marilith";
+                case Monsters.ID.MASTIFF:
+                    return "Mastiff";
+                case Monsters.ID.MEDUSA:
+                    return "Medusa";
+                case Monsters.ID.MERFOLK:
+                    return "Merfolk";
+                case Monsters.ID.MERROW:
+                    return "Merrow";
+                case Monsters.ID.MIMIC:
+                    return "Mimic";
+                case Monsters.ID.MINOTAUR:
+                    return "Minotaur";
+                case Monsters.ID.MINOTAUR_SKELETON:
+                    return "Minotaur Skeleton";
+                case Monsters.ID.MULE:
+                    return "Mule";
+                case Monsters.ID.MUMMY:
+                    return "Mummy";
+                case Monsters.ID.MUMMY_LORD:
+                    return "Mummy Lord";
+                case Monsters.ID.NALFESHNEE:
+                    return "Nalfeshnee";
+                case Monsters.ID.NIGHT_HAG:
+                    return "Night Hag";
+                case Monsters.ID.NIGHTMARE:
+                    return "Nightmare";
+                case Monsters.ID.NOBLE:
+                    return "Noble";
+                case Monsters.ID.OCHRE_JELLY:
+                    return "Ochre Jelly";
+                case Monsters.ID.OCTOPUS:
+                    return "Octopus";
+                case Monsters.ID.OGRE:
+                    return "Ogre";
+                case Monsters.ID.OGRE_ZOMBIE:
+                    return "Ogre Zombie";
+                case Monsters.ID.ONI:
+                    return "Oni";
+                case Monsters.ID.ORC:
+                    return "Orc";
+                case Monsters.ID.OTYUGH:
+                    return "Otyugh";
+                case Monsters.ID.OWL:
+                    return "Owl";
+                case Monsters.ID.OWLBEAR:
+                    return "Owlbear";
+                case Monsters.ID.PANTHER:
+                    return "Panther";
+                case Monsters.ID.PEGASUS:
+                    return "Pegasus";
+                case Monsters.ID.PHASE_SPIDER:
+                    return "Phase Spider";
+                case Monsters.ID.PIT_FIEND:
+                    return "Pit Fiend";
+                case Monsters.ID.PLANETAR:
+                    return "Planetar";
+                case Monsters.ID.PLESIOSAURUS:
+                    return "Plesiosaurus";
+                case Monsters.ID.POISONOUS_SNAKE:
+                    return "Poisonous Snake";
+                case Monsters.ID.POLAR_BEAR:
+                    return "Polar Bear";
+                case Monsters.ID.PONY:
+                    return "Pony";
+                case Monsters.ID.PRIEST:
+                    return "Priest";
+                case Monsters.ID.PSEUDODRAGON:
+                    return "Pseudodragon";
+                case Monsters.ID.PURPLE_WORM:
+                    return "Purple Worm";
+                case Monsters.ID.QUASIT:
+                    return "Quasit";
+                case Monsters.ID.QUIPPER:
+                    return "Quipper";
+                case Monsters.ID.RAKSHASA:
+                    return "Rakshasa";
+                case Monsters.ID.RAT:
+                    return "Rat";
+                case Monsters.ID.RAVEN:
+                    return "Raven";
+                case Monsters.ID.RED_DRAGON_WYRMLING:
+                    return "Red Dragon Wyrmling";
+                case Monsters.ID.REEF_SHARK:
+                    return "Reef Shark";
+                case Monsters.ID.REMORHAZ:
+                    return "Remorhaz";
+                case Monsters.ID.RHINOCEROS:
+                    return "Rhinoceros";
+                case Monsters.ID.RIDING_HORSE:
+                    return "Riding Horse";
+                case Monsters.ID.ROC:
+                    return "Roc";
+                case Monsters.ID.ROPER:
+                    return "Roper";
+                case Monsters.ID.RUG_OF_SMOTHERING:
+                    return "Rug of Smothering";
+                case Monsters.ID.RUST_MONSTER:
+                    return "Rust Monster";
+                case Monsters.ID.SABER_TOOTHED_TIGER:
+                    return "Saber-Toothed Tiger";
+                case Monsters.ID.SAHUAGIN:
+                    return "Sahuagin";
+                case Monsters.ID.SALAMANDER:
+                    return "Salamander";
+                case Monsters.ID.SATYR:
+                    return "Satyr";
+                case Monsters.ID.SCORPION:
+                    return "Scorpion";
+                case Monsters.ID.SCOUT:
+                    return "Scout";
+                case Monsters.ID.SEA_HAG:
+                    return "Sea Hag";
+                case Monsters.ID.SEA_HORSE:
+                    return "Sea Horse";
+                case Monsters.ID.SHADOW:
+                    return "Shadow";
+                case Monsters.ID.SHAMBLING_MOUND:
+                    return "Shambling Mound";
+                case Monsters.ID.SHIELD_GUARDIAN:
+                    return "Shield Guardian";
+                case Monsters.ID.SHRIEKER:
+                    return "Shrieker";
+                case Monsters.ID.SILVER_DRAGON_WYRMLING:
+                    return "Silver Dragon Wyrmling";
+                case Monsters.ID.SKELETON:
+                    return "Skeleton";
+                case Monsters.ID.SOLAR:
+                    return "Solar";
+                case Monsters.ID.SPECTER:
+                    return "Specter";
+                case Monsters.ID.SPIDER:
+                    return "Spider";
+                case Monsters.ID.SPIRIT_NAGA:
+                    return "Spirit Naga";
+                case Monsters.ID.SPRITE:
+                    return "Sprite";
+                case Monsters.ID.SPY:
+                    return "Spy";
+                case Monsters.ID.STEAM_MEPHIT:
+                    return "Steam Mephit";
+                case Monsters.ID.STIRGE:
+                    return "Stirge";
+                case Monsters.ID.STONE_GIANT:
+                    return "Stone Giant";
+                case Monsters.ID.STONE_GOLEM:
+                    return "Stone Golem";
+                case Monsters.ID.STORM_GIANT:
+                    return "Storm Giant";
+                case Monsters.ID.SUCCUBUS_INCUBUS:
+                    return "Succubus/Incubus";
+                case Monsters.ID.SWARM_OF_BATS:
+                    return "Swarm of Bats";
+                case Monsters.ID.SWARM_OF_BEETLES:
+                    return "Swarm of Beetles";
+                case Monsters.ID.SWARM_OF_CENTIPEDES:
+                    return "Swarm of Centipedes";
+                case Monsters.ID.SWARM_OF_INSECTS:
+                    return "Swarm of Insects";
+                case Monsters.ID.SWARM_OF_POISONOUS_SNAKES:
+                    return "Swarm of Poisonous Snakes";
+                case Monsters.ID.SWARM_OF_QUIPPERS:
+                    return "Swarm of Quippers";
+                case Monsters.ID.SWARM_OF_RATS:
+                    return "Swarm of Rats";
+                case Monsters.ID.SWARM_OF_RAVENS:
+                    return "Swarm of Ravens";
+                case Monsters.ID.SWARM_OF_SPIDERS:
+                    return "Swarm of Spiders";
+                case Monsters.ID.SWARM_OF_WASPS:
+                    return "Swarm of Wasps";
+                case Monsters.ID.TARRASQUE:
+                    return "Tarrasque";
+                case Monsters.ID.THUG:
+                    return "Thug";
+                case Monsters.ID.TIGER:
+                    return "Tiger";
+                case Monsters.ID.TREANT:
+                    return "Treant";
+                case Monsters.ID.TRIBAL_WARRIOR:
+                    return "Tribal Warrior";
+                case Monsters.ID.TRICERATOPS:
+                    return "Triceratops";
+                case Monsters.ID.TROLL:
+                    return "Troll";
+                case Monsters.ID.TYRANNOSAURUS_REX:
+                    return "Tyrannosaurus Rex";
+                case Monsters.ID.UNICORN:
+                    return "Unicorn";
+                case Monsters.ID.VAMPIRE_VAMPIRE_FORM:
+                    return "Vampire, Vampire Form";
+                case Monsters.ID.VAMPIRE_BAT_FORM:
+                    return "Vampire, Bat Form";
+                case Monsters.ID.VAMPIRE_MIST_FORM:
+                    return "Vampire, Mist Form";
+                case Monsters.ID.VAMPIRE_SPAWN:
+                    return "Vampire Spawn";
+                case Monsters.ID.VETERAN:
+                    return "Veteran";
+                case Monsters.ID.VIOLET_FUNGUS:
+                    return "Violet Fungus";
+                case Monsters.ID.VROCK:
+                    return "Vrock";
+                case Monsters.ID.VULTURE:
+                    return "Vulture";
+                case Monsters.ID.WARHORSE:
+                    return "Warhorse";
+                case Monsters.ID.WARHORSE_SKELETON:
+                    return "Warhorse Skeleton";
+                case Monsters.ID.WATER_ELEMENTAL:
+                    return "Water Elemental";
+                case Monsters.ID.WEASEL:
+                    return "Weasel";
+                case Monsters.ID.WEREBEAR_BEAR_FORM:
+                    return "Werebear, Bear Form";
+                case Monsters.ID.WEREBEAR_HUMAN_FORM:
+                    return "Werebear, Human Form";
+                case Monsters.ID.WEREBEAR_HYBRID_FORM:
+                    return "Werebear, Hybrid Form";
+                case Monsters.ID.WEREBOAR_BOAR_FORM:
+                    return "Wereboar, Boar Form";
+                case Monsters.ID.WEREBOAR_HUMAN_FORM:
+                    return "Wereboar, Human Form";
+                case Monsters.ID.WEREBOAR_HYBRID_FORM:
+                    return "Wereboar, Hybrid Form";
+                case Monsters.ID.WERERAT_HUMAN_FORM:
+                    return "Wererat, Human Form";
+                case Monsters.ID.WERERAT_HYBRID_FORM:
+                    return "Wererat, Hybrid Form";
+                case Monsters.ID.WERERAT_RAT_FORM:
+                    return "Wererat, Rat Form";
+                case Monsters.ID.WERETIGER_HUMAN_FORM:
+                    return "Weretiger, Human Form";
+                case Monsters.ID.WERETIGER_HYBRID_FORM:
+                    return "Weretiger, Hybrid Form";
+                case Monsters.ID.WERETIGER_TIGER_FORM:
+                    return "Weretiger, Tiger Form";
+                case Monsters.ID.WEREWOLF_HUMAN_FORM:
+                    return "Werewolf, Human Form";
+                case Monsters.ID.WEREWOLF_HYBRID_FORM:
+                    return "Werewolf, Hybrid Form";
+                case Monsters.ID.WEREWOLF_WOLF_FORM:
+                    return "Werewolf, Wolf Form";
+                case Monsters.ID.WHITE_DRAGON_WYRMLING:
+                    return "White Dragon Wyrmling";
+                case Monsters.ID.WIGHT:
+                    return "Wight";
+                case Monsters.ID.WILL_O_WISP:
+                    return "Will-o'-Wisp";
+                case Monsters.ID.WINTER_WOLF:
+                    return "Winter Wolf";
+                case Monsters.ID.WOLF:
+                    return "Wolf";
+                case Monsters.ID.WORG:
+                    return "Worg";
+                case Monsters.ID.WRAITH:
+                    return "Wraith";
+                case Monsters.ID.WYVERN:
+                    return "Wyvern";
+                case Monsters.ID.XORN:
+                    return "Xorn";
+                case Monsters.ID.YOUNG_BLACK_DRAGON:
+                    return "Young Black Dragon";
+                case Monsters.ID.YOUNG_BLUE_DRAGON:
+                    return "Young Blue Dragon";
+                case Monsters.ID.YOUNG_BRASS_DRAGON:
+                    return "Young Brass Dragon";
+                case Monsters.ID.YOUNG_BRONZE_DRAGON:
+                    return "Young Bronze Dragon";
+                case Monsters.ID.YOUNG_COPPER_DRAGON:
+                    return "Young Copper Dragon";
+                case Monsters.ID.YOUNG_GOLD_DRAGON:
+                    return "Young Gold Dragon";
+                case Monsters.ID.YOUNG_GREEN_DRAGON:
+                    return "Young Green Dragon";
+                case Monsters.ID.YOUNG_RED_DRAGON:
+                    return "Young Red Dragon";
+                case Monsters.ID.YOUNG_SILVER_DRAGON:
+                    return "Young Silver Dragon";
+                case Monsters.ID.YOUNG_WHITE_DRAGON:
+                    return "Young White Dragon";
+                case Monsters.ID.ZOMBIE:
+                    return "Zombie";
                 default:
-                    return Enum.GetName(typeof(MonsterType), type) + ": (Name missing)";
+                    return Enum.GetName(typeof(Monsters.ID), monster) + ": (Name missing)";
             }
         }
 
-        public static string Description(this MonsterType type) {
+        public static string Description(this Monsters.ID monster) {
+            switch (monster) {
+                case Monsters.ID.ACOLYTE:
+                    return "Acolytes are junior members of a clergy, usually answerable to a priest. They perform a variety of functions in a temple and are granted minor spellcasting power by their deities.";
+                case Monsters.ID.ARCHMAGE:
+                    return "Archmages are powerful (and usually quite old) spellcasters dedicated to the study of the arcane arts. Benevolent ones counsel kings and queens, while evil ones rule as tyrants and pursue lichdom. Those who are neither good nor evil sequester themselves in remote towers to practice their magic without interruption. \n\nAn archmage typically has one or more apprentice mages, and an archmage’s abode has numerous magical wards and guardians to discourage interlopers.";
+                case Monsters.ID.ASSASSIN:
+                    return "Trained in the use of poison, assassins are remorseless killers who work for nobles, guildmasters, sovereigns, and anyone else who can afford them.";
+                case Monsters.ID.AWAKENED_SHRUB:
+                    return "An awakened shrub is an ordinary shrub given sentience and mobility by the awaken spell or similar magic.";
+                case Monsters.ID.AWAKENED_TREE:
+                    return "An awakened tree is an ordinary tree given sentience and mobility by the awaken spell or similar magic.";
+                case Monsters.ID.AXE_BEAK:
+                    return "An axe beak is a tall flightless bird with strong legs and a heavy, wedge-shaped beak. It has a nasty disposition and tends to attack any unfamiliar creature that wanders too close.";
+                case Monsters.ID.BANDIT:
+                    return "**Bandits** rove in gangs and are sometimes led by thugs, veterans, or spellcasters. Not all bandits are evil. Oppression, drought, disease, or famine can often drive otherwise honest folk to a life of banditry.\n\n**Pirates** are bandits of the high seas. They might be freebooters interested only in treasure and murder, or they might be privateers sanctioned by the crown to attack and plunder an enemy nation’s vessels.";
+                case Monsters.ID.BANDIT_CAPTAIN:
+                    return "It takes a strong personality, ruthless cunning, and a silver tongue to keep a gang of bandits in line. The **bandit captain** has these qualities in spades.\n\nIn addition to managing a crew of selfish malcontents, the **pirate captain** is a variation of the bandit captain, with a ship to protect and command. To keep the crew in line, the captain must mete out rewards and punishment on a regular basis.\n\nMore than treasure, a bandit captain or pirate captain craves infamy. A prisoner who appeals to the captain’s vanity or ego is more likely to be treated fairly than a prisoner who does not or claims not to know anything of the captain’s colorful reputation.";
+                case Monsters.ID.BLINK_DOG:
+                    return "A blink dog takes its name from its ability to blink in and out of existence, a talent it uses to aid its attacks and to avoid harm.";
+                case Monsters.ID.BLOOD_HAWK:
+                    return "Taking its name from its crimson feathers and aggressive nature, the blood hawk fearlessly attacks almost any animal, stabbing it with its daggerlike beak. Blood hawks flock together in large numbers, attacking as a pack to take down prey.";
+                case Monsters.ID.COMMONER:
+                    return "Commoners include peasants, serfs, slaves, servants, pilgrims, merchants, artisans, and hermits.";
+                case Monsters.ID.CULT_FANATIC:
+                    return "Fanatics are often part of a cult's leadership, using their charisma and dogma to influence and prey on those of weak will. Most are interested in personal power above all else.";
+                case Monsters.ID.CULTIST:
+                    return "Cultists swear allegiance to dark powers such as elemental princes, demon lords, or archdevils. Most conceal their loyalties to avoid being ostracized, imprisoned, or executed for their beliefs. Unlike evil acolytes, cultists often show signs of insanity in their beliefs and practices.";
+                case Monsters.ID.DEATH_DOG:
+                    return "A death dog is an ugly two-headed hound that roams plains, and deserts. Hate burns in a death dog's heart, and a taste for humanoid flesh drives it to attack travelers and explorers. Death dog saliva carries a foul disease that causes a victim’s flesh to slowly rot off the bone.";
+                case Monsters.ID.DRUID:
+                    return "**Druids** dwell in forests and other secluded wilderness locations, where they protect the natural world from monsters and the encroachment of civilization. Some are **tribal shamans** who heal the sick, pray to animal spirits, and provide spiritual guidance.";
+                case Monsters.ID.FLYING_SNAKE:
+                    return "A flying snake is a brightly colored, winged serpent found in remote jungles. Tribespeople and cultists sometimes domesticate flying snakes to serve as messengers that deliver scrolls wrapped in their coils.";
+                case Monsters.ID.FROG:
+                    return "A frog has no effective attacks. It feeds on small insects and typically dwells near water, in trees, or underground. The frog's statistics can also be used to represent a toad.";
+                case Monsters.ID.GIANT_EAGLE:
+                    return "A giant eagle is a noble creature that speaks its own language and understands speech in the Common tongue. A mated pair of giant eagles typically has up to four eggs or young in their nest (treat the young as normal eagles).";
+                case Monsters.ID.GIANT_ELK:
+                    return "The majestic giant elk is rare to the point that its appearance is often taken as a foreshadowing of an important event, such as the birth of a king. Legends tell of gods that take the form of giant elk when visiting the Material Plane. Many cultures therefore believe that to hunt these creatures is to invite divine wrath.";
+                case Monsters.ID.GIANT_FIRE_BEETLE:
+                    return "A giant fire beetle is a nocturnal creature that takes its name from a pair of glowing glands that give off light. Miners and adventurers prize these creatures, for a giant fire beetle's glands continue to shed light for 1d6 days after the beetle dies. Giant fire beetles are most commonly found underground and in dark forests.";
+                case Monsters.ID.GIANT_LIZARD:
+                    return "A giant lizard can be ridden or used as a draft animal. Lizardfolk also keep them as pets, and subterranean giant lizards are used as mounts and pack animals by drow, duergar, and others.";
+                case Monsters.ID.GIANT_SEA_HORSE:
+                    return "Like their smaller kin, giant sea horses are shy, colorful fish with elongated bodies and curled tails. Aquatic elves train them as mounts.";
+                case Monsters.ID.GIANT_SHARK:
+                    return "A giant shark is 30 feet long and normally found in deep oceans. Utterly fearless, it preys on anything that crosses its path, including whales and ships.";
+                case Monsters.ID.GIANT_SPIDER:
+                    return "To snare its prey, a giant spider spins elaborate webs or shoots sticky strands of webbing from its abdomen. Giant spiders are most commonly found underground, making their lairs on ceilings or in dark, web-filled crevices. Such lairs are often festooned with web cocoons holding past victims.";
+                case Monsters.ID.GIANT_VULTURE:
+                    return "A giant vulture has advanced intelligence and a malevolent bent. Unlike its smaller kin, it will attack a wounded creature to hasten its end. Giant vultures have been known to haunt a thirsty, starving creature for days to enjoy its suffering.";
+                case Monsters.ID.GIANT_WOLF_SPIDER:
+                    return "Smaller than a giant spider, a giant wolf spider hunts prey across open ground or hides in a burrow or crevice, or in a hidden cavity beneath debris.";
+                case Monsters.ID.GLADIATOR:
+                    return "Gladiators battle for the entertainment of raucous crowds. Some gladiators are brutal pit fighters who treat each match as a life-or-death struggle, while others are professional duelists who command huge fees but rarely fight to the death.";
+                case Monsters.ID.GUARD:
+                    return "Guards include members of a city watch, sentries in a citadel or fortified town, and the bodyguards of merchants and nobles.";
+                case Monsters.ID.HUNTER_SHARK:
+                    return "Smaller than a giant shark but larger and fiercer than a reef shark, a hunter shark haunts deep waters. It usually hunts alone, but multiple hunter sharks might feed in the same area. A fully grown hunter shark is 15 to 20 feet long.";
+                case Monsters.ID.KNIGHT:
+                    return "Knights are warriors who pledge service to rulers, religious orders, and noble causes. A knight's alignment determines the extent to which a pledge is honored. Whether undertaking a quest or patrolling a realm, a knight often travels with an entourage that includes squires and hirelings who are commoners.";
+                case Monsters.ID.MAGE:
+                    return "Mages spend their lives in the study and practice of magic. Good-aligned mages offer counsel to nobles and others in power, while evil mages dwell in isolated sites to perform unspeakable experiments without interference.";
+                case Monsters.ID.MAMMOTH:
+                    return "A mammoth is an elephantine creature with thick fur and long tusks. Stockier and fiercer than normal elephants, mammoths inhabit a wide range of climes, from subarctic to subtropical.";
+                case Monsters.ID.MASTIFF:
+                    return "Mastiffs are impressive hounds prized by humanoids for their loyalty and keen senses. Mastiffs can be trained as guard dogs, hunting dogs, and war dogs. Halflings and other Small humanoids ride them as mounts.";
+                case Monsters.ID.NOBLE:
+                    return "**Nobles** wield great authority and influence as members of the upper class, possessing wealth and connections that can make them as powerful as monarchs and generals. A noble often travels in the company of guards, as well as servants who are commoners.\n\nThe noble’s statistics can also be used to represent **courtiers** who aren’t of noble birth.";
+                case Monsters.ID.PHASE_SPIDER:
+                    return "A phase spider possesses the magical ability to phase in and out of the Ethereal Plane. It seems to appear out of nowhere and quickly vanishes after attacking. Its movement on the Ethereal Plane before coming back to the Material Plane makes it seem like it can teleport.";
+                case Monsters.ID.PRIEST:
+                    return "Priests bring the teachings of their gods to the common folk. They are the spiritual leaders of temples and shrines and often hold positions of influence in their communities. Evil priests might work openly under a tyrant, or they might be the leaders of religious sects hidden in the shadows of good society, overseeing depraved rites.\n\nA priest typically has one or more acolytes to help with religious ceremonies and other sacred duties.";
+                case Monsters.ID.QUIPPER:
+                    return "A quipper is a carnivorous fish with sharp teeth. Quippers can adapt to any aquatic environment, including cold subterranean lakes. They frequently gather in swarms; the statistics for a swarm of quippers appear later in this appendix.";
+                case Monsters.ID.REEF_SHARK:
+                    return "Smaller than giant sharks and hunter sharks, reef sharks inhabit shallow waters and coral reefs, gathering in small packs to hunt. A full-grown specimen measures 6 to 10 feet long.";
+                case Monsters.ID.SCOUT:
+                    return "Scouts are skilled hunters and trackers who offer their services for a fee. Most hunt wild game, but a few work as bounty hunters, serve as guides, or provide military reconnaissance.";
+                case Monsters.ID.SPY:
+                    return "Rulers, nobles, merchants, guildmasters, and other wealthy individuals use spies to gain the upper hand in a world of cutthroat politics. A spy is trained to secretly gather information. Loyal spies would rather die than divulge information that could compromise them or their employers.";
+                case Monsters.ID.THUG:
+                    return "Thugs are ruthless enforcers skilled at intimidation and violence. They work for money and have few scruples.";
+                case Monsters.ID.TRIBAL_WARRIOR:
+                    return "Tribal warriors live beyond civilization, most often subsisting on fishing and hunting. Each tribe acts in accordance with the wishes of its chief, who is the greatest or oldest warrior of the tribe or a tribe member blessed by the gods.";
+                case Monsters.ID.VETERAN:
+                    return "Veterans are professional fighters that take up arms for pay or to protect something they believe in or value. Their ranks include soldiers retired from long service and warriors who never served anyone but themselves.";
+                case Monsters.ID.WINTER_WOLF:
+                    return "The arctic-dwelling winter wolf is as large as a dire wolf but has snow-white fur and pale blue eyes. Frost giants use these evil creatures as guards and hunting companions, putting the wolves’ deadly breath weapon to use against their foes. Winter wolves communicate with one another using growls and barks, but they speak Common and Giant well enough to follow simple conversations.";
+                case Monsters.ID.WORG:
+                    return "A worg is an evil predator that delights in hunting and devouring creatures weaker than itself. Cunning and malevolent, worgs roam across the remote wilderness or are raised by goblins and hobgoblins. Those creatures use worgs as mounts, but a worg will turn on its rider if it feels mistreated or malnourished. Worgs speak in their own language and Goblin, and a few learn to speak Common as well.";
+                default:
+                    return ""; // only a few monsters have a description in the SRD
+            }
+        }
+        public static string Name(this Monsters.Type type) {
             switch (type) {
-                case MonsterType.ABERRATION:
+                case Monsters.Type.ABERRATION:
+                    return "Aberration";
+                case Monsters.Type.BEAST:
+                    return "Beast";
+                case Monsters.Type.CELESTIAL:
+                    return "Celestial";
+                case Monsters.Type.CONSTRUCT:
+                    return "Construct";
+                case Monsters.Type.DRAGON:
+                    return "Dragon";
+                case Monsters.Type.ELEMENTAL:
+                    return "Elemental";
+                case Monsters.Type.FEY:
+                    return "Fey";
+                case Monsters.Type.FIEND:
+                    return "Fiend";
+                case Monsters.Type.GIANT:
+                    return "Giant";
+                case Monsters.Type.HUMANOID:
+                    return "Humanoid";
+                case Monsters.Type.MONSTROSITY:
+                    return "Monstrosity";
+                case Monsters.Type.OOZE:
+                    return "Ooze";
+                case Monsters.Type.PLANT:
+                    return "Plant";
+                case Monsters.Type.UNDEAD:
+                    return "Undead";
+                default:
+                    return Enum.GetName(typeof(Monsters.Type), type) + ": (Name missing)";
+            }
+        }
+
+        public static string Description(this Monsters.Type type) {
+            switch (type) {
+                case Monsters.Type.ABERRATION:
                     return "Aberrations are utterly alien beings. Many of them have innate magical abilities drawn from the creature's alien mind rather than the mystical forces of the world.";
-                case MonsterType.BEAST:
+                case Monsters.Type.BEAST:
                     return "Beasts are nonhumanoid creatures that are a natural part of the fantasy ecology. Some of them have magical powers, but most are unintelligent and lack any society or language. Beasts include all varieties of ordinary animals, dinosaurs, and giant versions of animals.";
-                case MonsterType.CELESTIAL:
+                case Monsters.Type.CELESTIAL:
                     return "Celestials are creatures native to the Upper Planes. Many of them are the servants of deities, employed as messengers or agents in the mortal realm and throughout the planes. Celestials are good by nature, so the exceptional celestial who strays from a good alignment is a horrifying rarity. Celestials include angels, couatls, and pegasi.";
-                case MonsterType.CONSTRUCT:
+                case Monsters.Type.CONSTRUCT:
                     return "Constructs are made, not born. Some are programmed by their creators to follow a simple set of instructions, while others are imbued with sentience and capable of independent thought. Golems are the iconic constructs. Many creatures native to the outer plane of Mechanus, such as modrons, are constructs shaped from the raw material of the plane by the will of more powerful creatures.";
-                case MonsterType.DRAGON:
+                case Monsters.Type.DRAGON:
                     return "Dragons are large reptilian creatures of ancient origin and tremendous power. True dragons, including the good metallic dragons and the evil chromatic dragons, are highly intelligent and have innate magic. Also in this category are creatures distantly related to true dragons, but less powerful, less intelligent, and less magical, such as wyverns and pseudodragons.";
-                case MonsterType.ELEMENTAL:
+                case Monsters.Type.ELEMENTAL:
                     return "Elementals are creatures native to the elemental planes. Some creatures of this type are little more than animate masses of their respective elements, including the creatures simply called elementals. Others have biological forms infused with elemental energy. The races of genies, including djinn and efreet, form the most important civilizations on the elemental planes.Other elemental creatures include azers, invisible stalkers, and water weirds.";
-                case MonsterType.FEY:
+                case Monsters.Type.FEY:
                     return "Fey are magical creatures closely tied to the forces of nature.They dwell in twilight groves and misty forests.In some worlds, they are closely tied to the Plane of Faerie.Some are also found in the Outer Planes, particularly the planes of Arborea and the Beastlands. Fey include dryads, pixies, and satyrs.";
-                case MonsterType.FIEND:
+                case Monsters.Type.FIEND:
                     return "Fiends are creatures of wickedness that are native to the Lower Planes. A few are the servants of deities, but many more labor under the leadership of archdevils and demon princes. Evil priests and mages sometimes summon fiends to the material world to do their bidding. If an evil celestial is a rarity, a good fiend is almost inconceivable. Fiends include demons, devils, hell hounds, rakshasas, and yugoloths.";
-                case MonsterType.GIANT:
+                case Monsters.Type.GIANT:
                     return "Giants tower over humans and their kind.They are humanlike in shape, though some have multiple heads(ettins) or deformities(fomorians). The six varieties of true giant are hill giants, stone giants, frost giants, fire giants, cloud giants, and storm giants. Besides these, creatures such as ogres and trolls are giants.";
-                case MonsterType.HUMANOID:
+                case Monsters.Type.HUMANOID:
                     return "Humanoids are the main peoples of a fantasy gaming world, both civilized and savage, including humans and a tremendous variety of other species.They have language and culture, few if any innate magical abilities(though most humanoids can learn spellcasting), and a bipedal form. The most common humanoid races are the ones most suitable as player characters: humans, dwarves, elves, and halflings.";
-                case MonsterType.MONSTROSITY:
+                case Monsters.Type.MONSTROSITY:
                     return "Monstrosities are monsters in the strictest sense—frightening creatures that are not ordinary, not truly natural, and almost never benign.Some are the results of magical experimentation gone awry(such as owlbears), and others are the product of terrible curses(including minotaurs and yuan-ti). They defy categorization, and in some sense serve as a catch-all category for creatures that don't fit into any other type.";
-                case MonsterType.OOZE:
+                case Monsters.Type.OOZE:
                     return "Oozes are gelatinous creatures that rarely have a fixed shape.They are mostly subterranean, dwelling in caves and dungeons and feeding on refuse, carrion, or creatures unlucky enough to get in their way. Black puddings and gelatinous cubes are among the most recognizable oozes.";
-                case MonsterType.PLANT:
+                case Monsters.Type.PLANT:
                     return "Plants in this context are vegetable creatures, not ordinary flora. Most of them are ambulatory, and some are carnivorous. The quintessential plants are the shambling mound and the treant. Fungal creatures such as the gas spore and the myconid also fall into this category.";
-                case MonsterType.UNDEAD:
+                case Monsters.Type.UNDEAD:
                     return "Undead are once - living creatures brought to a horrifying state of undeath through the practice of necromantic magic or some unholy curse. Undead include walking corpses, such as vampires and zombies, as well as bodiless spirits, such as ghosts and specters.";
                 default:
-                    return Enum.GetName(typeof(MonsterType), type) + ": (Description missing)";
+                    return Enum.GetName(typeof(Monsters.Type), type) + ": (Description missing)";
             }
         }
     }

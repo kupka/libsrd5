@@ -51,6 +51,692 @@ namespace srd5 {
                     return name + ": (Name missing)";
             }
         }
+
+        public static string Description(this Effect effect) {
+            switch (effect) {
+                case Effect.ABERRANT_GROUND:
+                    return "The ground in a 10-foot radius around the mouther is doughlike difficult terrain. Each creature that starts its turn in that area must succeed on a DC 10 Strength saving throw or have its speed reduced to 0 until the start of its next turn.";
+                case Effect.ACID_ABSORPTION:
+                    return "Whenever the golem is subjected to acid damage, it takes no damage and instead regains a number of hit points equal to the acid damage dealt.";
+                case Effect.ADHESIVE:
+                    return "The mimic adheres to anything that touches it. A Huge or smaller creature adhered to the mimic is also grappled by it (escape DC 13). Ability checks made to escape this grapple have disadvantage.";
+                case Effect.AGGRESSIVE:
+                    return "As a bonus action, the orc can move up to its speed toward a hostile creature that it can see.";
+                case Effect.AIR_FORM:
+                    return "The elemental can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing.";
+                case Effect.AMBUSHER:
+                    return "The doppelganger has advantage on attack rolls against any creature it has surprised.";
+                case Effect.AMORPHOUS:
+                    return "The pudding can move through a space as narrow as 1 inch wide without squeezing.";
+                    return "The ooze can move through a space as narrow as 1 inch wide without squeezing.";
+                    return "The jelly can move through a space as narrow as 1 inch wide without squeezing.";
+                    return "The shadow can move through a space as narrow as 1 inch wide without squeezing.";
+                case Effect.AMPHIBIOUS:
+                    return "The aboleth can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The chuul can breathe air and water.";
+                    return "The crab can breathe air and water.";
+                    return "The dragon turtle can breathe air and water.";
+                    return "The frog can breathe air and water";
+                    return "The crab can breathe air and water.";
+                    return "The frog can breathe air and water";
+                    return "The toad can breathe air and water";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The hag can breathe air and water.";
+                    return "The kraken can breathe air and water.";
+                    return "The merfolk can breathe air and water.";
+                    return "The merrow can breathe air and water.";
+                    return "The hag can breathe air and water.";
+                    return "The giant can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                    return "The dragon can breathe air and water.";
+                case Effect.ANGELIC_WEAPONS:
+                    return "The deva's weapon attacks are magical. When the deva hits with any weapon, the weapon deals an extra 4d8 radiant damage (included in the attack).";
+                    return "The planetar's weapon attacks are magical. When the planetar hits with any weapon, the weapon deals an extra 5d8 radiant damage (included in the attack).";
+                    return "The solar's weapon attacks are magical. When the solar hits with any weapon, the weapon deals an extra 6d8 radiant damage (included in the attack).";
+                case Effect.ANTIMAGIC_SUSCEPTIBILITY:
+                    return "The armor is incapacitated while in the area of an antimagic field. If targeted by dispel magic, the armor must succeed on a Constitution saving throw against the caster's spell save DC or fall unconscious for 1 minute.";
+                    return "The sword is incapacitated while in the area of an antimagic field. If targeted by dispel magic, the sword must succeed on a Constitution saving throw against the caster's spell save DC or fall unconscious for 1 minute.";
+                    return "The rug is incapacitated while in the area of an antimagic field. If targeted by dispel magic, the rug must succeed on a Constitution saving throw against the caster's spell save DC or fall unconscious for 1 minute.";
+                case Effect.ASSASSINATE:
+                    return "During its first turn, the assassin has advantage on attack rolls against any creature that hasn't taken a turn. Any hit the assassin scores against a surprised creature is a critical hit.";
+                case Effect.AVERSION_OF_FIRE:
+                    return "If the golem takes fire damage, it has disadvantage on attack rolls and ability checks until the end of its next turn.";
+                case Effect.BARBED_HIDE:
+                    return "At the start of each of its turns, the barbed devil deals 5 (1d10) piercing damage to any creature grappling it.";
+                case Effect.BEAST_OF_BURDEN:
+                    return "The mule is considered to be a Large animal for the purpose of determining its carrying capacity.";
+                case Effect.BERSERK:
+                    return "Whenever the golem starts its turn with 60 hit points or fewer, roll a d6. On a 6, the golem goes berserk. On each of its turns while berserk, the golem attacks the nearest creature it can see. If no creature is near enough to move to and attack, the golem attacks an object, with preference for an object smaller than itself. Once the golem goes berserk, it continues to do so until it is destroyed or regains all its hit points.";
+                    return "Whenever the golem starts its turn with 40 hit points or fewer, roll a d6. On a 6, the golem goes berserk. On each of its turns while berserk, the golem attacks the nearest creature it can see. If no creature is near enough to move to and attack, the golem attacks an object, with preference for an object smaller than itself. Once the golem goes berserk, it continues to do so until it is destroyed or regains all its hit points.\nThe golem's creator, if within 60 feet of the berserk golem, can try to calm it by speaking firmly and persuasively. The golem must be able to hear its creator, who must take an action to make a DC 15 Charisma (Persuasion) check. If the check succeeds, the golem ceases being berserk. If it takes damage while still at 40 hit points or fewer, the golem might go berserk again.";
+                case Effect.BLIND_SENSES:
+                    return "The grimlock can't use its blindsight while deafened and unable to smell.";
+                case Effect.BLOOD_FRENZY:
+                    return "The shark has advantage on melee attack rolls against any creature that doesn't have all its hit points.";
+                    return "The shark has advantage on melee attack rolls against any creature that doesn't have all its hit points.";
+                    return "The quipper has advantage on melee attack rolls against any creature that doesn't have all its hit points.";
+                    return "The sahuagin has advantage on melee attack rolls against any creature that doesn't have all its hit points.";
+                    return "The swarm has advantage on melee attack rolls against any creature that doesn't have all its hit points.";
+                case Effect.BOUND:
+                    return "The shield guardian is magically bound to an amulet. As long as the guardian and its amulet are on the same plane of existence, the amulet's wearer can telepathically call the guardian to travel to it, and the guardian knows the distance and direction to the amulet. If the guardian is within 60 feet of the amulet's wearer, half of any damage the wearer takes (rounded up) is transferred to the guardian.";
+                case Effect.BRAVE:
+                    return "The gladiator has advantage on saving throws against being frightened.";
+                    return "The knight has advantage on saving throws against being frightened.";
+                case Effect.BRUTE:
+                    return "A melee weapon deals one extra die of its damage when the bugbear hits with it (included in the attack).";
+                    return "A melee weapon deals one extra die of its damage when the gladiator hits with it (included in the attack).";
+                case Effect.CHARGE:
+                    return "If the boar moves at least 20 ft. straight toward a target and then hits it with a tusk attack on the same turn, the target takes an extra 3 (1d6) slashing damage. If the target is a creature, it must succeed on a DC 11 Strength saving throw or be knocked prone.";
+                    return "If the centaur moves at least 30 ft. straight toward a target and then hits it with a pike attack on the same turn, the target takes an extra 10 (3d6) piercing damage.";
+                    return "If the elk moves at least 20 ft. straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.";
+                    return "If the boar moves at least 20 ft. straight toward a target and then hits it with a tusk attack on the same turn, the target takes an extra 7 (2d6) slashing damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.";
+                    return "If the elk moves at least 20 ft. straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 14 Strength saving throw or be knocked prone.";
+                    return "If the goat moves at least 20 ft. straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 5 (2d4) bludgeoning damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.";
+                    return "If the sea horse moves at least 20 ft. straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) bludgeoning damage. If the target is a creature, it must succeed on a DC 11 Strength saving throw or be knocked prone.";
+                    return "If the goat moves at least 20 ft. straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 2 (1d4) bludgeoning damage. If the target is a creature, it must succeed on a DC 10 Strength saving throw or be knocked prone.";
+                    return "If the minotaur moves at least 10 ft. straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 9 (2d8) piercing damage. If the target is a creature, it must succeed on a DC 14 Strength saving throw or be pushed up to 10 ft. away and knocked prone.";
+                    return "If the skeleton moves at least 10 feet straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 9 (2d8) piercing damage. If the target is a creature, it must succeed on a DC 14 Strength saving throw or be pushed up to 10 feet away and knocked prone.";
+                    return "If the rhinoceros moves at least 20 ft. straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 9 (2d8) bludgeoning damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone.";
+                    return "If the unicorn moves at least 20 ft. straight toward a target and then hits it with a horn attack on the same turn, the target takes an extra 9 (2d8) piercing damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone.";
+                    return "If the wereboar moves at least 15 feet straight toward a target and then hits it with its tusks on the same turn, the target takes an extra 7 (2d6) slashing damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.";
+                    return "If the wereboar moves at least 15 feet straight toward a target and then hits it with its tusks on the same turn, the target takes an extra 7 (2d6) slashing damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.";
+                case Effect.CONFER_FIRE_RESISTANCE:
+                    return "The nightmare can grant resistance to fire damage to anyone riding it.";
+                case Effect.CONSUME_LIFE:
+                    return "As a bonus action, the will-o'-wisp can target one creature it can see within 5 ft. of it that has 0 hit points and is still alive. The target must succeed on a DC 10 Constitution saving throw against this magic or die. If the target dies, the will-o'-wisp regains 10 (3d6) hit points.";
+                case Effect.CORRODE_METAL:
+                    return "Any nonmagical weapon made of metal that hits the ooze corrodes. After dealing damage, the weapon takes a permanent and cumulative -1 penalty to damage rolls. If its penalty drops to -5, the weapon is destroyed. Nonmagical ammunition made of metal that hits the ooze is destroyed after dealing damage.\nThe ooze can eat through 2-inch-thick, nonmagical metal in 1 round.";
+                case Effect.CORROSIVE_FORM:
+                    return "A creature that touches the pudding or hits it with a melee attack while within 5 feet of it takes 4 (1d8) acid damage. Any nonmagical weapon made of metal or wood that hits the pudding corrodes. After dealing damage, the weapon takes a permanent and cumulative -1 penalty to damage rolls. If its penalty drops to -5, the weapon is destroyed. Nonmagical ammunition made of metal or wood that hits the pudding is destroyed after dealing damage. The pudding can eat through 2-inch-thick, nonmagical wood or metal in 1 round.";
+                case Effect.CUNNING_ACTION:
+                    return "On each of its turns, the spy can use a bonus action to take the Dash, Disengage, or Hide action.";
+                case Effect.DAMAGE_TRANSFER:
+                    return "While attached to a creature, the cloaker takes only half the damage dealt to it (rounded down). and that creature takes the other half.";
+                    return "While it is grappling a creature, the rug takes only half the damage dealt to it, and the creature grappled by the rug takes the other half.";
+                case Effect.DARK_DEVOTION:
+                    return "The fanatic has advantage on saving throws against being charmed or frightened.";
+                    return "The cultist has advantage on saving throws against being charmed or frightened.";
+                case Effect.DEATH_BURST:
+                    return "When the mephit dies, it explodes in a burst of dust. Each creature within 5 ft. of it must then succeed on a DC 10 Constitution saving throw or be blinded for 1 minute. A blinded creature can repeat the saving throw on each of its turns, ending the effect on itself on a success.";
+                    return "When the mephit dies, it explodes in a burst of jagged ice. Each creature within 5 ft. of it must make a DC 10 Dexterity saving throw, taking 4 (1d8) slashing damage on a failed save, or half as much damage on a successful one.";
+                    return "When the mephit dies, it explodes in a burst of lava. Each creature within 5 ft. of it must make a DC 11 Dexterity saving throw, taking 7 (2d6) fire damage on a failed save, or half as much damage on a successful one.";
+                    return "When the magmin dies, it explodes in a burst of fire and magma. Each creature within 10 ft. of it must make a DC 11 Dexterity saving throw, taking 7 (2d6) fire damage on a failed save, or half as much damage on a successful one. Flammable objects that aren't being worn or carried in that area are ignited.";
+                    return "When the mephit dies, it explodes in a cloud of steam. Each creature within 5 ft. of the mephit must succeed on a DC 10 Dexterity saving throw or take 4 (1d8) fire damage.";
+                case Effect.DEATH_THROES:
+                    return "When the balor dies, it explodes, and each creature within 30 feet of it must make a DC 20 Dexterity saving throw, taking 70 (20d6) fire damage on a failed save, or half as much damage on a successful one. The explosion ignites flammable objects in that area that aren't being worn or carried, and it destroys the balor's weapons.";
+                case Effect.DEVILS_SIGHT:
+                    return "Magical darkness doesn't impede the devil's darkvision.";
+                    return "Magical darkness doesn't impede the devil's darkvision.";
+                    return "Magical darkness doesn't impede the devil's darkvision.";
+                    return "Magical darkness doesn't impede the devil's darkvision.";
+                    return "Magical darkness doesn't impede the devil's darkvision.";
+                    return "Magical darkness doesn't impede the devil's darkvision.";
+                    return "Magical darkness doesn't impede the imp's darkvision.";
+                    return "Magical darkness doesn't impede the lemure's darkvision.";
+                case Effect.DIVINE_AWARENESS:
+                    return "The planetar knows if it hears a lie.";
+                    return "The solar knows if it hears a lie.";
+                case Effect.DIVINE_EMINENCE:
+                    return "As a bonus action, the priest can expend a spell slot to cause its melee weapon attacks to magically deal an extra 10 (3d6) radiant damage to a target on a hit. This benefit lasts until the end of the turn. If the priest expends a spell slot of 2nd level or higher, the extra damage increases by 1d6 for each level above 1st.";
+                case Effect.DUERGAR_RESILIENCE:
+                    return "The duergar has advantage on saving throws against poison, spells, and illusions, as well as to resist being charmed or paralyzed.";
+                case Effect.EARTH_GLIDE:
+                    return "The elemental can burrow through nonmagical, unworked earth and stone. While doing so, the elemental doesn't disturb the material it moves through.";
+                    return "The xorn can burrow through nonmagical, unworked earth and stone. While doing so, the xorn doesn't disturb the material it moves through.";
+                case Effect.ECHOLOCATION:
+                    return "The bat can't use its blindsight while deafened.";
+                    return "The darkmantle can't use its blindsight while deafened.";
+                    return "The bat can't use its blindsight while deafened.";
+                    return "The whale can't use its blindsight while deafened.";
+                    return "The swarm can't use its blindsight while deafened.";
+                case Effect.ELEMENTAL_DEMISE:
+                    return "If the djinni dies, its body disintegrates into a warm breeze, leaving behind only equipment the djinni was wearing or carrying.";
+                    return "If the efreeti dies, its body disintegrates in a flash of fire and puff of smoke, leaving behind only equipment the djinni was wearing or carrying.";
+                case Effect.EPHEMERAL:
+                    return "The will-o'-wisp can't wear or carry anything.";
+                case Effect.ETHEREAL_JAUNT:
+                    return "As a bonus action, the spider can magically shift from the Material Plane to the Ethereal Plane, or vice versa.";
+                case Effect.ETHEREAL_SIGHT:
+                    return "The ghost can see 60 ft. into the Ethereal Plane when it is on the Material Plane, and vice versa.";
+                case Effect.EVASION:
+                    return "If the assassin is subjected to an effect that allows it to make a Dexterity saving throw to take only half damage, the assassin instead takes no damage if it succeeds on the saving throw, and only half damage if it fails.";
+                case Effect.FALSE_APPEARANCE:
+                    return "While the armor remains motionless, it is indistinguishable from a normal suit of armor.";
+                    return "While the shrub remains motionless, it is indistinguishable from a normal shrub.";
+                    return "While the tree remains motionless, it is indistinguishable from a normal tree.";
+                    return "While the cloaker remains motionless without its underside exposed, it is indistinguishable from a dark leather cloak.";
+                    return "While the darkmantle remains motionless, it is indistinguishable from a cave formation such as a stalactite or stalagmite.";
+                    return "While the sword remains motionless and isn't flying, it is indistinguishable from a normal sword.";
+                    return "While the gargoyle remains motion less, it is indistinguishable from an inanimate statue.";
+                    return "While the ooze remains motionless, it is indistinguishable from an oily pool or wet rock.";
+                    return "While the mephit remains motionless, it is indistinguishable from an ordinary shard of ice.";
+                    return "While the mephit remains motionless, it is indistinguishable from an ordinary mound of magma.";
+                    return "While the roper remains motionless, it is indistinguishable from a normal cave formation, such as a stalagmite.";
+                    return "While the rug remains motionless, it is indistinguishable from a normal rug.";
+                    return "While the shrieker remains motionless, it is indistinguishable from an ordinary fungus.";
+                    return "While the treant remains motionless, it is indistinguishable from a normal tree.";
+                    return "While the violet fungus remains motionless, it is indistinguishable from an ordinary fungus.";
+                    return "While the mimic remains motionless, it is indistinguishable from an ordinary object.";
+                case Effect.FAULTLESS_TRACKER:
+                    return "The stalker is given a quarry by its summoner. The stalker knows the direction and distance to its quarry as long as the two of them are on the same plane of existence. The stalker also knows the location of its summoner.";
+                case Effect.FEAR_AURA:
+                    return "Any creature hostile to the pit fiend that starts its turn within 20 feet of the pit fiend must make a DC 21 Wisdom saving throw, unless the pit fiend is incapacitated. On a failed save, the creature is frightened until the start of its next turn. If a creature's saving throw is successful, the creature is immune to the pit fiend's Fear Aura for the next 24 hours.";
+                case Effect.FEY_ANCESTRY:
+                    return "The drider has advantage on saving throws against being charmed, and magic can't put the drider to sleep.";
+                    return "The drow has advantage on saving throws against being charmed, and magic can't put the drow to sleep.";
+                case Effect.FIRE_ABSORPTION:
+                    return "Whenever the golem is subjected to fire damage, it takes no damage and instead regains a number of hit points equal to the fire damage dealt.";
+                case Effect.FIRE_AURA:
+                    return "At the start of each of the balor's turns, each creature within 5 feet of it takes 10 (3d6) fire damage, and flammable objects in the aura that aren't being worn or carried ignite. A creature that touches the balor or hits it with a melee attack while within 5 feet of it takes 10 (3d6) fire damage.";
+                case Effect.FIRE_FORM:
+                    return "The elemental can move through a space as narrow as 1 inch wide without squeezing. A creature that touches the elemental or hits it with a melee attack while within 5 ft. of it takes 5 (1d10) fire damage. In addition, the elemental can enter a hostile creature's space and stop there. The first time it enters a creature's space on a turn, that creature takes 5 (1d10) fire damage and catches fire; until someone takes an action to douse the fire, the creature takes 5 (1d10) fire damage at the start of each of its turns.";
+                case Effect.FLYBY:
+                    return "The snake doesn't provoke opportunity attacks when it flies out of an enemy's reach.";
+                    return "The owl doesn't provoke opportunity attacks when it flies out of an enemy's reach.";
+                    return "The owl doesn't provoke opportunity attacks when it flies out of an enemy's reach.";
+                case Effect.FREEDOM_OF_MOVEMENT:
+                    return "The kraken ignores difficult terrain, and magical effects can't reduce its speed or cause it to be restrained. It can spend 5 feet of movement to escape from nonmagical restraints or being grappled.";
+                case Effect.FREEZE:
+                    return "If the elemental takes cold damage, it partially freezes; its speed is reduced by 20 ft. until the end of its next turn.";
+                case Effect.GIBBERING:
+                    return "The mouther babbles incoherently while it can see any creature and isn't incapacitated. Each creature that starts its turn within 20 feet of the mouther and can hear the gibbering must succeed on a DC 10 Wisdom saving throw. On a failure, the creature can't take reactions until the start of its next turn and rolls a d8 to determine what it does during its turn. On a 1 to 4, the creature does nothing. On a 5 or 6, the creature takes no action or bonus action and uses all its movement to move in a randomly determined direction. On a 7 or 8, the creature makes a melee attack against a randomly determined creature within its reach or does nothing if it can't make such an attack.";
+                case Effect.GNOME_CUNNING:
+                    return "The gnome has advantage on Intelligence, Wisdom, and Charisma saving throws against magic.";
+                case Effect.GRAPPLER:
+                    return "The mimic has advantage on attack rolls against any creature grappled by it.";
+                case Effect.GRASPING_TENDRILS:
+                    return "The roper can have up to six tendrils at a time. Each tendril can be attacked (AC 20; 10 hit points; immunity to poison and psychic damage). Destroying a tendril deals no damage to the roper, which can extrude a replacement tendril on its next turn. A tendril can also be broken if a creature takes an action and succeeds on a DC 15 Strength check against it.";
+                case Effect.HEATED_BODY:
+                    return "A creature that touches the azer or hits it with a melee attack while within 5 ft. of it takes 5 (1d10) fire damage.";
+                    return "A creature that touches the remorhaz or hits it with a melee attack while within 5 feet of it takes 10 (3d6) fire damage.";
+                    return "A creature that touches the salamander or hits it with a melee attack while within 5 ft. of it takes 7 (2d6) fire damage.";
+                case Effect.HEATED_WEAPONS:
+                    return "When the azer hits with a metal melee weapon, it deals an extra 3 (1d6) fire damage (included in the attack).";
+                    return "Any metal melee weapon the salamander wields deals an extra 3 (1d6) fire damage on a hit (included in the attack).";
+                case Effect.HELLISH_REJUVENATION:
+                    return "A lemure that dies in the Nine Hells comes back to life with all its hit points in 1d10 days unless it is killed by a good-aligned creature with a bless spell cast on that creature or its remains are sprinkled with holy water.";
+                case Effect.HELLISH_WEAPONS:
+                    return "The erinyes's weapon attacks are magical and deal an extra 13 (3d8) poison damage on a hit (included in the attacks).";
+                case Effect.HOLD_BREATH:
+                    return "The crocodile can hold its breath for 15 minutes.";
+                    return "The crocodile can hold its breath for 30 minutes.";
+                    return "While out of water, the octopus can hold its breath for 1 hour.";
+                    return "The hydra can hold its breath for 1 hour.";
+                    return "The whale can hold its breath for 30 minutes";
+                    return "The lizardfolk can hold its breath for 15 minutes.";
+                    return "While out of water, the octopus can hold its breath for 30 minutes.";
+                    return "The plesiosaurus can hold its breath for 1 hour.";
+                case Effect.HORRIFIC_APPEARANCE:
+                    return "Any humanoid that starts its turn within 30 feet of the hag and can see the hag's true form must make a DC 11 Wisdom saving throw. On a failed save, the creature is frightened for 1 minute. A creature can repeat the saving throw at the end of each of its turns, with disadvantage if the hag is within line of sight, ending the effect on itself on a success. If a creature's saving throw is successful or the effect ends for it, the creature is immune to the hag's Horrific Appearance for the next 24 hours.\nUnless the target is surprised or the revelation of the hag's true form is sudden, the target can avert its eyes and avoid making the initial saving throw. Until the start of its next turn, a creature that averts its eyes has disadvantage on attack rolls against the hag.";
+                case Effect.ICE_WALK:
+                    return "The dragon can move across and climb icy surfaces without needing to make an ability check. Additionally, difficult terrain composed of ice or snow doesn't cost it extra moment.";
+                    return "The dragon can move across and climb icy surfaces without needing to make an ability check. Additionally, difficult terrain composed of ice or snow doesn't cost it extra moment.";
+                    return "The dragon can move across and climb icy surfaces without needing to make an ability check. Additionally, difficult terrain composed of ice or snow doesn't cost it extra moment.";
+                case Effect.IGNITED_ILLUMINATION:
+                    return "As a bonus action, the magmin can set itself ablaze or extinguish its flames. While ablaze, the magmin sheds bright light in a 10-foot radius and dim light for an additional 10 ft.";
+                case Effect.ILLUMINATION:
+                    return "The azer sheds bright light in a 10-foot radius and dim light for an additional 10 ft..";
+                    return "The elemental sheds bright light in a 30-foot radius and dim light in an additional 30 ft..";
+                    return "The beetle sheds bright light in a 10-foot radius and dim light for an additional 10 ft..";
+                    return "The nightmare sheds bright light in a 10-foot radius and dim light for an additional 10 feet.";
+                case Effect.IMMUTABLE_FORM:
+                    return "The golem is immune to any spell or effect that would alter its form.";
+                    return "The golem is immune to any spell or effect that would alter its form.";
+                    return "The golem is immune to any spell or effect that would alter its form.";
+                    return "The golem is immune to any spell or effect that would alter its form.";
+                case Effect.INCORPOREAL_MOVEMENT:
+                    return "The ghost can move through other creatures and objects as if they were difficult terrain. It takes 5 (1d10) force damage if it ends its turn inside an object.";
+                    return "The specter can move through other creatures and objects as if they were difficult terrain. It takes 5 (1d10) force damage if it ends its turn inside an object.";
+                    return "The will-o'-wisp can move through other creatures and objects as if they were difficult terrain. It takes 5 (1d10) force damage if it ends its turn inside an object.";
+                    return "The wraith can move through other creatures and objects as if they were difficult terrain. It takes 5 (1d10) force damage if it ends its turn inside an object.";
+                case Effect.INNATE_SPELLCASTING:
+                    return "The giant's innate spellcasting ability is Charisma. It can innately cast the following spells, requiring no material components:\n\nAt will: detect magic, fog cloud, light\n3/day each: feather fall, fly, misty step, telekinesis\n1/day each: control weather, gaseous form";
+                    return "The couatl's spellcasting ability is Charisma (spell save DC 14). It can innately cast the following spells, requiring only verbal components:\n\nAt will: detect evil and good, detect magic, detect thoughts\n3/day each: bless, create food and water, cure wounds, lesser restoration, protection from poison, sanctuary, shield\n1/day each: dream, greater restoration, scrying";
+                    return "The gnome's innate spellcasting ability is Intelligence (spell save DC 11). It can innately cast the following spells, requiring no material components:\nAt will: nondetection (self only)\n1/day each: blindness/deafness, blur, disguise self";
+                    return "The deva's spellcasting ability is Charisma (spell save DC 17). The deva can innately cast the following spells, requiring only verbal components:\nAt will: detect evil and good\n1/day each: commune, raise dead";
+                    return "The djinni's innate spellcasting ability is Charisma (spell save DC 17, +9 to hit with spell attacks). It can innately cast the following spells, requiring no material components:\n\nAt will: detect evil and good, detect magic, thunderwave\n3/day each: create food and water (can create wine instead of water), tongues, wind walk\n1/day each: conjure elemental (air elemental only), creation, gaseous form, invisibility, major image, plane shift";
+                    return "The drider's innate spellcasting ability is Wisdom (spell save DC 13). The drider can innately cast the following spells, requiring no material components:\nAt will: dancing lights\n1/day each: darkness, faerie fire";
+                    return "The drow's spellcasting ability is Charisma (spell save DC 11). It can innately cast the following spells, requiring no material components:\nAt will: dancing lights\n1/day each: darkness, faerie fire";
+                    return "The dryad's innate spellcasting ability is Charisma (spell save DC 14). The dryad can innately cast the following spells, requiring no material components:\n\nAt will: druidcraft\n3/day each: entangle, goodberry\n1/day each: barkskin, pass without trace, shillelagh";
+                    return "The mephit can innately cast sleep, requiring no material components. Its innate spellcasting ability is Charisma.";
+                    return "The efreeti's innate spell casting ability is Charisma (spell save DC 15, +7 to hit with spell attacks). It can innately cast the following spells, requiring no material components:\n\nAt will: detect magic\n3/day: enlarge/reduce, tongues\n1/day each: conjure elemental (fire elemental only), gaseous form, invisibility, major image, plane shift, wall of fire";
+                    return "The glabrezu's spellcasting ability is Intelligence (spell save DC 16). The glabrezu can innately cast the following spells, requiring no material components:\nAt will: darkness, detect magic, dispel magic\n1/day each: confusion, fly, power word stun";
+                    return "The hag's innate spellcasting ability is Charisma (spell save DC 12). She can innately cast the following spells, requiring no material components:\n\nAt will: dancing lights, minor illusion, vicious mockery";
+                    return "The mephit can innately cast fog cloud, requiring no material components. Its innate spellcasting ability is Charisma.";
+                    return "The lamia's innate spellcasting ability is Charisma (spell save DC 13). It can innately cast the following spells, requiring no material components. At will: disguise self (any humanoid form), major image 3/day each: charm person, mirror image, scrying, suggestion 1/day: geas";
+                    return "The mephit can innately cast heat metal (spell save DC 10), requiring no material components. Its innate spellcasting ability is Charisma.";
+                    return "The hag's innate spellcasting ability is Charisma (spell save DC 14, +6 to hit with spell attacks). She can innately cast the following spells, requiring no material components:\n\nAt will: detect magic, magic missile\n2/day each: plane shift (self only), ray of enfeeblement, sleep";
+                    return "The oni's innate spellcasting ability is Charisma (spell save DC 13). The oni can innately cast the following spells, requiring no material components:\n\nAt will: darkness, invisibility\n1/day each: charm person, cone of cold, gaseous form, sleep";
+                    return "The pit fiend's spellcasting ability is Charisma (spell save DC 21). The pit fiend can innately cast the following spells, requiring no material components:\nAt will: detect magic, fireball\n3/day each: hold monster, wall of fire";
+                    return "The planetar's spellcasting ability is Charisma (spell save DC 20). The planetar can innately cast the following spells, requiring no material components:\nAt will: detect evil and good, invisibility (self only)\n3/day each: blade barrier, dispel evil and good, flame strike, raise dead\n1/day each: commune, control weather, insect plague";
+                    return "The rakshasa's innate spellcasting ability is Charisma (spell save DC 18, +10 to hit with spell attacks). The rakshasa can innately cast the following spells, requiring no material components:\n\nAt will: detect thoughts, disguise self, mage hand, minor illusion\n3/day each: charm person, detect magic, invisibility, major image, suggestion\n1/day each: dominate person, fly, plane shift, true seeing";
+                    return "The solar's spell casting ability is Charisma (spell save DC 25). It can innately cast the following spells, requiring no material components:\nAt will: detect evil and good, invisibility (self only)\n3/day each: blade barrier, dispel evil and good, resurrection\n1/day each: commune, control weather";
+                    return "The mephit can innately cast blur, requiring no material components. Its innate spellcasting ability is Charisma.";
+                    return "The giant's innate spellcasting ability is Charisma (spell save DC 17). It can innately cast the following spells, requiring no material components:\n\nAt will: detect magic, feather fall, levitate, light\n3/day each: control weather, water breathing";
+                    return "The unicorn's innate spellcasting ability is Charisma (spell save DC 14). The unicorn can innately cast the following spells, requiring no components:\n\nAt will: detect evil and good, druidcraft, pass without trace\n1/day each: calm emotions, dispel evil and good, entangle";
+                case Effect.INSCRUTABLE:
+                    return "The sphinx is immune to any effect that would sense its emotions or read its thoughts, as well as any divination spell that it refuses. Wisdom (Insight) checks made to ascertain the sphinx's intentions or sincerity have disadvantage.";
+                    return "The sphinx is immune to any effect that would sense its emotions or read its thoughts, as well as any divination spell that it refuses. Wisdom (Insight) checks made to ascertain the sphinx's intentions or sincerity have disadvantage.";
+                case Effect.INVISIBILITY:
+                    return "The stalker is invisible.";
+                case Effect.IRON_SCENT:
+                    return "The rust monster can pinpoint, by scent, the location of ferrous metal within 30 feet of it.";
+                case Effect.KEEN_HEARING:
+                    return "The bat has advantage on Wisdom (Perception) checks that rely on hearing.";
+                    return "The bat has advantage on Wisdom (Perception) checks that rely on hearing.";
+                    return "The whale has advantage on Wisdom (Perception) checks that rely on hearing.";
+                    return "The swarm has advantage on Wisdom (Perception) checks that rely on hearing.";
+                case Effect.KEEN_HEARING_AND_SIGHT:
+                    return "The owl has advantage on Wisdom (Perception) checks that rely on hearing or sight.";
+                    return "The owl has advantage on Wisdom (Perception) checks that rely on hearing or sight.";
+                    return "The scout has advantage on Wisdom (Perception) checks that rely on hearing or sight.";
+                case Effect.KEEN_HEARING_AND_SMELL:
+                    return "The dog has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The wolf has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The weasel has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The grimlock has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The hound has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The jackal has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The mastiff has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The weasel has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The weretiger has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The weretiger has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The weretiger has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The werewolf has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The werewolf has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The werewolf has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The wolf has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The wolf has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                    return "The worg has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                case Effect.KEEN_SENSES:
+                    return "The pseudodragon has advantage on Wisdom (Perception) checks that rely on sight, hearing, or smell.";
+                case Effect.KEEN_SIGHT:
+                    return "The hawk has advantage on Wisdom (Perception) checks that rely on sight.";
+                    return "The eagle has advantage on Wisdom (Perception) checks that rely on sight.";
+                    return "The eagle has advantage on Wisdom (Perception) checks that rely on sight.";
+                    return "The griffon has advantage on Wisdom (Perception) checks that rely on sight.";
+                    return "The hawk has advantage on Wisdom (Perception) checks that rely on sight.";
+                    return "The hippogriff has advantage on Wisdom (Perception) checks that rely on sight.";
+                    return "The roc has advantage on Wisdom (Perception) checks that rely on sight.";
+                case Effect.KEEN_SIGHT_AND_SMELL:
+                    return "The vulture has advantage on Wisdom (Perception) checks that rely on sight or smell.";
+                    return "The owlbear has advantage on Wisdom (Perception) checks that rely on sight or smell.";
+                    return "The vulture has advantage on Wisdom (Perception) checks that rely on sight or smell.";
+                case Effect.KEEN_SMELL:
+                    return "The badger has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The bear has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The bear has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The cat has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The giant has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The badger has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The rat has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The rat has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The lion has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The panther has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The bear has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The rat has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The tiger has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The swarm has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The tiger has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The troll has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The werebear has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The werebear has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The werebear has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The wererat has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The wererat has advantage on Wisdom (Perception) checks that rely on smell.";
+                    return "The wererat has advantage on Wisdom (Perception) checks that rely on smell.";
+                case Effect.LABYRINTHINE_RECALL:
+                    return "The minotaur can perfectly recall any path it has traveled.";
+                case Effect.LEGENDARY_RESISTANCE:
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the dragon fails a saving throw, it can choose to succeed instead.";
+                    return "If the lich fails a saving throw, it can choose to succeed instead.";
+                    return "If the tarrasque fails a saving throw, it can choose to succeed instead.";
+                    return "If the vampire fails a saving throw, it can choose to succeed instead.";
+                    return "If the vampire fails a saving throw, it can choose to succeed instead.";
+                    return "If the vampire fails a saving throw, it can choose to succeed instead.";
+                case Effect.LIGHT_SENSITIVITY:
+                    return "While in bright light, the cloaker has disadvantage on attack rolls and Wisdom (Perception) checks that rely on sight.";
+                case Effect.LIGHTNING_ABSORPTION:
+                    return "Whenever the golem is subjected to lightning damage, it takes no damage and instead regains a number of hit points equal to the lightning damage dealt.";
+                    return "Whenever the shambling mound is subjected to lightning damage, it takes no damage and regains a number of hit points equal to the lightning damage dealt.";
+                case Effect.LIMITED_AMPHIBIOUSNESS:
+                    return "The sahuagin can breathe air and water, but it needs to be submerged at least once every 4 hours to avoid suffocating.";
+                case Effect.LIMITED_MAGIC_IMMUNITY:
+                    return "The rakshasa can't be affected or detected by spells of 6th level or lower unless it wishes to be. It has advantage on saving throws against all other spells and magical effects.";
+                case Effect.LIMITED_TELEPATHY:
+                    return "The otyugh can magically transmit simple messages and images to any creature within 120 ft. of it that can understand a language. This form of telepathy doesn't allow the receiving creature to telepathically respond.";
+                    return "The pseudodragon can magically communicate simple ideas, emotions, and images telepathically with any creature within 100 ft. of it that can understand a language.";
+                case Effect.MAGIC_RESISTANCE:
+                    return "The archmage has advantage on saving throws against spells and other magical effects.";
+                    return "The balor has advantage on saving throws against spells and other magical effects.";
+                    return "The devil has advantage on saving throws against spells and other magical effects.";
+                    return "The devil has advantage on saving throws against spells and other magical effects.";
+                    return "The devil has advantage on saving throws against spells and other magical effects.";
+                    return "The devil has advantage on saving throws against spells and other magical effects.";
+                    return "The golem has advantage on saving throws against spells and other magical effects.";
+                    return "The deva has advantage on saving throws against spells and other magical effects.";
+                    return "The dryad has advantage on saving throws against spells and other magical effects.";
+                    return "The erinyes has advantage on saving throws against spells and other magical effects.";
+                    return "The golem has advantage on saving throws against spells and other magical effects.";
+                    return "The glabrezu has advantage on saving throws against spells and other magical effects.";
+                    return "The hezrou has advantage on saving throws against spells and other magical effects.";
+                    return "The devil has advantage on saving throws against spells and other magical effects.";
+                    return "The devil has advantage on saving throws against spells and other magical effects.";
+                    return "The imp has advantage on saving throws against spells and other magical effects.";
+                    return "The golem has advantage on saving throws against spells and other magical effects.";
+                    return "The marilith has advantage on saving throws against spells and other magical effects.";
+                    return "The mummy lord has advantage on saving throws against spells and other magical effects.";
+                    return "The nalfeshnee has advantage on saving throws against spells and other magical effects.";
+                    return "The hag has advantage on saving throws against spells and other magical effects.";
+                    return "The pit fiend has advantage on saving throws against spells and other magical effects.";
+                    return "The planetar has advantage on saving throws against spells and other magical effects.";
+                    return "The pseudodragon has advantage on saving throws against spells and other magical effects.";
+                    return "The quasit has advantage on saving throws against spells and other magical effects.";
+                    return "The satyr has advantage on saving throws against spells and other magical effects.";
+                    return "The solar has advantage on saving throws against spells and other magical effects.";
+                    return "The golem has advantage on saving throws against spells and other magical effects.";
+                    return "The tarrasque has advantage on saving throws against spells and other magical effects.";
+                    return "The unicorn has advantage on saving throws against spells and other magical effects.";
+                    return "The vrock has advantage on saving throws against spells and other magical effects.";
+                case Effect.MAGIC_WEAPONS:
+                    return "The sphinx's weapon attacks are magical.";
+                    return "The balor's weapon attacks are magical.";
+                    return "The golem's weapon attacks are magical.";
+                    return "The couatl's weapon attacks are magical.";
+                    return "The golem's weapon attacks are magical.";
+                    return "The sphinx's weapon attacks are magical.";
+                    return "The golem's weapon attacks are magical.";
+                    return "The marilith's weapon attacks are magical.";
+                    return "The oni's weapon attacks are magical.";
+                    return "The pit fiend's weapon attacks are magical.";
+                    return "The golem's weapon attacks are magical.";
+                    return "The unicorn's weapon attacks are magical.";
+                case Effect.MARTIAL_ADVANTAGE:
+                    return "Once per turn, the hobgoblin can deal an extra 7 (2d6) damage to a creature it hits with a weapon attack if that creature is within 5 ft. of an ally of the hobgoblin that isn't incapacitated.";
+                case Effect.MIMICRY:
+                    return "The hag can mimic animal sounds and humanoid voices. A creature that hears the sounds can tell they are imitations with a successful DC 14 Wisdom (Insight) check.";
+                    return "The raven can mimic simple sounds it has heard, such as a person whispering, a baby crying, or an animal chittering. A creature that hears the sounds can tell they are imitations with a successful DC 10 Wisdom (Insight) check.";
+                case Effect.MISTY_ESCAPE:
+                    return "When it drops to 0 hit points outside its resting place, the vampire transforms into a cloud of mist (as in the Shapechanger trait) instead of falling unconscious, provided that it isn't in sunlight or running water. If it can't transform, it is destroyed.\nWhile it has 0 hit points in mist form, it can't revert to its vampire form, and it must reach its resting place within 2 hours or be destroyed. Once in its resting place, it reverts to its vampire form. It is then paralyzed until it regains at least 1 hit point. After spending 1 hour in its resting place with 0 hit points, it regains 1 hit point.";
+                    return "When it drops to 0 hit points outside its resting place, the vampire transforms into a cloud of mist (as in the Shapechanger trait) instead of falling unconscious, provided that it isn't in sunlight or running water. If it can't transform, it is destroyed.\nWhile it has 0 hit points in mist form, it can't revert to its vampire form, and it must reach its resting place within 2 hours or be destroyed. Once in its resting place, it reverts to its vampire form. It is then paralyzed until it regains at least 1 hit point. After spending 1 hour in its resting place with 0 hit points, it regains 1 hit point.";
+                    return "When it drops to 0 hit points outside its resting place, the vampire transforms into a cloud of mist (as in the Shapechanger trait) instead of falling unconscious, provided that it isn't in sunlight or running water. If it can't transform, it is destroyed.\nWhile it has 0 hit points in mist form, it can't revert to its vampire form, and it must reach its resting place within 2 hours or be destroyed. Once in its resting place, it reverts to its vampire form. It is then paralyzed until it regains at least 1 hit point. After spending 1 hour in its resting place with 0 hit points, it regains 1 hit point.";
+                case Effect.MUCOUS_CLOUD:
+                    return "While underwater, the aboleth is surrounded by transformative mucus. A creature that touches the aboleth or that hits it with a melee attack while within 5 ft. of it must make a DC 14 Constitution saving throw. On a failure, the creature is diseased for 1d4 hours. The diseased creature can breathe only underwater.";
+                case Effect.MULTIPLE_HEADS:
+                    return "The hydra has five heads. While it has more than one head, the hydra has advantage on saving throws against being blinded, charmed, deafened, frightened, stunned, and knocked unconscious.\nWhenever the hydra takes 25 or more damage in a single turn, one of its heads dies. If all its heads die, the hydra dies.\nAt the end of its turn, it grows two heads for each of its heads that died since its last turn, unless it has taken fire damage since its last turn. The hydra regains 10 hit points for each head regrown in this way.";
+                case Effect.NIGHT_HAG_ITEMS:
+                    return "A night hag carries two very rare magic items that she must craft for herself If either object is lost, the night hag will go to great lengths to retrieve it, as creating a new tool takes time and effort.\nHeartstone: This lustrous black gem allows a night hag to become ethereal while it is in her possession. The touch of a heartstone also cures any disease. Crafting a heartstone takes 30 days.\nSoul Bag: When an evil humanoid dies as a result of a night hag's Nightmare Haunting, the hag catches the soul in this black sack made of stitched flesh. A soul bag can hold only one evil soul at a time, and only the night hag who crafted the bag can catch a soul with it. Crafting a soul bag takes 7 days and a humanoid sacrifice (whose flesh is used to make the bag).";
+                case Effect.NIMBLE_ESCAPE:
+                    return "The goblin can take the Disengage or Hide action as a bonus action on each of its turns.";
+                case Effect.OOZE_CUBE:
+                    return "The cube takes up its entire space. Other creatures can enter the space, but a creature that does so is subjected to the cube's Engulf and has disadvantage on the saving throw.\nCreatures inside the cube can be seen but have total cover.\nA creature within 5 feet of the cube can take an action to pull a creature or object out of the cube. Doing so requires a successful DC 12 Strength check, and the creature making the attempt takes 10 (3d6) acid damage.\nThe cube can hold only one Large creature or up to four Medium or smaller creatures inside it at a time.";
+                case Effect.PACK_TACTICS:
+                    return "The baboon has advantage on an attack roll against a creature if at least one of the baboon's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The hawk has advantage on an attack roll against a creature if at least one of the hawk's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The wolf has advantage on an attack roll against a creature if at least one of the wolf's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The rat has advantage on an attack roll against a creature if at least one of the rat's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The rat has advantage on an attack roll against a creature if at least one of the rat's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The vulture has advantage on an attack roll against a creature if at least one of the vulture's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The hound has advantage on an attack roll against a creature if at least one of the hound's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The hyena has advantage on an attack roll against a creature if at least one of the hyena's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The jackal has advantage on an attack roll against a creature if at least one of the jackal's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The kobold has advantage on an attack roll against a creature if at least one of the kobold's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The lion has advantage on an attack roll against a creature if at least one of the lion's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The shark has advantage on an attack roll against a creature if at least one of the shark's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The thug has advantage on an attack roll against a creature if at least one of the thug's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The warrior has advantage on an attack roll against a creature if at least one of the warrior's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The vulture has advantage on an attack roll against a creature if at least one of the vulture's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The wolf has advantage on an attack roll against a creature if at least one of the wolf's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                    return "The wolf has advantage on an attack roll against a creature if at least one of the wolf's allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                case Effect.PETRIFYING_GAZE:
+                    return "If a creature starts its turn within 30 ft. of the basilisk and the two of them can see each other, the basilisk can force the creature to make a DC 12 Constitution saving throw if the basilisk isn't incapacitated. On a failed save, the creature magically begins to turn to stone and is restrained. It must repeat the saving throw at the end of its next turn. On a success, the effect ends. On a failure, the creature is petrified until freed by the greater restoration spell or other magic.\nA creature that isn't surprised can avert its eyes to avoid the saving throw at the start of its turn. If it does so, it can't see the basilisk until the start of its next turn, when it can avert its eyes again. If it looks at the basilisk in the meantime, it must immediately make the save.\nIf the basilisk sees its reflection within 30 ft. of it in bright light, it mistakes itself for a rival and targets itself with its gaze.";
+                    return "When a creature that can see the medusa's eyes starts its turn within 30 ft. of the medusa, the medusa can force it to make a DC 14 Constitution saving throw if the medusa isn't incapacitated and can see the creature. If the saving throw fails by 5 or more, the creature is instantly petrified. Otherwise, a creature that fails the save begins to turn to stone and is restrained. The restrained creature must repeat the saving throw at the end of its next turn, becoming petrified on a failure or ending the effect on a success. The petrification lasts until the creature is freed by the greater restoration spell or other magic.\nUnless surprised, a creature can avert its eyes to avoid the saving throw at the start of its turn. If the creature does so, it can't see the medusa until the start of its next turn, when it can avert its eyes again. If the creature looks at the medusa in the meantime, it must immediately make the save.\nIf the medusa sees itself reflected on a polished surface within 30 ft. of it and in an area of bright light, the medusa is, due to its curse, affected by its own gaze.";
+                case Effect.POUNCE:
+                    return "If the lion moves at least 20 ft. straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the lion can make one bite attack against it as a bonus action.";
+                    return "If the panther moves at least 20 ft. straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 12 Strength saving throw or be knocked prone. If the target is prone, the panther can make one bite attack against it as a bonus action.";
+                    return "If the tiger moves at least 20 ft. straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the tiger can make one bite attack against it as a bonus action.";
+                    return "If the tiger moves at least 20 ft. straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the tiger can make one bite attack against it as a bonus action.";
+                    return "If the weretiger moves at least 15 feet straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the weretiger can make one bite attack against it as a bonus action.";
+                    return "If the weretiger moves at least 15 feet straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the weretiger can make one bite attack against it as a bonus action.";
+                case Effect.PROBING_TELEPATHY:
+                    return "If a creature communicates telepathically with the aboleth, the aboleth learns the creature's greatest desires if the aboleth can see the creature.";
+                case Effect.RAMPAGE:
+                    return "When the hyena reduces a creature to 0 hit points with a melee attack on its turn, the hyena can take a bonus action to move up to half its speed and make a bite attack.";
+                    return "When the gnoll reduces a creature to 0 hit points with a melee attack on its turn, the gnoll can take a bonus action to move up to half its speed and make a bite attack.";
+                case Effect.REACTIVE:
+                    return "The marilith can take one reaction on every turn in combat.";
+                case Effect.REACTIVE_HEADS:
+                    return "For each head the hydra has beyond one, it gets an extra reaction that can be used only for opportunity attacks.";
+                case Effect.RECKLESS:
+                    return "At the start of its turn, the berserker can gain advantage on all melee weapon attack rolls during that turn, but attack rolls against it have advantage until the start of its next turn.";
+                    return "At the start of its turn, the minotaur can gain advantage on all melee weapon attack rolls it makes during that turn, but attack rolls against it have advantage until the start of its next turn.";
+                case Effect.REFLECTIVE_CARAPACE:
+                    return "Any time the tarrasque is targeted by a magic missile spell, a line spell, or a spell that requires a ranged attack roll, roll a d6. On a 1 to 5, the tarrasque is unaffected. On a 6, the tarrasque is unaffected, and the effect is reflected back at the caster as though it originated from the tarrasque, turning the caster into the target.";
+                case Effect.REGENERATION:
+                    return "The oni regains 10 hit points at the start of its turn if it has at least 1 hit point.";
+                    return "The shield guardian regains 10 hit points at the start of its turn if it has at least 1 hit. point.";
+                    return "The troll regains 10 hit points at the start of its turn. If the troll takes acid or fire damage, this trait doesn't function at the start of the troll's next turn. The troll dies only if it starts its turn with 0 hit points and doesn't regenerate.";
+                    return "The vampire regains 20 hit points at the start of its turn if it has at least 1 hit point and isn't in sunlight or running water. If the vampire takes radiant damage or damage from holy water, this trait doesn't function at the start of the vampire's next turn.";
+                    return "The vampire regains 20 hit points at the start of its turn if it has at least 1 hit point and isn't in sunlight or running water. If the vampire takes radiant damage or damage from holy water, this trait doesn't function at the start of the vampire's next turn.";
+                    return "The vampire regains 20 hit points at the start of its turn if it has at least 1 hit point and isn't in sunlight or running water. If the vampire takes radiant damage or damage from holy water, this trait doesn't function at the start of the vampire's next turn.";
+                    return "The vampire regains 10 hit points at the start of its turn if it has at least 1 hit point and isn't in sunlight or running water. If the vampire takes radiant damage or damage from holy water, this trait doesn't function at the start of the vampire's next turn.";
+                case Effect.REJUVENATION:
+                    return "If it dies, the naga returns to life in 1d6 days and regains all its hit points. Only a wish spell can prevent this trait from functioning.";
+                    return "If it has a phylactery, a destroyed lich gains a new body in 1d10 days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the phylactery.";
+                    return "A destroyed mummy lord gains a new body in 24 hours if its heart is intact, regaining all its hit points and becoming active again. The new body appears within 5 feet of the mummy lord's heart.";
+                    return "If it dies, the naga returns to life in 1d6 days and regains all its hit points. Only a wish spell can prevent this trait from functioning.";
+                case Effect.RELENTLESS:
+                    return "If the boar takes 7 damage or less that would reduce it to 0 hit points, it is reduced to 1 hit point instead.";
+                    return "If the boar takes 10 damage or less that would reduce it to 0 hit points, it is reduced to 1 hit point instead.";
+                    return "If the wereboar takes 14 damage or less that would reduce it to 0 hit points, it is reduced to 1 hit point instead.";
+                    return "If the wereboar takes 14 damage or less that would reduce it to 0 hit points, it is reduced to 1 hit point instead.";
+                    return "If the wereboar takes 14 damage or less that would reduce it to 0 hit points, it is reduced to 1 hit point instead.";
+                case Effect.RUNNING_LEAP:
+                    return "With a 10-foot running start, the lion can long jump up to 25 ft..";
+                case Effect.RUST_METAL:
+                    return "Any nonmagical weapon made of metal that hits the rust monster corrodes. After dealing damage, the weapon takes a permanent and cumulative -1 penalty to damage rolls. If its penalty drops to -5, the weapon is destroyed. Non magical ammunition made of metal that hits the rust monster is destroyed after dealing damage.";
+                case Effect.SENSE_MAGIC:
+                    return "The chuul senses magic within 120 feet of it at will. This trait otherwise works like the detect magic spell but isn't itself magical.";
+                case Effect.SHADOW_STEALTH:
+                    return "While in dim light or darkness, the shadow can take the Hide action as a bonus action. Its stealth bonus is also improved to +6.";
+                case Effect.SHAPECHANGER:
+                    return "The doppelganger can use its action to polymorph into a Small or Medium humanoid it has seen, or back into its true form. Its statistics, other than its size, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The imp can use its action to polymorph into a beast form that resembles a rat (speed 20 ft.), a raven (20 ft., fly 60 ft.), or a spider (20 ft., climb 20 ft.), or back into its true form. Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The mimic can use its action to polymorph into an object or back into its true, amorphous form. Its statistics are the same in each form. Any equipment it is wearing or carrying isn 't transformed. It reverts to its true form if it dies.";
+                    return "The quasit can use its action to polymorph into a beast form that resembles a bat (speed 10 ft. fly 40 ft.), a centipede (40 ft., climb 40 ft.), or a toad (40 ft., swim 40 ft.), or back into its true form . Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed . It reverts to its true form if it dies.";
+                    return "The fiend can use its action to polymorph into a Small or Medium humanoid, or back into its true form. Without wings, the fiend loses its flying speed. Other than its size and speed, its statistics are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "If the vampire isn't in sun light or running water, it can use its action to polymorph into a Tiny bat or a Medium cloud of mist, or back into its true form.\nWhile in bat form, the vampire can't speak, its walking speed is 5 feet, and it has a flying speed of 30 feet. Its statistics, other than its size and speed, are unchanged. Anything it is wearing transforms with it, but nothing it is carrying does. It reverts to its true form if it dies.\nWhile in mist form, the vampire can't take any actions, speak, or manipulate objects. It is weightless, has a flying speed of 20 feet, can hover, and can enter a hostile creature's space and stop there. In addition, if air can pass through a space, the mist can do so without squeezing, and it can't pass through water. It has advantage on Strength, Dexterity, and Constitution saving throws, and it is immune to all nonmagical damage, except the damage it takes from sunlight.";
+                    return "If the vampire isn't in sun light or running water, it can use its action to polymorph into a Tiny bat or a Medium cloud of mist, or back into its true form.\nWhile in bat form, the vampire can't speak, its walking speed is 5 feet, and it has a flying speed of 30 feet. Its statistics, other than its size and speed, are unchanged. Anything it is wearing transforms with it, but nothing it is carrying does. It reverts to its true form if it dies.\nWhile in mist form, the vampire can't take any actions, speak, or manipulate objects. It is weightless, has a flying speed of 20 feet, can hover, and can enter a hostile creature's space and stop there. In addition, if air can pass through a space, the mist can do so without squeezing, and it can't pass through water. It has advantage on Strength, Dexterity, and Constitution saving throws, and it is immune to all nonmagical damage, except the damage it takes from sunlight.";
+                    return "If the vampire isn't in sun light or running water, it can use its action to polymorph into a Tiny bat or a Medium cloud of mist, or back into its true form.\nWhile in bat form, the vampire can't speak, its walking speed is 5 feet, and it has a flying speed of 30 feet. Its statistics, other than its size and speed, are unchanged. Anything it is wearing transforms with it, but nothing it is carrying does. It reverts to its true form if it dies.\nWhile in mist form, the vampire can't take any actions, speak, or manipulate objects. It is weightless, has a flying speed of 20 feet, can hover, and can enter a hostile creature's space and stop there. In addition, if air can pass through a space, the mist can do so without squeezing, and it can't pass through water. It has advantage on Strength, Dexterity, and Constitution saving throws, and it is immune to all nonmagical damage, except the damage it takes from sunlight.";
+                    return "The werebear can use its action to polymorph into a Large bear-humanoid hybrid or into a Large bear, or back into its true form, which is humanoid. Its statistics, other than its size and AC, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The werebear can use its action to polymorph into a Large bear-humanoid hybrid or into a Large bear, or back into its true form, which is humanoid. Its statistics, other than its size and AC, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The werebear can use its action to polymorph into a Large bear-humanoid hybrid or into a Large bear, or back into its true form, which is humanoid. Its statistics, other than its size and AC, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The wereboar can use its action to polymorph into a boar-humanoid hybrid or into a boar, or back into its true form, which is humanoid. Its statistics, other than its AC, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The wereboar can use its action to polymorph into a boar-humanoid hybrid or into a boar, or back into its true form, which is humanoid. Its statistics, other than its AC, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The wereboar can use its action to polymorph into a boar-humanoid hybrid or into a boar, or back into its true form, which is humanoid. Its statistics, other than its AC, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The wererat can use its action to polymorph into a rat-humanoid hybrid or into a giant rat, or back into its true form, which is humanoid. Its statistics, other than its size, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The wererat can use its action to polymorph into a rat-humanoid hybrid or into a giant rat, or back into its true form, which is humanoid. Its statistics, other than its size, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The wererat can use its action to polymorph into a rat-humanoid hybrid or into a giant rat, or back into its true form, which is humanoid. Its statistics, other than its size, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The weretiger can use its action to polymorph into a tiger-humanoid hybrid or into a tiger, or back into its true form, which is humanoid. Its statistics, other than its size, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The weretiger can use its action to polymorph into a tiger-humanoid hybrid or into a tiger, or back into its true form, which is humanoid. Its statistics, other than its size, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The weretiger can use its action to polymorph into a tiger-humanoid hybrid or into a tiger, or back into its true form, which is humanoid. Its statistics, other than its size, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The werewolf can use its action to polymorph into a wolf-humanoid hybrid or into a wolf, or back into its true form, which is humanoid. Its statistics, other than its AC, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The werewolf can use its action to polymorph into a wolf-humanoid hybrid or into a wolf, or back into its true form, which is humanoid. Its statistics, other than its AC, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                    return "The werewolf can use its action to polymorph into a wolf-humanoid hybrid or into a wolf, or back into its true form, which is humanoid. Its statistics, other than its AC, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                case Effect.SHARK_TELEPATHY:
+                    return "The sahuagin can magically command any shark within 120 feet of it, using a limited telepathy.";
+                case Effect.SHIELDED_MIND:
+                    return "The couatl is immune to scrying and to any effect that would sense its emotions, read its thoughts, or detect its location.";
+                case Effect.SIEGE_MONSTER:
+                    return "The elemental deals double damage to objects and structures.";
+                    return "The kraken deals double damage to objects and structures.";
+                    return "The tarrasque deals double damage to objects and structures.";
+                    return "The treant deals double damage to objects and structures.";
+                case Effect.SNEAK_ATTACK_1_TURN:
+                    return "The assassin deals an extra 13 (4d6) damage when it hits a target with a weapon attack and has advantage on the attack roll, or when the target is within 5 ft. of an ally of the assassin that isn't incapacitated and the assassin doesn't have disadvantage on the attack roll.";
+                    return "The spy deals an extra 7 (2d6) damage when it hits a target with a weapon attack and has advantage on the attack roll, or when the target is within 5 ft. of an ally of the spy that isn't incapacitated and the spy doesn't have disadvantage on the attack roll.";
+                case Effect.SNOW_CAMOUFLAGE:
+                    return "The wolf has advantage on Dexterity (Stealth) checks made to hide in snowy terrain.";
+                case Effect.SPEAK_WITH_BEASTS_AND_PLANTS:
+                    return "The dryad can communicate with beasts and plants as if they shared a language.";
+                case Effect.SPELL_STORING:
+                    return "A spellcaster who wears the shield guardian's amulet can cause the guardian to store one spell of 4th level or lower. To do so, the wearer must cast the spell on the guardian. The spell has no effect but is stored within the guardian. When commanded to do so by the wearer or when a situation arises that was predefined by the spellcaster, the guardian casts the stored spell with any parameters set by the original caster, requiring no components. When the spell is cast or a new spell is stored, any previously stored spell is lost.";
+                case Effect.SPELLCASTING:
+                    return "The acolyte is a 1st-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 12, +4 to hit with spell attacks). The acolyte has following cleric spells prepared:\n\n- Cantrips (at will): light, sacred flame, thaumaturgy\n- 1st level (3 slots): bless, cure wounds, sanctuary";
+                    return "The sphinx is a 12th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 18, +10 to hit with spell attacks). It requires no material components to cast its spells. The sphinx has the following cleric spells prepared:\n\n- Cantrips (at will): sacred flame, spare the dying, thaumaturgy\n- 1st level (4 slots): command, detect evil and good, detect magic\n- 2nd level (3 slots): lesser restoration, zone of truth\n- 3rd level (3 slots): dispel magic, tongues\n- 4th level (3 slots): banishment, freedom of movement\n- 5th level (2 slots): flame strike, greater restoration\n- 6th level (1 slot): heroes' feast";
+                    return "The archmage is an 18th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 17, +9 to hit with spell attacks). The archmage can cast disguise self and invisibility at will and has the following wizard spells prepared:\n\n- Cantrips (at will): fire bolt, light, mage hand, prestidigitation, shocking grasp\n- 1st level (4 slots): detect magic, identify, mage armor*, magic missile\n- 2nd level (3 slots): detect thoughts, mirror image, misty step\n- 3rd level (3 slots): counterspell, fly, lightning bolt\n- 4th level (3 slots): banishment, fire shield, stoneskin*\n- 5th level (3 slots): cone of cold, scrying, wall of force\n- 6th level (1 slot): globe of invulnerability\n- 7th level (1 slot): teleport\n- 8th level (1 slot): mind blank*\n- 9th level (1 slot): time stop\n* The archmage casts these spells on itself before combat.";
+                    return "The fanatic is a 4th-level spellcaster. Its spell casting ability is Wisdom (spell save DC 11, +3 to hit with spell attacks). The fanatic has the following cleric spells prepared:\n\nCantrips (at will): light, sacred flame, thaumaturgy\n- 1st level (4 slots): command, inflict wounds, shield of faith\n- 2nd level (3 slots): hold person, spiritual weapon";
+                    return "The druid is a 4th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 12, +4 to hit with spell attacks). It has the following druid spells prepared:\n\n- Cantrips (at will): druidcraft, produce flame, shillelagh\n- 1st level (4 slots): entangle, longstrider, speak with animals, thunderwave\n- 2nd level (3 slots): animal messenger, barkskin";
+                    return "The naga is an 11th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 16, +8 to hit with spell attacks), and it needs only verbal components to cast its spells. It has the following cleric spells prepared:\n\n- Cantrips (at will): mending, sacred flame, thaumaturgy\n- 1st level (4 slots): command, cure wounds, shield of faith\n- 2nd level (3 slots): calm emotions, hold person\n- 3rd level (3 slots): bestow curse, clairvoyance\n- 4th level (3 slots): banishment, freedom of movement\n- 5th level (2 slots): flame strike, geas\n- 6th level (1 slot): true seeing";
+                    return "The sphinx is a 9th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 16, +8 to hit with spell attacks). It requires no material components to cast its spells. The sphinx has the following wizard spells prepared:\n\n- Cantrips (at will): mage hand, minor illusion, prestidigitation\n- 1st level (4 slots): detect magic, identify, shield\n- 2nd level (3 slots): darkness, locate object, suggestion\n- 3rd level (3 slots): dispel magic, remove curse, tongues\n- 4th level (3 slots): banishment, greater invisibility\n- 5th level (1 slot): legend lore";
+                    return "The lich is an 18th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 20, +12 to hit with spell attacks). The lich has the following wizard spells prepared:\n\n- Cantrips (at will): mage hand, prestidigitation, ray of frost\n- 1st level (4 slots): detect magic, magic missile, shield, thunderwave\n- 2nd level (3 slots): acid arrow, detect thoughts, invisibility, mirror image\n- 3rd level (3 slots): animate dead, counterspell, dispel magic, fireball\n- 4th level (3 slots): blight, dimension door\n- 5th level (3 slots): cloudkill, scrying\n- 6th level (1 slot): disintegrate, globe of invulnerability\n- 7th level (1 slot): finger of death, plane shift\n- 8th level (1 slot): dominate monster, power word stun\n- 9th level (1 slot): power word kill";
+                    return "The mage is a 9th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 14, +6 to hit with spell attacks). The mage has the following wizard spells prepared:\n\n- Cantrips (at will): fire bolt, light, mage hand, prestidigitation\n- 1st level (4 slots): detect magic, mage armor, magic missile, shield\n- 2nd level (3 slots): misty step, suggestion\n- 3rd level (3 slots): counterspell, fireball, fly\n- 4th level (3 slots): greater invisibility, ice storm\n- 5th level (1 slot): cone of cold";
+                    return "The mummy lord is a 10th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 17, +9 to hit with spell attacks). The mummy lord has the following cleric spells prepared:\n\n- Cantrips (at will): sacred flame, thaumaturgy\n- 1st level (4 slots): command, guiding bolt, shield of faith\n- 2nd level (3 slots): hold person, silence, spiritual weapon\n- 3rd level (3 slots): animate dead, dispel magic\n- 4th level (3 slots): divination, guardian of faith\n- 5th level (2 slots): contagion, insect plague\n- 6th level (1 slot): harm";
+                    return "The priest is a 5th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 13, +5 to hit with spell attacks). The priest has the following cleric spells prepared:\n\n- Cantrips (at will): light, sacred flame, thaumaturgy\n- 1st level (4 slots): cure wounds, guiding bolt, sanctuary\n- 2nd level (3 slots): lesser restoration, spiritual weapon\n- 3rd level (2 slots): dispel magic, spirit guardians";
+                    return "The naga is a 10th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 14, +6 to hit with spell attacks), and it needs only verbal components to cast its spells. It has the following wizard spells prepared:\n\n- Cantrips (at will): mage hand, minor illusion, ray of frost\n- 1st level (4 slots): charm person, detect magic, sleep\n- 2nd level (3 slots): detect thoughts, hold person\n- 3rd level (3 slots): lightning bolt, water breathing\n- 4th level (3 slots): blight, dimension door\n- 5th level (2 slots): dominate person";
+                case Effect.SPIDER_CLIMB:
+                    return "The pudding can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The drider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The ettercap can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The jelly can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The roper can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The spider can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The swarm can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The vampire can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The vampire can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The vampire can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                    return "The vampire can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                case Effect.STANDING_LEAP:
+                    return "The bulette's long jump is up to 30 ft. and its high jump is up to 15 ft., with or without a running start.";
+                    return "The frog's long jump is up to 10 ft. and its high jump is up to 5 ft., with or without a running start.";
+                    return "The frog's long jump is up to 20 ft. and its high jump is up to 10 ft., with or without a running start.";
+                    return "The toad's long jump is up to 20 ft. and its high jump is up to 10 ft., with or without a running start.";
+                case Effect.STEADFAST:
+                    return "The devil can't be frightened while it can see an allied creature within 30 feet of it.";
+                case Effect.STENCH:
+                    return "Any creature that starts its turn within 5 ft. of the ghast must succeed on a DC 10 Constitution saving throw or be poisoned until the start of its next turn. On a successful saving throw, the creature is immune to the ghast's Stench for 24 hours.";
+                    return "Any creature that starts its turn within 10 feet of the hezrou must succeed on a DC 14 Constitution saving throw or be poisoned until the start of its next turn. On a successful saving throw, the creature is immune to the hezrou's stench for 24 hours.";
+                case Effect.STONE_CAMOUFLAGE:
+                    return "The gnome has advantage on Dexterity (Stealth) checks made to hide in rocky terrain.";
+                    return "The grick has advantage on Dexterity (Stealth) checks made to hide in rocky terrain.";
+                    return "The grimlock has advantage on Dexterity (Stealth) checks made to hide in rocky terrain.";
+                    return "The giant has advantage on Dexterity (Stealth) checks made to hide in rocky terrain.";
+                    return "The xorn has advantage on Dexterity (Stealth) checks made to hide in rocky terrain.";
+                case Effect.SUNLIGHT_SENSITIVITY:
+                    return "While in sunlight, the drider has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight.";
+                    return "While in sunlight, the drow has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight.";
+                    return "While in sunlight, the duergar has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight.";
+                    return "While in sunlight, the kobold has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight.";
+                    return "While in sunlight, the specter has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight.";
+                    return "While in sunlight, the wight has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight.";
+                    return "While in sunlight, the wraith has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight.";
+                case Effect.SUNLIGHT_WEAKNESS:
+                    return "While in sunlight, the shadow has disadvantage on attack rolls, ability checks, and saving throws.";
+                case Effect.SURE_FOOTED:
+                    return "The goat has advantage on Strength and Dexterity saving throws made against effects that would knock it prone.";
+                    return "The goat has advantage on Strength and Dexterity saving throws made against effects that would knock it prone.";
+                    return "The mule has advantage on Strength and Dexterity saving throws made against effects that would knock it prone.";
+                case Effect.SURPRISE_ATTACK:
+                    return "If the bugbear surprises a creature and hits it with an attack during the first round of combat, the target takes an extra 7 (2d6) damage from the attack.";
+                    return "If the doppelganger surprises a creature and hits it with an attack during the first round of combat, the target takes an extra 10 (3d6) damage from the attack.";
+                case Effect.SWARM:
+                    return "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny bat. The swarm can't regain hit points or gain temporary hit points.";
+                    return "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny insect. The swarm can't regain hit points or gain temporary hit points.";
+                    return "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny insect. The swarm can't regain hit points or gain temporary hit points.";
+                    return "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny insect. The swarm can't regain hit points or gain temporary hit points.";
+                    return "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny snake. The swarm can't regain hit points or gain temporary hit points.";
+                    return "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny quipper. The swarm can't regain hit points or gain temporary hit points.";
+                    return "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny rat. The swarm can't regain hit points or gain temporary hit points.";
+                    return "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny raven. The swarm can't regain hit points or gain temporary hit points.";
+                    return "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny insect. The swarm can't regain hit points or gain temporary hit points.";
+                    return "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny insect. The swarm can't regain hit points or gain temporary hit points.";
+                case Effect.TAIL_SPIKE_REGROWTH:
+                    return "The manticore has twenty-four tail spikes. Used spikes regrow when the manticore finishes a long rest.";
+                case Effect.TELEPATHIC_BOND:
+                    return "While the homunculus is on the same plane of existence as its master, it can magically convey what it senses to its master, and the two can communicate telepathically.";
+                    return "The fiend ignores the range restriction on its telepathy when communicating with a creature it has charmed. The two don't even need to be on the same plane of existence.";
+                case Effect.TRAMPLING_CHARGE_ELEPHANT:
+                    return "If the elephant moves at least 20 ft. straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 12 Strength saving throw or be knocked prone. If the target is prone, the elephant can make one stomp attack against it as a bonus action.";
+                case Effect.TRAMPLING_CHARGE_GORGON:
+                    return "If the gorgon moves at least 20 feet straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 16 Strength saving throw or be knocked prone. If the target is prone, the gorgon can make one attack with its hooves against it as a bonus action.";
+                case Effect.TRAMPLING_CHARGE_HORSE:
+                    return "If the horse moves at least 20 ft. straight toward a creature and then hits it with a hooves attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the horse can make another attack with its hooves against it as a bonus action.";
+                case Effect.TRAMPLING_CHARGE_MAMMOTH:
+                    return "If the mammoth moves at least 20 ft. straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 18 Strength saving throw or be knocked prone. If the target is prone, the mammoth can make one stomp attack against it as a bonus action.";
+                case Effect.TRAMPLING_CHARGE_TRICERATOS:
+                    return "If the triceratops moves at least 20 ft. straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the triceratops can make one stomp attack against it as a bonus action.";
+                case Effect.TRANSPARENT:
+                    return "Even when in plain sight, it takes a successful DC 15 Wisdom (Perception) check to spot a cube that has neither moved nor attacked. A creature that tries to enter its space while unaware is surprised.";
+                case Effect.TREASURE_SENSE:
+                    return "Can pinpoint, by scent, the location of precious metals and stones, such as coins and gems, within 60 ft. of it.";
+                case Effect.TREE_STRIDE:
+                    return "Once on her turn, it can use 10 ft. of her movement to step magically into one living tree within her reach and emerge from a second living tree within 60 ft. of the first tree, appearing in an unoccupied space within 5 ft. of the second tree. Both trees must be large or bigger.";
+                case Effect.TUNNELER:
+                    return "Can burrow through solid rock at half its burrow speed and leaves a 10-foot-diameter tunnel in its wake.";
+                case Effect.TURN_DEFIANCE:
+                    return "Itself and any ghouls within 30 ft. of it have advantage on saving throws against effects that turn undead.";
+                case Effect.TURN_RESISTANCE:
+                    return "Has advantage on saving throws against any effect that turns undead.";
+                case Effect.TWO_HEADED:
+                    return "Has advantage on Wisdom (Perception) checks and on saving throws against being blinded, charmed, deafened, frightened, stunned, or knocked unconscious.";
+                case Effect.UNDEAD_FORTITUDE:
+                    return "If damage reduces the undead to 0 hit points, it must make a Constitution saving throw with a DC of 5+the damage taken, unless the damage is radiant or from a critical hit. On a success, the undead drops to 1 hit point instead.";
+                case Effect.UNDERWATER_CAMOUFLAGE:
+                    return "Has advantage on Dexterity (Stealth) checks made while underwater.";
+                case Effect.VAMPIRE_WEAKNESSES:
+                    return "The vampire has the following flaws:\nForbiddance. The vampire can't enter a residence without an invitation from one of the occupants.\nHarmed by Running Water. The vampire takes 20 acid damage if it ends its turn in running water.\nStake to the Heart. If a piercing weapon made of wood is driven into the vampire's heart while the vampire is incapacitated in its resting place, the vampire is paralyzed until the stake is removed.\nSunlight Hypersensitivity. The vampire takes 20 radiant damage when it starts its turn in sunlight. While in sunlight, it has disadvantage on attack rolls and ability checks.";
+                case Effect.VARIABLE_ILLUMINATION:
+                    return "Sheds bright light in a 5- to 20-foot radius and dim light for an additional number of ft. equal to the chosen radius. Can alter the radius as a bonus action.";
+                case Effect.WAKEFUL:
+                    return "At least one head is always awake.";
+                case Effect.WATER_BREATHING:
+                    return "Can breathe only underwater.";
+                case Effect.WATER_FORM:
+                    return "Can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing.";
+                case Effect.WATER_SUSCEPTIBILITY:
+                    return "For every 5 ft. it moves in water, or for every gallon of water splashed on it, it takes 1 cold damage.";
+                case Effect.WEB_SENSE:
+                    return "While in contact with a web, knows the exact location of any other creature in contact with the same web.";
+                case Effect.WEB_WALKER:
+                    return "Ignores movement restrictions caused by webbing.";
+                default:
+                    return Enum.GetName(typeof(Effect), effect) + ": (Description missing)";
+            }
+        }
     }
 
     public static class FeatTextResource {

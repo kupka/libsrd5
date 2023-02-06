@@ -827,7 +827,7 @@ namespace srd5 {
                     new Attack[] { Attacks.TarrasqueBite, Attacks.TarrasqueHorns, Attacks.TarrasqueTail, Attacks.TarrasqueClaw, Attacks.TarrasqueClaw },
                     Attacks.None, Size.GARGANTUAN, 0
                 );
-                tarrasque.AddEffects(Effect.LEGENDARY_RESISTANCE, Effect.LEGENDARY_RESISTANCE, Effect.LEGENDARY_RESISTANCE, Effect.MAGIC_RESISTANCE, Effect.REFLECTIVE_CARAPACE, Effect.SIEGE_MONSTER);
+                tarrasque.AddFeats(Feat.LEGENDARY_RESISTANCE, Feat.MAGIC_RESISTANCE, Feat.REFLECTIVE_CARAPACE, Feat.SIEGE_MONSTER);
                 tarrasque.AddEffects(Effect.IMMUNITY_FIRE, Effect.IMMUNITY_POISON, Effect.IMMUNITY_NONMAGIC);
                 tarrasque.AddEffects(Effect.IMMUNITY_CHARMED, Effect.IMMUNITY_FRIGHTENED, Effect.IMMUNITY_PARALYZED, Effect.IMMUNITY_POISONED);
 

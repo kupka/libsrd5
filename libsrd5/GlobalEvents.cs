@@ -209,5 +209,20 @@ namespace srd5 {
             if (Handlers == null) return;
             Handlers(EventTypes.EFFECT_ACTIVATED, new EffectActivated(source, effect));
         }
+
+        public class FeatActivated : EventArgs {
+            public Combattant Source { get; private set; }
+            public Feat Feat { get; private set; }
+
+            public FeatActivated(Combattant source, Feat feat) {
+                Source = source;
+                Feat = feat;
+            }
+        }
+
+        public static void ActivateFeat(Combattant source, Feat feat) {
+            if (Handlers == null) return;
+            Handlers(EventTypes.EFFECT_ACTIVATED, new FeatActivated(source, feat));
+        }
     }
 }

@@ -213,8 +213,8 @@ namespace srd5 {
                 int missilesTotal = (int)slot + 2;
                 foreach (Combattant possibleTarget in targets) {
                     Combattant target = possibleTarget;
-                    if (target.HasEffect(Effect.REFLECTIVE_CARAPACE)) {
-                        GlobalEvents.ActivateEffect(target, Effect.REFLECTIVE_CARAPACE);
+                    if (target.HasFeat(Feat.REFLECTIVE_CARAPACE)) {
+                        GlobalEvents.ActivateFeat(target, Feat.REFLECTIVE_CARAPACE);
                         GlobalEvents.AffectBySpell(caster, ID.MAGIC_MISSILE, target, false);
                         if (Dice.D6.Value == 6) {
                             target = caster;

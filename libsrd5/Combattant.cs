@@ -144,6 +144,8 @@ namespace srd5 {
         public Size Size { get; internal set; }
         public Effect[] Effects { get { return effects; } }
         private Effect[] effects = new Effect[0];
+        public Feat[] Feats { get { return feats; } }
+        private Feat[] feats = new Feat[0];
         public ConditionType[] Conditions { get { return conditions; } }
         private ConditionType[] conditions = new ConditionType[0];
         public Proficiency[] Proficiencies { get { return proficiencies; } }
@@ -178,6 +180,25 @@ namespace srd5 {
                 effect.Unapply(this);
         }
 
+        public bool HasEffect(Effect effect) {
+            return Array.IndexOf(effects, effect) >= 0;
+        }
+
+        public void AddFeat(Feat feat) {
+            if (Utils.PushUnique<Feat>(ref feats, feat))
+                feat.Apply(this);
+        }
+
+        public void AddFeats(params Feat[] feats) {
+            foreach (Feat feat in feats) {
+                AddFeat(feat);
+            }
+        }
+
+        public bool HasFeat(Feat feat) {
+            return Array.IndexOf(feats, feat) >= 0;
+        }
+
         public bool AddCondition(ConditionType condition) {
             // don't add if immune
             if (HasEffect(srd5.Effects.Immunity(condition))) return false;
@@ -199,10 +220,6 @@ namespace srd5 {
 
         internal void AddAvailableSpells(AvailableSpells spells) {
             Utils.Push<AvailableSpells>(ref availableSpells, spells);
-        }
-
-        public bool HasEffect(Effect type) {
-            return Array.IndexOf(effects, type) >= 0;
         }
 
         public bool IsImmune(DamageType type) {
@@ -303,7 +320,7 @@ namespace srd5 {
         /// </summary>
         public bool DC(object source, int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
             if (source != null) {
-                if (source is Spells.ID && HasEffect(Effect.MAGIC_RESISTANCE))
+                if (source is Spells.ID && HasFeat(Feat.MAGIC_RESISTANCE))
                     advantage = true;
             }
             Ability ability = GetAbility(type);
@@ -384,8 +401,8 @@ namespace srd5 {
             if (ranged && attack.RangeLong < distance) return false;
             if (!ranged && attack.Reach < distance) return false;
             // special effects
-            if (spell && ranged && target.HasEffect(Effect.REFLECTIVE_CARAPACE)) {
-                GlobalEvents.ActivateEffect(target, Effect.REFLECTIVE_CARAPACE);
+            if (spell && ranged && target.HasFeat(Feat.REFLECTIVE_CARAPACE)) {
+                GlobalEvents.ActivateFeat(target, Feat.REFLECTIVE_CARAPACE);
                 if (Dice.D6.Value == 6) { // reflect back on 6
                     this.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll());
                 }

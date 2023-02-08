@@ -94,6 +94,389 @@ namespace srd5 {
                     return "Danger Sense";
                 case Feat.FRENZY:
                     return "Frenzy";
+                // Monster Feats
+                case Feat.ABERRANT_GROUND:
+                    return "Aberrant Ground";
+                case Feat.ACID_ABSORPTION:
+                    return "Acid Absorption";
+                case Feat.ADHESIVE:
+                    return "Adhesive (Object Form Only)";
+                case Feat.AGGRESSIVE:
+                    return "Aggressive";
+                case Feat.AIR_FORM:
+                    return "Air Form";
+                case Feat.AMBUSHER:
+                    return "Ambusher";
+                case Feat.AMORPHOUS:
+                    return "Amorphous";
+                case Feat.AMPHIBIOUS:
+                    return "Amphibious";
+                case Feat.ANGELIC_WEAPONS_4D8:
+                case Feat.ANGELIC_WEAPONS_5D8:
+                case Feat.ANGELIC_WEAPONS_6D8:
+                    return "Angelic Weapons";
+                case Feat.ANTIMAGIC_SUSCEPTIBILITY:
+                    return "Antimagic Susceptibility";
+                case Feat.ASSASSINATE:
+                    return "Assassinate";
+                case Feat.AVERSION_OF_FIRE:
+                    return "Aversion of Fire";
+                case Feat.BARBED_HIDE:
+                    return "Barbed Hide";
+                case Feat.BEAST_OF_BURDEN:
+                    return "Beast of Burden";
+                case Feat.BERSERK_CLAY_GOLEM:
+                case Feat.BERSERK_FLESH_GOLEM:
+                    return "Berserk";
+                case Feat.BLIND_SENSES:
+                    return "Blind Senses";
+                case Feat.BLOOD_FRENZY:
+                    return "Blood Frenzy";
+                case Feat.BOUND:
+                    return "Bound";
+                case Feat.BRAVE:
+                    return "Brave";
+                case Feat.BRUTE:
+                    return "Brute";
+                case Feat.CHARGE_BOAR:
+                case Feat.CHARGE_CENTAUR:
+                case Feat.CHARGE_ELK:
+                case Feat.CHARGE_GIANT_GOAT:
+                case Feat.CHARGE_GIANT_SEA_HORSE:
+                case Feat.CHARGE_GOAT:
+                case Feat.CHARGE_MINOTAUR:
+                case Feat.CHARGE_MINOTAUR_SKELETON:
+                case Feat.CHARGE_RHINOCEROS:
+                case Feat.CHARGE_UNICORN:
+                    return "Charge";
+                case Feat.CHARGE_WEREBOAR:
+                    return "Charge (Boar or Hybrid Form Only)";
+                case Feat.CONFER_FIRE_RESISTANCE:
+                    return "Confer Fire Resistance";
+                case Feat.CONSUME_LIFE:
+                    return "Consume Life";
+                case Feat.CORRODE_METAL:
+                    return "Corrode Metal";
+                case Feat.CORROSIVE_FORM:
+                    return "Corrosive Form";
+                case Feat.CUNNING_ACTION:
+                    return "Cunning Action";
+                case Feat.DAMAGE_TRANSFER_ATTACHED:
+                case Feat.DAMAGE_TRANSFER_GRAPPLING:
+                    return "Damage Transfer";
+                case Feat.DARK_DEVOTION:
+                    return "Dark Devotion";
+                case Feat.DEATH_BURST_DUST_MEPHIT:
+                case Feat.DEATH_BURST_ICE_MEPHIT:
+                case Feat.DEATH_BURST_MAGMA_MEPHIT:
+                case Feat.DEATH_BURST_MAGMIN:
+                case Feat.DEATH_BURST_STEAM_MEPHIT:
+                    return "Death Burst";
+                case Feat.DEATH_THROES:
+                    return "Death Throes";
+                case Feat.DEVILS_SIGHT:
+                    return "Devil's Sight";
+                case Feat.DIVINE_AWARENESS:
+                    return "Divine Awareness";
+                case Feat.DIVINE_EMINENCE:
+                    return "Divine Eminence";
+                case Feat.DUERGAR_RESILIENCE:
+                    return "Duergar Resilience";
+                case Feat.EARTH_GLIDE:
+                    return "Earth Glide";
+                case Feat.ECHOLOCATION:
+                    return "Echolocation";
+                case Feat.ELEMENTAL_DEMISE_DJINNI:
+                case Feat.ELEMENTAL_DEMISE_EFREETI:
+                    return "Elemental Demise";
+                case Feat.EPHEMERAL:
+                    return "Ephemeral";
+                case Feat.ETHEREAL_JAUNT:
+                    return "Ethereal Jaunt";
+                case Feat.ETHEREAL_SIGHT:
+                    return "Ethereal Sight";
+                case Feat.EVASION:
+                    return "Evasion";
+                case Feat.FALSE_APPEARANCE:
+                    return "False Appearance";
+                case Feat.FAULTLESS_TRACKER:
+                    return "Faultless Tracker";
+                case Feat.FEAR_AURA:
+                    return "Fear Aura";
+                case Feat.FIRE_ABSORPTION:
+                    return "Fire Absorption";
+                case Feat.FIRE_AURA:
+                    return "Fire Aura";
+                case Feat.FIRE_FORM:
+                    return "Fire Form";
+                case Feat.FLYBY:
+                    return "Flyby";
+                case Feat.FREEDOM_OF_MOVEMENT:
+                    return "Freedom of Movement";
+                case Feat.FREEZE:
+                    return "Freeze";
+                case Feat.GIBBERING:
+                    return "Gibbering";
+                case Feat.GNOME_CUNNING:
+                    return "Gnome Cunning";
+                case Feat.GRAPPLER:
+                    return "Grappler";
+                case Feat.GRASPING_TENDRILS:
+                    return "Grasping Tendrils";
+                case Feat.HEATED_BODY_1D10:
+                case Feat.HEATED_BODY_2D6:
+                case Feat.HEATED_BODY_3D6:
+                    return "Heated Body";
+                case Feat.HEATED_WEAPONS:
+                    return "Heated Weapons";
+                case Feat.HELLISH_REJUVENATION:
+                    return "Hellish Rejuvenation";
+                case Feat.HELLISH_WEAPONS:
+                    return "Hellish Weapons";
+                case Feat.HOLD_BREATH_15MIN:
+                case Feat.HOLD_BREATH_1HOUR:
+                case Feat.HOLD_BREATH_30MIN:
+                    return "Hold Breath";
+                case Feat.HORRIFIC_APPEARANCE:
+                    return "Horrific Appearance";
+                case Feat.ICE_WALK:
+                    return "Ice Walk";
+                case Feat.IGNITED_ILLUMINATION:
+                    return "Ignited Illumination";
+                case Feat.ILLUMINATION_10FT:
+                case Feat.ILLUMINATION_30FT:
+                    return "Illumination";
+                case Feat.IMMUTABLE_FORM:
+                    return "Immutable Form";
+                case Feat.INCORPOREAL_MOVEMENT:
+                    return "Incorporeal Movement";
+                case Feat.INNATE_SPELLCASTING_CLOUD_GIANT:
+                case Feat.INNATE_SPELLCASTING_COUATL:
+                case Feat.INNATE_SPELLCASTING_DEEP_GNOME:
+                case Feat.INNATE_SPELLCASTING_DEVA:
+                case Feat.INNATE_SPELLCASTING_DJINNI:
+                case Feat.INNATE_SPELLCASTING_DRIDER:
+                case Feat.INNATE_SPELLCASTING_DROW:
+                case Feat.INNATE_SPELLCASTING_DRYAD:
+                case Feat.INNATE_SPELLCASTING_DUST_MEPHIT:
+                case Feat.INNATE_SPELLCASTING_EFREETI:
+                case Feat.INNATE_SPELLCASTING_GLABREZU:
+                case Feat.INNATE_SPELLCASTING_GREEN_HAG:
+                case Feat.INNATE_SPELLCASTING_ICE_MEPHIT:
+                case Feat.INNATE_SPELLCASTING_LAMIA:
+                case Feat.INNATE_SPELLCASTING_MAGMA_MEPHIT:
+                case Feat.INNATE_SPELLCASTING_NIGHT_HAG:
+                case Feat.INNATE_SPELLCASTING_ONI:
+                case Feat.INNATE_SPELLCASTING_PIT_FIEND:
+                case Feat.INNATE_SPELLCASTING_PLANETAR:
+                case Feat.INNATE_SPELLCASTING_RAKSHASA:
+                case Feat.INNATE_SPELLCASTING_SOLAR:
+                case Feat.INNATE_SPELLCASTING_STEAM_MEPHIT:
+                case Feat.INNATE_SPELLCASTING_STORM_GIANT:
+                case Feat.INNATE_SPELLCASTING_UNICORN:
+                    return "Innate Spellcasting";
+                case Feat.INSCRUTABLE:
+                    return "Inscrutable";
+                case Feat.INVISIBILITY:
+                    return "Invisibility";
+                case Feat.IRON_SCENT:
+                    return "Iron Scent";
+                case Feat.KEEN_HEARING:
+                    return "Keen Hearing";
+                case Feat.KEEN_HEARING_AND_SIGHT:
+                    return "Keen Hearing and Sight";
+                case Feat.KEEN_HEARING_AND_SMELL:
+                    return "Keen Hearing and Smell";
+                case Feat.KEEN_SIGHT:
+                    return "Keen Sight";
+                case Feat.KEEN_SIGHT_AND_SMELL:
+                    return "Keen Sight and Smell";
+                case Feat.KEEN_SMELL:
+                    return "Keen Smell";
+                case Feat.LABYRINTHINE_RECALL:
+                    return "Labyrinthine Recall";
+                case Feat.LEGENDARY_RESISTANCE:
+                    return "Legendary Resistance";
+                case Feat.LIGHTNING_ABSORPTION:
+                    return "Lightning Absorption";
+                case Feat.LIGHT_SENSITIVITY:
+                    return "Light Sensitivity";
+                case Feat.LIMITED_AMPHIBIOUSNESS:
+                    return "Limited Amphibiousness";
+                case Feat.LIMITED_MAGIC_IMMUNITY:
+                    return "Limited Magic Immunity";
+                case Feat.LIMITED_TELEPATHY_OTYUGH:
+                case Feat.LIMITED_TELEPATHY_PSEUDODRAGON:
+                    return "Limited Telepathy";
+                case Feat.MAGIC_RESISTANCE:
+                    return "Magic Resistance";
+                case Feat.MAGIC_WEAPONS:
+                    return "Magic Weapons";
+                case Feat.MARTIAL_ADVANTAGE:
+                    return "Martial Advantage";
+                case Feat.MIMICRY_HAG:
+                case Feat.MIMICRY_RAVEN:
+                    return "Mimicry";
+                case Feat.MISTY_ESCAPE:
+                    return "Misty Escape";
+                case Feat.MUCOUS_CLOUD:
+                    return "Mucous Cloud";
+                case Feat.MULTIPLE_HEADS:
+                    return "Multiple Heads";
+                case Feat.NIGHT_HAG_ITEMS:
+                    return "Night Hag Items";
+                case Feat.NIMBLE_ESCAPE:
+                    return "Nimble Escape";
+                case Feat.OOZE_CUBE:
+                    return "Ooze Cube";
+                case Feat.PACK_TACTICS:
+                    return "Pack Tactics";
+                case Feat.PETRIFYING_GAZE_BASILISK:
+                case Feat.PETRIFYING_GAZE_MEDUSA:
+                    return "Petrifying Gaze";
+                case Feat.POUNCE_LION:
+                case Feat.POUNCE_PANTHER:
+                case Feat.POUNCE_TIGER_13:
+                case Feat.POUNCE_TIGER_14:
+                case Feat.POUNCE_WERETIGER:
+                    return "Pounce";
+                case Feat.PROBING_TELEPATHY:
+                    return "Probing Telepathy";
+                case Feat.RAMPAGE:
+                    return "Rampage";
+                case Feat.REACTIVE:
+                    return "Reactive";
+                case Feat.REACTIVE_HEADS:
+                    return "Reactive Heads";
+                case Feat.RECKLESS:
+                    return "Reckless";
+                case Feat.REFLECTIVE_CARAPACE:
+                    return "Reflective Carapace";
+                case Feat.REGENERATION:
+                    return "Regeneration";
+                case Feat.REJUVENATION_LICH:
+                case Feat.REJUVENATION_MUMMY_LORD:
+                case Feat.REJUVENATION_NAGA:
+                    return "Rejuvenation";
+                case Feat.RELENTLESS_10:
+                case Feat.RELENTLESS_14:
+                case Feat.RELENTLESS_7:
+                    return "Relentless";
+                case Feat.RUNNING_LEAP:
+                    return "Running Leap";
+                case Feat.RUST_METAL:
+                    return "Rust Metal";
+                case Feat.SENSE_MAGIC:
+                    return "Sense Magic";
+                case Feat.SHADOW_STEALTH:
+                    return "Shadow Stealth";
+                case Feat.SHAPECHANGER_DOPPELGANGER:
+                case Feat.SHAPECHANGER_FIEND:
+                case Feat.SHAPECHANGER_IMP:
+                case Feat.SHAPECHANGER_MIMIC:
+                case Feat.SHAPECHANGER_QUASIT:
+                case Feat.SHAPECHANGER_VAMPIRE:
+                case Feat.SHAPECHANGER_WEREBEAST:
+                    return "Shapechanger";
+                case Feat.SHARK_TELEPATHY:
+                    return "Shark Telepathy";
+                case Feat.SHIELDED_MIND:
+                    return "Shielded Mind";
+                case Feat.SIEGE_MONSTER:
+                    return "Siege Monster";
+                case Feat.SNEAK_ATTACK_2D6:
+                case Feat.SNEAK_ATTACK_4D6:
+                    return "Sneak Attack";
+                case Feat.SNOW_CAMOUFLAGE:
+                    return "Snow Camouflage";
+                case Feat.SPEAK_WITH_BEASTS_AND_PLANTS:
+                    return "Speak with Beasts and Plants";
+                case Feat.SPELLCASTING_ACOLYTE:
+                case Feat.SPELLCASTING_ARCHMAGE:
+                case Feat.SPELLCASTING_DRUID:
+                case Feat.SPELLCASTING_FANATIC:
+                case Feat.SPELLCASTING_LICH:
+                case Feat.SPELLCASTING_MAGE:
+                case Feat.SPELLCASTING_MUMMY_LORD:
+                case Feat.SPELLCASTING_NAGA_10:
+                case Feat.SPELLCASTING_NAGA_11:
+                case Feat.SPELLCASTING_SPHINX_12:
+                case Feat.SPELLCASTING_SPHINX_9:
+                    return "Spellcasting";
+                case Feat.SPELL_STORING:
+                    return "Spell Storing";
+                case Feat.SPIDER_CLIMB:
+                    return "Spider Climb";
+                case Feat.STANDING_LEAP_BULETTE:
+                case Feat.STANDING_LEAP_FROG_10FT:
+                case Feat.STANDING_LEAP_FROG_20FT:
+                case Feat.STANDING_LEAP_TOAD:
+                    return "Standing Leap";
+                case Feat.STEADFAST:
+                    return "Steadfast";
+                case Feat.STENCH_GHAST:
+                case Feat.STENCH_HEZROU:
+                    return "Stench";
+                case Feat.STONE_CAMOUFLAGE:
+                    return "Stone Camouflage";
+                case Feat.SUNLIGHT_SENSITIVITY:
+                    return "Sunlight Sensitivity";
+                case Feat.SUNLIGHT_WEAKNESS:
+                    return "Sunlight Weakness";
+                case Feat.SURE_FOOTED:
+                    return "Sure-Footed";
+                case Feat.SURPRISE_ATTACK_BUGBEAR:
+                case Feat.SURPRISE_ATTACK_DOPPELGANGER:
+                    return "Surprise Attack";
+                case Feat.SWARM:
+                    return "Swarm";
+                case Feat.TAIL_SPIKE_REGROWTH:
+                    return "Tail Spike Regrowth";
+                case Feat.TELEPATHIC_BOND_FIEND:
+                case Feat.TELEPATHIC_BOND_HOMUNCULUS:
+                    return "Telepathic Bond";
+                case Feat.TRAMPLING_CHARGE_ELEPHANT:
+                case Feat.TRAMPLING_CHARGE_GORGON:
+                case Feat.TRAMPLING_CHARGE_HORSE:
+                case Feat.TRAMPLING_CHARGE_MAMMOTH:
+                case Feat.TRAMPLING_CHARGE_TRICERATOS:
+                    return "Trampling Charge";
+                case Feat.TRANSPARENT:
+                    return "Transparent";
+                case Feat.TREASURE_SENSE:
+                    return "Treasure Sense";
+                case Feat.TREE_STRIDE:
+                    return "Tree Stride";
+                case Feat.TUNNELER:
+                    return "Tunneler";
+                case Feat.TURN_DEFIANCE:
+                    return "Turn Defiance";
+                case Feat.TURN_RESISTANCE:
+                    return "Turn Resistance";
+                case Feat.TWO_HEADED:
+                    return "Two-Headed";
+                case Feat.TWO_HEADS:
+                    return "Two Heads";
+                case Feat.UNDEAD_FORTITUDE:
+                    return "Undead Fortitude";
+                case Feat.UNDERWATER_CAMOUFLAGE:
+                    return "Underwater Camouflage";
+                case Feat.VAMPIRE_WEAKNESSES:
+                    return "Vampire Weaknesses";
+                case Feat.VARIABLE_ILLUMINATION:
+                    return "Variable Illumination";
+                case Feat.WAKEFUL:
+                    return "Wakeful";
+                case Feat.WATER_BREATHING:
+                    return "Water Breathing";
+                case Feat.WATER_FORM:
+                    return "Water Form";
+                case Feat.WATER_SUSCEPTIBILITY:
+                    return "Water Susceptibility";
+                case Feat.WEB_SENSE:
+                    return "Web Sense";
+                case Feat.WEB_WALKER:
+                    return "Web Walker";
                 default:
                     return Enum.GetName(typeof(Feat), feat) + ": (Name missing)";
             }

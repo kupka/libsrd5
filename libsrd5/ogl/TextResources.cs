@@ -400,8 +400,8 @@ namespace srd5 {
                 case Feat.SPELLCASTING_MUMMY_LORD:
                 case Feat.SPELLCASTING_NAGA_10:
                 case Feat.SPELLCASTING_NAGA_11:
-                case Feat.SPELLCASTING_SPHINX_12:
-                case Feat.SPELLCASTING_SPHINX_9:
+                case Feat.SPELLCASTING_ANDROSPHINX:
+                case Feat.SPELLCASTING_GYNOSPHINX:
                     return "Spellcasting";
                 case Feat.SPELL_STORING:
                     return "Spell Storing";
@@ -923,9 +923,9 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "The naga is a 10th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 14, +6 to hit with spell attacks), and it needs only verbal components to cast its spells. It has the following wizard spells prepared:\n\n- Cantrips (at will): mage hand, minor illusion, ray of frost\n- 1st level (4 slots): charm person, detect magic, sleep\n- 2nd level (3 slots): detect thoughts, hold person\n- 3rd level (3 slots): lightning bolt, water breathing\n- 4th level (3 slots): blight, dimension door\n- 5th level (2 slots): dominate person";
                 case Feat.SPELLCASTING_NAGA_11:
                     return "The naga is an 11th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 16, +8 to hit with spell attacks), and it needs only verbal components to cast its spells. It has the following cleric spells prepared:\n\n- Cantrips (at will): mending, sacred flame, thaumaturgy\n- 1st level (4 slots): command, cure wounds, shield of faith\n- 2nd level (3 slots): calm emotions, hold person\n- 3rd level (3 slots): bestow curse, clairvoyance\n- 4th level (3 slots): banishment, freedom of movement\n- 5th level (2 slots): flame strike, geas\n- 6th level (1 slot): true seeing";
-                case Feat.SPELLCASTING_SPHINX_9:
+                case Feat.SPELLCASTING_GYNOSPHINX:
                     return "The sphinx is a 9th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 16, +8 to hit with spell attacks). It requires no material components to cast its spells. The sphinx has the following wizard spells prepared:\n\n- Cantrips (at will): mage hand, minor illusion, prestidigitation\n- 1st level (4 slots): detect magic, identify, shield\n- 2nd level (3 slots): darkness, locate object, suggestion\n- 3rd level (3 slots): dispel magic, remove curse, tongues\n- 4th level (3 slots): banishment, greater invisibility\n- 5th level (1 slot): legend lore";
-                case Feat.SPELLCASTING_SPHINX_12:
+                case Feat.SPELLCASTING_ANDROSPHINX:
                     return "The sphinx is a 12th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 18, +10 to hit with spell attacks). It requires no material components to cast its spells. The sphinx has the following cleric spells prepared:\n\n- Cantrips (at will): sacred flame, spare the dying, thaumaturgy\n- 1st level (4 slots): command, detect evil and good, detect magic\n- 2nd level (3 slots): lesser restoration, zone of truth\n- 3rd level (3 slots): dispel magic, tongues\n- 4th level (3 slots): banishment, freedom of movement\n- 5th level (2 slots): flame strike, greater restoration\n- 6th level (1 slot): heroes' feast";
                 case Feat.SPIDER_CLIMB:
                     return "Can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";

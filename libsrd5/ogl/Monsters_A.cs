@@ -137,6 +137,9 @@ namespace srd5 {
                 aboleth.AddProficiency(Proficiency.WISDOM);
                 aboleth.AddProficiency(Proficiency.HISTORY);
                 aboleth.AddProficiency(Proficiency.PERCEPTION);
+                aboleth.AddFeat(Feat.AMPHIBIOUS);
+                aboleth.AddFeat(Feat.MUCOUS_CLOUD);
+                aboleth.AddFeat(Feat.PROBING_TELEPATHY);
                 return aboleth;
             }
         }
@@ -145,11 +148,12 @@ namespace srd5 {
         public static Monster Acolyte {
             get {
                 Monster acolyte = new Monster(
-                    Monsters.Type.HUMANOID, Monsters.ID.ACOLYTE, Alignment.NEUTRAL, 10, 10, 10, 10, 14, 11, 10, "2d8", 40, ChallengeRating.QUARTER,
+                    Monsters.Type.HUMANOID, Monsters.ID.ACOLYTE, Alignment.UNALIGNED, 10, 10, 10, 10, 14, 11, 10, "2d8", 40, ChallengeRating.QUARTER,
                     new Attack[] { Attacks.AcolyteClub }, new Attack[] { }, Size.MEDIUM
                 );
                 acolyte.AddProficiency(Proficiency.MEDICINE);
                 acolyte.AddProficiency(Proficiency.RELIGION);
+                acolyte.AddFeat(Feat.SPELLCASTING_ACOLYTE);
                 return acolyte;
             }
         }
@@ -168,6 +172,8 @@ namespace srd5 {
                 adultBlackDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultBlackDragon.AddProficiency(Proficiency.STEALTH);
                 adultBlackDragon.AddEffect(Effect.IMMUNITY_ACID);
+                adultBlackDragon.AddFeat(Feat.AMPHIBIOUS);
+                adultBlackDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultBlackDragon;
             }
         }
@@ -186,6 +192,7 @@ namespace srd5 {
                 adultBlueDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultBlueDragon.AddProficiency(Proficiency.STEALTH);
                 adultBlueDragon.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                adultBlueDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultBlueDragon;
             }
         }
@@ -206,6 +213,7 @@ namespace srd5 {
                 adultBrassDragon.AddProficiency(Proficiency.PERSUASION);
                 adultBrassDragon.AddProficiency(Proficiency.STEALTH);
                 adultBrassDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                adultBrassDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultBrassDragon;
             }
         }
@@ -225,6 +233,8 @@ namespace srd5 {
                 adultBronzeDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultBronzeDragon.AddProficiency(Proficiency.STEALTH);
                 adultBronzeDragon.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                adultBronzeDragon.AddFeat(Feat.AMPHIBIOUS);
+                adultBronzeDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultBronzeDragon;
             }
         }
@@ -244,6 +254,7 @@ namespace srd5 {
                 adultCopperDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultCopperDragon.AddProficiency(Proficiency.STEALTH);
                 adultCopperDragon.AddEffect(Effect.IMMUNITY_ACID);
+                adultCopperDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultCopperDragon;
             }
         }
@@ -264,6 +275,8 @@ namespace srd5 {
                 adultGoldDragon.AddProficiency(Proficiency.PERSUASION);
                 adultGoldDragon.AddProficiency(Proficiency.STEALTH);
                 adultGoldDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                adultGoldDragon.AddFeat(Feat.AMPHIBIOUS);
+                adultGoldDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultGoldDragon;
             }
         }
@@ -286,6 +299,8 @@ namespace srd5 {
                 adultGreenDragon.AddProficiency(Proficiency.STEALTH);
                 adultGreenDragon.AddEffect(Effect.IMMUNITY_POISON);
                 adultGreenDragon.AddEffect(Effect.IMMUNITY_POISONED);
+                adultGreenDragon.AddFeat(Feat.AMPHIBIOUS);
+                adultGreenDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultGreenDragon;
             }
         }
@@ -304,6 +319,7 @@ namespace srd5 {
                 adultRedDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultRedDragon.AddProficiency(Proficiency.STEALTH);
                 adultRedDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                adultRedDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultRedDragon;
             }
         }
@@ -324,6 +340,7 @@ namespace srd5 {
                 adultSilverDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultSilverDragon.AddProficiency(Proficiency.STEALTH);
                 adultSilverDragon.AddEffect(Effect.IMMUNITY_COLD);
+                adultSilverDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultSilverDragon;
             }
         }
@@ -342,6 +359,8 @@ namespace srd5 {
                 adultWhiteDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultWhiteDragon.AddProficiency(Proficiency.STEALTH);
                 adultWhiteDragon.AddEffect(Effect.IMMUNITY_COLD);
+                adultWhiteDragon.AddFeat(Feat.ICE_WALK);
+                adultWhiteDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultWhiteDragon;
             }
         }
@@ -365,6 +384,7 @@ namespace srd5 {
                 airElemental.AddEffect(Effect.IMMUNITY_PRONE);
                 airElemental.AddEffect(Effect.IMMUNITY_RESTRAINED);
                 airElemental.AddEffect(Effect.IMMUNITY_UNCONSCIOUS);
+                airElemental.AddFeat(Feat.AIR_FORM);
                 return airElemental;
             }
         }
@@ -383,6 +403,8 @@ namespace srd5 {
                 ancientBlackDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientBlackDragon.AddProficiency(Proficiency.STEALTH);
                 ancientBlackDragon.AddEffect(Effect.IMMUNITY_ACID);
+                ancientBlackDragon.AddFeat(Feat.AMPHIBIOUS);
+                ancientBlackDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientBlackDragon;
             }
         }
@@ -401,6 +423,7 @@ namespace srd5 {
                 ancientBlueDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientBlueDragon.AddProficiency(Proficiency.STEALTH);
                 ancientBlueDragon.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                ancientBlueDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientBlueDragon;
             }
         }
@@ -421,6 +444,7 @@ namespace srd5 {
                 ancientBrassDragon.AddProficiency(Proficiency.PERSUASION);
                 ancientBrassDragon.AddProficiency(Proficiency.STEALTH);
                 ancientBrassDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                ancientBrassDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientBrassDragon;
             }
         }
@@ -440,6 +464,8 @@ namespace srd5 {
                 ancientBronzeDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientBronzeDragon.AddProficiency(Proficiency.STEALTH);
                 ancientBronzeDragon.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                ancientBronzeDragon.AddFeat(Feat.AMPHIBIOUS);
+                ancientBronzeDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientBronzeDragon;
             }
         }
@@ -459,6 +485,7 @@ namespace srd5 {
                 ancientCopperDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientCopperDragon.AddProficiency(Proficiency.STEALTH);
                 ancientCopperDragon.AddEffect(Effect.IMMUNITY_ACID);
+                ancientCopperDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientCopperDragon;
             }
         }
@@ -479,6 +506,8 @@ namespace srd5 {
                 ancientGoldDragon.AddProficiency(Proficiency.PERSUASION);
                 ancientGoldDragon.AddProficiency(Proficiency.STEALTH);
                 ancientGoldDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                ancientGoldDragon.AddFeat(Feat.AMPHIBIOUS);
+                ancientGoldDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientGoldDragon;
             }
         }
@@ -501,6 +530,8 @@ namespace srd5 {
                 ancientGreenDragon.AddProficiency(Proficiency.STEALTH);
                 ancientGreenDragon.AddEffect(Effect.IMMUNITY_POISON);
                 ancientGreenDragon.AddEffect(Effect.IMMUNITY_POISONED);
+                ancientGreenDragon.AddFeat(Feat.AMPHIBIOUS);
+                ancientGreenDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientGreenDragon;
             }
         }
@@ -519,6 +550,7 @@ namespace srd5 {
                 ancientRedDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientRedDragon.AddProficiency(Proficiency.STEALTH);
                 ancientRedDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                ancientRedDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientRedDragon;
             }
         }
@@ -539,6 +571,7 @@ namespace srd5 {
                 ancientSilverDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientSilverDragon.AddProficiency(Proficiency.STEALTH);
                 ancientSilverDragon.AddEffect(Effect.IMMUNITY_COLD);
+                ancientSilverDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientSilverDragon;
             }
         }
@@ -557,6 +590,8 @@ namespace srd5 {
                 ancientWhiteDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientWhiteDragon.AddProficiency(Proficiency.STEALTH);
                 ancientWhiteDragon.AddEffect(Effect.IMMUNITY_COLD);
+                ancientWhiteDragon.AddFeat(Feat.ICE_WALK);
+                ancientWhiteDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientWhiteDragon;
             }
         }
@@ -579,6 +614,9 @@ namespace srd5 {
                 androsphinx.AddEffect(Effect.IMMUNITY_NONMAGIC);
                 androsphinx.AddEffect(Effect.IMMUNITY_CHARMED);
                 androsphinx.AddEffect(Effect.IMMUNITY_FRIGHTENED);
+                androsphinx.AddFeat(Feat.INSCRUTABLE);
+                androsphinx.AddFeat(Feat.MAGIC_WEAPONS);
+                androsphinx.AddFeat(Feat.SPELLCASTING_ANDROSPHINX);
                 return androsphinx;
             }
         }
@@ -600,6 +638,8 @@ namespace srd5 {
                 animatedArmor.AddEffect(Effect.IMMUNITY_PARALYZED);
                 animatedArmor.AddEffect(Effect.IMMUNITY_PETRIFIED);
                 animatedArmor.AddEffect(Effect.IMMUNITY_POISONED);
+                animatedArmor.AddFeat(Feat.ANTIMAGIC_SUSCEPTIBILITY);
+                animatedArmor.AddFeat(Feat.FALSE_APPEARANCE);
                 return animatedArmor;
             }
         }
@@ -632,7 +672,7 @@ namespace srd5 {
         public static Monster Archmage {
             get {
                 Monster archmage = new Monster(
-                    Monsters.Type.HUMANOID, Monsters.ID.ARCHMAGE, Alignment.NEUTRAL, 10, 14, 12, 20, 15, 16, 12, "18d8+18", 40, 12,
+                    Monsters.Type.HUMANOID, Monsters.ID.ARCHMAGE, Alignment.UNALIGNED, 10, 14, 12, 20, 15, 16, 12, "18d8+18", 40, 12,
                     new Attack[] { Attacks.ArchmageDaggerMelee }, new Attack[] { Attacks.ArchmageDaggerRanged }, Size.MEDIUM
                 );
                 archmage.AddProficiency(Proficiency.INTELLIGENCE);
@@ -641,6 +681,8 @@ namespace srd5 {
                 archmage.AddProficiency(Proficiency.HISTORY);
                 archmage.AddEffect(Effect.RESISTANCE_DAMAGE_FROM_SPELLS);
                 archmage.AddEffect(Effect.RESISTANCE_NONMAGIC);
+                archmage.AddFeat(Feat.MAGIC_RESISTANCE);
+                archmage.AddFeat(Feat.SPELLCASTING_ARCHMAGE);
                 return archmage;
             }
         }
@@ -649,7 +691,7 @@ namespace srd5 {
         public static Monster Assassin {
             get {
                 Monster assassin = new Monster(
-                    Monsters.Type.HUMANOID, Monsters.ID.ASSASSIN, Alignment.NEUTRAL, 11, 16, 14, 13, 11, 10, 15, "12d8+24", 40, 8,
+                    Monsters.Type.HUMANOID, Monsters.ID.ASSASSIN, Alignment.UNALIGNED, 11, 16, 14, 13, 11, 10, 15, "12d8+24", 40, 8,
                     new Attack[] { Attacks.AssassinShortsword }, new Attack[] { }, Size.MEDIUM
                 );
                 assassin.AddProficiency(Proficiency.DEXTERITY);
@@ -659,6 +701,9 @@ namespace srd5 {
                 assassin.AddProficiency(Proficiency.PERCEPTION);
                 assassin.AddProficiency(Proficiency.STEALTH);
                 assassin.AddEffect(Effect.RESISTANCE_POISON);
+                assassin.AddFeat(Feat.ASSASSINATE);
+                assassin.AddFeat(Feat.EVASION);
+                assassin.AddFeat(Feat.SNEAK_ATTACK_4D6);
                 return assassin;
             }
         }
@@ -672,6 +717,7 @@ namespace srd5 {
                 );
                 awakenedShrub.AddEffect(Effect.VULNERABILITY_FIRE);
                 awakenedShrub.AddEffect(Effect.RESISTANCE_PIERCING);
+                awakenedShrub.AddFeat(Feat.FALSE_APPEARANCE);
                 return awakenedShrub;
             }
         }
@@ -686,6 +732,7 @@ namespace srd5 {
                 awakenedTree.AddEffect(Effect.VULNERABILITY_FIRE);
                 awakenedTree.AddEffect(Effect.RESISTANCE_BLUDGEONING);
                 awakenedTree.AddEffect(Effect.RESISTANCE_PIERCING);
+                awakenedTree.AddFeat(Feat.FALSE_APPEARANCE);
                 return awakenedTree;
             }
         }
@@ -712,6 +759,9 @@ namespace srd5 {
                 azer.AddEffect(Effect.IMMUNITY_FIRE);
                 azer.AddEffect(Effect.IMMUNITY_POISON);
                 azer.AddEffect(Effect.IMMUNITY_POISONED);
+                azer.AddFeat(Feat.HEATED_BODY_1D10);
+                azer.AddFeat(Feat.HEATED_WEAPONS);
+                azer.AddFeat(Feat.ILLUMINATION_10FT);
                 return azer;
             }
         }

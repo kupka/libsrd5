@@ -242,6 +242,10 @@ namespace srd5 {
             return Array.IndexOf(proficiencies, proficiency) > -1;
         }
 
+        public bool IsProficient(Skill skill) {
+            return IsProficient(skill.Proficiency());
+        }
+
         public bool IsDoubleProficient(Proficiency proficiency) {
             try {
                 Effect doubleProficiency = (Effect)Enum.Parse(typeof(Effect), "DOUBLE_PROFICIENCY_BONUS_" + proficiency.ToString());
@@ -334,6 +338,20 @@ namespace srd5 {
             if (IsProficient(type)) {
                 additionalModifiers += ProficiencyBonus;
             }
+            return this.dc(dc, additionalModifiers, d20, ability, advantage, disadvantage);
+        }
+
+        public bool DC(object source, int dc, Skill skill, bool advantage = false, bool disadvantage = false) {
+            Ability ability = GetAbility(skill.Ability());
+            Dice d20 = srd5.Dice.D20;
+            int additionalModifiers = 0;
+            if (IsProficient(skill)) {
+                additionalModifiers += ProficiencyBonus;
+            }
+            return this.dc(dc, additionalModifiers, d20, ability, advantage, disadvantage);
+        }
+
+        private bool dc(int dc, int additionalModifiers, Dice d20, Ability ability, bool advantage, bool disadvantage) {
             if (advantage && !disadvantage) {
                 d20 = srd5.Dice.D20Advantage;
             }
@@ -344,8 +362,8 @@ namespace srd5 {
             bool success = d20.Value + ability.Modifier + additionalModifiers >= dc;
             if (d20.Value == 20) success = true;
             if (d20.Value == 1) success = false;
-            if (type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) success = false;
-            if (type == AbilityType.DEXTERITY && HasEffect(Effect.FAIL_DEXERITY_CHECK)) success = false;
+            if (ability.Type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) success = false;
+            if (ability.Type == AbilityType.DEXTERITY && HasEffect(Effect.FAIL_DEXERITY_CHECK)) success = false;
             if (HasEffect(Effect.LEGENDARY_RESISTANCE) && !success) { // Allow to turn fail into success
                 success = true;
                 RemoveEffect(Effect.LEGENDARY_RESISTANCE);

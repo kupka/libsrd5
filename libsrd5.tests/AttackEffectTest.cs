@@ -8,7 +8,7 @@ namespace srd5 {
                 );
 
         private Monster pansyMonster = new Monster(
-                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 1, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
+                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
                     new Attack[] { }, new Attack[] { }, Size.HUGE
                 );
 
@@ -23,6 +23,7 @@ namespace srd5 {
         [Fact]
         public void TestAttackEffects_A() {
             attackEffectTest(Attacks.AbolethTentacleEffect);
+            attackEffectTest(Attacks.AnkhegBiteEffect);
             attackEffectTest(Attacks.AssassinShortswordEffect);
             attackEffectTest(Attacks.GiantScorpionStingEffect);
         }

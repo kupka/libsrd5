@@ -70,9 +70,8 @@ namespace srd5 {
                         }
                     }
                     // Wisdom save
-                    if (!target.DC(ID.HOLD_PERSON, dc, AbilityType.WISDOM)) {
+                    if (!target.DC(ID.HOLD_PERSON, dc, AbilityType.WISDOM) && target.AddCondition(ConditionType.PARALYZED)) {
                         GlobalEvents.AffectBySpell(caster, ID.HOLD_PERSON, target, true);
-                        target.AddCondition(ConditionType.PARALYZED);
                         target.AddEndOfTurnEvent(delegate (Combattant combattant) {
                             bool success = combattant.DC(ID.HOLD_PERSON, dc, AbilityType.WISDOM);
                             if (success) {

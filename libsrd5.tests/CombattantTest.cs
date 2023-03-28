@@ -82,6 +82,9 @@ namespace srd5 {
             Combattant orc = Monsters.Orc;
             Assert.True(orc.DC(null, 2, AbilityType.WISDOM, true, false));
             Assert.False(orc.DC(null, 19, AbilityType.STRENGTH, false, true));
+            Combattant assassin = Monsters.Assassin;
+            Assert.True(assassin.DC(null, 2, Skill.STEALTH, true, false));
+            Assert.False(assassin.DC(null, 30, Skill.NATURE, false, true));
         }
 
         [Fact]
@@ -89,6 +92,7 @@ namespace srd5 {
             CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF, true);
             hero.AddLevel(CharacterClasses.Barbarian);
             Assert.True(hero.IsProficient(AbilityType.CONSTITUTION));
+            Assert.True(hero.IsProficient(Skill.HISTORY));
             hero.DC(Spells.ID.CHARM_PERSON, 10, AbilityType.CONSTITUTION);
             Assert.False(hero.IsProficient(AbilityType.INTELLIGENCE));
             hero.DC(null, 10, AbilityType.INTELLIGENCE);

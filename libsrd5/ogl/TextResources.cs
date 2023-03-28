@@ -94,6 +94,389 @@ namespace srd5 {
                     return "Danger Sense";
                 case Feat.FRENZY:
                     return "Frenzy";
+                // Monster Feats
+                case Feat.ABERRANT_GROUND:
+                    return "Aberrant Ground";
+                case Feat.ACID_ABSORPTION:
+                    return "Acid Absorption";
+                case Feat.ADHESIVE:
+                    return "Adhesive (Object Form Only)";
+                case Feat.AGGRESSIVE:
+                    return "Aggressive";
+                case Feat.AIR_FORM:
+                    return "Air Form";
+                case Feat.AMBUSHER:
+                    return "Ambusher";
+                case Feat.AMORPHOUS:
+                    return "Amorphous";
+                case Feat.AMPHIBIOUS:
+                    return "Amphibious";
+                case Feat.ANGELIC_WEAPONS_4D8:
+                case Feat.ANGELIC_WEAPONS_5D8:
+                case Feat.ANGELIC_WEAPONS_6D8:
+                    return "Angelic Weapons";
+                case Feat.ANTIMAGIC_SUSCEPTIBILITY:
+                    return "Antimagic Susceptibility";
+                case Feat.ASSASSINATE:
+                    return "Assassinate";
+                case Feat.AVERSION_OF_FIRE:
+                    return "Aversion of Fire";
+                case Feat.BARBED_HIDE:
+                    return "Barbed Hide";
+                case Feat.BEAST_OF_BURDEN:
+                    return "Beast of Burden";
+                case Feat.BERSERK_CLAY_GOLEM:
+                case Feat.BERSERK_FLESH_GOLEM:
+                    return "Berserk";
+                case Feat.BLIND_SENSES:
+                    return "Blind Senses";
+                case Feat.BLOOD_FRENZY:
+                    return "Blood Frenzy";
+                case Feat.BOUND:
+                    return "Bound";
+                case Feat.BRAVE:
+                    return "Brave";
+                case Feat.BRUTE:
+                    return "Brute";
+                case Feat.CHARGE_BOAR:
+                case Feat.CHARGE_CENTAUR:
+                case Feat.CHARGE_ELK:
+                case Feat.CHARGE_GIANT_GOAT:
+                case Feat.CHARGE_GIANT_SEA_HORSE:
+                case Feat.CHARGE_GOAT:
+                case Feat.CHARGE_MINOTAUR:
+                case Feat.CHARGE_MINOTAUR_SKELETON:
+                case Feat.CHARGE_RHINOCEROS:
+                case Feat.CHARGE_UNICORN:
+                    return "Charge";
+                case Feat.CHARGE_WEREBOAR:
+                    return "Charge (Boar or Hybrid Form Only)";
+                case Feat.CONFER_FIRE_RESISTANCE:
+                    return "Confer Fire Resistance";
+                case Feat.CONSUME_LIFE:
+                    return "Consume Life";
+                case Feat.CORRODE_METAL:
+                    return "Corrode Metal";
+                case Feat.CORROSIVE_FORM:
+                    return "Corrosive Form";
+                case Feat.CUNNING_ACTION:
+                    return "Cunning Action";
+                case Feat.DAMAGE_TRANSFER_ATTACHED:
+                case Feat.DAMAGE_TRANSFER_GRAPPLING:
+                    return "Damage Transfer";
+                case Feat.DARK_DEVOTION:
+                    return "Dark Devotion";
+                case Feat.DEATH_BURST_DUST_MEPHIT:
+                case Feat.DEATH_BURST_ICE_MEPHIT:
+                case Feat.DEATH_BURST_MAGMA_MEPHIT:
+                case Feat.DEATH_BURST_MAGMIN:
+                case Feat.DEATH_BURST_STEAM_MEPHIT:
+                    return "Death Burst";
+                case Feat.DEATH_THROES:
+                    return "Death Throes";
+                case Feat.DEVILS_SIGHT:
+                    return "Devil's Sight";
+                case Feat.DIVINE_AWARENESS:
+                    return "Divine Awareness";
+                case Feat.DIVINE_EMINENCE:
+                    return "Divine Eminence";
+                case Feat.DUERGAR_RESILIENCE:
+                    return "Duergar Resilience";
+                case Feat.EARTH_GLIDE:
+                    return "Earth Glide";
+                case Feat.ECHOLOCATION:
+                    return "Echolocation";
+                case Feat.ELEMENTAL_DEMISE_DJINNI:
+                case Feat.ELEMENTAL_DEMISE_EFREETI:
+                    return "Elemental Demise";
+                case Feat.EPHEMERAL:
+                    return "Ephemeral";
+                case Feat.ETHEREAL_JAUNT:
+                    return "Ethereal Jaunt";
+                case Feat.ETHEREAL_SIGHT:
+                    return "Ethereal Sight";
+                case Feat.EVASION:
+                    return "Evasion";
+                case Feat.FALSE_APPEARANCE:
+                    return "False Appearance";
+                case Feat.FAULTLESS_TRACKER:
+                    return "Faultless Tracker";
+                case Feat.FEAR_AURA:
+                    return "Fear Aura";
+                case Feat.FIRE_ABSORPTION:
+                    return "Fire Absorption";
+                case Feat.FIRE_AURA:
+                    return "Fire Aura";
+                case Feat.FIRE_FORM:
+                    return "Fire Form";
+                case Feat.FLYBY:
+                    return "Flyby";
+                case Feat.FREEDOM_OF_MOVEMENT:
+                    return "Freedom of Movement";
+                case Feat.FREEZE:
+                    return "Freeze";
+                case Feat.GIBBERING:
+                    return "Gibbering";
+                case Feat.GNOME_CUNNING:
+                    return "Gnome Cunning";
+                case Feat.GRAPPLER:
+                    return "Grappler";
+                case Feat.GRASPING_TENDRILS:
+                    return "Grasping Tendrils";
+                case Feat.HEATED_BODY_1D10:
+                case Feat.HEATED_BODY_2D6:
+                case Feat.HEATED_BODY_3D6:
+                    return "Heated Body";
+                case Feat.HEATED_WEAPONS:
+                    return "Heated Weapons";
+                case Feat.HELLISH_REJUVENATION:
+                    return "Hellish Rejuvenation";
+                case Feat.HELLISH_WEAPONS:
+                    return "Hellish Weapons";
+                case Feat.HOLD_BREATH_15MIN:
+                case Feat.HOLD_BREATH_1HOUR:
+                case Feat.HOLD_BREATH_30MIN:
+                    return "Hold Breath";
+                case Feat.HORRIFIC_APPEARANCE:
+                    return "Horrific Appearance";
+                case Feat.ICE_WALK:
+                    return "Ice Walk";
+                case Feat.IGNITED_ILLUMINATION:
+                    return "Ignited Illumination";
+                case Feat.ILLUMINATION_10FT:
+                case Feat.ILLUMINATION_30FT:
+                    return "Illumination";
+                case Feat.IMMUTABLE_FORM:
+                    return "Immutable Form";
+                case Feat.INCORPOREAL_MOVEMENT:
+                    return "Incorporeal Movement";
+                case Feat.INNATE_SPELLCASTING_CLOUD_GIANT:
+                case Feat.INNATE_SPELLCASTING_COUATL:
+                case Feat.INNATE_SPELLCASTING_DEEP_GNOME:
+                case Feat.INNATE_SPELLCASTING_DEVA:
+                case Feat.INNATE_SPELLCASTING_DJINNI:
+                case Feat.INNATE_SPELLCASTING_DRIDER:
+                case Feat.INNATE_SPELLCASTING_DROW:
+                case Feat.INNATE_SPELLCASTING_DRYAD:
+                case Feat.INNATE_SPELLCASTING_DUST_MEPHIT:
+                case Feat.INNATE_SPELLCASTING_EFREETI:
+                case Feat.INNATE_SPELLCASTING_GLABREZU:
+                case Feat.INNATE_SPELLCASTING_GREEN_HAG:
+                case Feat.INNATE_SPELLCASTING_ICE_MEPHIT:
+                case Feat.INNATE_SPELLCASTING_LAMIA:
+                case Feat.INNATE_SPELLCASTING_MAGMA_MEPHIT:
+                case Feat.INNATE_SPELLCASTING_NIGHT_HAG:
+                case Feat.INNATE_SPELLCASTING_ONI:
+                case Feat.INNATE_SPELLCASTING_PIT_FIEND:
+                case Feat.INNATE_SPELLCASTING_PLANETAR:
+                case Feat.INNATE_SPELLCASTING_RAKSHASA:
+                case Feat.INNATE_SPELLCASTING_SOLAR:
+                case Feat.INNATE_SPELLCASTING_STEAM_MEPHIT:
+                case Feat.INNATE_SPELLCASTING_STORM_GIANT:
+                case Feat.INNATE_SPELLCASTING_UNICORN:
+                    return "Innate Spellcasting";
+                case Feat.INSCRUTABLE:
+                    return "Inscrutable";
+                case Feat.INVISIBILITY:
+                    return "Invisibility";
+                case Feat.IRON_SCENT:
+                    return "Iron Scent";
+                case Feat.KEEN_HEARING:
+                    return "Keen Hearing";
+                case Feat.KEEN_HEARING_AND_SIGHT:
+                    return "Keen Hearing and Sight";
+                case Feat.KEEN_HEARING_AND_SMELL:
+                    return "Keen Hearing and Smell";
+                case Feat.KEEN_SIGHT:
+                    return "Keen Sight";
+                case Feat.KEEN_SIGHT_AND_SMELL:
+                    return "Keen Sight and Smell";
+                case Feat.KEEN_SMELL:
+                    return "Keen Smell";
+                case Feat.LABYRINTHINE_RECALL:
+                    return "Labyrinthine Recall";
+                case Feat.LEGENDARY_RESISTANCE:
+                    return "Legendary Resistance";
+                case Feat.LIGHTNING_ABSORPTION:
+                    return "Lightning Absorption";
+                case Feat.LIGHT_SENSITIVITY:
+                    return "Light Sensitivity";
+                case Feat.LIMITED_AMPHIBIOUSNESS:
+                    return "Limited Amphibiousness";
+                case Feat.LIMITED_MAGIC_IMMUNITY:
+                    return "Limited Magic Immunity";
+                case Feat.LIMITED_TELEPATHY_OTYUGH:
+                case Feat.LIMITED_TELEPATHY_PSEUDODRAGON:
+                    return "Limited Telepathy";
+                case Feat.MAGIC_RESISTANCE:
+                    return "Magic Resistance";
+                case Feat.MAGIC_WEAPONS:
+                    return "Magic Weapons";
+                case Feat.MARTIAL_ADVANTAGE:
+                    return "Martial Advantage";
+                case Feat.MIMICRY_HAG:
+                case Feat.MIMICRY_RAVEN:
+                    return "Mimicry";
+                case Feat.MISTY_ESCAPE:
+                    return "Misty Escape";
+                case Feat.MUCOUS_CLOUD:
+                    return "Mucous Cloud";
+                case Feat.MULTIPLE_HEADS:
+                    return "Multiple Heads";
+                case Feat.NIGHT_HAG_ITEMS:
+                    return "Night Hag Items";
+                case Feat.NIMBLE_ESCAPE:
+                    return "Nimble Escape";
+                case Feat.OOZE_CUBE:
+                    return "Ooze Cube";
+                case Feat.PACK_TACTICS:
+                    return "Pack Tactics";
+                case Feat.PETRIFYING_GAZE_BASILISK:
+                case Feat.PETRIFYING_GAZE_MEDUSA:
+                    return "Petrifying Gaze";
+                case Feat.POUNCE_LION:
+                case Feat.POUNCE_PANTHER:
+                case Feat.POUNCE_TIGER_13:
+                case Feat.POUNCE_TIGER_14:
+                case Feat.POUNCE_WERETIGER:
+                    return "Pounce";
+                case Feat.PROBING_TELEPATHY:
+                    return "Probing Telepathy";
+                case Feat.RAMPAGE:
+                    return "Rampage";
+                case Feat.REACTIVE:
+                    return "Reactive";
+                case Feat.REACTIVE_HEADS:
+                    return "Reactive Heads";
+                case Feat.RECKLESS:
+                    return "Reckless";
+                case Feat.REFLECTIVE_CARAPACE:
+                    return "Reflective Carapace";
+                case Feat.REGENERATION:
+                    return "Regeneration";
+                case Feat.REJUVENATION_LICH:
+                case Feat.REJUVENATION_MUMMY_LORD:
+                case Feat.REJUVENATION_NAGA:
+                    return "Rejuvenation";
+                case Feat.RELENTLESS_10:
+                case Feat.RELENTLESS_14:
+                case Feat.RELENTLESS_7:
+                    return "Relentless";
+                case Feat.RUNNING_LEAP:
+                    return "Running Leap";
+                case Feat.RUST_METAL:
+                    return "Rust Metal";
+                case Feat.SENSE_MAGIC:
+                    return "Sense Magic";
+                case Feat.SHADOW_STEALTH:
+                    return "Shadow Stealth";
+                case Feat.SHAPECHANGER_DOPPELGANGER:
+                case Feat.SHAPECHANGER_FIEND:
+                case Feat.SHAPECHANGER_IMP:
+                case Feat.SHAPECHANGER_MIMIC:
+                case Feat.SHAPECHANGER_QUASIT:
+                case Feat.SHAPECHANGER_VAMPIRE:
+                case Feat.SHAPECHANGER_WEREBEAST:
+                    return "Shapechanger";
+                case Feat.SHARK_TELEPATHY:
+                    return "Shark Telepathy";
+                case Feat.SHIELDED_MIND:
+                    return "Shielded Mind";
+                case Feat.SIEGE_MONSTER:
+                    return "Siege Monster";
+                case Feat.SNEAK_ATTACK_2D6:
+                case Feat.SNEAK_ATTACK_4D6:
+                    return "Sneak Attack";
+                case Feat.SNOW_CAMOUFLAGE:
+                    return "Snow Camouflage";
+                case Feat.SPEAK_WITH_BEASTS_AND_PLANTS:
+                    return "Speak with Beasts and Plants";
+                case Feat.SPELLCASTING_ACOLYTE:
+                case Feat.SPELLCASTING_ARCHMAGE:
+                case Feat.SPELLCASTING_DRUID:
+                case Feat.SPELLCASTING_FANATIC:
+                case Feat.SPELLCASTING_LICH:
+                case Feat.SPELLCASTING_MAGE:
+                case Feat.SPELLCASTING_MUMMY_LORD:
+                case Feat.SPELLCASTING_NAGA_10:
+                case Feat.SPELLCASTING_NAGA_11:
+                case Feat.SPELLCASTING_ANDROSPHINX:
+                case Feat.SPELLCASTING_GYNOSPHINX:
+                    return "Spellcasting";
+                case Feat.SPELL_STORING:
+                    return "Spell Storing";
+                case Feat.SPIDER_CLIMB:
+                    return "Spider Climb";
+                case Feat.STANDING_LEAP_BULETTE:
+                case Feat.STANDING_LEAP_FROG_10FT:
+                case Feat.STANDING_LEAP_FROG_20FT:
+                case Feat.STANDING_LEAP_TOAD:
+                    return "Standing Leap";
+                case Feat.STEADFAST:
+                    return "Steadfast";
+                case Feat.STENCH_GHAST:
+                case Feat.STENCH_HEZROU:
+                    return "Stench";
+                case Feat.STONE_CAMOUFLAGE:
+                    return "Stone Camouflage";
+                case Feat.SUNLIGHT_SENSITIVITY:
+                    return "Sunlight Sensitivity";
+                case Feat.SUNLIGHT_WEAKNESS:
+                    return "Sunlight Weakness";
+                case Feat.SURE_FOOTED:
+                    return "Sure-Footed";
+                case Feat.SURPRISE_ATTACK_BUGBEAR:
+                case Feat.SURPRISE_ATTACK_DOPPELGANGER:
+                    return "Surprise Attack";
+                case Feat.SWARM:
+                    return "Swarm";
+                case Feat.TAIL_SPIKE_REGROWTH:
+                    return "Tail Spike Regrowth";
+                case Feat.TELEPATHIC_BOND_FIEND:
+                case Feat.TELEPATHIC_BOND_HOMUNCULUS:
+                    return "Telepathic Bond";
+                case Feat.TRAMPLING_CHARGE_ELEPHANT:
+                case Feat.TRAMPLING_CHARGE_GORGON:
+                case Feat.TRAMPLING_CHARGE_HORSE:
+                case Feat.TRAMPLING_CHARGE_MAMMOTH:
+                case Feat.TRAMPLING_CHARGE_TRICERATOS:
+                    return "Trampling Charge";
+                case Feat.TRANSPARENT:
+                    return "Transparent";
+                case Feat.TREASURE_SENSE:
+                    return "Treasure Sense";
+                case Feat.TREE_STRIDE:
+                    return "Tree Stride";
+                case Feat.TUNNELER:
+                    return "Tunneler";
+                case Feat.TURN_DEFIANCE:
+                    return "Turn Defiance";
+                case Feat.TURN_RESISTANCE:
+                    return "Turn Resistance";
+                case Feat.TWO_HEADED:
+                    return "Two-Headed";
+                case Feat.TWO_HEADS:
+                    return "Two Heads";
+                case Feat.UNDEAD_FORTITUDE:
+                    return "Undead Fortitude";
+                case Feat.UNDERWATER_CAMOUFLAGE:
+                    return "Underwater Camouflage";
+                case Feat.VAMPIRE_WEAKNESSES:
+                    return "Vampire Weaknesses";
+                case Feat.VARIABLE_ILLUMINATION:
+                    return "Variable Illumination";
+                case Feat.WAKEFUL:
+                    return "Wakeful";
+                case Feat.WATER_BREATHING:
+                    return "Water Breathing";
+                case Feat.WATER_FORM:
+                    return "Water Form";
+                case Feat.WATER_SUSCEPTIBILITY:
+                    return "Water Susceptibility";
+                case Feat.WEB_SENSE:
+                    return "Web Sense";
+                case Feat.WEB_WALKER:
+                    return "Web Walker";
                 default:
                     return Enum.GetName(typeof(Feat), feat) + ": (Name missing)";
             }
@@ -149,6 +532,481 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "At 2nd level, you gain an uncanny sense of when things nearby aren't as they should be, giving you an edge when you dodge away from danger.\nYou have advantage on Dexterity saving throws against effects that you can see, such as traps and spells. To gain this benefit, you can't be blinded, deafened, or incapacitated.";
                 case Feat.FRENZY:
                     return "You can go into a frenzy when you rage. If you do so, for the duration of your rage you can make a single melee weapon attack as a bonus action on each of your turns after this one. When your rage ends, you suffer one level of exhaustion.";
+                // Monster Feats
+                case Feat.ABERRANT_GROUND:
+                    return "The ground in a 10-foot radius around the mouther is doughlike difficult terrain. Each creature that starts its turn in that area must succeed on a DC 10 Strength saving throw or have its speed reduced to 0 until the start of its next turn.";
+                case Feat.ACID_ABSORPTION:
+                    return "Whenever  subjected to acid damage, it takes no damage and instead regains a number of hit points equal to the acid damage dealt.";
+                case Feat.ADHESIVE:
+                    return "The mimic adheres to anything that touches it. A Huge or smaller creature adhered to the mimic is also grappled by it (escape DC 13). Ability checks made to escape this grapple have disadvantage.";
+                case Feat.AGGRESSIVE:
+                    return "As a bonus action, can move up to its speed toward a hostile creature that it can see.";
+                case Feat.AIR_FORM:
+                    return "Can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing.";
+                case Feat.AMBUSHER:
+                    return "Has advantage on attack rolls against any creature it has surprised.";
+                case Feat.AMORPHOUS:
+                    return "Can move through a space as narrow as 1 inch wide without squeezing.";
+                case Feat.AMPHIBIOUS:
+                    return "Can breathe air and water.";
+                case Feat.ANGELIC_WEAPONS_4D8:
+                    return "Weapon attacks are magical. When it hits with any weapon, the weapon deals an extra 4d8 radiant damage (included in the attack).";
+                case Feat.ANGELIC_WEAPONS_5D8:
+                    return "Weapon attacks are magical. When it hits with any weapon, the weapon deals an extra 5d8 radiant damage (included in the attack).";
+                case Feat.ANGELIC_WEAPONS_6D8:
+                    return "Weapon attacks are magical. When it hits with any weapon, the weapon deals an extra 6d8 radiant damage (included in the attack).";
+                case Feat.ANTIMAGIC_SUSCEPTIBILITY:
+                    return "Is incapacitated while in the area of an antimagic field. If targeted by dispel magic, it must succeed on a Constitution saving throw against the caster's spell save DC or fall unconscious for 1 minute.";
+                case Feat.ASSASSINATE:
+                    return "During its first turn, has advantage on attack rolls against any creature that hasn't taken a turn. Any hit it scores against a surprised creature is a critical hit.";
+                case Feat.AVERSION_OF_FIRE:
+                    return "If it takes fire damage, it has disadvantage on attack rolls and ability checks until the end of its next turn.";
+                case Feat.BARBED_HIDE:
+                    return "At the start of each of its turns, deals 5 (1d10) piercing damage to any creature grappling it.";
+                case Feat.BEAST_OF_BURDEN:
+                    return "Is considered to be a Large animal for the purpose of determining its carrying capacity.";
+                case Feat.BERSERK_CLAY_GOLEM:
+                    return "Whenever the golem starts its turn with 60 hit points or fewer, roll a d6. On a 6, the golem goes berserk. On each of its turns while berserk, the golem attacks the nearest creature it can see. If no creature is near enough to move to and attack, the golem attacks an object, with preference for an object smaller than itself. Once the golem goes berserk, it continues to do so until it is destroyed or regains all its hit points.";
+                case Feat.BERSERK_FLESH_GOLEM:
+                    return "Whenever the golem starts its turn with 40 hit points or fewer, roll a d6. On a 6, the golem goes berserk. On each of its turns while berserk, the golem attacks the nearest creature it can see. If no creature is near enough to move to and attack, the golem attacks an object, with preference for an object smaller than itself. Once the golem goes berserk, it continues to do so until it is destroyed or regains all its hit points.\nThe golem's creator, if within 60 feet of the berserk golem, can try to calm it by speaking firmly and persuasively. The golem must be able to hear its creator, who must take an action to make a DC 15 Charisma (Persuasion) check. If the check succeeds, the golem ceases being berserk. If it takes damage while still at 40 hit points or fewer, the golem might go berserk again.";
+                case Feat.BLIND_SENSES:
+                    return "Can't use its blindsight while deafened and unable to smell.";
+                case Feat.BLOOD_FRENZY:
+                    return "Has advantage on melee attack rolls against any creature that doesn't have all its hit points.";
+                case Feat.BOUND:
+                    return "The shield guardian is magically bound to an amulet. As long as the guardian and its amulet are on the same plane of existence, the amulet's wearer can telepathically call the guardian to travel to it, and the guardian knows the distance and direction to the amulet. If the guardian is within 60 feet of the amulet's wearer, half of any damage the wearer takes (rounded up) is transferred to the guardian.";
+                case Feat.BRAVE:
+                    return "Has advantage on saving throws against being frightened.";
+                case Feat.BRUTE:
+                    return "A wielded melee weapon deals one extra die of its damage when it hits (included in the attack).";
+                case Feat.CHARGE_BOAR:
+                    return "If the boar moves at least 20 ft. straight toward a target and then hits it with a tusk attack on the same turn, the target takes an extra 3 (1d6) slashing damage. If the target is a creature, it must succeed on a DC 11 Strength saving throw or be knocked prone.";
+                case Feat.CHARGE_CENTAUR:
+                    return "If the centaur moves at least 30 ft. straight toward a target and then hits it with a pike attack on the same turn, the target takes an extra 10 (3d6) piercing damage.";
+                case Feat.CHARGE_ELK:
+                    return "If the elk moves at least 20 ft. straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.";
+                case Feat.CHARGE_GIANT_BOAR:
+                    return "If the boar moves at least 20 ft. straight toward a target and then hits it with a tusk attack on the same turn, the target takes an extra 7 (2d6) slashing damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.";
+                case Feat.CHARGE_GIANT_ELK:
+                    return "If the elk moves at least 20 ft. straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) damage. If the target is a creature, it must succeed on a DC 14 Strength saving throw or be knocked prone.";
+                case Feat.CHARGE_GIANT_GOAT:
+                    return "If the goat moves at least 20 ft. straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 5 (2d4) bludgeoning damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.";
+                case Feat.CHARGE_GIANT_SEA_HORSE:
+                    return "If the sea horse moves at least 20 ft. straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 7 (2d6) bludgeoning damage. If the target is a creature, it must succeed on a DC 11 Strength saving throw or be knocked prone.";
+                case Feat.CHARGE_GOAT:
+                    return "If the goat moves at least 20 ft. straight toward a target and then hits it with a ram attack on the same turn, the target takes an extra 2 (1d4) bludgeoning damage. If the target is a creature, it must succeed on a DC 10 Strength saving throw or be knocked prone.";
+                case Feat.CHARGE_MINOTAUR:
+                    return "If the minotaur moves at least 10 ft. straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 9 (2d8) piercing damage. If the target is a creature, it must succeed on a DC 14 Strength saving throw or be pushed up to 10 ft. away and knocked prone.";
+                case Feat.CHARGE_MINOTAUR_SKELETON:
+                    return "If the skeleton moves at least 10 feet straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 9 (2d8) piercing damage. If the target is a creature, it must succeed on a DC 14 Strength saving throw or be pushed up to 10 feet away and knocked prone.";
+                case Feat.CHARGE_RHINOCEROS:
+                    return "If the rhinoceros moves at least 20 ft. straight toward a target and then hits it with a gore attack on the same turn, the target takes an extra 9 (2d8) bludgeoning damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone.";
+                case Feat.CHARGE_UNICORN:
+                    return "If the unicorn moves at least 20 ft. straight toward a target and then hits it with a horn attack on the same turn, the target takes an extra 9 (2d8) piercing damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone.";
+                case Feat.CHARGE_WEREBOAR:
+                    return "If the wereboar moves at least 15 feet straight toward a target and then hits it with its tusks on the same turn, the target takes an extra 7 (2d6) slashing damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone.";
+                case Feat.CONFER_FIRE_RESISTANCE:
+                    return "Can grant resistance to fire damage to anyone riding it.";
+                case Feat.CONSUME_LIFE:
+                    return "As a bonus action, can target one creature it can see within 5 ft. of it that has 0 hit points and is still alive. The target must succeed on a DC 10 Constitution saving throw against this magic or die. If its target dies, it regains 10 (3d6) hit points.";
+                case Feat.CORRODE_METAL:
+                    return "Any nonmagical weapon made of metal that hits the ooze corrodes. After dealing damage, the weapon takes a permanent and cumulative -1 penalty to damage rolls. If its penalty drops to -5, the weapon is destroyed. Nonmagical ammunition made of metal that hits the ooze is destroyed after dealing damage.\nThe ooze can eat through 2-inch-thick, nonmagical metal in 1 round.";
+                case Feat.CORROSIVE_FORM:
+                    return "A creature that touches the pudding or hits it with a melee attack while within 5 feet of it takes 4 (1d8) acid damage. Any nonmagical weapon made of metal or wood that hits the pudding corrodes. After dealing damage, the weapon takes a permanent and cumulative -1 penalty to damage rolls. If its penalty drops to -5, the weapon is destroyed. Nonmagical ammunition made of metal or wood that hits the pudding is destroyed after dealing damage. The pudding can eat through 2-inch-thick, nonmagical wood or metal in 1 round.";
+                case Feat.CUNNING_ACTION:
+                    return "On each of its turns, can use a bonus action to take the Dash, Disengage, or Hide action.";
+                case Feat.DAMAGE_TRANSFER_ATTACHED:
+                    return "While attached to a creature, takes only half the damage dealt to it (rounded down), and that creature takes the other half.";
+                case Feat.DAMAGE_TRANSFER_GRAPPLING:
+                    return "While it is grappling a creature, takes only half the damage dealt to it, and the creature grappled takes the other half.";
+                case Feat.DARK_DEVOTION:
+                    return "Has advantage on saving throws against being charmed or frightened.";
+                case Feat.DEATH_BURST_DUST_MEPHIT:
+                    return "When the mephit dies, it explodes in a burst of dust. Each creature within 5 ft. of it must then succeed on a DC 10 Constitution saving throw or be blinded for 1 minute. A blinded creature can repeat the saving throw on each of its turns, ending the effect on itself on a success.";
+                case Feat.DEATH_BURST_ICE_MEPHIT:
+                    return "When the mephit dies, it explodes in a burst of jagged ice. Each creature within 5 ft. of it must make a DC 10 Dexterity saving throw, taking 4 (1d8) slashing damage on a failed save, or half as much damage on a successful one.";
+                case Feat.DEATH_BURST_MAGMA_MEPHIT:
+                    return "When the mephit dies, it explodes in a burst of lava. Each creature within 5 ft. of it must make a DC 11 Dexterity saving throw, taking 7 (2d6) fire damage on a failed save, or half as much damage on a successful one.";
+                case Feat.DEATH_BURST_MAGMIN:
+                    return "When the magmin dies, it explodes in a burst of fire and magma. Each creature within 10 ft. of it must make a DC 11 Dexterity saving throw, taking 7 (2d6) fire damage on a failed save, or half as much damage on a successful one. Flammable objects that aren't being worn or carried in that area are ignited.";
+                case Feat.DEATH_BURST_STEAM_MEPHIT:
+                    return "When the mephit dies, it explodes in a cloud of steam. Each creature within 5 ft. of the mephit must succeed on a DC 10 Dexterity saving throw or take 4 (1d8) fire damage.";
+                case Feat.DEATH_THROES:
+                    return "When the balor dies, it explodes, and each creature within 30 feet of it must make a DC 20 Dexterity saving throw, taking 70 (20d6) fire damage on a failed save, or half as much damage on a successful one. The explosion ignites flammable objects in that area that aren't being worn or carried, and it destroys the balor's weapons.";
+                case Feat.DEVILS_SIGHT:
+                    return "Magical darkness doesn't impede its darkvision.";
+                case Feat.DIVINE_AWARENESS:
+                    return "Knows if it hears a lie.";
+                case Feat.DIVINE_EMINENCE:
+                    return "As a bonus action, the priest can expend a spell slot to cause its melee weapon attacks to magically deal an extra 10 (3d6) radiant damage to a target on a hit. This benefit lasts until the end of the turn. If the priest expends a spell slot of 2nd level or higher, the extra damage increases by 1d6 for each level above 1st.";
+                case Feat.DUERGAR_RESILIENCE:
+                    return "The duergar has advantage on saving throws against poison, spells, and illusions, as well as to resist being charmed or paralyzed.";
+                case Feat.EARTH_GLIDE:
+                    return "Can burrow through nonmagical, unworked earth and stone. While doing so, it doesn't disturb the material it moves through.";
+                case Feat.ECHOLOCATION:
+                    return "Can't use its blindsight while deafened.";
+                case Feat.ELEMENTAL_DEMISE_DJINNI:
+                    return "If the djinni dies, its body disintegrates into a warm breeze, leaving behind only equipment the djinni was wearing or carrying.";
+                case Feat.ELEMENTAL_DEMISE_EFREETI:
+                    return "If the efreeti dies, its body disintegrates in a flash of fire and puff of smoke, leaving behind only equipment the djinni was wearing or carrying.";
+                case Feat.EPHEMERAL:
+                    return "Can't wear or carry anything.";
+                case Feat.ETHEREAL_JAUNT:
+                    return "As a bonus action, can magically shift from the Material Plane to the Ethereal Plane, or vice versa.";
+                case Feat.ETHEREAL_SIGHT:
+                    return "Can see 60 ft. into the Ethereal Plane when it is on the Material Plane, and vice versa.";
+                case Feat.EVASION:
+                    return "If the assassin is subjected to an effect that allows it to make a Dexterity saving throw to take only half damage, the assassin instead takes no damage if it succeeds on the saving throw, and only half damage if it fails.";
+                case Feat.FALSE_APPEARANCE:
+                    return "While it remains motionless, it is indistinguishable from a normal object.";
+                case Feat.FAULTLESS_TRACKER:
+                    return "The stalker is given a quarry by its summoner. The stalker knows the direction and distance to its quarry as long as the two of them are on the same plane of existence. The stalker also knows the location of its summoner.";
+                case Feat.FEAR_AURA:
+                    return "Any creature hostile to the pit fiend that starts its turn within 20 feet of the pit fiend must make a DC 21 Wisdom saving throw, unless the pit fiend is incapacitated. On a failed save, the creature is frightened until the start of its next turn. If a creature's saving throw is successful, the creature is immune to the pit fiend's Fear Aura for the next 24 hours.";
+                case Feat.FIRE_ABSORPTION:
+                    return "Whenever subjected to fire damage, it takes no damage and instead regains a number of hit points equal to the fire damage dealt.";
+                case Feat.FIRE_AURA:
+                    return "At the start of each of its turns, each creature within 5 feet of it takes 10 (3d6) fire damage, and flammable objects in the aura that aren't being worn or carried ignite. A creature that touches it or hits it with a melee attack while within 5 feet of it takes 10 (3d6) fire damage.";
+                case Feat.FIRE_FORM:
+                    return "Can move through a space as narrow as 1 inch wide without squeezing. A creature that touches it or hits it with a melee attack while within 5 ft. of it takes 5 (1d10) fire damage. In addition, it can enter a hostile creature's space and stop there. The first time it enters a creature's space on a turn, that creature takes 5 (1d10) fire damage and catches fire; until someone takes an action to douse the fire, the creature takes 5 (1d10) fire damage at the start of each of its turns.";
+                case Feat.FLYBY:
+                    return "Doesn't provoke opportunity attacks when it flies out of an enemy's reach.";
+                case Feat.FREEDOM_OF_MOVEMENT:
+                    return "Ignores difficult terrain, and magical effects can't reduce its speed or cause it to be restrained. It can spend 5 feet of movement to escape from nonmagical restraints or being grappled.";
+                case Feat.FREEZE:
+                    return "If it takes cold damage, it partially freezes; its speed is reduced by 20 ft. until the end of its next turn.";
+                case Feat.GIBBERING:
+                    return "The mouther babbles incoherently while it can see any creature and isn't incapacitated. Each creature that starts its turn within 20 feet of the mouther and can hear the gibbering must succeed on a DC 10 Wisdom saving throw. On a failure, the creature can't take reactions until the start of its next turn and rolls a d8 to determine what it does during its turn. On a 1 to 4, the creature does nothing. On a 5 or 6, the creature takes no action or bonus action and uses all its movement to move in a randomly determined direction. On a 7 or 8, the creature makes a melee attack against a randomly determined creature within its reach or does nothing if it can't make such an attack.";
+                case Feat.GNOME_CUNNING:
+                    return "The gnome has advantage on Intelligence, Wisdom, and Charisma saving throws against magic.";
+                case Feat.GRAPPLER:
+                    return "Has advantage on attack rolls against any creature grappled by it.";
+                case Feat.GRASPING_TENDRILS:
+                    return "The roper can have up to six tendrils at a time. Each tendril can be attacked (AC 20; 10 hit points; immunity to poison and psychic damage). Destroying a tendril deals no damage to the roper, which can extrude a replacement tendril on its next turn. A tendril can also be broken if a creature takes an action and succeeds on a DC 15 Strength check against it.";
+                case Feat.HEATED_BODY_1D10:
+                    return "A creature that touches or hits it with a melee attack while within 5 ft. of it takes 5 (1d10) fire damage.";
+                case Feat.HEATED_BODY_2D6:
+                    return "A creature that touches or hits it with a melee attack while within 5 ft. of it takes 7 (2d6) fire damage.";
+                case Feat.HEATED_BODY_3D6:
+                    return "A creature that touches or hits it with a melee attack while within 5 feet of it takes 10 (3d6) fire damage.";
+                case Feat.HEATED_WEAPONS:
+                    return "When it hits with a metal melee weapon, it deals an extra 3 (1d6) fire damage (included in the attack).";
+                case Feat.HELLISH_REJUVENATION:
+                    return "A lemure that dies in the Nine Hells comes back to life with all its hit points in 1d10 days unless it is killed by a good-aligned creature with a bless spell cast on that creature or its remains are sprinkled with holy water.";
+                case Feat.HELLISH_WEAPONS:
+                    return "Weapon attacks are magical and deal an extra 13 (3d8) poison damage on a hit (included in the attacks).";
+                case Feat.HOLD_BREATH_15MIN:
+                    return "Can hold its breath for 15 minutes.";
+                case Feat.HOLD_BREATH_30MIN:
+                    return "Can hold its breath for 30 minutes.";
+                case Feat.HOLD_BREATH_1HOUR:
+                    return "Can hold its breath for 1 hour.";
+                case Feat.HORRIFIC_APPEARANCE:
+                    return "Any humanoid that starts its turn within 30 feet of the hag and can see the hag's true form must make a DC 11 Wisdom saving throw. On a failed save, the creature is frightened for 1 minute. A creature can repeat the saving throw at the end of each of its turns, with disadvantage if the hag is within line of sight, ending the effect on itself on a success. If a creature's saving throw is successful or the effect ends for it, the creature is immune to the hag's Horrific Appearance for the next 24 hours.\nUnless the target is surprised or the revelation of the hag's true form is sudden, the target can avert its eyes and avoid making the initial saving throw. Until the start of its next turn, a creature that averts its eyes has disadvantage on attack rolls against the hag.";
+                case Feat.ICE_WALK:
+                    return "Can move across and climb icy surfaces without needing to make an ability check. Additionally, difficult terrain composed of ice or snow doesn't cost it extra moment.";
+                case Feat.IGNITED_ILLUMINATION:
+                    return "As a bonus action, can set itself ablaze or extinguish its flames. While ablaze, sheds bright light in a 10-foot radius and dim light for an additional 10 ft.";
+                case Feat.ILLUMINATION_10FT:
+                    return "Sheds bright light in a 10-foot radius and dim light for an additional 10 ft..";
+                case Feat.ILLUMINATION_30FT:
+                    return "Sheds bright light in a 30-foot radius and dim light in an additional 30 ft..";
+                case Feat.IMMUTABLE_FORM:
+                    return "Is immune to any spell or effect that would alter its form.";
+                case Feat.INCORPOREAL_MOVEMENT:
+                    return "Can move through other creatures and objects as if they were difficult terrain. It takes 5 (1d10) force damage if it ends its turn inside an object.";
+                case Feat.INNATE_SPELLCASTING_CLOUD_GIANT:
+                    return "The giant's innate spellcasting ability is Charisma. It can innately cast the following spells, requiring no material components:\n\nAt will: detect magic, fog cloud, light\n3/day each: feather fall, fly, misty step, telekinesis\n1/day each: control weather, gaseous form";
+                case Feat.INNATE_SPELLCASTING_COUATL:
+                    return "The couatl's spellcasting ability is Charisma (spell save DC 14). It can innately cast the following spells, requiring only verbal components:\n\nAt will: detect evil and good, detect magic, detect thoughts\n3/day each: bless, create food and water, cure wounds, lesser restoration, protection from poison, sanctuary, shield\n1/day each: dream, greater restoration, scrying";
+                case Feat.INNATE_SPELLCASTING_DEEP_GNOME:
+                    return "The gnome's innate spellcasting ability is Intelligence (spell save DC 11). It can innately cast the following spells, requiring no material components:\nAt will: nondetection (self only)\n1/day each: blindness/deafness, blur, disguise self";
+                case Feat.INNATE_SPELLCASTING_DEVA:
+                    return "The deva's spellcasting ability is Charisma (spell save DC 17). The deva can innately cast the following spells, requiring only verbal components:\nAt will: detect evil and good\n1/day each: commune, raise dead";
+                case Feat.INNATE_SPELLCASTING_DJINNI:
+                    return "The djinni's innate spellcasting ability is Charisma (spell save DC 17, +9 to hit with spell attacks). It can innately cast the following spells, requiring no material components:\n\nAt will: detect evil and good, detect magic, thunderwave\n3/day each: create food and water (can create wine instead of water), tongues, wind walk\n1/day each: conjure elemental (air elemental only), creation, gaseous form, invisibility, major image, plane shift";
+                case Feat.INNATE_SPELLCASTING_DRIDER:
+                    return "The drider's innate spellcasting ability is Wisdom (spell save DC 13). The drider can innately cast the following spells, requiring no material components:\nAt will: dancing lights\n1/day each: darkness, faerie fire";
+                case Feat.INNATE_SPELLCASTING_DROW:
+                    return "The drow's spellcasting ability is Charisma (spell save DC 11). It can innately cast the following spells, requiring no material components:\nAt will: dancing lights\n1/day each: darkness, faerie fire";
+                case Feat.INNATE_SPELLCASTING_DRYAD:
+                    return "The dryad's innate spellcasting ability is Charisma (spell save DC 14). The dryad can innately cast the following spells, requiring no material components:\n\nAt will: druidcraft\n3/day each: entangle, goodberry\n1/day each: barkskin, pass without trace, shillelagh";
+                case Feat.INNATE_SPELLCASTING_DUST_MEPHIT:
+                    return "The mephit can innately cast sleep, requiring no material components. Its innate spellcasting ability is Charisma.";
+                case Feat.INNATE_SPELLCASTING_EFREETI:
+                    return "The efreeti's innate spell casting ability is Charisma (spell save DC 15, +7 to hit with spell attacks). It can innately cast the following spells, requiring no material components:\n\nAt will: detect magic\n3/day: enlarge/reduce, tongues\n1/day each: conjure elemental (fire elemental only), gaseous form, invisibility, major image, plane shift, wall of fire";
+                case Feat.INNATE_SPELLCASTING_GLABREZU:
+                    return "The glabrezu's spellcasting ability is Intelligence (spell save DC 16). The glabrezu can innately cast the following spells, requiring no material components:\nAt will: darkness, detect magic, dispel magic\n1/day each: confusion, fly, power word stun";
+                case Feat.INNATE_SPELLCASTING_GREEN_HAG:
+                    return "The hag's innate spellcasting ability is Charisma (spell save DC 12). She can innately cast the following spells, requiring no material components:\n\nAt will: dancing lights, minor illusion, vicious mockery";
+                case Feat.INNATE_SPELLCASTING_ICE_MEPHIT:
+                    return "The mephit can innately cast fog cloud, requiring no material components. Its innate spellcasting ability is Charisma.";
+                case Feat.INNATE_SPELLCASTING_LAMIA:
+                    return "The lamia's innate spellcasting ability is Charisma (spell save DC 13). It can innately cast the following spells, requiring no material components. At will: disguise self (any humanoid form), major image 3/day each: charm person, mirror image, scrying, suggestion 1/day: geas";
+                case Feat.INNATE_SPELLCASTING_MAGMA_MEPHIT:
+                    return "The mephit can innately cast heat metal (spell save DC 10), requiring no material components. Its innate spellcasting ability is Charisma.";
+                case Feat.INNATE_SPELLCASTING_NIGHT_HAG:
+                    return "The hag's innate spellcasting ability is Charisma (spell save DC 14, +6 to hit with spell attacks). She can innately cast the following spells, requiring no material components:\n\nAt will: detect magic, magic missile\n2/day each: plane shift (self only), ray of enfeeblement, sleep";
+                case Feat.INNATE_SPELLCASTING_ONI:
+                    return "The oni's innate spellcasting ability is Charisma (spell save DC 13). The oni can innately cast the following spells, requiring no material components:\n\nAt will: darkness, invisibility\n1/day each: charm person, cone of cold, gaseous form, sleep";
+                case Feat.INNATE_SPELLCASTING_PIT_FIEND:
+                    return "The pit fiend's spellcasting ability is Charisma (spell save DC 21). The pit fiend can innately cast the following spells, requiring no material components:\nAt will: detect magic, fireball\n3/day each: hold monster, wall of fire";
+                case Feat.INNATE_SPELLCASTING_PLANETAR:
+                    return "The planetar's spellcasting ability is Charisma (spell save DC 20). The planetar can innately cast the following spells, requiring no material components:\nAt will: detect evil and good, invisibility (self only)\n3/day each: blade barrier, dispel evil and good, flame strike, raise dead\n1/day each: commune, control weather, insect plague";
+                case Feat.INNATE_SPELLCASTING_RAKSHASA:
+                    return "The rakshasa's innate spellcasting ability is Charisma (spell save DC 18, +10 to hit with spell attacks). The rakshasa can innately cast the following spells, requiring no material components:\n\nAt will: detect thoughts, disguise self, mage hand, minor illusion\n3/day each: charm person, detect magic, invisibility, major image, suggestion\n1/day each: dominate person, fly, plane shift, true seeing";
+                case Feat.INNATE_SPELLCASTING_SOLAR:
+                    return "The solar's spell casting ability is Charisma (spell save DC 25). It can innately cast the following spells, requiring no material components:\nAt will: detect evil and good, invisibility (self only)\n3/day each: blade barrier, dispel evil and good, resurrection\n1/day each: commune, control weather";
+                case Feat.INNATE_SPELLCASTING_STEAM_MEPHIT:
+                    return "The mephit can innately cast blur, requiring no material components. Its innate spellcasting ability is Charisma.";
+                case Feat.INNATE_SPELLCASTING_STORM_GIANT:
+                    return "The giant's innate spellcasting ability is Charisma (spell save DC 17). It can innately cast the following spells, requiring no material components:\n\nAt will: detect magic, feather fall, levitate, light\n3/day each: control weather, water breathing";
+                case Feat.INNATE_SPELLCASTING_UNICORN:
+                    return "The unicorn's innate spellcasting ability is Charisma (spell save DC 14). The unicorn can innately cast the following spells, requiring no components:\n\nAt will: detect evil and good, druidcraft, pass without trace\n1/day each: calm emotions, dispel evil and good, entangle";
+                case Feat.INSCRUTABLE:
+                    return "Is immune to any effect that would sense its emotions or read its thoughts, as well as any divination spell that it refuses. Wisdom (Insight) checks made to ascertain its intentions or sincerity have disadvantage.";
+                case Feat.INVISIBILITY:
+                    return "Is invisible.";
+                case Feat.IRON_SCENT:
+                    return "Can pinpoint, by scent, the location of ferrous metal within 30 feet of it.";
+                case Feat.KEEN_HEARING:
+                    return "Has advantage on Wisdom (Perception) checks that rely on hearing.";
+                case Feat.KEEN_HEARING_AND_SIGHT:
+                    return "Has advantage on Wisdom (Perception) checks that rely on hearing or sight.";
+                case Feat.KEEN_HEARING_AND_SMELL:
+                    return "Has advantage on Wisdom (Perception) checks that rely on hearing or smell.";
+                case Feat.KEEN_SIGHT:
+                    return "Has advantage on Wisdom (Perception) checks that rely on sight.";
+                case Feat.KEEN_SIGHT_AND_SMELL:
+                    return "Has advantage on Wisdom (Perception) checks that rely on sight or smell.";
+                case Feat.KEEN_SMELL:
+                    return "Has advantage on Wisdom (Perception) checks that rely on smell.";
+                case Feat.LABYRINTHINE_RECALL:
+                    return "Can perfectly recall any path it has traveled.";
+                case Feat.LEGENDARY_RESISTANCE:
+                    return "If it fails a saving throw, it can choose to succeed instead.";
+                case Feat.LIGHT_SENSITIVITY:
+                    return "While in bright light, has disadvantage on attack rolls and Wisdom (Perception) checks that rely on sight.";
+                case Feat.LIGHTNING_ABSORPTION:
+                    return "Whenever subjected to lightning damage, it takes no damage and instead regains a number of hit points equal to the lightning damage dealt.";
+                case Feat.LIMITED_AMPHIBIOUSNESS:
+                    return "Can breathe air and water, but it needs to be submerged at least once every 4 hours to avoid suffocating.";
+                case Feat.LIMITED_MAGIC_IMMUNITY:
+                    return "Can't be affected or detected by spells of 6th level or lower unless it wishes to be. It has advantage on saving throws against all other spells and magical effects.";
+                case Feat.LIMITED_TELEPATHY_OTYUGH:
+                    return "The otyugh can magically transmit simple messages and images to any creature within 120 ft. of it that can understand a language. This form of telepathy doesn't allow the receiving creature to telepathically respond.";
+                case Feat.LIMITED_TELEPATHY_PSEUDODRAGON:
+                    return "The pseudodragon can magically communicate simple ideas, emotions, and images telepathically with any creature within 100 ft. of it that can understand a language.";
+                case Feat.MAGIC_RESISTANCE:
+                    return "Has advantage on saving throws against spells and other magical effects.";
+                case Feat.MAGIC_WEAPONS:
+                    return "Its weapon attacks are magical.";
+                case Feat.MARTIAL_ADVANTAGE:
+                    return "Once per turn, it can deal an extra 7 (2d6) damage to a creature it hits with a weapon attack if that creature is within 5 ft. of an ally that isn't incapacitated.";
+                case Feat.MIMICRY_HAG:
+                    return "The hag can mimic animal sounds and humanoid voices. A creature that hears the sounds can tell they are imitations with a successful DC 14 Wisdom (Insight) check.";
+                case Feat.MIMICRY_RAVEN:
+                    return "The raven can mimic simple sounds it has heard, such as a person whispering, a baby crying, or an animal chittering. A creature that hears the sounds can tell they are imitations with a successful DC 10 Wisdom (Insight) check.";
+                case Feat.MISTY_ESCAPE:
+                    return "When it drops to 0 hit points outside its resting place, the vampire transforms into a cloud of mist (as in the Shapechanger trait) instead of falling unconscious, provided that it isn't in sunlight or running water. If it can't transform, it is destroyed.\nWhile it has 0 hit points in mist form, it can't revert to its vampire form, and it must reach its resting place within 2 hours or be destroyed. Once in its resting place, it reverts to its vampire form. It is then paralyzed until it regains at least 1 hit point. After spending 1 hour in its resting place with 0 hit points, it regains 1 hit point.";
+                case Feat.MUCOUS_CLOUD:
+                    return "While underwater, it is surrounded by transformative mucus. A creature that touches it or that hits it with a melee attack while within 5 ft. of it must make a DC 14 Constitution saving throw. On a failure, the creature is diseased for 1d4 hours. The diseased creature can breathe only underwater.";
+                case Feat.MULTIPLE_HEADS:
+                    return "The hydra has five heads. While it has more than one head, the hydra has advantage on saving throws against being blinded, charmed, deafened, frightened, stunned, and knocked unconscious.\nWhenever the hydra takes 25 or more damage in a single turn, one of its heads dies. If all its heads die, the hydra dies.\nAt the end of its turn, it grows two heads for each of its heads that died since its last turn, unless it has taken fire damage since its last turn. The hydra regains 10 hit points for each head regrown in this way.";
+                case Feat.NIGHT_HAG_ITEMS:
+                    return "A night hag carries two very rare magic items that she must craft for herself If either object is lost, the night hag will go to great lengths to retrieve it, as creating a new tool takes time and effort.\nHeartstone: This lustrous black gem allows a night hag to become ethereal while it is in her possession. The touch of a heartstone also cures any disease. Crafting a heartstone takes 30 days.\nSoul Bag: When an evil humanoid dies as a result of a night hag's Nightmare Haunting, the hag catches the soul in this black sack made of stitched flesh. A soul bag can hold only one evil soul at a time, and only the night hag who crafted the bag can catch a soul with it. Crafting a soul bag takes 7 days and a humanoid sacrifice (whose flesh is used to make the bag).";
+                case Feat.NIMBLE_ESCAPE:
+                    return "Can take the Disengage or Hide action as a bonus action on each of its turns.";
+                case Feat.OOZE_CUBE:
+                    return "The cube takes up its entire space. Other creatures can enter the space, but a creature that does so is subjected to the cube's Engulf and has disadvantage on the saving throw.\nCreatures inside the cube can be seen but have total cover.\nA creature within 5 feet of the cube can take an action to pull a creature or object out of the cube. Doing so requires a successful DC 12 Strength check, and the creature making the attempt takes 10 (3d6) acid damage.\nThe cube can hold only one Large creature or up to four Medium or smaller creatures inside it at a time.";
+                case Feat.PACK_TACTICS:
+                    return "Hhs advantage on an attack roll against a creature if at least one of its allies is within 5 ft. of the creature and the ally isn't incapacitated.";
+                case Feat.PETRIFYING_GAZE_BASILISK:
+                    return "If a creature starts its turn within 30 ft. of the basilisk and the two of them can see each other, the basilisk can force the creature to make a DC 12 Constitution saving throw if the basilisk isn't incapacitated. On a failed save, the creature magically begins to turn to stone and is restrained. It must repeat the saving throw at the end of its next turn. On a success, the effect ends. On a failure, the creature is petrified until freed by the greater restoration spell or other magic.\nA creature that isn't surprised can avert its eyes to avoid the saving throw at the start of its turn. If it does so, it can't see the basilisk until the start of its next turn, when it can avert its eyes again. If it looks at the basilisk in the meantime, it must immediately make the save.\nIf the basilisk sees its reflection within 30 ft. of it in bright light, it mistakes itself for a rival and targets itself with its gaze.";
+                case Feat.PETRIFYING_GAZE_MEDUSA:
+                    return "When a creature that can see the medusa's eyes starts its turn within 30 ft. of the medusa, the medusa can force it to make a DC 14 Constitution saving throw if the medusa isn't incapacitated and can see the creature. If the saving throw fails by 5 or more, the creature is instantly petrified. Otherwise, a creature that fails the save begins to turn to stone and is restrained. The restrained creature must repeat the saving throw at the end of its next turn, becoming petrified on a failure or ending the effect on a success. The petrification lasts until the creature is freed by the greater restoration spell or other magic.\nUnless surprised, a creature can avert its eyes to avoid the saving throw at the start of its turn. If the creature does so, it can't see the medusa until the start of its next turn, when it can avert its eyes again. If the creature looks at the medusa in the meantime, it must immediately make the save.\nIf the medusa sees itself reflected on a polished surface within 30 ft. of it and in an area of bright light, the medusa is, due to its curse, affected by its own gaze.";
+                case Feat.POUNCE_LION:
+                    return "If the lion moves at least 20 ft. straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the lion can make one bite attack against it as a bonus action.";
+                case Feat.POUNCE_PANTHER:
+                    return "If the panther moves at least 20 ft. straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 12 Strength saving throw or be knocked prone. If the target is prone, the panther can make one bite attack against it as a bonus action.";
+                case Feat.POUNCE_TIGER_13:
+                    return "If the tiger moves at least 20 ft. straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the tiger can make one bite attack against it as a bonus action.";
+                case Feat.POUNCE_TIGER_14:
+                    return "If the tiger moves at least 20 ft. straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the tiger can make one bite attack against it as a bonus action.";
+                case Feat.POUNCE_WERETIGER:
+                    return "If the weretiger moves at least 15 feet straight toward a creature and then hits it with a claw attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the weretiger can make one bite attack against it as a bonus action.";
+                case Feat.PROBING_TELEPATHY:
+                    return "If a creature communicates telepathically with it, it learns the creature's greatest desires if it can see the creature.";
+                case Feat.RAMPAGE:
+                    return "When it reduces a creature to 0 hit points with a melee attack on its turn, it can take a bonus action to move up to half its speed and make a bite attack.";
+                case Feat.REACTIVE:
+                    return "Can take one reaction on every turn in combat.";
+                case Feat.REACTIVE_HEADS:
+                    return "For each head it has beyond one, it gets an extra reaction that can be used only for opportunity attacks.";
+                case Feat.RECKLESS:
+                    return "At the start of its turn, can gain advantage on all melee weapon attack rolls during that turn, but attack rolls against it have advantage until the start of its next turn.";
+                case Feat.REFLECTIVE_CARAPACE:
+                    return "Any time the tarrasque is targeted by a magic missile spell, a line spell, or a spell that requires a ranged attack roll, roll a d6. On a 1 to 5, the tarrasque is unaffected. On a 6, the tarrasque is unaffected, and the effect is reflected back at the caster as though it originated from the tarrasque, turning the caster into the target.";
+                case Feat.REGENERATION:
+                    return "Regains 10 hit points at the start of its turn if it has at least 1 hit point.";
+                case Feat.REGENERATION_TROLL:
+                    return "The troll regains 10 hit points at the start of its turn. If the troll takes acid or fire damage, this trait doesn't function at the start of the troll's next turn. The troll dies only if it starts its turn with 0 hit points and doesn't regenerate.";
+                case Feat.REGENERATION_VAMPIRE:
+                    return "The vampire regains 20 hit points at the start of its turn if it has at least 1 hit point and isn't in sunlight or running water. If the vampire takes radiant damage or damage from holy water, this trait doesn't function at the start of the vampire's next turn.";
+                case Feat.REGENERATION_VAMPIRE_SPAWN:
+                    return "The vampire regains 10 hit points at the start of its turn if it has at least 1 hit point and isn't in sunlight or running water. If the vampire takes radiant damage or damage from holy water, this trait doesn't function at the start of the vampire's next turn.";
+                case Feat.REJUVENATION_LICH:
+                    return "If it has a phylactery, a destroyed lich gains a new body in 1d10 days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the phylactery.";
+                case Feat.REJUVENATION_MUMMY_LORD:
+                    return "A destroyed mummy lord gains a new body in 24 hours if its heart is intact, regaining all its hit points and becoming active again. The new body appears within 5 feet of the mummy lord's heart.";
+                case Feat.REJUVENATION_NAGA:
+                    return "If it dies, the naga returns to life in 1d6 days and regains all its hit points. Only a wish spell can prevent this trait from functioning.";
+                case Feat.RELENTLESS_7:
+                    return "If it takes 7 damage or less that would reduce it to 0 hit points, it is reduced to 1 hit point instead.";
+                case Feat.RELENTLESS_10:
+                    return "If it takes 10 damage or less that would reduce it to 0 hit points, it is reduced to 1 hit point instead.";
+                case Feat.RELENTLESS_14:
+                    return "If it takes 14 damage or less that would reduce it to 0 hit points, it is reduced to 1 hit point instead.";
+                case Feat.RUNNING_LEAP:
+                    return "With a 10-foot running start, the lion can long jump up to 25 ft..";
+                case Feat.RUST_METAL:
+                    return "Any nonmagical weapon made of metal that hits it corrodes. After dealing damage, the weapon takes a permanent and cumulative -1 penalty to damage rolls. If its penalty drops to -5, the weapon is destroyed. Non magical ammunition made of metal that hits the rust monster is destroyed after dealing damage.";
+                case Feat.SENSE_MAGIC:
+                    return "Senses magic within 120 feet of it at will. This trait otherwise works like the detect magic spell but isn't itself magical.";
+                case Feat.SHADOW_STEALTH:
+                    return "While in dim light or darkness, the shadow can take the Hide action as a bonus action. Its stealth bonus is also improved to +6.";
+                case Feat.SHAPECHANGER_DOPPELGANGER:
+                    return "The doppelganger can use its action to polymorph into a Small or Medium humanoid it has seen, or back into its true form. Its statistics, other than its size, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                case Feat.SHAPECHANGER_FIEND:
+                    return "The fiend can use its action to polymorph into a Small or Medium humanoid, or back into its true form. Without wings, the fiend loses its flying speed. Other than its size and speed, its statistics are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                case Feat.SHAPECHANGER_IMP:
+                    return "The imp can use its action to polymorph into a beast form that resembles a rat (speed 20 ft.), a raven (20 ft., fly 60 ft.), or a spider (20 ft., climb 20 ft.), or back into its true form. Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                case Feat.SHAPECHANGER_MIMIC:
+                    return "The mimic can use its action to polymorph into an object or back into its true, amorphous form. Its statistics are the same in each form. Any equipment it is wearing or carrying isn 't transformed. It reverts to its true form if it dies.";
+                case Feat.SHAPECHANGER_QUASIT:
+                    return "The quasit can use its action to polymorph into a beast form that resembles a bat (speed 10 ft. fly 40 ft.), a centipede (40 ft., climb 40 ft.), or a toad (40 ft., swim 40 ft.), or back into its true form . Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed . It reverts to its true form if it dies.";
+                case Feat.SHAPECHANGER_VAMPIRE:
+                    return "If the vampire isn't in sun light or running water, it can use its action to polymorph into a Tiny bat or a Medium cloud of mist, or back into its true form.\nWhile in bat form, the vampire can't speak, its walking speed is 5 feet, and it has a flying speed of 30 feet. Its statistics, other than its size and speed, are unchanged. Anything it is wearing transforms with it, but nothing it is carrying does. It reverts to its true form if it dies.\nWhile in mist form, the vampire can't take any actions, speak, or manipulate objects. It is weightless, has a flying speed of 20 feet, can hover, and can enter a hostile creature's space and stop there. In addition, if air can pass through a space, the mist can do so without squeezing, and it can't pass through water. It has advantage on Strength, Dexterity, and Constitution saving throws, and it is immune to all nonmagical damage, except the damage it takes from sunlight.";
+                case Feat.SHAPECHANGER_WEREBEAST:
+                    return "The werebeast can use its action to polymorph into a beast-humanoid hybrid or into a beast, or back into its true form, which is humanoid. Its statistics, other than its AC, are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.";
+                case Feat.SHARK_TELEPATHY:
+                    return "Can magically command any shark within 120 feet of it, using a limited telepathy.";
+                case Feat.SHIELDED_MIND:
+                    return "Is immune to scrying and to any effect that would sense its emotions, read its thoughts, or detect its location.";
+                case Feat.SIEGE_MONSTER:
+                    return "Deals double damage to objects and structures.";
+                case Feat.SNEAK_ATTACK_2D6:
+                    return "Deals an extra 7 (2d6) damage when it hits a target with a weapon attack and has advantage on the attack roll, or when the target is within 5 ft. of an ally that isn't incapacitated and it doesn't have disadvantage on the attack roll.";
+                case Feat.SNEAK_ATTACK_4D6:
+                    return "Deals an extra 13 (4d6) damage when it hits a target with a weapon attack and has advantage on the attack roll, or when the target is within 5 ft. of an ally that isn't incapacitated and it doesn't have disadvantage on the attack roll.";
+                case Feat.SNOW_CAMOUFLAGE:
+                    return "Has advantage on Dexterity (Stealth) checks made to hide in snowy terrain.";
+                case Feat.SPEAK_WITH_BEASTS_AND_PLANTS:
+                    return "Can communicate with beasts and plants as if they shared a language.";
+                case Feat.SPELL_STORING:
+                    return "A spellcaster who wears the shield guardian's amulet can cause the guardian to store one spell of 4th level or lower. To do so, the wearer must cast the spell on the guardian. The spell has no effect but is stored within the guardian. When commanded to do so by the wearer or when a situation arises that was predefined by the spellcaster, the guardian casts the stored spell with any parameters set by the original caster, requiring no components. When the spell is cast or a new spell is stored, any previously stored spell is lost.";
+                case Feat.SPELLCASTING_ACOLYTE:
+                    return "The acolyte is a 1st-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 12, +4 to hit with spell attacks). The acolyte has following cleric spells prepared:\n\n- Cantrips (at will): light, sacred flame, thaumaturgy\n- 1st level (3 slots): bless, cure wounds, sanctuary";
+                case Feat.SPELLCASTING_ARCHMAGE:
+                    return "The archmage is an 18th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 17, +9 to hit with spell attacks). The archmage can cast disguise self and invisibility at will and has the following wizard spells prepared:\n\n- Cantrips (at will): fire bolt, light, mage hand, prestidigitation, shocking grasp\n- 1st level (4 slots): detect magic, identify, mage armor*, magic missile\n- 2nd level (3 slots): detect thoughts, mirror image, misty step\n- 3rd level (3 slots): counterspell, fly, lightning bolt\n- 4th level (3 slots): banishment, fire shield, stoneskin*\n- 5th level (3 slots): cone of cold, scrying, wall of force\n- 6th level (1 slot): globe of invulnerability\n- 7th level (1 slot): teleport\n- 8th level (1 slot): mind blank*\n- 9th level (1 slot): time stop\n* The archmage casts these spells on itself before combat.";
+                case Feat.SPELLCASTING_DRUID:
+                    return "The druid is a 4th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 12, +4 to hit with spell attacks). It has the following druid spells prepared:\n\n- Cantrips (at will): druidcraft, produce flame, shillelagh\n- 1st level (4 slots): entangle, longstrider, speak with animals, thunderwave\n- 2nd level (3 slots): animal messenger, barkskin";
+                case Feat.SPELLCASTING_FANATIC:
+                    return "The fanatic is a 4th-level spellcaster. Its spell casting ability is Wisdom (spell save DC 11, +3 to hit with spell attacks). The fanatic has the following cleric spells prepared:\n\nCantrips (at will): light, sacred flame, thaumaturgy\n- 1st level (4 slots): command, inflict wounds, shield of faith\n- 2nd level (3 slots): hold person, spiritual weapon";
+                case Feat.SPELLCASTING_LICH:
+                    return "The lich is an 18th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 20, +12 to hit with spell attacks). The lich has the following wizard spells prepared:\n\n- Cantrips (at will): mage hand, prestidigitation, ray of frost\n- 1st level (4 slots): detect magic, magic missile, shield, thunderwave\n- 2nd level (3 slots): acid arrow, detect thoughts, invisibility, mirror image\n- 3rd level (3 slots): animate dead, counterspell, dispel magic, fireball\n- 4th level (3 slots): blight, dimension door\n- 5th level (3 slots): cloudkill, scrying\n- 6th level (1 slot): disintegrate, globe of invulnerability\n- 7th level (1 slot): finger of death, plane shift\n- 8th level (1 slot): dominate monster, power word stun\n- 9th level (1 slot): power word kill";
+                case Feat.SPELLCASTING_MAGE:
+                    return "The mage is a 9th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 14, +6 to hit with spell attacks). The mage has the following wizard spells prepared:\n\n- Cantrips (at will): fire bolt, light, mage hand, prestidigitation\n- 1st level (4 slots): detect magic, mage armor, magic missile, shield\n- 2nd level (3 slots): misty step, suggestion\n- 3rd level (3 slots): counterspell, fireball, fly\n- 4th level (3 slots): greater invisibility, ice storm\n- 5th level (1 slot): cone of cold";
+                case Feat.SPELLCASTING_MUMMY_LORD:
+                    return "The mummy lord is a 10th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 17, +9 to hit with spell attacks). The mummy lord has the following cleric spells prepared:\n\n- Cantrips (at will): sacred flame, thaumaturgy\n- 1st level (4 slots): command, guiding bolt, shield of faith\n- 2nd level (3 slots): hold person, silence, spiritual weapon\n- 3rd level (3 slots): animate dead, dispel magic\n- 4th level (3 slots): divination, guardian of faith\n- 5th level (2 slots): contagion, insect plague\n- 6th level (1 slot): harm";
+                case Feat.SPELLCASTING_NAGA_10:
+                    return "The naga is a 10th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 14, +6 to hit with spell attacks), and it needs only verbal components to cast its spells. It has the following wizard spells prepared:\n\n- Cantrips (at will): mage hand, minor illusion, ray of frost\n- 1st level (4 slots): charm person, detect magic, sleep\n- 2nd level (3 slots): detect thoughts, hold person\n- 3rd level (3 slots): lightning bolt, water breathing\n- 4th level (3 slots): blight, dimension door\n- 5th level (2 slots): dominate person";
+                case Feat.SPELLCASTING_NAGA_11:
+                    return "The naga is an 11th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 16, +8 to hit with spell attacks), and it needs only verbal components to cast its spells. It has the following cleric spells prepared:\n\n- Cantrips (at will): mending, sacred flame, thaumaturgy\n- 1st level (4 slots): command, cure wounds, shield of faith\n- 2nd level (3 slots): calm emotions, hold person\n- 3rd level (3 slots): bestow curse, clairvoyance\n- 4th level (3 slots): banishment, freedom of movement\n- 5th level (2 slots): flame strike, geas\n- 6th level (1 slot): true seeing";
+                case Feat.SPELLCASTING_GYNOSPHINX:
+                    return "The sphinx is a 9th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 16, +8 to hit with spell attacks). It requires no material components to cast its spells. The sphinx has the following wizard spells prepared:\n\n- Cantrips (at will): mage hand, minor illusion, prestidigitation\n- 1st level (4 slots): detect magic, identify, shield\n- 2nd level (3 slots): darkness, locate object, suggestion\n- 3rd level (3 slots): dispel magic, remove curse, tongues\n- 4th level (3 slots): banishment, greater invisibility\n- 5th level (1 slot): legend lore";
+                case Feat.SPELLCASTING_ANDROSPHINX:
+                    return "The sphinx is a 12th-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 18, +10 to hit with spell attacks). It requires no material components to cast its spells. The sphinx has the following cleric spells prepared:\n\n- Cantrips (at will): sacred flame, spare the dying, thaumaturgy\n- 1st level (4 slots): command, detect evil and good, detect magic\n- 2nd level (3 slots): lesser restoration, zone of truth\n- 3rd level (3 slots): dispel magic, tongues\n- 4th level (3 slots): banishment, freedom of movement\n- 5th level (2 slots): flame strike, greater restoration\n- 6th level (1 slot): heroes' feast";
+                case Feat.SPIDER_CLIMB:
+                    return "Can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check.";
+                case Feat.STANDING_LEAP_BULETTE:
+                    return "The bulette's long jump is up to 30 ft. and its high jump is up to 15 ft., with or without a running start.";
+                case Feat.STANDING_LEAP_FROG_10FT:
+                    return "The frog's long jump is up to 10 ft. and its high jump is up to 5 ft., with or without a running start.";
+                case Feat.STANDING_LEAP_FROG_20FT:
+                    return "The frog's long jump is up to 20 ft. and its high jump is up to 10 ft., with or without a running start.";
+                case Feat.STANDING_LEAP_TOAD:
+                    return "The toad's long jump is up to 20 ft. and its high jump is up to 10 ft., with or without a running start.";
+                case Feat.STEADFAST:
+                    return "The devil can't be frightened while it can see an allied creature within 30 feet of it.";
+                case Feat.STENCH_GHAST:
+                    return "Any creature that starts its turn within 5 ft. of the ghast must succeed on a DC 10 Constitution saving throw or be poisoned until the start of its next turn. On a successful saving throw, the creature is immune to the ghast's Stench for 24 hours.";
+                case Feat.STENCH_HEZROU:
+                    return "Any creature that starts its turn within 10 feet of the hezrou must succeed on a DC 14 Constitution saving throw or be poisoned until the start of its next turn. On a successful saving throw, the creature is immune to the hezrou's stench for 24 hours.";
+                case Feat.STONE_CAMOUFLAGE:
+                    return "Has advantage on Dexterity (Stealth) checks made to hide in rocky terrain.";
+                case Feat.SUNLIGHT_SENSITIVITY:
+                    return "While in sunlight, has disadvantage on attack rolls, as well as on Wisdom (Perception) checks that rely on sight.";
+                case Feat.SUNLIGHT_WEAKNESS:
+                    return "While in sunlight, has disadvantage on attack rolls, ability checks, and saving throws.";
+                case Feat.SURE_FOOTED:
+                    return "Has advantage on Strength and Dexterity saving throws made against effects that would knock it prone.";
+                case Feat.SURPRISE_ATTACK_BUGBEAR:
+                    return "If the bugbear surprises a creature and hits it with an attack during the first round of combat, the target takes an extra 7 (2d6) damage from the attack.";
+                case Feat.SURPRISE_ATTACK_DOPPELGANGER:
+                    return "If the doppelganger surprises a creature and hits it with an attack during the first round of combat, the target takes an extra 10 (3d6) damage from the attack.";
+                case Feat.SWARM:
+                    return "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a Tiny bat. The swarm can't regain hit points or gain temporary hit points.";
+                case Feat.TAIL_SPIKE_REGROWTH:
+                    return "The manticore has twenty-four tail spikes. Used spikes regrow when the manticore finishes a long rest.";
+                case Feat.TELEPATHIC_BOND_HOMUNCULUS:
+                    return "While the homunculus is on the same plane of existence as its master, it can magically convey what it senses to its master, and the two can communicate telepathically.";
+                case Feat.TELEPATHIC_BOND_FIEND:
+                    return "The fiend ignores the range restriction on its telepathy when communicating with a creature it has charmed. The two don't even need to be on the same plane of existence.";
+                case Feat.TRAMPLING_CHARGE_ELEPHANT:
+                    return "If the elephant moves at least 20 ft. straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 12 Strength saving throw or be knocked prone. If the target is prone, the elephant can make one stomp attack against it as a bonus action.";
+                case Feat.TRAMPLING_CHARGE_GORGON:
+                    return "If the gorgon moves at least 20 feet straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 16 Strength saving throw or be knocked prone. If the target is prone, the gorgon can make one attack with its hooves against it as a bonus action.";
+                case Feat.TRAMPLING_CHARGE_HORSE:
+                    return "If the horse moves at least 20 ft. straight toward a creature and then hits it with a hooves attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the horse can make another attack with its hooves against it as a bonus action.";
+                case Feat.TRAMPLING_CHARGE_MAMMOTH:
+                    return "If the mammoth moves at least 20 ft. straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 18 Strength saving throw or be knocked prone. If the target is prone, the mammoth can make one stomp attack against it as a bonus action.";
+                case Feat.TRAMPLING_CHARGE_TRICERATOS:
+                    return "If the triceratops moves at least 20 ft. straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the triceratops can make one stomp attack against it as a bonus action.";
+                case Feat.TRANSPARENT:
+                    return "Even when in plain sight, it takes a successful DC 15 Wisdom (Perception) check to spot a cube that has neither moved nor attacked. A creature that tries to enter its space while unaware is surprised.";
+                case Feat.TREASURE_SENSE:
+                    return "Can pinpoint, by scent, the location of precious metals and stones, such as coins and gems, within 60 ft. of it.";
+                case Feat.TREE_STRIDE:
+                    return "Once on her turn, it can use 10 ft. of her movement to step magically into one living tree within her reach and emerge from a second living tree within 60 ft. of the first tree, appearing in an unoccupied space within 5 ft. of the second tree. Both trees must be large or bigger.";
+                case Feat.TUNNELER:
+                    return "Can burrow through solid rock at half its burrow speed and leaves a 10-foot-diameter tunnel in its wake.";
+                case Feat.TURN_DEFIANCE:
+                    return "Itself and any ghouls within 30 ft. of it have advantage on saving throws against effects that turn undead.";
+                case Feat.TURN_RESISTANCE:
+                    return "Has advantage on saving throws against any effect that turns undead.";
+                case Feat.TWO_HEADED:
+                    return "Has advantage on Wisdom (Perception) checks and on saving throws against being blinded, charmed, deafened, frightened, stunned, or knocked unconscious.";
+                case Feat.UNDEAD_FORTITUDE:
+                    return "If damage reduces the undead to 0 hit points, it must make a Constitution saving throw with a DC of 5+the damage taken, unless the damage is radiant or from a critical hit. On a success, the undead drops to 1 hit point instead.";
+                case Feat.UNDERWATER_CAMOUFLAGE:
+                    return "Has advantage on Dexterity (Stealth) checks made while underwater.";
+                case Feat.VAMPIRE_WEAKNESSES:
+                    return "The vampire has the following flaws:\nForbiddance. The vampire can't enter a residence without an invitation from one of the occupants.\nHarmed by Running Water. The vampire takes 20 acid damage if it ends its turn in running water.\nStake to the Heart. If a piercing weapon made of wood is driven into the vampire's heart while the vampire is incapacitated in its resting place, the vampire is paralyzed until the stake is removed.\nSunlight Hypersensitivity. The vampire takes 20 radiant damage when it starts its turn in sunlight. While in sunlight, it has disadvantage on attack rolls and ability checks.";
+                case Feat.VARIABLE_ILLUMINATION:
+                    return "Sheds bright light in a 5- to 20-foot radius and dim light for an additional number of ft. equal to the chosen radius. Can alter the radius as a bonus action.";
+                case Feat.WAKEFUL:
+                    return "At least one head is always awake.";
+                case Feat.WATER_BREATHING:
+                    return "Can breathe only underwater.";
+                case Feat.WATER_FORM:
+                    return "Can enter a hostile creature's space and stop there. It can move through a space as narrow as 1 inch wide without squeezing.";
+                case Feat.WATER_SUSCEPTIBILITY:
+                    return "For every 5 ft. it moves in water, or for every gallon of water splashed on it, it takes 1 cold damage.";
+                case Feat.WEB_SENSE:
+                    return "While in contact with a web, knows the exact location of any other creature in contact with the same web.";
+                case Feat.WEB_WALKER:
+                    return "Ignores movement restrictions caused by webbing.";
                 default:
                     return Enum.GetName(typeof(Feat), feat) + ": (Description missing)";
             }
@@ -2576,7 +3434,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "exhausted to death";
                 case ConditionType.FRIGHTENED:
                     return "frightened";
-                case ConditionType.GRAPPLED:
+                case ConditionType.GRAPPLED_DC13:
+                case ConditionType.GRAPPLED_DC16:
                     return "grappled";
                 case ConditionType.INCAPACITATED:
                     return "incapacitated";
@@ -2622,7 +3481,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Death.";
                 case ConditionType.FRIGHTENED:
                     return "A frightened creature has disadvantage on ability checks and attack rolls while the source of its fear is within line of sight. The creature can't willingly move closer to the source of its fear.";
-                case ConditionType.GRAPPLED:
+                case ConditionType.GRAPPLED_DC13:
+                case ConditionType.GRAPPLED_DC16:
                     return "A grappled creature's speed becomes 0, and it can't benefit from any bonus to its speed. The condition ends if the grappler is incapacitated. The condition also ends if an effect removes the grappled creature from the reach of the grappler or grappling effect, such as when a creature is forcefully hurled away by a sphere talent or ability.";
                 case ConditionType.INCAPACITATED:
                     return "An incapacitated creature can't take actions or reactions.";

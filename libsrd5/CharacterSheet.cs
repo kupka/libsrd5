@@ -57,8 +57,6 @@ namespace srd5 {
         public CharacterLevel[] Levels { get { return levels; } }
         private CharacterLevel[] levels = new CharacterLevel[0];
         public int Experience { get; set; } = 0;
-        public Feat[] Feats { get { return feats; } }
-        private Feat[] feats = new Feat[0];
         public Dice[] HitDice { get { return hitDice; } }
         private Dice[] hitDice = new Dice[0];
         public CharacterInventory Inventory { get; internal set; }
@@ -498,11 +496,6 @@ namespace srd5 {
             }
             Speed = race.Speed;
             Size = race.Size;
-        }
-
-        public void AddFeat(Feat feat) {
-            if (Utils.PushUnique<Feat>(ref feats, feat))
-                feat.Apply(this);
         }
 
         public void IncreaseAbility(AbilityType type) {

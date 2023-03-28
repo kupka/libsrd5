@@ -191,6 +191,9 @@ namespace srd5 {
         [Fact]
         public void HoldPersonTest() {
             Spells.HoldPerson.Cast(Monsters.NightHag, 10, SpellLevel.SECOND, 10, Monsters.GiantBadger); // not affected
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            hero.AddEffect(Effect.IMMUNITY_PARALYZED);
+            Spells.HoldPerson.Cast(Monsters.NightHag, 10, SpellLevel.SECOND, 10, hero); // immune to paralyze
             DefaultSpellTest(Spells.HoldPerson, 14, SpellLevel.SEVENTH, ConditionType.PARALYZED, null, 100);
         }
 

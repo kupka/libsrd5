@@ -28,9 +28,8 @@ namespace srd5 {
                         }
                     }
                     // Wisdom save with advantage since we assume a fight
-                    if (!target.DC(ID.CHARM_PERSON, dc, AbilityType.WISDOM, true)) {
+                    if (!target.DC(ID.CHARM_PERSON, dc, AbilityType.WISDOM, true) && target.AddCondition(ConditionType.CHARMED)) {
                         GlobalEvents.AffectBySpell(caster, ID.CHARM_PERSON, target, true);
-                        target.AddCondition(ConditionType.CHARMED);
                     } else {
                         GlobalEvents.AffectBySpell(caster, ID.CHARM_PERSON, target, false);
                     }
@@ -213,8 +212,8 @@ namespace srd5 {
                 int missilesTotal = (int)slot + 2;
                 foreach (Combattant possibleTarget in targets) {
                     Combattant target = possibleTarget;
-                    if (target.HasEffect(Effect.REFLECTIVE_CARAPACE)) {
-                        GlobalEvents.ActivateEffect(target, Effect.REFLECTIVE_CARAPACE);
+                    if (target.HasFeat(Feat.REFLECTIVE_CARAPACE)) {
+                        GlobalEvents.ActivateFeat(target, Feat.REFLECTIVE_CARAPACE);
                         GlobalEvents.AffectBySpell(caster, ID.MAGIC_MISSILE, target, false);
                         if (Dice.D6.Value == 6) {
                             target = caster;

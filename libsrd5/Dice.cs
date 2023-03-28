@@ -266,12 +266,13 @@ namespace srd5 {
             return value;
         }
 
-        // Crticial hits roll each dice twice
-        public int RollCritical() {
+        // Crticial hits roll each dice twice or more
+        public int RollCritical(int times = 2) {
             int result = Modifier;
             for (int i = 0; i < Amount; i++) {
-                result += Random.Get(1, Dice);
-                result += Random.Get(1, Dice);
+                for (int j = 0; j < times; j++) {
+                    result += Random.Get(1, Dice);
+                }
             }
             int value = Math.Max(0, result);
             onDiceRolled(this, value);

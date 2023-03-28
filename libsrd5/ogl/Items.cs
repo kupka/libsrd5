@@ -44,6 +44,7 @@ namespace srd5 {
     }
 
     public enum DamageType {
+        TRUE_DAMAGE, // unresistable damage
         ACID,
         BLUDGEONING,
         COLD,

@@ -3434,7 +3434,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "exhausted to death";
                 case ConditionType.FRIGHTENED:
                     return "frightened";
-                case ConditionType.GRAPPLED:
+                case ConditionType.GRAPPLED_DC13:
+                case ConditionType.GRAPPLED_DC16:
                     return "grappled";
                 case ConditionType.INCAPACITATED:
                     return "incapacitated";
@@ -3480,7 +3481,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Death.";
                 case ConditionType.FRIGHTENED:
                     return "A frightened creature has disadvantage on ability checks and attack rolls while the source of its fear is within line of sight. The creature can't willingly move closer to the source of its fear.";
-                case ConditionType.GRAPPLED:
+                case ConditionType.GRAPPLED_DC13:
+                case ConditionType.GRAPPLED_DC16:
                     return "A grappled creature's speed becomes 0, and it can't benefit from any bonus to its speed. The condition ends if the grappler is incapacitated. The condition also ends if an effect removes the grappled creature from the reach of the grappler or grappling effect, such as when a creature is forcefully hurled away by a sphere talent or ability.";
                 case ConditionType.INCAPACITATED:
                     return "An incapacitated creature can't take actions or reactions.";

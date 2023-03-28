@@ -72,12 +72,7 @@ namespace srd5 {
         public static readonly Attack AndrosphinxClaw = new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d10+6"), 5);
         public static readonly Attack AnimatedArmorSlam = new Attack("Slam", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
         public static AttackEffect AnkhegBiteEffect = delegate (Combattant attacker, Combattant target) {
-            AbilityType ability = AbilityType.DEXTERITY;
-            if (target.Strength.Value > target.Dexterity.Value) {
-                ability = AbilityType.STRENGTH;
-            }
-            if (target.DC(AnkhegBite, 13, ability)) return;
-            target.AddCondition(ConditionType.GRAPPLED);
+            target.AddCondition(ConditionType.GRAPPLED_DC13);
         };
         public static readonly Attack AnkhegBite = new Attack("Bite", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, new Damage(DamageType.ACID, "1d6"), AnkhegBiteEffect);
         public static readonly Attack ApeFist = new Attack("Fist", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5);
@@ -95,10 +90,6 @@ namespace srd5 {
         public static readonly Attack AwakenedTreeSlam = new Attack("Slam", 6, new Damage(DamageType.BLUDGEONING, "3d6+4"), 10);
         public static readonly Attack AxeBeakBeak = new Attack("Beak", 4, new Damage(DamageType.SLASHING, "1d8+2"), 5);
         public static readonly Attack AzerWarhammer = new Attack("Warhammer", 5, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, new Damage(DamageType.FIRE, "1d6"));
-
-
-
-        public static readonly Attack BoarTusk = new Attack("Tusk", 3, new Damage(DamageType.SLASHING, "1d6+1"), 5);
         public static readonly Attack ClayGolemSlam = new Attack("Slam", 8, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5);
         public static readonly Attack GiantBadgerBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5);
         public static readonly Attack GiantBadgerClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+1"), 5);
@@ -763,17 +754,6 @@ namespace srd5 {
                 azer.AddFeat(Feat.HEATED_WEAPONS);
                 azer.AddFeat(Feat.ILLUMINATION_10FT);
                 return azer;
-            }
-        }
-
-
-
-        public static Monster Boar {
-            get {
-                return new Monster(
-                    Monsters.Type.BEAST, Monsters.ID.BOAR, Alignment.UNALIGNED, 13, 11, 12, 2, 9, 5, 11, "2d8+2", 40, ChallengeRating.QUARTER,
-                    new Attack[] { Attacks.BoarTusk }, Attacks.None, Size.MEDIUM
-                );
             }
         }
 

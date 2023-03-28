@@ -48,7 +48,7 @@ namespace srd5 {
     }
 
     public class Armor : Item {
-        public int AC { get; private set; }
+        public int AC { get; internal set; }
         public int MaxDexBonus { get; private set; }
         public int Strength { get; private set; }
         public ArmorProperty[] Properties { get; private set; }
@@ -63,6 +63,10 @@ namespace srd5 {
             Value = value;
             Weight = weight;
             Type = ItemType.ARMOR;
+        }
+
+        public bool HasProperty(ArmorProperty property) {
+            return Array.IndexOf(Properties, property) >= 0;
         }
     }
 

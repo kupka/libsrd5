@@ -28,9 +28,8 @@ namespace srd5 {
                         }
                     }
                     // Wisdom save with advantage since we assume a fight
-                    if (!target.DC(ID.CHARM_PERSON, dc, AbilityType.WISDOM, true)) {
+                    if (!target.DC(ID.CHARM_PERSON, dc, AbilityType.WISDOM, true) && target.AddCondition(ConditionType.CHARMED)) {
                         GlobalEvents.AffectBySpell(caster, ID.CHARM_PERSON, target, true);
-                        target.AddCondition(ConditionType.CHARMED);
                     } else {
                         GlobalEvents.AffectBySpell(caster, ID.CHARM_PERSON, target, false);
                     }

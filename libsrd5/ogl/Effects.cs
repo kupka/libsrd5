@@ -16,6 +16,7 @@ namespace srd5 {
         VULNERABILITY_RADIANT,
         VULNERABILITY_SLASHING,
         VULNERABILITY_THUNDER,
+        VULNERABILITY_TRUE_DAMAGE, // should never be applied
         // Resistances against DamageType
         RESISTANCE_ACID,
         RESISTANCE_BLUDGEONING,
@@ -32,6 +33,7 @@ namespace srd5 {
         RESISTANCE_THUNDER,
         RESISTANCE_NONMAGIC,
         RESISTANCE_DAMAGE_FROM_SPELLS,
+        RESISTANCE_TRUE_DAMAGE, // should never be applied
         // Immunities against DamageType
         IMMUNITY_ACID,
         IMMUNITY_BLUDGEONING,
@@ -48,6 +50,7 @@ namespace srd5 {
         IMMUNITY_THUNDER,
         IMMUNITY_NONMAGIC,
         IMMUNITY_DAMAGE_FROM_SPELLS,
+        IMMUNITY_TRUE_DAMAGE, // should never be applied
         // Immunities against Condition
         IMMUNITY_BLINDED,
         IMMUNITY_CHARMED,
@@ -105,8 +108,11 @@ namespace srd5 {
 
         // Spell Effects
         ABOLETH_DISEASE_TENTACLE,
+        BEARDED_DEVIL_POISON,
+        BONE_DEVIL_POISON,
         ENTANGLE,
         FAIRIE_FIRE,
+        INFERNAL_WOUND,
         JUMP,
         LIGHT,
         LONGSTRIDER,
@@ -134,9 +140,10 @@ namespace srd5 {
         }
 
         public static Effect Immunity(ConditionType condition) {
-            if (condition >= ConditionType.EXHAUSTED_1 && condition <= ConditionType.EXHAUSTED_6)
-                return Effect.IMMUNITY_EXHAUSTION;
-            string name = "IMMUNITY_" + Enum.GetName(typeof(ConditionType), condition);
+            string conditionName = Enum.GetName(typeof(ConditionType), condition);
+            if (conditionName.IndexOf("EXHAUSTED") == 0) conditionName = "EXHAUSTION";
+            if (conditionName.IndexOf("GRAPPLED") == 0) conditionName = "GRAPPLED";
+            string name = "IMMUNITY_" + conditionName;
             return (Effect)Enum.Parse(typeof(Effect), name);
         }
     }
@@ -168,6 +175,10 @@ namespace srd5 {
                 case Effect.FAIRIE_FIRE:
                     combattant.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
                     break;
+                case Effect.IMMUNITY_TRUE_DAMAGE:
+                case Effect.RESISTANCE_TRUE_DAMAGE:
+                case Effect.VULNERABILITY_TRUE_DAMAGE:
+                    throw new Srd5ArgumentException("Do not aply True Damage effects.");
             }
         }
 

@@ -15,5 +15,18 @@ namespace srd5 {
         public void VulnerabilityTest() {
             Assert.Equal(Effect.VULNERABILITY_SLASHING, Effects.Vulnerability(DamageType.SLASHING));
         }
+
+        [Fact]
+        public void TrueDamageTest() {
+            Assert.Throws<Srd5ArgumentException>(delegate () {
+                Monsters.Aboleth.AddEffect(Effect.IMMUNITY_TRUE_DAMAGE);
+            });
+            Assert.Throws<Srd5ArgumentException>(delegate () {
+                Monsters.Aboleth.AddEffect(Effect.RESISTANCE_TRUE_DAMAGE);
+            });
+            Assert.Throws<Srd5ArgumentException>(delegate () {
+                Monsters.Aboleth.AddEffect(Effect.VULNERABILITY_TRUE_DAMAGE);
+            });
+        }
     }
 }

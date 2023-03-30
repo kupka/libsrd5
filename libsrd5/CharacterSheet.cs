@@ -94,6 +94,7 @@ namespace srd5 {
                 foreach (Dice dice in hitDice) {
                     hp += dice.Value + Constitution.Modifier + additionalHp;
                 }
+                hp += HitPointMaxiumModifiersSum;
                 return hp;
             }
         }

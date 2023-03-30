@@ -105,11 +105,14 @@ namespace srd5 {
         FAIL_STRENGTH_CHECK,
         FAIL_DEXERITY_CHECK,
         CANNOT_REGENERATE_HITPOINTS,
+        GRAPPLING,
 
         // Spell Effects
         ABOLETH_DISEASE_TENTACLE,
         BEARDED_DEVIL_POISON,
         BONE_DEVIL_POISON,
+        CLOAKER_ATTACHED,
+        COUATL_POISON,
         ENTANGLE,
         FAIRIE_FIRE,
         INFERNAL_WOUND,
@@ -118,6 +121,7 @@ namespace srd5 {
         LONGSTRIDER,
         RAY_OF_FROST,
         RESISTANCE,
+        UNABLE_TO_BREATHE,
 
         // Feat Effects
         LEGENDARY_RESISTANCE

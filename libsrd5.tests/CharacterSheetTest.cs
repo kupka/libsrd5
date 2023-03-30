@@ -516,5 +516,20 @@ namespace srd5 {
             Assert.Null(sheet.Inventory.Armor);
             Assert.Equal(1, sheet.HitPoints);
         }
+
+        [Fact]
+        public void HitPointMaxiumModifierTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            int hpMax = hero.HitPointsMax;
+            HitPointMaxiumModifier modifier1 = new HitPointMaxiumModifier(-10, HitPointMaxiumModifier.RemovedByEffect.GREATER_RESTORATION);
+            Assert.False(modifier1.Equals(hero));
+            Assert.NotEqual(0, modifier1.GetHashCode());
+            HitPointMaxiumModifier modifier2 = new HitPointMaxiumModifier(5, HitPointMaxiumModifier.RemovedByEffect.AFTER_24_HOURS);
+            hero.AddHitPointMaximumModifiers(modifier1, modifier2);
+            Assert.Equal(hpMax - 5, hero.HitPointsMax);
+            hero.RemoveHitPointsMaximumModifiers(modifier1);
+            Assert.Equal(hpMax + 5, hero.HitPointsMax);
+        }
     }
 }

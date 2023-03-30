@@ -72,6 +72,8 @@ namespace srd5 {
         public static readonly Attack AndrosphinxClaw = new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d10+6"), 5);
         public static readonly Attack AnimatedArmorSlam = new Attack("Slam", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
         public static AttackEffect AnkhegBiteEffect = delegate (Combattant attacker, Combattant target) {
+            if (attacker.HasEffect(Effect.GRAPPLING)) return;
+            attacker.AddEffect(Effect.GRAPPLING);
             target.AddCondition(ConditionType.GRAPPLED_DC13);
         };
         public static readonly Attack AnkhegBite = new Attack("Bite", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, new Damage(DamageType.ACID, "1d6"), AnkhegBiteEffect);
@@ -90,7 +92,6 @@ namespace srd5 {
         public static readonly Attack AwakenedTreeSlam = new Attack("Slam", 6, new Damage(DamageType.BLUDGEONING, "3d6+4"), 10);
         public static readonly Attack AxeBeakBeak = new Attack("Beak", 4, new Damage(DamageType.SLASHING, "1d8+2"), 5);
         public static readonly Attack AzerWarhammer = new Attack("Warhammer", 5, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, new Damage(DamageType.FIRE, "1d6"));
-        public static readonly Attack ClayGolemSlam = new Attack("Slam", 8, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5);
         public static readonly Attack GiantBadgerBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5);
         public static readonly Attack GiantBadgerClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+1"), 5);
         public static readonly Attack GiantScorpionClaw = new Attack("Claw", 4, new Damage(DamageType.BLUDGEONING, "1d8+2"), 5);
@@ -821,18 +822,6 @@ namespace srd5 {
                     new Attack[] { Attacks.OrcGreataxe }, new Attack[] { Attacks.OrcJavelin }, Size.MEDIUM, 0
                 );
                 return orc;
-            }
-        }
-
-        public static Monster ClayGolem {
-            get {
-                Monster golem = new Monster(
-                    Monsters.Type.CONSTRUCT, Monsters.ID.CLAY_GOLEM, Alignment.UNALIGNED, 20, 9, 18, 3, 8, 1, 14, "14d10+56", 20, 9,
-                    new Attack[] { Attacks.ClayGolemSlam, Attacks.ClayGolemSlam }, Attacks.None, Size.LARGE, 0
-                );
-                golem.AddEffects(Effect.IMMUNITY_ACID, Effect.IMMUNITY_POISON, Effect.IMMUNITY_PSYCHIC, Effect.IMMUNITY_NONMAGIC);
-                golem.AddEffects(Effect.IMMUNITY_CHARMED, Effect.IMMUNITY_EXHAUSTION, Effect.IMMUNITY_FRIGHTENED, Effect.IMMUNITY_PARALYZED, Effect.IMMUNITY_PETRIFIED, Effect.IMMUNITY_POISONED);
-                return golem;
             }
         }
 

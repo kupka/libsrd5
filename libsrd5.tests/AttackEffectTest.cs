@@ -31,6 +31,15 @@ namespace srd5 {
             attackEffectTest(Attacks.BehirConstrictEffect);
             attackEffectTest(Attacks.BlackPuddingPseudopodEffect);
             attackEffectTest(Attacks.BoneDevilStingEffect);
+            attackEffectTest(Attacks.ChainDevilChainEffect);
+            attackEffectTest(Attacks.ChuulPincerEffect);
+            attackEffectTest(Attacks.ClayGolemSlamEffect);
+            attackEffectTest(Attacks.CloakerBiteEffect);
+            attackEffectTest(Attacks.CockatriceBiteEffect);
+            attackEffectTest(Attacks.ConstrictorSnakeConstrictEffect);
+            attackEffectTest(Attacks.CouatlBiteEffect);
+            attackEffectTest(Attacks.CouatlConstrictEffect);
+            attackEffectTest(Attacks.CrocodileBiteEffect);
             attackEffectTest(Attacks.GiantScorpionStingEffect);
 
             for (int i = 0; i < 10; i++) {

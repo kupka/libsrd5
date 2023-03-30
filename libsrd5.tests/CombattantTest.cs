@@ -98,5 +98,19 @@ namespace srd5 {
             hero.DC(null, 10, AbilityType.INTELLIGENCE);
             Assert.False(hero.IsProficient(AbilityType.NONE));
         }
+
+        [Fact]
+        public void HitPointMaxiumModifierTest() {
+            Combattant combattant = Monsters.Orc;
+            int hpMax = combattant.HitPointsMax;
+            HitPointMaxiumModifier modifier1 = new HitPointMaxiumModifier(-10, HitPointMaxiumModifier.RemovedByEffect.GREATER_RESTORATION);
+            Assert.False(modifier1.Equals(combattant));
+            Assert.NotEqual(0, modifier1.GetHashCode());
+            HitPointMaxiumModifier modifier2 = new HitPointMaxiumModifier(5, HitPointMaxiumModifier.RemovedByEffect.AFTER_24_HOURS);
+            combattant.AddHitPointMaximumModifiers(modifier1, modifier2);
+            Assert.Equal(hpMax - 5, combattant.HitPointsMax);
+            combattant.RemoveHitPointsMaximumModifiers(modifier1);
+            Assert.Equal(hpMax + 5, combattant.HitPointsMax);
+        }
     }
 }

@@ -58,6 +58,13 @@ namespace srd5 {
             if (attacker.HasEffect(Effect.GRAPPLING)) return;
             attacker.AddEffect(Effect.GRAPPLING);
             target.AddCondition(ConditionType.GRAPPLED_DC16);
+            target.AddStartOfTurnEvent(delegate (Combattant combattant) {
+                if (!combattant.HasCondition(ConditionType.GRAPPLED_DC16)) {
+                    attacker.RemoveEffect(Effect.GRAPPLING);
+                    return true;
+                }
+                return false;
+            });
         };
         public static readonly Attack BehirConstrict = new Attack("Constrict", 10, new Damage(DamageType.BLUDGEONING, "2d10+6"), 5, new Damage(DamageType.SLASHING, "2d10+6"), BehirConstrictEffect);
         public static readonly Attack BerserkerGreataxe = new Attack("Greataxe", 5, new Damage(DamageType.SLASHING, "1d12+3"), 5);

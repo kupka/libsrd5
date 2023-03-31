@@ -12,6 +12,7 @@ namespace srd5 {
             target.AddCondition(ConditionType.RESTRAINED);
             target.AddStartOfTurnEvent(delegate (Combattant combattant) {
                 if (!combattant.HasCondition(ConditionType.GRAPPLED_DC14)) {
+                    attacker.RemoveEffect(Effect.GRAPPLING);
                     combattant.RemoveCondition(ConditionType.RESTRAINED);
                     return true;
                 }
@@ -30,7 +31,16 @@ namespace srd5 {
             }
             if (grappling >= 2) return;
             if (target.Size > Size.LARGE) return;
+            if (target.HasCondition(ConditionType.GRAPPLED_DC14)) return;
+            attacker.AddEffect(Effect.GRAPPLING);
             target.AddCondition(ConditionType.GRAPPLED_DC14);
+            target.AddStartOfTurnEvent(delegate (Combattant combattant) {
+                if (!combattant.HasCondition(ConditionType.GRAPPLED_DC14)) {
+                    attacker.RemoveEffect(Effect.GRAPPLING);
+                    return true;
+                }
+                return false;
+            });
         };
         public static readonly Attack ChuulPincer = new Attack("Pincer", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5, null, ChuulPincerEffect);
         public static readonly AttackEffect ClayGolemSlamEffect = delegate (Combattant attacker, Combattant target) {
@@ -75,6 +85,7 @@ namespace srd5 {
             target.AddCondition(ConditionType.RESTRAINED);
             target.AddStartOfTurnEvent(delegate (Combattant combattant) {
                 if (!combattant.HasCondition(ConditionType.GRAPPLED_DC14)) {
+                    attacker.RemoveEffect(Effect.GRAPPLING);
                     combattant.RemoveCondition(ConditionType.RESTRAINED);
                     return true;
                 }
@@ -98,6 +109,7 @@ namespace srd5 {
             target.AddCondition(ConditionType.RESTRAINED);
             target.AddStartOfTurnEvent(delegate (Combattant combattant) {
                 if (!combattant.HasCondition(ConditionType.GRAPPLED_DC15)) {
+                    attacker.RemoveEffect(Effect.GRAPPLING);
                     combattant.RemoveCondition(ConditionType.RESTRAINED);
                     return true;
                 }
@@ -118,6 +130,7 @@ namespace srd5 {
             target.AddStartOfTurnEvent(delegate (Combattant combattant) {
                 if (!combattant.HasCondition(ConditionType.GRAPPLED_DC12)) {
                     combattant.RemoveCondition(ConditionType.RESTRAINED);
+                    attacker.RemoveEffect(Effect.GRAPPLING);
                     return true;
                 }
                 return false;

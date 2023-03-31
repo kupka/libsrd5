@@ -1,35 +1,22 @@
 using System;
 
 namespace srd5 {
-    public struct HitPointMaxiumModifier {
+    public class HitPointMaxiumModifier : GuidClass {
         public enum RemovedByEffect {
             GREATER_RESTORATION,
             REMOVE_DISEASE,
             REMOVE_CURSE,
             AFTER_24_HOURS
         }
-        public Guid Guid { get; private set; }
+
         public int Amount { get; private set; }
         public RemovedByEffect RemovedBy { get; private set; }
 
         public HitPointMaxiumModifier(int amount, RemovedByEffect removedBy) {
             Amount = amount;
             RemovedBy = removedBy;
-            Guid = System.Guid.NewGuid();
         }
 
-        public override bool Equals(object obj) {
-            if (obj is HitPointMaxiumModifier) {
-                HitPointMaxiumModifier other = (HitPointMaxiumModifier)obj;
-                return this.Guid.Equals(other.Guid);
-            } else {
-                return false;
-            }
-        }
-
-        public override int GetHashCode() {
-            return Guid.GetHashCode();
-        }
     }
 
     public abstract class Combattant {
@@ -310,6 +297,43 @@ namespace srd5 {
                 GlobalEvents.ActivateEffect(this, Effect.LEGENDARY_RESISTANCE);
             }
             GlobalEvents.RolledDC(this, ability, dc, d20.Value, success);
+            return success;
+        }
+
+        /// <summary>
+        /// Try to escape from a grapple. This method determines the most favorable skill check (Athletics or Acrobatics)
+        /// by checking proficiencies and comparing Strength and Dexterity abilities.
+        /// </summary>
+        public bool EscapeFromGrapple() {
+            // check proficiency or skills
+            bool success = false;
+            int dc = 0;
+            int athelicsFavor = Strength.Modifier;
+            int acrobaticsFavor = Dexterity.Modifier;
+            // determine grappled condition
+            ConditionType grappled = ConditionType.GRAPPLED_DC12;
+            foreach (ConditionType condition in Conditions) {
+                if (Enum.GetName(typeof(ConditionType), condition).IndexOf("GRAPPLED_") == 0) {
+                    grappled = condition;
+                    dc = (int)condition - (int)ConditionType.GRAPPLED_DC12 + 12;
+                    break;
+                }
+            }
+            if (dc == 0) return false; // not grappled
+            if (IsProficient(Skill.ATHLETICS)) {
+                athelicsFavor += ProficiencyBonus;
+            }
+            if (IsProficient(Skill.ACROBATICS)) {
+                acrobaticsFavor += ProficiencyBonus;
+            }
+            if (athelicsFavor > acrobaticsFavor) {
+                success = DC(null, dc, Skill.ATHLETICS);
+            } else {
+                success = DC(null, dc, Skill.ACROBATICS);
+            }
+            if (success) {
+                RemoveCondition(grappled);
+            }
             return success;
         }
 

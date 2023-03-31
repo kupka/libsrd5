@@ -61,4 +61,21 @@ namespace srd5 {
             return elements;
         }
     }
+
+    public abstract class GuidClass {
+        public Guid Guid { get; private set; } = System.Guid.NewGuid();
+
+        public override bool Equals(object obj) {
+            if (obj is GuidClass) {
+                GuidClass other = (GuidClass)obj;
+                return this.Guid.Equals(other.Guid);
+            } else {
+                return false;
+            }
+        }
+
+        public override int GetHashCode() {
+            return Guid.GetHashCode();
+        }
+    }
 }

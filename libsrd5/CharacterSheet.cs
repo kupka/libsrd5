@@ -95,7 +95,7 @@ namespace srd5 {
                     hp += dice.Value + Constitution.Modifier + additionalHp;
                 }
                 hp += HitPointMaxiumModifiersSum;
-                return hp;
+                return Math.Max(0, hp);
             }
         }
 

@@ -242,7 +242,7 @@ namespace srd5 {
         /// Add a combattant to the battlefield and roll initiative
         /// </summary>
         public void AddCombattant(Combattant combattant) {
-            if (Array.IndexOf(combattants, combattant) >= 0) return;
+            if (Array.IndexOf(combattants, combattant) > -1) return;
             Utils.Push<Combattant>(ref combattants, combattant);
             int roll = Dice.D20.Value + combattant.Dexterity.Modifier;
             Utils.Push<int>(ref initiativeRolls, roll);

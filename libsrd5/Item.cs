@@ -66,7 +66,7 @@ namespace srd5 {
         }
 
         public bool HasProperty(ArmorProperty property) {
-            return Array.IndexOf(Properties, property) >= 0;
+            return Array.IndexOf(Properties, property) > -1;
         }
     }
 
@@ -140,7 +140,7 @@ namespace srd5 {
         public int Reach { get; private set; }
 
         public bool HasProperty(WeaponProperty property) {
-            return Array.IndexOf(Properties, property) >= 0;
+            return Array.IndexOf(Properties, property) > -1;
         }
     }
 

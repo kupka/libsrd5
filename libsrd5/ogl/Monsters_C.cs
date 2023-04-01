@@ -29,7 +29,7 @@ namespace srd5 {
             foreach (Effect effect in attacker.Effects) {
                 if (effect == Effect.GRAPPLING) grappling++;
             }
-            if (grappling >= 2) return;
+            if (grappling > 1) return;
             if (target.Size > Size.LARGE) return;
             if (target.HasCondition(ConditionType.GRAPPLED_DC14)) return;
             attacker.AddEffect(Effect.GRAPPLING);
@@ -53,8 +53,8 @@ namespace srd5 {
         public static readonly Attack ClayGolemSlam = new Attack("Slam", 8, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5, null, ClayGolemSlamEffect);
         public static readonly AttackEffect CloakerBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.Size > Size.LARGE) return;
-            if (attacker.HasEffect(Effect.CLOAKER_ATTACHED)) return;
-            attacker.AddEffect(Effect.CLOAKER_ATTACHED);
+            if (attacker.HasEffect(Effect.ATTACHED_TO_TARGET)) return;
+            attacker.AddEffect(Effect.ATTACHED_TO_TARGET);
             attacker.AddEffect(Effect.ADVANTAGE_ON_ATTACK);
             foreach (Attack attack in attacker.MeleeAttacks) {
                 if (attack.Name == CloakerBite.Name)

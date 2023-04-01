@@ -68,7 +68,7 @@ namespace srd5 {
         }
 
         public bool HasProperty(Attack.Property property) {
-            return Array.IndexOf(properties, property) >= 0;
+            return Array.IndexOf(properties, property) > -1;
         }
 
         public Attack WithProperties(params Attack.Property[] properties) {

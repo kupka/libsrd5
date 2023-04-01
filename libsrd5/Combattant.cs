@@ -34,7 +34,7 @@ namespace srd5 {
         public int HitPoints { get; set; }
         public virtual int HitPointsMax {
             get {
-                return hitPointsMax + HitPointMaxiumModifiersSum;
+                return Math.Max(0, hitPointsMax + HitPointMaxiumModifiersSum);
             }
             internal set {
                 hitPointsMax = value;
@@ -81,6 +81,7 @@ namespace srd5 {
         public void AddHitPointMaximumModifiers(params HitPointMaxiumModifier[] modifiers) {
             foreach (HitPointMaxiumModifier modifier in modifiers)
                 Utils.PushUnique<HitPointMaxiumModifier>(ref hitPointMaxiumModifiers, modifier);
+            if (HitPointsMax < HitPoints) HitPoints = HitPointsMax;
         }
 
         public void RemoveHitPointsMaximumModifiers(params HitPointMaxiumModifier[] modifiers) {
@@ -108,7 +109,7 @@ namespace srd5 {
         }
 
         public bool HasEffect(Effect effect) {
-            return Array.IndexOf(effects, effect) >= 0;
+            return Array.IndexOf(effects, effect) > -1;
         }
 
         public void AddFeat(Feat feat) {
@@ -123,7 +124,7 @@ namespace srd5 {
         }
 
         public bool HasFeat(Feat feat) {
-            return Array.IndexOf(feats, feat) >= 0;
+            return Array.IndexOf(feats, feat) > -1;
         }
 
         public bool AddCondition(ConditionType condition) {
@@ -142,7 +143,7 @@ namespace srd5 {
         }
 
         public bool HasCondition(ConditionType condition) {
-            return Array.IndexOf(conditions, condition) >= 0;
+            return Array.IndexOf(conditions, condition) > -1;
         }
 
         internal void AddAvailableSpells(AvailableSpells spells) {

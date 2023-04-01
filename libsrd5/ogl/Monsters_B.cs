@@ -22,9 +22,10 @@ namespace srd5 {
             if (target.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION)) return;
             if (!target.AddCondition(ConditionType.POISONED)) return;
             target.AddEffect(Effect.BEARDED_DEVIL_POISON);
+            int turn = 0;
             target.AddEndOfTurnEvent(delegate (Combattant combattant) {
                 bool success = combattant.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION);
-                if (success) {
+                if (turn++ > 9 || success) {
                     combattant.RemoveEffect(Effect.BEARDED_DEVIL_POISON);
                     combattant.RemoveCondition(ConditionType.POISONED);
                 }

@@ -6,7 +6,7 @@ namespace srd5 {
             get {
                 if (Value <= 1) {
                     return -5;
-                } else if (Value >= 30) {
+                } else if (Value > 29) {
                     return 10;
                 } else {
                     return (Value / 2) - 5;

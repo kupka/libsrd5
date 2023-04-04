@@ -250,7 +250,7 @@ namespace srd5 {
         /// <summary>
         /// Roll a DC (difficulty check) against the specified Ability
         /// </summary>
-        public bool DC(object source, int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
+        public bool DC(object source, int dc, AbilityType type, out int finalValue, bool advantage = false, bool disadvantage = false) {
             if (source != null) {
                 if (source is Spells.ID && HasFeat(Feat.MAGIC_RESISTANCE))
                     advantage = true;
@@ -266,20 +266,32 @@ namespace srd5 {
             if (IsProficient(type)) {
                 additionalModifiers += ProficiencyBonus;
             }
-            return this.dc(dc, additionalModifiers, d20, ability, advantage, disadvantage);
+            return this.dc(dc, additionalModifiers, d20, ability, advantage, disadvantage, out finalValue);
         }
 
-        public bool DC(object source, int dc, Skill skill, bool advantage = false, bool disadvantage = false) {
+        public bool DC(object source, int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
+            int finalValue;
+            return DC(source, dc, type, out finalValue, advantage, disadvantage);
+        }
+
+
+
+        public bool DC(object source, int dc, Skill skill, out int finalValue, bool advantage = false, bool disadvantage = false) {
             Ability ability = GetAbility(skill.Ability());
             Dice d20 = srd5.Dice.D20;
             int additionalModifiers = 0;
             if (IsProficient(skill)) {
                 additionalModifiers += ProficiencyBonus;
             }
-            return this.dc(dc, additionalModifiers, d20, ability, advantage, disadvantage);
+            return this.dc(dc, additionalModifiers, d20, ability, advantage, disadvantage, out finalValue);
         }
 
-        private bool dc(int dc, int additionalModifiers, Dice d20, Ability ability, bool advantage, bool disadvantage) {
+        public bool DC(object source, int dc, Skill skill, bool advantage = false, bool disadvantage = false) {
+            int finalValue;
+            return DC(source, dc, skill, out finalValue, advantage, disadvantage);
+        }
+
+        private bool dc(int dc, int additionalModifiers, Dice d20, Ability ability, bool advantage, bool disadvantage, out int finalValue) {
             if (advantage && !disadvantage) {
                 d20 = srd5.Dice.D20Advantage;
             }
@@ -287,7 +299,8 @@ namespace srd5 {
                 d20 = srd5.Dice.D20Disadvantage;
             }
             Dices.onDiceRolled(d20);
-            bool success = d20.Value + ability.Modifier + additionalModifiers >= dc;
+            finalValue = d20.Value + ability.Modifier + additionalModifiers;
+            bool success = finalValue >= dc;
             if (d20.Value == 20) success = true;
             if (d20.Value == 1) success = false;
             if (ability.Type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) success = false;

@@ -108,20 +108,23 @@ namespace srd5 {
         GRAPPLING,
 
         // Spell Effects
-        ABOLETH_DISEASE_TENTACLE,
-        BEARDED_DEVIL_POISON,
-        BONE_DEVIL_POISON,
-        ATTACHED_TO_TARGET,
-        COUATL_POISON,
-        DEATH_DOG_DISEASE,
         ENTANGLE,
         FAIRIE_FIRE,
-        INFERNAL_WOUND,
         JUMP,
         LIGHT,
         LONGSTRIDER,
         RAY_OF_FROST,
         RESISTANCE,
+
+        // Attack Effects
+        ABOLETH_DISEASE_TENTACLE,
+        BEARDED_DEVIL_POISON,
+        BONE_DEVIL_POISON,
+        ATTACHED_TO_TARGET,
+        COUATL_POISON,
+        DROW_POISON,
+        DEATH_DOG_DISEASE,
+        INFERNAL_WOUND,
         UNABLE_TO_BREATHE,
 
         // Feat Effects

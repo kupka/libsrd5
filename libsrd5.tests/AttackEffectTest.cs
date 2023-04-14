@@ -171,6 +171,14 @@ namespace srd5 {
         }
 
         [Fact]
+        public void CouatlBiteEffectTest() {
+            Monster n00b1 = Monsters.Commoner;
+            Attacks.CouatlBiteEffect.Invoke(Monsters.Aboleth, n00b1);
+            n00b1.RemoveEffect(Effect.COUATL_POISON);
+            n00b1.TakeDamage(DamageType.TRUE_DAMAGE, 1);
+        }
+
+        [Fact]
         public void CrocodileBiteTest() {
             Monster crocodile = new Monster(
                 Monsters.Type.BEAST, Monsters.ID.CROCODILE, Alignment.UNALIGNED, 15, 10, 13, 2, 10, 5, 12, "3d10+3", 40, ChallengeRating.HALF,

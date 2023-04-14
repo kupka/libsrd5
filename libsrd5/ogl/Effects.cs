@@ -187,6 +187,15 @@ namespace srd5 {
                 case Effect.RESISTANCE_TRUE_DAMAGE:
                 case Effect.VULNERABILITY_TRUE_DAMAGE:
                     throw new Srd5ArgumentException("Do not aply True Damage effects.");
+                case Effect.COUATL_POISON:
+                    combattant.AddCondition(ConditionType.POISONED);
+                    combattant.AddCondition(ConditionType.UNCONSCIOUS);
+                    break;
+                case Effect.BEARDED_DEVIL_POISON:
+                case Effect.BONE_DEVIL_POISON:
+                case Effect.DROW_POISON:
+                    combattant.AddCondition(ConditionType.POISONED);
+                    break;
             }
         }
 
@@ -215,6 +224,15 @@ namespace srd5 {
                     break;
                 case Effect.FAIRIE_FIRE:
                     combattant.RemoveEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+                    break;
+                case Effect.COUATL_POISON:
+                    combattant.RemoveCondition(ConditionType.POISONED);
+                    combattant.RemoveCondition(ConditionType.UNCONSCIOUS);
+                    break;
+                case Effect.BEARDED_DEVIL_POISON:
+                case Effect.BONE_DEVIL_POISON:
+                case Effect.DROW_POISON:
+                    combattant.RemoveCondition(ConditionType.POISONED);
                     break;
             }
         }

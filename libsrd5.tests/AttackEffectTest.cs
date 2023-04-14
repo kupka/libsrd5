@@ -172,10 +172,28 @@ namespace srd5 {
 
         [Fact]
         public void CouatlBiteEffectTest() {
-            Monster n00b1 = Monsters.Commoner;
-            Attacks.CouatlBiteEffect.Invoke(Monsters.Aboleth, n00b1);
-            n00b1.RemoveEffect(Effect.COUATL_POISON);
-            n00b1.TakeDamage(DamageType.TRUE_DAMAGE, 1);
+            Combattant target1 = new Monster(
+                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
+                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
+                );
+            Combattant target2 = new Monster(
+                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
+                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
+                );
+            Combattant target3 = new Monster(
+                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
+                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
+                );
+            Attacks.CouatlBiteEffect.Invoke(Monsters.Aboleth, target1);
+            target1.RemoveEffect(Effect.COUATL_POISON);
+            target1.TakeDamage(DamageType.TRUE_DAMAGE, 1);
+            Attacks.CouatlBiteEffect.Invoke(Monsters.Aboleth, target2);
+            target2.RemoveEffect(Effect.COUATL_POISON);
+            target2.TakeDamage(DamageType.TRUE_DAMAGE, 1);
+            Attacks.CouatlBiteEffect.Invoke(Monsters.Aboleth, target3);
+            target3.RemoveEffect(Effect.COUATL_POISON);
+            target3.TakeDamage(DamageType.TRUE_DAMAGE, 1);
+            Assert.False(target1.HasCondition(ConditionType.UNCONSCIOUS) && target2.HasCondition(ConditionType.UNCONSCIOUS) && target3.HasCondition(ConditionType.UNCONSCIOUS));
         }
 
         [Fact]
@@ -234,6 +252,7 @@ namespace srd5 {
                 target2.OnEndOfTurn();
                 target3.OnEndOfTurn();
             }
+            Assert.False(target1.HasCondition(ConditionType.POISONED) && target2.HasCondition(ConditionType.POISONED) && target3.HasCondition(ConditionType.POISONED));
         }
     }
 }

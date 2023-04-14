@@ -97,13 +97,9 @@ namespace srd5 {
         public static readonly Attack CopperDragonWyrmlingBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5);
         public static readonly AttackEffect CouatlBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(CouatlBite, 13, AbilityType.CONSTITUTION)) return;
-            target.AddCondition(ConditionType.POISONED);
-            target.AddCondition(ConditionType.UNCONSCIOUS);
             target.AddEffect(Effect.COUATL_POISON);
             target.AddDamageTakenEvent(delegate (Combattant combattant) {
-                if (!target.HasEffect(Effect.COUATL_POISON)) return true;
                 target.RemoveEffect(Effect.COUATL_POISON);
-                target.RemoveCondition(ConditionType.UNCONSCIOUS);
                 return true;
             });
         };

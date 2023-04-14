@@ -65,9 +65,8 @@ namespace srd5 {
         public static readonly AttackEffect DrowHandCrossbowEffect = delegate (Combattant attacker, Combattant target) {
             int value;
             if (target.DC(DrowHandCrossbow, 13, AbilityType.CONSTITUTION, out value)) return;
-            target.AddCondition(ConditionType.POISONED);
+            target.AddEffect(Effect.DROW_POISON);
             if (value < 9) {
-                target.AddEffect(Effect.DROW_POISON);
                 target.AddCondition(ConditionType.UNCONSCIOUS);
             }
             target.AddDamageTakenEvent(delegate (Combattant combattant) {

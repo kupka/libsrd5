@@ -20,14 +20,13 @@ namespace srd5 {
         public static readonly Attack BatBite = new Attack("Bite", 2, new Damage(DamageType.PIERCING, "1d1"), 5);
         public static AttackEffect BeardedDevilBeardEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION)) return;
-            if (!target.AddCondition(ConditionType.POISONED)) return;
+            if (target.IsImmune(DamageType.POISON)) return;
             target.AddEffect(Effect.BEARDED_DEVIL_POISON);
             int turn = 0;
             target.AddEndOfTurnEvent(delegate (Combattant combattant) {
                 bool success = combattant.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION);
                 if (turn++ > 9 || success) {
                     combattant.RemoveEffect(Effect.BEARDED_DEVIL_POISON);
-                    combattant.RemoveCondition(ConditionType.POISONED);
                 }
                 return success;
             });
@@ -93,13 +92,12 @@ namespace srd5 {
         public static readonly Attack BoneDevilClaw = new Attack("Claw", 8, new Damage(DamageType.SLASHING, "1d8+4"), 10);
         public static readonly AttackEffect BoneDevilStingEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(BoneDevilSting, 14, AbilityType.CONSTITUTION)) return;
-            if (!target.AddCondition(ConditionType.POISONED)) return;
+            if (target.IsImmune(DamageType.POISON)) return;
             target.AddEffect(Effect.BONE_DEVIL_POISON);
             target.AddEndOfTurnEvent(delegate (Combattant combattant) {
                 bool success = combattant.DC(BoneDevilSting, 14, AbilityType.CONSTITUTION);
                 if (success) {
                     combattant.RemoveEffect(Effect.BONE_DEVIL_POISON);
-                    combattant.RemoveCondition(ConditionType.POISONED);
                 }
                 return success;
             });

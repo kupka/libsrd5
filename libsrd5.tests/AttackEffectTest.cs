@@ -203,5 +203,29 @@ namespace srd5 {
             Assert.True(n00b2.HasCondition(ConditionType.GRAPPLED_DC14));
             Assert.False(n00b3.HasCondition(ConditionType.GRAPPLED_DC14));
         }
+
+        [Fact]
+        public void DeepGnomeSvirfneblinPoisonedDartEffectTest() {
+            Combattant target1 = new Monster(
+                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
+                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
+                );
+            Combattant target2 = new Monster(
+                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
+                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
+                );
+            Combattant target3 = new Monster(
+                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
+                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
+                );
+            Attacks.DeepGnomeSvirfneblinPoisonedDartEffect.Invoke(Monsters.Aboleth, target1);
+            Attacks.DeepGnomeSvirfneblinPoisonedDartEffect.Invoke(Monsters.Aboleth, target2);
+            Attacks.DeepGnomeSvirfneblinPoisonedDartEffect.Invoke(Monsters.Aboleth, target3);
+            for (int i = 0; i < 20; i++) {
+                target1.OnEndOfTurn();
+                target2.OnEndOfTurn();
+                target3.OnEndOfTurn();
+            }
+        }
     }
 }

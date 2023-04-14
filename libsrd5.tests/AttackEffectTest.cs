@@ -32,6 +32,11 @@ namespace srd5 {
                             );
         }
 
+        private readonly Dices dices = new Dices("1d12-1");
+        private DamageType randomDamageType() {
+            int value = dices.Roll();
+            return (DamageType)value;
+        }
 
         private void attackEffectTest(AttackEffect effect) {
             for (int i = 0; i < 10; i++) {
@@ -41,12 +46,15 @@ namespace srd5 {
                 effect.Invoke(Monsters.Aboleth, pansyMonster);
 
                 for (int j = 0; j < 20; j++) {
+                    uberMonster.TakeDamage(randomDamageType(), Dice.D4.Value);
                     uberMonster.EscapeFromGrapple();
                     uberMonster.OnStartOfTurn();
                     uberMonster.OnEndOfTurn();
+                    averageMonster.TakeDamage(randomDamageType(), Dice.D4.Value);
                     averageMonster.EscapeFromGrapple();
                     averageMonster.OnStartOfTurn();
                     averageMonster.OnEndOfTurn();
+                    pansyMonster.TakeDamage(randomDamageType(), Dice.D4.Value);
                     pansyMonster.EscapeFromGrapple();
                     pansyMonster.OnStartOfTurn();
                     pansyMonster.OnEndOfTurn();
@@ -88,6 +96,7 @@ namespace srd5 {
         [Fact]
         public void TestAttackEffects_D() {
             attackEffectTest(Attacks.DarkmantleCrushEffect);
+            attackEffectTest(Attacks.DeathDogBiteEffect);
             attackEffectTest(Attacks.DeepGnomeSvirfneblinPoisonedDartEffect);
             attackEffectTest(Attacks.DireWolfBiteEffect);
             attackEffectTest(Attacks.DjinniScimitarEffect);

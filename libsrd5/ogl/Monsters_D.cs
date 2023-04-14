@@ -82,13 +82,8 @@ namespace srd5 {
         public static readonly Attack DruidQuarterstaff = new Attack("Quarterstaff", 2, new Damage(DamageType.BLUDGEONING, "1d6"), 5);
         public static readonly Attack DryadClub = new Attack("Club", 2, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
         public static readonly Attack DuergarWarPick = new Attack("War Pick", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
-        // !!!!!!!!!!!!!!!!!!!!!!UNPARSABLE ATTACK!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // DuergarJavelin
-        // {"name":"Javelin","desc":"Melee or Ranged Weapon Attack: +4 to hit, reach 5 ft. or range 30/120 ft., one target. Hit: 5 (1d6 + 2) piercing damage, or 9 (2d6 + 2) piercing damage while enlarged.","attack_bonus":4,"damage":[{"damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"1d6+2"}]}
-        public static readonly AttackEffect DuergarJavelinEffect = delegate (Combattant attacker, Combattant target) {
-        };
-        public static readonly Attack DuergarJavelin = new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, null, DuergarJavelinEffect);
-        public static readonly Attack DuergarJavelinRanged = new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 30, 120, null, DuergarJavelinEffect);
+        public static readonly Attack DuergarJavelin = new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+        public static readonly Attack DuergarJavelinRanged = new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 30, 120);
         public static readonly Attack DustMephitClaws = new Attack("Claws", 4, new Damage(DamageType.SLASHING, "1d4+2"), 5);
 
     }

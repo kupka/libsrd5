@@ -3,5 +3,5 @@
 .vscode
 */TestResults/*
 TestResults
-testreport
+testreport*
 coveragereport

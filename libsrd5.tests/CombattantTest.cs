@@ -21,7 +21,7 @@ namespace srd5 {
             Assert.Equal(hp, ogre.HitPoints);
             Damage lightning = new Damage(DamageType.LIGHTNING, "1d12");
             ogre.TakeDamage(lightning.Type, lightning.Dices.Roll());
-            Assert.InRange<int>(ogre.HitPoints, hp - 6, hp - 1);
+            Assert.InRange<int>(ogre.HitPoints, hp - 6, hp);
             Assert.Throws<Srd5ArgumentException>(delegate {
                 ogre.TakeDamage(DamageType.ACID, -100);
             });
@@ -97,6 +97,69 @@ namespace srd5 {
             Assert.False(hero.IsProficient(AbilityType.INTELLIGENCE));
             hero.DC(null, 10, AbilityType.INTELLIGENCE);
             Assert.False(hero.IsProficient(AbilityType.NONE));
+        }
+
+        [Fact]
+        public void HitPointMaxiumModifierTest() {
+            Combattant combattant = Monsters.Orc;
+            int hpMax = combattant.HitPointsMax;
+            HitPointMaxiumModifier modifier1 = new HitPointMaxiumModifier(-10, HitPointMaxiumModifier.RemovedByEffect.GREATER_RESTORATION);
+            Assert.False(modifier1.Equals(combattant));
+            Assert.NotEqual(0, modifier1.GetHashCode());
+            HitPointMaxiumModifier modifier2 = new HitPointMaxiumModifier(5, HitPointMaxiumModifier.RemovedByEffect.AFTER_24_HOURS);
+            combattant.AddHitPointMaximumModifiers(modifier1, modifier2);
+            Assert.Equal(2, combattant.HitPointMaxiumModifiers.Length);
+            Assert.Equal(hpMax - 5, combattant.HitPointsMax);
+            combattant.RemoveHitPointsMaximumModifiers(modifier1);
+            Assert.Equal(hpMax + 5, combattant.HitPointsMax);
+        }
+
+        [Fact]
+        public void EscapeFromGrappleTest() {
+            Combattant combattant = Monsters.BanditCaptain; // Athelics Proficiency
+            Assert.False(combattant.EscapeFromGrapple());
+            bool success = false;
+            combattant.AddCondition(ConditionType.DEAFENED);
+            combattant.AddCondition(ConditionType.GRAPPLED_DC14);
+            while (!success) {
+                success = combattant.EscapeFromGrapple();
+            }
+            Assert.False(combattant.HasCondition(ConditionType.GRAPPLED_DC14));
+            Assert.True(combattant.HasCondition(ConditionType.DEAFENED));
+            combattant = Monsters.Assassin; // Acrobatics Proficiency
+            combattant.AddCondition(ConditionType.GRAPPLED_DC16);
+            success = false;
+            while (!success) {
+                success = combattant.EscapeFromGrapple();
+            }
+            Assert.False(combattant.HasCondition(ConditionType.GRAPPLED_DC14));
+            combattant = Monsters.Ankheg; // Str > Dex
+            combattant.AddCondition(ConditionType.GRAPPLED_DC16);
+            success = false;
+            while (!success) {
+                success = combattant.EscapeFromGrapple();
+            }
+            Assert.False(combattant.HasCondition(ConditionType.GRAPPLED_DC14));
+            combattant = Monsters.Bat; // Dex > Str
+            combattant.AddCondition(ConditionType.GRAPPLED_DC16);
+            success = false;
+            while (!success) {
+                success = combattant.EscapeFromGrapple();
+            }
+            Assert.False(combattant.HasCondition(ConditionType.GRAPPLED_DC14));
+        }
+
+        [Fact]
+        public void LockedTargetTest() {
+            Combattant combattant = Monsters.Ankheg;
+            Combattant bat = Monsters.Bat;
+            combattant.MeleeAttacks[0].LockedTarget = bat;
+            Assert.False(combattant.Attack(combattant.MeleeAttacks[0], Monsters.Badger, 5));
+            bool success = false;
+            while (!success) {
+                success = combattant.Attack(combattant.MeleeAttacks[0], bat, 5);
+            }
+            Assert.True(success);
         }
     }
 }

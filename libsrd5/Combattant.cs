@@ -1,146 +1,20 @@
 using System;
 
 namespace srd5 {
-    public delegate void AttackEffect(Combattant attacker, Combattant target);
-
-    public class Attack {
-        public enum Property {
-            TRIPLE_DICE_ON_CRIT
+    public class HitPointMaxiumModifier : GuidClass {
+        public enum RemovedByEffect {
+            GREATER_RESTORATION,
+            REMOVE_DISEASE,
+            REMOVE_CURSE,
+            AFTER_24_HOURS
         }
 
-        public string Name { get; set; }
-        public int AttackBonus { get; internal set; }
-        public Damage Damage { get; internal set; }
-        public Damage AdditionalDamage { get; internal set; }
-        public int Reach { get; internal set; }
-        public int RangeNormal { get; internal set; }
-        public int RangeLong { get; internal set; }
-        public AttackEffect EffectOnHit { get; internal set; }
-        private Attack.Property[] properties = new Attack.Property[0];
-        public Attack.Property[] Properties {
-            get {
-                return properties;
-            }
-        }
+        public int Amount { get; private set; }
+        public RemovedByEffect RemovedBy { get; private set; }
 
-        public Attack(string name, int attackBonus, Damage damage, int reach, int rangeNormal, int rangeLong, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
-            Name = name;
-            AttackBonus = attackBonus;
-            Damage = damage;
-            AdditionalDamage = additionalDamage;
-            Reach = reach;
-            RangeNormal = rangeNormal;
-            RangeLong = rangeLong;
-            EffectOnHit = effectOnHit;
-        }
-
-        public Attack(string name, int attackBonus, Damage damage, int reach, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
-            Name = name;
-            AttackBonus = attackBonus;
-            Damage = damage;
-            AdditionalDamage = additionalDamage;
-            Reach = reach;
-            RangeNormal = 0;
-            RangeLong = 0;
-            EffectOnHit = effectOnHit;
-        }
-
-        public Attack(string name, int attackBonus, Damage damage, int rangeNormal, int rangeLong, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
-            Name = name;
-            AttackBonus = attackBonus;
-            Damage = damage;
-            AdditionalDamage = additionalDamage;
-            Reach = 0;
-            RangeNormal = rangeNormal;
-            RangeLong = rangeLong;
-            EffectOnHit = effectOnHit;
-        }
-
-        public static Attack FromWeapon(int attackBonus, string damageString, Weapon weapon, Damage additionalDamage = null) {
-            return new Attack(weapon.Name, attackBonus,
-                new Damage(weapon.Damage.Type, damageString), weapon.Reach, weapon.RangeNormal, weapon.RangeLong, additionalDamage);
-        }
-
-        public void ApplyEffectOnHit(Combattant attacker, Combattant target) {
-            if (EffectOnHit == null) return;
-            EffectOnHit(attacker, target);
-        }
-
-        public bool HasProperty(Attack.Property property) {
-            return Array.IndexOf(properties, property) >= 0;
-        }
-
-        public Attack WithProperties(params Attack.Property[] properties) {
-            for (int i = 0; i < properties.Length; i++) {
-                Utils.Push<Attack.Property>(ref this.properties, properties[i]);
-            }
-            return this;
-        }
-    }
-
-    public class AvailableSpells {
-        public CharacterClass CharacterClass { get; internal set; }
-        public Spell[] KnownSpells {
-            get {
-                return knownSpells;
-            }
-        }
-        private Spell[] knownSpells = new Spell[0];
-        public Spell[] PreparedSpells {
-            get {
-                return preparedSpells;
-            }
-        }
-        private Spell[] preparedSpells = new Spell[0];
-        public Spell[] BonusPreparedSpells { get; internal set; } = new Spell[0];
-        public int[] SlotsMax { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        public int[] SlotsCurrent { get; internal set; } = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-        public AvailableSpells(AbilityType abilityType) {
-            CharacterClass clazz = new CharacterClass();
-            clazz.SpellCastingAbility = abilityType;
-            clazz.MustPrepareSpells = false;
-            CharacterClass = clazz;
-        }
-        public AvailableSpells(CharacterClass clazz) {
-            CharacterClass = clazz;
-        }
-
-        public void AddKnownSpell(params Spell[] spells) {
-            Utils.Push<Spell>(ref knownSpells, spells);
-        }
-
-        public void AddPreparedSpell(params Spell[] spells) {
-            foreach (Spell spell in spells)
-                if (Array.IndexOf(knownSpells, spell) == -1) return;
-            Utils.Push<Spell>(ref preparedSpells, spells);
-        }
-
-        /// <summary>
-        /// Calculates the spell cast DC for the sheet. Assumes that this object belongs to this sheet.
-        /// </summary>
-        public int GetSpellCastDC(CharacterSheet sheet) {
-            int dc = 8;
-            dc += sheet.GetAbility(CharacterClass.SpellCastingAbility).Modifier;
-            dc += sheet.ProficiencyBonus;
-            return dc;
-        }
-
-        /// <summary>
-        /// Calculates the spell cast DC for the Monster. Assumes that this object belongs to this Monster.
-        /// </summary>
-        public int GetSpellCastDC(Combattant combattant) {
-            if (combattant is CharacterSheet) return GetSpellCastDC((CharacterSheet)combattant);
-            Monster monster = (Monster)combattant;
-            return monster.SpellCastDC;
-        }
-
-        /// <summary>
-        /// Get the spellcasting modifier for the Combattant. Assumes that this object belongs to this sheet.
-        /// <summary>
-        public int GetSpellcastingModifier(Combattant combattant) {
-            AbilityType spellAbility = CharacterClass.SpellCastingAbility;
-            return combattant.GetAbility(spellAbility).Modifier;
+        public HitPointMaxiumModifier(int amount, RemovedByEffect removedBy) {
+            Amount = amount;
+            RemovedBy = removedBy;
         }
 
     }
@@ -158,7 +32,15 @@ namespace srd5 {
         public virtual int ArmorClass { get; internal set; }
         public int ArmorClassModifier { get; internal set; }
         public int HitPoints { get; set; }
-        public virtual int HitPointsMax { get; internal set; }
+        public virtual int HitPointsMax {
+            get {
+                return Math.Max(0, hitPointsMax + HitPointMaxiumModifiersSum);
+            }
+            internal set {
+                hitPointsMax = value;
+            }
+        }
+        private int hitPointsMax;
         public Attack[] MeleeAttacks { get; internal set; } = new Attack[0];
         public Attack[] RangedAttacks { get; internal set; } = new Attack[0];
         public Attack BonusAttack { get; internal set; }
@@ -181,6 +63,31 @@ namespace srd5 {
         public abstract int ProficiencyBonus {
             get;
         }
+        public HitPointMaxiumModifier[] HitPointMaxiumModifiers {
+            get {
+                return hitPointMaxiumModifiers;
+            }
+        }
+        public int HitPointMaxiumModifiersSum {
+            get {
+                int value = 0;
+                foreach (HitPointMaxiumModifier modifier in hitPointMaxiumModifiers) {
+                    value += modifier.Amount;
+                }
+                return value;
+            }
+        }
+        private HitPointMaxiumModifier[] hitPointMaxiumModifiers = new HitPointMaxiumModifier[0];
+        public void AddHitPointMaximumModifiers(params HitPointMaxiumModifier[] modifiers) {
+            foreach (HitPointMaxiumModifier modifier in modifiers)
+                Utils.PushUnique<HitPointMaxiumModifier>(ref hitPointMaxiumModifiers, modifier);
+            if (HitPointsMax < HitPoints) HitPoints = HitPointsMax;
+        }
+
+        public void RemoveHitPointsMaximumModifiers(params HitPointMaxiumModifier[] modifiers) {
+            foreach (HitPointMaxiumModifier modifier in modifiers)
+                Utils.RemoveSingle<HitPointMaxiumModifier>(ref hitPointMaxiumModifiers, modifier);
+        }
 
         public void AddEffect(Effect effect) {
             bool pushed = Utils.PushUnique<Effect>(ref effects, effect);
@@ -202,7 +109,7 @@ namespace srd5 {
         }
 
         public bool HasEffect(Effect effect) {
-            return Array.IndexOf(effects, effect) >= 0;
+            return Array.IndexOf(effects, effect) > -1;
         }
 
         public void AddFeat(Feat feat) {
@@ -217,7 +124,7 @@ namespace srd5 {
         }
 
         public bool HasFeat(Feat feat) {
-            return Array.IndexOf(feats, feat) >= 0;
+            return Array.IndexOf(feats, feat) > -1;
         }
 
         public bool AddCondition(ConditionType condition) {
@@ -236,7 +143,7 @@ namespace srd5 {
         }
 
         public bool HasCondition(ConditionType condition) {
-            return Array.IndexOf(conditions, condition) >= 0;
+            return Array.IndexOf(conditions, condition) > -1;
         }
 
         internal void AddAvailableSpells(AvailableSpells spells) {
@@ -305,6 +212,7 @@ namespace srd5 {
             }
             GlobalEvents.ReceivedDamage(this, amount, type);
             HitPoints = Math.Max(0, HitPoints - amount);
+            OnDamageTaken();
             if (HitPoints == 0) AddCondition(ConditionType.UNCONSCIOUS);
         }
 
@@ -343,7 +251,7 @@ namespace srd5 {
         /// <summary>
         /// Roll a DC (difficulty check) against the specified Ability
         /// </summary>
-        public bool DC(object source, int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
+        public bool DC(object source, int dc, AbilityType type, out int finalValue, bool advantage = false, bool disadvantage = false) {
             if (source != null) {
                 if (source is Spells.ID && HasFeat(Feat.MAGIC_RESISTANCE))
                     advantage = true;
@@ -359,20 +267,32 @@ namespace srd5 {
             if (IsProficient(type)) {
                 additionalModifiers += ProficiencyBonus;
             }
-            return this.dc(dc, additionalModifiers, d20, ability, advantage, disadvantage);
+            return this.dc(dc, additionalModifiers, d20, ability, advantage, disadvantage, out finalValue);
         }
 
-        public bool DC(object source, int dc, Skill skill, bool advantage = false, bool disadvantage = false) {
+        public bool DC(object source, int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
+            int finalValue;
+            return DC(source, dc, type, out finalValue, advantage, disadvantage);
+        }
+
+
+
+        public bool DC(object source, int dc, Skill skill, out int finalValue, bool advantage = false, bool disadvantage = false) {
             Ability ability = GetAbility(skill.Ability());
             Dice d20 = srd5.Dice.D20;
             int additionalModifiers = 0;
             if (IsProficient(skill)) {
                 additionalModifiers += ProficiencyBonus;
             }
-            return this.dc(dc, additionalModifiers, d20, ability, advantage, disadvantage);
+            return this.dc(dc, additionalModifiers, d20, ability, advantage, disadvantage, out finalValue);
         }
 
-        private bool dc(int dc, int additionalModifiers, Dice d20, Ability ability, bool advantage, bool disadvantage) {
+        public bool DC(object source, int dc, Skill skill, bool advantage = false, bool disadvantage = false) {
+            int finalValue;
+            return DC(source, dc, skill, out finalValue, advantage, disadvantage);
+        }
+
+        private bool dc(int dc, int additionalModifiers, Dice d20, Ability ability, bool advantage, bool disadvantage, out int finalValue) {
             if (advantage && !disadvantage) {
                 d20 = srd5.Dice.D20Advantage;
             }
@@ -380,10 +300,12 @@ namespace srd5 {
                 d20 = srd5.Dice.D20Disadvantage;
             }
             Dices.onDiceRolled(d20);
-            bool success = d20.Value + ability.Modifier + additionalModifiers >= dc;
+            finalValue = d20.Value + ability.Modifier + additionalModifiers;
+            bool success = finalValue >= dc;
             if (d20.Value == 20) success = true;
             if (d20.Value == 1) success = false;
             if (ability.Type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) success = false;
+            if (ability.Type == AbilityType.CONSTITUTION && HasEffect(Effect.FAIL_CONSTITUTION_CHECK)) success = false;
             if (ability.Type == AbilityType.DEXTERITY && HasEffect(Effect.FAIL_DEXERITY_CHECK)) success = false;
             if (HasEffect(Effect.LEGENDARY_RESISTANCE) && !success) { // Allow to turn fail into success
                 success = true;
@@ -391,6 +313,43 @@ namespace srd5 {
                 GlobalEvents.ActivateEffect(this, Effect.LEGENDARY_RESISTANCE);
             }
             GlobalEvents.RolledDC(this, ability, dc, d20.Value, success);
+            return success;
+        }
+
+        /// <summary>
+        /// Try to escape from a grapple. This method determines the most favorable skill check (Athletics or Acrobatics)
+        /// by checking proficiencies and comparing Strength and Dexterity abilities.
+        /// </summary>
+        public bool EscapeFromGrapple() {
+            // check proficiency or skills
+            bool success = false;
+            int dc = 0;
+            int athelicsFavor = Strength.Modifier;
+            int acrobaticsFavor = Dexterity.Modifier;
+            // determine grappled condition
+            ConditionType grappled = ConditionType.GRAPPLED_DC12;
+            foreach (ConditionType condition in Conditions) {
+                if (Enum.GetName(typeof(ConditionType), condition).IndexOf("GRAPPLED_") == 0) {
+                    grappled = condition;
+                    dc = (int)condition - (int)ConditionType.GRAPPLED_DC12 + 12;
+                    break;
+                }
+            }
+            if (dc == 0) return false; // not grappled
+            if (IsProficient(Skill.ATHLETICS)) {
+                athelicsFavor += ProficiencyBonus;
+            }
+            if (IsProficient(Skill.ACROBATICS)) {
+                acrobaticsFavor += ProficiencyBonus;
+            }
+            if (athelicsFavor > acrobaticsFavor) {
+                success = DC(null, dc, Skill.ATHLETICS);
+            } else {
+                success = DC(null, dc, Skill.ACROBATICS);
+            }
+            if (success) {
+                RemoveCondition(grappled);
+            }
             return success;
         }
 
@@ -431,11 +390,30 @@ namespace srd5 {
             }
         }
 
+        private TurnEvent[] damageTakenEvents = new TurnEvent[0];
+
+        /// <summary>
+        /// Adds a piece of code to be evaluated when this combattatant takes damage
+        /// </summary>
+        public void AddDamageTakenEvent(TurnEvent turnEvent) {
+            Utils.Push<TurnEvent>(ref damageTakenEvents, turnEvent);
+        }
+
+        public void OnDamageTaken() {
+            for (int i = 0; i < damageTakenEvents.Length; i++) {
+                if (damageTakenEvents[i] == null) continue;
+                if (damageTakenEvents[i](this)) {
+                    damageTakenEvents[i] = null;
+                }
+            }
+        }
 
         /// <summary>
         /// Trys to attack the target Combattant with the specified attack. Returns true on hit, false on miss.
         /// </summary>
         public bool Attack(Attack attack, Combattant target, int distance, bool ranged = false, bool spell = false) {
+            // check locked target
+            if (attack.LockedTarget != null && attack.LockedTarget != target) return false;
             // check range / reach
             if (ranged && attack.RangeLong < distance) return false;
             if (!ranged && attack.Reach < distance) return false;

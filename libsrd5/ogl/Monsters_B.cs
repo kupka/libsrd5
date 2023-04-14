@@ -20,13 +20,13 @@ namespace srd5 {
         public static readonly Attack BatBite = new Attack("Bite", 2, new Damage(DamageType.PIERCING, "1d1"), 5);
         public static AttackEffect BeardedDevilBeardEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION)) return;
-            if (!target.AddCondition(ConditionType.POISONED)) return;
+            if (target.IsImmune(DamageType.POISON)) return;
             target.AddEffect(Effect.BEARDED_DEVIL_POISON);
+            int turn = 0;
             target.AddEndOfTurnEvent(delegate (Combattant combattant) {
                 bool success = combattant.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION);
-                if (success) {
+                if (turn++ > 9 || success) {
                     combattant.RemoveEffect(Effect.BEARDED_DEVIL_POISON);
-                    combattant.RemoveCondition(ConditionType.POISONED);
                 }
                 return success;
             });
@@ -55,7 +55,16 @@ namespace srd5 {
         public static readonly Attack BeardedDevilGlaive = new Attack("Glaive", 5, new Damage(DamageType.SLASHING, "1d10+3"), 10, null, BeardedDevilGlaiveEffect);
         public static readonly Attack BehirBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "3d10+6"), 10);
         public static readonly AttackEffect BehirConstrictEffect = delegate (Combattant attacker, Combattant target) {
+            if (attacker.HasEffect(Effect.GRAPPLING)) return;
+            attacker.AddEffect(Effect.GRAPPLING);
             target.AddCondition(ConditionType.GRAPPLED_DC16);
+            target.AddStartOfTurnEvent(delegate (Combattant combattant) {
+                if (!combattant.HasCondition(ConditionType.GRAPPLED_DC16)) {
+                    attacker.RemoveEffect(Effect.GRAPPLING);
+                    return true;
+                }
+                return false;
+            });
         };
         public static readonly Attack BehirConstrict = new Attack("Constrict", 10, new Damage(DamageType.BLUDGEONING, "2d10+6"), 5, new Damage(DamageType.SLASHING, "2d10+6"), BehirConstrictEffect);
         public static readonly Attack BerserkerGreataxe = new Attack("Greataxe", 5, new Damage(DamageType.SLASHING, "1d12+3"), 5);
@@ -83,13 +92,12 @@ namespace srd5 {
         public static readonly Attack BoneDevilClaw = new Attack("Claw", 8, new Damage(DamageType.SLASHING, "1d8+4"), 10);
         public static readonly AttackEffect BoneDevilStingEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(BoneDevilSting, 14, AbilityType.CONSTITUTION)) return;
-            if (!target.AddCondition(ConditionType.POISONED)) return;
+            if (target.IsImmune(DamageType.POISON)) return;
             target.AddEffect(Effect.BONE_DEVIL_POISON);
             target.AddEndOfTurnEvent(delegate (Combattant combattant) {
                 bool success = combattant.DC(BoneDevilSting, 14, AbilityType.CONSTITUTION);
                 if (success) {
                     combattant.RemoveEffect(Effect.BONE_DEVIL_POISON);
-                    combattant.RemoveCondition(ConditionType.POISONED);
                 }
                 return success;
             });

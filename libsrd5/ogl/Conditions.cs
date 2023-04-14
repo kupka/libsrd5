@@ -12,7 +12,10 @@ namespace srd5 {
         EXHAUSTED_5, // Speed = 0
         EXHAUSTED_6, // Death
         FRIGHTENED, // Disadvantage on ability and attack when source is close, cannot approach source
+        GRAPPLED_DC12, // Speed = 0
         GRAPPLED_DC13, // Speed = 0
+        GRAPPLED_DC14, // Speed = 0
+        GRAPPLED_DC15, // Speed = 0
         GRAPPLED_DC16, // Speed = 0
         INCAPACITATED, // Cannot take actions and reactions
         INVISIBLE, // Advantage on attacks, Disadvantage on being attacked
@@ -22,7 +25,7 @@ namespace srd5 {
         PRONE, // Disadvantage on attack, Advantage on being melee attacked, Disadvantage on being ranged attacked
         RESTRAINED, // Speed = 0, Disadvantage on attacks, Advantage on being attacked, Disadvantage on DEX saves
         STUNNED, // Incapacitated & fail STR/DEX checks, Advantage on being attacked
-        UNCONSCIOUS // Paralyzed & Fully Disarmed
+        UNCONSCIOUS, // Paralyzed & Fully Disarmed
     }
 
     public static class ConditionsExtension {

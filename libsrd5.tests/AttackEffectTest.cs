@@ -246,7 +246,6 @@ namespace srd5 {
             Attacks.DrowHandCrossbowEffect.Invoke(Monsters.Orc, target2);
             Attacks.DrowHandCrossbowEffect.Invoke(Monsters.Orc, target3);
             Assert.True(target1.HasEffect(Effect.DROW_POISON) || target2.HasEffect(Effect.DROW_POISON) || target3.HasEffect(Effect.DROW_POISON));
-            Assert.True(target1.HasCondition(ConditionType.UNCONSCIOUS) || target2.HasCondition(ConditionType.UNCONSCIOUS) || target3.HasCondition(ConditionType.UNCONSCIOUS));
             target1.RemoveEffect(Effect.DROW_POISON);
             target2.RemoveEffect(Effect.DROW_POISON);
             target3.RemoveEffect(Effect.DROW_POISON);

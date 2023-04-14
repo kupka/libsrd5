@@ -2,34 +2,37 @@ using Xunit;
 
 namespace srd5 {
     public class AttackEffectTest {
-        private Monster uberMonster = new Monster(
+        private Monster uberMonster = createUberMonster();
+
+        private static Monster createUberMonster() {
+            return new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.ORC, Alignment.LAWFUL_EVIL, 30, 30, 30, 30, 30, 30, 30, "1d6+10000", 40, 16,
                     new Attack[] { }, new Attack[] { }, Size.HUGE
                 );
+        }
 
-        private Monster averageMonster = new Monster(
+        private Monster averageMonster = createAverageMonster();
+
+        private static Monster createAverageMonster() {
+            return new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.OWLBEAR, Alignment.CHAOTIC_GOOD, 10, 11, 12, 13, 14, 15, 10, "1d6+10000", 40, 16,
                     new Attack[] { }, new Attack[] { }, Size.MEDIUM
                 );
+        }
 
-        private Monster pansyMonster = new Monster(
+        private Monster pansyMonster = createPansyMonster();
+
+        private static Monster createPansyMonster() {
+            return new Monster(
                     Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
                     new Attack[] { }, new Attack[] { }, Size.MEDIUM
                 );
+        }
 
         private void restoreMonsters() {
-            uberMonster = new Monster(
-                                Monsters.Type.DRAGON, Monsters.ID.ORC, Alignment.LAWFUL_EVIL, 30, 30, 30, 30, 30, 30, 30, "1d6+10000", 40, 16,
-                                new Attack[] { }, new Attack[] { }, Size.HUGE
-                            );
-            averageMonster = new Monster(
-                                Monsters.Type.HUMANOID, Monsters.ID.OWLBEAR, Alignment.CHAOTIC_GOOD, 10, 11, 12, 13, 14, 15, 10, "1d6+10000", 40, 16,
-                                new Attack[] { }, new Attack[] { }, Size.MEDIUM
-                            );
-            pansyMonster = new Monster(
-                                Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
-                                new Attack[] { }, new Attack[] { }, Size.MEDIUM
-                            );
+            uberMonster = createUberMonster();
+            averageMonster = createAverageMonster();
+            pansyMonster = createPansyMonster();
         }
 
         private readonly Dices dices = new Dices("1d12-1");
@@ -172,18 +175,9 @@ namespace srd5 {
 
         [Fact]
         public void CouatlBiteEffectTest() {
-            Combattant target1 = new Monster(
-                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
-                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
-                );
-            Combattant target2 = new Monster(
-                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
-                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
-                );
-            Combattant target3 = new Monster(
-                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
-                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
-                );
+            Combattant target1 = createPansyMonster();
+            Combattant target2 = createPansyMonster();
+            Combattant target3 = createPansyMonster();
             Attacks.CouatlBiteEffect.Invoke(Monsters.Aboleth, target1);
             target1.RemoveEffect(Effect.COUATL_POISON);
             target1.TakeDamage(DamageType.TRUE_DAMAGE, 1);
@@ -232,18 +226,9 @@ namespace srd5 {
 
         [Fact]
         public void DeepGnomeSvirfneblinPoisonedDartEffectTest() {
-            Combattant target1 = new Monster(
-                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
-                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
-                );
-            Combattant target2 = new Monster(
-                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
-                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
-                );
-            Combattant target3 = new Monster(
-                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
-                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
-                );
+            Combattant target1 = createPansyMonster();
+            Combattant target2 = createPansyMonster();
+            Combattant target3 = createPansyMonster();
             Attacks.DeepGnomeSvirfneblinPoisonedDartEffect.Invoke(Monsters.Aboleth, target1);
             Attacks.DeepGnomeSvirfneblinPoisonedDartEffect.Invoke(Monsters.Aboleth, target2);
             Attacks.DeepGnomeSvirfneblinPoisonedDartEffect.Invoke(Monsters.Aboleth, target3);
@@ -253,6 +238,24 @@ namespace srd5 {
                 target3.OnEndOfTurn();
             }
             Assert.False(target1.HasCondition(ConditionType.POISONED) && target2.HasCondition(ConditionType.POISONED) && target3.HasCondition(ConditionType.POISONED));
+        }
+
+        [Fact]
+        public void DrowPoisonTest() {
+            Combattant target1 = createPansyMonster();
+            Combattant target2 = createPansyMonster();
+            Combattant target3 = createPansyMonster();
+            Attacks.DrowHandCrossbowEffect.Invoke(Monsters.Orc, target1);
+            Attacks.DrowHandCrossbowEffect.Invoke(Monsters.Orc, target2);
+            Attacks.DrowHandCrossbowEffect.Invoke(Monsters.Orc, target3);
+            Assert.True(target1.HasEffect(Effect.DROW_POISON) || target2.HasEffect(Effect.DROW_POISON) || target3.HasEffect(Effect.DROW_POISON));
+            Assert.True(target1.HasCondition(ConditionType.UNCONSCIOUS) || target2.HasCondition(ConditionType.UNCONSCIOUS) || target3.HasCondition(ConditionType.UNCONSCIOUS));
+            target1.RemoveEffect(Effect.DROW_POISON);
+            target2.RemoveEffect(Effect.DROW_POISON);
+            target3.RemoveEffect(Effect.DROW_POISON);
+            target1.TakeDamage(DamageType.TRUE_DAMAGE, 1);
+            target2.TakeDamage(DamageType.TRUE_DAMAGE, 1);
+            target3.TakeDamage(DamageType.TRUE_DAMAGE, 1);
         }
     }
 }

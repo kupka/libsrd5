@@ -64,6 +64,7 @@ namespace srd5 {
         public static readonly Attack DriderBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d4"), 5, new Damage(DamageType.POISON, "2d8"));
         public static readonly AttackEffect DrowHandCrossbowEffect = delegate (Combattant attacker, Combattant target) {
             int value;
+            if (target.IsImmune(DamageType.POISON)) return;
             if (target.DC(DrowHandCrossbow, 13, AbilityType.CONSTITUTION, out value)) return;
             target.AddEffect(Effect.DROW_POISON);
             if (value < 9) {

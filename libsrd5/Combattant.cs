@@ -305,6 +305,7 @@ namespace srd5 {
             if (d20.Value == 20) success = true;
             if (d20.Value == 1) success = false;
             if (ability.Type == AbilityType.STRENGTH && HasEffect(Effect.FAIL_STRENGTH_CHECK)) success = false;
+            if (ability.Type == AbilityType.CONSTITUTION && HasEffect(Effect.FAIL_CONSTITUTION_CHECK)) success = false;
             if (ability.Type == AbilityType.DEXTERITY && HasEffect(Effect.FAIL_DEXERITY_CHECK)) success = false;
             if (HasEffect(Effect.LEGENDARY_RESISTANCE) && !success) { // Allow to turn fail into success
                 success = true;

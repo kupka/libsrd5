@@ -23,7 +23,10 @@ namespace srd5 {
             target.AddCondition(ConditionType.POISONED);
             int turn = 0;
             target.AddEndOfTurnEvent(delegate (Combattant combattant) {
-                if (turn++ > 9 || combattant.DC(DeepGnomeSvirfneblinPoisonedDart, 12, AbilityType.CONSTITUTION)) {
+                if (turn++ > 9) {
+                    combattant.RemoveCondition(ConditionType.POISONED);
+                    return true;
+                } else if (combattant.DC(DeepGnomeSvirfneblinPoisonedDart, 12, AbilityType.CONSTITUTION)) {
                     combattant.RemoveCondition(ConditionType.POISONED);
                     return true;
                 }

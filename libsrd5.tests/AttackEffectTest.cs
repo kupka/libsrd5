@@ -226,18 +226,15 @@ namespace srd5 {
 
         [Fact]
         public void DeepGnomeSvirfneblinPoisonedDartEffectTest() {
-            Combattant target1 = createPansyMonster();
-            Combattant target2 = createPansyMonster();
-            Combattant target3 = createPansyMonster();
-            Attacks.DeepGnomeSvirfneblinPoisonedDartEffect.Invoke(Monsters.Aboleth, target1);
-            Attacks.DeepGnomeSvirfneblinPoisonedDartEffect.Invoke(Monsters.Aboleth, target2);
-            Attacks.DeepGnomeSvirfneblinPoisonedDartEffect.Invoke(Monsters.Aboleth, target3);
-            for (int i = 0; i < 20; i++) {
-                target1.OnEndOfTurn();
-                target2.OnEndOfTurn();
-                target3.OnEndOfTurn();
+            Combattant target = createPansyMonster();
+            target.AddEffect(Effect.FAIL_CONSTITUTION_CHECK);
+            Attacks.DeepGnomeSvirfneblinPoisonedDartEffect.Invoke(Monsters.Aboleth, target);
+            for (int i = 0; i < 10; i++) {
+                target.OnEndOfTurn();
             }
-            Assert.False(target1.HasCondition(ConditionType.POISONED) && target2.HasCondition(ConditionType.POISONED) && target3.HasCondition(ConditionType.POISONED));
+            Assert.True(target.HasCondition(ConditionType.POISONED));
+            target.OnEndOfTurn();
+            Assert.False(target.HasCondition(ConditionType.POISONED));
         }
 
         [Fact]

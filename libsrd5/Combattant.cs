@@ -212,6 +212,7 @@ namespace srd5 {
             }
             GlobalEvents.ReceivedDamage(this, amount, type);
             HitPoints = Math.Max(0, HitPoints - amount);
+            OnDamageTaken();
             if (HitPoints == 0) AddCondition(ConditionType.UNCONSCIOUS);
         }
 
@@ -388,6 +389,23 @@ namespace srd5 {
             }
         }
 
+        private TurnEvent[] damageTakenEvents = new TurnEvent[0];
+
+        /// <summary>
+        /// Adds a piece of code to be evaluated when this combattatant takes damage
+        /// </summary>
+        public void AddDamageTakenEvent(TurnEvent turnEvent) {
+            Utils.Push<TurnEvent>(ref damageTakenEvents, turnEvent);
+        }
+
+        public void OnDamageTaken() {
+            for (int i = 0; i < damageTakenEvents.Length; i++) {
+                if (damageTakenEvents[i] == null) continue;
+                if (damageTakenEvents[i](this)) {
+                    damageTakenEvents[i] = null;
+                }
+            }
+        }
 
         /// <summary>
         /// Trys to attack the target Combattant with the specified attack. Returns true on hit, false on miss.

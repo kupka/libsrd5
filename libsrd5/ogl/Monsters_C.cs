@@ -100,6 +100,12 @@ namespace srd5 {
             target.AddCondition(ConditionType.POISONED);
             target.AddCondition(ConditionType.UNCONSCIOUS);
             target.AddEffect(Effect.COUATL_POISON);
+            target.AddDamageTakenEvent(delegate (Combattant combattant) {
+                if (!target.HasEffect(Effect.COUATL_POISON)) return true;
+                target.RemoveEffect(Effect.COUATL_POISON);
+                target.RemoveCondition(ConditionType.UNCONSCIOUS);
+                return true;
+            });
         };
         public static readonly Attack CouatlBite = new Attack("Bite", 8, new Damage(DamageType.PIERCING, "1d6+5"), 5, null, CouatlBiteEffect);
         public static readonly AttackEffect CouatlConstrictEffect = delegate (Combattant attacker, Combattant target) {

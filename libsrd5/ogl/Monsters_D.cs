@@ -62,9 +62,6 @@ namespace srd5 {
         public static readonly Attack DriderLongsword = new Attack("Longsword", 6, new Damage(DamageType.SLASHING, "1d8+3"), 5);
         public static readonly Attack DriderLongbow = new Attack("Longbow", 6, new Damage(DamageType.PIERCING, "1d8+3"), 150, 600, new Damage(DamageType.POISON, "1d8"));
         public static readonly Attack DriderBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d4"), 5, new Damage(DamageType.POISON, "2d8"));
-        // !!!!!!!!!!!!!!!!!!!!!!UNPARSABLE ATTACK!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // DrowHandCrossbow
-        // {"name":"Hand Crossbow","desc":"Ranged Weapon Attack: +4 to hit, range 30/120 ft., one target. Hit: 5 (1d6 + 2) piercing damage, and the target must succeed on a DC 13 Constitution saving throw or be poisoned for 1 hour. If the saving throw fails by 5 or more, the target is also unconscious while poisoned in this way. The target wakes up if it takes damage or if another creature takes an action to shake it awake.","attack_bonus":4,"damage":[{"damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d6+2"}]}
         public static readonly AttackEffect DrowHandCrossbowEffect = delegate (Combattant attacker, Combattant target) {
             int value;
             if (target.DC(DrowHandCrossbow, 13, AbilityType.CONSTITUTION, out value)) return;
@@ -73,28 +70,18 @@ namespace srd5 {
                 target.AddEffect(Effect.DROW_POISON);
                 target.AddCondition(ConditionType.UNCONSCIOUS);
             }
-            // TODO: On Damage Wake Up
+            target.AddDamageTakenEvent(delegate (Combattant combattant) {
+                if (!target.HasEffect(Effect.DROW_POISON)) return true;
+                target.RemoveEffect(Effect.DROW_POISON);
+                target.RemoveCondition(ConditionType.UNCONSCIOUS);
+                return true;
+            });
         };
         public static readonly Attack DrowHandCrossbow = new Attack("Hand Crossbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 30, 120, null, DrowHandCrossbowEffect);
         public static readonly Attack DrowShortsword = new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        // !!!!!!!!!!!!!!!!!!!!!!UNPARSABLE ATTACK!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // DruidQuarterstaff
-        // {"name":"Quarterstaff","desc":" Melee Weapon Attack: +2 to hit (+4 to hit with shillelagh), reach 5 ft., one target. Hit: 3 (1d6) bludgeoning damage, 4 (1d8) bludgeoning damage if wielded with two hands, or 6 (1d8 + 2) bludgeoning damage with shillelagh.","attack_bonus":2,"damage":[{"choose":1,"type":"damage","from":{"option_set_type":"options_array","options":[{"option_type":"damage","damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"1d6","notes":"One handed"},{"option_type":"damage","damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"1d8","notes":"Two handed"},{"option_type":"damage","damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"1d8+2","notes":"With shillelagh"}]}}]}
-        public static readonly AttackEffect DruidQuarterstaffEffect = delegate (Combattant attacker, Combattant target) {
-        };
-        public static readonly Attack DruidQuarterstaff = new Attack("Quarterstaff", 2, new Damage(DamageType.BLUDGEONING, "1d6"), 5, null, DruidQuarterstaffEffect);
-        // !!!!!!!!!!!!!!!!!!!!!!UNPARSABLE ATTACK!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // DryadClub
-        // {"name":"Club","desc":"Melee Weapon Attack: +2 to hit (+6 to hit with shillelagh), reach 5 ft., one target. Hit: 2 (1 d4) bludgeoning damage, or 8 (1d8 + 4) bludgeoning damage with shillelagh.","attack_bonus":2,"damage":[{"damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"1d4"}]}
-        public static readonly AttackEffect DryadClubEffect = delegate (Combattant attacker, Combattant target) {
-        };
-        public static readonly Attack DryadClub = new Attack("Club", 2, new Damage(DamageType.BLUDGEONING, "1d4"), 5, null, DryadClubEffect);
-        // !!!!!!!!!!!!!!!!!!!!!!UNPARSABLE ATTACK!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // DuergarWarPick
-        // {"name":"War Pick","desc":"Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 6 (1d8 + 2) piercing damage, or 11 (2d8 + 2) piercing damage while enlarged.","attack_bonus":4,"damage":[{"damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d8+2"}]}
-        public static readonly AttackEffect DuergarWarPickEffect = delegate (Combattant attacker, Combattant target) {
-        };
-        public static readonly Attack DuergarWarPick = new Attack("War Pick", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, null, DuergarWarPickEffect);
+        public static readonly Attack DruidQuarterstaff = new Attack("Quarterstaff", 2, new Damage(DamageType.BLUDGEONING, "1d6"), 5);
+        public static readonly Attack DryadClub = new Attack("Club", 2, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
+        public static readonly Attack DuergarWarPick = new Attack("War Pick", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
         // !!!!!!!!!!!!!!!!!!!!!!UNPARSABLE ATTACK!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // DuergarJavelin
         // {"name":"Javelin","desc":"Melee or Ranged Weapon Attack: +4 to hit, reach 5 ft. or range 30/120 ft., one target. Hit: 5 (1d6 + 2) piercing damage, or 9 (2d6 + 2) piercing damage while enlarged.","attack_bonus":4,"damage":[{"damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"1d6+2"}]}

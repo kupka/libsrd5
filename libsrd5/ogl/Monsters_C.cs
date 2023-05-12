@@ -6,6 +6,7 @@ namespace srd5 {
         public static readonly Attack CentaurHooves = new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
         public static readonly Attack CentaurLongbow = new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, 150, 600);
         public static readonly AttackEffect ChainDevilChainEffect = delegate (Combattant attacker, Combattant target) {
+            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
             if (attacker.HasEffect(Effect.GRAPPLING)) return;
             attacker.AddEffect(Effect.GRAPPLING);
             target.AddCondition(ConditionType.GRAPPLED_DC14);
@@ -25,6 +26,7 @@ namespace srd5 {
         public static readonly Attack ChimeraHorns = new Attack("Horns", 7, new Damage(DamageType.BLUDGEONING, "1d12+4"), 5);
         public static readonly Attack ChimeraClaws = new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
         public static readonly AttackEffect ChuulPincerEffect = delegate (Combattant attacker, Combattant target) {
+            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
             int grappling = 0;
             foreach (Effect effect in attacker.Effects) {
                 if (effect == Effect.GRAPPLING) grappling++;
@@ -79,6 +81,7 @@ namespace srd5 {
         public static readonly Attack CockatriceBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d4+1"), 5, null, CockatriceBiteEffect);
         public static readonly Attack CommonerClub = new Attack("Club", 2, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
         public static readonly AttackEffect ConstrictorSnakeConstrictEffect = delegate (Combattant attacker, Combattant target) {
+            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
             if (attacker.HasEffect(Effect.GRAPPLING)) return;
             attacker.AddEffect(Effect.GRAPPLING);
             target.AddCondition(ConditionType.GRAPPLED_DC14);
@@ -105,6 +108,7 @@ namespace srd5 {
         };
         public static readonly Attack CouatlBite = new Attack("Bite", 8, new Damage(DamageType.PIERCING, "1d6+5"), 5, null, CouatlBiteEffect);
         public static readonly AttackEffect CouatlConstrictEffect = delegate (Combattant attacker, Combattant target) {
+            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
             if (attacker.HasEffect(Effect.GRAPPLING)) return;
             attacker.AddEffect(Effect.GRAPPLING);
             target.AddCondition(ConditionType.GRAPPLED_DC15);
@@ -121,6 +125,7 @@ namespace srd5 {
         public static readonly Attack CouatlConstrict = new Attack("Constrict", 6, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, null, CouatlConstrictEffect);
         public static readonly Attack CrabClaw = new Attack("Claw", 0, new Damage(DamageType.BLUDGEONING, "1d1"), 5);
         public static readonly AttackEffect CrocodileBiteEffect = delegate (Combattant attacker, Combattant target) {
+            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
             if (attacker.HasEffect(Effect.GRAPPLING)) return;
             attacker.AddEffect(Effect.GRAPPLING);
             target.AddCondition(ConditionType.GRAPPLED_DC12);

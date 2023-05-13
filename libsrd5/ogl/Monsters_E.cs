@@ -28,15 +28,15 @@ namespace srd5 {
         public static readonly Attack ErinyesLongbow = new Attack("Longbow", 7, new Damage(DamageType.PIERCING, "1d8+3"), 5, new Damage(DamageType.POISON, "3d8"), ErinyesLongbowEffect);
         public static readonly AttackEffect EttercapBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.IsImmune(DamageType.POISON)) return;
-            bool succees = target.DC(EttercapBite, 11, AbilityType.CONSTITUTION);
-            if (succees) return;
+            bool success = target.DC(EttercapBite, 11, AbilityType.CONSTITUTION);
+            if (success) return;
             target.AddEffect(Effect.ETTERCAP_POISON);
             int turn = 0;
             target.AddEndOfTurnEvent(delegate (Combattant combattant) {
-                bool success = combattant.DC(EttercapBite, 11, AbilityType.CONSTITUTION);
-                if ((turn++) > 10) succees = true;
-                if (succees) target.RemoveEffect(Effect.ETTERCAP_POISON);
-                return succees;
+                success = combattant.DC(EttercapBite, 11, AbilityType.CONSTITUTION);
+                if ((turn++) > 10) success = true;
+                if (success) target.RemoveEffect(Effect.ETTERCAP_POISON);
+                return success;
             });
         };
         public static readonly Attack EttercapBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, new Damage(DamageType.POISON, "1d8"), EttercapBiteEffect);

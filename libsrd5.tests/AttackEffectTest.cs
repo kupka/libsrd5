@@ -23,10 +23,12 @@ namespace srd5 {
         private Monster pansyMonster = createPansyMonster();
 
         private static Monster createPansyMonster() {
-            return new Monster(
+            Monster pansyMonster = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
                     new Attack[] { }, new Attack[] { }, Size.MEDIUM
-                );
+            );
+            pansyMonster.AddEffects(Effect.FAIL_STRENGTH_CHECK, Effect.FAIL_DEXERITY_CHECK, Effect.FAIL_CONSTITUTION_CHECK);
+            return pansyMonster;
         }
 
         private void restoreMonsters() {
@@ -61,6 +63,16 @@ namespace srd5 {
                     pansyMonster.EscapeFromGrapple();
                     pansyMonster.OnStartOfTurn();
                     pansyMonster.OnEndOfTurn();
+                }
+
+                foreach (Effect eff in uberMonster.Effects) {
+                    uberMonster.RemoveEffect(eff);
+                }
+                foreach (Effect eff in averageMonster.Effects) {
+                    averageMonster.RemoveEffect(eff);
+                }
+                foreach (Effect eff in pansyMonster.Effects) {
+                    pansyMonster.RemoveEffect(eff);
                 }
             }
         }
@@ -261,6 +273,18 @@ namespace srd5 {
             target1.TakeDamage(DamageType.TRUE_DAMAGE, 1);
             target2.TakeDamage(DamageType.TRUE_DAMAGE, 1);
             target3.TakeDamage(DamageType.TRUE_DAMAGE, 1);
+        }
+
+        [Fact]
+        public void ProneEffectTest() {
+            Combattant target1 = createPansyMonster();
+            target1.AddCondition(ConditionType.PRONE);
+            int hp = target1.HitPoints;
+            Attacks.ElephantStompEffect.Invoke(Monsters.Elephant, target1);
+            Assert.True(target1.HitPoints < hp);
+            hp = target1.HitPoints;
+            Attacks.ElkHoovesEffect.Invoke(Monsters.Elk, target1);
+            Assert.True(target1.HitPoints < hp);
         }
     }
 }

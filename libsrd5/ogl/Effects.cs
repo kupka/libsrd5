@@ -125,6 +125,9 @@ namespace srd5 {
         COUATL_POISON,
         DROW_POISON,
         DEATH_DOG_DISEASE,
+        ERINYES_POISON,
+        ETTERCAP_POISON,
+        ETTERCAP_WEB,
         INFERNAL_WOUND,
         UNABLE_TO_BREATHE,
 
@@ -194,8 +197,14 @@ namespace srd5 {
                     break;
                 case Effect.BEARDED_DEVIL_POISON:
                 case Effect.BONE_DEVIL_POISON:
+                case Effect.DEATH_DOG_DISEASE:
                 case Effect.DROW_POISON:
+                case Effect.ERINYES_POISON:
+                case Effect.ETTERCAP_POISON:
                     combattant.AddCondition(ConditionType.POISONED);
+                    break;
+                case Effect.ETTERCAP_WEB:
+                    combattant.AddCondition(ConditionType.RESTRAINED);
                     break;
             }
         }
@@ -232,8 +241,14 @@ namespace srd5 {
                     break;
                 case Effect.BEARDED_DEVIL_POISON:
                 case Effect.BONE_DEVIL_POISON:
+                case Effect.DEATH_DOG_DISEASE:
                 case Effect.DROW_POISON:
+                case Effect.ERINYES_POISON:
+                case Effect.ETTERCAP_POISON:
                     combattant.RemoveCondition(ConditionType.POISONED);
+                    break;
+                case Effect.ETTERCAP_WEB:
+                    combattant.RemoveCondition(ConditionType.RESTRAINED);
                     break;
             }
         }

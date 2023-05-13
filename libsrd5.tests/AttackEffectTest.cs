@@ -108,6 +108,15 @@ namespace srd5 {
         }
 
         [Fact]
+        public void TestAttackEffects_E() {
+            attackEffectTest(Attacks.ElephantStompEffect);
+            attackEffectTest(Attacks.ElkHoovesEffect);
+            attackEffectTest(Attacks.ErinyesLongbowEffect);
+            attackEffectTest(Attacks.EttercapBiteEffect);
+            attackEffectTest(Attacks.EttercapWebEffect);
+        }
+
+        [Fact]
         public void BalorLongswordTest() {
             Assert.True(Attacks.BalorLongsword.Properties.Length == 1);
             Assert.True(Attacks.BalorLongsword.HasProperty(Attack.Property.TRIPLE_DICE_ON_CRIT));

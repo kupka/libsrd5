@@ -15,7 +15,6 @@ namespace srd5 {
         public static readonly AttackEffect DeathDogBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.IsImmune(DamageType.POISON)) return;
             if (target.DC(DeathDogBite, 12, AbilityType.CONSTITUTION)) return;
-            target.AddCondition(ConditionType.POISONED);
             target.AddEffect(Effect.DEATH_DOG_DISEASE);
         };
         public static readonly Attack DeathDogBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, DeathDogBiteEffect);

@@ -197,6 +197,7 @@ namespace srd5 {
                     break;
                 case Effect.BEARDED_DEVIL_POISON:
                 case Effect.BONE_DEVIL_POISON:
+                case Effect.DEATH_DOG_DISEASE:
                 case Effect.DROW_POISON:
                 case Effect.ERINYES_POISON:
                 case Effect.ETTERCAP_POISON:
@@ -240,6 +241,7 @@ namespace srd5 {
                     break;
                 case Effect.BEARDED_DEVIL_POISON:
                 case Effect.BONE_DEVIL_POISON:
+                case Effect.DEATH_DOG_DISEASE:
                 case Effect.DROW_POISON:
                 case Effect.ERINYES_POISON:
                 case Effect.ETTERCAP_POISON:

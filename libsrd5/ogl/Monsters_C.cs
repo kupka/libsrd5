@@ -99,6 +99,7 @@ namespace srd5 {
         public static readonly Attack ConstrictorSnakeBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
         public static readonly Attack CopperDragonWyrmlingBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5);
         public static readonly AttackEffect CouatlBiteEffect = delegate (Combattant attacker, Combattant target) {
+            if (target.IsImmune(DamageType.POISON)) return;
             if (target.DC(CouatlBite, 13, AbilityType.CONSTITUTION)) return;
             target.AddEffect(Effect.COUATL_POISON);
             target.AddDamageTakenEvent(delegate (Combattant combattant) {

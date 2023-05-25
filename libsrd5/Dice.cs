@@ -4,6 +4,8 @@ namespace srd5 {
     public struct Dice {
         public static Dice Get(int max) {
             switch (max) {
+                case 0: // constant 0, not an actual dice
+                case 1: // constant 1, not an actual dice
                 case 2:
                 case 3:
                 case 4:
@@ -15,7 +17,7 @@ namespace srd5 {
                 case 100:
                     Dice dice = new Dice();
                     dice.MaxValue = max;
-                    dice.Value = Random.Get(1, max);
+                    dice.Value = Random.Get(Math.Min(max, 1), max);
                     Dices.onDiceRolled(dice);
                     return dice;
                 default:
@@ -240,6 +242,7 @@ namespace srd5 {
                 Modifier *= -1;
             }
             switch (Dice) {
+                case 0:
                 case 1:
                 case 2:
                 case 3:
@@ -259,7 +262,7 @@ namespace srd5 {
         public int Roll() {
             int result = Modifier;
             for (int i = 0; i < Amount; i++) {
-                result += Random.Get(1, Dice);
+                result += Random.Get(Math.Min(Dice, 1), Dice);
             }
             int value = Math.Max(0, result);
             onDiceRolled(this, value);

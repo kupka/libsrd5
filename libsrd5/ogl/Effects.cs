@@ -128,6 +128,7 @@ namespace srd5 {
         ERINYES_POISON,
         ETTERCAP_POISON,
         ETTERCAP_WEB,
+        FIRE_ELEMENTAL_TOUCH,
         INFERNAL_WOUND,
         UNABLE_TO_BREATHE,
 
@@ -205,6 +206,14 @@ namespace srd5 {
                     break;
                 case Effect.ETTERCAP_WEB:
                     combattant.AddCondition(ConditionType.RESTRAINED);
+                    break;
+                case Effect.FIRE_ELEMENTAL_TOUCH:
+                    combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
+                        if (!combattant1.HasEffect(Effect.FIRE_ELEMENTAL_TOUCH)) return true;
+                        int amount = Dice.D10.Value;
+                        combattant1.TakeDamage(DamageType.FIRE, amount);
+                        return false;
+                    });
                     break;
             }
         }

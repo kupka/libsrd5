@@ -129,6 +129,11 @@ namespace srd5 {
         }
 
         [Fact]
+        public void TestAttackEffects_F() {
+            attackEffectTest(Attacks.FireElementalTouchEffect);
+        }
+
+        [Fact]
         public void BalorLongswordTest() {
             Assert.True(Attacks.BalorLongsword.Properties.Length == 1);
             Assert.True(Attacks.BalorLongsword.HasProperty(Attack.Property.TRIPLE_DICE_ON_CRIT));

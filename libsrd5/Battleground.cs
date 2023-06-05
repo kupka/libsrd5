@@ -302,6 +302,7 @@ namespace srd5 {
         /// Current combattant uses their ranged attack against the target if able
         /// </summary>
         public bool RangedAttackAction(Combattant target) {
+            if (target == null) throw new Srd5ArgumentException("target cannot be null");
             if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) {
                 GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.CANNOT_TAKE_ACTIONS);
                 return false;
@@ -310,7 +311,6 @@ namespace srd5 {
                 GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_PHASE);
                 return false;
             }
-            if (target == null) throw new Srd5ArgumentException("target cannot be null");
             if (target == CurrentCombattant) throw new Srd5ArgumentException("cannot attack self");
             bool success = false;
             if (currentPhase == TurnPhase.ACTION)

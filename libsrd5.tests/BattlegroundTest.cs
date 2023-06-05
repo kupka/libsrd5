@@ -410,23 +410,24 @@ namespace srd5 {
         [Fact]
         public void RangedTest() {
             Monster ogre = Monsters.Ogre;
-            Monster goblin = Monsters.Goblin;
+            Monster gnoll = Monsters.Gnoll;
             BattleGroundClassic battle = new BattleGroundClassic();
             battle.AddCombattant(ogre, ClassicLocation.Row.BACK_LEFT);
-            battle.AddCombattant(goblin, ClassicLocation.Row.BACK_RIGHT);
-            goblin.BonusAttack = Attacks.GoblinShortbow;
+            battle.AddCombattant(gnoll, ClassicLocation.Row.BACK_RIGHT);
+            gnoll.BonusAttack = Attacks.GoblinShortbow;
             battle.Initialize();
+            Random.State = 1;
             if (battle.CurrentCombattant == ogre)
-                Assert.False(battle.RangedAttackAction(goblin));
+                Assert.False(battle.RangedAttackAction(gnoll));
             else
                 Assert.False(battle.RangedAttackAction(ogre));
-            while (goblin.HitPoints > 0) {
+            while (gnoll.HitPoints > 0) {
                 while (battle.NextPhase() != TurnPhase.ACTION) ;
                 Assert.Throws<Srd5ArgumentException>(delegate { battle.RangedAttackAction(null); });
                 if (battle.CurrentCombattant == ogre)
-                    Assert.True(battle.RangedAttackAction(goblin));
+                    Assert.True(battle.RangedAttackAction(gnoll));
                 else {
-                    Assert.Throws<Srd5ArgumentException>(delegate { battle.RangedAttackAction(goblin); });
+                    Assert.Throws<Srd5ArgumentException>(delegate { battle.RangedAttackAction(gnoll); });
                     Assert.True(battle.RangedAttackAction(ogre));
                     // Bonus Attack
                     Assert.True(battle.RangedAttackAction(ogre));

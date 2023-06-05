@@ -44,7 +44,7 @@ namespace srd5 {
                 target.AddStartOfTurnEvent(delegate (Combattant combattant) {
                     foreach (Effect effect in combattant.Effects) {
                         if (effect != Effect.INFERNAL_WOUND) continue;
-                        combattant.TakeDamage(DamageType.TRUE_DAMAGE, Dice.D10.Value);
+                        combattant.TakeDamage(DamageType.TRUE_DAMAGE, "1d10");
                     }
                     return combattant.HasEffect(Effect.INFERNAL_WOUND);
                 });

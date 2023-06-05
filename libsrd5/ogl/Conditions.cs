@@ -12,6 +12,7 @@ namespace srd5 {
         EXHAUSTED_5, // Speed = 0
         EXHAUSTED_6, // Death
         FRIGHTENED, // Disadvantage on ability and attack when source is close, cannot approach source
+        GRAPPLED_DC11, // Speed = 0        
         GRAPPLED_DC12, // Speed = 0
         GRAPPLED_DC13, // Speed = 0
         GRAPPLED_DC14, // Speed = 0

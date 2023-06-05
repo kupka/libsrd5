@@ -198,6 +198,10 @@ namespace srd5 {
             return IsProficient(proficiency);
         }
 
+        public void TakeDamage(DamageType type, string amount) {
+            TakeDamage(type, new Dices(amount).Roll());
+        }
+
         /// <summary>
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>

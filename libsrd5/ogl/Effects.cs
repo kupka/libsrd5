@@ -129,6 +129,8 @@ namespace srd5 {
         ETTERCAP_POISON,
         ETTERCAP_WEB,
         FIRE_ELEMENTAL_TOUCH,
+        GHAST_CLAWS_PARALYZATION,
+        GHOUL_CLAWS_PARALYZATION,
         INFERNAL_WOUND,
         UNABLE_TO_BREATHE,
 
@@ -210,9 +212,19 @@ namespace srd5 {
                 case Effect.FIRE_ELEMENTAL_TOUCH:
                     combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
                         if (!combattant1.HasEffect(Effect.FIRE_ELEMENTAL_TOUCH)) return true;
-                        int amount = Dice.D10.Value;
-                        combattant1.TakeDamage(DamageType.FIRE, amount);
+                        combattant1.TakeDamage(DamageType.FIRE, "1d10");
                         return false;
+                    });
+                    break;
+                case Effect.GHAST_CLAWS_PARALYZATION:
+                case Effect.GHOUL_CLAWS_PARALYZATION:
+                    combattant.AddCondition(ConditionType.PARALYZED);
+                    int turn = 0;
+                    combattant.AddEndOfTurnEvent(delegate (Combattant combattant1) {
+                        bool success = combattant1.DC(Effect.GHAST_CLAWS_PARALYZATION, 10, AbilityType.CONSTITUTION);
+                        if (turn++ > 9) success = true;
+                        if (success) combattant1.RemoveEffect(Effect.GHAST_CLAWS_PARALYZATION);
+                        return success;
                     });
                     break;
             }
@@ -258,6 +270,10 @@ namespace srd5 {
                     break;
                 case Effect.ETTERCAP_WEB:
                     combattant.RemoveCondition(ConditionType.RESTRAINED);
+                    break;
+                case Effect.GHAST_CLAWS_PARALYZATION:
+                case Effect.GHOUL_CLAWS_PARALYZATION:
+                    combattant.RemoveCondition(ConditionType.PARALYZED);
                     break;
             }
         }

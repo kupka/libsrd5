@@ -17,7 +17,7 @@ namespace srd5 {
                     combattant.RemoveCondition(ConditionType.RESTRAINED);
                     return true;
                 }
-                combattant.TakeDamage(DamageType.PIERCING, new Dices("2d6").Roll());
+                combattant.TakeDamage(DamageType.PIERCING, "2d6");
                 return false;
             });
         };

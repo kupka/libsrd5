@@ -134,6 +134,37 @@ namespace srd5 {
         }
 
         [Fact]
+        public void TestAttackEffects_G() {
+            attackEffectTest(Attacks.GhastClawsEffect);
+            attackEffectTest(Attacks.GhoulClawsEffect);
+            attackEffectTest(Attacks.GiantCentipedeBiteEffect);
+            attackEffectTest(Attacks.GiantConstrictorSnakeConstrictEffect);
+            attackEffectTest(Attacks.GiantCrabClawEffect);
+            attackEffectTest(Attacks.GiantCrocodileBiteEffect);
+            attackEffectTest(Attacks.GiantCrocodileTailEffect);
+            attackEffectTest(Attacks.GiantElkHoovesEffect);
+            attackEffectTest(Attacks.GiantFrogBiteEffect);
+            attackEffectTest(Attacks.GiantOctopusTentaclesEffect);
+            attackEffectTest(Attacks.GiantPoisonousSnakeBiteEffect);
+            attackEffectTest(Attacks.GiantRatDiseasedBiteEffect);
+            attackEffectTest(Attacks.GiantScorpionClawEffect);
+            attackEffectTest(Attacks.GiantScorpionStingEffect);
+            attackEffectTest(Attacks.GiantSpiderBiteEffect);
+            attackEffectTest(Attacks.GiantSpiderWebEffect);
+            attackEffectTest(Attacks.GiantToadBiteEffect);
+            attackEffectTest(Attacks.GiantWaspStingEffect);
+            attackEffectTest(Attacks.GiantWolfSpiderBiteEffect);
+            attackEffectTest(Attacks.GibberingMoutherBitesEffect);
+            attackEffectTest(Attacks.GlabrezuPincerEffect);
+            attackEffectTest(Attacks.GladiatorSpearEffect);
+            attackEffectTest(Attacks.GladiatorShieldBashEffect);
+            attackEffectTest(Attacks.GrayOozePseudopodEffect);
+            attackEffectTest(Attacks.GrimlockSpikedBoneClubEffect);
+            attackEffectTest(Attacks.GuardianNagaBiteEffect);
+            attackEffectTest(Attacks.GuardianNagaSpitPoisonEffect);
+        }
+
+        [Fact]
         public void BalorLongswordTest() {
             Assert.True(Attacks.BalorLongsword.Properties.Length == 1);
             Assert.True(Attacks.BalorLongsword.HasProperty(Attack.Property.TRIPLE_DICE_ON_CRIT));
@@ -290,6 +321,47 @@ namespace srd5 {
             hp = target1.HitPoints;
             Attacks.ElkHoovesEffect.Invoke(Monsters.Elk, target1);
             Assert.True(target1.HitPoints < hp);
+            hp = target1.HitPoints;
+            Attacks.GiantElkHoovesEffect.Invoke(Monsters.GiantElk, target1);
+            Assert.True(target1.HitPoints < hp);
+        }
+
+        [Fact]
+        public void GhoulClawsTest() {
+            CharacterSheet halfling = new CharacterSheet(Race.HALFLING);
+            CharacterSheet highelf = new CharacterSheet(Race.HIGH_ELF);
+            CharacterSheet halfelf = new CharacterSheet(Race.HALF_ELF);
+            halfling.AddLevel(CharacterClasses.Barbarian);
+            highelf.AddLevel(CharacterClasses.Barbarian);
+            halfelf.AddLevel(CharacterClasses.Wizard);
+            for (int i = 0; i < 10; i++)
+                Attacks.GhoulClawsEffect.Invoke(Monsters.Ghoul, halfling);
+            Attacks.GhoulClawsEffect.Invoke(Monsters.Ghoul, highelf);
+            Attacks.GhoulClawsEffect.Invoke(Monsters.Ghoul, halfelf);
+            Assert.True(halfling.HasEffect(Effect.GHOUL_CLAWS_PARALYZATION));
+            Assert.True(halfling.HasCondition(ConditionType.PARALYZED));
+            Assert.False(highelf.HasEffect(Effect.GHOUL_CLAWS_PARALYZATION));
+            Assert.False(halfelf.HasEffect(Effect.GHOUL_CLAWS_PARALYZATION));
+        }
+
+        [Fact]
+        public void GiantCrabClawTest() {
+            Monster giantcrab = Monsters.GiantCrab;
+            Monster n00b1 = Monsters.Commoner;
+            Monster n00b2 = Monsters.Commoner;
+            Monster n00b3 = Monsters.Commoner;
+            for (int i = 0; i < 10; i++) {
+                giantcrab.Attack(giantcrab.MeleeAttacks[0], n00b1, 5);
+            }
+            for (int i = 0; i < 10; i++) {
+                giantcrab.Attack(giantcrab.MeleeAttacks[0], n00b2, 5);
+            }
+            for (int i = 0; i < 10; i++) {
+                giantcrab.Attack(giantcrab.MeleeAttacks[0], n00b3, 5);
+            }
+            Assert.True(n00b1.HasCondition(ConditionType.GRAPPLED_DC11));
+            Assert.True(n00b2.HasCondition(ConditionType.GRAPPLED_DC11));
+            Assert.False(n00b3.HasCondition(ConditionType.GRAPPLED_DC11));
         }
     }
 }

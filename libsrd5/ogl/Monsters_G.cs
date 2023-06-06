@@ -40,9 +40,7 @@ namespace srd5 {
             if (target.IsImmune(DamageType.POISON)) return;
             if (target.DC(GiantCentipedeBite, 11, AbilityType.CONSTITUTION)) return;
             target.TakeDamage(DamageType.POISON, "3d6");
-            if (target.HitPoints == 0) {
-                // TODO: "If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way."
-            }
+            // TODO: "If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way."
         };
         public static readonly Attack GiantCentipedeBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, GiantCentipedeBiteEffect);
         public static readonly AttackEffect GiantConstrictorSnakeConstrictEffect = delegate (Combattant attacker, Combattant target) {
@@ -63,6 +61,7 @@ namespace srd5 {
         public static readonly Attack GiantConstrictorSnakeConstrict = new Attack("Constrict", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5, null, GiantConstrictorSnakeConstrictEffect);
         public static readonly Attack GiantConstrictorSnakeBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d6+4"), 10);
         public static readonly AttackEffect GiantCrabClawEffect = delegate (Combattant attacker, Combattant target) {
+            if (target.HasCondition(ConditionType.GRAPPLED_DC11)) return;
             int grappling = 0;
             foreach (Effect effect in attacker.Effects) {
                 if (effect == Effect.GRAPPLING) grappling++;

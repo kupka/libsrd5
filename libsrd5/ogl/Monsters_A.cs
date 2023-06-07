@@ -72,17 +72,7 @@ namespace srd5 {
         public static readonly Attack AndrosphinxClaw = new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d10+6"), 5);
         public static readonly Attack AnimatedArmorSlam = new Attack("Slam", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
         public static AttackEffect AnkhegBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
-            if (attacker.HasEffect(Effect.GRAPPLING)) return;
-            attacker.AddEffect(Effect.GRAPPLING);
-            target.AddCondition(ConditionType.GRAPPLED_DC13);
-            target.AddStartOfTurnEvent(delegate (Combattant combattant) {
-                if (!combattant.HasCondition(ConditionType.GRAPPLED_DC13)) {
-                    attacker.RemoveEffect(Effect.GRAPPLING);
-                    return true;
-                }
-                return false;
-            });
+            AttackEffects.GrapplingEffect(attacker, target, 13, Monsters.Ankheg.Size++);
         };
         public static readonly Attack AnkhegBite = new Attack("Bite", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, new Damage(DamageType.ACID, "1d6"), AnkhegBiteEffect);
         public static readonly Attack ApeFist = new Attack("Fist", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5);

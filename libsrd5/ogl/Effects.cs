@@ -131,6 +131,7 @@ namespace srd5 {
         FIRE_ELEMENTAL_TOUCH,
         GHAST_CLAWS_PARALYZATION,
         GHOUL_CLAWS_PARALYZATION,
+        GIANT_RAT_DISEASED_BITE,
         INFERNAL_WOUND,
         UNABLE_TO_BREATHE,
 
@@ -226,6 +227,12 @@ namespace srd5 {
                         if (success) combattant1.RemoveEffect(Effect.GHAST_CLAWS_PARALYZATION);
                         return success;
                     });
+                    break;
+                case Effect.GIANT_RAT_DISEASED_BITE:
+                    // TODO: contract a disease. 
+                    // Until the disease is cured, the target can't regain hit points except by magical means, 
+                    // and the target's hit point maximum decreases by 3 (1d6) every 24 hours. 
+                    // If the target's hit point maximum drops to 0 as a result of this disease, the target dies.
                     break;
             }
         }

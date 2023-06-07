@@ -44,50 +44,27 @@ namespace srd5 {
         };
         public static readonly Attack GiantCentipedeBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, GiantCentipedeBiteEffect);
         public static readonly AttackEffect GiantConstrictorSnakeConstrictEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HasEffect(Effect.GRAPPLING)) return;
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
-            attacker.AddEffect(Effect.GRAPPLING);
-            target.AddCondition(ConditionType.GRAPPLED_DC16);
-            target.AddCondition(ConditionType.RESTRAINED);
-            target.AddEndOfTurnEvent(delegate (Combattant combattant) {
-                if (!target.HasCondition(ConditionType.GRAPPLED_DC16)) {
-                    target.RemoveCondition(ConditionType.RESTRAINED);
-                    attacker.RemoveEffect(Effect.GRAPPLING);
-                    return true;
-                }
-                return false;
-            });
+            AttackEffects.GrapplingEffect(attacker, target, 16, Monsters.GiantConstrictorSnake.Size++, true);
         };
         public static readonly Attack GiantConstrictorSnakeConstrict = new Attack("Constrict", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5, null, GiantConstrictorSnakeConstrictEffect);
         public static readonly Attack GiantConstrictorSnakeBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d6+4"), 10);
         public static readonly AttackEffect GiantCrabClawEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasCondition(ConditionType.GRAPPLED_DC11)) return;
-            int grappling = 0;
-            foreach (Effect effect in attacker.Effects) {
-                if (effect == Effect.GRAPPLING) grappling++;
-            }
-            if (grappling > 1) return;
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
-            attacker.AddEffect(Effect.GRAPPLING);
-            target.AddCondition(ConditionType.GRAPPLED_DC11);
-            target.AddEndOfTurnEvent(delegate (Combattant combattant) {
-                if (!target.HasCondition(ConditionType.GRAPPLED_DC11)) {
-                    attacker.RemoveEffect(Effect.GRAPPLING);
-                    return true;
-                }
-                return false;
-            });
+            AttackEffects.GrapplingEffect(attacker, target, 11, Monsters.GiantCrab.Size++, true, 2);
         };
         public static readonly Attack GiantCrabClaw = new Attack("Claw", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5, null, GiantCrabClawEffect);
         public static readonly AttackEffect GiantCrocodileBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HasEffect(Effect.GRAPPLING)) return;
             if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
+            if (attacker.HasEffect(Effect.GRAPPLING)) return;
             attacker.AddEffect(Effect.GRAPPLING);
             target.AddCondition(ConditionType.GRAPPLED_DC16);
             target.AddCondition(ConditionType.RESTRAINED);
-            target.AddEndOfTurnEvent(delegate (Combattant combattant) {
-                if (!target.HasCondition(ConditionType.GRAPPLED_DC16)) {
-                    target.RemoveCondition(ConditionType.RESTRAINED);
+            foreach (Attack attack in attacker.MeleeAttacks) {
+                if (attack.Name == GiantCrocodileBite.Name)
+                    attack.LockedTarget = target;
+            }
+            target.AddStartOfTurnEvent(delegate (Combattant combattant) {
+                if (!combattant.HasCondition(ConditionType.GRAPPLED_DC16)) {
+                    combattant.RemoveCondition(ConditionType.RESTRAINED);
                     attacker.RemoveEffect(Effect.GRAPPLING);
                     return true;
                 }
@@ -112,18 +89,7 @@ namespace srd5 {
         public static readonly Attack GiantFireBeetleBite = new Attack("Bite", 1, new Damage(DamageType.SLASHING, "1d6-1"), 5);
         public static readonly AttackEffect GiantFrogBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HasEffect(Effect.GRAPPLING)) return; // FIXME: Giant Frog cannot bite while grappling
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
-            attacker.AddEffect(Effect.GRAPPLING);
-            target.AddCondition(ConditionType.GRAPPLED_DC11);
-            target.AddCondition(ConditionType.RESTRAINED);
-            target.AddEndOfTurnEvent(delegate (Combattant combattant) {
-                if (!target.HasCondition(ConditionType.GRAPPLED_DC11)) {
-                    target.RemoveCondition(ConditionType.RESTRAINED);
-                    attacker.RemoveEffect(Effect.GRAPPLING);
-                    return true;
-                }
-                return false;
-            });
+            AttackEffects.GrapplingEffect(attacker, target, 11, Monsters.GiantFrog.Size++, true);
         };
         public static readonly Attack GiantFrogBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, null, GiantFrogBiteEffect);
         public static readonly Attack GiantGoatRam = new Attack("Ram", 5, new Damage(DamageType.BLUDGEONING, "2d4+3"), 5);
@@ -131,35 +97,26 @@ namespace srd5 {
         public static readonly Attack GiantLizardBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
         public static readonly AttackEffect GiantOctopusTentaclesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HasEffect(Effect.GRAPPLING)) return; // FIXME: Giant Octopus cannot use tentacles while grappling
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
-            attacker.AddEffect(Effect.GRAPPLING);
-            target.AddCondition(ConditionType.GRAPPLED_DC16);
-            target.AddCondition(ConditionType.RESTRAINED);
-            target.AddEndOfTurnEvent(delegate (Combattant combattant) {
-                if (!target.HasCondition(ConditionType.GRAPPLED_DC16)) {
-                    target.RemoveCondition(ConditionType.RESTRAINED);
-                    attacker.RemoveEffect(Effect.GRAPPLING);
-                    return true;
-                }
-                return false;
-            });
+            AttackEffects.GrapplingEffect(attacker, target, 11, Monsters.GiantOctopus.Size++, true);
         };
         public static readonly Attack GiantOctopusTentacles = new Attack("Tentacles", 5, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, null, GiantOctopusTentaclesEffect);
         public static readonly Attack GiantOwlTalons = new Attack("Talons", 3, new Damage(DamageType.SLASHING, "2d6+1"), 5);
-        // GiantPoisonousSnakeBite
-        // {"name":"Bite","desc":"Melee Weapon Attack: +6 to hit, reach 10 ft., one target. Hit: 6 (1d4 + 4) piercing damage, and the target must make a DC 11 Constitution saving throw, taking 10 (3d6) poison damage on a failed save, or half as much damage on a successful one.","attack_bonus":6,"damage":[{"damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d4+4"}]}
         public static readonly AttackEffect GiantPoisonousSnakeBiteEffect = delegate (Combattant attacker, Combattant target) {
+            if (target.IsImmune(DamageType.POISON)) return;
+            bool success = target.DC(GiantPoisonousSnakeBite, 11, AbilityType.CONSTITUTION);
+            int amount = new Dices("3d6").Roll();
+            if (success) amount /= 2;
+            target.TakeDamage(DamageType.POISON, amount);
         };
         public static readonly Attack GiantPoisonousSnakeBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d4+4"), 5, null, GiantPoisonousSnakeBiteEffect);
         public static readonly Attack GiantRatBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
-        // GiantRat(Diseased)Bite
-        // {"name":"Bite","desc":"Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 3 (1d4 + 2) piercing damage. If the target is a creature, it must succeed on a DC 10 Constitution saving throw or contract a disease. Until the disease is cured, the target can't regain hit points except by magical means, and the target's hit point maximum decreases by 3 (1d6) every 24 hours. If the target's hit point maximum drops to 0 as a result of this disease, the target dies.","attack_bonus":4,"damage":[{"damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d4+2"}]}
         public static readonly AttackEffect GiantRatDiseasedBiteEffect = delegate (Combattant attacker, Combattant target) {
+            if (target.DC(GiantRatDiseasedBite, 10, AbilityType.CONSTITUTION)) return;
+            target.AddEffect(Effect.GIANT_RAT_DISEASED_BITE);
         };
         public static readonly Attack GiantRatDiseasedBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, GiantRatDiseasedBiteEffect);
-        // GiantScorpionClaw
-        // {"name":"Claw","desc":"Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 6 (1d8 + 2) bludgeoning damage, and the target is grappled (escape DC 12). The scorpion has two claws, each of which can grapple only one target.","attack_bonus":4,"damage":[{"damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"1d8+2"}]}
         public static readonly AttackEffect GiantScorpionClawEffect = delegate (Combattant attacker, Combattant target) {
+            AttackEffects.GrapplingEffect(attacker, target, 12, Monsters.GiantScorpion.Size++, false, 2);
         };
         public static readonly Attack GiantScorpionClaw = new Attack("Claw", 4, new Damage(DamageType.BLUDGEONING, "1d8+2"), 5, null, GiantScorpionClawEffect);
         public static readonly AttackEffect GiantScorpionStingEffect = delegate (Combattant attacker, Combattant target) {

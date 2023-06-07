@@ -3,6 +3,33 @@ using System;
 namespace srd5 {
     public delegate void AttackEffect(Combattant attacker, Combattant target);
 
+    public struct AttackEffects {
+        public static void GrapplingEffect(Combattant attacker, Combattant target, int dc, Size maxSize, bool withRestrained = false, int maxTargets = 1) {
+            ConditionType grapplingType = (ConditionType)Enum.Parse(typeof(ConditionType), "GRAPPLED_DC" + dc);
+            if (target.HasCondition(grapplingType)) return;
+            if (target.Size > maxSize) return;
+            int grappling = 0;
+            foreach (Effect effect in attacker.Effects) {
+                if (effect == Effect.GRAPPLING) grappling++;
+            }
+            if (grappling >= maxTargets) return;
+            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
+            attacker.AddEffect(Effect.GRAPPLING);
+            if (withRestrained && !target.HasEffect(Effect.IMMUNITY_RESTRAINED))
+                target.AddCondition(ConditionType.RESTRAINED);
+            target.AddCondition(grapplingType);
+            target.AddEndOfTurnEvent(delegate (Combattant combattant) {
+                if (!target.HasCondition(grapplingType)) {
+                    if (withRestrained)
+                        target.RemoveCondition(ConditionType.RESTRAINED);
+                    attacker.RemoveEffect(Effect.GRAPPLING);
+                    return true;
+                }
+                return false;
+            });
+        }
+    }
+
     public class Attack {
         public enum Property {
             TRIPLE_DICE_ON_CRIT

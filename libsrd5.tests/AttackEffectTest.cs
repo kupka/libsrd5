@@ -185,10 +185,8 @@ namespace srd5 {
             attackEffectTest(Attacks.GiantWolfSpiderBiteEffect);
             attackEffectTest(Attacks.GibberingMoutherBitesEffect);
             attackEffectTest(Attacks.GlabrezuPincerEffect);
-            attackEffectTest(Attacks.GladiatorSpearEffect);
             attackEffectTest(Attacks.GladiatorShieldBashEffect);
             attackEffectTest(Attacks.GrayOozePseudopodEffect);
-            attackEffectTest(Attacks.GrimlockSpikedBoneClubEffect);
             attackEffectTest(Attacks.GuardianNagaBiteEffect);
             attackEffectTest(Attacks.GuardianNagaSpitPoisonEffect);
         }
@@ -205,7 +203,7 @@ namespace srd5 {
         public void BalorLongswordTest() {
             Assert.True(Attacks.BalorLongsword.Properties.Length == 1);
             Assert.True(Attacks.BalorLongsword.HasProperty(Attack.Property.TRIPLE_DICE_ON_CRIT));
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 1000; i++) {
                 Monsters.Balor.Attack(Attacks.BalorLongsword, uberMonster, 5);
             }
         }

@@ -69,7 +69,7 @@ namespace srd5 {
                 // permanently reduce armor ac by 1 if armor isn't magical. armor is destroyed if reduced to 10 or below by this.
                 if (armor == null || armor.HasProperty(ArmorProperty.MAGIC)) return;
                 armor.AC--;
-                if (armor.AC <= 10) {
+                if (armor.AC < 11) {
                     sheet.Unequip(armor);
                     armor.Destroy();
                 }

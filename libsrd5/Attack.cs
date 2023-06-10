@@ -30,7 +30,7 @@ namespace srd5 {
                 target.AddCondition(ConditionType.RESTRAINED);
             target.AddCondition(grapplingType);
             if (lockAttackToTarget != null) {
-                foreach (Attack attack in attacker.MeleeAttacks) {
+                foreach (Attack attack in attacker.MeleeAttacks) { // Currently, no ranged attack is locked
                     if (lockAttackToTarget.Name.Equals(attack.Name)) {
                         attack.LockedTarget = target;
                     }

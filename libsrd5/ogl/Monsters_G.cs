@@ -121,43 +121,37 @@ namespace srd5 {
         public static readonly Attack GiantToadBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.POISON, "1d10"), GiantToadBiteEffect);
         public static readonly Attack GiantVultureBeak = new Attack("Beak", 4, new Damage(DamageType.PIERCING, "2d4+2"), 5);
         public static readonly Attack GiantVultureTalons = new Attack("Talons", 4, new Damage(DamageType.SLASHING, "2d6+2"), 5);
-        // GiantWaspSting
-        // {"name":"Sting","desc":"Sting. Melee Weapon Attack: +4 to hit, reach 5 ft., one creature. Hit: 5 (1d6 + 2) piercing damage, and the target must make a DC 11 Constitution saving throw, taking 10 (3d6) poison damage on a failed save, or half as much damage on a successful one. If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.","attack_bonus":4,"damage":[{"damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d6+2"}]}
         public static readonly AttackEffect GiantWaspStingEffect = delegate (Combattant attacker, Combattant target) {
+            AttackEffects.PoisonEffect(target, GiantWaspSting, "3d6", 11);
+            // TODO: If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.
         };
         public static readonly Attack GiantWaspSting = new Attack("Sting", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, null, GiantWaspStingEffect);
         public static readonly Attack GiantWeaselBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5);
-        // GiantWolfSpiderBite
-        // {"name":"Bite","desc":"Melee Weapon Attack: +3 to hit, reach 5 ft., one creature. Hit: 4 (1d6 + 1) piercing damage, and the target must make a DC 11 Constitution saving throw, taking 7 (2d6) poison damage on a failed save, or half as much damage on a successful one. If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.","attack_bonus":3,"damage":[{"damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d6+1"}]}
         public static readonly AttackEffect GiantWolfSpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
+            AttackEffects.PoisonEffect(target, GiantWolfSpiderBite, "2d6", 11);
+            // TODO: If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.
         };
         public static readonly Attack GiantWolfSpiderBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, null, GiantWolfSpiderBiteEffect);
-        // GibberingMoutherBites
-        // {"name":"Bites","desc":"Melee Weapon Attack: +2 to hit, reach 5 ft., one creature. Hit: 17 (5d6) piercing damage. If the target is Medium or smaller, it must succeed on a DC 10 Strength saving throw or be knocked prone. If the target is killed by this damage, it is absorbed into the mouther.","attack_bonus":2,"damage":[{"damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"5d6"}]}
         public static readonly AttackEffect GibberingMoutherBitesEffect = delegate (Combattant attacker, Combattant target) {
+            if (target.Size > Size.MEDIUM) return;
+            if (target.DC(GibberingMoutherBites, 10, AbilityType.STRENGTH)) return;
+            target.AddCondition(ConditionType.PRONE);
+            // TODO:  If the target is killed by this damage, it is absorbed into the mouther.
         };
         public static readonly Attack GibberingMoutherBites = new Attack("Bites", 2, new Damage(DamageType.PIERCING, "5d6"), 5, null, GibberingMoutherBitesEffect);
-        // GlabrezuPincer
-        // {"name":"Pincer","desc":"Melee Weapon Attack: +9 to hit, reach 10 ft., one target. Hit: 16 (2d10 + 5) bludgeoning damage. If the target is a Medium or smaller creature, it is grappled (escape DC 15). The glabrezu has two pincers, each of which can grapple only one target.","attack_bonus":9,"damage":[{"damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"2d10+5"}]}
         public static readonly AttackEffect GlabrezuPincerEffect = delegate (Combattant attacker, Combattant target) {
+            AttackEffects.GrapplingEffect(attacker, target, 15, Size.MEDIUM, false, null, 2);
         };
         public static readonly Attack GlabrezuPincer = new Attack("Pincer", 9, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5, null, GlabrezuPincerEffect);
         public static readonly Attack GlabrezuFist = new Attack("Fist", 9, new Damage(DamageType.BLUDGEONING, "2d4+2"), 5);
-        // GladiatorSpear
-        // {"name":"Spear","desc":"Melee or Ranged Weapon Attack: +7 to hit, reach 5 ft. and range 20/60 ft., one target. Hit: 11 (2d6 + 4) piercing damage, or 13 (2d8 + 4) piercing damage if used with two hands to make a melee attack.","attack_bonus":7,"damage":[{"choose":1,"type":"damage","from":{"option_set_type":"options_array","options":[{"option_type":"damage","notes":"One handed","damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"2d6+4"},{"option_type":"damage","notes":"Two handed","damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"2d8+4"}]}}]}
-        public static readonly AttackEffect GladiatorSpearEffect = delegate (Combattant attacker, Combattant target) {
-        };
-        public static readonly Attack GladiatorSpear = new Attack("Spear", 7, new Damage(DamageType.PIERCING, "2d6+4"), 5, null, GladiatorSpearEffect);
-
-        // GladiatorShieldBash
-        // {"name":"Shield Bash","desc":"Melee Weapon Attack: +7 to hit, reach 5 ft., one creature. Hit: 9 (2d4 + 4) bludgeoning damage. If the target is a Medium or smaller creature, it must succeed on a DC 15 Strength saving throw or be knocked prone.","attack_bonus":7,"damage":[{"damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"2d4+4"}]}
+        public static readonly Attack GladiatorSpear = new Attack("Spear", 7, new Damage(DamageType.PIERCING, "2d6+4"), 5);
         public static readonly AttackEffect GladiatorShieldBashEffect = delegate (Combattant attacker, Combattant target) {
+            if (target.Size > Size.MEDIUM) return;
+            if (target.DC(GladiatorShieldBash, 15, AbilityType.STRENGTH)) return;
+            target.AddCondition(ConditionType.PRONE);
         };
         public static readonly Attack GladiatorShieldBash = new Attack("Shield Bash", 7, new Damage(DamageType.BLUDGEONING, "2d4+4"), 5, null, GladiatorShieldBashEffect);
-
-        // GnollSpear
-        // {"name":"Spear","desc":"Melee or Ranged Weapon Attack: +4 to hit, reach 5 ft. or range 20/60 ft., one target. Hit: 5 (1d6 + 2) piercing damage, or 6 (1d8 + 2) piercing damage if used with two hands to make a melee attack.","attack_bonus":4,"damage":[{"choose":1,"type":"damage","from":{"option_set_type":"options_array","options":[{"option_type":"damage","notes":"One handed","damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d6+2"},{"option_type":"damage","notes":"Two handed","damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d8+2"}]}}]}
-        public static readonly Attack GnollSpearMelee = new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+        public static readonly Attack GnollSpearMelee = new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
         public static readonly Attack GnollSpearRanged = new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d6+2"), 20, 60);
         public static readonly Attack GnollBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
         public static readonly Attack GnollLongbow = new Attack("Longbow", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5, 150, 600);
@@ -168,37 +162,26 @@ namespace srd5 {
         public static readonly Attack GorgonGore = new Attack("Gore", 8, new Damage(DamageType.PIERCING, "2d12+5"), 5);
         public static readonly Attack GorgonHooves = new Attack("Hooves", 8, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5);
 
-        // GrayOozePseudopod
-        // {"name":"Pseudopod","desc":"Melee Weapon Attack: +3 to hit, reach 5 ft., one target. Hit: 4 (1d6 + 1) bludgeoning damage plus 7 (2d6) acid damage, and if the target is wearing nonmagical metal armor, its armor is partly corroded and takes a permanent and cumulative -1 penalty to the AC it offers. The armor is destroyed if the penalty reduces its AC to 10.","attack_bonus":3,"damage":[{"damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"1d6+1"},{"damage_type":{"index":"acid","name":"Acid","url":"/api/damage-types/acid"},"damage_dice":"2d6"}]}
         public static readonly AttackEffect GrayOozePseudopodEffect = delegate (Combattant attacker, Combattant target) {
+            // exactly same effect as Black Pudding
+            BlackPuddingPseudopodEffect(attacker, target);
         };
-        public static readonly Attack GrayOozePseudopod = new Attack("Pseudopod", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5, null, GrayOozePseudopodEffect);
+        public static readonly Attack GrayOozePseudopod = new Attack("Pseudopod", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5, new Damage(DamageType.ACID, "2d6"), GrayOozePseudopodEffect);
         public static readonly Attack GreenDragonWyrmlingBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.POISON, "1d6"));
         public static readonly Attack GreenHagClaws = new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d8+4"), 5);
         public static readonly Attack GrickTentacles = new Attack("Tentacles", 4, new Damage(DamageType.SLASHING, "2d6+2"), 5);
         public static readonly Attack GrickBeak = new Attack("Beak", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
         public static readonly Attack GriffonBeak = new Attack("Beak", 6, new Damage(DamageType.PIERCING, "1d8+4"), 5);
         public static readonly Attack GriffonClaws = new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d6+4"), 5);
-
-        // GrimlockSpikedBoneClub
-        // {"name":"Spiked Bone Club","desc":"Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 5 (1d4 + 3) bludgeoning damage plus 2 (1d4) piercing damage.","attack_bonus":5,"damage":[{"damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"1d4+3"},{"damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d4"}]}
-        public static readonly AttackEffect GrimlockSpikedBoneClubEffect = delegate (Combattant attacker, Combattant target) {
-        };
-        public static readonly Attack GrimlockSpikedBoneClub = new Attack("Spiked Bone Club", 5, new Damage(DamageType.BLUDGEONING, "1d4+3"), 5, null, GrimlockSpikedBoneClubEffect);
-
-        // GuardSpear
-        // {"name":"Spear","desc":"Melee or Ranged Weapon Attack: +3 to hit, reach 5 ft. or range 20/60 ft., one target. Hit: 4 (1d6 + 1) piercing damage or 5 (1d8 + 1) piercing damage if used with two hands to make a melee attack.","attack_bonus":3,"damage":[{"choose":1,"type":"damage","from":{"option_set_type":"options_array","options":[{"option_type":"damage","notes":"One handed","damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d6+1"},{"option_type":"damage","notes":"Two handed","damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d8+1"}]}}]}
-        public static readonly Attack GuardSpearMelee = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5);
+        public static readonly Attack GrimlockSpikedBoneClub = new Attack("Spiked Bone Club", 5, new Damage(DamageType.BLUDGEONING, "1d4+3"), 5, new Damage(DamageType.PIERCING, "1d4"));
+        public static readonly Attack GuardSpearMelee = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
         public static readonly Attack GuardSpearRanged = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, 20, 60);
-        // GuardianNagaBite
-        // {"name":"Bite","desc":"Melee Weapon Attack: +8 to hit, reach 10 ft., one creature. Hit: 8 (1d8 + 4) piercing damage, and the target must make a DC 15 Constitution saving throw, taking 45 (10d8) poison damage on a failed save, or half as much damage on a successful one.","attack_bonus":8,"damage":[{"damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d8+4"}]}
         public static readonly AttackEffect GuardianNagaBiteEffect = delegate (Combattant attacker, Combattant target) {
+            AttackEffects.PoisonEffect(target, GuardianNagaBite, "10d8", 15);
         };
         public static readonly Attack GuardianNagaBite = new Attack("Bite", 8, new Damage(DamageType.PIERCING, "1d8+4"), 5, null, GuardianNagaBiteEffect);
-
-        // GuardianNagaSpitPoison
-        // {"name":"Spit Poison","desc":"Ranged Weapon Attack: +8 to hit, range 15/30 ft., one creature. Hit: The target must make a DC 15 Constitution saving throw, taking 45 (10d8) poison damage on a failed save, or half as much damage on a successful one.","attack_bonus":8}
         public static readonly AttackEffect GuardianNagaSpitPoisonEffect = delegate (Combattant attacker, Combattant target) {
+            AttackEffects.PoisonEffect(target, GuardianNagaSpitPoison, "10d8", 15);
         };
         public static readonly Attack GuardianNagaSpitPoison = new Attack("Spit Poison", 8, new Damage(DamageType.POISON, "1d0"), 5, null, GuardianNagaSpitPoisonEffect);
         public static readonly Attack GynosphinxClaw = new Attack("Claw", 9, new Damage(DamageType.SLASHING, "2d8+4"), 5);
@@ -726,7 +709,7 @@ namespace srd5 {
             get {
                 Monster gladiator = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.GLADIATOR, Alignment.UNALIGNED, 18, 15, 16, 10, 12, 15, 16, "15d8+45", 40, 5,
-                    new Attack[] { Attacks.GladiatorShieldBash }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.GladiatorSpear, Attacks.GladiatorShieldBash }, new Attack[] { }, Size.MEDIUM
                 );
                 gladiator.AddProficiency(Proficiency.STRENGTH);
                 gladiator.AddProficiency(Proficiency.DEXTERITY);

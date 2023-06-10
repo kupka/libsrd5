@@ -55,7 +55,7 @@ namespace srd5 {
         public static readonly Attack BeardedDevilGlaive = new Attack("Glaive", 5, new Damage(DamageType.SLASHING, "1d10+3"), 10, null, BeardedDevilGlaiveEffect);
         public static readonly Attack BehirBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "3d10+6"), 10);
         public static readonly AttackEffect BehirConstrictEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.GrapplingEffect(attacker, target, 16, Monsters.Behir.Size++);
+            AttackEffects.GrapplingEffect(attacker, target, 16, Monsters.Behir.Size + 1);
         };
         public static readonly Attack BehirConstrict = new Attack("Constrict", 10, new Damage(DamageType.BLUDGEONING, "2d10+6"), 5, new Damage(DamageType.SLASHING, "2d10+6"), BehirConstrictEffect);
         public static readonly Attack BerserkerGreataxe = new Attack("Greataxe", 5, new Damage(DamageType.SLASHING, "1d12+3"), 5);

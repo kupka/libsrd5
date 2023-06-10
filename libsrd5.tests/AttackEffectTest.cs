@@ -194,6 +194,14 @@ namespace srd5 {
         }
 
         [Fact]
+        public void AssassinShortswordTest() {
+            Monster undead = Monsters.Ghost; // immune to poison
+            int hitpoints = undead.HitPoints;
+            Attacks.AssassinShortswordEffect.Invoke(Monsters.Assassin, undead);
+            Assert.Equal(hitpoints, undead.HitPoints);
+        }
+
+        [Fact]
         public void BalorLongswordTest() {
             Assert.True(Attacks.BalorLongsword.Properties.Length == 1);
             Assert.True(Attacks.BalorLongsword.HasProperty(Attack.Property.TRIPLE_DICE_ON_CRIT));

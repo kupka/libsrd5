@@ -26,7 +26,7 @@ namespace srd5 {
         public static readonly Attack ChimeraHorns = new Attack("Horns", 7, new Damage(DamageType.BLUDGEONING, "1d12+4"), 5);
         public static readonly Attack ChimeraClaws = new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
         public static readonly AttackEffect ChuulPincerEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.GrapplingEffect(attacker, target, 14, Size.LARGE, false, 2);
+            AttackEffects.GrapplingEffect(attacker, target, 14, Size.LARGE, false, null, 2);
         };
         public static readonly Attack ChuulPincer = new Attack("Pincer", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5, null, ChuulPincerEffect);
         public static readonly AttackEffect ClayGolemSlamEffect = delegate (Combattant attacker, Combattant target) {
@@ -65,7 +65,7 @@ namespace srd5 {
         public static readonly Attack CockatriceBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d4+1"), 5, null, CockatriceBiteEffect);
         public static readonly Attack CommonerClub = new Attack("Club", 2, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
         public static readonly AttackEffect ConstrictorSnakeConstrictEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.GrapplingEffect(attacker, target, 14, Monsters.ConstrictorSnake.Size++, true);
+            AttackEffects.GrapplingEffect(attacker, target, 14, Monsters.ConstrictorSnake.Size + 1, true);
         };
         public static readonly Attack ConstrictorSnakeConstrict = new Attack("Constrict", 4, new Damage(DamageType.BLUDGEONING, "1d8+2"), 5, null, ConstrictorSnakeConstrictEffect);
         public static readonly Attack ConstrictorSnakeBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
@@ -81,28 +81,12 @@ namespace srd5 {
         };
         public static readonly Attack CouatlBite = new Attack("Bite", 8, new Damage(DamageType.PIERCING, "1d6+5"), 5, null, CouatlBiteEffect);
         public static readonly AttackEffect CouatlConstrictEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.GrapplingEffect(attacker, target, 15, Monsters.Couatl.Size++, true);
+            AttackEffects.GrapplingEffect(attacker, target, 15, Monsters.Couatl.Size + 1, true);
         };
         public static readonly Attack CouatlConstrict = new Attack("Constrict", 6, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, null, CouatlConstrictEffect);
         public static readonly Attack CrabClaw = new Attack("Claw", 0, new Damage(DamageType.BLUDGEONING, "1d1"), 5);
         public static readonly AttackEffect CrocodileBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
-            if (attacker.HasEffect(Effect.GRAPPLING)) return;
-            attacker.AddEffect(Effect.GRAPPLING);
-            target.AddCondition(ConditionType.GRAPPLED_DC12);
-            target.AddCondition(ConditionType.RESTRAINED);
-            foreach (Attack attack in attacker.MeleeAttacks) {
-                if (attack.Name == CrocodileBite.Name)
-                    attack.LockedTarget = target;
-            }
-            target.AddStartOfTurnEvent(delegate (Combattant combattant) {
-                if (!combattant.HasCondition(ConditionType.GRAPPLED_DC12)) {
-                    combattant.RemoveCondition(ConditionType.RESTRAINED);
-                    attacker.RemoveEffect(Effect.GRAPPLING);
-                    return true;
-                }
-                return false;
-            });
+            AttackEffects.GrapplingEffect(attacker, target, 12, Monsters.Crocodile.Size + 1, true, CrocodileBite);
         };
         public static readonly Attack CrocodileBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, null, CrocodileBiteEffect);
         public static readonly Attack CultFanaticDaggerMelee = new Attack("Dagger", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);

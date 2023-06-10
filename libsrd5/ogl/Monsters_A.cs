@@ -72,7 +72,7 @@ namespace srd5 {
         public static readonly Attack AndrosphinxClaw = new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d10+6"), 5);
         public static readonly Attack AnimatedArmorSlam = new Attack("Slam", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
         public static AttackEffect AnkhegBiteEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.GrapplingEffect(attacker, target, 13, Monsters.Ankheg.Size++);
+            AttackEffects.GrapplingEffect(attacker, target, 13, Monsters.Ankheg.Size + 1);
         };
         public static readonly Attack AnkhegBite = new Attack("Bite", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, new Damage(DamageType.ACID, "1d6"), AnkhegBiteEffect);
         public static readonly Attack ApeFist = new Attack("Fist", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5);
@@ -80,9 +80,7 @@ namespace srd5 {
         public static readonly Attack ArchmageDaggerMelee = new Attack("Dagger", 6, new Damage(DamageType.PIERCING, "1d4+2"), 5);
         public static readonly Attack ArchmageDaggerRanged = new Attack("Dagger", 6, new Damage(DamageType.PIERCING, "1d4+2"), 5, 20, 60);
         public static AttackEffect AssassinShortswordEffect = delegate (Combattant attacker, Combattant target) {
-            int amount = new Dices("7d6").Roll();
-            if (target.DC(AssassinShortsword, 15, AbilityType.CONSTITUTION)) amount /= 2;
-            target.TakeDamage(DamageType.POISON, amount);
+            AttackEffects.PoisonEffect(target, AssassinShortsword, "7d6", 15);
         };
         public static readonly Attack AssassinShortsword = new Attack("Shortsword", 6, new Damage(DamageType.PIERCING, "1d6+3"), 5, null, AssassinShortswordEffect);
         public static readonly Attack AssassinLight_Crossbow = new Attack("Light Crossbow", 6, new Damage(DamageType.PIERCING, "1d8+3"), 5, 80, 320);

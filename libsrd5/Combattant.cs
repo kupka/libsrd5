@@ -205,19 +205,20 @@ namespace srd5 {
         /// <summary>
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
-        public void TakeDamage(DamageType type, int amount) {
+        public int TakeDamage(DamageType type, int amount) {
             if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
-            if (IsImmune(type)) return;
+            if (IsImmune(type)) return 0;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;
             if (HitPoints == 0) {
                 // TODO: Implement Death Saves
-                return;
+                return amount;
             }
             GlobalEvents.ReceivedDamage(this, amount, type);
             HitPoints = Math.Max(0, HitPoints - amount);
             OnDamageTaken();
             if (HitPoints == 0) AddCondition(ConditionType.UNCONSCIOUS);
+            return amount;
         }
 
         /// <summary>

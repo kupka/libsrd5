@@ -44,7 +44,7 @@ namespace srd5 {
                 target.AddStartOfTurnEvent(delegate (Combattant combattant) {
                     foreach (Effect effect in combattant.Effects) {
                         if (effect != Effect.INFERNAL_WOUND) continue;
-                        combattant.TakeDamage(DamageType.TRUE_DAMAGE, Dice.D10.Value);
+                        combattant.TakeDamage(DamageType.TRUE_DAMAGE, "1d10");
                     }
                     return combattant.HasEffect(Effect.INFERNAL_WOUND);
                 });
@@ -55,17 +55,7 @@ namespace srd5 {
         public static readonly Attack BeardedDevilGlaive = new Attack("Glaive", 5, new Damage(DamageType.SLASHING, "1d10+3"), 10, null, BeardedDevilGlaiveEffect);
         public static readonly Attack BehirBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "3d10+6"), 10);
         public static readonly AttackEffect BehirConstrictEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
-            if (attacker.HasEffect(Effect.GRAPPLING)) return;
-            attacker.AddEffect(Effect.GRAPPLING);
-            target.AddCondition(ConditionType.GRAPPLED_DC16);
-            target.AddStartOfTurnEvent(delegate (Combattant combattant) {
-                if (!combattant.HasCondition(ConditionType.GRAPPLED_DC16)) {
-                    attacker.RemoveEffect(Effect.GRAPPLING);
-                    return true;
-                }
-                return false;
-            });
+            AttackEffects.GrapplingEffect(attacker, target, 16, Monsters.Behir.Size + 1);
         };
         public static readonly Attack BehirConstrict = new Attack("Constrict", 10, new Damage(DamageType.BLUDGEONING, "2d10+6"), 5, new Damage(DamageType.SLASHING, "2d10+6"), BehirConstrictEffect);
         public static readonly Attack BerserkerGreataxe = new Attack("Greataxe", 5, new Damage(DamageType.SLASHING, "1d12+3"), 5);
@@ -79,7 +69,7 @@ namespace srd5 {
                 // permanently reduce armor ac by 1 if armor isn't magical. armor is destroyed if reduced to 10 or below by this.
                 if (armor == null || armor.HasProperty(ArmorProperty.MAGIC)) return;
                 armor.AC--;
-                if (armor.AC <= 10) {
+                if (armor.AC < 11) {
                     sheet.Unequip(armor);
                     armor.Destroy();
                 }

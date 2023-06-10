@@ -3,6 +3,69 @@ using System;
 namespace srd5 {
     public delegate void AttackEffect(Combattant attacker, Combattant target);
 
+    public struct AttackEffects {
+
+        /// <summary>
+        /// Lets the attacker grapple a target with DC and other options.
+        /// </summary>
+        /// <param name="attacker">The grappler</param>
+        /// <param name="target">Who is grappled</param>
+        /// <param name="dc">DC required to avoid grapple</param>
+        /// <param name="maxSize">Maximum Size the attacker can grapple</param>
+        /// <param name="withRestrained">With true, the target is restrained as well as grappled</param>
+        /// <param name="lockAttackToTarget">If set, then this attack will have the target locked (e.g. can only Bite the grappled target)</param>
+        /// <param name="maxTargets">Amount of targets the attacker can grapple (e.g. Crabs can grapple one target with each of their two claws)</param>
+        public static void GrapplingEffect(Combattant attacker, Combattant target, int dc, Size maxSize, bool withRestrained = false, Attack lockAttackToTarget = null, int maxTargets = 1) {
+            ConditionType grapplingType = (ConditionType)Enum.Parse(typeof(ConditionType), "GRAPPLED_DC" + dc);
+            if (target.HasCondition(grapplingType)) return;
+            if (target.Size > maxSize) return;
+            int grappling = 0;
+            foreach (Effect effect in attacker.Effects) {
+                if (effect == Effect.GRAPPLING) grappling++;
+            }
+            if (grappling >= maxTargets) return;
+            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
+            attacker.AddEffect(Effect.GRAPPLING);
+            if (withRestrained && !target.HasEffect(Effect.IMMUNITY_RESTRAINED))
+                target.AddCondition(ConditionType.RESTRAINED);
+            target.AddCondition(grapplingType);
+            if (lockAttackToTarget != null) {
+                foreach (Attack attack in attacker.MeleeAttacks) { // Currently, no ranged attack is locked
+                    if (lockAttackToTarget.Name.Equals(attack.Name)) {
+                        attack.LockedTarget = target;
+                    }
+                }
+            }
+            target.AddEndOfTurnEvent(delegate (Combattant combattant) {
+                if (!target.HasCondition(grapplingType)) {
+                    if (withRestrained)
+                        target.RemoveCondition(ConditionType.RESTRAINED);
+                    attacker.RemoveEffect(Effect.GRAPPLING);
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        /// <summary>
+        /// Damages the target by a certain amount, half of the amount when dc is successfull
+        /// </summary>
+        /// <param name="target">The target to take damage</param>
+        /// <param name="type">The type of the damage</param>
+        /// <param name="dices">The dice string describing how much damage is taken (e.g. "3d6+3")</param>
+        /// <param name="dc">How difficult the DC is to receive only half of the dices' damage</param>
+        /// <param name="ability">Which ability is used for the DC (default Constitution)</param>
+        /// <returns></returns>
+        public static int PoisonEffect(Combattant target, Attack source, string dices, int dc, AbilityType ability = AbilityType.CONSTITUTION) {
+            if (target.IsImmune(DamageType.POISON)) return 0;
+            bool success = target.DC(source, 12, AbilityType.CONSTITUTION);
+            int amount = new Dices(dices).Roll();
+            if (success) amount /= 2;
+            amount = target.TakeDamage(DamageType.POISON, amount);
+            return amount;
+        }
+    }
+
     public class Attack {
         public enum Property {
             TRIPLE_DICE_ON_CRIT

@@ -128,6 +128,11 @@ namespace srd5 {
         ERINYES_POISON,
         ETTERCAP_POISON,
         ETTERCAP_WEB,
+        FIRE_ELEMENTAL_TOUCH,
+        GHAST_CLAWS_PARALYZATION,
+        GHOUL_CLAWS_PARALYZATION,
+        GIANT_RAT_DISEASED_BITE,
+        GIANT_SPIDER_WEB,
         INFERNAL_WOUND,
         UNABLE_TO_BREATHE,
 
@@ -206,6 +211,30 @@ namespace srd5 {
                 case Effect.ETTERCAP_WEB:
                     combattant.AddCondition(ConditionType.RESTRAINED);
                     break;
+                case Effect.FIRE_ELEMENTAL_TOUCH:
+                    combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
+                        if (!combattant1.HasEffect(Effect.FIRE_ELEMENTAL_TOUCH)) return true;
+                        combattant1.TakeDamage(DamageType.FIRE, "1d10");
+                        return false;
+                    });
+                    break;
+                case Effect.GHAST_CLAWS_PARALYZATION:
+                case Effect.GHOUL_CLAWS_PARALYZATION:
+                    combattant.AddCondition(ConditionType.PARALYZED);
+                    int turn = 0;
+                    combattant.AddEndOfTurnEvent(delegate (Combattant combattant1) {
+                        bool success = combattant1.DC(Effect.GHAST_CLAWS_PARALYZATION, 10, AbilityType.CONSTITUTION);
+                        if (turn++ > 9) success = true;
+                        if (success) combattant1.RemoveEffect(Effect.GHAST_CLAWS_PARALYZATION);
+                        return success;
+                    });
+                    break;
+                case Effect.GIANT_RAT_DISEASED_BITE:
+                    // TODO: contract a disease. 
+                    // Until the disease is cured, the target can't regain hit points except by magical means, 
+                    // and the target's hit point maximum decreases by 3 (1d6) every 24 hours. 
+                    // If the target's hit point maximum drops to 0 as a result of this disease, the target dies.
+                    break;
             }
         }
 
@@ -249,6 +278,10 @@ namespace srd5 {
                     break;
                 case Effect.ETTERCAP_WEB:
                     combattant.RemoveCondition(ConditionType.RESTRAINED);
+                    break;
+                case Effect.GHAST_CLAWS_PARALYZATION:
+                case Effect.GHOUL_CLAWS_PARALYZATION:
+                    combattant.RemoveCondition(ConditionType.PARALYZED);
                     break;
             }
         }

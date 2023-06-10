@@ -72,17 +72,7 @@ namespace srd5 {
         public static readonly Attack AndrosphinxClaw = new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d10+6"), 5);
         public static readonly Attack AnimatedArmorSlam = new Attack("Slam", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
         public static AttackEffect AnkhegBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
-            if (attacker.HasEffect(Effect.GRAPPLING)) return;
-            attacker.AddEffect(Effect.GRAPPLING);
-            target.AddCondition(ConditionType.GRAPPLED_DC13);
-            target.AddStartOfTurnEvent(delegate (Combattant combattant) {
-                if (!combattant.HasCondition(ConditionType.GRAPPLED_DC13)) {
-                    attacker.RemoveEffect(Effect.GRAPPLING);
-                    return true;
-                }
-                return false;
-            });
+            AttackEffects.GrapplingEffect(attacker, target, 13, Monsters.Ankheg.Size + 1);
         };
         public static readonly Attack AnkhegBite = new Attack("Bite", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, new Damage(DamageType.ACID, "1d6"), AnkhegBiteEffect);
         public static readonly Attack ApeFist = new Attack("Fist", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5);
@@ -90,9 +80,7 @@ namespace srd5 {
         public static readonly Attack ArchmageDaggerMelee = new Attack("Dagger", 6, new Damage(DamageType.PIERCING, "1d4+2"), 5);
         public static readonly Attack ArchmageDaggerRanged = new Attack("Dagger", 6, new Damage(DamageType.PIERCING, "1d4+2"), 5, 20, 60);
         public static AttackEffect AssassinShortswordEffect = delegate (Combattant attacker, Combattant target) {
-            int amount = new Dices("7d6").Roll();
-            if (target.DC(AssassinShortsword, 15, AbilityType.CONSTITUTION)) amount /= 2;
-            target.TakeDamage(DamageType.POISON, amount);
+            AttackEffects.PoisonEffect(target, AssassinShortsword, "7d6", 15);
         };
         public static readonly Attack AssassinShortsword = new Attack("Shortsword", 6, new Damage(DamageType.PIERCING, "1d6+3"), 5, null, AssassinShortswordEffect);
         public static readonly Attack AssassinLight_Crossbow = new Attack("Light Crossbow", 6, new Damage(DamageType.PIERCING, "1d8+3"), 5, 80, 320);
@@ -100,17 +88,6 @@ namespace srd5 {
         public static readonly Attack AwakenedTreeSlam = new Attack("Slam", 6, new Damage(DamageType.BLUDGEONING, "3d6+4"), 10);
         public static readonly Attack AxeBeakBeak = new Attack("Beak", 4, new Damage(DamageType.SLASHING, "1d8+2"), 5);
         public static readonly Attack AzerWarhammer = new Attack("Warhammer", 5, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, new Damage(DamageType.FIRE, "1d6"));
-        public static readonly Attack GiantBadgerBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5);
-        public static readonly Attack GiantBadgerClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+1"), 5);
-        public static readonly Attack GiantScorpionClaw = new Attack("Claw", 4, new Damage(DamageType.BLUDGEONING, "1d8+2"), 5);
-        public static AttackEffect GiantScorpionStingEffect = delegate (Combattant attacker, Combattant target) {
-            int amount = new Dices("4d10").Roll();
-            if (target.DC(GiantScorpionSting, 12, AbilityType.CONSTITUTION)) amount /= 2;
-            target.TakeDamage(DamageType.POISON, amount);
-        };
-        public static readonly Attack GiantScorpionSting = new Attack("Sting", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, null, GiantScorpionStingEffect);
-        public static readonly Attack GoblinScimitar = new Attack("Scimitar", 4, new Damage(DamageType.SLASHING, "1d6+2"), 5);
-        public static readonly Attack GoblinShortbow = new Attack("Shortbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 80, 320);
         public static readonly Attack NightHagClaws = new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d8+4"), 5);
         public static readonly Attack OgreGreatclub = new Attack("Greatclub", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
         public static readonly Attack OgreJavelin = new Attack("Javelin", 6, new Damage(DamageType.PIERCING, "2d6+4"), 30, 120);
@@ -766,33 +743,6 @@ namespace srd5 {
             }
         }
 
-        public static Monster GiantBadger {
-            get {
-                return new Monster(
-                    Monsters.Type.BEAST, Monsters.ID.GIANT_BADGER, Alignment.UNALIGNED, 13, 10, 15, 2, 12, 5, 10, "2d8+4", 30, ChallengeRating.QUARTER,
-                    new Attack[] { Attacks.GiantBadgerBite, Attacks.GiantBadgerClaws }, Attacks.None, Size.MEDIUM
-                );
-            }
-        }
-
-        public static Monster GiantScorpion {
-            get {
-                Monster giantScorpion = new Monster(
-                    Monsters.Type.BEAST, Monsters.ID.GIANT_SCORPION, Alignment.UNALIGNED, 15, 13, 15, 1, 9, 3, 15, "7d10+14", 40, 3,
-                    new Attack[] { Attacks.GiantScorpionClaw, Attacks.GiantScorpionSting }, new Attack[] { }, Size.LARGE
-                );
-                return giantScorpion;
-            }
-        }
-
-        public static Monster Goblin {
-            get {
-                return new Monster(
-                    Monsters.Type.HUMANOID, Monsters.ID.GOBLIN, Alignment.NEUTRAL_EVIL, 8, 14, 10, 10, 8, 8, 15, "2d6", 30, ChallengeRating.QUARTER,
-                    new Attack[] { Attacks.GoblinScimitar }, new Attack[] { Attacks.GoblinShortbow }, Size.SMALL
-                );
-            }
-        }
 
         public static Monster Ogre {
             get {

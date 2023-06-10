@@ -74,6 +74,35 @@ namespace srd5 {
                 foreach (Effect eff in pansyMonster.Effects) {
                     pansyMonster.RemoveEffect(eff);
                 }
+
+                foreach (ConditionType condition in uberMonster.Conditions) {
+                    uberMonster.RemoveCondition(condition);
+                }
+                foreach (ConditionType condition in averageMonster.Conditions) {
+                    averageMonster.RemoveCondition(condition);
+                }
+                foreach (ConditionType condition in pansyMonster.Conditions) {
+                    pansyMonster.RemoveCondition(condition);
+                }
+
+
+
+                int hitPointsUberMonster = uberMonster.HitPoints;
+                int hitPointsAverageMonster = averageMonster.HitPoints;
+                int hitPointsPansyMonster = pansyMonster.HitPoints;
+
+                uberMonster.OnStartOfTurn();
+                uberMonster.OnEndOfTurn();
+
+                averageMonster.OnStartOfTurn();
+                averageMonster.OnEndOfTurn();
+
+                pansyMonster.OnStartOfTurn();
+                pansyMonster.OnEndOfTurn();
+
+                Assert.Equal(hitPointsUberMonster, uberMonster.HitPoints);
+                Assert.Equal(hitPointsAverageMonster, averageMonster.HitPoints);
+                Assert.Equal(hitPointsPansyMonster, pansyMonster.HitPoints);
             }
         }
 
@@ -259,6 +288,22 @@ namespace srd5 {
             }
             Assert.True(bandit.HasCondition(ConditionType.RESTRAINED));
             Assert.Equal(bandit, crocodile.MeleeAttacks[0].LockedTarget);
+            Assert.Null(crocodile.MeleeAttacks[1].LockedTarget);
+        }
+
+        [Fact]
+        public void GiantCrocodileBiteTest() {
+            Monster crocodile = new Monster(
+                Monsters.Type.BEAST, Monsters.ID.GIANT_CROCODILE, Alignment.UNALIGNED, 15, 10, 13, 2, 10, 5, 12, "3d10+3", 40, ChallengeRating.HALF,
+                new Attack[] { Attacks.GiantCrocodileBite, Attacks.AbolethTail }, new Attack[] { }, Size.LARGE
+            );
+            Monster bandit = Monsters.Bandit;
+            for (int i = 0; i < 10; i++) {
+                crocodile.Attack(crocodile.MeleeAttacks[0], bandit, 5);
+            }
+            Assert.True(bandit.HasCondition(ConditionType.RESTRAINED));
+            Assert.Equal(bandit, crocodile.MeleeAttacks[0].LockedTarget);
+            Assert.Null(crocodile.MeleeAttacks[1].LockedTarget);
         }
 
         [Fact]

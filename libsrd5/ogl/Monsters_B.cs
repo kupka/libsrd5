@@ -40,17 +40,17 @@ namespace srd5 {
             }
             if (target.DC(BeardedDevilGlaive, 12, AbilityType.CONSTITUTION)) return;
             // add infernal wound affect if newly applied
-            if (!target.HasEffect(Effect.INFERNAL_WOUND)) {
+            if (!target.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL)) {
                 target.AddStartOfTurnEvent(delegate (Combattant combattant) {
                     foreach (Effect effect in combattant.Effects) {
-                        if (effect != Effect.INFERNAL_WOUND) continue;
+                        if (effect != Effect.INFERNAL_WOUND_BEARDED_DEVIL) continue;
                         combattant.TakeDamage(DamageType.TRUE_DAMAGE, "1d10");
                     }
-                    return combattant.HasEffect(Effect.INFERNAL_WOUND);
+                    return combattant.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL);
                 });
             }
             // increase infernal wound stack by one
-            target.AddEffect(Effect.INFERNAL_WOUND);
+            target.AddEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL);
         };
         public static readonly Attack BeardedDevilGlaive = new Attack("Glaive", 5, new Damage(DamageType.SLASHING, "1d10+3"), 10, null, BeardedDevilGlaiveEffect);
         public static readonly Attack BehirBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "3d10+6"), 10);

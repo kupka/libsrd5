@@ -135,11 +135,24 @@ namespace srd5 {
             GlobalEvents.ChangedCondition(this, condition);
             return true;
         }
+
+        public void AddConditions(params ConditionType[] conditions) {
+            foreach (ConditionType condition in Conditions) {
+                AddCondition(condition);
+            }
+        }
+
         public void RemoveCondition(ConditionType condition) {
             RemoveResult result = Utils.RemoveSingle<ConditionType>(ref conditions, condition);
             if (result == RemoveResult.REMOVED_AND_GONE)
                 condition.Unapply(this);
             GlobalEvents.ChangedCondition(this, condition, true);
+        }
+
+        public void RemoveConditions(params ConditionType[] conditions) {
+            foreach (ConditionType condition in Conditions) {
+                RemoveCondition(condition);
+            }
         }
 
         public bool HasCondition(ConditionType condition) {

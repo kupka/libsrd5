@@ -213,9 +213,9 @@ namespace srd5 {
             Monster golem = Monsters.ClayGolem;
             Monster shadow = Monsters.Shadow;
             Attacks.BeardedDevilGlaiveEffect.Invoke(Monsters.Aboleth, golem); // don't affect construct
-            Assert.False(golem.HasEffect(Effect.INFERNAL_WOUND));
+            Assert.False(golem.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL));
             Attacks.BeardedDevilGlaiveEffect.Invoke(Monsters.Aboleth, shadow); // don't affect undead
-            Assert.False(shadow.HasEffect(Effect.INFERNAL_WOUND));
+            Assert.False(shadow.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL));
         }
 
         [Fact]

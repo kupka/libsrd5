@@ -133,7 +133,10 @@ namespace srd5 {
         GHOUL_CLAWS_PARALYZATION,
         GIANT_RAT_DISEASED_BITE,
         GIANT_SPIDER_WEB,
-        INFERNAL_WOUND,
+        HOMUNCULUS_POISON,
+        HOMUNCULUS_POISON_UNCONCIOUSNESS,
+        INFERNAL_WOUND_BEARDED_DEVIL,
+        INFERNAL_WOUND_HORNED_DEVIL,
         UNABLE_TO_BREATHE,
 
         // Feat Effects
@@ -206,6 +209,7 @@ namespace srd5 {
                 case Effect.DROW_POISON:
                 case Effect.ERINYES_POISON:
                 case Effect.ETTERCAP_POISON:
+                case Effect.HOMUNCULUS_POISON:
                     combattant.AddCondition(ConditionType.POISONED);
                     break;
                 case Effect.ETTERCAP_WEB:
@@ -234,6 +238,9 @@ namespace srd5 {
                     // Until the disease is cured, the target can't regain hit points except by magical means, 
                     // and the target's hit point maximum decreases by 3 (1d6) every 24 hours. 
                     // If the target's hit point maximum drops to 0 as a result of this disease, the target dies.
+                    break;
+                case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
+                    combattant.AddConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
                     break;
             }
         }
@@ -274,6 +281,7 @@ namespace srd5 {
                 case Effect.DROW_POISON:
                 case Effect.ERINYES_POISON:
                 case Effect.ETTERCAP_POISON:
+                case Effect.HOMUNCULUS_POISON:
                     combattant.RemoveCondition(ConditionType.POISONED);
                     break;
                 case Effect.ETTERCAP_WEB:
@@ -282,6 +290,9 @@ namespace srd5 {
                 case Effect.GHAST_CLAWS_PARALYZATION:
                 case Effect.GHOUL_CLAWS_PARALYZATION:
                     combattant.RemoveCondition(ConditionType.PARALYZED);
+                    break;
+                case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
+                    combattant.RemoveConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
                     break;
             }
         }

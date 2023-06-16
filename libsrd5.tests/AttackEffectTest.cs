@@ -443,5 +443,32 @@ namespace srd5 {
             Assert.True(n00b2.HasCondition(ConditionType.GRAPPLED_DC11));
             Assert.False(n00b3.HasCondition(ConditionType.GRAPPLED_DC11));
         }
+
+        [Fact]
+        public void KrakenTest() {
+            Monster pansyMonster = createPansyMonster();
+            Monster uberMonster = createUberMonster();
+            Monster luckyMonster = createPansyMonster();
+            Monster kraken = Monsters.Kraken;
+            // Grab the monsters
+            for (int i = 0; i < 5; i++) {
+                Attacks.KrakenTentacleEffect.Invoke(kraken, pansyMonster);
+                Attacks.KrakenTentacleEffect.Invoke(kraken, uberMonster);
+            }
+            Assert.True(pansyMonster.HasCondition(ConditionType.GRAPPLED_DC18));
+            Assert.True(pansyMonster.HasCondition(ConditionType.GRAPPLED_DC18));
+            Assert.False(luckyMonster.HasCondition(ConditionType.GRAPPLED_DC18));
+            // Try to swallow the monsters
+            Attacks.KrakenBiteEffect.Invoke(kraken, pansyMonster);
+            Assert.True(pansyMonster.HasEffect(Effect.KRAKEN_SWALLOW));
+            Attacks.KrakenBiteEffect(kraken, uberMonster); // cannot swallow huge monsters
+            Assert.False(uberMonster.HasEffect(Effect.KRAKEN_SWALLOW));
+            Attacks.KrakenBiteEffect(kraken, luckyMonster); // cannot swallow monsters that are not grappled
+            Assert.False(luckyMonster.HasEffect(Effect.KRAKEN_SWALLOW));
+            int hitpoints = pansyMonster.HitPoints;
+            // digest the monster
+            kraken.OnStartOfTurn();
+            Assert.True(pansyMonster.HitPoints < hitpoints);
+        }
     }
 }

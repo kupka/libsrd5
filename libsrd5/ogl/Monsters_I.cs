@@ -1,9 +1,9 @@
 namespace srd5 {
     public partial struct Attacks {
         public static readonly Attack IceDevilTail = new Attack("Tail", 10, new Damage(DamageType.BLUDGEONING, "2d6+5"), 5, new Damage(DamageType.COLD, "3d6"));
-        public static readonly Attack IceDevilBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d6+5"), 5, new Damage(DamageType.COLD, "(3d6)"));
-        public static readonly Attack IceDevilClaws = new Attack("Claws", 10, new Damage(DamageType.SLASHING, "2d4+5"), 5, new Damage(DamageType.COLD, "(3d6)"));
-        public static readonly Attack IceMephitClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "1d4+1"), 5, new Damage(DamageType.COLD, "(1d4)"));
+        public static readonly Attack IceDevilBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d6+5"), 5, new Damage(DamageType.COLD, "3d6"));
+        public static readonly Attack IceDevilClaws = new Attack("Claws", 10, new Damage(DamageType.SLASHING, "2d4+5"), 5, new Damage(DamageType.COLD, "3d6"));
+        public static readonly Attack IceMephitClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "1d4+1"), 5, new Damage(DamageType.COLD, "1d4"));
         public static readonly AttackEffect ImpStingEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, ImpSting, "1d4+3", 11);
         };

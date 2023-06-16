@@ -8,7 +8,7 @@ namespace srd5 {
         public static readonly Attack HarpyClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+1"), 5);
         public static readonly Attack HarpyClub = new Attack("Club", 3, new Damage(DamageType.BLUDGEONING, "1d4+1"), 5);
         public static readonly Attack HawkTalons = new Attack("Talons", 5, new Damage(DamageType.SLASHING, "1d1"), 5);
-        public static readonly Attack HellHoundBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, new Damage(DamageType.FIRE, "(2d6)"));
+        public static readonly Attack HellHoundBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, new Damage(DamageType.FIRE, "2d6"));
         public static readonly Attack HezrouBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 5);
         public static readonly Attack HezrouClaws = new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
         public static readonly Attack HillGiantGreatclub = new Attack("Greatclub", 8, new Damage(DamageType.BLUDGEONING, "3d8+5"), 10);

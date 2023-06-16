@@ -227,6 +227,16 @@ namespace srd5 {
         }
 
         [Fact]
+        public void HornedDeveilTailEffect() {
+            Monster golem = Monsters.ClayGolem;
+            Monster shadow = Monsters.Shadow;
+            Attacks.HornedDevilTailEffect.Invoke(Monsters.Aboleth, golem); // don't affect construct
+            Assert.False(golem.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL));
+            Attacks.HornedDevilTailEffect.Invoke(Monsters.Aboleth, shadow); // don't affect undead
+            Assert.False(shadow.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL));
+        }
+
+        [Fact]
         public void BlackPuddingPseudopodEffect() {
             CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             hero.AddLevel(CharacterClasses.Barbarian);

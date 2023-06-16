@@ -137,7 +137,7 @@ namespace srd5 {
         }
 
         public void AddConditions(params ConditionType[] conditions) {
-            foreach (ConditionType condition in Conditions) {
+            foreach (ConditionType condition in conditions) {
                 AddCondition(condition);
             }
         }
@@ -150,7 +150,7 @@ namespace srd5 {
         }
 
         public void RemoveConditions(params ConditionType[] conditions) {
-            foreach (ConditionType condition in Conditions) {
+            foreach (ConditionType condition in conditions) {
                 RemoveCondition(condition);
             }
         }

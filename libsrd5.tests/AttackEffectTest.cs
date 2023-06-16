@@ -200,6 +200,11 @@ namespace srd5 {
         }
 
         [Fact]
+        public void TestAttackEffects_I() {
+            attackEffectTest(Attacks.ImpStingEffect);
+        }
+
+        [Fact]
         public void AssassinShortswordTest() {
             Monster undead = Monsters.Ghost; // immune to poison
             int hitpoints = undead.HitPoints;

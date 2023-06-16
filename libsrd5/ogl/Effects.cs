@@ -137,6 +137,7 @@ namespace srd5 {
         HOMUNCULUS_POISON_UNCONCIOUSNESS,
         INFERNAL_WOUND_BEARDED_DEVIL,
         INFERNAL_WOUND_HORNED_DEVIL,
+        KRAKEN_SWALLOW,
         UNABLE_TO_BREATHE,
 
         // Feat Effects

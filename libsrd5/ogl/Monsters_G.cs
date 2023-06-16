@@ -81,7 +81,7 @@ namespace srd5 {
         public static readonly AttackEffect GiantOctopusTentaclesEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 11, Monsters.GiantOctopus.Size + 1, true, GiantOctopusTentacles);
         };
-        public static readonly Attack GiantOctopusTentacles = new Attack("Tentacles", 5, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, null, GiantOctopusTentaclesEffect);
+        public static readonly Attack GiantOctopusTentacles = new Attack("Tentacles", 15, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, null, GiantOctopusTentaclesEffect);
         public static readonly Attack GiantOwlTalons = new Attack("Talons", 3, new Damage(DamageType.SLASHING, "2d6+1"), 5);
         public static readonly AttackEffect GiantPoisonousSnakeBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, GiantPoisonousSnakeBite, "3d6", 11);

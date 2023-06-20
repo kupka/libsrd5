@@ -138,6 +138,7 @@ namespace srd5 {
         INFERNAL_WOUND_BEARDED_DEVIL,
         INFERNAL_WOUND_HORNED_DEVIL,
         KRAKEN_SWALLOW,
+        LICH_PARALYZATION,
         UNABLE_TO_BREATHE,
 
         // Feat Effects
@@ -218,19 +219,23 @@ namespace srd5 {
                     break;
                 case Effect.FIRE_ELEMENTAL_TOUCH:
                     combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
-                        if (!combattant1.HasEffect(Effect.FIRE_ELEMENTAL_TOUCH)) return true;
+                        if (!combattant1.HasEffect(effect)) return true;
                         combattant1.TakeDamage(DamageType.FIRE, "1d10");
                         return false;
                     });
                     break;
                 case Effect.GHAST_CLAWS_PARALYZATION:
                 case Effect.GHOUL_CLAWS_PARALYZATION:
+                case Effect.LICH_PARALYZATION:
                     combattant.AddCondition(ConditionType.PARALYZED);
                     int turn = 0;
+                    int dc = 10;
+                    if (effect == Effect.LICH_PARALYZATION) dc = 18;
                     combattant.AddEndOfTurnEvent(delegate (Combattant combattant1) {
-                        bool success = combattant1.DC(Effect.GHAST_CLAWS_PARALYZATION, 10, AbilityType.CONSTITUTION);
+                        if (!combattant1.HasEffect(effect)) return true;
+                        bool success = combattant1.DC(effect, dc, AbilityType.CONSTITUTION);
                         if (turn++ > 9) success = true;
-                        if (success) combattant1.RemoveEffect(Effect.GHAST_CLAWS_PARALYZATION);
+                        if (success) combattant1.RemoveEffect(effect);
                         return success;
                     });
                     break;
@@ -290,6 +295,7 @@ namespace srd5 {
                     break;
                 case Effect.GHAST_CLAWS_PARALYZATION:
                 case Effect.GHOUL_CLAWS_PARALYZATION:
+                case Effect.LICH_PARALYZATION:
                     combattant.RemoveCondition(ConditionType.PARALYZED);
                     break;
                 case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:

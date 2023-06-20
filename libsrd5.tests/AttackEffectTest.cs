@@ -211,6 +211,11 @@ namespace srd5 {
         }
 
         [Fact]
+        public void TestAttackEffects_L() {
+            attackEffectTest(Attacks.LichParalyzingTouchEffect);
+        }
+
+        [Fact]
         public void AssassinShortswordTest() {
             Monster undead = Monsters.Ghost; // immune to poison
             int hitpoints = undead.HitPoints;

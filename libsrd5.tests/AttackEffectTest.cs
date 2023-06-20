@@ -216,6 +216,18 @@ namespace srd5 {
         }
 
         [Fact]
+        public void TestAttackEffects_M() {
+            attackEffectTest(Attacks.MagminTouchEffect);
+            attackEffectTest(Attacks.MammothStompEffect);
+            attackEffectTest(Attacks.MarilithTailEffect);
+            attackEffectTest(Attacks.MastiffBiteEffect);
+            attackEffectTest(Attacks.MerrowHarpoonEffect);
+            attackEffectTest(Attacks.MimicPseudopodEffect);
+            attackEffectTest(Attacks.MummyLordRottingFistEffect);
+            attackEffectTest(Attacks.MummyRottingFistEffect);
+        }
+
+        [Fact]
         public void AssassinShortswordTest() {
             Monster undead = Monsters.Ghost; // immune to poison
             int hitpoints = undead.HitPoints;

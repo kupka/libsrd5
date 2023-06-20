@@ -116,7 +116,8 @@ namespace srd5 {
         LONGSTRIDER,
         RAY_OF_FROST,
         RESISTANCE,
-
+        // Curses
+        CURSE_MUMMY_ROT,
         // Attack Effects
         ABOLETH_DISEASE_TENTACLE,
         BEARDED_DEVIL_POISON,
@@ -245,6 +246,12 @@ namespace srd5 {
                     // and the target's hit point maximum decreases by 3 (1d6) every 24 hours. 
                     // If the target's hit point maximum drops to 0 as a result of this disease, the target dies.
                     break;
+                case Effect.CURSE_MUMMY_ROT:
+                   // TODO: The cursed target can't regain hit points, and its hit point maximum decreases by 10 
+                   // (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, 
+                   // the target dies, and its body turns to dust. The curse lasts until removed by the remove curse 
+                   // spell or other magic.
+                   break;
                 case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
                     combattant.AddConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
                     break;
@@ -324,6 +331,10 @@ namespace srd5 {
                     combattant.Constitution.RemoveMinimumBaseValue(19);
                     break;
             }
+        }
+
+        public static bool IsCurse(this Effect effect) {
+            return Enum.GetName(typeof(Effect), effect).StartsWith("CURSE_");
         }
     }
 }

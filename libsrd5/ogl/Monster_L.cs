@@ -11,7 +11,7 @@ namespace srd5 {
         public static readonly Attack LichParalyzingTouch = new Attack("Paralyzing Touch", 12, new Damage(DamageType.COLD, "3d6"), 5, null, LichParalyzingTouchEffect);
         public static readonly Attack LionBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5);
         public static readonly Attack LionClaw = new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
-        public static readonly Attack LizardBite = new Attack("Bite", 0, new Damage(DamageType.PIERCING, "1d1"), 5);
+        public static readonly Attack LizardBite = new Attack("Bite", 0, new Damage(DamageType.PIERCING, 1), 5);
         public static readonly Attack LizardfolkBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
         public static readonly Attack LizardfolkHeavyClub = new Attack("Heavy Club", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
         public static readonly Attack LizardfolkJavelinMelee = new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);

@@ -290,8 +290,7 @@ namespace srd5 {
         }
 
         public bool DC(object source, int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
-            int finalValue;
-            return DC(source, dc, type, out finalValue, advantage, disadvantage);
+            return DC(source, dc, type, out _, advantage, disadvantage);
         }
 
 

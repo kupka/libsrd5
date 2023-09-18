@@ -9,14 +9,14 @@ namespace srd5 {
             int amount = new Dices("3d10+6").Roll(); // FIXME: Cannot crit because attack roll is not available here
             target.TakeDamage(DamageType.BLUDGEONING, amount);
         };
-        public static readonly Attack ElephantStomp = new Attack("Stomp", 8, new Damage(DamageType.BLUDGEONING, "1d0"), 5, null, ElephantStompEffect);
+        public static readonly Attack ElephantStomp = new Attack("Stomp", 8, new Damage(DamageType.BLUDGEONING, 0), 5, null, ElephantStompEffect);
         public static readonly Attack ElephantGore = new Attack("Gore", 8, new Damage(DamageType.PIERCING, "3d8+6"), 5);
         public static readonly AttackEffect ElkHoovesEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return;
             int amount = new Dices("2d4+3").Roll(); // FIXME: Cannot crit because attack roll is not available here
             target.TakeDamage(DamageType.BLUDGEONING, amount);
         };
-        public static readonly Attack ElkHooves = new Attack("Hooves", 5, new Damage(DamageType.BLUDGEONING, "1d0"), 5, null, ElkHoovesEffect);
+        public static readonly Attack ElkHooves = new Attack("Hooves", 5, new Damage(DamageType.BLUDGEONING, 0), 5, null, ElkHoovesEffect);
         public static readonly Attack ElkRam = new Attack("Ram", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5);
         public static readonly Attack ErinyesLongsword = new Attack("Longsword", 8, new Damage(DamageType.SLASHING, "1d10+4"), 5, new Damage(DamageType.POISON, "3d8"));
         public static readonly AttackEffect ErinyesLongbowEffect = delegate (Combattant attacker, Combattant target) {

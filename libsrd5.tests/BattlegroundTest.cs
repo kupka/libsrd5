@@ -350,8 +350,8 @@ namespace srd5 {
             CharacterSheet hero = new CharacterSheet(Race.TIEFLING, true);
             Combattant currentCombattant = null;
             ground.EventSubscription += delegate (object sender, BattlegroundEvent bgEvent) {
-                if (bgEvent is CombattantChangedEvent) {
-                    currentCombattant = ((CombattantChangedEvent)bgEvent).CurrentCombattant;
+                if (bgEvent is CombattantChangedEvent @event) {
+                    currentCombattant = @event.CurrentCombattant;
                 }
             };
             ground.AddCombattant(hero, 0, 0);

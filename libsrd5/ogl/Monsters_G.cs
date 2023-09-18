@@ -4,8 +4,7 @@ namespace srd5 {
         public static readonly Attack GargoyleClaws = new Attack("Claws", 4, new Damage(DamageType.SLASHING, "1d6+2"), 5);
         public static readonly Attack GelatinousCubePseudopod = new Attack("Pseudopod", 4, new Damage(DamageType.ACID, "3d6"), 5);
         public static readonly AttackEffect GhastClawsEffect = delegate (Combattant attacker, Combattant target) {
-            if (target is Monster) {
-                Monster monster = (Monster)target;
+            if (target is Monster monster) {
                 if (monster.Type == Monsters.Type.UNDEAD) return;
             }
             bool success = target.DC(GhastClaws, 10, AbilityType.CONSTITUTION);
@@ -16,12 +15,10 @@ namespace srd5 {
         public static readonly Attack GhastBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "2d8+3"), 5);
         public static readonly Attack GhostWitheringTouch = new Attack("Withering Touch", 5, new Damage(DamageType.NECROTIC, "4d6+3"), 5);
         public static readonly AttackEffect GhoulClawsEffect = delegate (Combattant attacker, Combattant target) {
-            if (target is CharacterSheet) {
-                CharacterSheet sheet = (CharacterSheet)target;
+            if (target is CharacterSheet sheet) {
                 if (sheet.Race.Race == Race.HALF_ELF || sheet.Race.Race == Race.HIGH_ELF) return;
             }
-            if (target is Monster) {
-                Monster monster = (Monster)target;
+            if (target is Monster monster) {
                 if (monster.Type == Monsters.Type.UNDEAD) return;
             }
             bool success = target.DC(GhoulClaws, 10, AbilityType.CONSTITUTION);
@@ -68,7 +65,7 @@ namespace srd5 {
             int amount = new Dices("4d8+4").Roll(); // FIXME: Cannot crit because attack roll is not available here
             target.TakeDamage(DamageType.BLUDGEONING, amount);
         };
-        public static readonly Attack GiantElkHooves = new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "1d0"), 5, null, GiantElkHoovesEffect);
+        public static readonly Attack GiantElkHooves = new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, 0), 5, null, GiantElkHoovesEffect);
         public static readonly Attack GiantElkRam = new Attack("Ram", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 10);
         public static readonly Attack GiantFireBeetleBite = new Attack("Bite", 1, new Damage(DamageType.SLASHING, "1d6-1"), 5);
         public static readonly AttackEffect GiantFrogBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -114,7 +111,7 @@ namespace srd5 {
             // TODO: As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success.
             // The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage)
         };
-        public static readonly Attack GiantSpiderWeb = new Attack("Web", 5, new Damage(DamageType.BLUDGEONING, "1d0"), 5, null, GiantSpiderWebEffect);
+        public static readonly Attack GiantSpiderWeb = new Attack("Web", 5, new Damage(DamageType.BLUDGEONING, 0), 5, null, GiantSpiderWebEffect);
         public static readonly AttackEffect GiantToadBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 13, Monsters.GiantToad.Size + 1, true, GiantToadBite);
         };
@@ -183,7 +180,7 @@ namespace srd5 {
         public static readonly AttackEffect GuardianNagaSpitPoisonEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, GuardianNagaSpitPoison, "10d8", 15);
         };
-        public static readonly Attack GuardianNagaSpitPoison = new Attack("Spit Poison", 8, new Damage(DamageType.POISON, "1d0"), 5, null, GuardianNagaSpitPoisonEffect);
+        public static readonly Attack GuardianNagaSpitPoison = new Attack("Spit Poison", 8, new Damage(DamageType.POISON, 0), 5, null, GuardianNagaSpitPoisonEffect);
         public static readonly Attack GynosphinxClaw = new Attack("Claw", 9, new Damage(DamageType.SLASHING, "2d8+4"), 5);
 
     }

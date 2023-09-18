@@ -9,7 +9,7 @@ namespace srd5 {
         public static readonly Attack FireGiantGreatsword = new Attack("Greatsword", 11, new Damage(DamageType.SLASHING, "6d6+7"), 10);
         public static readonly Attack FireGiantRock = new Attack("Rock", 11, new Damage(DamageType.BLUDGEONING, "4d10+7"), 5, 60, 240);
         public static readonly Attack FleshGolemSlam = new Attack("Slam", 7, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
-        public static readonly Attack FlyingSnakeBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d1"), 5, new Damage(DamageType.POISON, "3d4"));
+        public static readonly Attack FlyingSnakeBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, 1), 5, new Damage(DamageType.POISON, "3d4"));
         public static readonly Attack FlyingSwordLongsword = new Attack("Longsword", 3, new Damage(DamageType.SLASHING, "1d8+1"), 5);
         public static readonly Attack FrostGiantGreataxe = new Attack("Greataxe", 9, new Damage(DamageType.SLASHING, "3d12+6"), 10);
         public static readonly Attack FrostGiantRock = new Attack("Rock", 9, new Damage(DamageType.BLUDGEONING, "4d10+6"), 5, 60, 240);

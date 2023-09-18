@@ -7,7 +7,7 @@ namespace srd5 {
         public static readonly Attack HalfRedDragonVeteranHeavyCrossbow = new Attack("Heavy Crossbow", 3, new Damage(DamageType.PIERCING, "1d10+1"), 5, 100, 400);
         public static readonly Attack HarpyClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+1"), 5);
         public static readonly Attack HarpyClub = new Attack("Club", 3, new Damage(DamageType.BLUDGEONING, "1d4+1"), 5);
-        public static readonly Attack HawkTalons = new Attack("Talons", 5, new Damage(DamageType.SLASHING, "1d1"), 5);
+        public static readonly Attack HawkTalons = new Attack("Talons", 5, new Damage(DamageType.SLASHING, 1), 5);
         public static readonly Attack HellHoundBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, new Damage(DamageType.FIRE, "2d6"));
         public static readonly Attack HezrouBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 5);
         public static readonly Attack HezrouClaws = new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
@@ -44,11 +44,10 @@ namespace srd5 {
                 });
             }
         };
-        public static readonly Attack HomunculusBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d1"), 5, null, HomunculusBiteEffect);
+        public static readonly Attack HomunculusBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, 1), 5, null, HomunculusBiteEffect);
         public static readonly AttackEffect HornedDevilTailEffect = delegate (Combattant attacker, Combattant target) {
             // do not affect undead and constructs
-            if (target is Monster) {
-                Monster monster = (Monster)target;
+            if (target is Monster monster) {
                 if (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT) return;
             }
             if (target.DC(BeardedDevilGlaive, 17, AbilityType.CONSTITUTION)) return;

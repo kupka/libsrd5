@@ -140,6 +140,7 @@ namespace srd5 {
         INFERNAL_WOUND_HORNED_DEVIL,
         KRAKEN_SWALLOW,
         LICH_PARALYZATION,
+        OTYUGH_DISEASE,
         UNABLE_TO_BREATHE,
 
         // Feat Effects
@@ -255,6 +256,14 @@ namespace srd5 {
                 case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
                     combattant.AddConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
                     break;
+                case Effect.OTYUGH_DISEASE:
+                    combattant.AddCondition(ConditionType.POISONED);
+                    // TODO: Every 24 hours that elapse, the target must repeat the saving throw, 
+                    // reducing its hit point maximum by 5 (1d10) on a failure. The disease is cured on a success. 
+                    // The target dies if the disease reduces its hit point maximum to 0. 
+                    // This reduction to the target's hit point maximum lasts until the disease is cured.
+                    break;
+
             }
         }
 
@@ -308,6 +317,14 @@ namespace srd5 {
                 case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
                     combattant.RemoveConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
                     break;
+                case Effect.OTYUGH_DISEASE:
+                    combattant.RemoveCondition(ConditionType.POISONED);
+                    // TODO: Every 24 hours that elapse, the target must repeat the saving throw, 
+                    // reducing its hit point maximum by 5 (1d10) on a failure. The disease is cured on a success. 
+                    // The target dies if the disease reduces its hit point maximum to 0. 
+                    // This reduction to the target's hit point maximum lasts until the disease is cured.
+                    break;
+
             }
         }
 

@@ -227,6 +227,14 @@ namespace srd5 {
             attackEffectTest(Attacks.MummyRottingFistEffect);
         }
 
+        [Fact] 
+        public void TestAttackEffects_O() {
+            attackEffectTest(Attacks.OctopusInkCloudEffect);
+            attackEffectTest(Attacks.OctopusTentaclesEffect);
+            attackEffectTest(Attacks.OtyughBiteEffect);
+            attackEffectTest(Attacks.OtyughTentacleEffect);
+        }
+
         [Fact]
         public void AssassinShortswordTest() {
             Monster undead = Monsters.Ghost; // immune to poison
@@ -420,6 +428,9 @@ namespace srd5 {
             Assert.True(target1.HitPoints < hp);
             hp = target1.HitPoints;
             Attacks.GiantElkHoovesEffect.Invoke(Monsters.GiantElk, target1);
+            Assert.True(target1.HitPoints < hp);
+            hp = target1.HitPoints;
+            Attacks.MammothStompEffect.Invoke(Monsters.Mammoth, target1);
             Assert.True(target1.HitPoints < hp);
         }
 

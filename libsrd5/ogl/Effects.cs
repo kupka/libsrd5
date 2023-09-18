@@ -129,7 +129,7 @@ namespace srd5 {
         ERINYES_POISON,
         ETTERCAP_POISON,
         ETTERCAP_WEB,
-        FIRE_ELEMENTAL_TOUCH,
+        FIRE_ELEMENTAL_IGNITE,
         GHAST_CLAWS_PARALYZATION,
         GHOUL_CLAWS_PARALYZATION,
         GIANT_RAT_DISEASED_BITE,
@@ -140,6 +140,7 @@ namespace srd5 {
         INFERNAL_WOUND_HORNED_DEVIL,
         KRAKEN_SWALLOW,
         LICH_PARALYZATION,
+        MAGMIN_IGNITE,
         OTYUGH_DISEASE,
         UNABLE_TO_BREATHE,
 
@@ -219,7 +220,7 @@ namespace srd5 {
                 case Effect.ETTERCAP_WEB:
                     combattant.AddCondition(ConditionType.RESTRAINED);
                     break;
-                case Effect.FIRE_ELEMENTAL_TOUCH:
+                case Effect.FIRE_ELEMENTAL_IGNITE:
                     combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
                         if (!combattant1.HasEffect(effect)) return true;
                         combattant1.TakeDamage(DamageType.FIRE, "1d10");
@@ -256,6 +257,13 @@ namespace srd5 {
                 case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
                     combattant.AddConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
                     break;
+                case Effect.MAGMIN_IGNITE:
+                    combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
+                        if (!combattant1.HasEffect(effect)) return true;
+                        combattant1.TakeDamage(DamageType.FIRE, "1d6");
+                        return false;
+                    });
+                    break;
                 case Effect.OTYUGH_DISEASE:
                     combattant.AddCondition(ConditionType.POISONED);
                     // TODO: Every 24 hours that elapse, the target must repeat the saving throw, 
@@ -263,7 +271,6 @@ namespace srd5 {
                     // The target dies if the disease reduces its hit point maximum to 0. 
                     // This reduction to the target's hit point maximum lasts until the disease is cured.
                     break;
-
             }
         }
 

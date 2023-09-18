@@ -3,11 +3,11 @@ namespace srd5 {
         public static readonly Attack MageDaggerMelee = new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+2"), 5);
         public static readonly Attack MageDaggerRanged = new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+2"), 20, 60);
         public static readonly Attack MagmaMephitClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "1d4+1"), 5, new Damage(DamageType.FIRE, "1d4"));
-        // !!!!!!!!!!!!!!!!!!!!!!UNPARSABLE ATTACK!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // MagminTouch
-        // {"name":"Touch","desc":"Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 7 (2d6) fire damage. If the target is a creature or a flammable object, it ignites. Until a target takes an action to douse the fire, the target takes 3 (1d6) fire damage at the end of each of its turns.","attack_bonus":4,"damage":[{"damage_type":{"index":"fire","name":"Fire","url":"/api/damage-types/fire"},"damage_dice":"2d6"}]}
         public static readonly AttackEffect MagminTouchEffect = delegate (Combattant attacker, Combattant target) {
-
+            if (target.IsImmune(DamageType.FIRE)) return;
+            if (target.HasEffect(Effect.MAGMIN_IGNITE)) return;
+            target.AddEffect(Effect.MAGMIN_IGNITE);
+             // TODO: Add means to remove effect ("Until a creature takes an action to douse the fire...")
         };
         public static readonly Attack MagminTouch = new Attack("Touch", 4, new Damage(DamageType.FIRE, "2d6"), 5, null, MagminTouchEffect);
         public static readonly AttackEffect MammothStompEffect = delegate (Combattant attacker, Combattant target) {
@@ -45,10 +45,8 @@ namespace srd5 {
         public static readonly Attack MerrowHarpoonRanged = new Attack("Harpoon", 6, new Damage(DamageType.PIERCING, "2d6+4"), 20, 60, null, MerrowHarpoonEffect);
         public static readonly Attack MerrowBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d8+4"), 5);
         public static readonly Attack MerrowClaws = new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d4+4"), 5);
-        // !!!!!!!!!!!!!!!!!!!!!!UNPARSABLE ATTACK!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // MimicPseudopod
-        // {"name":"Pseudopod","desc":"Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 7 (1d8 + 3) bludgeoning damage. If the mimic is in object form, the target is subjected to its Adhesive trait.","attack_bonus":5,"damage":[{"damage_type":{"index":"bludgeoning","name":"Bludgeoning","url":"/api/damage-types/bludgeoning"},"damage_dice":"1d8+3"}]}
         public static readonly AttackEffect MimicPseudopodEffect = delegate (Combattant attacker, Combattant target) {
+            // TODO: f the mimic is in object form, the target is subjected to its Adhesive trait
         };
         public static readonly Attack MimicPseudopod = new Attack("Pseudopod", 5, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, null, MimicPseudopodEffect);
         public static readonly Attack MimicBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, new Damage(DamageType.ACID, "1d8"));

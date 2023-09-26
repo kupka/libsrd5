@@ -227,12 +227,21 @@ namespace srd5 {
             attackEffectTest(Attacks.MummyRottingFistEffect);
         }
 
-        [Fact] 
+        [Fact]
         public void TestAttackEffects_O() {
             attackEffectTest(Attacks.OctopusInkCloudEffect);
             attackEffectTest(Attacks.OctopusTentaclesEffect);
             attackEffectTest(Attacks.OtyughBiteEffect);
             attackEffectTest(Attacks.OtyughTentacleEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_P() {
+            attackEffectTest(Attacks.PhaseSpiderBiteEffect);
+            attackEffectTest(Attacks.PitFiendBiteEffect);
+            attackEffectTest(Attacks.PoisonousSnakeBiteEffect);
+            attackEffectTest(Attacks.PseudodragonStingEffect);
+            attackEffectTest(Attacks.PurpleWormTailStingerEffect);
         }
 
         [Fact]

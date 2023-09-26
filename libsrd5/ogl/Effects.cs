@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Runtime.InteropServices;
 
 namespace srd5 {
     public enum Effect {
@@ -105,7 +107,7 @@ namespace srd5 {
         FAIL_STRENGTH_CHECK,
         FAIL_DEXERITY_CHECK,
         FAIL_CONSTITUTION_CHECK,
-        CANNOT_REGENERATE_HITPOINTS,
+        CANNOT_REGAIN_HITPOINTS,
         GRAPPLING,
 
         // Spell Effects
@@ -142,6 +144,10 @@ namespace srd5 {
         LICH_PARALYZATION,
         MAGMIN_IGNITE,
         OTYUGH_DISEASE,
+        PHASE_SPIDER_POISON,
+        PSEUDO_DRAGON_POISON,
+        PSEUDO_DRAGON_POISON_UNCONSCIOUS,
+        PIT_FIEND_POISON,
         UNABLE_TO_BREATHE,
 
         // Feat Effects
@@ -249,11 +255,11 @@ namespace srd5 {
                     // If the target's hit point maximum drops to 0 as a result of this disease, the target dies.
                     break;
                 case Effect.CURSE_MUMMY_ROT:
-                   // TODO: The cursed target can't regain hit points, and its hit point maximum decreases by 10 
-                   // (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, 
-                   // the target dies, and its body turns to dust. The curse lasts until removed by the remove curse 
-                   // spell or other magic.
-                   break;
+                    // TODO: The cursed target can't regain hit points, and its hit point maximum decreases by 10 
+                    // (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, 
+                    // the target dies, and its body turns to dust. The curse lasts until removed by the remove curse 
+                    // spell or other magic.
+                    break;
                 case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
                     combattant.AddConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
                     break;
@@ -270,6 +276,34 @@ namespace srd5 {
                     // reducing its hit point maximum by 5 (1d10) on a failure. The disease is cured on a success. 
                     // The target dies if the disease reduces its hit point maximum to 0. 
                     // This reduction to the target's hit point maximum lasts until the disease is cured.
+                    break;
+                case Effect.PHASE_SPIDER_POISON:
+                    combattant.AddConditions(ConditionType.POISONED, ConditionType.PARALYZED);
+                    break;
+                case Effect.PIT_FIEND_POISON:
+                    combattant.AddCondition(ConditionType.POISONED);
+                    combattant.AddEffect(Effect.CANNOT_REGAIN_HITPOINTS);
+                    combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
+                        if (!combattant1.HasEffect(effect)) return true;
+                        combattant1.TakeDamage(DamageType.POISON, "6d6");
+                        return false;
+                    });
+                    combattant.AddEndOfTurnEvent(delegate (Combattant combattant1) {
+                        if (!combattant1.HasEffect(effect)) return true;
+                        if (combattant.DC(effect, 21, AbilityType.CONSTITUTION)) {
+                            combattant.RemoveEffect(effect);
+                            return true;
+                        }
+                        return false;
+                    });
+                    break;
+                case Effect.PSEUDO_DRAGON_POISON:
+                    combattant.AddCondition(ConditionType.POISONED);
+                    break;
+                case Effect.PSEUDO_DRAGON_POISON_UNCONSCIOUS:
+                    combattant.AddCondition(ConditionType.UNCONSCIOUS);
+                    // TODO: If the saving throw fails by 5 or more, the target falls unconscious for the same duration, 
+                    // or until it takes damage or another creature uses an action to shake it awake.
                     break;
             }
         }
@@ -331,7 +365,19 @@ namespace srd5 {
                     // The target dies if the disease reduces its hit point maximum to 0. 
                     // This reduction to the target's hit point maximum lasts until the disease is cured.
                     break;
-
+                case Effect.PHASE_SPIDER_POISON:
+                    combattant.RemoveConditions(ConditionType.POISONED, ConditionType.PARALYZED);
+                    break;
+                case Effect.PIT_FIEND_POISON:
+                    combattant.RemoveCondition(ConditionType.POISONED);
+                    combattant.RemoveEffect(Effect.CANNOT_REGAIN_HITPOINTS);
+                    break;
+                case Effect.PSEUDO_DRAGON_POISON:
+                    combattant.RemoveCondition(ConditionType.POISONED);
+                    break;
+                case Effect.PSEUDO_DRAGON_POISON_UNCONSCIOUS:
+                    combattant.RemoveCondition(ConditionType.UNCONSCIOUS);
+                    break;
             }
         }
 

@@ -20,8 +20,7 @@ namespace srd5 {
                 for (int i = 0; i < (int)slot && i < targets.Length; i++) {
                     Combattant target = targets[i];
                     // only affect humanoid monsters
-                    if (target is Monster) {
-                        Monster monster = (Monster)target;
+                    if (target is Monster monster) {
                         if (monster.Type != Monsters.Type.HUMANOID) {
                             GlobalEvents.AffectBySpell(caster, ID.CHARM_PERSON, monster, false);
                             continue;
@@ -52,8 +51,7 @@ namespace srd5 {
         public static readonly Spell CureWounds = new Spell(
             ID.CURE_WOUNDS, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 5, VS,
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                if (targets[0] is Monster) {
-                    Monster monster = (Monster)targets[0];
+                if (targets[0] is Monster monster) {
                     if (monster.Type == Monsters.Type.CONSTRUCT || monster.Type == Monsters.Type.UNDEAD) {
                         GlobalEvents.AffectBySpell(caster, ID.CURE_WOUNDS, monster, false);
                         return;
@@ -155,8 +153,7 @@ namespace srd5 {
         public static readonly Spell HealingWord = new Spell(
             ID.HEALING_WORD, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 60, V,
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                if (targets[0] is Monster) {
-                    Monster monster = (Monster)targets[0];
+                if (targets[0] is Monster monster) {
                     if (monster.Type == Monsters.Type.CONSTRUCT || monster.Type == Monsters.Type.UNDEAD) {
                         GlobalEvents.AffectBySpell(caster, ID.HEALING_WORD, monster, false);
                         return;

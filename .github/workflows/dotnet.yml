@@ -28,6 +28,7 @@ jobs:
     - name: Publish coverage report to codecov
       uses: codecov/codecov-action@main
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         files: ${{ steps.get_lcov_path.outputs.lcov_path }}
         fail_ci_if_error: true 
 #    - name: Publish coverage report to coveralls.io

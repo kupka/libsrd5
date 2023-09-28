@@ -1,7 +1,7 @@
 namespace srd5 {
     public partial struct Attacks {
         public static readonly Attack BaboonBite = new Attack("Bite", 1, new Damage(DamageType.PIERCING, "1d4-1"), 5);
-        public static readonly Attack BadgerBite = new Attack("Bite", 2, new Damage(DamageType.PIERCING, "1d1"), 5);
+        public static readonly Attack BadgerBite = new Attack("Bite", 2, new Damage(DamageType.PIERCING, 1), 5);
         public static readonly Attack BalorLongsword = new Attack("Longsword", 14, new Damage(DamageType.SLASHING, "3d8+8"), 10, new Damage(DamageType.LIGHTNING, "3d8")).WithProperties(Attack.Property.TRIPLE_DICE_ON_CRIT);
         public static AttackEffect BalorWhipEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: THE TARGET MUST SUCCEED ON A DC 20 STRENGTH SAVING THROW OR BE PULLED UP TO 25 FEET TOWARD THE BALOR
@@ -17,7 +17,7 @@ namespace srd5 {
         public static readonly Attack BarbedDevilHurlFlame = new Attack("Hurl Flame", 5, new Damage(DamageType.FIRE, "3d6"), 150, 150);
         public static readonly Attack BarbedDevilTail = new Attack("Tail", 6, new Damage(DamageType.PIERCING, "2d6+3"), 5);
         public static readonly Attack BasiliskBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "2d6+3"), 5, new Damage(DamageType.POISON, "2d6"));
-        public static readonly Attack BatBite = new Attack("Bite", 2, new Damage(DamageType.PIERCING, "1d1"), 5);
+        public static readonly Attack BatBite = new Attack("Bite", 2, new Damage(DamageType.PIERCING, 1), 5);
         public static AttackEffect BeardedDevilBeardEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION)) return;
             if (target.IsImmune(DamageType.POISON)) return;
@@ -40,17 +40,17 @@ namespace srd5 {
             }
             if (target.DC(BeardedDevilGlaive, 12, AbilityType.CONSTITUTION)) return;
             // add infernal wound affect if newly applied
-            if (!target.HasEffect(Effect.INFERNAL_WOUND)) {
+            if (!target.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL)) {
                 target.AddStartOfTurnEvent(delegate (Combattant combattant) {
                     foreach (Effect effect in combattant.Effects) {
-                        if (effect != Effect.INFERNAL_WOUND) continue;
+                        if (effect != Effect.INFERNAL_WOUND_BEARDED_DEVIL) continue;
                         combattant.TakeDamage(DamageType.TRUE_DAMAGE, "1d10");
                     }
-                    return combattant.HasEffect(Effect.INFERNAL_WOUND);
+                    return combattant.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL);
                 });
             }
             // increase infernal wound stack by one
-            target.AddEffect(Effect.INFERNAL_WOUND);
+            target.AddEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL);
         };
         public static readonly Attack BeardedDevilGlaive = new Attack("Glaive", 5, new Damage(DamageType.SLASHING, "1d10+3"), 10, null, BeardedDevilGlaiveEffect);
         public static readonly Attack BehirBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "3d10+6"), 10);

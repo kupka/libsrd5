@@ -135,11 +135,24 @@ namespace srd5 {
             GlobalEvents.ChangedCondition(this, condition);
             return true;
         }
+
+        public void AddConditions(params ConditionType[] conditions) {
+            foreach (ConditionType condition in conditions) {
+                AddCondition(condition);
+            }
+        }
+
         public void RemoveCondition(ConditionType condition) {
             RemoveResult result = Utils.RemoveSingle<ConditionType>(ref conditions, condition);
             if (result == RemoveResult.REMOVED_AND_GONE)
                 condition.Unapply(this);
             GlobalEvents.ChangedCondition(this, condition, true);
+        }
+
+        public void RemoveConditions(params ConditionType[] conditions) {
+            foreach (ConditionType condition in conditions) {
+                RemoveCondition(condition);
+            }
         }
 
         public bool HasCondition(ConditionType condition) {
@@ -226,6 +239,7 @@ namespace srd5 {
         /// </summary>
         public void HealDamage(int amount) {
             if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
+            if (HasEffect(Effect.CURSE_MUMMY_ROT)) return; // Cannot regain hit points
             if (HitPoints == 0) RemoveCondition(ConditionType.UNCONSCIOUS);
             GlobalEvents.ReceivedHealing(this, amount);
             HitPoints = Math.Min(HitPoints + amount, HitPointsMax);
@@ -276,8 +290,7 @@ namespace srd5 {
         }
 
         public bool DC(object source, int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
-            int finalValue;
-            return DC(source, dc, type, out finalValue, advantage, disadvantage);
+            return DC(source, dc, type, out _, advantage, disadvantage);
         }
 
 

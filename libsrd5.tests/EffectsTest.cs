@@ -28,5 +28,11 @@ namespace srd5 {
                 Monsters.Aboleth.AddEffect(Effect.VULNERABILITY_TRUE_DAMAGE);
             });
         }
+
+        [Fact]
+        public void CurseTest() {
+            Assert.True(Effect.CURSE_MUMMY_ROT.IsCurse());
+            Assert.False(Effect.BEARDED_DEVIL_POISON.IsCurse());
+        }
     }
 }

@@ -352,20 +352,20 @@ namespace srd5 {
         /// </summary>
         public void Equip(Item item) {
             if (item == null || item.Destroyed) return;
-            if (item is Weapon) {
-                equip((Weapon)item);
-            } else if (item is Armor) {
-                equip((Armor)item);
-            } else if (item is Shield) {
-                equip((Shield)item);
-            } else if (item is Ring) {
-                equip((Ring)item);
-            } else if (item is Amulet) {
-                equip((Amulet)item);
-            } else if (item is Helmet) {
-                equip((Helmet)item);
-            } else if (item is Boots) {
-                equip((Boots)item);
+            if (item is Weapon weapon) {
+                equip(weapon);
+            } else if (item is Armor armor) {
+                equip(armor);
+            } else if (item is Shield shield) {
+                equip(shield);
+            } else if (item is Ring ring) {
+                equip(ring);
+            } else if (item is Amulet amulet) {
+                equip(amulet);
+            } else if (item is Helmet helmet) {
+                equip(helmet);
+            } else if (item is Boots boots) {
+                equip(boots);
             }
         }
 

@@ -192,6 +192,64 @@ namespace srd5 {
         }
 
         [Fact]
+        public void TestAttackEffects_H() {
+            attackEffectTest(Attacks.HalfRedDragonVeteranLongswordEffect);
+            attackEffectTest(Attacks.HomunculusBiteEffect);
+            attackEffectTest(Attacks.HornedDevilHurlFlameEffect);
+            attackEffectTest(Attacks.HornedDevilTailEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_I() {
+            attackEffectTest(Attacks.ImpStingEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_K() {
+            attackEffectTest(Attacks.KrakenBiteEffect);
+            attackEffectTest(Attacks.KrakenTentacleEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_L() {
+            attackEffectTest(Attacks.LichParalyzingTouchEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_M() {
+            attackEffectTest(Attacks.MagminTouchEffect);
+            attackEffectTest(Attacks.MammothStompEffect);
+            attackEffectTest(Attacks.MarilithTailEffect);
+            attackEffectTest(Attacks.MastiffBiteEffect);
+            attackEffectTest(Attacks.MerrowHarpoonEffect);
+            attackEffectTest(Attacks.MimicPseudopodEffect);
+            attackEffectTest(Attacks.MummyLordRottingFistEffect);
+            attackEffectTest(Attacks.MummyRottingFistEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_O() {
+            attackEffectTest(Attacks.OctopusInkCloudEffect);
+            attackEffectTest(Attacks.OctopusTentaclesEffect);
+            attackEffectTest(Attacks.OtyughBiteEffect);
+            attackEffectTest(Attacks.OtyughTentacleEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_P() {
+            attackEffectTest(Attacks.PhaseSpiderBiteEffect);
+            attackEffectTest(Attacks.PitFiendBiteEffect);
+            attackEffectTest(Attacks.PoisonousSnakeBiteEffect);
+            attackEffectTest(Attacks.PseudodragonStingEffect);
+            attackEffectTest(Attacks.PurpleWormTailStingerEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_Q() {
+            attackEffectTest(Attacks.QuasitClawEffect);
+        }
+
+        [Fact]
         public void AssassinShortswordTest() {
             Monster undead = Monsters.Ghost; // immune to poison
             int hitpoints = undead.HitPoints;
@@ -213,9 +271,19 @@ namespace srd5 {
             Monster golem = Monsters.ClayGolem;
             Monster shadow = Monsters.Shadow;
             Attacks.BeardedDevilGlaiveEffect.Invoke(Monsters.Aboleth, golem); // don't affect construct
-            Assert.False(golem.HasEffect(Effect.INFERNAL_WOUND));
+            Assert.False(golem.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL));
             Attacks.BeardedDevilGlaiveEffect.Invoke(Monsters.Aboleth, shadow); // don't affect undead
-            Assert.False(shadow.HasEffect(Effect.INFERNAL_WOUND));
+            Assert.False(shadow.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL));
+        }
+
+        [Fact]
+        public void HornedDeveilTailEffect() {
+            Monster golem = Monsters.ClayGolem;
+            Monster shadow = Monsters.Shadow;
+            Attacks.HornedDevilTailEffect.Invoke(Monsters.Aboleth, golem); // don't affect construct
+            Assert.False(golem.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL));
+            Attacks.HornedDevilTailEffect.Invoke(Monsters.Aboleth, shadow); // don't affect undead
+            Assert.False(shadow.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL));
         }
 
         [Fact]
@@ -375,6 +443,9 @@ namespace srd5 {
             hp = target1.HitPoints;
             Attacks.GiantElkHoovesEffect.Invoke(Monsters.GiantElk, target1);
             Assert.True(target1.HitPoints < hp);
+            hp = target1.HitPoints;
+            Attacks.MammothStompEffect.Invoke(Monsters.Mammoth, target1);
+            Assert.True(target1.HitPoints < hp);
         }
 
         [Fact]
@@ -413,6 +484,33 @@ namespace srd5 {
             Assert.True(n00b1.HasCondition(ConditionType.GRAPPLED_DC11));
             Assert.True(n00b2.HasCondition(ConditionType.GRAPPLED_DC11));
             Assert.False(n00b3.HasCondition(ConditionType.GRAPPLED_DC11));
+        }
+
+        [Fact]
+        public void KrakenTest() {
+            Monster pansyMonster = createPansyMonster();
+            Monster uberMonster = createUberMonster();
+            Monster luckyMonster = createPansyMonster();
+            Monster kraken = Monsters.Kraken;
+            // Grab the monsters
+            for (int i = 0; i < 5; i++) {
+                Attacks.KrakenTentacleEffect.Invoke(kraken, pansyMonster);
+                Attacks.KrakenTentacleEffect.Invoke(kraken, uberMonster);
+            }
+            Assert.True(pansyMonster.HasCondition(ConditionType.GRAPPLED_DC18));
+            Assert.True(pansyMonster.HasCondition(ConditionType.GRAPPLED_DC18));
+            Assert.False(luckyMonster.HasCondition(ConditionType.GRAPPLED_DC18));
+            // Try to swallow the monsters
+            Attacks.KrakenBiteEffect.Invoke(kraken, pansyMonster);
+            Assert.True(pansyMonster.HasEffect(Effect.KRAKEN_SWALLOW));
+            Attacks.KrakenBiteEffect(kraken, uberMonster); // cannot swallow huge monsters
+            Assert.False(uberMonster.HasEffect(Effect.KRAKEN_SWALLOW));
+            Attacks.KrakenBiteEffect(kraken, luckyMonster); // cannot swallow monsters that are not grappled
+            Assert.False(luckyMonster.HasEffect(Effect.KRAKEN_SWALLOW));
+            int hitpoints = pansyMonster.HitPoints;
+            // digest the monster
+            kraken.OnStartOfTurn();
+            Assert.True(pansyMonster.HitPoints < hitpoints);
         }
     }
 }

@@ -1,7 +1,7 @@
 namespace srd5 {
     public partial struct Attacks {
         public static readonly Attack CamelBite = new Attack("Bite", 5, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
-        public static readonly Attack CatClaws = new Attack("Claws", 0, new Damage(DamageType.SLASHING, "1d1"), 5);
+        public static readonly Attack CatClaws = new Attack("Claws", 0, new Damage(DamageType.SLASHING, 1), 5);
         public static readonly Attack CentaurPike = new Attack("Pike", 6, new Damage(DamageType.PIERCING, "1d10+4"), 10);
         public static readonly Attack CentaurHooves = new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
         public static readonly Attack CentaurLongbow = new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, 150, 600);
@@ -84,7 +84,7 @@ namespace srd5 {
             AttackEffects.GrapplingEffect(attacker, target, 15, Monsters.Couatl.Size + 1, true);
         };
         public static readonly Attack CouatlConstrict = new Attack("Constrict", 6, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, null, CouatlConstrictEffect);
-        public static readonly Attack CrabClaw = new Attack("Claw", 0, new Damage(DamageType.BLUDGEONING, "1d1"), 5);
+        public static readonly Attack CrabClaw = new Attack("Claw", 0, new Damage(DamageType.BLUDGEONING, 1), 5);
         public static readonly AttackEffect CrocodileBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 12, Monsters.Crocodile.Size + 1, true, CrocodileBite);
         };

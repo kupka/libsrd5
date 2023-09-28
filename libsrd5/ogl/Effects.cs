@@ -147,6 +147,7 @@ namespace srd5 {
         PHASE_SPIDER_POISON,
         PSEUDO_DRAGON_POISON,
         PSEUDO_DRAGON_POISON_UNCONSCIOUS,
+        QUASIT_POISON,
         PIT_FIEND_POISON,
         UNABLE_TO_BREATHE,
 
@@ -181,6 +182,9 @@ namespace srd5 {
 
     public static class EffectExtension {
         public static void Apply(this Effect effect, Combattant combattant) {
+            int turn = 0;
+            int duration;
+            int dc;
             switch (effect) {
                 case Effect.HEAVY_ARMOR_SPEED_PENALITY:
                     combattant.Speed -= 10;
@@ -237,13 +241,13 @@ namespace srd5 {
                 case Effect.GHOUL_CLAWS_PARALYZATION:
                 case Effect.LICH_PARALYZATION:
                     combattant.AddCondition(ConditionType.PARALYZED);
-                    int turn = 0;
-                    int dc = 10;
+                    dc = 10;
+                    duration = 10; // one minute 
                     if (effect == Effect.LICH_PARALYZATION) dc = 18;
                     combattant.AddEndOfTurnEvent(delegate (Combattant combattant1) {
                         if (!combattant1.HasEffect(effect)) return true;
                         bool success = combattant1.DC(effect, dc, AbilityType.CONSTITUTION);
-                        if (turn++ > 9) success = true;
+                        if (turn++ >= duration) success = true;
                         if (success) combattant1.RemoveEffect(effect);
                         return success;
                     });
@@ -304,6 +308,18 @@ namespace srd5 {
                     combattant.AddCondition(ConditionType.UNCONSCIOUS);
                     // TODO: If the saving throw fails by 5 or more, the target falls unconscious for the same duration, 
                     // or until it takes damage or another creature uses an action to shake it awake.
+                    break;
+                case Effect.QUASIT_POISON:
+                    combattant.AddCondition(ConditionType.POISONED);
+                    dc = 10;
+                    duration = 10; // one minute
+                    combattant.AddEndOfTurnEvent(delegate (Combattant combattant1) {
+                        if (!combattant1.HasEffect(effect)) return true;
+                        bool success = combattant1.DC(effect, dc, AbilityType.CONSTITUTION);
+                        if (turn++ >= duration) success = true;
+                        if (success) combattant1.RemoveEffect(effect);
+                        return success;
+                    });
                     break;
             }
         }
@@ -377,6 +393,9 @@ namespace srd5 {
                     break;
                 case Effect.PSEUDO_DRAGON_POISON_UNCONSCIOUS:
                     combattant.RemoveCondition(ConditionType.UNCONSCIOUS);
+                    break;
+                case Effect.QUASIT_POISON:
+                    combattant.RemoveCondition(ConditionType.POISONED);
                     break;
             }
         }

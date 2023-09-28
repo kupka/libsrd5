@@ -32,13 +32,9 @@ namespace srd5 {
         public static readonly Attack PolarBearClaws = new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d6+5"), 5);
         public static readonly Attack PonyHooves = new Attack("Hooves", 4, new Damage(DamageType.BLUDGEONING, "2d4+2"), 5);
         public static readonly Attack PriestMace = new Attack("Mace", 2, new Damage(DamageType.BLUDGEONING, "1d6"), 5);
-        // !!!!!!!!!!!!!!!!!!!!!!UNPARSABLE ATTACK!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // PseudodragonSting
-        // {"name":"Sting","desc":"Melee Weapon Attack: +4 to hit, reach 5 ft., one creature. Hit: 4 (1d4 + 2) piercing damage, and the target must succeed on a DC 11 Constitution saving throw or become poisoned for 1 hour. If the saving throw fails by 5 or more, the target falls unconscious for the same duration, or until it takes damage or another creature uses an action to shake it awake.","attack_bonus":4,"damage":[{"damage_type":{"index":"piercing","name":"Piercing","url":"/api/damage-types/piercing"},"damage_dice":"1d4+2"}]}
         public static readonly AttackEffect PseudodragonStingEffect = delegate (Combattant attacker, Combattant target) {
             if (target.IsImmune(DamageType.POISON)) return;
-            int roll;
-            if (target.DC(PseudodragonSting, 11, AbilityType.CONSTITUTION, out roll)) return;
+            if (target.DC(PseudodragonSting, 11, AbilityType.CONSTITUTION, out int roll)) return;
             target.AddEffect(Effect.PSEUDO_DRAGON_POISON);
             if (roll < 7) {
                 target.AddEffect(Effect.PSEUDO_DRAGON_POISON_UNCONSCIOUS);

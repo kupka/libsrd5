@@ -149,6 +149,8 @@ namespace srd5 {
         PSEUDO_DRAGON_POISON_UNCONSCIOUS,
         QUASIT_POISON,
         PIT_FIEND_POISON,
+        SPRITE_POISON,
+        SPRITE_POISON_UNCONCIOUS,
         UNABLE_TO_BREATHE,
 
         // Feat Effects
@@ -302,9 +304,11 @@ namespace srd5 {
                     });
                     break;
                 case Effect.PSEUDO_DRAGON_POISON:
+                case Effect.SPRITE_POISON:
                     combattant.AddCondition(ConditionType.POISONED);
                     break;
                 case Effect.PSEUDO_DRAGON_POISON_UNCONSCIOUS:
+                case Effect.SPRITE_POISON_UNCONCIOUS:
                     combattant.AddCondition(ConditionType.UNCONSCIOUS);
                     // TODO: If the saving throw fails by 5 or more, the target falls unconscious for the same duration, 
                     // or until it takes damage or another creature uses an action to shake it awake.

@@ -6,7 +6,8 @@ namespace srd5 {
             GREATER_RESTORATION,
             REMOVE_DISEASE,
             REMOVE_CURSE,
-            AFTER_24_HOURS
+            AFTER_24_HOURS,
+            LONG_REST
         }
 
         public int Amount { get; private set; }
@@ -515,6 +516,11 @@ namespace srd5 {
             disadvantage = disadvantage || target.HasEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
             disadvantage = disadvantage || (ranged && (distance <= 5 || distance > attack.RangeNormal));
             return disadvantage;
+        }
+
+        internal void Die() {
+            // TODO: Implement what happens when this Combattant dies
+            throw new NotImplementedException();
         }
     }
 

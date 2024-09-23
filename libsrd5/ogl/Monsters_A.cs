@@ -88,10 +88,6 @@ namespace srd5 {
         public static readonly Attack AwakenedTreeSlam = new Attack("Slam", 6, new Damage(DamageType.BLUDGEONING, "3d6+4"), 10);
         public static readonly Attack AxeBeakBeak = new Attack("Beak", 4, new Damage(DamageType.SLASHING, "1d8+2"), 5);
         public static readonly Attack AzerWarhammer = new Attack("Warhammer", 5, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, new Damage(DamageType.FIRE, "1d6"));
-        public static readonly Attack TarrasqueBite = new Attack("Bite", 19, new Damage(DamageType.PIERCING, "4d12+10"), 10);
-        public static readonly Attack TarrasqueClaw = new Attack("Claw", 19, new Damage(DamageType.SLASHING, "4d8+10"), 15);
-        public static readonly Attack TarrasqueHorns = new Attack("Horns", 19, new Damage(DamageType.PIERCING, "4d10+10"), 10);
-        public static readonly Attack TarrasqueTail = new Attack("Tail", 19, new Damage(DamageType.BLUDGEONING, "4d6+10"), 20);
     }
 
     public partial struct Monsters {
@@ -734,25 +730,6 @@ namespace srd5 {
                 azer.AddFeat(Feat.HEATED_WEAPONS);
                 azer.AddFeat(Feat.ILLUMINATION_10FT);
                 return azer;
-            }
-        }
-
-        public static Monster Tarrasque {
-            get {
-                Monster tarrasque = new Monster(
-                    Monsters.Type.MONSTROSITY, Monsters.ID.TARRASQUE, Alignment.UNALIGNED, 30, 11, 30, 3, 11, 11, 25, "33d20+330", 40, 30,
-                    new Attack[] { Attacks.TarrasqueBite, Attacks.TarrasqueHorns, Attacks.TarrasqueTail, Attacks.TarrasqueClaw, Attacks.TarrasqueClaw },
-                    Attacks.None, Size.GARGANTUAN, 0
-                );
-                tarrasque.AddFeats(Feat.LEGENDARY_RESISTANCE, Feat.MAGIC_RESISTANCE, Feat.REFLECTIVE_CARAPACE, Feat.SIEGE_MONSTER);
-                tarrasque.AddEffects(Effect.IMMUNITY_FIRE, Effect.IMMUNITY_POISON, Effect.IMMUNITY_NONMAGIC);
-                tarrasque.AddEffects(Effect.IMMUNITY_CHARMED, Effect.IMMUNITY_FRIGHTENED, Effect.IMMUNITY_PARALYZED, Effect.IMMUNITY_POISONED);
-
-                tarrasque.AddProficiency(Proficiency.INTELLIGENCE);
-                tarrasque.AddProficiency(Proficiency.WISDOM);
-                tarrasque.AddProficiency(Proficiency.CHARISMA);
-
-                return tarrasque;
             }
         }
     }

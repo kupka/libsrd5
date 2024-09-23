@@ -15,16 +15,16 @@ namespace srd5 {
         /// <param name="withRestrained">With true, the target is restrained as well as grappled</param>
         /// <param name="lockAttackToTarget">If set, then this attack will have the target locked (e.g. can only Bite the grappled target)</param>
         /// <param name="maxTargets">Amount of targets the attacker can grapple (e.g. Crabs can grapple one target with each of their two claws)</param>
-        public static void GrapplingEffect(Combattant attacker, Combattant target, int dc, Size maxSize, bool withRestrained = false, Attack lockAttackToTarget = null, int maxTargets = 1) {
+        public static bool GrapplingEffect(Combattant attacker, Combattant target, int dc, Size maxSize, bool withRestrained = false, Attack lockAttackToTarget = null, int maxTargets = 1) {
             ConditionType grapplingType = (ConditionType)Enum.Parse(typeof(ConditionType), "GRAPPLED_DC" + dc);
-            if (target.HasCondition(grapplingType)) return;
-            if (target.Size > maxSize) return;
+            if (target.HasCondition(grapplingType)) return false;
+            if (target.Size > maxSize) return false;
             int grappling = 0;
             foreach (Effect effect in attacker.Effects) {
                 if (effect == Effect.GRAPPLING) grappling++;
             }
-            if (grappling >= maxTargets) return;
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
+            if (grappling >= maxTargets) return false;
+            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return false;
             attacker.AddEffect(Effect.GRAPPLING);
             if (withRestrained && !target.HasEffect(Effect.IMMUNITY_RESTRAINED))
                 target.AddCondition(ConditionType.RESTRAINED);
@@ -45,6 +45,7 @@ namespace srd5 {
                 }
                 return false;
             });
+            return true;
         }
 
         /// <summary>

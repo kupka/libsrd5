@@ -120,6 +120,7 @@ namespace srd5 {
         RESISTANCE,
         // Curses
         CURSE_MUMMY_ROT,
+        CURSE_RAKSHASA,
         // Attack Effects
         ABOLETH_DISEASE_TENTACLE,
         BEARDED_DEVIL_POISON,
@@ -149,6 +150,7 @@ namespace srd5 {
         PSEUDO_DRAGON_POISON_UNCONSCIOUS,
         QUASIT_POISON,
         PIT_FIEND_POISON,
+        RUG_SMOTHER,
         SPRITE_POISON,
         SPRITE_POISON_UNCONCIOUS,
         UNABLE_TO_BREATHE,
@@ -325,6 +327,17 @@ namespace srd5 {
                         return success;
                     });
                     break;
+                case Effect.RUG_SMOTHER:
+                    if (!combattant.HasEffect(Effect.IMMUNITY_BLINDED)) combattant.AddCondition(ConditionType.BLINDED);
+                    combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
+                        if (combattant.HasCondition(ConditionType.GRAPPLED_DC13)) {
+                            combattant.TakeDamage(DamageType.BLUDGEONING, "2d6+3");
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    });
+                    break;
             }
         }
 
@@ -400,6 +413,9 @@ namespace srd5 {
                     break;
                 case Effect.QUASIT_POISON:
                     combattant.RemoveCondition(ConditionType.POISONED);
+                    break;
+                case Effect.RUG_SMOTHER:
+                    combattant.RemoveCondition(ConditionType.BLINDED);
                     break;
             }
         }

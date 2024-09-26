@@ -18,10 +18,8 @@ namespace srd5 {
         public static readonly Attack TigerClaw = new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d8+3"), 5);
         public static readonly Attack TreantSlam = new Attack("Slam", 10, new Damage(DamageType.BLUDGEONING, "3d6+6"), 5);
         public static readonly Attack TreantRock = new Attack("Rock", 10, new Damage(DamageType.BLUDGEONING, "4d10+6"), 5, 60, 180);
-        public static readonly AttackEffect TribalWarriorSpearEffect = delegate (Combattant attacker, Combattant target) {
-        };
-        public static readonly Attack TribalWarriorSpear = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5, null, TribalWarriorSpearEffect);
-        public static readonly Attack TribalWarriorSpearRanged = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d6+1"), 20, 60, null, TribalWarriorSpearEffect);
+        public static readonly Attack TribalWarriorSpear = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
+        public static readonly Attack TribalWarriorSpearRanged = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d6+1"), 20, 60);
         public static readonly AttackEffect TriceratopsStompEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return;
             target.TakeDamage(DamageType.BLUDGEONING, "3d10+6");

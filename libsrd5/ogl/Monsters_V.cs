@@ -23,8 +23,6 @@ namespace srd5 {
             // TODO: Instead of dealing damage, the vampire can grapple the target (escape DC 13).
         };
         public static readonly Attack VampireSpawnClaws = new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d4+3"), 5, null, VampireSpawnClawsEffect);
-        public static readonly AttackEffect VeteranLongswordEffect = delegate (Combattant attacker, Combattant target) {
-        };
         public static readonly Attack VeteranLongsword = new Attack("Longsword", 5, new Damage(DamageType.SLASHING, "1d10+3"), 5);
         public static readonly Attack VeteranShortsword = new Attack("Shortsword", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
         public static readonly Attack VeteranHeavyCrossbow = new Attack("Heavy Crossbow", 3, new Damage(DamageType.PIERCING, "1d10+1"), 5, 100, 400);

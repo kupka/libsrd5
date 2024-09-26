@@ -250,6 +250,64 @@ namespace srd5 {
         }
 
         [Fact]
+        public void TestAttackEffects_R() {
+            attackEffectTest(Attacks.RakshasaClawEffect);
+            attackEffectTest(Attacks.RemorhazBiteEffect);
+            attackEffectTest(Attacks.RocTalonsEffect);
+            attackEffectTest(Attacks.RoperTendrilEffect);
+            attackEffectTest(Attacks.RugOfSmotheringSmotherEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_S() {
+            attackEffectTest(Attacks.SalamanderTailEffect);
+            attackEffectTest(Attacks.ScorpionStingEffect);
+            attackEffectTest(Attacks.ScoutLongbowEffect);
+            attackEffectTest(Attacks.ShadowStrengthDrainEffect);
+            attackEffectTest(Attacks.SolarSlayingLongbowEffect);
+            attackEffectTest(Attacks.SpecterLifeDrainEffect);
+            attackEffectTest(Attacks.SpiritNagaBiteEffect);
+            attackEffectTest(Attacks.SpriteShortbowEffect);
+            attackEffectTest(Attacks.StirgeBloodDrainEffect);
+            attackEffectTest(Attacks.StoneGiantRockEffect);
+            attackEffectTest(Attacks.SuccubusDrainingKissEffect);
+            attackEffectTest(Attacks.SwarmOfBatsBitesEffect);
+            attackEffectTest(Attacks.SwarmOfBeetlesBitesEffect);
+            attackEffectTest(Attacks.SwarmOfCentipedesBitesEffect);
+            attackEffectTest(Attacks.SwarmOfInsectsBitesEffect);
+            attackEffectTest(Attacks.SwarmOfPoisonousSnakesBitesEffect);
+            attackEffectTest(Attacks.SwarmOfQuippersBitesEffect);
+            attackEffectTest(Attacks.SwarmOfRatsBitesEffect);
+            attackEffectTest(Attacks.SwarmOfRavensBeaksEffect);
+            attackEffectTest(Attacks.SwarmOfSpidersBitesEffect);
+            attackEffectTest(Attacks.SwarmOfWaspsBitesEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_T() {
+            attackEffectTest(Attacks.TarrasqueBiteEffect);
+            attackEffectTest(Attacks.TarrasqueTailEffect);
+            attackEffectTest(Attacks.TriceratopsStompEffect);
+            attackEffectTest(Attacks.TyrannosaurusRexBiteEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_U() {
+            // None here
+        }
+
+        [Fact]
+        public void TestAttackEffects_V() {
+            attackEffectTest(Attacks.VampireBiteEffect);
+            attackEffectTest(Attacks.VampireSpawnBiteEffect);
+            attackEffectTest(Attacks.VampireSpawnClawsEffect);
+            attackEffectTest(Attacks.VampireUnarmedStrikeEffect);
+        }
+
+
+
+
+        [Fact]
         public void AssassinShortswordTest() {
             Monster undead = Monsters.Ghost; // immune to poison
             int hitpoints = undead.HitPoints;

@@ -3,36 +3,108 @@ namespace srd5 {
         public static readonly AttackEffect TarrasqueBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 20, Size.GARGANTUAN, true, TarrasqueBite, 1);
         };
-        public static readonly Attack TarrasqueBite = new Attack("Bite", 19, new Damage(DamageType.PIERCING, "4d12+10"), 10, null, TarrasqueBiteEffect);
+        public static Attack TarrasqueBite {
+            get {
+                return new Attack("Bite", 19, new Damage(DamageType.PIERCING, "4d12+10"), 10, null, TarrasqueBiteEffect);
+            }
+        }
         public static readonly AttackEffect TarrasqueTailEffect = delegate (Combattant attacker, Combattant target) {
             if (target.HasEffect(Effect.IMMUNITY_PRONE)) return;
             if (target.DC(TarrasqueTail, 20, AbilityType.STRENGTH)) return;
             target.AddCondition(ConditionType.PRONE);
         };
-        public static readonly Attack TarrasqueTail = new Attack("Tail", 19, new Damage(DamageType.BLUDGEONING, "4d6+10"), 20, null, TarrasqueTailEffect);
-        public static readonly Attack TarrasqueClaw = new Attack("Claw", 19, new Damage(DamageType.SLASHING, "4d8+10"), 15);
-        public static readonly Attack TarrasqueHorns = new Attack("Horns", 19, new Damage(DamageType.PIERCING, "4d10+10"), 10);
-        public static readonly Attack ThugMace = new Attack("Mace", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
-        public static readonly Attack ThugHeavyCrossbow = new Attack("Heavy Crossbow", 2, new Damage(DamageType.PIERCING, "1d10"), 5, 100, 400);
-        public static readonly Attack TigerBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5);
-        public static readonly Attack TigerClaw = new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d8+3"), 5);
-        public static readonly Attack TreantSlam = new Attack("Slam", 10, new Damage(DamageType.BLUDGEONING, "3d6+6"), 5);
-        public static readonly Attack TreantRock = new Attack("Rock", 10, new Damage(DamageType.BLUDGEONING, "4d10+6"), 5, 60, 180);
-        public static readonly Attack TribalWarriorSpear = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
-        public static readonly Attack TribalWarriorSpearRanged = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d6+1"), 20, 60);
+        public static Attack TarrasqueTail {
+            get {
+                return new Attack("Tail", 19, new Damage(DamageType.BLUDGEONING, "4d6+10"), 20, null, TarrasqueTailEffect);
+            }
+        }
+        public static Attack TarrasqueClaw {
+            get {
+                return new Attack("Claw", 19, new Damage(DamageType.SLASHING, "4d8+10"), 15);
+            }
+        }
+        public static Attack TarrasqueHorns {
+            get {
+                return new Attack("Horns", 19, new Damage(DamageType.PIERCING, "4d10+10"), 10);
+            }
+        }
+        public static Attack ThugMace {
+            get {
+                return new Attack("Mace", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
+            }
+        }
+        public static Attack ThugHeavyCrossbow {
+            get {
+                return new Attack("Heavy Crossbow", 2, new Damage(DamageType.PIERCING, "1d10"), 5, 100, 400);
+            }
+        }
+        public static Attack TigerBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5);
+            }
+        }
+        public static Attack TigerClaw {
+            get {
+                return new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d8+3"), 5);
+            }
+        }
+        public static Attack TreantSlam {
+            get {
+                return new Attack("Slam", 10, new Damage(DamageType.BLUDGEONING, "3d6+6"), 5);
+            }
+        }
+        public static Attack TreantRock {
+            get {
+                return new Attack("Rock", 10, new Damage(DamageType.BLUDGEONING, "4d10+6"), 5, 60, 180);
+            }
+        }
+        public static Attack TribalWarriorSpear {
+            get {
+                return new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
+            }
+        }
+        public static Attack TribalWarriorSpearRanged {
+            get {
+                return new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d6+1"), 20, 60);
+            }
+        }
         public static readonly AttackEffect TriceratopsStompEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return;
             target.TakeDamage(DamageType.BLUDGEONING, "3d10+6");
         };
-        public static readonly Attack TriceratopsStomp = new Attack("Stomp", 9, new Damage(DamageType.BLUDGEONING, 0), 5, null, TriceratopsStompEffect);
-        public static readonly Attack TriceratopsGore = new Attack("Gore", 9, new Damage(DamageType.PIERCING, "4d8+6"), 5);
-        public static readonly Attack TrollBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "1d6+4"), 5);
-        public static readonly Attack TrollClaw = new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+        public static Attack TriceratopsStomp {
+            get {
+                return new Attack("Stomp", 9, new Damage(DamageType.BLUDGEONING, 0), 5, null, TriceratopsStompEffect);
+            }
+        }
+        public static Attack TriceratopsGore {
+            get {
+                return new Attack("Gore", 9, new Damage(DamageType.PIERCING, "4d8+6"), 5);
+            }
+        }
+        public static Attack TrollBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "1d6+4"), 5);
+            }
+        }
+        public static Attack TrollClaw {
+            get {
+                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+            }
+        }
         public static readonly AttackEffect TyrannosaurusRexBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 17, Size.MEDIUM, true, TyrannosaurusRexBite);
         };
-        public static readonly Attack TyrannosaurusRexBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "4d12+7"), 5, null, TyrannosaurusRexBiteEffect);
-        public static readonly Attack TyrannosaurusRexTail = new Attack("Tail", 10, new Damage(DamageType.BLUDGEONING, "3d8+7"), 10);
+        public static Attack TyrannosaurusRexBite {
+            get {
+                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "4d12+7"), 5, null, TyrannosaurusRexBiteEffect);
+            }
+        }
+        public static Attack TyrannosaurusRexTail {
+            get {
+                return new Attack("Tail", 10, new Damage(DamageType.BLUDGEONING, "3d8+7"), 10);
+            }
+        }
     }
 
     public partial struct Monsters {

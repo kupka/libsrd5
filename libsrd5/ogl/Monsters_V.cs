@@ -3,7 +3,11 @@ namespace srd5 {
         public static readonly AttackEffect VampireUnarmedStrikeEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: Instead of dealing damage, the vampire can grapple the target (escape DC 18).
         };
-        public static readonly Attack VampireUnarmedStrike = new Attack("Unarmed Strike", 9, new Damage(DamageType.BLUDGEONING, "1d8+4"), 5, null, VampireUnarmedStrikeEffect);
+        public static Attack VampireUnarmedStrike {
+            get {
+                return new Attack("Unarmed Strike", 9, new Damage(DamageType.BLUDGEONING, "1d8+4"), 5, null, VampireUnarmedStrikeEffect);
+            }
+        }
         public static readonly AttackEffect VampireBiteEffect = delegate (Combattant attacker, Combattant target) {
             int damage = target.TakeDamage(DamageType.NECROTIC, "3d6");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
@@ -11,25 +15,69 @@ namespace srd5 {
             // TODO:  The target dies if this effect reduces its hit point maximum to 0. 
             // A humanoid slain in this way and then buried in the ground rises the following night as a vampire spawn under the vampire's control.
         };
-        public static readonly Attack VampireBite = new Attack("Bite", 9, new Damage(DamageType.PIERCING, "1d6+4"), 5, null, VampireBiteEffect);
-        public static readonly Attack VampireBatFormBite = new Attack("Bite", 9, new Damage(DamageType.PIERCING, "1d6+4"), 5, null, VampireBiteEffect);
+        public static Attack VampireBite {
+            get {
+                return new Attack("Bite", 9, new Damage(DamageType.PIERCING, "1d6+4"), 5, null, VampireBiteEffect);
+            }
+        }
+        public static Attack VampireBatFormBite {
+            get {
+                return new Attack("Bite", 9, new Damage(DamageType.PIERCING, "1d6+4"), 5, null, VampireBiteEffect);
+            }
+        }
         public static readonly AttackEffect VampireSpawnBiteEffect = delegate (Combattant attacker, Combattant target) {
             int damage = target.TakeDamage(DamageType.NECROTIC, "2d6");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
             attacker.HealDamage(damage);
         };
-        public static readonly Attack VampireSpawnBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d6+6"), 5, null, VampireSpawnBiteEffect);
+        public static Attack VampireSpawnBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d6+6"), 5, null, VampireSpawnBiteEffect);
+            }
+        }
         public static readonly AttackEffect VampireSpawnClawsEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: Instead of dealing damage, the vampire can grapple the target (escape DC 13).
         };
-        public static readonly Attack VampireSpawnClaws = new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d4+3"), 5, null, VampireSpawnClawsEffect);
-        public static readonly Attack VeteranLongsword = new Attack("Longsword", 5, new Damage(DamageType.SLASHING, "1d10+3"), 5);
-        public static readonly Attack VeteranShortsword = new Attack("Shortsword", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
-        public static readonly Attack VeteranHeavyCrossbow = new Attack("Heavy Crossbow", 3, new Damage(DamageType.PIERCING, "1d10+1"), 5, 100, 400);
-        public static readonly Attack VioletFungusRottingTouch = new Attack("Rotting Touch", 2, new Damage(DamageType.NECROTIC, "1d8"), 10);
-        public static readonly Attack VrockBeak = new Attack("Beak", 6, new Damage(DamageType.PIERCING, "2d6+3"), 5);
-        public static readonly Attack VrockTalons = new Attack("Talons", 6, new Damage(DamageType.SLASHING, "2d10+3"), 5);
-        public static readonly Attack VultureBeak = new Attack("Beak", 2, new Damage(DamageType.PIERCING, "1d4"), 5);
+        public static Attack VampireSpawnClaws {
+            get {
+                return new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d4+3"), 5, null, VampireSpawnClawsEffect);
+            }
+        }
+        public static Attack VeteranLongsword {
+            get {
+                return new Attack("Longsword", 5, new Damage(DamageType.SLASHING, "1d10+3"), 5);
+            }
+        }
+        public static Attack VeteranShortsword {
+            get {
+                return new Attack("Shortsword", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
+            }
+        }
+        public static Attack VeteranHeavyCrossbow {
+            get {
+                return new Attack("Heavy Crossbow", 3, new Damage(DamageType.PIERCING, "1d10+1"), 5, 100, 400);
+            }
+        }
+        public static Attack VioletFungusRottingTouch {
+            get {
+                return new Attack("Rotting Touch", 2, new Damage(DamageType.NECROTIC, "1d8"), 10);
+            }
+        }
+        public static Attack VrockBeak {
+            get {
+                return new Attack("Beak", 6, new Damage(DamageType.PIERCING, "2d6+3"), 5);
+            }
+        }
+        public static Attack VrockTalons {
+            get {
+                return new Attack("Talons", 6, new Damage(DamageType.SLASHING, "2d10+3"), 5);
+            }
+        }
+        public static Attack VultureBeak {
+            get {
+                return new Attack("Beak", 2, new Damage(DamageType.PIERCING, "1d4"), 5);
+            }
+        }
 
     }
 

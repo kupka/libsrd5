@@ -1,61 +1,165 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack SaberToothedTigerBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d10+5"), 5);
-        public static readonly Attack SaberToothedTigerClaw = new Attack("Claw", 6, new Damage(DamageType.SLASHING, "2d6+5"), 5);
-        public static readonly Attack SahuaginSpearMelee = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
-        public static readonly Attack SahuaginSpearRanged = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 20, 60);
-        public static readonly Attack SahuaginBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d4+1"), 5);
-        public static readonly Attack SahuaginClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "1d4+1"), 5);
-        public static readonly Attack SalamanderSpear = new Attack("Spear", 7, new Damage(DamageType.PIERCING, "2d8+4"), 5, new Damage(DamageType.FIRE, "1d6"));
+        public static Attack SaberToothedTigerBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d10+5"), 5);
+            }
+        }
+        public static Attack SaberToothedTigerClaw {
+            get {
+                return new Attack("Claw", 6, new Damage(DamageType.SLASHING, "2d6+5"), 5);
+            }
+        }
+        public static Attack SahuaginSpearMelee {
+            get {
+                return new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
+            }
+        }
+        public static Attack SahuaginSpearRanged {
+            get {
+                return new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 20, 60);
+            }
+        }
+        public static Attack SahuaginBite {
+            get {
+                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d4+1"), 5);
+            }
+        }
+        public static Attack SahuaginClaws {
+            get {
+                return new Attack("Claws", 3, new Damage(DamageType.SLASHING, "1d4+1"), 5);
+            }
+        }
+        public static Attack SalamanderSpear {
+            get {
+                return new Attack("Spear", 7, new Damage(DamageType.PIERCING, "2d8+4"), 5, new Damage(DamageType.FIRE, "1d6"));
+            }
+        }
         public static readonly AttackEffect SalamanderTailEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 14, Size.HUGE, true, SalamanderTail, 1);
         };
-        public static readonly Attack SalamanderTail = new Attack("Tail", 7, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5, new Damage(DamageType.FIRE, "2d6"), SalamanderTailEffect);
-        public static readonly Attack SatyrRam = new Attack("Ram", 3, new Damage(DamageType.BLUDGEONING, "2d4+1"), 5);
-        public static readonly Attack SatyrShortsword = new Attack("Shortsword", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
-        public static readonly Attack SatyrShortbow = new Attack("Shortbow", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5, 80, 320);
+        public static Attack SalamanderTail {
+            get {
+                return new Attack("Tail", 7, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5, new Damage(DamageType.FIRE, "2d6"), SalamanderTailEffect);
+            }
+        }
+        public static Attack SatyrRam {
+            get {
+                return new Attack("Ram", 3, new Damage(DamageType.BLUDGEONING, "2d4+1"), 5);
+            }
+        }
+        public static Attack SatyrShortsword {
+            get {
+                return new Attack("Shortsword", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
+            }
+        }
+        public static Attack SatyrShortbow {
+            get {
+                return new Attack("Shortbow", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5, 80, 320);
+            }
+        }
         public static readonly AttackEffect ScorpionStingEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, ScorpionSting, "1d8", 9);
         };
-        public static readonly Attack ScorpionSting = new Attack("Sting", 2, new Damage(DamageType.PIERCING, 1), 5, null, ScorpionStingEffect);
+        public static Attack ScorpionSting {
+            get {
+                return new Attack("Sting", 2, new Damage(DamageType.PIERCING, 1), 5, null, ScorpionStingEffect);
+            }
+        }
         public static readonly AttackEffect ScoutLongbowEffect = delegate (Combattant attacker, Combattant target) {
         };
-        public static readonly Attack ScoutLongbow = new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 150, 600);
-        public static readonly Attack ScoutShortsword = new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack SeaHagClaws = new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
+        public static Attack ScoutLongbow {
+            get {
+                return new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 150, 600);
+            }
+        }
+        public static Attack ScoutShortsword {
+            get {
+                return new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack SeaHagClaws {
+            get {
+                return new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
+            }
+        }
         public static readonly AttackEffect ShadowStrengthDrainEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: the target's Strength score is reduced by 1d4. The target dies if this reduces its Strength to 0. 
             // Otherwise, the reduction lasts until the target finishes a short or long rest.
             // If a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later.
         };
-        public static readonly Attack ShadowStrengthDrain = new Attack("Strength Drain", 4, new Damage(DamageType.NECROTIC, "2d6+2"), 5, null, ShadowStrengthDrainEffect);
-        public static readonly Attack ShamblingMoundSlam = new Attack("Slam", 7, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
-        public static readonly Attack ShieldGuardianFist = new Attack("Fist", 7, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
-        public static readonly Attack SilverDragonWyrmlingBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d10+4"), 5);
-        public static readonly Attack SkeletonShortsword = new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack SkeletonShortbow = new Attack("Shortbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 80, 320);
+        public static Attack ShadowStrengthDrain {
+            get {
+                return new Attack("Strength Drain", 4, new Damage(DamageType.NECROTIC, "2d6+2"), 5, null, ShadowStrengthDrainEffect);
+            }
+        }
+        public static Attack ShamblingMoundSlam {
+            get {
+                return new Attack("Slam", 7, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
+            }
+        }
+        public static Attack ShieldGuardianFist {
+            get {
+                return new Attack("Fist", 7, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
+            }
+        }
+        public static Attack SilverDragonWyrmlingBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d10+4"), 5);
+            }
+        }
+        public static Attack SkeletonShortsword {
+            get {
+                return new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack SkeletonShortbow {
+            get {
+                return new Attack("Shortbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 80, 320);
+            }
+        }
         public static readonly AttackEffect SolarSlayingLongbowEffect = delegate (Combattant attacker, Combattant target) {
             if (target.HitPoints > 190) return;
             bool success = target.DC(SolarSlayingLongbow, 15, AbilityType.CONSTITUTION);
             if (success) return;
             // TODO: Target dies
         };
-        public static readonly Attack SolarSlayingLongbow = new Attack("Slaying Longbow", 13, new Damage(DamageType.PIERCING, "2d8+6"), 150, 600, new Damage(DamageType.RADIANT, "6d8"), SolarSlayingLongbowEffect);
-        public static readonly Attack SolarGreatsword = new Attack("Greatsword", 15, new Damage(DamageType.SLASHING, "4d6+8"), 5, new Damage(DamageType.RADIANT, "6d8"));
+        public static Attack SolarSlayingLongbow {
+            get {
+                return new Attack("Slaying Longbow", 13, new Damage(DamageType.PIERCING, "2d8+6"), 150, 600, new Damage(DamageType.RADIANT, "6d8"), SolarSlayingLongbowEffect);
+            }
+        }
+        public static Attack SolarGreatsword {
+            get {
+                return new Attack("Greatsword", 15, new Damage(DamageType.SLASHING, "4d6+8"), 5, new Damage(DamageType.RADIANT, "6d8"));
+            }
+        }
         public static readonly AttackEffect SpecterLifeDrainEffect = delegate (Combattant attacker, Combattant target) {
             // FIXME: Amount of damage taken is not known here
             // TODO: The target must succeed on a DC 10 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. 
             // This reduction lasts until the creature finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.
         };
-        public static readonly Attack SpecterLifeDrain = new Attack("Life Drain", 4, new Damage(DamageType.NECROTIC, "3d6"), 5, null, SpecterLifeDrainEffect);
+        public static Attack SpecterLifeDrain {
+            get {
+                return new Attack("Life Drain", 4, new Damage(DamageType.NECROTIC, "3d6"), 5, null, SpecterLifeDrainEffect);
+            }
+        }
         public static readonly AttackEffect SpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, SpiderBite, "1d4", 9, AbilityType.CONSTITUTION, true);
         };
-        public static readonly Attack SpiderBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, 1), 5, null, SpiderBiteEffect);
+        public static Attack SpiderBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, 1), 5, null, SpiderBiteEffect);
+            }
+        }
         public static readonly AttackEffect SpiritNagaBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, SpiritNagaBite, "7d8", 13);
         };
-        public static readonly Attack SpiritNagaBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "1d6+4"), 5, null, SpiritNagaBiteEffect);
+        public static Attack SpiritNagaBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "1d6+4"), 5, null, SpiritNagaBiteEffect);
+            }
+        }
         public static readonly AttackEffect SpriteShortbowEffect = delegate (Combattant attacker, Combattant target) {
             if (target.IsImmune(DamageType.POISON)) return;
             if (target.DC(SpriteShortbow, 10, AbilityType.CONSTITUTION, out int roll)) return;
@@ -64,11 +168,31 @@ namespace srd5 {
                 target.AddEffect(Effect.SPRITE_POISON_UNCONCIOUS);
             }
         };
-        public static readonly Attack SpriteShortbow = new Attack("Shortbow", 6, new Damage(DamageType.PIERCING, 1), 5, null, SpriteShortbowEffect);
-        public static readonly Attack SpriteLongsword = new Attack("Longsword", 2, new Damage(DamageType.SLASHING, "1d1"), 5);
-        public static readonly Attack SpyShortsword = new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack SpyHandCrossbow = new Attack("Hand Crossbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 30, 120);
-        public static readonly Attack SteamMephitClaws = new Attack("Claws", 2, new Damage(DamageType.SLASHING, "1d4"), 5, new Damage(DamageType.FIRE, "1d4"));
+        public static Attack SpriteShortbow {
+            get {
+                return new Attack("Shortbow", 6, new Damage(DamageType.PIERCING, 1), 5, null, SpriteShortbowEffect);
+            }
+        }
+        public static Attack SpriteLongsword {
+            get {
+                return new Attack("Longsword", 2, new Damage(DamageType.SLASHING, "1d1"), 5);
+            }
+        }
+        public static Attack SpyShortsword {
+            get {
+                return new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack SpyHandCrossbow {
+            get {
+                return new Attack("Hand Crossbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 30, 120);
+            }
+        }
+        public static Attack SteamMephitClaws {
+            get {
+                return new Attack("Claws", 2, new Damage(DamageType.SLASHING, "1d4"), 5, new Damage(DamageType.FIRE, "1d4"));
+            }
+        }
         public static readonly AttackEffect StirgeBloodDrainEffect = delegate (Combattant attacker, Combattant target) {
             if (target is Monster monster) {
                 // Bloodless are immune
@@ -85,17 +209,41 @@ namespace srd5 {
 
             // A creature, including the target, can use its action to detach the stirge.
         };
-        public static readonly Attack StirgeBloodDrain = new Attack("Blood Drain", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5, null, StirgeBloodDrainEffect);
+        public static Attack StirgeBloodDrain {
+            get {
+                return new Attack("Blood Drain", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5, null, StirgeBloodDrainEffect);
+            }
+        }
         public static readonly AttackEffect StoneGiantRockEffect = delegate (Combattant attacker, Combattant target) {
             if (target.HasEffect(Effect.IMMUNITY_PRONE)) return;
             if (target.DC(StoneGiantRock, 17, AbilityType.STRENGTH)) return;
             target.AddCondition(ConditionType.PRONE);
         };
-        public static readonly Attack StoneGiantRock = new Attack("Rock", 9, new Damage(DamageType.BLUDGEONING, "4d10+6"), 5, null, StoneGiantRockEffect);
-        public static readonly Attack StoneGiantGreatclub = new Attack("Greatclub", 9, new Damage(DamageType.BLUDGEONING, "3d8+6"), 15);
-        public static readonly Attack StoneGolemSlam = new Attack("Slam", 10, new Damage(DamageType.BLUDGEONING, "3d8+6"), 5);
-        public static readonly Attack StormGiantGreatsword = new Attack("Greatsword", 14, new Damage(DamageType.SLASHING, "6d6+9"), 10);
-        public static readonly Attack StormGiantRock = new Attack("Rock", 14, new Damage(DamageType.BLUDGEONING, "4d12+9"), 5, 60, 240);
+        public static Attack StoneGiantRock {
+            get {
+                return new Attack("Rock", 9, new Damage(DamageType.BLUDGEONING, "4d10+6"), 5, null, StoneGiantRockEffect);
+            }
+        }
+        public static Attack StoneGiantGreatclub {
+            get {
+                return new Attack("Greatclub", 9, new Damage(DamageType.BLUDGEONING, "3d8+6"), 15);
+            }
+        }
+        public static Attack StoneGolemSlam {
+            get {
+                return new Attack("Slam", 10, new Damage(DamageType.BLUDGEONING, "3d8+6"), 5);
+            }
+        }
+        public static Attack StormGiantGreatsword {
+            get {
+                return new Attack("Greatsword", 14, new Damage(DamageType.SLASHING, "6d6+9"), 10);
+            }
+        }
+        public static Attack StormGiantRock {
+            get {
+                return new Attack("Rock", 14, new Damage(DamageType.BLUDGEONING, "4d12+9"), 5, 60, 240);
+            }
+        }
         public static readonly AttackEffect SuccubusDrainingKissEffect = delegate (Combattant attacker, Combattant target) {
             bool success = target.DC(SuccubusDrainingKiss, 15, AbilityType.CONSTITUTION);
             int damage = Dice.Roll("5d10+5");
@@ -106,61 +254,109 @@ namespace srd5 {
                 target.Die();
             }
         };
-        public static readonly Attack SuccubusDrainingKiss = new Attack("Draining Kiss", 0, new Damage(DamageType.TRUE_DAMAGE, 0), 5, null, SuccubusDrainingKissEffect);
-        public static readonly Attack SuccubusClaw = new Attack("Claw)", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+        public static Attack SuccubusDrainingKiss {
+            get {
+                return new Attack("Draining Kiss", 0, new Damage(DamageType.TRUE_DAMAGE, 0), 5, null, SuccubusDrainingKissEffect);
+            }
+        }
+        public static Attack SuccubusClaw {
+            get {
+                return new Attack("Claw)", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+            }
+        }
         public static readonly AttackEffect SwarmOfBatsBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax) return;
             target.TakeDamage(DamageType.PIERCING, "1d4");
         };
-        public static readonly Attack SwarmOfBatsBites = new Attack("Bites", 4, new Damage(DamageType.PIERCING, "1d4"), 5, null, SwarmOfBatsBitesEffect);
+        public static Attack SwarmOfBatsBites {
+            get {
+                return new Attack("Bites", 4, new Damage(DamageType.PIERCING, "1d4"), 5, null, SwarmOfBatsBitesEffect);
+            }
+        }
         public static readonly AttackEffect SwarmOfBeetlesBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax) return;
             target.TakeDamage(DamageType.PIERCING, "2d4");
         };
-        public static readonly Attack SwarmOfBeetlesBites = new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfBeetlesBitesEffect);
+        public static Attack SwarmOfBeetlesBites {
+            get {
+                return new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfBeetlesBitesEffect);
+            }
+        }
         public static readonly AttackEffect SwarmOfCentipedesBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax) return;
             target.TakeDamage(DamageType.PIERCING, "2d4");
             // TODO: A creature reduced to 0 hit points by a swarm of centipedes is stable but poisoned for 1 hour, 
             // even after regaining hit points, and paralyzed while poisoned in this way.
         };
-        public static readonly Attack SwarmOfCentipedesBites = new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfCentipedesBitesEffect);
+        public static Attack SwarmOfCentipedesBites {
+            get {
+                return new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfCentipedesBitesEffect);
+            }
+        }
         public static readonly AttackEffect SwarmOfInsectsBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax) return;
             target.TakeDamage(DamageType.PIERCING, "2d4");
         };
-        public static readonly Attack SwarmOfInsectsBites = new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfInsectsBitesEffect);
+        public static Attack SwarmOfInsectsBites {
+            get {
+                return new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfInsectsBitesEffect);
+            }
+        }
         public static readonly AttackEffect SwarmOfPoisonousSnakesBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax) return;
             target.TakeDamage(DamageType.PIERCING, "1d6");
             AttackEffects.PoisonEffect(target, SwarmOfPoisonousSnakesBites, "4d6", 10);
         };
-        public static readonly Attack SwarmOfPoisonousSnakesBites = new Attack("Bites", 6, new Damage(DamageType.PIERCING, "1d6"), 5, null, SwarmOfPoisonousSnakesBitesEffect);
+        public static Attack SwarmOfPoisonousSnakesBites {
+            get {
+                return new Attack("Bites", 6, new Damage(DamageType.PIERCING, "1d6"), 5, null, SwarmOfPoisonousSnakesBitesEffect);
+            }
+        }
         public static readonly AttackEffect SwarmOfQuippersBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax) return;
             target.TakeDamage(DamageType.PIERCING, "2d6");
         };
-        public static readonly Attack SwarmOfQuippersBites = new Attack("Bites", 5, new Damage(DamageType.PIERCING, "2d6"), 5, null, SwarmOfQuippersBitesEffect);
+        public static Attack SwarmOfQuippersBites {
+            get {
+                return new Attack("Bites", 5, new Damage(DamageType.PIERCING, "2d6"), 5, null, SwarmOfQuippersBitesEffect);
+            }
+        }
         public static readonly AttackEffect SwarmOfRatsBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax) return;
             target.TakeDamage(DamageType.PIERCING, "1d6");
         };
-        public static readonly Attack SwarmOfRatsBites = new Attack("Bites", 2, new Damage(DamageType.PIERCING, "1d6"), 5, null, SwarmOfRatsBitesEffect);
+        public static Attack SwarmOfRatsBites {
+            get {
+                return new Attack("Bites", 2, new Damage(DamageType.PIERCING, "1d6"), 5, null, SwarmOfRatsBitesEffect);
+            }
+        }
         public static readonly AttackEffect SwarmOfRavensBeaksEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax) return;
             target.TakeDamage(DamageType.PIERCING, "1d6");
         };
-        public static readonly Attack SwarmOfRavensBeaks = new Attack("Beaks", 4, new Damage(DamageType.PIERCING, "1d6"), 5, null, SwarmOfRavensBeaksEffect);
+        public static Attack SwarmOfRavensBeaks {
+            get {
+                return new Attack("Beaks", 4, new Damage(DamageType.PIERCING, "1d6"), 5, null, SwarmOfRavensBeaksEffect);
+            }
+        }
         public static readonly AttackEffect SwarmOfSpidersBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax) return;
             target.TakeDamage(DamageType.PIERCING, "2d4");
         };
-        public static readonly Attack SwarmOfSpidersBites = new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfSpidersBitesEffect);
+        public static Attack SwarmOfSpidersBites {
+            get {
+                return new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfSpidersBitesEffect);
+            }
+        }
         public static readonly AttackEffect SwarmOfWaspsBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax) return;
             target.TakeDamage(DamageType.PIERCING, "2d4");
         };
-        public static readonly Attack SwarmOfWaspsBites = new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfWaspsBitesEffect);
+        public static Attack SwarmOfWaspsBites {
+            get {
+                return new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfWaspsBitesEffect);
+            }
+        }
     }
 
     public partial struct Monsters {

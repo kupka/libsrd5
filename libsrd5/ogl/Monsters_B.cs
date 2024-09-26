@@ -1,23 +1,79 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack BaboonBite = new Attack("Bite", 1, new Damage(DamageType.PIERCING, "1d4-1"), 5);
-        public static readonly Attack BadgerBite = new Attack("Bite", 2, new Damage(DamageType.PIERCING, 1), 5);
-        public static readonly Attack BalorLongsword = new Attack("Longsword", 14, new Damage(DamageType.SLASHING, "3d8+8"), 10, new Damage(DamageType.LIGHTNING, "3d8")).WithProperties(Attack.Property.TRIPLE_DICE_ON_CRIT);
+        public static Attack BaboonBite {
+            get {
+                return new Attack("Bite", 1, new Damage(DamageType.PIERCING, "1d4-1"), 5);
+            }
+        }
+        public static Attack BadgerBite {
+            get {
+                return new Attack("Bite", 2, new Damage(DamageType.PIERCING, 1), 5);
+            }
+        }
+        public static Attack BalorLongsword {
+            get {
+                return new Attack("Longsword", 14, new Damage(DamageType.SLASHING, "3d8+8"), 10, new Damage(DamageType.LIGHTNING, "3d8")).WithProperties(Attack.Property.TRIPLE_DICE_ON_CRIT);
+            }
+        }
         public static AttackEffect BalorWhipEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: THE TARGET MUST SUCCEED ON A DC 20 STRENGTH SAVING THROW OR BE PULLED UP TO 25 FEET TOWARD THE BALOR
             if (target.DC(BalorWhip, 20, AbilityType.STRENGTH)) return;
         };
-        public static readonly Attack BalorWhip = new Attack("Whip", 14, new Damage(DamageType.SLASHING, "2d6+8"), 30, new Damage(DamageType.FIRE, "3d6"), BalorWhipEffect);
-        public static readonly Attack BanditScimitar = new Attack("Scimitar", 3, new Damage(DamageType.SLASHING, "1d6+1"), 5);
-        public static readonly Attack BanditLightCrossbow = new Attack("Light Crossbow", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5, 80, 320);
-        public static readonly Attack BanditCaptainScimitar = new Attack("Scimitar", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
-        public static readonly Attack BanditCaptainDaggerMelee = new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5);
-        public static readonly Attack BanditCaptainDaggerRanged = new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5, 20, 60);
-        public static readonly Attack BarbedDevilClaw = new Attack("Claw", 6, new Damage(DamageType.PIERCING, "1d6+3"), 5);
-        public static readonly Attack BarbedDevilHurlFlame = new Attack("Hurl Flame", 5, new Damage(DamageType.FIRE, "3d6"), 150, 150);
-        public static readonly Attack BarbedDevilTail = new Attack("Tail", 6, new Damage(DamageType.PIERCING, "2d6+3"), 5);
-        public static readonly Attack BasiliskBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "2d6+3"), 5, new Damage(DamageType.POISON, "2d6"));
-        public static readonly Attack BatBite = new Attack("Bite", 2, new Damage(DamageType.PIERCING, 1), 5);
+        public static Attack BalorWhip {
+            get {
+                return new Attack("Whip", 14, new Damage(DamageType.SLASHING, "2d6+8"), 30, new Damage(DamageType.FIRE, "3d6"), BalorWhipEffect);
+            }
+        }
+        public static Attack BanditScimitar {
+            get {
+                return new Attack("Scimitar", 3, new Damage(DamageType.SLASHING, "1d6+1"), 5);
+            }
+        }
+        public static Attack BanditLightCrossbow {
+            get {
+                return new Attack("Light Crossbow", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5, 80, 320);
+            }
+        }
+        public static Attack BanditCaptainScimitar {
+            get {
+                return new Attack("Scimitar", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+            }
+        }
+        public static Attack BanditCaptainDaggerMelee {
+            get {
+                return new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5);
+            }
+        }
+        public static Attack BanditCaptainDaggerRanged {
+            get {
+                return new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5, 20, 60);
+            }
+        }
+        public static Attack BarbedDevilClaw {
+            get {
+                return new Attack("Claw", 6, new Damage(DamageType.PIERCING, "1d6+3"), 5);
+            }
+        }
+        public static Attack BarbedDevilHurlFlame {
+            get {
+                return new Attack("Hurl Flame", 5, new Damage(DamageType.FIRE, "3d6"), 150, 150);
+            }
+        }
+        public static Attack BarbedDevilTail {
+            get {
+                return new Attack("Tail", 6, new Damage(DamageType.PIERCING, "2d6+3"), 5);
+            }
+        }
+        public static Attack BasiliskBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "2d6+3"), 5, new Damage(DamageType.POISON, "2d6"));
+            }
+        }
+        public static Attack BatBite {
+            get {
+                return new Attack("Bite", 2, new Damage(DamageType.PIERCING, 1), 5);
+            }
+        }
         public static AttackEffect BeardedDevilBeardEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION)) return;
             if (target.IsImmune(DamageType.POISON)) return;
@@ -31,7 +87,11 @@ namespace srd5 {
                 return success;
             });
         };
-        public static readonly Attack BeardedDevilBeard = new Attack("Beard", 5, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+        public static Attack BeardedDevilBeard {
+            get {
+                return new Attack("Beard", 5, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+            }
+        }
         public static readonly AttackEffect BeardedDevilGlaiveEffect = delegate (Combattant attacker, Combattant target) {
             // do not affect undead and constructs
             if (target is Monster) {
@@ -52,16 +112,44 @@ namespace srd5 {
             // increase infernal wound stack by one
             target.AddEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL);
         };
-        public static readonly Attack BeardedDevilGlaive = new Attack("Glaive", 5, new Damage(DamageType.SLASHING, "1d10+3"), 10, null, BeardedDevilGlaiveEffect);
-        public static readonly Attack BehirBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "3d10+6"), 10);
+        public static Attack BeardedDevilGlaive {
+            get {
+                return new Attack("Glaive", 5, new Damage(DamageType.SLASHING, "1d10+3"), 10, null, BeardedDevilGlaiveEffect);
+            }
+        }
+        public static Attack BehirBite {
+            get {
+                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "3d10+6"), 10);
+            }
+        }
         public static readonly AttackEffect BehirConstrictEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 16, Monsters.Behir.Size + 1);
         };
-        public static readonly Attack BehirConstrict = new Attack("Constrict", 10, new Damage(DamageType.BLUDGEONING, "2d10+6"), 5, new Damage(DamageType.SLASHING, "2d10+6"), BehirConstrictEffect);
-        public static readonly Attack BerserkerGreataxe = new Attack("Greataxe", 5, new Damage(DamageType.SLASHING, "1d12+3"), 5);
-        public static readonly Attack BlackBearBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack BlackBearClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+2"), 5);
-        public static readonly Attack BlackDragonWyrmlingBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.ACID, "1d4"));
+        public static Attack BehirConstrict {
+            get {
+                return new Attack("Constrict", 10, new Damage(DamageType.BLUDGEONING, "2d10+6"), 5, new Damage(DamageType.SLASHING, "2d10+6"), BehirConstrictEffect);
+            }
+        }
+        public static Attack BerserkerGreataxe {
+            get {
+                return new Attack("Greataxe", 5, new Damage(DamageType.SLASHING, "1d12+3"), 5);
+            }
+        }
+        public static Attack BlackBearBite {
+            get {
+                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack BlackBearClaws {
+            get {
+                return new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+2"), 5);
+            }
+        }
+        public static Attack BlackDragonWyrmlingBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.ACID, "1d4"));
+            }
+        }
         public static readonly AttackEffect BlackPuddingPseudopodEffect = delegate (Combattant attacker, Combattant target) {
             if (target is CharacterSheet) {
                 CharacterSheet sheet = (CharacterSheet)target;
@@ -75,12 +163,36 @@ namespace srd5 {
                 }
             }
         };
-        public static readonly Attack BlackPuddingPseudopod = new Attack("Pseudopod", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5, new Damage(DamageType.ACID, "4d8"), BlackPuddingPseudopodEffect);
-        public static readonly Attack BlinkDogBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5);
-        public static readonly Attack BloodHawkBeak = new Attack("Beak", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
-        public static readonly Attack BlueDragonWyrmlingBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5, new Damage(DamageType.LIGHTNING, "1d6"));
-        public static readonly Attack BoarTusk = new Attack("Tusk", 3, new Damage(DamageType.SLASHING, "1d6+1"), 5);
-        public static readonly Attack BoneDevilClaw = new Attack("Claw", 8, new Damage(DamageType.SLASHING, "1d8+4"), 10);
+        public static Attack BlackPuddingPseudopod {
+            get {
+                return new Attack("Pseudopod", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5, new Damage(DamageType.ACID, "4d8"), BlackPuddingPseudopodEffect);
+            }
+        }
+        public static Attack BlinkDogBite {
+            get {
+                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5);
+            }
+        }
+        public static Attack BloodHawkBeak {
+            get {
+                return new Attack("Beak", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+            }
+        }
+        public static Attack BlueDragonWyrmlingBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5, new Damage(DamageType.LIGHTNING, "1d6"));
+            }
+        }
+        public static Attack BoarTusk {
+            get {
+                return new Attack("Tusk", 3, new Damage(DamageType.SLASHING, "1d6+1"), 5);
+            }
+        }
+        public static Attack BoneDevilClaw {
+            get {
+                return new Attack("Claw", 8, new Damage(DamageType.SLASHING, "1d8+4"), 10);
+            }
+        }
         public static readonly AttackEffect BoneDevilStingEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(BoneDevilSting, 14, AbilityType.CONSTITUTION)) return;
             if (target.IsImmune(DamageType.POISON)) return;
@@ -93,15 +205,51 @@ namespace srd5 {
                 return success;
             });
         };
-        public static readonly Attack BoneDevilSting = new Attack("Sting", 8, new Damage(DamageType.PIERCING, "2d8+4"), 10, new Damage(DamageType.POISON, "5d6"), BoneDevilStingEffect);
-        public static readonly Attack BrassDragonWyrmlingBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5);
-        public static readonly Attack BronzeDragonWyrmlingBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5);
-        public static readonly Attack BrownBearBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+4"), 5);
-        public static readonly Attack BrownBearClaws = new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d6+4"), 5);
-        public static readonly Attack BugbearMorningstar = new Attack("Morningstar", 4, new Damage(DamageType.PIERCING, "2d8+2"), 5);
-        public static readonly Attack BugbearJavelinMelee = new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "2d6+2"), 5);
-        public static readonly Attack BugbearJavelinRanged = new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "2d6+2"), 5, 30, 120);
-        public static readonly Attack BuletteBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "4d12+4"), 5);
+        public static Attack BoneDevilSting {
+            get {
+                return new Attack("Sting", 8, new Damage(DamageType.PIERCING, "2d8+4"), 10, new Damage(DamageType.POISON, "5d6"), BoneDevilStingEffect);
+            }
+        }
+        public static Attack BrassDragonWyrmlingBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5);
+            }
+        }
+        public static Attack BronzeDragonWyrmlingBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5);
+            }
+        }
+        public static Attack BrownBearBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+4"), 5);
+            }
+        }
+        public static Attack BrownBearClaws {
+            get {
+                return new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+            }
+        }
+        public static Attack BugbearMorningstar {
+            get {
+                return new Attack("Morningstar", 4, new Damage(DamageType.PIERCING, "2d8+2"), 5);
+            }
+        }
+        public static Attack BugbearJavelinMelee {
+            get {
+                return new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "2d6+2"), 5);
+            }
+        }
+        public static Attack BugbearJavelinRanged {
+            get {
+                return new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "2d6+2"), 5, 30, 120);
+            }
+        }
+        public static Attack BuletteBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "4d12+4"), 5);
+            }
+        }
     }
 
     public partial struct Monsters {

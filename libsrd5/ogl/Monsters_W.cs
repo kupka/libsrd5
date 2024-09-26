@@ -1,9 +1,25 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack WarhorseHooves = new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
-        public static readonly Attack WarhorseSkeletonHooves = new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
-        public static readonly Attack WaterElementalSlam = new Attack("Slam", 7, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
-        public static readonly Attack WeaselBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d1"), 5);
+        public static Attack WarhorseHooves {
+            get {
+                return new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
+            }
+        }
+        public static Attack WarhorseSkeletonHooves {
+            get {
+                return new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
+            }
+        }
+        public static Attack WaterElementalSlam {
+            get {
+                return new Attack("Slam", 7, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
+            }
+        }
+        public static Attack WeaselBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d1"), 5);
+            }
+        }
         public static readonly AttackEffect WerebearBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target is Monster) {
                 if (((Monster)target).Type != Monsters.Type.HUMANOID) return;
@@ -11,12 +27,36 @@ namespace srd5 {
             if (target.DC(WerebearBite, 14, AbilityType.CONSTITUTION)) return;
             target.AddEffect(Effect.CURSE_WEREBEAR);
         };
-        public static readonly Attack WerebearBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 5, null, WerebearBiteEffect);
-        public static readonly Attack WerebearClaw = new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d8+4"), 5);
-        public static readonly Attack WerebearHumanFormGreataxe = new Attack("Greataxe", 7, new Damage(DamageType.SLASHING, "1d12+4"), 5);
-        public static readonly Attack WerebearHybridFormBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 5, null, WerebearBiteEffect);
-        public static readonly Attack WerebearHybridFormClaw = new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d8+4"), 5);
-        public static readonly Attack WerebearHybridFormGreataxe = new Attack("Greataxe", 7, new Damage(DamageType.SLASHING, "1d12+4"), 5);
+        public static Attack WerebearBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 5, null, WerebearBiteEffect);
+            }
+        }
+        public static Attack WerebearClaw {
+            get {
+                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+            }
+        }
+        public static Attack WerebearHumanFormGreataxe {
+            get {
+                return new Attack("Greataxe", 7, new Damage(DamageType.SLASHING, "1d12+4"), 5);
+            }
+        }
+        public static Attack WerebearHybridFormBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 5, null, WerebearBiteEffect);
+            }
+        }
+        public static Attack WerebearHybridFormClaw {
+            get {
+                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+            }
+        }
+        public static Attack WerebearHybridFormGreataxe {
+            get {
+                return new Attack("Greataxe", 7, new Damage(DamageType.SLASHING, "1d12+4"), 5);
+            }
+        }
         public static readonly AttackEffect WereboarTusksEffect = delegate (Combattant attacker, Combattant target) {
             if (target is Monster) {
                 if (((Monster)target).Type != Monsters.Type.HUMANOID) return;
@@ -24,12 +64,36 @@ namespace srd5 {
             if (target.DC(WereboarTusks, 12, AbilityType.CONSTITUTION)) return;
             target.AddEffect(Effect.CURSE_WEREBOAR);
         };
-        public static readonly Attack WereboarTusks = new Attack("Tusks", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, null, WereboarTusksEffect);
-        public static readonly Attack WereboarHumanFormMaul = new Attack("Maul", 5, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5);
-        public static readonly Attack WereboarHybridFormTusks = new Attack("Tusks", 5, new Damage(DamageType.SLASHING, "1d6+0"), 5, null, WereboarTusksEffect);
-        public static readonly Attack WereboarHybridFormMaul = new Attack("Maul", 5, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5);
-        public static readonly Attack WereratHumanFormShortsword = new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack WereratHumanFormHandCrossbow = new Attack("Hand Crossbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 30, 120);
+        public static Attack WereboarTusks {
+            get {
+                return new Attack("Tusks", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, null, WereboarTusksEffect);
+            }
+        }
+        public static Attack WereboarHumanFormMaul {
+            get {
+                return new Attack("Maul", 5, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5);
+            }
+        }
+        public static Attack WereboarHybridFormTusks {
+            get {
+                return new Attack("Tusks", 5, new Damage(DamageType.SLASHING, "1d6+0"), 5, null, WereboarTusksEffect);
+            }
+        }
+        public static Attack WereboarHybridFormMaul {
+            get {
+                return new Attack("Maul", 5, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5);
+            }
+        }
+        public static Attack WereratHumanFormShortsword {
+            get {
+                return new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack WereratHumanFormHandCrossbow {
+            get {
+                return new Attack("Hand Crossbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 30, 120);
+            }
+        }
         public static readonly AttackEffect WereratBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target is Monster) {
                 if (((Monster)target).Type != Monsters.Type.HUMANOID) return;
@@ -37,12 +101,36 @@ namespace srd5 {
             if (target.DC(WereratBite, 11, AbilityType.CONSTITUTION)) return;
             target.AddEffect(Effect.CURSE_WERERAT);
         };
-        public static readonly Attack WereratHybridFormBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, WereratBiteEffect);
-        public static readonly Attack WereratHybridFormShortsword = new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack WereratHybridFormHandCrossbow = new Attack("Hand Crossbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 30, 120);
-        public static readonly Attack WereratBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, WereratBiteEffect);
-        public static readonly Attack WeretigerHumanFormScimitar = new Attack("Scimitar", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
-        public static readonly Attack WeretigerHumanFormLongbow = new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, 150, 600);
+        public static Attack WereratHybridFormBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, WereratBiteEffect);
+            }
+        }
+        public static Attack WereratHybridFormShortsword {
+            get {
+                return new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack WereratHybridFormHandCrossbow {
+            get {
+                return new Attack("Hand Crossbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 30, 120);
+            }
+        }
+        public static Attack WereratBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, WereratBiteEffect);
+            }
+        }
+        public static Attack WeretigerHumanFormScimitar {
+            get {
+                return new Attack("Scimitar", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+            }
+        }
+        public static Attack WeretigerHumanFormLongbow {
+            get {
+                return new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, 150, 600);
+            }
+        }
         public static readonly AttackEffect WeretigerBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target is Monster) {
                 if (((Monster)target).Type != Monsters.Type.HUMANOID) return;
@@ -50,14 +138,46 @@ namespace srd5 {
             if (target.DC(WeretigerBite, 13, AbilityType.CONSTITUTION)) return;
             target.AddEffect(Effect.CURSE_WERETIGER);
         };
-        public static readonly Attack WeretigerHybridFormBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5, null, WeretigerBiteEffect);
-        public static readonly Attack WeretigerHybridFormClaw = new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d8+3"), 5);
-        public static readonly Attack WeretigerHybridFormScimitar = new Attack("Scimitar", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
-        public static readonly Attack WeretigerHybridFormLongbow = new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, 150, 600);
-        public static readonly Attack WeretigerBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5, null, WeretigerBiteEffect);
-        public static readonly Attack WeretigerClaw = new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d8+3"), 5);
-        public static readonly Attack WerewolfHumanFormSpearMelee = new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
-        public static readonly Attack WerewolfHumanFormSpearRanged = new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d8+2"), 20, 60);
+        public static Attack WeretigerHybridFormBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5, null, WeretigerBiteEffect);
+            }
+        }
+        public static Attack WeretigerHybridFormClaw {
+            get {
+                return new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d8+3"), 5);
+            }
+        }
+        public static Attack WeretigerHybridFormScimitar {
+            get {
+                return new Attack("Scimitar", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+            }
+        }
+        public static Attack WeretigerHybridFormLongbow {
+            get {
+                return new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, 150, 600);
+            }
+        }
+        public static Attack WeretigerBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5, null, WeretigerBiteEffect);
+            }
+        }
+        public static Attack WeretigerClaw {
+            get {
+                return new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d8+3"), 5);
+            }
+        }
+        public static Attack WerewolfHumanFormSpearMelee {
+            get {
+                return new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+            }
+        }
+        public static Attack WerewolfHumanFormSpearRanged {
+            get {
+                return new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d8+2"), 20, 60);
+            }
+        }
         public static readonly AttackEffect WerewolfBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target is Monster) {
                 if (((Monster)target).Type != Monsters.Type.HUMANOID) return;
@@ -65,11 +185,27 @@ namespace srd5 {
             if (target.DC(WerewolfBite, 12, AbilityType.CONSTITUTION)) return;
             target.AddEffect(Effect.CURSE_WEREWOLF);
         };
-        public static readonly Attack WerewolfHybridFormBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+0"), 5, null, WerewolfBiteEffect);
-        public static readonly Attack WerewolfHybridFormClaws = new Attack("Claws", 4, new Damage(DamageType.SLASHING, "2d4+2"), 5);
+        public static Attack WerewolfHybridFormBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+0"), 5, null, WerewolfBiteEffect);
+            }
+        }
+        public static Attack WerewolfHybridFormClaws {
+            get {
+                return new Attack("Claws", 4, new Damage(DamageType.SLASHING, "2d4+2"), 5);
+            }
+        }
 
-        public static readonly Attack WerewolfBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, null, WerewolfBiteEffect);
-        public static readonly Attack WhiteDragonWyrmlingBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.COLD, "1d4"));
+        public static Attack WerewolfBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, null, WerewolfBiteEffect);
+            }
+        }
+        public static Attack WhiteDragonWyrmlingBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.COLD, "1d4"));
+            }
+        }
         public static readonly AttackEffect WightLifeDrainEffect = delegate (Combattant attacker, Combattant target) {
             int damage = target.TakeDamage(DamageType.NECROTIC, "1d6+2");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
@@ -80,28 +216,56 @@ namespace srd5 {
             // unless the humanoid is restored to life or its body is destroyed. 
             // The wight can have no more than twelve zombies under its control at one time.
         };
-        public static readonly Attack WightLifeDrain = new Attack("Life Drain", 4, new Damage(DamageType.NECROTIC, 0), 5, null, WightLifeDrainEffect);
-        public static readonly Attack WightLongsword = new Attack("Longsword", 4, new Damage(DamageType.SLASHING, "1d10+2"), 5);
-        public static readonly Attack WightLongbow = new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, 150, 600);
-        public static readonly Attack WilloWispShock = new Attack("Shock", 4, new Damage(DamageType.LIGHTNING, "2d8"), 5);
+        public static Attack WightLifeDrain {
+            get {
+                return new Attack("Life Drain", 4, new Damage(DamageType.NECROTIC, 0), 5, null, WightLifeDrainEffect);
+            }
+        }
+        public static Attack WightLongsword {
+            get {
+                return new Attack("Longsword", 4, new Damage(DamageType.SLASHING, "1d10+2"), 5);
+            }
+        }
+        public static Attack WightLongbow {
+            get {
+                return new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, 150, 600);
+            }
+        }
+        public static Attack WilloWispShock {
+            get {
+                return new Attack("Shock", 4, new Damage(DamageType.LIGHTNING, "2d8"), 5);
+            }
+        }
         public static readonly AttackEffect WinterWolfBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.HasEffect(Effect.IMMUNITY_PRONE)) return;
             if (target.DC(WinterWolfBite, 14, AbilityType.STRENGTH)) return;
             target.AddCondition(ConditionType.PRONE);
         };
-        public static readonly Attack WinterWolfBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d6+4"), 5, null, WinterWolfBiteEffect);
+        public static Attack WinterWolfBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d6+4"), 5, null, WinterWolfBiteEffect);
+            }
+        }
         public static readonly AttackEffect WolfBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.HasEffect(Effect.IMMUNITY_PRONE)) return;
             if (target.DC(WolfBite, 11, AbilityType.STRENGTH)) return;
             target.AddCondition(ConditionType.PRONE);
         };
-        public static readonly Attack WolfBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+0"), 5, null, WolfBiteEffect);
+        public static Attack WolfBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+0"), 5, null, WolfBiteEffect);
+            }
+        }
         public static readonly AttackEffect WorgBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.HasEffect(Effect.IMMUNITY_PRONE)) return;
             if (target.DC(WorgBite, 13, AbilityType.STRENGTH)) return;
             target.AddCondition(ConditionType.PRONE);
         };
-        public static readonly Attack WorgBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "2d6+3"), 5, null, WorgBiteEffect);
+        public static Attack WorgBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "2d6+3"), 5, null, WorgBiteEffect);
+            }
+        }
         public static readonly AttackEffect WraithLifeDrainEffect = delegate (Combattant attacker, Combattant target) {
             int damage = target.TakeDamage(DamageType.NECROTIC, "4d8+3");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
@@ -109,13 +273,29 @@ namespace srd5 {
                 target.Die();
             }
         };
-        public static readonly Attack WraithLifeDrain = new Attack("Life Drain", 6, new Damage(DamageType.NECROTIC, 0), 5, null, WraithLifeDrainEffect);
+        public static Attack WraithLifeDrain {
+            get {
+                return new Attack("Life Drain", 6, new Damage(DamageType.NECROTIC, 0), 5, null, WraithLifeDrainEffect);
+            }
+        }
         public static readonly AttackEffect WyvernStingerEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, WyvernStinger, "7d6", 15);
         };
-        public static readonly Attack WyvernStinger = new Attack("Stinger", 7, new Damage(DamageType.PIERCING, "2d6+4"), 5, null, WyvernStingerEffect);
-        public static readonly Attack WyvernBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d6+4"), 10);
-        public static readonly Attack WyvernClaws = new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+        public static Attack WyvernStinger {
+            get {
+                return new Attack("Stinger", 7, new Damage(DamageType.PIERCING, "2d6+4"), 5, null, WyvernStingerEffect);
+            }
+        }
+        public static Attack WyvernBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d6+4"), 10);
+            }
+        }
+        public static Attack WyvernClaws {
+            get {
+                return new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+            }
+        }
     }
 
     public partial struct Monsters {

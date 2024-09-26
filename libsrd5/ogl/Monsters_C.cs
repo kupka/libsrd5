@@ -1,10 +1,30 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack CamelBite = new Attack("Bite", 5, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
-        public static readonly Attack CatClaws = new Attack("Claws", 0, new Damage(DamageType.SLASHING, 1), 5);
-        public static readonly Attack CentaurPike = new Attack("Pike", 6, new Damage(DamageType.PIERCING, "1d10+4"), 10);
-        public static readonly Attack CentaurHooves = new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
-        public static readonly Attack CentaurLongbow = new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, 150, 600);
+        public static Attack CamelBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
+            }
+        }
+        public static Attack CatClaws {
+            get {
+                return new Attack("Claws", 0, new Damage(DamageType.SLASHING, 1), 5);
+            }
+        }
+        public static Attack CentaurPike {
+            get {
+                return new Attack("Pike", 6, new Damage(DamageType.PIERCING, "1d10+4"), 10);
+            }
+        }
+        public static Attack CentaurHooves {
+            get {
+                return new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
+            }
+        }
+        public static Attack CentaurLongbow {
+            get {
+                return new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, 150, 600);
+            }
+        }
         public static readonly AttackEffect ChainDevilChainEffect = delegate (Combattant attacker, Combattant target) {
             if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
             if (attacker.HasEffect(Effect.GRAPPLING)) return;
@@ -21,14 +41,34 @@ namespace srd5 {
                 return false;
             });
         };
-        public static readonly Attack ChainDevilChain = new Attack("Chain", 8, new Damage(DamageType.SLASHING, "2d6+4"), 5, null, ChainDevilChainEffect);
-        public static readonly Attack ChimeraBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d6+4"), 5);
-        public static readonly Attack ChimeraHorns = new Attack("Horns", 7, new Damage(DamageType.BLUDGEONING, "1d12+4"), 5);
-        public static readonly Attack ChimeraClaws = new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+        public static Attack ChainDevilChain {
+            get {
+                return new Attack("Chain", 8, new Damage(DamageType.SLASHING, "2d6+4"), 5, null, ChainDevilChainEffect);
+            }
+        }
+        public static Attack ChimeraBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d6+4"), 5);
+            }
+        }
+        public static Attack ChimeraHorns {
+            get {
+                return new Attack("Horns", 7, new Damage(DamageType.BLUDGEONING, "1d12+4"), 5);
+            }
+        }
+        public static Attack ChimeraClaws {
+            get {
+                return new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+            }
+        }
         public static readonly AttackEffect ChuulPincerEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 14, Size.LARGE, false, null, 2);
         };
-        public static readonly Attack ChuulPincer = new Attack("Pincer", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5, null, ChuulPincerEffect);
+        public static Attack ChuulPincer {
+            get {
+                return new Attack("Pincer", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5, null, ChuulPincerEffect);
+            }
+        }
         public static readonly AttackEffect ClayGolemSlamEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(ClayGolemSlam, 15, AbilityType.CONSTITUTION)) return;
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-16, HitPointMaxiumModifier.RemovedByEffect.GREATER_RESTORATION)); // FIXME: Amount should be equal to actual damage, not average
@@ -36,7 +76,11 @@ namespace srd5 {
                 // TODO: target dies
             }
         };
-        public static readonly Attack ClayGolemSlam = new Attack("Slam", 8, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5, null, ClayGolemSlamEffect);
+        public static Attack ClayGolemSlam {
+            get {
+                return new Attack("Slam", 8, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5, null, ClayGolemSlamEffect);
+            }
+        }
         public static readonly AttackEffect CloakerBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.Size > Size.LARGE) return;
             if (attacker.HasEffect(Effect.ATTACHED_TO_TARGET)) return;
@@ -49,10 +93,26 @@ namespace srd5 {
             target.AddCondition(ConditionType.BLINDED);
             target.AddEffect(Effect.UNABLE_TO_BREATHE);
         };
-        public static readonly Attack CloakerBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d6+3"), 5, null, CloakerBiteEffect);
-        public static readonly Attack CloakerTail = new Attack("Tail", 6, new Damage(DamageType.SLASHING, "1d8+3"), 10);
-        public static readonly Attack CloudGiantMorningstar = new Attack("Morningstar", 12, new Damage(DamageType.PIERCING, "3d8+8"), 10);
-        public static readonly Attack CloudGiantRock = new Attack("Rock", 12, new Damage(DamageType.BLUDGEONING, "4d10+8"), 5, 60, 240);
+        public static Attack CloakerBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d6+3"), 5, null, CloakerBiteEffect);
+            }
+        }
+        public static Attack CloakerTail {
+            get {
+                return new Attack("Tail", 6, new Damage(DamageType.SLASHING, "1d8+3"), 10);
+            }
+        }
+        public static Attack CloudGiantMorningstar {
+            get {
+                return new Attack("Morningstar", 12, new Damage(DamageType.PIERCING, "3d8+8"), 10);
+            }
+        }
+        public static Attack CloudGiantRock {
+            get {
+                return new Attack("Rock", 12, new Damage(DamageType.BLUDGEONING, "4d10+8"), 5, 60, 240);
+            }
+        }
         public static readonly AttackEffect CockatriceBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(CockatriceBite, 12, AbilityType.CONSTITUTION)) return;
             target.AddCondition(ConditionType.RESTRAINED);
@@ -62,14 +122,34 @@ namespace srd5 {
                 return true;
             });
         };
-        public static readonly Attack CockatriceBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d4+1"), 5, null, CockatriceBiteEffect);
-        public static readonly Attack CommonerClub = new Attack("Club", 2, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
+        public static Attack CockatriceBite {
+            get {
+                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d4+1"), 5, null, CockatriceBiteEffect);
+            }
+        }
+        public static Attack CommonerClub {
+            get {
+                return new Attack("Club", 2, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
+            }
+        }
         public static readonly AttackEffect ConstrictorSnakeConstrictEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 14, Monsters.ConstrictorSnake.Size + 1, true);
         };
-        public static readonly Attack ConstrictorSnakeConstrict = new Attack("Constrict", 4, new Damage(DamageType.BLUDGEONING, "1d8+2"), 5, null, ConstrictorSnakeConstrictEffect);
-        public static readonly Attack ConstrictorSnakeBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack CopperDragonWyrmlingBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5);
+        public static Attack ConstrictorSnakeConstrict {
+            get {
+                return new Attack("Constrict", 4, new Damage(DamageType.BLUDGEONING, "1d8+2"), 5, null, ConstrictorSnakeConstrictEffect);
+            }
+        }
+        public static Attack ConstrictorSnakeBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack CopperDragonWyrmlingBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5);
+            }
+        }
         public static readonly AttackEffect CouatlBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.IsImmune(DamageType.POISON)) return;
             if (target.DC(CouatlBite, 13, AbilityType.CONSTITUTION)) return;
@@ -79,19 +159,47 @@ namespace srd5 {
                 return true;
             });
         };
-        public static readonly Attack CouatlBite = new Attack("Bite", 8, new Damage(DamageType.PIERCING, "1d6+5"), 5, null, CouatlBiteEffect);
+        public static Attack CouatlBite {
+            get {
+                return new Attack("Bite", 8, new Damage(DamageType.PIERCING, "1d6+5"), 5, null, CouatlBiteEffect);
+            }
+        }
         public static readonly AttackEffect CouatlConstrictEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 15, Monsters.Couatl.Size + 1, true);
         };
-        public static readonly Attack CouatlConstrict = new Attack("Constrict", 6, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, null, CouatlConstrictEffect);
-        public static readonly Attack CrabClaw = new Attack("Claw", 0, new Damage(DamageType.BLUDGEONING, 1), 5);
+        public static Attack CouatlConstrict {
+            get {
+                return new Attack("Constrict", 6, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, null, CouatlConstrictEffect);
+            }
+        }
+        public static Attack CrabClaw {
+            get {
+                return new Attack("Claw", 0, new Damage(DamageType.BLUDGEONING, 1), 5);
+            }
+        }
         public static readonly AttackEffect CrocodileBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 12, Monsters.Crocodile.Size + 1, true, CrocodileBite);
         };
-        public static readonly Attack CrocodileBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, null, CrocodileBiteEffect);
-        public static readonly Attack CultFanaticDaggerMelee = new Attack("Dagger", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
-        public static readonly Attack CultFanaticDaggerRanged = new Attack("Dagger", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, 20, 60);
-        public static readonly Attack CultistScimitar = new Attack("Scimitar", 3, new Damage(DamageType.SLASHING, "1d6+1"), 5);
+        public static Attack CrocodileBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, null, CrocodileBiteEffect);
+            }
+        }
+        public static Attack CultFanaticDaggerMelee {
+            get {
+                return new Attack("Dagger", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+            }
+        }
+        public static Attack CultFanaticDaggerRanged {
+            get {
+                return new Attack("Dagger", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, 20, 60);
+            }
+        }
+        public static Attack CultistScimitar {
+            get {
+                return new Attack("Scimitar", 3, new Damage(DamageType.SLASHING, "1d6+1"), 5);
+            }
+        }
     }
 
     public partial struct Monsters {

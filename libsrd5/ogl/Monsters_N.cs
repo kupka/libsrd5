@@ -1,10 +1,30 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack NalfeshneeBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "5d10+5"), 5);
-        public static readonly Attack NalfeshneeClaw = new Attack("Claw", 10, new Damage(DamageType.SLASHING, "3d6+5"), 10);
-        public static readonly Attack NightHagClaws = new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d8+4"), 5);
-        public static readonly Attack NightmareHooves = new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5, new Damage(DamageType.FIRE, "2d6"));
-        public static readonly Attack NobleRapier = new Attack("Rapier", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
+        public static Attack NalfeshneeBite {
+            get {
+                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "5d10+5"), 5);
+            }
+        }
+        public static Attack NalfeshneeClaw {
+            get {
+                return new Attack("Claw", 10, new Damage(DamageType.SLASHING, "3d6+5"), 10);
+            }
+        }
+        public static Attack NightHagClaws {
+            get {
+                return new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+            }
+        }
+        public static Attack NightmareHooves {
+            get {
+                return new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5, new Damage(DamageType.FIRE, "2d6"));
+            }
+        }
+        public static Attack NobleRapier {
+            get {
+                return new Attack("Rapier", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
+            }
+        }
     }
 
     public partial struct Monsters {

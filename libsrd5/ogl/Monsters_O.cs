@@ -1,38 +1,106 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack OchreJellyPseudopod = new Attack("Pseudopod", 4, new Damage(DamageType.BLUDGEONING, "2d6+2"), 5, new Damage(DamageType.ACID, "1d6"));
+        public static Attack OchreJellyPseudopod {
+            get {
+                return new Attack("Pseudopod", 4, new Damage(DamageType.BLUDGEONING, "2d6+2"), 5, new Damage(DamageType.ACID, "1d6"));
+            }
+        }
         public static readonly AttackEffect OctopusTentaclesEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 10, Monsters.Octopus.Size++, false, Attacks.OctopusTentacles, 1);
         };
-        public static readonly Attack OctopusTentacles = new Attack("Tentacles", 4, new Damage(DamageType.BLUDGEONING, 1), 5, null, OctopusTentaclesEffect);
+        public static Attack OctopusTentacles {
+            get {
+                return new Attack("Tentacles", 4, new Damage(DamageType.BLUDGEONING, 1), 5, null, OctopusTentaclesEffect);
+            }
+        }
         public static readonly AttackEffect OctopusInkCloudEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: A 5-foot-radius cloud of ink extends all around the octopus if it is underwater. 
             // The area is heavily obscured for 1 minute, although a significant current can disperse the ink. 
             // After releasing the ink, the octopus can use the Dash action as a bonus action.
         };
-        public static readonly Attack OctopusInkCloud = new Attack("Ink Cloud", 0, new Damage(DamageType.TRUE_DAMAGE, 0), 5, null, OctopusInkCloudEffect);
-        public static readonly Attack OgreGreatclub = new Attack("Greatclub", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
-        public static readonly Attack OgreJavelinMelee = new Attack("Javelin", 6, new Damage(DamageType.PIERCING, "2d6+4"), 5);
-        public static readonly Attack OgreJavelinRanged = new Attack("Javelin", 6, new Damage(DamageType.PIERCING, "2d6+4"), 5, 30, 120);
-        public static readonly Attack OgreZombieMorningstar = new Attack("Morningstar", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
-        public static readonly Attack OniGlaive = new Attack("Glaive", 7, new Damage(DamageType.SLASHING, "2d10+4"), 5);
-        public static readonly Attack OniClaw = new Attack("Claw", 7, new Damage(DamageType.SLASHING, "1d8+4"), 5);
-        public static readonly Attack OrcGreataxe = new Attack("Greataxe", 5, new Damage(DamageType.SLASHING, "1d12+3"), 5);
-        public static readonly Attack OrcJavelinMelee = new Attack("Javelin", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
-        public static readonly Attack OrcJavelinRanged = new Attack("Javelin", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5, 30, 120);
+        public static Attack OctopusInkCloud {
+            get {
+                return new Attack("Ink Cloud", 0, new Damage(DamageType.TRUE_DAMAGE, 0), 5, null, OctopusInkCloudEffect);
+            }
+        }
+        public static Attack OgreGreatclub {
+            get {
+                return new Attack("Greatclub", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
+            }
+        }
+        public static Attack OgreJavelinMelee {
+            get {
+                return new Attack("Javelin", 6, new Damage(DamageType.PIERCING, "2d6+4"), 5);
+            }
+        }
+        public static Attack OgreJavelinRanged {
+            get {
+                return new Attack("Javelin", 6, new Damage(DamageType.PIERCING, "2d6+4"), 5, 30, 120);
+            }
+        }
+        public static Attack OgreZombieMorningstar {
+            get {
+                return new Attack("Morningstar", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
+            }
+        }
+        public static Attack OniGlaive {
+            get {
+                return new Attack("Glaive", 7, new Damage(DamageType.SLASHING, "2d10+4"), 5);
+            }
+        }
+        public static Attack OniClaw {
+            get {
+                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "1d8+4"), 5);
+            }
+        }
+        public static Attack OrcGreataxe {
+            get {
+                return new Attack("Greataxe", 5, new Damage(DamageType.SLASHING, "1d12+3"), 5);
+            }
+        }
+        public static Attack OrcJavelinMelee {
+            get {
+                return new Attack("Javelin", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
+            }
+        }
+        public static Attack OrcJavelinRanged {
+            get {
+                return new Attack("Javelin", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5, 30, 120);
+            }
+        }
         public static readonly AttackEffect OtyughBiteEffect = delegate (Combattant attacker, Combattant target) {
             bool success = target.DC(OtyughBite, 15, AbilityType.CONSTITUTION);
             if (success) return;
             target.AddEffect(Effect.OTYUGH_DISEASE);
         };
-        public static readonly Attack OtyughBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d8+3"), 5, null, OtyughBiteEffect);
+        public static Attack OtyughBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d8+3"), 5, null, OtyughBiteEffect);
+            }
+        }
         public static readonly AttackEffect OtyughTentacleEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 13, Size.MEDIUM, true, null, 2);
         };
-        public static readonly Attack OtyughTentacle = new Attack("Tentacle", 6, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, null, OtyughTentacleEffect);
-        public static readonly Attack OwlTalons = new Attack("Talons", 3, new Damage(DamageType.SLASHING, 1), 5);
-        public static readonly Attack OwlbearBeak = new Attack("Beak", 7, new Damage(DamageType.PIERCING, "1d10+5"), 5);
-        public static readonly Attack OwlbearClaws = new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d8+5"), 5);
+        public static Attack OtyughTentacle {
+            get {
+                return new Attack("Tentacle", 6, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, null, OtyughTentacleEffect);
+            }
+        }
+        public static Attack OwlTalons {
+            get {
+                return new Attack("Talons", 3, new Damage(DamageType.SLASHING, 1), 5);
+            }
+        }
+        public static Attack OwlbearBeak {
+            get {
+                return new Attack("Beak", 7, new Damage(DamageType.PIERCING, "1d10+5"), 5);
+            }
+        }
+        public static Attack OwlbearClaws {
+            get {
+                return new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d8+5"), 5);
+            }
+        }
     }
 
     public partial struct Monsters {

@@ -6,14 +6,46 @@ namespace srd5 {
             target.AddEffect(Effect.FIRE_ELEMENTAL_IGNITE);
             // TODO: Add means to remove effect ("Until a creature takes an action to douse the fire...")
         };
-        public static readonly Attack FireElementalTouch = new Attack("Touch", 6, new Damage(DamageType.FIRE, "1d6+0"), 5, null, FireElementalTouchEffect);
-        public static readonly Attack FireGiantGreatsword = new Attack("Greatsword", 11, new Damage(DamageType.SLASHING, "6d6+7"), 10);
-        public static readonly Attack FireGiantRock = new Attack("Rock", 11, new Damage(DamageType.BLUDGEONING, "4d10+7"), 5, 60, 240);
-        public static readonly Attack FleshGolemSlam = new Attack("Slam", 7, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
-        public static readonly Attack FlyingSnakeBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, 1), 5, new Damage(DamageType.POISON, "3d4"));
-        public static readonly Attack FlyingSwordLongsword = new Attack("Longsword", 3, new Damage(DamageType.SLASHING, "1d8+1"), 5);
-        public static readonly Attack FrostGiantGreataxe = new Attack("Greataxe", 9, new Damage(DamageType.SLASHING, "3d12+6"), 10);
-        public static readonly Attack FrostGiantRock = new Attack("Rock", 9, new Damage(DamageType.BLUDGEONING, "4d10+6"), 5, 60, 240);
+        public static Attack FireElementalTouch {
+            get {
+                return new Attack("Touch", 6, new Damage(DamageType.FIRE, "1d6+0"), 5, null, FireElementalTouchEffect);
+            }
+        }
+        public static Attack FireGiantGreatsword {
+            get {
+                return new Attack("Greatsword", 11, new Damage(DamageType.SLASHING, "6d6+7"), 10);
+            }
+        }
+        public static Attack FireGiantRock {
+            get {
+                return new Attack("Rock", 11, new Damage(DamageType.BLUDGEONING, "4d10+7"), 5, 60, 240);
+            }
+        }
+        public static Attack FleshGolemSlam {
+            get {
+                return new Attack("Slam", 7, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
+            }
+        }
+        public static Attack FlyingSnakeBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, 1), 5, new Damage(DamageType.POISON, "3d4"));
+            }
+        }
+        public static Attack FlyingSwordLongsword {
+            get {
+                return new Attack("Longsword", 3, new Damage(DamageType.SLASHING, "1d8+1"), 5);
+            }
+        }
+        public static Attack FrostGiantGreataxe {
+            get {
+                return new Attack("Greataxe", 9, new Damage(DamageType.SLASHING, "3d12+6"), 10);
+            }
+        }
+        public static Attack FrostGiantRock {
+            get {
+                return new Attack("Rock", 9, new Damage(DamageType.BLUDGEONING, "4d10+6"), 5, 60, 240);
+            }
+        }
     }
 
     public partial struct Monsters {

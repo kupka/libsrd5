@@ -1,16 +1,48 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack IceDevilTail = new Attack("Tail", 10, new Damage(DamageType.BLUDGEONING, "2d6+5"), 5, new Damage(DamageType.COLD, "3d6"));
-        public static readonly Attack IceDevilBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d6+5"), 5, new Damage(DamageType.COLD, "3d6"));
-        public static readonly Attack IceDevilClaws = new Attack("Claws", 10, new Damage(DamageType.SLASHING, "2d4+5"), 5, new Damage(DamageType.COLD, "3d6"));
-        public static readonly Attack IceMephitClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "1d4+1"), 5, new Damage(DamageType.COLD, "1d4"));
+        public static Attack IceDevilTail {
+            get {
+                return new Attack("Tail", 10, new Damage(DamageType.BLUDGEONING, "2d6+5"), 5, new Damage(DamageType.COLD, "3d6"));
+            }
+        }
+        public static Attack IceDevilBite {
+            get {
+                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d6+5"), 5, new Damage(DamageType.COLD, "3d6"));
+            }
+        }
+        public static Attack IceDevilClaws {
+            get {
+                return new Attack("Claws", 10, new Damage(DamageType.SLASHING, "2d4+5"), 5, new Damage(DamageType.COLD, "3d6"));
+            }
+        }
+        public static Attack IceMephitClaws {
+            get {
+                return new Attack("Claws", 3, new Damage(DamageType.SLASHING, "1d4+1"), 5, new Damage(DamageType.COLD, "1d4"));
+            }
+        }
         public static readonly AttackEffect ImpStingEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, ImpSting, "1d4+3", 11);
         };
-        public static readonly Attack ImpSting = new Attack("Sting", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5, null, ImpStingEffect);
-        public static readonly Attack InvisibleStalkerSlam = new Attack("Slam", 6, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5);
-        public static readonly Attack IronGolemSlam = new Attack("Slam", 13, new Damage(DamageType.BLUDGEONING, "3d8+7"), 5);
-        public static readonly Attack IronGolemSword = new Attack("Sword", 13, new Damage(DamageType.SLASHING, "3d10+7"), 10);
+        public static Attack ImpSting {
+            get {
+                return new Attack("Sting", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5, null, ImpStingEffect);
+            }
+        }
+        public static Attack InvisibleStalkerSlam {
+            get {
+                return new Attack("Slam", 6, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5);
+            }
+        }
+        public static Attack IronGolemSlam {
+            get {
+                return new Attack("Slam", 13, new Damage(DamageType.BLUDGEONING, "3d8+7"), 5);
+            }
+        }
+        public static Attack IronGolemSword {
+            get {
+                return new Attack("Sword", 13, new Damage(DamageType.SLASHING, "3d10+7"), 10);
+            }
+        }
     }
 
     public partial struct Monsters {

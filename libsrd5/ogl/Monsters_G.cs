@@ -1,8 +1,20 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack GargoyleBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack GargoyleClaws = new Attack("Claws", 4, new Damage(DamageType.SLASHING, "1d6+2"), 5);
-        public static readonly Attack GelatinousCubePseudopod = new Attack("Pseudopod", 4, new Damage(DamageType.ACID, "3d6"), 5);
+        public static Attack GargoyleBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack GargoyleClaws {
+            get {
+                return new Attack("Claws", 4, new Damage(DamageType.SLASHING, "1d6+2"), 5);
+            }
+        }
+        public static Attack GelatinousCubePseudopod {
+            get {
+                return new Attack("Pseudopod", 4, new Damage(DamageType.ACID, "3d6"), 5);
+            }
+        }
         public static readonly AttackEffect GhastClawsEffect = delegate (Combattant attacker, Combattant target) {
             if (target is Monster monster) {
                 if (monster.Type == Monsters.Type.UNDEAD) return;
@@ -11,9 +23,21 @@ namespace srd5 {
             if (success) return;
             target.AddEffect(Effect.GHAST_CLAWS_PARALYZATION);
         };
-        public static readonly Attack GhastClaws = new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, null, GhastClawsEffect);
-        public static readonly Attack GhastBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "2d8+3"), 5);
-        public static readonly Attack GhostWitheringTouch = new Attack("Withering Touch", 5, new Damage(DamageType.NECROTIC, "4d6+3"), 5);
+        public static Attack GhastClaws {
+            get {
+                return new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, null, GhastClawsEffect);
+            }
+        }
+        public static Attack GhastBite {
+            get {
+                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "2d8+3"), 5);
+            }
+        }
+        public static Attack GhostWitheringTouch {
+            get {
+                return new Attack("Withering Touch", 5, new Damage(DamageType.NECROTIC, "4d6+3"), 5);
+            }
+        }
         public static readonly AttackEffect GhoulClawsEffect = delegate (Combattant attacker, Combattant target) {
             if (target is CharacterSheet sheet) {
                 if (sheet.Race.Race == Race.HALF_ELF || sheet.Race.Race == Race.HIGH_ELF) return;
@@ -25,163 +49,435 @@ namespace srd5 {
             if (success) return;
             target.AddEffect(Effect.GHOUL_CLAWS_PARALYZATION);
         };
-        public static readonly Attack GhoulClaws = new Attack("Claws", 4, new Damage(DamageType.SLASHING, "2d4+2"), 5, null, GhoulClawsEffect);
-        public static readonly Attack GhoulBite = new Attack("Bite", 2, new Damage(DamageType.PIERCING, "2d6+2"), 5);
-        public static readonly Attack GiantApeFist = new Attack("Fist", 9, new Damage(DamageType.BLUDGEONING, "3d10+6"), 10);
-        public static readonly Attack GiantApeRock = new Attack("Rock", 9, new Damage(DamageType.BLUDGEONING, "7d6+6"), 5, 50, 100);
-        public static readonly Attack GiantBadgerBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5);
-        public static readonly Attack GiantBadgerClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+1"), 5);
-        public static readonly Attack GiantBatBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack GiantBoarTusk = new Attack("Tusk", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
+        public static Attack GhoulClaws {
+            get {
+                return new Attack("Claws", 4, new Damage(DamageType.SLASHING, "2d4+2"), 5, null, GhoulClawsEffect);
+            }
+        }
+        public static Attack GhoulBite {
+            get {
+                return new Attack("Bite", 2, new Damage(DamageType.PIERCING, "2d6+2"), 5);
+            }
+        }
+        public static Attack GiantApeFist {
+            get {
+                return new Attack("Fist", 9, new Damage(DamageType.BLUDGEONING, "3d10+6"), 10);
+            }
+        }
+        public static Attack GiantApeRock {
+            get {
+                return new Attack("Rock", 9, new Damage(DamageType.BLUDGEONING, "7d6+6"), 5, 50, 100);
+            }
+        }
+        public static Attack GiantBadgerBite {
+            get {
+                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5);
+            }
+        }
+        public static Attack GiantBadgerClaws {
+            get {
+                return new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+1"), 5);
+            }
+        }
+        public static Attack GiantBatBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack GiantBoarTusk {
+            get {
+                return new Attack("Tusk", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
+            }
+        }
         public static readonly AttackEffect GiantCentipedeBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.IsImmune(DamageType.POISON)) return;
             if (target.DC(GiantCentipedeBite, 11, AbilityType.CONSTITUTION)) return;
             target.TakeDamage(DamageType.POISON, "3d6");
             // TODO: "If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way."
         };
-        public static readonly Attack GiantCentipedeBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, GiantCentipedeBiteEffect);
+        public static Attack GiantCentipedeBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, GiantCentipedeBiteEffect);
+            }
+        }
         public static readonly AttackEffect GiantConstrictorSnakeConstrictEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 16, Monsters.GiantConstrictorSnake.Size + 1, true);
         };
-        public static readonly Attack GiantConstrictorSnakeConstrict = new Attack("Constrict", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5, null, GiantConstrictorSnakeConstrictEffect);
-        public static readonly Attack GiantConstrictorSnakeBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d6+4"), 10);
+        public static Attack GiantConstrictorSnakeConstrict {
+            get {
+                return new Attack("Constrict", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5, null, GiantConstrictorSnakeConstrictEffect);
+            }
+        }
+        public static Attack GiantConstrictorSnakeBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d6+4"), 10);
+            }
+        }
         public static readonly AttackEffect GiantCrabClawEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 11, Monsters.GiantCrab.Size + 1, true, null, 2);
         };
-        public static readonly Attack GiantCrabClaw = new Attack("Claw", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5, null, GiantCrabClawEffect);
+        public static Attack GiantCrabClaw {
+            get {
+                return new Attack("Claw", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5, null, GiantCrabClawEffect);
+            }
+        }
         public static readonly AttackEffect GiantCrocodileBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 16, Monsters.GiantCrocodile.Size + 1, true, GiantCrocodileBite);
         };
-        public static readonly Attack GiantCrocodileBite = new Attack("Bite", 8, new Damage(DamageType.PIERCING, "3d10+5"), 5, null, GiantCrocodileBiteEffect);
+        public static Attack GiantCrocodileBite {
+            get {
+                return new Attack("Bite", 8, new Damage(DamageType.PIERCING, "3d10+5"), 5, null, GiantCrocodileBiteEffect);
+            }
+        }
         public static readonly AttackEffect GiantCrocodileTailEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(GiantCrocodileTail, 16, AbilityType.STRENGTH)) return;
             target.AddCondition(ConditionType.PRONE);
         };
-        public static readonly Attack GiantCrocodileTail = new Attack("Tail", 8, new Damage(DamageType.BLUDGEONING, "2d8+5"), 5, null, GiantCrocodileTailEffect);
-        public static readonly Attack GiantEagleBeak = new Attack("Beak", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
-        public static readonly Attack GiantEagleTalons = new Attack("Talons", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
+        public static Attack GiantCrocodileTail {
+            get {
+                return new Attack("Tail", 8, new Damage(DamageType.BLUDGEONING, "2d8+5"), 5, null, GiantCrocodileTailEffect);
+            }
+        }
+        public static Attack GiantEagleBeak {
+            get {
+                return new Attack("Beak", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
+            }
+        }
+        public static Attack GiantEagleTalons {
+            get {
+                return new Attack("Talons", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
+            }
+        }
         public static readonly AttackEffect GiantElkHoovesEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return;
             int amount = new Dices("4d8+4").Roll(); // FIXME: Cannot crit because attack roll is not available here
             target.TakeDamage(DamageType.BLUDGEONING, amount);
         };
-        public static readonly Attack GiantElkHooves = new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, 0), 5, null, GiantElkHoovesEffect);
-        public static readonly Attack GiantElkRam = new Attack("Ram", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 10);
-        public static readonly Attack GiantFireBeetleBite = new Attack("Bite", 1, new Damage(DamageType.SLASHING, "1d6-1"), 5);
+        public static Attack GiantElkHooves {
+            get {
+                return new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, 0), 5, null, GiantElkHoovesEffect);
+            }
+        }
+        public static Attack GiantElkRam {
+            get {
+                return new Attack("Ram", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 10);
+            }
+        }
+        public static Attack GiantFireBeetleBite {
+            get {
+                return new Attack("Bite", 1, new Damage(DamageType.SLASHING, "1d6-1"), 5);
+            }
+        }
         public static readonly AttackEffect GiantFrogBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 11, Monsters.GiantFrog.Size + 1, true, GiantFrogBite);
         };
-        public static readonly Attack GiantFrogBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, null, GiantFrogBiteEffect);
-        public static readonly Attack GiantGoatRam = new Attack("Ram", 5, new Damage(DamageType.BLUDGEONING, "2d4+3"), 5);
-        public static readonly Attack GiantHyenaBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "2d6+3"), 5);
-        public static readonly Attack GiantLizardBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+        public static Attack GiantFrogBite {
+            get {
+                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, null, GiantFrogBiteEffect);
+            }
+        }
+        public static Attack GiantGoatRam {
+            get {
+                return new Attack("Ram", 5, new Damage(DamageType.BLUDGEONING, "2d4+3"), 5);
+            }
+        }
+        public static Attack GiantHyenaBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "2d6+3"), 5);
+            }
+        }
+        public static Attack GiantLizardBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+            }
+        }
         public static readonly AttackEffect GiantOctopusTentaclesEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 11, Monsters.GiantOctopus.Size + 1, true, GiantOctopusTentacles);
         };
-        public static readonly Attack GiantOctopusTentacles = new Attack("Tentacles", 15, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, null, GiantOctopusTentaclesEffect);
-        public static readonly Attack GiantOwlTalons = new Attack("Talons", 3, new Damage(DamageType.SLASHING, "2d6+1"), 5);
+        public static Attack GiantOctopusTentacles {
+            get {
+                return new Attack("Tentacles", 15, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, null, GiantOctopusTentaclesEffect);
+            }
+        }
+        public static Attack GiantOwlTalons {
+            get {
+                return new Attack("Talons", 3, new Damage(DamageType.SLASHING, "2d6+1"), 5);
+            }
+        }
         public static readonly AttackEffect GiantPoisonousSnakeBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, GiantPoisonousSnakeBite, "3d6", 11);
         };
-        public static readonly Attack GiantPoisonousSnakeBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d4+4"), 5, null, GiantPoisonousSnakeBiteEffect);
-        public static readonly Attack GiantRatBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+        public static Attack GiantPoisonousSnakeBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d4+4"), 5, null, GiantPoisonousSnakeBiteEffect);
+            }
+        }
+        public static Attack GiantRatBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+            }
+        }
         public static readonly AttackEffect GiantRatDiseasedBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(GiantRatDiseasedBite, 10, AbilityType.CONSTITUTION)) return;
             target.AddEffect(Effect.GIANT_RAT_DISEASED_BITE);
         };
-        public static readonly Attack GiantRatDiseasedBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, GiantRatDiseasedBiteEffect);
+        public static Attack GiantRatDiseasedBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, GiantRatDiseasedBiteEffect);
+            }
+        }
         public static readonly AttackEffect GiantScorpionClawEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 12, Monsters.GiantScorpion.Size + 1, false, null, 2);
         };
-        public static readonly Attack GiantScorpionClaw = new Attack("Claw", 4, new Damage(DamageType.BLUDGEONING, "1d8+2"), 5, null, GiantScorpionClawEffect);
+        public static Attack GiantScorpionClaw {
+            get {
+                return new Attack("Claw", 4, new Damage(DamageType.BLUDGEONING, "1d8+2"), 5, null, GiantScorpionClawEffect);
+            }
+        }
         public static readonly AttackEffect GiantScorpionStingEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, GiantScorpionSting, "4d10", 12);
         };
-        public static readonly Attack GiantScorpionSting = new Attack("Sting", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, null, GiantScorpionStingEffect);
-        public static readonly Attack GiantSeaHorseRam = new Attack("Ram", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5);
-        public static readonly Attack GiantSharkBite = new Attack("Bite", 9, new Damage(DamageType.PIERCING, "3d10+6"), 5);
+        public static Attack GiantScorpionSting {
+            get {
+                return new Attack("Sting", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, null, GiantScorpionStingEffect);
+            }
+        }
+        public static Attack GiantSeaHorseRam {
+            get {
+                return new Attack("Ram", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5);
+            }
+        }
+        public static Attack GiantSharkBite {
+            get {
+                return new Attack("Bite", 9, new Damage(DamageType.PIERCING, "3d10+6"), 5);
+            }
+        }
         public static readonly AttackEffect GiantSpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, GiantSpiderBite, "2d8", 11);
             // TODO: If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.
         };
-        public static readonly Attack GiantSpiderBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, null, GiantSpiderBiteEffect);
+        public static Attack GiantSpiderBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, null, GiantSpiderBiteEffect);
+            }
+        }
         public static readonly AttackEffect GiantSpiderWebEffect = delegate (Combattant attacker, Combattant target) {
             if (target.HasEffect(Effect.IMMUNITY_RESTRAINED)) return;
             target.AddEffect(Effect.GIANT_SPIDER_WEB);
             // TODO: As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success.
             // The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage)
         };
-        public static readonly Attack GiantSpiderWeb = new Attack("Web", 5, new Damage(DamageType.BLUDGEONING, 0), 5, null, GiantSpiderWebEffect);
+        public static Attack GiantSpiderWeb {
+            get {
+                return new Attack("Web", 5, new Damage(DamageType.BLUDGEONING, 0), 5, null, GiantSpiderWebEffect);
+            }
+        }
         public static readonly AttackEffect GiantToadBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 13, Monsters.GiantToad.Size + 1, true, GiantToadBite);
         };
-        public static readonly Attack GiantToadBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.POISON, "1d10"), GiantToadBiteEffect);
-        public static readonly Attack GiantVultureBeak = new Attack("Beak", 4, new Damage(DamageType.PIERCING, "2d4+2"), 5);
-        public static readonly Attack GiantVultureTalons = new Attack("Talons", 4, new Damage(DamageType.SLASHING, "2d6+2"), 5);
+        public static Attack GiantToadBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.POISON, "1d10"), GiantToadBiteEffect);
+            }
+        }
+        public static Attack GiantVultureBeak {
+            get {
+                return new Attack("Beak", 4, new Damage(DamageType.PIERCING, "2d4+2"), 5);
+            }
+        }
+        public static Attack GiantVultureTalons {
+            get {
+                return new Attack("Talons", 4, new Damage(DamageType.SLASHING, "2d6+2"), 5);
+            }
+        }
         public static readonly AttackEffect GiantWaspStingEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, GiantWaspSting, "3d6", 11);
             // TODO: If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.
         };
-        public static readonly Attack GiantWaspSting = new Attack("Sting", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, null, GiantWaspStingEffect);
-        public static readonly Attack GiantWeaselBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5);
+        public static Attack GiantWaspSting {
+            get {
+                return new Attack("Sting", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, null, GiantWaspStingEffect);
+            }
+        }
+        public static Attack GiantWeaselBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5);
+            }
+        }
         public static readonly AttackEffect GiantWolfSpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, GiantWolfSpiderBite, "2d6", 11);
             // TODO: If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.
         };
-        public static readonly Attack GiantWolfSpiderBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, null, GiantWolfSpiderBiteEffect);
+        public static Attack GiantWolfSpiderBite {
+            get {
+                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, null, GiantWolfSpiderBiteEffect);
+            }
+        }
         public static readonly AttackEffect GibberingMoutherBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (target.Size > Size.MEDIUM) return;
             if (target.DC(GibberingMoutherBites, 10, AbilityType.STRENGTH)) return;
             target.AddCondition(ConditionType.PRONE);
             // TODO:  If the target is killed by this damage, it is absorbed into the mouther.
         };
-        public static readonly Attack GibberingMoutherBites = new Attack("Bites", 2, new Damage(DamageType.PIERCING, "5d6"), 5, null, GibberingMoutherBitesEffect);
+        public static Attack GibberingMoutherBites {
+            get {
+                return new Attack("Bites", 2, new Damage(DamageType.PIERCING, "5d6"), 5, null, GibberingMoutherBitesEffect);
+            }
+        }
         public static readonly AttackEffect GlabrezuPincerEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 15, Size.MEDIUM, false, null, 2);
         };
-        public static readonly Attack GlabrezuPincer = new Attack("Pincer", 9, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5, null, GlabrezuPincerEffect);
-        public static readonly Attack GlabrezuFist = new Attack("Fist", 9, new Damage(DamageType.BLUDGEONING, "2d4+2"), 5);
-        public static readonly Attack GladiatorSpear = new Attack("Spear", 7, new Damage(DamageType.PIERCING, "2d6+4"), 5);
+        public static Attack GlabrezuPincer {
+            get {
+                return new Attack("Pincer", 9, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5, null, GlabrezuPincerEffect);
+            }
+        }
+        public static Attack GlabrezuFist {
+            get {
+                return new Attack("Fist", 9, new Damage(DamageType.BLUDGEONING, "2d4+2"), 5);
+            }
+        }
+        public static Attack GladiatorSpear {
+            get {
+                return new Attack("Spear", 7, new Damage(DamageType.PIERCING, "2d6+4"), 5);
+            }
+        }
         public static readonly AttackEffect GladiatorShieldBashEffect = delegate (Combattant attacker, Combattant target) {
             if (target.Size > Size.MEDIUM) return;
             if (target.DC(GladiatorShieldBash, 15, AbilityType.STRENGTH)) return;
             target.AddCondition(ConditionType.PRONE);
         };
-        public static readonly Attack GladiatorShieldBash = new Attack("Shield Bash", 7, new Damage(DamageType.BLUDGEONING, "2d4+4"), 5, null, GladiatorShieldBashEffect);
-        public static readonly Attack GnollSpearMelee = new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
-        public static readonly Attack GnollSpearRanged = new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d6+2"), 20, 60);
-        public static readonly Attack GnollBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
-        public static readonly Attack GnollLongbow = new Attack("Longbow", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5, 150, 600);
-        public static readonly Attack GoatRam = new Attack("Ram", 3, new Damage(DamageType.BLUDGEONING, "1d4+1"), 5);
-        public static readonly Attack GoblinScimitar = new Attack("Scimitar", 4, new Damage(DamageType.SLASHING, "1d6+2"), 5);
-        public static readonly Attack GoblinShortbow = new Attack("Shortbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 80, 320);
-        public static readonly Attack GoldDragonWyrmlingBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d10+4"), 5);
-        public static readonly Attack GorgonGore = new Attack("Gore", 8, new Damage(DamageType.PIERCING, "2d12+5"), 5);
-        public static readonly Attack GorgonHooves = new Attack("Hooves", 8, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5);
+        public static Attack GladiatorShieldBash {
+            get {
+                return new Attack("Shield Bash", 7, new Damage(DamageType.BLUDGEONING, "2d4+4"), 5, null, GladiatorShieldBashEffect);
+            }
+        }
+        public static Attack GnollSpearMelee {
+            get {
+                return new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+            }
+        }
+        public static Attack GnollSpearRanged {
+            get {
+                return new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d6+2"), 20, 60);
+            }
+        }
+        public static Attack GnollBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+            }
+        }
+        public static Attack GnollLongbow {
+            get {
+                return new Attack("Longbow", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5, 150, 600);
+            }
+        }
+        public static Attack GoatRam {
+            get {
+                return new Attack("Ram", 3, new Damage(DamageType.BLUDGEONING, "1d4+1"), 5);
+            }
+        }
+        public static Attack GoblinScimitar {
+            get {
+                return new Attack("Scimitar", 4, new Damage(DamageType.SLASHING, "1d6+2"), 5);
+            }
+        }
+        public static Attack GoblinShortbow {
+            get {
+                return new Attack("Shortbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 80, 320);
+            }
+        }
+        public static Attack GoldDragonWyrmlingBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d10+4"), 5);
+            }
+        }
+        public static Attack GorgonGore {
+            get {
+                return new Attack("Gore", 8, new Damage(DamageType.PIERCING, "2d12+5"), 5);
+            }
+        }
+        public static Attack GorgonHooves {
+            get {
+                return new Attack("Hooves", 8, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5);
+            }
+        }
 
         public static readonly AttackEffect GrayOozePseudopodEffect = delegate (Combattant attacker, Combattant target) {
             // exactly same effect as Black Pudding
             BlackPuddingPseudopodEffect(attacker, target);
         };
-        public static readonly Attack GrayOozePseudopod = new Attack("Pseudopod", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5, new Damage(DamageType.ACID, "2d6"), GrayOozePseudopodEffect);
-        public static readonly Attack GreenDragonWyrmlingBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.POISON, "1d6"));
-        public static readonly Attack GreenHagClaws = new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d8+4"), 5);
-        public static readonly Attack GrickTentacles = new Attack("Tentacles", 4, new Damage(DamageType.SLASHING, "2d6+2"), 5);
-        public static readonly Attack GrickBeak = new Attack("Beak", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack GriffonBeak = new Attack("Beak", 6, new Damage(DamageType.PIERCING, "1d8+4"), 5);
-        public static readonly Attack GriffonClaws = new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d6+4"), 5);
-        public static readonly Attack GrimlockSpikedBoneClub = new Attack("Spiked Bone Club", 5, new Damage(DamageType.BLUDGEONING, "1d4+3"), 5, new Damage(DamageType.PIERCING, "1d4"));
-        public static readonly Attack GuardSpearMelee = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
-        public static readonly Attack GuardSpearRanged = new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, 20, 60);
+        public static Attack GrayOozePseudopod {
+            get {
+                return new Attack("Pseudopod", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5, new Damage(DamageType.ACID, "2d6"), GrayOozePseudopodEffect);
+            }
+        }
+        public static Attack GreenDragonWyrmlingBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.POISON, "1d6"));
+            }
+        }
+        public static Attack GreenHagClaws {
+            get {
+                return new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+            }
+        }
+        public static Attack GrickTentacles {
+            get {
+                return new Attack("Tentacles", 4, new Damage(DamageType.SLASHING, "2d6+2"), 5);
+            }
+        }
+        public static Attack GrickBeak {
+            get {
+                return new Attack("Beak", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack GriffonBeak {
+            get {
+                return new Attack("Beak", 6, new Damage(DamageType.PIERCING, "1d8+4"), 5);
+            }
+        }
+        public static Attack GriffonClaws {
+            get {
+                return new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+            }
+        }
+        public static Attack GrimlockSpikedBoneClub {
+            get {
+                return new Attack("Spiked Bone Club", 5, new Damage(DamageType.BLUDGEONING, "1d4+3"), 5, new Damage(DamageType.PIERCING, "1d4"));
+            }
+        }
+        public static Attack GuardSpearMelee {
+            get {
+                return new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
+            }
+        }
+        public static Attack GuardSpearRanged {
+            get {
+                return new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, 20, 60);
+            }
+        }
         public static readonly AttackEffect GuardianNagaBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, GuardianNagaBite, "10d8", 15);
         };
-        public static readonly Attack GuardianNagaBite = new Attack("Bite", 8, new Damage(DamageType.PIERCING, "1d8+4"), 5, null, GuardianNagaBiteEffect);
+        public static Attack GuardianNagaBite {
+            get {
+                return new Attack("Bite", 8, new Damage(DamageType.PIERCING, "1d8+4"), 5, null, GuardianNagaBiteEffect);
+            }
+        }
         public static readonly AttackEffect GuardianNagaSpitPoisonEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, GuardianNagaSpitPoison, "10d8", 15);
         };
-        public static readonly Attack GuardianNagaSpitPoison = new Attack("Spit Poison", 8, new Damage(DamageType.POISON, 0), 5, null, GuardianNagaSpitPoisonEffect);
-        public static readonly Attack GynosphinxClaw = new Attack("Claw", 9, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+        public static Attack GuardianNagaSpitPoison {
+            get {
+                return new Attack("Spit Poison", 8, new Damage(DamageType.POISON, 0), 5, null, GuardianNagaSpitPoisonEffect);
+            }
+        }
+        public static Attack GynosphinxClaw {
+            get {
+                return new Attack("Claw", 9, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+            }
+        }
 
     }
     public partial struct Monsters {

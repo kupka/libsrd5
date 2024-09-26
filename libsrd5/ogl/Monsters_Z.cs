@@ -1,6 +1,10 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack ZombieSlam = new Attack("Slam", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5);
+        public static Attack ZombieSlam {
+            get {
+                return new Attack("Slam", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5);
+            }
+        }
     }
 
     public partial struct Monsters {

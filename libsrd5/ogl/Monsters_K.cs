@@ -1,10 +1,30 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack KillerWhaleBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "5d6+4"), 5);
-        public static readonly Attack KnightGreatsword = new Attack("Greatsword", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
-        public static readonly Attack KnightHeavyCrossbow = new Attack("Heavy Crossbow", 2, new Damage(DamageType.PIERCING, "1d10"), 5, 100, 400);
-        public static readonly Attack KoboldDagger = new Attack("Dagger", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
-        public static readonly Attack KoboldSling = new Attack("Sling", 4, new Damage(DamageType.BLUDGEONING, "1d4+2"), 5, 30, 120);
+        public static Attack KillerWhaleBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "5d6+4"), 5);
+            }
+        }
+        public static Attack KnightGreatsword {
+            get {
+                return new Attack("Greatsword", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
+            }
+        }
+        public static Attack KnightHeavyCrossbow {
+            get {
+                return new Attack("Heavy Crossbow", 2, new Damage(DamageType.PIERCING, "1d10"), 5, 100, 400);
+            }
+        }
+        public static Attack KoboldDagger {
+            get {
+                return new Attack("Dagger", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+            }
+        }
+        public static Attack KoboldSling {
+            get {
+                return new Attack("Sling", 4, new Damage(DamageType.BLUDGEONING, "1d4+2"), 5, 30, 120);
+            }
+        }
         public static readonly AttackEffect KrakenBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.GRAPPLED_DC18)) return;
             if (target.Size > Size.LARGE) return;
@@ -27,12 +47,20 @@ namespace srd5 {
             // If the kraken dies, a swallowed creature is no longer restrained by it and can escape from 
             // the corpse using 15 feet of movement, exiting prone.
         };
-        public static readonly Attack KrakenBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "3d8+10"), 5, null, KrakenBiteEffect);
+        public static Attack KrakenBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "3d8+10"), 5, null, KrakenBiteEffect);
+            }
+        }
 
         public static readonly AttackEffect KrakenTentacleEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 18, Size.GARGANTUAN, true, null, 10);
         };
-        public static readonly Attack KrakenTentacle = new Attack("Tentacle", 7, new Damage(DamageType.BLUDGEONING, "3d6+10"), 30, null, KrakenTentacleEffect);
+        public static Attack KrakenTentacle {
+            get {
+                return new Attack("Tentacle", 7, new Damage(DamageType.BLUDGEONING, "3d6+10"), 30, null, KrakenTentacleEffect);
+            }
+        }
     }
 
     public partial struct Monsters {

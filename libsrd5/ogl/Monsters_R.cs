@@ -3,28 +3,76 @@ namespace srd5 {
         public static readonly AttackEffect RakshasaClawEffect = delegate (Combattant attacker, Combattant target) {
             target.AddEffect(Effect.CURSE_RAKSHASA);
         };
-        public static readonly Attack RakshasaClaw = new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+2"), 5, null, RakshasaClawEffect);
-        public static readonly Attack RatBite = new Attack("Bite", 0, new Damage(DamageType.PIERCING, "1d1"), 5);
-        public static readonly Attack RavenBeak = new Attack("Beak", 4, new Damage(DamageType.PIERCING, "1d1"), 5);
-        public static readonly Attack RedDragonWyrmlingBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d10+4"), 5, new Damage(DamageType.FIRE, "1d6"));
-        public static readonly Attack ReefSharkBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+        public static Attack RakshasaClaw {
+            get {
+                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+2"), 5, null, RakshasaClawEffect);
+            }
+        }
+        public static Attack RatBite {
+            get {
+                return new Attack("Bite", 0, new Damage(DamageType.PIERCING, "1d1"), 5);
+            }
+        }
+        public static Attack RavenBeak {
+            get {
+                return new Attack("Beak", 4, new Damage(DamageType.PIERCING, "1d1"), 5);
+            }
+        }
+        public static Attack RedDragonWyrmlingBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d10+4"), 5, new Damage(DamageType.FIRE, "1d6"));
+            }
+        }
+        public static Attack ReefSharkBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+            }
+        }
         public static readonly AttackEffect RemorhazBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 17, Size.GARGANTUAN, true, RemorhazBite);
         };
-        public static readonly Attack RemorhazBite = new Attack("Bite", 11, new Damage(DamageType.PIERCING, "6d10+7"), 5, new Damage(DamageType.FIRE, "3d6"), RemorhazBiteEffect);
-        public static readonly Attack RhinocerosGore = new Attack("Gore", 7, new Damage(DamageType.BLUDGEONING, "2d8+5"), 5);
-        public static readonly Attack RidingHorseHooves = new Attack("Hooves", 5, new Damage(DamageType.BLUDGEONING, "2d4+3"), 5);
+        public static Attack RemorhazBite {
+            get {
+                return new Attack("Bite", 11, new Damage(DamageType.PIERCING, "6d10+7"), 5, new Damage(DamageType.FIRE, "3d6"), RemorhazBiteEffect);
+            }
+        }
+        public static Attack RhinocerosGore {
+            get {
+                return new Attack("Gore", 7, new Damage(DamageType.BLUDGEONING, "2d8+5"), 5);
+            }
+        }
+        public static Attack RidingHorseHooves {
+            get {
+                return new Attack("Hooves", 5, new Damage(DamageType.BLUDGEONING, "2d4+3"), 5);
+            }
+        }
         public static readonly AttackEffect RocTalonsEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 19, Size.GARGANTUAN, true, RocTalons);
         };
-        public static readonly Attack RocTalons = new Attack("Talons", 13, new Damage(DamageType.SLASHING, "4d6+9"), 5, null, RocTalonsEffect);
-        public static readonly Attack RocBeak = new Attack("Beak", 13, new Damage(DamageType.PIERCING, "4d8+9"), 10);
+        public static Attack RocTalons {
+            get {
+                return new Attack("Talons", 13, new Damage(DamageType.SLASHING, "4d6+9"), 5, null, RocTalonsEffect);
+            }
+        }
+        public static Attack RocBeak {
+            get {
+                return new Attack("Beak", 13, new Damage(DamageType.PIERCING, "4d8+9"), 10);
+            }
+        }
 
         public static readonly AttackEffect RoperTendrilEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 15, Size.HUGE, true, RoperTendril, 6);
         };
-        public static readonly Attack RoperTendril = new Attack("Tendril", 7, new Damage(DamageType.BLUDGEONING, 0), 5, null, RoperTendrilEffect);
-        public static readonly Attack RoperBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "4d8+4"), 5);
+        public static Attack RoperTendril {
+            get {
+                return new Attack("Tendril", 7, new Damage(DamageType.BLUDGEONING, 0), 5, null, RoperTendrilEffect);
+            }
+        }
+        public static Attack RoperBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "4d8+4"), 5);
+            }
+        }
         // !!!!!!!!!!!!!!!!!!!!!!UNPARSABLE ATTACK!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // RugOfSmotheringSmother
         // {"name":"Smother","desc":"Melee Weapon Attack: +5 to hit, reach 5 ft., one Medium or smaller creature. Hit: The creature is grappled (escape DC 13). Until this grapple ends, the target is restrained, blinded, and at risk of suffocating, and the rug can't smother another target. In addition, at the start of each of the target's turns, the target takes 10 (2d6 + 3) bludgeoning damage.","attack_bonus":5}
@@ -33,8 +81,16 @@ namespace srd5 {
                 target.AddEffect(Effect.RUG_SMOTHER);
             }
         };
-        public static readonly Attack RugOfSmotheringSmother = new Attack("Smother", 5, new Damage(DamageType.SLASHING, 0), 5, null, RugOfSmotheringSmotherEffect);
-        public static readonly Attack RustMonsterBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
+        public static Attack RugOfSmotheringSmother {
+            get {
+                return new Attack("Smother", 5, new Damage(DamageType.SLASHING, 0), 5, null, RugOfSmotheringSmotherEffect);
+            }
+        }
+        public static Attack RustMonsterBite {
+            get {
+                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
+            }
+        }
     }
 
     public partial struct Monsters {

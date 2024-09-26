@@ -1,7 +1,15 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack UnicornHooves = new Attack("Hooves", 7, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
-        public static readonly Attack UnicornHorn = new Attack("Horn", 7, new Damage(DamageType.PIERCING, "1d8+4"), 5);
+        public static Attack UnicornHooves {
+            get {
+                return new Attack("Hooves", 7, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
+            }
+        }
+        public static Attack UnicornHorn {
+            get {
+                return new Attack("Horn", 7, new Damage(DamageType.PIERCING, "1d8+4"), 5);
+            }
+        }
     }
 
     public partial struct Monsters {

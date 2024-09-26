@@ -1,25 +1,105 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack YoungBlackDragonBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10, new Damage(DamageType.ACID, "1d8"));
-        public static readonly Attack YoungBlackDragonClaw = new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
-        public static readonly Attack YoungBlueDragonBite = new Attack("Bite", 9, new Damage(DamageType.PIERCING, "2d10+5"), 10, new Damage(DamageType.LIGHTNING, "1d10"));
-        public static readonly Attack YoungBlueDragonClaw = new Attack("Claw", 9, new Damage(DamageType.SLASHING, "2d6+5"), 5);
-        public static readonly Attack YoungBrassDragonBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10);
-        public static readonly Attack YoungBrassDragonClaw = new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
-        public static readonly Attack YoungBronzeDragonBite = new Attack("Bite", 8, new Damage(DamageType.PIERCING, "2d10+5"), 10);
-        public static readonly Attack YoungBronzeDragonClaw = new Attack("Claw", 8, new Damage(DamageType.SLASHING, "2d6+5"), 5);
-        public static readonly Attack YoungCopperDragonBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10);
-        public static readonly Attack YoungCopperDragonClaw = new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
-        public static readonly Attack YoungGoldDragonBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d10+6"), 10);
-        public static readonly Attack YoungGoldDragonClaw = new Attack("Claw", 10, new Damage(DamageType.SLASHING, "2d6+6"), 5);
-        public static readonly Attack YoungGreenDragonBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10, new Damage(DamageType.POISON, "2d6"));
-        public static readonly Attack YoungGreenDragonClaw = new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
-        public static readonly Attack YoungRedDragonBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d10+6"), 10, new Damage(DamageType.FIRE, "1d6"));
-        public static readonly Attack YoungRedDragonClaw = new Attack("Claw", 10, new Damage(DamageType.SLASHING, "2d6+6"), 5);
-        public static readonly Attack YoungSilverDragonBite = new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d10+6"), 10);
-        public static readonly Attack YoungSilverDragonClaw = new Attack("Claw", 10, new Damage(DamageType.SLASHING, "2d6+6"), 5);
-        public static readonly Attack YoungWhiteDragonBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10, new Damage(DamageType.COLD, "1d8"));
-        public static readonly Attack YoungWhiteDragonClaw = new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+        public static Attack YoungBlackDragonBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10, new Damage(DamageType.ACID, "1d8"));
+            }
+        }
+        public static Attack YoungBlackDragonClaw {
+            get {
+                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+            }
+        }
+        public static Attack YoungBlueDragonBite {
+            get {
+                return new Attack("Bite", 9, new Damage(DamageType.PIERCING, "2d10+5"), 10, new Damage(DamageType.LIGHTNING, "1d10"));
+            }
+        }
+        public static Attack YoungBlueDragonClaw {
+            get {
+                return new Attack("Claw", 9, new Damage(DamageType.SLASHING, "2d6+5"), 5);
+            }
+        }
+        public static Attack YoungBrassDragonBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10);
+            }
+        }
+        public static Attack YoungBrassDragonClaw {
+            get {
+                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+            }
+        }
+        public static Attack YoungBronzeDragonBite {
+            get {
+                return new Attack("Bite", 8, new Damage(DamageType.PIERCING, "2d10+5"), 10);
+            }
+        }
+        public static Attack YoungBronzeDragonClaw {
+            get {
+                return new Attack("Claw", 8, new Damage(DamageType.SLASHING, "2d6+5"), 5);
+            }
+        }
+        public static Attack YoungCopperDragonBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10);
+            }
+        }
+        public static Attack YoungCopperDragonClaw {
+            get {
+                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+            }
+        }
+        public static Attack YoungGoldDragonBite {
+            get {
+                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d10+6"), 10);
+            }
+        }
+        public static Attack YoungGoldDragonClaw {
+            get {
+                return new Attack("Claw", 10, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+            }
+        }
+        public static Attack YoungGreenDragonBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10, new Damage(DamageType.POISON, "2d6"));
+            }
+        }
+        public static Attack YoungGreenDragonClaw {
+            get {
+                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+            }
+        }
+        public static Attack YoungRedDragonBite {
+            get {
+                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d10+6"), 10, new Damage(DamageType.FIRE, "1d6"));
+            }
+        }
+        public static Attack YoungRedDragonClaw {
+            get {
+                return new Attack("Claw", 10, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+            }
+        }
+        public static Attack YoungSilverDragonBite {
+            get {
+                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d10+6"), 10);
+            }
+        }
+        public static Attack YoungSilverDragonClaw {
+            get {
+                return new Attack("Claw", 10, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+            }
+        }
+        public static Attack YoungWhiteDragonBite {
+            get {
+                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10, new Damage(DamageType.COLD, "1d8"));
+            }
+        }
+        public static Attack YoungWhiteDragonClaw {
+            get {
+                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+            }
+        }
     }
 
     public partial struct Monsters {

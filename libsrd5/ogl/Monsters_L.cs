@@ -1,22 +1,70 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack LamiaClaws = new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d10+3"), 5);
-        public static readonly Attack LamiaDagger = new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5);
-        public static readonly Attack LemureFist = new Attack("Fist", 3, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
+        public static Attack LamiaClaws {
+            get {
+                return new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d10+3"), 5);
+            }
+        }
+        public static Attack LamiaDagger {
+            get {
+                return new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5);
+            }
+        }
+        public static Attack LemureFist {
+            get {
+                return new Attack("Fist", 3, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
+            }
+        }
         public static readonly AttackEffect LichParalyzingTouchEffect = delegate (Combattant attacker, Combattant target) {
             if (target.HasEffect(Effect.IMMUNITY_PARALYZED)) return;
             if (target.DC(LichParalyzingTouch, 18, AbilityType.CONSTITUTION)) return;
             target.AddEffect(Effect.LICH_PARALYZATION);
         };
-        public static readonly Attack LichParalyzingTouch = new Attack("Paralyzing Touch", 12, new Damage(DamageType.COLD, "3d6"), 5, null, LichParalyzingTouchEffect);
-        public static readonly Attack LionBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5);
-        public static readonly Attack LionClaw = new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
-        public static readonly Attack LizardBite = new Attack("Bite", 0, new Damage(DamageType.PIERCING, 1), 5);
-        public static readonly Attack LizardfolkBite = new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack LizardfolkHeavyClub = new Attack("Heavy Club", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
-        public static readonly Attack LizardfolkJavelinMelee = new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack LizardfolkSpikedShield = new Attack("Spiked Shield", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack LizardfolkJavelinRanged = new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 30, 120);
+        public static Attack LichParalyzingTouch {
+            get {
+                return new Attack("Paralyzing Touch", 12, new Damage(DamageType.COLD, "3d6"), 5, null, LichParalyzingTouchEffect);
+            }
+        }
+        public static Attack LionBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5);
+            }
+        }
+        public static Attack LionClaw {
+            get {
+                return new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+            }
+        }
+        public static Attack LizardBite {
+            get {
+                return new Attack("Bite", 0, new Damage(DamageType.PIERCING, 1), 5);
+            }
+        }
+        public static Attack LizardfolkBite {
+            get {
+                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack LizardfolkHeavyClub {
+            get {
+                return new Attack("Heavy Club", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
+            }
+        }
+        public static Attack LizardfolkJavelinMelee {
+            get {
+                return new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack LizardfolkSpikedShield {
+            get {
+                return new Attack("Spiked Shield", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack LizardfolkJavelinRanged {
+            get {
+                return new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 30, 120);
+            }
+        }
     }
 
     public partial struct Monsters {

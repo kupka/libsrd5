@@ -6,8 +6,16 @@ namespace srd5 {
             target.TakeDamage(DamageType.POISON, "2d4");
             target.AddEffect(Effect.QUASIT_POISON);
         };
-        public static readonly Attack QuasitClaw = new Attack("Claw", 4, new Damage(DamageType.PIERCING, "1d4+3"), 5, null, QuasitClawEffect);
-        public static readonly Attack QuipperBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, 1), 5);
+        public static Attack QuasitClaw {
+            get {
+                return new Attack("Claw", 4, new Damage(DamageType.PIERCING, "1d4+3"), 5, null, QuasitClawEffect);
+            }
+        }
+        public static Attack QuipperBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, 1), 5);
+            }
+        }
     }
 
 

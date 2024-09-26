@@ -1,72 +1,192 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack MageDaggerMelee = new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+2"), 5);
-        public static readonly Attack MageDaggerRanged = new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+2"), 20, 60);
-        public static readonly Attack MagmaMephitClaws = new Attack("Claws", 3, new Damage(DamageType.SLASHING, "1d4+1"), 5, new Damage(DamageType.FIRE, "1d4"));
+        public static Attack MageDaggerMelee {
+            get {
+                return new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+            }
+        }
+        public static Attack MageDaggerRanged {
+            get {
+                return new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+2"), 20, 60);
+            }
+        }
+        public static Attack MagmaMephitClaws {
+            get {
+                return new Attack("Claws", 3, new Damage(DamageType.SLASHING, "1d4+1"), 5, new Damage(DamageType.FIRE, "1d4"));
+            }
+        }
         public static readonly AttackEffect MagminTouchEffect = delegate (Combattant attacker, Combattant target) {
             if (target.IsImmune(DamageType.FIRE)) return;
             if (target.HasEffect(Effect.MAGMIN_IGNITE)) return;
             target.AddEffect(Effect.MAGMIN_IGNITE);
              // TODO: Add means to remove effect ("Until a creature takes an action to douse the fire...")
         };
-        public static readonly Attack MagminTouch = new Attack("Touch", 4, new Damage(DamageType.FIRE, "2d6"), 5, null, MagminTouchEffect);
+        public static Attack MagminTouch {
+            get {
+                return new Attack("Touch", 4, new Damage(DamageType.FIRE, "2d6"), 5, null, MagminTouchEffect);
+            }
+        }
         public static readonly AttackEffect MammothStompEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return;
             int amount = new Dices("4d10+7").Roll(); // FIXME: Cannot crit because attack roll is not available here
             target.TakeDamage(DamageType.BLUDGEONING, amount);
         };
-        public static readonly Attack MammothStomp = new Attack("Stomp", 10, new Damage(DamageType.BLUDGEONING, "1d1-1"), 5, null, MammothStompEffect);
-        public static readonly Attack MammothGore = new Attack("Gore", 10, new Damage(DamageType.PIERCING, "4d8+7"), 10);
-        public static readonly Attack ManticoreBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5);
-        public static readonly Attack ManticoreClaw = new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
-        public static readonly Attack ManticoreTailSpike = new Attack("Tail Spike", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, 100, 200);
+        public static Attack MammothStomp {
+            get {
+                return new Attack("Stomp", 10, new Damage(DamageType.BLUDGEONING, "1d1-1"), 5, null, MammothStompEffect);
+            }
+        }
+        public static Attack MammothGore {
+            get {
+                return new Attack("Gore", 10, new Damage(DamageType.PIERCING, "4d8+7"), 10);
+            }
+        }
+        public static Attack ManticoreBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5);
+            }
+        }
+        public static Attack ManticoreClaw {
+            get {
+                return new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+            }
+        }
+        public static Attack ManticoreTailSpike {
+            get {
+                return new Attack("Tail Spike", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, 100, 200);
+            }
+        }
         public static readonly AttackEffect MarilithTailEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 19, Size.MEDIUM, true, MarilithTail);
             // TODO: the marilith can automatically hit the target with its tail
         };
-        public static readonly Attack MarilithTail = new Attack("Tail", 9, new Damage(DamageType.BLUDGEONING, "2d10+4"), 5, null, MarilithTailEffect);
-        public static readonly Attack MarilithLongsword = new Attack("Longsword", 9, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+        public static Attack MarilithTail {
+            get {
+                return new Attack("Tail", 9, new Damage(DamageType.BLUDGEONING, "2d10+4"), 5, null, MarilithTailEffect);
+            }
+        }
+        public static Attack MarilithLongsword {
+            get {
+                return new Attack("Longsword", 9, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+            }
+        }
         public static readonly AttackEffect MastiffBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.HasEffect(Effects.Immunity(ConditionType.PRONE))) return;
             if (target.DC(MastiffBite, 11, AbilityType.STRENGTH)) return;
             target.AddCondition(ConditionType.PRONE);
         };
-        public static readonly Attack MastiffBite = new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, null, MastiffBiteEffect);
-        public static readonly Attack MedusaLongbow = new Attack("Longbow", 5, new Damage(DamageType.PIERCING, "1d8+2"), 150, 600, new Damage(DamageType.POISON, "2d6"));
-        public static readonly Attack MedusaSnakeHair = new Attack("Snake Hair", 5, new Damage(DamageType.PIERCING, "1d4+2"), 5, new Damage(DamageType.POISON, "4d6"));
-        public static readonly Attack MedusaShortsword = new Attack("Shortsword", 5, new Damage(DamageType.PIERCING, "1d6+2"), 5);
-        public static readonly Attack MerfolkSpearMelee = new Attack("Spear", 2, new Damage(DamageType.PIERCING, "1d8"), 5);
-        public static readonly Attack MerfolkSpearRanged = new Attack("Spear", 2, new Damage(DamageType.PIERCING, "1d6"), 20, 60);
+        public static Attack MastiffBite {
+            get {
+                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, null, MastiffBiteEffect);
+            }
+        }
+        public static Attack MedusaLongbow {
+            get {
+                return new Attack("Longbow", 5, new Damage(DamageType.PIERCING, "1d8+2"), 150, 600, new Damage(DamageType.POISON, "2d6"));
+            }
+        }
+        public static Attack MedusaSnakeHair {
+            get {
+                return new Attack("Snake Hair", 5, new Damage(DamageType.PIERCING, "1d4+2"), 5, new Damage(DamageType.POISON, "4d6"));
+            }
+        }
+        public static Attack MedusaShortsword {
+            get {
+                return new Attack("Shortsword", 5, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+            }
+        }
+        public static Attack MerfolkSpearMelee {
+            get {
+                return new Attack("Spear", 2, new Damage(DamageType.PIERCING, "1d8"), 5);
+            }
+        }
+        public static Attack MerfolkSpearRanged {
+            get {
+                return new Attack("Spear", 2, new Damage(DamageType.PIERCING, "1d6"), 20, 60);
+            }
+        }
         public static readonly AttackEffect MerrowHarpoonEffect = delegate (Combattant attacker, Combattant target) {
             if(target.Size > Size.HUGE) return;
             // TODO: it must succeed on a Strength contest against the merrow or be pulled up to 20 feet toward the merrow.
         };
-        public static readonly Attack MerrowHarpoonMelee = new Attack("Harpoon", 6, new Damage(DamageType.PIERCING, "2d6+4"), 5);
-        public static readonly Attack MerrowHarpoonRanged = new Attack("Harpoon", 6, new Damage(DamageType.PIERCING, "2d6+4"), 20, 60, null, MerrowHarpoonEffect);
-        public static readonly Attack MerrowBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d8+4"), 5);
-        public static readonly Attack MerrowClaws = new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d4+4"), 5);
+        public static Attack MerrowHarpoonMelee {
+            get {
+                return new Attack("Harpoon", 6, new Damage(DamageType.PIERCING, "2d6+4"), 5);
+            }
+        }
+        public static Attack MerrowHarpoonRanged {
+            get {
+                return new Attack("Harpoon", 6, new Damage(DamageType.PIERCING, "2d6+4"), 20, 60, null, MerrowHarpoonEffect);
+            }
+        }
+        public static Attack MerrowBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d8+4"), 5);
+            }
+        }
+        public static Attack MerrowClaws {
+            get {
+                return new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d4+4"), 5);
+            }
+        }
         public static readonly AttackEffect MimicPseudopodEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: f the mimic is in object form, the target is subjected to its Adhesive trait
         };
-        public static readonly Attack MimicPseudopod = new Attack("Pseudopod", 5, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, null, MimicPseudopodEffect);
-        public static readonly Attack MimicBite = new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, new Damage(DamageType.ACID, "1d8"));
-        public static readonly Attack MinotaurGreataxe = new Attack("Greataxe", 6, new Damage(DamageType.SLASHING, "2d12+4"), 5);
-        public static readonly Attack MinotaurGore = new Attack("Gore", 6, new Damage(DamageType.PIERCING, "2d8+4"), 5);
-        public static readonly Attack MinotaurSkeletonGreataxe = new Attack("Greataxe", 6, new Damage(DamageType.SLASHING, "2d12+4"), 5);
-        public static readonly Attack MinotaurSkeletonGore = new Attack("Gore", 6, new Damage(DamageType.PIERCING, "2d8+4"), 5);
-        public static readonly Attack MuleHooves = new Attack("Hooves", 2, new Damage(DamageType.BLUDGEONING, "1d4+2"), 5);
+        public static Attack MimicPseudopod {
+            get {
+                return new Attack("Pseudopod", 5, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, null, MimicPseudopodEffect);
+            }
+        }
+        public static Attack MimicBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, new Damage(DamageType.ACID, "1d8"));
+            }
+        }
+        public static Attack MinotaurGreataxe {
+            get {
+                return new Attack("Greataxe", 6, new Damage(DamageType.SLASHING, "2d12+4"), 5);
+            }
+        }
+        public static Attack MinotaurGore {
+            get {
+                return new Attack("Gore", 6, new Damage(DamageType.PIERCING, "2d8+4"), 5);
+            }
+        }
+        public static Attack MinotaurSkeletonGreataxe {
+            get {
+                return new Attack("Greataxe", 6, new Damage(DamageType.SLASHING, "2d12+4"), 5);
+            }
+        }
+        public static Attack MinotaurSkeletonGore {
+            get {
+                return new Attack("Gore", 6, new Damage(DamageType.PIERCING, "2d8+4"), 5);
+            }
+        }
+        public static Attack MuleHooves {
+            get {
+                return new Attack("Hooves", 2, new Damage(DamageType.BLUDGEONING, "1d4+2"), 5);
+            }
+        }
         public static readonly AttackEffect MummyRottingFistEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(MummyRottingFist, 12, AbilityType.CONSTITUTION)) return;
             if (target.HasEffect(Effect.CURSE_MUMMY_ROT)) return;
             target.AddEffect(Effect.CURSE_MUMMY_ROT);
         };
-        public static readonly Attack MummyRottingFist = new Attack("Rotting Fist", 5, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, new Damage(DamageType.NECROTIC, "3d6"), MummyRottingFistEffect);
+        public static Attack MummyRottingFist {
+            get {
+                return new Attack("Rotting Fist", 5, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, new Damage(DamageType.NECROTIC, "3d6"), MummyRottingFistEffect);
+            }
+        }
         public static readonly AttackEffect MummyLordRottingFistEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(MummyRottingFist, 16, AbilityType.CONSTITUTION)) return;
             if (target.HasEffect(Effect.CURSE_MUMMY_ROT)) return;
             target.AddEffect(Effect.CURSE_MUMMY_ROT);
         };
-        public static readonly Attack MummyLordRottingFist = new Attack("Rotting Fist", 9, new Damage(DamageType.BLUDGEONING, "3d6+4"), 5, new Damage(DamageType.NECROTIC, "6d6"), MummyLordRottingFistEffect);
+        public static Attack MummyLordRottingFist {
+            get {
+                return new Attack("Rotting Fist", 9, new Damage(DamageType.BLUDGEONING, "3d6+4"), 5, new Damage(DamageType.NECROTIC, "6d6"), MummyLordRottingFistEffect);
+            }
+        }
     }
 
     public partial struct Monsters {

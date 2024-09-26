@@ -1,7 +1,15 @@
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly Attack XornBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "3d6+3"), 5);
-        public static readonly Attack XornClaw = new Attack("Claw", 6, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+        public static Attack XornBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "3d6+3"), 5);
+            }
+        }
+        public static Attack XornClaw {
+            get {
+                return new Attack("Claw", 6, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+            }
+        }
     }
 
     public partial struct Monsters {

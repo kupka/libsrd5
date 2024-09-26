@@ -408,7 +408,7 @@ namespace srd5 {
             get {
                 Monster druid = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.DRUID, Alignment.UNALIGNED, 10, 12, 13, 12, 15, 11, 11, "5d8+5", 40, 2,
-                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.DruidQuarterstaff }, new Attack[] { }, Size.MEDIUM
                 );
                 druid.AddProficiency(Proficiency.MEDICINE);
                 druid.AddProficiency(Proficiency.NATURE);
@@ -423,7 +423,7 @@ namespace srd5 {
             get {
                 Monster dryad = new Monster(
                     Monsters.Type.FEY, Monsters.ID.DRYAD, Alignment.NEUTRAL, 10, 12, 11, 14, 15, 18, 11, "5d8", 40, 1,
-                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.DryadClub }, new Attack[] { }, Size.MEDIUM
                 );
                 dryad.AddProficiency(Proficiency.PERCEPTION);
                 dryad.AddProficiency(Proficiency.STEALTH);

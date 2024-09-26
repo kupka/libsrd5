@@ -304,8 +304,35 @@ namespace srd5 {
             attackEffectTest(Attacks.VampireUnarmedStrikeEffect);
         }
 
+        [Fact]
+        public void TestAttackEffects_W() {
+            attackEffectTest(Attacks.WerebearBiteEffect);
+            attackEffectTest(Attacks.WereboarTusksEffect);
+            attackEffectTest(Attacks.WereratBiteEffect);
+            attackEffectTest(Attacks.WeretigerBiteEffect);
+            attackEffectTest(Attacks.WerewolfBiteEffect);
+            attackEffectTest(Attacks.WightLifeDrainEffect);
+            attackEffectTest(Attacks.WinterWolfBiteEffect);
+            attackEffectTest(Attacks.WolfBiteEffect);
+            attackEffectTest(Attacks.WorgBiteEffect);
+            attackEffectTest(Attacks.WraithLifeDrainEffect);
+            attackEffectTest(Attacks.WyvernStingerEffect);
+        }
 
+        [Fact]
+        public void TestAttackEffects_X() {
+            // None here
+        }
 
+        [Fact]
+        public void TestAttackEffects_Y() {
+            // None here
+        }
+
+        [Fact]
+        public void TestAttackEffects_Z() {
+            // None here
+        }
 
         [Fact]
         public void AssassinShortswordTest() {

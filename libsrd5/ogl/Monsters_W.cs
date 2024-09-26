@@ -355,7 +355,7 @@ namespace srd5 {
             get {
                 Monster weasel = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.WEASEL, Alignment.UNALIGNED, 3, 16, 8, 2, 12, 3, 13, "1d4-1", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.WeaselBite }, new Attack[] { }, Size.TINY
                 );
                 weasel.AddProficiency(Proficiency.PERCEPTION);
                 weasel.AddProficiency(Proficiency.STEALTH);
@@ -461,7 +461,7 @@ namespace srd5 {
             get {
                 Monster wereratHumanForm = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.WERERAT_HUMAN_FORM, Alignment.LAWFUL_EVIL, 10, 15, 12, 11, 10, 8, 12, "6d8+6", 40, 2,
-                    new Attack[] { Attacks.WereratHumanFormShortsword }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.WereratHumanFormShortsword }, new Attack[] { Attacks.WereratHumanFormHandCrossbow }, Size.MEDIUM
                 );
                 wereratHumanForm.AddProficiency(Proficiency.PERCEPTION);
                 wereratHumanForm.AddProficiency(Proficiency.STEALTH);
@@ -509,7 +509,7 @@ namespace srd5 {
             get {
                 Monster weretigerHumanForm = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.WERETIGER_HUMAN_FORM, Alignment.NEUTRAL, 17, 15, 16, 10, 13, 11, 12, "16d8+48", 40, 4,
-                    new Attack[] { Attacks.WeretigerHumanFormScimitar }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.WeretigerHumanFormScimitar }, new Attack[] { Attacks.WeretigerHumanFormLongbow }, Size.MEDIUM
                 );
                 weretigerHumanForm.AddProficiency(Proficiency.PERCEPTION);
                 weretigerHumanForm.AddProficiency(Proficiency.STEALTH);
@@ -525,7 +525,7 @@ namespace srd5 {
             get {
                 Monster weretigerHybridForm = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.WERETIGER_HYBRID_FORM, Alignment.NEUTRAL, 17, 15, 16, 10, 13, 11, 12, "16d8+48", 40, 4,
-                    new Attack[] { Attacks.WeretigerHybridFormBite, Attacks.WeretigerHybridFormClaw, Attacks.WeretigerHybridFormScimitar }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.WeretigerHybridFormBite, Attacks.WeretigerHybridFormClaw, Attacks.WeretigerHybridFormScimitar }, new Attack[] {  Attacks.WeretigerHybridFormLongbow }, Size.MEDIUM
                 );
                 weretigerHybridForm.AddProficiency(Proficiency.PERCEPTION);
                 weretigerHybridForm.AddProficiency(Proficiency.STEALTH);
@@ -622,7 +622,7 @@ namespace srd5 {
             get {
                 Monster wight = new Monster(
                     Monsters.Type.UNDEAD, Monsters.ID.WIGHT, Alignment.NEUTRAL_EVIL, 15, 14, 16, 10, 13, 15, 14, "6d8+18", 40, 3,
-                    new Attack[] { Attacks.WightLifeDrain, Attacks.WightLongsword }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.WightLifeDrain, Attacks.WightLongsword }, new Attack[] { Attacks.WightLongbow }, Size.MEDIUM
                 );
                 wight.AddProficiency(Proficiency.PERCEPTION);
                 wight.AddProficiency(Proficiency.STEALTH);

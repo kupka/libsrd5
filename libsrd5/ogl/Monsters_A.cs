@@ -669,7 +669,7 @@ namespace srd5 {
             get {
                 Monster ancientBlackDragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.ANCIENT_BLACK_DRAGON, Alignment.CHAOTIC_EVIL, 27, 14, 25, 16, 15, 19, 22, "21d20+147", 40, 21,
-                    new Attack[] { Attacks.AncientBlackDragonClaw, Attacks.AncientBlackDragonTail }, new Attack[] { }, Size.GARGANTUAN
+                    new Attack[] { Attacks.AncientBlackDragonBite, Attacks.AncientBlackDragonClaw, Attacks.AncientBlackDragonTail }, new Attack[] { }, Size.GARGANTUAN
                 );
                 ancientBlackDragon.AddProficiency(Proficiency.DEXTERITY);
                 ancientBlackDragon.AddProficiency(Proficiency.CONSTITUTION);
@@ -935,7 +935,7 @@ namespace srd5 {
             get {
                 Monster ape = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.APE, Alignment.UNALIGNED, 16, 14, 14, 6, 12, 7, 12, "3d8+6", 40, ChallengeRating.HALF,
-                    new Attack[] { Attacks.ApeFist }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.ApeFist }, new Attack[] { Attacks.ApeRock }, Size.MEDIUM
                 );
                 ape.AddProficiency(Proficiency.ATHLETICS);
                 ape.AddProficiency(Proficiency.PERCEPTION);
@@ -967,7 +967,7 @@ namespace srd5 {
             get {
                 Monster assassin = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.ASSASSIN, Alignment.UNALIGNED, 11, 16, 14, 13, 11, 10, 15, "12d8+24", 40, 8,
-                    new Attack[] { Attacks.AssassinShortsword }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.AssassinShortsword }, new Attack[] { Attacks.AssassinLight_Crossbow }, Size.MEDIUM
                 );
                 assassin.AddProficiency(Proficiency.DEXTERITY);
                 assassin.AddProficiency(Proficiency.INTELLIGENCE);

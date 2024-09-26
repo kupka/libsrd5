@@ -121,6 +121,11 @@ namespace srd5 {
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,
+        CURSE_WEREBEAR,
+        CURSE_WEREBOAR,
+        CURSE_WERERAT,
+        CURSE_WERETIGER,
+        CURSE_WEREWOLF,
         // Attack Effects
         ABOLETH_DISEASE_TENTACLE,
         BEARDED_DEVIL_POISON,

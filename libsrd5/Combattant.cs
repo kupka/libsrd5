@@ -212,8 +212,8 @@ namespace srd5 {
             return IsProficient(proficiency);
         }
 
-        public void TakeDamage(DamageType type, string amount) {
-            TakeDamage(type, new Dices(amount).Roll());
+        public int TakeDamage(DamageType type, string amount) {
+            return TakeDamage(type, new Dices(amount).Roll());
         }
 
         /// <summary>

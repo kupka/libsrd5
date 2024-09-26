@@ -1,7 +1,5 @@
-namespace srd5
-{
-    public partial struct Attacks
-    {
+namespace srd5 {
+    public partial struct Attacks {
         public static readonly Attack YoungBlackDragonBite = new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10, new Damage(DamageType.ACID, "1d8"));
         public static readonly Attack YoungBlackDragonClaw = new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
         public static readonly Attack YoungBlueDragonBite = new Attack("Bite", 9, new Damage(DamageType.PIERCING, "2d10+5"), 10, new Damage(DamageType.LIGHTNING, "1d10"));
@@ -24,13 +22,10 @@ namespace srd5
         public static readonly Attack YoungWhiteDragonClaw = new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
     }
 
-    public partial struct Monsters
-    {
+    public partial struct Monsters {
         /* TODO */
-        public static Monster YoungBlackDragon
-        {
-            get
-            {
+        public static Monster YoungBlackDragon {
+            get {
                 Monster youngBlackDragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.YOUNG_BLACK_DRAGON, Alignment.CHAOTIC_EVIL, 19, 14, 17, 12, 11, 15, 18, "15d10+45", 40, 7,
                     new Attack[] { Attacks.YoungBlackDragonBite, Attacks.YoungBlackDragonClaw }, new Attack[] { }, Size.LARGE
@@ -48,10 +43,8 @@ namespace srd5
         }
 
         /* TODO */
-        public static Monster YoungBlueDragon
-        {
-            get
-            {
+        public static Monster YoungBlueDragon {
+            get {
                 Monster youngBlueDragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.YOUNG_BLUE_DRAGON, Alignment.LAWFUL_EVIL, 21, 10, 19, 14, 13, 17, 18, "16d10+64", 40, 9,
                     new Attack[] { Attacks.YoungBlueDragonBite, Attacks.YoungBlueDragonClaw }, new Attack[] { }, Size.LARGE
@@ -68,10 +61,8 @@ namespace srd5
         }
 
         /* TODO */
-        public static Monster YoungBrassDragon
-        {
-            get
-            {
+        public static Monster YoungBrassDragon {
+            get {
                 Monster youngBrassDragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.YOUNG_BRASS_DRAGON, Alignment.CHAOTIC_GOOD, 19, 10, 17, 12, 11, 15, 17, "13d10+39", 40, 6,
                     new Attack[] { Attacks.YoungBrassDragonBite, Attacks.YoungBrassDragonClaw }, new Attack[] { }, Size.LARGE
@@ -89,10 +80,8 @@ namespace srd5
         }
 
         /* TODO */
-        public static Monster YoungBronzeDragon
-        {
-            get
-            {
+        public static Monster YoungBronzeDragon {
+            get {
                 Monster youngBronzeDragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.YOUNG_BRONZE_DRAGON, Alignment.LAWFUL_GOOD, 21, 10, 19, 14, 13, 17, 18, "15d10+60", 40, 8,
                     new Attack[] { Attacks.YoungBronzeDragonBite, Attacks.YoungBronzeDragonClaw }, new Attack[] { }, Size.LARGE
@@ -111,10 +100,8 @@ namespace srd5
         }
 
         /* TODO */
-        public static Monster YoungCopperDragon
-        {
-            get
-            {
+        public static Monster YoungCopperDragon {
+            get {
                 Monster youngCopperDragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.YOUNG_COPPER_DRAGON, Alignment.CHAOTIC_GOOD, 19, 12, 17, 16, 13, 15, 17, "14d10+42", 40, 7,
                     new Attack[] { Attacks.YoungCopperDragonBite, Attacks.YoungCopperDragonClaw }, new Attack[] { }, Size.LARGE
@@ -132,10 +119,8 @@ namespace srd5
         }
 
         /* TODO */
-        public static Monster YoungGoldDragon
-        {
-            get
-            {
+        public static Monster YoungGoldDragon {
+            get {
                 Monster youngGoldDragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.YOUNG_GOLD_DRAGON, Alignment.LAWFUL_GOOD, 23, 14, 21, 16, 13, 20, 18, "17d10+85", 40, 10,
                     new Attack[] { Attacks.YoungGoldDragonBite, Attacks.YoungGoldDragonClaw }, new Attack[] { }, Size.LARGE
@@ -155,10 +140,8 @@ namespace srd5
         }
 
         /* TODO */
-        public static Monster YoungGreenDragon
-        {
-            get
-            {
+        public static Monster YoungGreenDragon {
+            get {
                 Monster youngGreenDragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.YOUNG_GREEN_DRAGON, Alignment.LAWFUL_EVIL, 19, 12, 17, 16, 13, 15, 18, "16d10+48", 40, 8,
                     new Attack[] { Attacks.YoungGreenDragonBite, Attacks.YoungGreenDragonClaw }, new Attack[] { }, Size.LARGE
@@ -178,10 +161,8 @@ namespace srd5
         }
 
         /* TODO */
-        public static Monster YoungRedDragon
-        {
-            get
-            {
+        public static Monster YoungRedDragon {
+            get {
                 Monster youngRedDragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.YOUNG_RED_DRAGON, Alignment.CHAOTIC_EVIL, 23, 10, 21, 14, 11, 19, 18, "17d10+85", 40, 10,
                     new Attack[] { Attacks.YoungRedDragonBite, Attacks.YoungRedDragonClaw }, new Attack[] { }, Size.LARGE
@@ -198,10 +179,8 @@ namespace srd5
         }
 
         /* TODO */
-        public static Monster YoungSilverDragon
-        {
-            get
-            {
+        public static Monster YoungSilverDragon {
+            get {
                 Monster youngSilverDragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.YOUNG_SILVER_DRAGON, Alignment.LAWFUL_GOOD, 23, 10, 21, 14, 11, 19, 18, "16d10+80", 40, 9,
                     new Attack[] { Attacks.YoungSilverDragonBite, Attacks.YoungSilverDragonClaw }, new Attack[] { }, Size.LARGE
@@ -220,10 +199,8 @@ namespace srd5
         }
 
         /* TODO */
-        public static Monster YoungWhiteDragon
-        {
-            get
-            {
+        public static Monster YoungWhiteDragon {
+            get {
                 Monster youngWhiteDragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.YOUNG_WHITE_DRAGON, Alignment.CHAOTIC_EVIL, 18, 10, 18, 6, 11, 12, 17, "14d10+56", 40, 6,
                     new Attack[] { Attacks.YoungWhiteDragonBite, Attacks.YoungWhiteDragonClaw }, new Attack[] { }, Size.LARGE

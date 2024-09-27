@@ -477,7 +477,7 @@ namespace srd5 {
             get {
                 Monster wereratHybridForm = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.WERERAT_HYBRID_FORM, Alignment.LAWFUL_EVIL, 10, 15, 12, 11, 10, 8, 12, "6d8+6", 40, 2,
-                    new Attack[] { Attacks.WereratHybridFormBite, Attacks.WereratHybridFormShortsword }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.WereratHybridFormBite, Attacks.WereratHybridFormShortsword }, new Attack[] { Attacks.WereratHybridFormHandCrossbow }, Size.MEDIUM
                 );
                 wereratHybridForm.AddProficiency(Proficiency.PERCEPTION);
                 wereratHybridForm.AddProficiency(Proficiency.STEALTH);
@@ -525,7 +525,7 @@ namespace srd5 {
             get {
                 Monster weretigerHybridForm = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.WERETIGER_HYBRID_FORM, Alignment.NEUTRAL, 17, 15, 16, 10, 13, 11, 12, "16d8+48", 40, 4,
-                    new Attack[] { Attacks.WeretigerHybridFormBite, Attacks.WeretigerHybridFormClaw, Attacks.WeretigerHybridFormScimitar }, new Attack[] {  Attacks.WeretigerHybridFormLongbow }, Size.MEDIUM
+                    new Attack[] { Attacks.WeretigerHybridFormBite, Attacks.WeretigerHybridFormClaw, Attacks.WeretigerHybridFormScimitar }, new Attack[] { Attacks.WeretigerHybridFormLongbow }, Size.MEDIUM
                 );
                 weretigerHybridForm.AddProficiency(Proficiency.PERCEPTION);
                 weretigerHybridForm.AddProficiency(Proficiency.STEALTH);
@@ -641,7 +641,7 @@ namespace srd5 {
             get {
                 Monster willoWisp = new Monster(
                     Monsters.Type.UNDEAD, Monsters.ID.WILL_O_WISP, Alignment.CHAOTIC_EVIL, 1, 28, 10, 13, 14, 11, 19, "9d4", 40, 2,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.WilloWispShock }, new Attack[] { }, Size.TINY
                 );
                 willoWisp.AddEffect(Effect.RESISTANCE_ACID);
                 willoWisp.AddEffect(Effect.RESISTANCE_COLD);

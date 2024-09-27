@@ -116,7 +116,7 @@ namespace srd5 {
             get {
                 Monster rat = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.RAT, Alignment.UNALIGNED, 2, 11, 9, 2, 10, 4, 10, "1d4-1", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.RatBite }, new Attack[] { }, Size.TINY
                 );
                 rat.AddFeat(Feat.KEEN_SMELL);
                 return rat;
@@ -128,7 +128,7 @@ namespace srd5 {
             get {
                 Monster raven = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.RAVEN, Alignment.UNALIGNED, 2, 14, 8, 2, 12, 6, 12, "1d4-1", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.RavenBeak }, new Attack[] { }, Size.TINY
                 );
                 raven.AddProficiency(Proficiency.PERCEPTION);
                 raven.AddFeat(Feat.MIMICRY_RAVEN);

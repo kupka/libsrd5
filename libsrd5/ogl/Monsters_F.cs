@@ -79,7 +79,7 @@ namespace srd5 {
             get {
                 Monster fireGiant = new Monster(
                     Monsters.Type.GIANT, Monsters.ID.FIRE_GIANT, Alignment.LAWFUL_EVIL, 25, 9, 23, 10, 14, 13, 18, "13d12+78", 40, 9,
-                    new Attack[] { Attacks.FireGiantGreatsword }, new Attack[] { }, Size.HUGE
+                    new Attack[] { Attacks.FireGiantGreatsword }, new Attack[] { Attacks.FireGiantRock }, Size.HUGE
                 );
                 fireGiant.AddProficiency(Proficiency.DEXTERITY);
                 fireGiant.AddProficiency(Proficiency.CONSTITUTION);
@@ -122,7 +122,7 @@ namespace srd5 {
             get {
                 Monster flyingSnake = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.FLYING_SNAKE, Alignment.UNALIGNED, 4, 18, 11, 2, 12, 5, 14, "2d4", 40, ChallengeRating.EIGHTH,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.FlyingSnakeBite }, new Attack[] { }, Size.TINY
                 );
                 flyingSnake.AddFeat(Feat.FLYBY);
                 return flyingSnake;
@@ -172,7 +172,7 @@ namespace srd5 {
             get {
                 Monster frostGiant = new Monster(
                     Monsters.Type.GIANT, Monsters.ID.FROST_GIANT, Alignment.NEUTRAL_EVIL, 23, 9, 21, 9, 10, 12, 15, "12d12+60", 40, 8,
-                    new Attack[] { Attacks.FrostGiantGreataxe }, new Attack[] { }, Size.HUGE
+                    new Attack[] { Attacks.FrostGiantGreataxe }, new Attack[] { Attacks.FrostGiantRock }, Size.HUGE
                 );
                 frostGiant.AddProficiency(Proficiency.CONSTITUTION);
                 frostGiant.AddProficiency(Proficiency.WISDOM);

@@ -374,7 +374,7 @@ namespace srd5 {
             get {
                 Monster drider = new Monster(
                     Monsters.Type.MONSTROSITY, Monsters.ID.DRIDER, Alignment.CHAOTIC_EVIL, 16, 16, 18, 13, 14, 12, 19, "13d10+52", 40, 6,
-                    new Attack[] { Attacks.DriderBite, Attacks.DriderLongsword }, new Attack[] { }, Size.LARGE
+                    new Attack[] { Attacks.DriderBite, Attacks.DriderLongsword }, new Attack[] { Attacks.DriderLongbow }, Size.LARGE
                 );
                 drider.AddProficiency(Proficiency.PERCEPTION);
                 drider.AddProficiency(Proficiency.STEALTH);

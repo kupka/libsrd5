@@ -585,7 +585,7 @@ namespace srd5 {
             get {
                 Monster giantApe = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.GIANT_APE, Alignment.UNALIGNED, 23, 14, 18, 7, 12, 7, 12, "15d12+60", 40, 7,
-                    new Attack[] { Attacks.GiantApeFist }, new Attack[] { }, Size.HUGE
+                    new Attack[] { Attacks.GiantApeFist }, new Attack[] { Attacks.GiantApeRock }, Size.HUGE
                 );
                 giantApe.AddProficiency(Proficiency.ATHLETICS);
                 giantApe.AddProficiency(Proficiency.PERCEPTION);
@@ -882,7 +882,7 @@ namespace srd5 {
             get {
                 Monster giantSpider = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.GIANT_SPIDER, Alignment.UNALIGNED, 14, 16, 12, 2, 11, 4, 14, "4d10+4", 40, 1,
-                    new Attack[] { Attacks.GiantSpiderBite }, new Attack[] { }, Size.LARGE
+                    new Attack[] { Attacks.GiantSpiderBite }, new Attack[] { Attacks.GiantSpiderWeb }, Size.LARGE
                 );
                 giantSpider.AddProficiency(Proficiency.STEALTH);
                 giantSpider.AddFeat(Feat.SPIDER_CLIMB);
@@ -1020,7 +1020,7 @@ namespace srd5 {
             get {
                 Monster gnoll = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.GNOLL, Alignment.CHAOTIC_EVIL, 14, 12, 11, 6, 10, 7, 15, "5d8", 40, ChallengeRating.HALF,
-                    new Attack[] { Attacks.GnollBite, Attacks.GnollSpearMelee }, new Attack[] { Attacks.GnollSpearRanged }, Size.MEDIUM
+                    new Attack[] { Attacks.GnollBite, Attacks.GnollSpearMelee }, new Attack[] { Attacks.GnollSpearRanged, Attacks.GnollLongbow }, Size.MEDIUM
                 );
                 gnoll.AddFeat(Feat.RAMPAGE);
                 return gnoll;

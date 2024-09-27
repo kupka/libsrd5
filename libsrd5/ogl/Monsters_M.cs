@@ -19,7 +19,7 @@ namespace srd5 {
             if (target.IsImmune(DamageType.FIRE)) return;
             if (target.HasEffect(Effect.MAGMIN_IGNITE)) return;
             target.AddEffect(Effect.MAGMIN_IGNITE);
-             // TODO: Add means to remove effect ("Until a creature takes an action to douse the fire...")
+            // TODO: Add means to remove effect ("Until a creature takes an action to douse the fire...")
         };
         public static Attack MagminTouch {
             get {
@@ -106,7 +106,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect MerrowHarpoonEffect = delegate (Combattant attacker, Combattant target) {
-            if(target.Size > Size.HUGE) return;
+            if (target.Size > Size.HUGE) return;
             // TODO: it must succeed on a Strength contest against the merrow or be pulled up to 20 feet toward the merrow.
         };
         public static Attack MerrowHarpoonMelee {
@@ -257,7 +257,7 @@ namespace srd5 {
             get {
                 Monster manticore = new Monster(
                     Monsters.Type.MONSTROSITY, Monsters.ID.MANTICORE, Alignment.LAWFUL_EVIL, 17, 16, 17, 7, 12, 8, 14, "8d10+24", 40, 3,
-                    new Attack[] { Attacks.ManticoreBite, Attacks.ManticoreClaw }, new Attack[] { }, Size.LARGE
+                    new Attack[] { Attacks.ManticoreBite, Attacks.ManticoreClaw }, new Attack[] { Attacks.ManticoreTailSpike }, Size.LARGE
                 );
                 manticore.AddFeat(Feat.TAIL_SPIKE_REGROWTH);
                 return manticore;
@@ -306,7 +306,7 @@ namespace srd5 {
             get {
                 Monster medusa = new Monster(
                     Monsters.Type.MONSTROSITY, Monsters.ID.MEDUSA, Alignment.LAWFUL_EVIL, 10, 15, 16, 12, 13, 15, 15, "17d8+51", 40, 6,
-                    new Attack[] { Attacks.MedusaSnakeHair, Attacks.MedusaShortsword }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.MedusaSnakeHair, Attacks.MedusaShortsword }, new Attack[] { Attacks.MedusaLongbow }, Size.MEDIUM
                 );
                 medusa.AddProficiency(Proficiency.DECEPTION);
                 medusa.AddProficiency(Proficiency.INSIGHT);

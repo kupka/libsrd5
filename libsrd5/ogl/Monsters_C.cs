@@ -219,7 +219,7 @@ namespace srd5 {
             get {
                 Monster cat = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.CAT, Alignment.UNALIGNED, 3, 15, 10, 3, 12, 7, 12, "1d4", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.CatClaws }, new Attack[] { }, Size.TINY
                 );
                 cat.AddProficiency(Proficiency.PERCEPTION);
                 cat.AddProficiency(Proficiency.STEALTH);
@@ -233,7 +233,7 @@ namespace srd5 {
             get {
                 Monster centaur = new Monster(
                     Monsters.Type.MONSTROSITY, Monsters.ID.CENTAUR, Alignment.NEUTRAL_GOOD, 18, 14, 14, 9, 13, 11, 12, "6d10+12", 40, 2,
-                    new Attack[] { Attacks.CentaurPike, Attacks.CentaurHooves }, new Attack[] { }, Size.LARGE
+                    new Attack[] { Attacks.CentaurPike, Attacks.CentaurHooves }, new Attack[] { Attacks.CentaurLongbow }, Size.LARGE
                 );
                 centaur.AddProficiency(Proficiency.ATHLETICS);
                 centaur.AddProficiency(Proficiency.PERCEPTION);
@@ -338,7 +338,7 @@ namespace srd5 {
             get {
                 Monster cloudGiant = new Monster(
                     Monsters.Type.GIANT, Monsters.ID.CLOUD_GIANT, Alignment.NEUTRAL_GOOD, 27, 10, 22, 12, 16, 16, 14, "16d12+96", 40, 9,
-                    new Attack[] { Attacks.CloudGiantMorningstar }, new Attack[] { }, Size.HUGE
+                    new Attack[] { Attacks.CloudGiantMorningstar }, new Attack[] { Attacks.CloudGiantRock }, Size.HUGE
                 );
                 cloudGiant.AddProficiency(Proficiency.CONSTITUTION);
                 cloudGiant.AddProficiency(Proficiency.WISDOM);
@@ -427,7 +427,7 @@ namespace srd5 {
             get {
                 Monster crab = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.CRAB, Alignment.UNALIGNED, 2, 11, 10, 1, 8, 2, 11, "1d4", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.CrabClaw }, new Attack[] { }, Size.TINY
                 );
                 crab.AddProficiency(Proficiency.STEALTH);
                 crab.AddFeat(Feat.AMPHIBIOUS);

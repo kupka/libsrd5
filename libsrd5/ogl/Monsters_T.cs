@@ -138,7 +138,7 @@ namespace srd5 {
             get {
                 Monster thug = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.THUG, Alignment.UNALIGNED, 15, 11, 14, 10, 10, 11, 11, "5d8+10", 40, ChallengeRating.HALF,
-                    new Attack[] { Attacks.ThugMace }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.ThugMace }, new Attack[] { Attacks.ThugHeavyCrossbow }, Size.MEDIUM
                 );
                 thug.AddProficiency(Proficiency.INTIMIDATION);
                 thug.AddFeat(Feat.PACK_TACTICS);
@@ -166,7 +166,7 @@ namespace srd5 {
             get {
                 Monster treant = new Monster(
                     Monsters.Type.PLANT, Monsters.ID.TREANT, Alignment.CHAOTIC_GOOD, 23, 8, 21, 12, 16, 12, 16, "12d12+60", 40, 9,
-                    new Attack[] { Attacks.TreantSlam }, new Attack[] { }, Size.HUGE
+                    new Attack[] { Attacks.TreantSlam }, new Attack[] { Attacks.TreantRock }, Size.HUGE
                 );
                 treant.AddEffect(Effect.VULNERABILITY_FIRE);
                 treant.AddEffect(Effect.RESISTANCE_BLUDGEONING);

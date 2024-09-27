@@ -180,7 +180,7 @@ namespace srd5 {
             get {
                 Monster veteran = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.VETERAN, Alignment.UNALIGNED, 16, 13, 14, 10, 11, 10, 17, "9d8+18", 40, 3,
-                    new Attack[] { Attacks.VeteranLongsword, Attacks.VeteranShortsword }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.VeteranLongsword, Attacks.VeteranShortsword }, new Attack[] { Attacks.VeteranHeavyCrossbow }, Size.MEDIUM
                 );
                 veteran.AddProficiency(Proficiency.ATHLETICS);
                 veteran.AddProficiency(Proficiency.PERCEPTION);

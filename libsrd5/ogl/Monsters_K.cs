@@ -64,12 +64,12 @@ namespace srd5 {
     }
 
     public partial struct Monsters {
-                /* TODO */ 
-         public static Monster KillerWhale {
+        /* TODO */
+        public static Monster KillerWhale {
             get {
                 Monster killerWhale = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.KILLER_WHALE, Alignment.UNALIGNED, 19, 10, 13, 3, 12, 7, 12, "12d12+12", 40, 3,
-                    new Attack[] { Attacks.KillerWhaleBite }, new Attack[] {  }, Size.HUGE
+                    new Attack[] { Attacks.KillerWhaleBite }, new Attack[] { }, Size.HUGE
                 );
                 killerWhale.AddProficiency(Proficiency.PERCEPTION);
                 killerWhale.AddFeat(Feat.ECHOLOCATION);
@@ -79,12 +79,12 @@ namespace srd5 {
             }
         }
 
-         /* TODO */ 
-         public static Monster Knight {
+        /* TODO */
+        public static Monster Knight {
             get {
                 Monster knight = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.KNIGHT, Alignment.UNALIGNED, 16, 11, 14, 11, 11, 15, 18, "8d8+16", 40, 3,
-                    new Attack[] { Attacks.KnightGreatsword }, new Attack[] {  }, Size.MEDIUM
+                    new Attack[] { Attacks.KnightGreatsword }, new Attack[] { Attacks.KnightHeavyCrossbow }, Size.MEDIUM
                 );
                 knight.AddProficiency(Proficiency.CONSTITUTION);
                 knight.AddProficiency(Proficiency.WISDOM);
@@ -93,12 +93,12 @@ namespace srd5 {
             }
         }
 
-         /* TODO */ 
-         public static Monster Kobold {
+        /* TODO */
+        public static Monster Kobold {
             get {
                 Monster kobold = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.KOBOLD, Alignment.LAWFUL_EVIL, 7, 15, 9, 8, 7, 8, 12, "2d6-2", 40, ChallengeRating.EIGHTH,
-                    new Attack[] { Attacks.KoboldDagger }, new Attack[] {  }, Size.SMALL
+                    new Attack[] { Attacks.KoboldDagger }, new Attack[] { Attacks.KoboldSling }, Size.SMALL
                 );
                 kobold.AddFeat(Feat.SUNLIGHT_SENSITIVITY);
                 kobold.AddFeat(Feat.PACK_TACTICS);
@@ -106,12 +106,12 @@ namespace srd5 {
             }
         }
 
-         /* TODO */ 
-         public static Monster Kraken {
+        /* TODO */
+        public static Monster Kraken {
             get {
                 Monster kraken = new Monster(
                     Monsters.Type.MONSTROSITY, Monsters.ID.KRAKEN, Alignment.CHAOTIC_EVIL, 30, 11, 25, 22, 18, 20, 18, "27d20+189", 40, 23,
-                    new Attack[] { Attacks.KrakenBite, Attacks.KrakenTentacle }, new Attack[] {  }, Size.GARGANTUAN
+                    new Attack[] { Attacks.KrakenBite, Attacks.KrakenTentacle }, new Attack[] { }, Size.GARGANTUAN
                 );
                 kraken.AddProficiency(Proficiency.STRENGTH);
                 kraken.AddProficiency(Proficiency.DEXTERITY);

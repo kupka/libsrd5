@@ -45,7 +45,7 @@ namespace srd5 {
             get {
                 Monster quipper = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.QUIPPER, Alignment.UNALIGNED, 2, 16, 9, 1, 7, 2, 13, "1d4-1", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.QuipperBite }, new Attack[] { }, Size.TINY
                 );
                 quipper.AddFeat(Feat.BLOOD_FRENZY);
                 quipper.AddFeat(Feat.WATER_BREATHING);

@@ -270,7 +270,7 @@ namespace srd5 {
             get {
                 Monster badger = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.BADGER, Alignment.UNALIGNED, 4, 11, 12, 2, 12, 5, 10, "1d4+1", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.BadgerBite }, new Attack[] { }, Size.TINY
                 );
                 badger.AddFeat(Feat.KEEN_SMELL);
                 return badger;
@@ -307,7 +307,7 @@ namespace srd5 {
             get {
                 Monster bandit = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.BANDIT, Alignment.UNALIGNED, 11, 12, 12, 10, 10, 10, 12, "2d8+2", 40, ChallengeRating.EIGHTH,
-                    new Attack[] { Attacks.BanditScimitar }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.BanditScimitar }, new Attack[] { Attacks.BanditLightCrossbow }, Size.MEDIUM
                 );
                 return bandit;
             }
@@ -334,7 +334,7 @@ namespace srd5 {
             get {
                 Monster barbedDevil = new Monster(
                     Monsters.Type.FIEND, Monsters.ID.BARBED_DEVIL, Alignment.LAWFUL_EVIL, 16, 17, 18, 12, 14, 14, 15, "13d8+52", 40, 5,
-                    new Attack[] { Attacks.BarbedDevilClaw, Attacks.BarbedDevilTail }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.BarbedDevilClaw, Attacks.BarbedDevilTail }, new Attack[] { Attacks.BarbedDevilHurlFlame }, Size.MEDIUM
                 );
                 barbedDevil.AddProficiency(Proficiency.STRENGTH);
                 barbedDevil.AddProficiency(Proficiency.CONSTITUTION);
@@ -372,7 +372,7 @@ namespace srd5 {
             get {
                 Monster bat = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.BAT, Alignment.UNALIGNED, 2, 15, 8, 2, 12, 4, 12, "1d4-1", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.BatBite }, new Attack[] { }, Size.TINY
                 );
                 bat.AddFeat(Feat.ECHOLOCATION);
                 bat.AddFeat(Feat.KEEN_HEARING);

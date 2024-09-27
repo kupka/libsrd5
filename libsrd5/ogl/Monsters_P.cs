@@ -128,12 +128,12 @@ namespace srd5 {
     }
 
     public partial struct Monsters {
-                 /* TODO */ 
-         public static Monster Panther {
+        /* TODO */
+        public static Monster Panther {
             get {
                 Monster panther = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.PANTHER, Alignment.UNALIGNED, 14, 15, 10, 3, 14, 7, 12, "3d8", 40, ChallengeRating.QUARTER,
-                    new Attack[] { Attacks.PantherBite, Attacks.PantherClaw }, new Attack[] {  }, Size.MEDIUM
+                    new Attack[] { Attacks.PantherBite, Attacks.PantherClaw }, new Attack[] { }, Size.MEDIUM
                 );
                 panther.AddProficiency(Proficiency.PERCEPTION);
                 panther.AddProficiency(Proficiency.STEALTH);
@@ -143,12 +143,12 @@ namespace srd5 {
             }
         }
 
-         /* TODO */ 
-         public static Monster Pegasus {
+        /* TODO */
+        public static Monster Pegasus {
             get {
                 Monster pegasus = new Monster(
                     Monsters.Type.CELESTIAL, Monsters.ID.PEGASUS, Alignment.CHAOTIC_GOOD, 18, 15, 16, 10, 15, 13, 12, "7d10+21", 40, 2,
-                    new Attack[] { Attacks.PegasusHooves }, new Attack[] {  }, Size.LARGE
+                    new Attack[] { Attacks.PegasusHooves }, new Attack[] { }, Size.LARGE
                 );
                 pegasus.AddProficiency(Proficiency.DEXTERITY);
                 pegasus.AddProficiency(Proficiency.WISDOM);
@@ -158,12 +158,12 @@ namespace srd5 {
             }
         }
 
-         /* TODO */ 
-         public static Monster PhaseSpider {
+        /* TODO */
+        public static Monster PhaseSpider {
             get {
                 Monster phaseSpider = new Monster(
                     Monsters.Type.MONSTROSITY, Monsters.ID.PHASE_SPIDER, Alignment.UNALIGNED, 15, 15, 12, 6, 10, 6, 13, "5d10+5", 40, 3,
-                    new Attack[] { Attacks.PhaseSpiderBite }, new Attack[] {  }, Size.LARGE
+                    new Attack[] { Attacks.PhaseSpiderBite }, new Attack[] { }, Size.LARGE
                 );
                 phaseSpider.AddProficiency(Proficiency.STEALTH);
                 phaseSpider.AddFeat(Feat.ETHEREAL_JAUNT);
@@ -173,12 +173,12 @@ namespace srd5 {
             }
         }
 
-         /* TODO */ 
-         public static Monster PitFiend {
+        /* TODO */
+        public static Monster PitFiend {
             get {
                 Monster pitFiend = new Monster(
                     Monsters.Type.FIEND, Monsters.ID.PIT_FIEND, Alignment.LAWFUL_EVIL, 26, 14, 24, 22, 18, 24, 19, "24d10+168", 40, 20,
-                    new Attack[] { Attacks.PitFiendBite, Attacks.PitFiendClaw }, new Attack[] {  }, Size.LARGE
+                    new Attack[] { Attacks.PitFiendBite, Attacks.PitFiendClaw, Attacks.PitFiendMace, Attacks.PitFiendTail }, new Attack[] { }, Size.LARGE
                 );
                 pitFiend.AddProficiency(Proficiency.DEXTERITY);
                 pitFiend.AddProficiency(Proficiency.CONSTITUTION);
@@ -196,12 +196,12 @@ namespace srd5 {
             }
         }
 
-         /* TODO */ 
-         public static Monster Planetar {
+        /* TODO */
+        public static Monster Planetar {
             get {
                 Monster planetar = new Monster(
                     Monsters.Type.CELESTIAL, Monsters.ID.PLANETAR, Alignment.LAWFUL_GOOD, 24, 20, 24, 19, 22, 25, 19, "16d10+112", 40, 16,
-                    new Attack[] { Attacks.PlanetarGreatsword }, new Attack[] {  }, Size.LARGE
+                    new Attack[] { Attacks.PlanetarGreatsword }, new Attack[] { }, Size.LARGE
                 );
                 planetar.AddProficiency(Proficiency.CONSTITUTION);
                 planetar.AddProficiency(Proficiency.WISDOM);
@@ -220,12 +220,12 @@ namespace srd5 {
             }
         }
 
-         /* TODO */ 
-         public static Monster Plesiosaurus {
+        /* TODO */
+        public static Monster Plesiosaurus {
             get {
                 Monster plesiosaurus = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.PLESIOSAURUS, Alignment.UNALIGNED, 18, 15, 16, 2, 12, 5, 13, "8d10+24", 40, 2,
-                    new Attack[] { Attacks.PlesiosaurusBite }, new Attack[] {  }, Size.LARGE
+                    new Attack[] { Attacks.PlesiosaurusBite }, new Attack[] { }, Size.LARGE
                 );
                 plesiosaurus.AddProficiency(Proficiency.PERCEPTION);
                 plesiosaurus.AddProficiency(Proficiency.STEALTH);
@@ -234,23 +234,23 @@ namespace srd5 {
             }
         }
 
-         /* TODO */ 
-         public static Monster PoisonousSnake {
+        /* TODO */
+        public static Monster PoisonousSnake {
             get {
                 Monster poisonousSnake = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.POISONOUS_SNAKE, Alignment.UNALIGNED, 2, 16, 11, 1, 10, 3, 13, "1d4", 40, ChallengeRating.EIGHTH,
-                    new Attack[] {  }, new Attack[] {  }, Size.TINY
+                    new Attack[] { }, new Attack[] { }, Size.TINY
                 );
                 return poisonousSnake;
             }
         }
 
-         /* TODO */ 
-         public static Monster PolarBear {
+        /* TODO */
+        public static Monster PolarBear {
             get {
                 Monster polarBear = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.POLAR_BEAR, Alignment.UNALIGNED, 20, 10, 16, 2, 13, 7, 12, "5d10+15", 40, 2,
-                    new Attack[] { Attacks.PolarBearBite, Attacks.PolarBearClaws }, new Attack[] {  }, Size.LARGE
+                    new Attack[] { Attacks.PolarBearBite, Attacks.PolarBearClaws }, new Attack[] { }, Size.LARGE
                 );
                 polarBear.AddProficiency(Proficiency.PERCEPTION);
                 polarBear.AddFeat(Feat.KEEN_SMELL);
@@ -258,23 +258,23 @@ namespace srd5 {
             }
         }
 
-         /* TODO */ 
-         public static Monster Pony {
+        /* TODO */
+        public static Monster Pony {
             get {
                 Monster pony = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.PONY, Alignment.UNALIGNED, 15, 10, 13, 2, 11, 7, 10, "2d8+2", 40, ChallengeRating.EIGHTH,
-                    new Attack[] { Attacks.PonyHooves }, new Attack[] {  }, Size.MEDIUM
+                    new Attack[] { Attacks.PonyHooves }, new Attack[] { }, Size.MEDIUM
                 );
                 return pony;
             }
         }
 
-         /* TODO */ 
-         public static Monster Priest {
+        /* TODO */
+        public static Monster Priest {
             get {
                 Monster priest = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.PRIEST, Alignment.UNALIGNED, 10, 10, 12, 13, 16, 13, 13, "5d8+5", 40, 2,
-                    new Attack[] { Attacks.PriestMace }, new Attack[] {  }, Size.MEDIUM
+                    new Attack[] { Attacks.PriestMace }, new Attack[] { }, Size.MEDIUM
                 );
                 priest.AddProficiency(Proficiency.MEDICINE);
                 priest.AddProficiency(Proficiency.PERSUASION);
@@ -285,12 +285,12 @@ namespace srd5 {
             }
         }
 
-         /* TODO */ 
-         public static Monster Pseudodragon {
+        /* TODO */
+        public static Monster Pseudodragon {
             get {
                 Monster pseudodragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.PSEUDODRAGON, Alignment.NEUTRAL_GOOD, 6, 15, 13, 10, 12, 10, 13, "2d4+2", 40, ChallengeRating.QUARTER,
-                    new Attack[] { Attacks.PseudodragonBite, Attacks.PseudodragonSting }, new Attack[] {  }, Size.TINY
+                    new Attack[] { Attacks.PseudodragonBite, Attacks.PseudodragonSting }, new Attack[] { }, Size.TINY
                 );
                 pseudodragon.AddProficiency(Proficiency.PERCEPTION);
                 pseudodragon.AddProficiency(Proficiency.STEALTH);
@@ -301,12 +301,12 @@ namespace srd5 {
             }
         }
 
-         /* TODO */ 
-         public static Monster PurpleWorm {
+        /* TODO */
+        public static Monster PurpleWorm {
             get {
                 Monster purpleWorm = new Monster(
                     Monsters.Type.MONSTROSITY, Monsters.ID.PURPLE_WORM, Alignment.UNALIGNED, 28, 7, 22, 1, 8, 4, 18, "15d20+90", 40, 15,
-                    new Attack[] { Attacks.PurpleWormBite, Attacks.PurpleWormTailStinger }, new Attack[] {  }, Size.GARGANTUAN
+                    new Attack[] { Attacks.PurpleWormBite, Attacks.PurpleWormTailStinger }, new Attack[] { }, Size.GARGANTUAN
                 );
                 purpleWorm.AddProficiency(Proficiency.CONSTITUTION);
                 purpleWorm.AddProficiency(Proficiency.WISDOM);

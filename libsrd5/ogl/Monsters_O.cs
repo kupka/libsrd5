@@ -131,7 +131,7 @@ namespace srd5 {
             get {
                 Monster octopus = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.OCTOPUS, Alignment.UNALIGNED, 4, 15, 11, 3, 10, 4, 12, "1d6", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.SMALL
+                    new Attack[] { Attacks.OctopusTentacles, Attacks.OctopusInkCloud }, new Attack[] { }, Size.SMALL
                 );
                 octopus.AddProficiency(Proficiency.PERCEPTION);
                 octopus.AddProficiency(Proficiency.STEALTH);
@@ -220,7 +220,7 @@ namespace srd5 {
             get {
                 Monster owl = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.OWL, Alignment.UNALIGNED, 3, 13, 8, 2, 12, 7, 11, "1d4-1", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.OwlTalons }, new Attack[] { }, Size.TINY
                 );
                 owl.AddProficiency(Proficiency.PERCEPTION);
                 owl.AddProficiency(Proficiency.STEALTH);

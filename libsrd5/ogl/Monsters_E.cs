@@ -153,7 +153,7 @@ namespace srd5 {
             get {
                 Monster efreeti = new Monster(
                     Monsters.Type.ELEMENTAL, Monsters.ID.EFREETI, Alignment.LAWFUL_EVIL, 22, 12, 24, 16, 15, 16, 17, "16d10+112", 40, 11,
-                    new Attack[] { Attacks.EfreetiScimitar }, new Attack[] { }, Size.LARGE
+                    new Attack[] { Attacks.EfreetiScimitar }, new Attack[] { Attacks.EfreetiHurlFlame }, Size.LARGE
                 );
                 efreeti.AddProficiency(Proficiency.INTELLIGENCE);
                 efreeti.AddProficiency(Proficiency.WISDOM);
@@ -216,7 +216,7 @@ namespace srd5 {
             get {
                 Monster ettercap = new Monster(
                     Monsters.Type.MONSTROSITY, Monsters.ID.ETTERCAP, Alignment.NEUTRAL_EVIL, 14, 15, 13, 7, 12, 8, 13, "8d8+8", 40, 2,
-                    new Attack[] { Attacks.EttercapBite, Attacks.EttercapClaws }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.EttercapBite, Attacks.EttercapClaws }, new Attack[] { Attacks.EttercapWeb }, Size.MEDIUM
                 );
                 ettercap.AddProficiency(Proficiency.PERCEPTION);
                 ettercap.AddProficiency(Proficiency.STEALTH);

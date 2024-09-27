@@ -265,7 +265,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfBatsBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
             target.TakeDamage(DamageType.PIERCING, "1d4");
         };
         public static Attack SwarmOfBatsBites {
@@ -274,7 +274,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfBeetlesBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
             target.TakeDamage(DamageType.PIERCING, "2d4");
         };
         public static Attack SwarmOfBeetlesBites {
@@ -283,7 +283,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfCentipedesBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
             target.TakeDamage(DamageType.PIERCING, "2d4");
             // TODO: A creature reduced to 0 hit points by a swarm of centipedes is stable but poisoned for 1 hour, 
             // even after regaining hit points, and paralyzed while poisoned in this way.
@@ -294,7 +294,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfInsectsBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
             target.TakeDamage(DamageType.PIERCING, "2d4");
         };
         public static Attack SwarmOfInsectsBites {
@@ -303,7 +303,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfPoisonousSnakesBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
             target.TakeDamage(DamageType.PIERCING, "1d6");
             AttackEffects.PoisonEffect(target, SwarmOfPoisonousSnakesBites, "4d6", 10);
         };
@@ -313,7 +313,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfQuippersBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
             target.TakeDamage(DamageType.PIERCING, "2d6");
         };
         public static Attack SwarmOfQuippersBites {
@@ -322,7 +322,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfRatsBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
             target.TakeDamage(DamageType.PIERCING, "1d6");
         };
         public static Attack SwarmOfRatsBites {
@@ -331,7 +331,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfRavensBeaksEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
             target.TakeDamage(DamageType.PIERCING, "1d6");
         };
         public static Attack SwarmOfRavensBeaks {
@@ -340,7 +340,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfSpidersBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
             target.TakeDamage(DamageType.PIERCING, "2d4");
         };
         public static Attack SwarmOfSpidersBites {
@@ -349,7 +349,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfWaspsBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
             target.TakeDamage(DamageType.PIERCING, "2d4");
         };
         public static Attack SwarmOfWaspsBites {
@@ -396,7 +396,7 @@ namespace srd5 {
             get {
                 Monster salamander = new Monster(
                     Monsters.Type.ELEMENTAL, Monsters.ID.SALAMANDER, Alignment.NEUTRAL_EVIL, 18, 14, 15, 11, 10, 12, 15, "12d10+24", 40, 5,
-                    new Attack[] { Attacks.SalamanderTail }, new Attack[] { }, Size.LARGE
+                    new Attack[] { Attacks.SalamanderSpear, Attacks.SalamanderTail }, new Attack[] { }, Size.LARGE
                 );
                 salamander.AddEffect(Effect.VULNERABILITY_COLD);
                 salamander.AddEffect(Effect.RESISTANCE_NONMAGIC);
@@ -412,7 +412,7 @@ namespace srd5 {
             get {
                 Monster satyr = new Monster(
                     Monsters.Type.FEY, Monsters.ID.SATYR, Alignment.CHAOTIC_NEUTRAL, 12, 16, 11, 12, 10, 14, 14, "7d8", 40, ChallengeRating.HALF,
-                    new Attack[] { Attacks.SatyrRam, Attacks.SatyrShortsword }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.SatyrRam, Attacks.SatyrShortsword }, new Attack[] { Attacks.SatyrShortbow }, Size.MEDIUM
                 );
                 satyr.AddProficiency(Proficiency.PERCEPTION);
                 satyr.AddProficiency(Proficiency.PERFORMANCE);
@@ -438,7 +438,7 @@ namespace srd5 {
             get {
                 Monster scout = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.SCOUT, Alignment.UNALIGNED, 11, 14, 12, 11, 13, 11, 13, "3d8+3", 40, ChallengeRating.HALF,
-                    new Attack[] { Attacks.ScoutShortsword }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.ScoutShortsword }, new Attack[] { Attacks.ScoutLongbow }, Size.MEDIUM
                 );
                 scout.AddProficiency(Proficiency.NATURE);
                 scout.AddProficiency(Proficiency.PERCEPTION);
@@ -583,7 +583,7 @@ namespace srd5 {
             get {
                 Monster skeleton = new Monster(
                     Monsters.Type.UNDEAD, Monsters.ID.SKELETON, Alignment.LAWFUL_EVIL, 10, 14, 15, 6, 8, 5, 13, "2d8+4", 40, ChallengeRating.QUARTER,
-                    new Attack[] { Attacks.SkeletonShortsword }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.SkeletonShortsword }, new Attack[] { Attacks.SkeletonShortbow }, Size.MEDIUM
                 );
                 skeleton.AddEffect(Effect.VULNERABILITY_BLUDGEONING);
                 skeleton.AddEffect(Effect.IMMUNITY_POISON);
@@ -598,7 +598,7 @@ namespace srd5 {
             get {
                 Monster solar = new Monster(
                     Monsters.Type.CELESTIAL, Monsters.ID.SOLAR, Alignment.LAWFUL_GOOD, 26, 22, 26, 25, 25, 30, 21, "18d10+144", 40, 21,
-                    new Attack[] { Attacks.SolarGreatsword }, new Attack[] { }, Size.LARGE
+                    new Attack[] { Attacks.SolarGreatsword }, new Attack[] { Attacks.SolarSlayingLongbow }, Size.LARGE
                 );
                 solar.AddProficiency(Proficiency.INTELLIGENCE);
                 solar.AddProficiency(Proficiency.WISDOM);
@@ -625,7 +625,7 @@ namespace srd5 {
             get {
                 Monster specter = new Monster(
                     Monsters.Type.UNDEAD, Monsters.ID.SPECTER, Alignment.CHAOTIC_EVIL, 1, 14, 11, 10, 10, 11, 12, "5d8", 40, 1,
-                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.SpecterLifeDrain }, new Attack[] { }, Size.MEDIUM
                 );
                 specter.AddEffect(Effect.RESISTANCE_ACID);
                 specter.AddEffect(Effect.RESISTANCE_COLD);
@@ -655,7 +655,7 @@ namespace srd5 {
             get {
                 Monster spider = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.SPIDER, Alignment.UNALIGNED, 2, 14, 8, 1, 10, 2, 12, "1d4-1", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.SpiderBite }, new Attack[] { }, Size.TINY
                 );
                 spider.AddProficiency(Proficiency.STEALTH);
                 spider.AddFeat(Feat.SPIDER_CLIMB);
@@ -690,7 +690,7 @@ namespace srd5 {
             get {
                 Monster sprite = new Monster(
                     Monsters.Type.FEY, Monsters.ID.SPRITE, Alignment.NEUTRAL_GOOD, 3, 18, 10, 14, 13, 11, 15, "1d4", 40, ChallengeRating.QUARTER,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.SpriteLongsword }, new Attack[] { }, Size.TINY
                 );
                 sprite.AddProficiency(Proficiency.PERCEPTION);
                 sprite.AddProficiency(Proficiency.STEALTH);
@@ -703,7 +703,7 @@ namespace srd5 {
             get {
                 Monster spy = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.SPY, Alignment.UNALIGNED, 10, 15, 10, 12, 14, 16, 12, "6d8", 40, 1,
-                    new Attack[] { Attacks.SpyShortsword }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.SpyShortsword }, new Attack[] { Attacks.SpyHandCrossbow }, Size.MEDIUM
                 );
                 spy.AddProficiency(Proficiency.DECEPTION);
                 spy.AddProficiency(Proficiency.INSIGHT);
@@ -749,7 +749,7 @@ namespace srd5 {
             get {
                 Monster stoneGiant = new Monster(
                     Monsters.Type.GIANT, Monsters.ID.STONE_GIANT, Alignment.NEUTRAL, 23, 15, 20, 10, 12, 9, 17, "11d12+55", 40, 7,
-                    new Attack[] { Attacks.StoneGiantGreatclub }, new Attack[] { }, Size.HUGE
+                    new Attack[] { Attacks.StoneGiantGreatclub }, new Attack[] { Attacks.StoneGiantRock }, Size.HUGE
                 );
                 stoneGiant.AddProficiency(Proficiency.DEXTERITY);
                 stoneGiant.AddProficiency(Proficiency.CONSTITUTION);

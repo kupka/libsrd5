@@ -156,7 +156,7 @@ namespace srd5 {
             get {
                 Monster lizard = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.LIZARD, Alignment.UNALIGNED, 2, 11, 10, 1, 8, 3, 10, "1d4", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.LizardBite }, new Attack[] { }, Size.TINY
                 );
                 return lizard;
             }

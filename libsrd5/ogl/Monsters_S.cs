@@ -122,7 +122,7 @@ namespace srd5 {
             if (target.HitPoints > 190) return;
             bool success = target.DC(SolarSlayingLongbow, 15, AbilityType.CONSTITUTION);
             if (success) return;
-            // TODO: Target dies
+            target.Die();
         };
         public static Attack SolarSlayingLongbow {
             get {

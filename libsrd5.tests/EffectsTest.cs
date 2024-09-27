@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Xunit;
 
 namespace srd5 {
@@ -33,6 +34,18 @@ namespace srd5 {
         public void CurseTest() {
             Assert.True(Effect.CURSE_MUMMY_ROT.IsCurse());
             Assert.False(Effect.BEARDED_DEVIL_POISON.IsCurse());
+        }
+
+        [Fact]
+        public void EnumerateEffectsTest() {
+            Combattant bandit = Monsters.Bandit;
+            foreach (Effect effect in Enum.GetValues(typeof(Effect))) {
+                if (effect == Effect.IMMUNITY_TRUE_DAMAGE || effect == Effect.RESISTANCE_TRUE_DAMAGE || effect == Effect.VULNERABILITY_TRUE_DAMAGE) continue;
+                bandit.AddEffect(effect);
+                Assert.True(bandit.HasEffect(effect));
+                bandit.RemoveEffect(effect);
+                Assert.False(bandit.HasEffect(effect));
+            }
         }
     }
 }

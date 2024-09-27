@@ -597,5 +597,21 @@ namespace srd5 {
             kraken.OnStartOfTurn();
             Assert.True(pansyMonster.HitPoints < hitpoints);
         }
+
+        [Fact]
+        public void SolarTest() {
+            bool died = false;
+            bool survived = false;
+            for (int i = 0; i < 100; i++) {
+                Monster bandit = Monsters.Bandit;
+                Attacks.SolarSlayingLongbowEffect(Monsters.Solar, bandit);
+                if (bandit.Dead) {
+                    died = true;
+                } else {
+                    survived = true;
+                }
+            }
+            Assert.True(died && survived);
+        }
     }
 }

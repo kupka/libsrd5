@@ -208,7 +208,9 @@ namespace srd5 {
                 case Effect.ONE_EXTRA_ATTACK:
                 case Effect.TWO_EXTRA_ATTACKS:
                 case Effect.THREE_EXTRA_ATTACKS:
-                    ((CharacterSheet)combattant).RecalculateAttacks();
+                    if (combattant is CharacterSheet sheet) {
+                        sheet.RecalculateAttacks();
+                    };
                     break;
                 case Effect.LONGSTRIDER:
                     combattant.Speed += 10;
@@ -361,7 +363,9 @@ namespace srd5 {
                 case Effect.ONE_EXTRA_ATTACK:
                 case Effect.TWO_EXTRA_ATTACKS:
                 case Effect.THREE_EXTRA_ATTACKS:
-                    ((CharacterSheet)combattant).RecalculateAttacks();
+                    if (combattant is CharacterSheet sheet) {
+                        sheet.RecalculateAttacks();
+                    };
                     break;
                 case Effect.LONGSTRIDER:
                     combattant.Speed -= 10;

@@ -55,6 +55,7 @@ namespace srd5 {
         public Proficiency[] Proficiencies { get { return proficiencies; } }
         protected Proficiency[] proficiencies = new Proficiency[0];
         public int EffectiveLevel { get; protected set; }
+        public bool Dead { get; internal set; } = false;
         public AvailableSpells[] AvailableSpells {
             get {
                 return availableSpells;
@@ -520,7 +521,7 @@ namespace srd5 {
 
         internal void Die() {
             // TODO: Implement what happens when this Combattant dies
-            throw new NotImplementedException();
+            Dead = true;
         }
     }
 

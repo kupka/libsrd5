@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Xunit;
 
 namespace srd5 {
@@ -27,6 +28,43 @@ namespace srd5 {
             Assert.Throws<Srd5ArgumentException>(delegate () {
                 Monsters.Aboleth.AddEffect(Effect.VULNERABILITY_TRUE_DAMAGE);
             });
+        }
+
+        [Fact]
+        public void CurseTest() {
+            Assert.True(Effect.CURSE_MUMMY_ROT.IsCurse());
+            Assert.False(Effect.BEARDED_DEVIL_POISON.IsCurse());
+        }
+
+        [Fact]
+        public void EnumerateEffectsTest() {
+            foreach (Effect effect in Enum.GetValues(typeof(Effect))) {
+                if (effect == Effect.IMMUNITY_TRUE_DAMAGE || effect == Effect.RESISTANCE_TRUE_DAMAGE || effect == Effect.VULNERABILITY_TRUE_DAMAGE) continue;
+                Combattant bandit = Monsters.Bandit;
+                bandit.AddEffect(effect);
+                Assert.True(bandit.HasEffect(effect));
+                bandit.OnStartOfTurn();
+                bandit.OnEndOfTurn();
+                bandit.OnDamageTaken();
+                bandit.RemoveEffect(effect);
+                Assert.False(bandit.HasEffect(effect));
+                bandit.OnStartOfTurn();
+                bandit.OnEndOfTurn();
+                bandit.OnDamageTaken();
+            }
+        }
+
+        [Fact]
+        public void QuasitPoisonEffectTest() {
+            Combattant bandit = Monsters.Bandit;
+            while (!bandit.HasEffect(Effect.QUASIT_POISON)) {
+                bandit.AddEffect(Effect.QUASIT_POISON);
+                bandit.OnEndOfTurn();
+            }
+            Assert.True(bandit.HasCondition(ConditionType.POISONED));
+            bandit.RemoveEffect(Effect.QUASIT_POISON);
+            bandit.OnEndOfTurn();
+            Assert.False(bandit.HasCondition(ConditionType.POISONED));
         }
     }
 }

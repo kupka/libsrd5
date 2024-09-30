@@ -66,8 +66,7 @@ namespace srd5 {
         public Guid Guid { get; private set; } = System.Guid.NewGuid();
 
         public override bool Equals(object obj) {
-            if (obj is GuidClass) {
-                GuidClass other = (GuidClass)obj;
+            if (obj is GuidClass other) {
                 return this.Guid.Equals(other.Guid);
             } else {
                 return false;

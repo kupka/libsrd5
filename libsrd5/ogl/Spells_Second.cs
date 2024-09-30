@@ -62,8 +62,7 @@ namespace srd5 {
                 for (int i = 0; i < (int)slot - 1 && i < targets.Length; i++) {
                     Combattant target = targets[i];
                     // only affect humanoid monsters
-                    if (target is Monster) {
-                        Monster monster = (Monster)target;
+                    if (target is Monster monster) {
                         if (monster.Type != Monsters.Type.HUMANOID) {
                             GlobalEvents.AffectBySpell(caster, ID.HOLD_PERSON, monster, false);
                             continue;

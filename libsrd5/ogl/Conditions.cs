@@ -12,12 +12,17 @@ namespace srd5 {
         EXHAUSTED_5, // Speed = 0
         EXHAUSTED_6, // Death
         FRIGHTENED, // Disadvantage on ability and attack when source is close, cannot approach source
+        GRAPPLED_DC10, // Speed = 0  
         GRAPPLED_DC11, // Speed = 0        
         GRAPPLED_DC12, // Speed = 0
         GRAPPLED_DC13, // Speed = 0
         GRAPPLED_DC14, // Speed = 0
         GRAPPLED_DC15, // Speed = 0
         GRAPPLED_DC16, // Speed = 0
+        GRAPPLED_DC17, // Speed = 0
+        GRAPPLED_DC18, // Speed = 0
+        GRAPPLED_DC19, // Speed = 0
+        GRAPPLED_DC20, // Speed = 0
         INCAPACITATED, // Cannot take actions and reactions
         INVISIBLE, // Advantage on attacks, Disadvantage on being attacked
         PARALYZED, // Stunned & takes auto crits

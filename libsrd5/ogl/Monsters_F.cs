@@ -2,17 +2,50 @@ namespace srd5 {
     public partial struct Attacks {
         public static readonly AttackEffect FireElementalTouchEffect = delegate (Combattant attacker, Combattant target) {
             if (target.IsImmune(DamageType.FIRE)) return;
-            target.AddEffect(Effect.FIRE_ELEMENTAL_TOUCH);
+            if (target.HasEffect(Effect.FIRE_ELEMENTAL_IGNITE)) return;
+            target.AddEffect(Effect.FIRE_ELEMENTAL_IGNITE);
             // TODO: Add means to remove effect ("Until a creature takes an action to douse the fire...")
         };
-        public static readonly Attack FireElementalTouch = new Attack("Touch", 6, new Damage(DamageType.FIRE, "1d6+0"), 5, null, FireElementalTouchEffect);
-        public static readonly Attack FireGiantGreatsword = new Attack("Greatsword", 11, new Damage(DamageType.SLASHING, "6d6+7"), 10);
-        public static readonly Attack FireGiantRock = new Attack("Rock", 11, new Damage(DamageType.BLUDGEONING, "4d10+7"), 5, 60, 240);
-        public static readonly Attack FleshGolemSlam = new Attack("Slam", 7, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
-        public static readonly Attack FlyingSnakeBite = new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d1"), 5, new Damage(DamageType.POISON, "3d4"));
-        public static readonly Attack FlyingSwordLongsword = new Attack("Longsword", 3, new Damage(DamageType.SLASHING, "1d8+1"), 5);
-        public static readonly Attack FrostGiantGreataxe = new Attack("Greataxe", 9, new Damage(DamageType.SLASHING, "3d12+6"), 10);
-        public static readonly Attack FrostGiantRock = new Attack("Rock", 9, new Damage(DamageType.BLUDGEONING, "4d10+6"), 5, 60, 240);
+        public static Attack FireElementalTouch {
+            get {
+                return new Attack("Touch", 6, new Damage(DamageType.FIRE, "1d6+0"), 5, null, FireElementalTouchEffect);
+            }
+        }
+        public static Attack FireGiantGreatsword {
+            get {
+                return new Attack("Greatsword", 11, new Damage(DamageType.SLASHING, "6d6+7"), 10);
+            }
+        }
+        public static Attack FireGiantRock {
+            get {
+                return new Attack("Rock", 11, new Damage(DamageType.BLUDGEONING, "4d10+7"), 5, 60, 240);
+            }
+        }
+        public static Attack FleshGolemSlam {
+            get {
+                return new Attack("Slam", 7, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
+            }
+        }
+        public static Attack FlyingSnakeBite {
+            get {
+                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, 1), 5, new Damage(DamageType.POISON, "3d4"));
+            }
+        }
+        public static Attack FlyingSwordLongsword {
+            get {
+                return new Attack("Longsword", 3, new Damage(DamageType.SLASHING, "1d8+1"), 5);
+            }
+        }
+        public static Attack FrostGiantGreataxe {
+            get {
+                return new Attack("Greataxe", 9, new Damage(DamageType.SLASHING, "3d12+6"), 10);
+            }
+        }
+        public static Attack FrostGiantRock {
+            get {
+                return new Attack("Rock", 9, new Damage(DamageType.BLUDGEONING, "4d10+6"), 5, 60, 240);
+            }
+        }
     }
 
     public partial struct Monsters {
@@ -46,7 +79,7 @@ namespace srd5 {
             get {
                 Monster fireGiant = new Monster(
                     Monsters.Type.GIANT, Monsters.ID.FIRE_GIANT, Alignment.LAWFUL_EVIL, 25, 9, 23, 10, 14, 13, 18, "13d12+78", 40, 9,
-                    new Attack[] { Attacks.FireGiantGreatsword }, new Attack[] { }, Size.HUGE
+                    new Attack[] { Attacks.FireGiantGreatsword }, new Attack[] { Attacks.FireGiantRock }, Size.HUGE
                 );
                 fireGiant.AddProficiency(Proficiency.DEXTERITY);
                 fireGiant.AddProficiency(Proficiency.CONSTITUTION);
@@ -89,7 +122,7 @@ namespace srd5 {
             get {
                 Monster flyingSnake = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.FLYING_SNAKE, Alignment.UNALIGNED, 4, 18, 11, 2, 12, 5, 14, "2d4", 40, ChallengeRating.EIGHTH,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.FlyingSnakeBite }, new Attack[] { }, Size.TINY
                 );
                 flyingSnake.AddFeat(Feat.FLYBY);
                 return flyingSnake;
@@ -139,7 +172,7 @@ namespace srd5 {
             get {
                 Monster frostGiant = new Monster(
                     Monsters.Type.GIANT, Monsters.ID.FROST_GIANT, Alignment.NEUTRAL_EVIL, 23, 9, 21, 9, 10, 12, 15, "12d12+60", 40, 8,
-                    new Attack[] { Attacks.FrostGiantGreataxe }, new Attack[] { }, Size.HUGE
+                    new Attack[] { Attacks.FrostGiantGreataxe }, new Attack[] { Attacks.FrostGiantRock }, Size.HUGE
                 );
                 frostGiant.AddProficiency(Proficiency.CONSTITUTION);
                 frostGiant.AddProficiency(Proficiency.WISDOM);

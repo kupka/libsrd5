@@ -24,11 +24,11 @@ namespace srd5 {
             Spells.ChillTouch.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, shadow);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
             Spells.ChillTouch.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, shadow);
-            Assert.True(shadow.HasEffect(Effect.CANNOT_REGENERATE_HITPOINTS));
+            Assert.True(shadow.HasEffect(Effect.CANNOT_REGAIN_HITPOINTS));
             Assert.True(shadow.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
             wizard.OnStartOfTurn();
             wizard.OnEndOfTurn();
-            Assert.False(shadow.HasEffect(Effect.CANNOT_REGENERATE_HITPOINTS));
+            Assert.False(shadow.HasEffect(Effect.CANNOT_REGAIN_HITPOINTS));
             Assert.True(shadow.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
             wizard.OnEndOfTurn();
             Assert.False(shadow.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));

@@ -350,8 +350,8 @@ namespace srd5 {
             CharacterSheet hero = new CharacterSheet(Race.TIEFLING, true);
             Combattant currentCombattant = null;
             ground.EventSubscription += delegate (object sender, BattlegroundEvent bgEvent) {
-                if (bgEvent is CombattantChangedEvent) {
-                    currentCombattant = ((CombattantChangedEvent)bgEvent).CurrentCombattant;
+                if (bgEvent is CombattantChangedEvent @event) {
+                    currentCombattant = @event.CurrentCombattant;
                 }
             };
             ground.AddCombattant(hero, 0, 0);
@@ -410,24 +410,24 @@ namespace srd5 {
         [Fact]
         public void RangedTest() {
             Monster ogre = Monsters.Ogre;
-            Monster gnoll = Monsters.Gnoll;
+            Monster bandit = Monsters.Bandit;
             BattleGroundClassic battle = new BattleGroundClassic();
             battle.AddCombattant(ogre, ClassicLocation.Row.BACK_LEFT);
-            battle.AddCombattant(gnoll, ClassicLocation.Row.BACK_RIGHT);
-            gnoll.BonusAttack = Attacks.GoblinShortbow;
+            battle.AddCombattant(bandit, ClassicLocation.Row.BACK_RIGHT);
+            bandit.BonusAttack = Attacks.GoblinShortbow;
             battle.Initialize();
             Random.State = 1;
             if (battle.CurrentCombattant == ogre)
-                Assert.False(battle.RangedAttackAction(gnoll));
+                Assert.False(battle.RangedAttackAction(bandit));
             else
                 Assert.False(battle.RangedAttackAction(ogre));
-            while (gnoll.HitPoints > 0) {
+            while (bandit.HitPoints > 0) {
                 while (battle.NextPhase() != TurnPhase.ACTION) ;
                 Assert.Throws<Srd5ArgumentException>(delegate { battle.RangedAttackAction(null); });
                 if (battle.CurrentCombattant == ogre)
-                    Assert.True(battle.RangedAttackAction(gnoll));
+                    Assert.True(battle.RangedAttackAction(bandit));
                 else {
-                    Assert.Throws<Srd5ArgumentException>(delegate { battle.RangedAttackAction(gnoll); });
+                    Assert.Throws<Srd5ArgumentException>(delegate { battle.RangedAttackAction(bandit); });
                     Assert.True(battle.RangedAttackAction(ogre));
                     // Bonus Attack
                     Assert.True(battle.RangedAttackAction(ogre));

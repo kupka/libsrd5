@@ -5,99 +5,397 @@ namespace srd5 {
             if (target.DC(AbolethTentacle, 14, AbilityType.CONSTITUTION)) return;
             target.AddEffect(Effect.ABOLETH_DISEASE_TENTACLE);
         };
-        public static readonly Attack AbolethTentacle = new Attack("Tentacle", 9, new Damage(DamageType.BLUDGEONING, "2d6+5"), 10, null, AbolethTentacleEffect);
-        public static readonly Attack AbolethTail = new Attack("Tail", 9, new Damage(DamageType.BLUDGEONING, "3d6+5"), 10);
-        public static readonly Attack AcolyteClub = new Attack("Club", 2, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
-        public static readonly Attack AdultBlackDragonBite = new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10, new Damage(DamageType.ACID, "1d8"));
-        public static readonly Attack AdultBlackDragonClaw = new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
-        public static readonly Attack AdultBlackDragonTail = new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
-        public static readonly Attack AdultBlueDragonBite = new Attack("Bite", 12, new Damage(DamageType.PIERCING, "2d10+7"), 10, new Damage(DamageType.LIGHTNING, "1d10"));
-        public static readonly Attack AdultBlueDragonClaw = new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d6+7"), 5);
-        public static readonly Attack AdultBlueDragonTail = new Attack("Tail", 12, new Damage(DamageType.BLUDGEONING, "2d8+7"), 15);
-        public static readonly Attack AdultBrassDragonBite = new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10);
-        public static readonly Attack AdultBrassDragonClaw = new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
-        public static readonly Attack AdultBrassDragonTail = new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
-        public static readonly Attack AdultBronzeDragonBite = new Attack("Bite", 12, new Damage(DamageType.PIERCING, "2d10+7"), 10);
-        public static readonly Attack AdultBronzeDragonClaw = new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d6+7"), 5);
-        public static readonly Attack AdultBronzeDragonTail = new Attack("Tail", 12, new Damage(DamageType.BLUDGEONING, "2d8+7"), 15);
-        public static readonly Attack AdultCopperDragonBite = new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10);
-        public static readonly Attack AdultCopperDragonClaw = new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
-        public static readonly Attack AdultCopperDragonTail = new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
-        public static readonly Attack AdultGoldDragonBite = new Attack("Bite", 14, new Damage(DamageType.PIERCING, "2d10+8"), 10);
-        public static readonly Attack AdultGoldDragonClaw = new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d6+8"), 5);
-        public static readonly Attack AdultGoldDragonTail = new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "2d8+8"), 15);
-        public static readonly Attack AdultGreenDragonBite = new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10, new Damage(DamageType.POISON, "2d6"));
-        public static readonly Attack AdultGreenDragonClaw = new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
-        public static readonly Attack AdultGreenDragonTail = new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
-        public static readonly Attack AdultRedDragonBite = new Attack("Bite", 14, new Damage(DamageType.PIERCING, "2d10+8"), 10, new Damage(DamageType.FIRE, "2d6"));
-        public static readonly Attack AdultRedDragonClaw = new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d6+8"), 5);
-        public static readonly Attack AdultRedDragonTail = new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "2d8+8"), 15);
-        public static readonly Attack AdultSilverDragonBite = new Attack("Bite", 13, new Damage(DamageType.PIERCING, "2d10+8"), 10);
-        public static readonly Attack AdultSilverDragonClaw = new Attack("Claw", 13, new Damage(DamageType.SLASHING, "2d6+8"), 5);
-        public static readonly Attack AdultSilverDragonTail = new Attack("Tail", 13, new Damage(DamageType.BLUDGEONING, "2d8+8"), 15);
-        public static readonly Attack AdultWhiteDragonBite = new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10, new Damage(DamageType.COLD, "1d8"));
-        public static readonly Attack AdultWhiteDragonClaw = new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
-        public static readonly Attack AdultWhiteDragonTail = new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
-        public static readonly Attack AirElementalSlam = new Attack("Slam", 8, new Damage(DamageType.BLUDGEONING, "2d8+5"), 5);
-        public static readonly Attack AncientBlackDragonBite = new Attack("Bite", 15, new Damage(DamageType.PIERCING, "2d10+8"), 15, new Damage(DamageType.ACID, "2d8"));
-        public static readonly Attack AncientBlackDragonClaw = new Attack("Claw", 15, new Damage(DamageType.SLASHING, "2d6+8"), 10);
-        public static readonly Attack AncientBlackDragonTail = new Attack("Tail", 15, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
-        public static readonly Attack AncientBlueDragonBite = new Attack("Bite", 16, new Damage(DamageType.PIERCING, "2d10+9"), 15, new Damage(DamageType.LIGHTNING, "2d10"));
-        public static readonly Attack AncientBlueDragonClaw = new Attack("Claw", 16, new Damage(DamageType.SLASHING, "2d6+9"), 10);
-        public static readonly Attack AncientBlueDragonTail = new Attack("Tail", 16, new Damage(DamageType.BLUDGEONING, "2d8+9"), 20);
-        public static readonly Attack AncientBrassDragonBite = new Attack("Bite", 14, new Damage(DamageType.PIERCING, "2d10+8"), 15);
-        public static readonly Attack AncientBrassDragonClaw = new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d6+8"), 10);
-        public static readonly Attack AncientBrassDragonTail = new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
-        public static readonly Attack AncientBronzeDragonBite = new Attack("Bite", 16, new Damage(DamageType.PIERCING, "2d10+9"), 15);
-        public static readonly Attack AncientBronzeDragonClaw = new Attack("Claw", 16, new Damage(DamageType.SLASHING, "2d6+9"), 10);
-        public static readonly Attack AncientBronzeDragonTail = new Attack("Tail", 16, new Damage(DamageType.BLUDGEONING, "2d8+9"), 20);
-        public static readonly Attack AncientCopperDragonBite = new Attack("Bite", 15, new Damage(DamageType.PIERCING, "2d10+8"), 15);
-        public static readonly Attack AncientCopperDragonClaw = new Attack("Claw", 15, new Damage(DamageType.SLASHING, "2d6+8"), 10);
-        public static readonly Attack AncientCopperDragonTail = new Attack("Tail", 15, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
-        public static readonly Attack AncientGoldDragonBite = new Attack("Bite", 17, new Damage(DamageType.PIERCING, "2d10+10"), 15);
-        public static readonly Attack AncientGoldDragonClaw = new Attack("Claw", 17, new Damage(DamageType.SLASHING, "2d6+10"), 10);
-        public static readonly Attack AncientGoldDragonTail = new Attack("Tail", 17, new Damage(DamageType.BLUDGEONING, "2d8+10"), 20);
-        public static readonly Attack AncientGreenDragonBite = new Attack("Bite", 15, new Damage(DamageType.PIERCING, "2d10+8"), 15, new Damage(DamageType.POISON, "3d6"));
-        public static readonly Attack AncientGreenDragonClaw = new Attack("Claw", 15, new Damage(DamageType.SLASHING, "4d6+8"), 10);
-        public static readonly Attack AncientGreenDragonTail = new Attack("Tail", 15, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
-        public static readonly Attack AncientRedDragonBite = new Attack("Bite", 17, new Damage(DamageType.PIERCING, "2d10+10"), 15, new Damage(DamageType.FIRE, "4d6"));
-        public static readonly Attack AncientRedDragonClaw = new Attack("Claw", 17, new Damage(DamageType.SLASHING, "2d6+10"), 10);
-        public static readonly Attack AncientRedDragonTail = new Attack("Tail", 17, new Damage(DamageType.BLUDGEONING, "2d8+10"), 20);
-        public static readonly Attack AncientSilverDragonBite = new Attack("Bite", 17, new Damage(DamageType.PIERCING, "2d10+10"), 15);
-        public static readonly Attack AncientSilverDragonClaw = new Attack("Claw", 17, new Damage(DamageType.SLASHING, "2d6+10"), 10);
-        public static readonly Attack AncientSilverDragonTail = new Attack("Tail", 17, new Damage(DamageType.BLUDGEONING, "2d8+10"), 20);
-        public static readonly Attack AncientWhiteDragonBite = new Attack("Bite", 14, new Damage(DamageType.PIERCING, "2d10+8"), 15, new Damage(DamageType.COLD, "2d8"));
-        public static readonly Attack AncientWhiteDragonClaw = new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d6+8"), 10);
-        public static readonly Attack AncientWhiteDragonTail = new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
-        public static readonly Attack AndrosphinxClaw = new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d10+6"), 5);
-        public static readonly Attack AnimatedArmorSlam = new Attack("Slam", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
+        public static Attack AbolethTentacle {
+            get {
+                return new Attack("Tentacle", 9, new Damage(DamageType.BLUDGEONING, "2d6+5"), 10, null, AbolethTentacleEffect);
+            }
+        } 
+        public static Attack AbolethTail {
+            get {
+                return new Attack("Tail", 9, new Damage(DamageType.BLUDGEONING, "3d6+5"), 10);
+            }
+        }
+        public static Attack AcolyteClub {
+            get {
+                return new Attack("Club", 2, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
+            }
+        }
+        public static Attack AdultBlackDragonBite {
+            get {
+                return new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10, new Damage(DamageType.ACID, "1d8"));
+            }
+        }
+        public static Attack AdultBlackDragonClaw {
+            get {
+                return new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+            }
+        }
+        public static Attack AdultBlackDragonTail {
+            get {
+                return new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
+            }
+        }
+        public static Attack AdultBlueDragonBite {
+            get {
+                return new Attack("Bite", 12, new Damage(DamageType.PIERCING, "2d10+7"), 10, new Damage(DamageType.LIGHTNING, "1d10"));
+            }
+        }
+        public static Attack AdultBlueDragonClaw {
+            get {
+                return new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d6+7"), 5);
+            }
+        }
+        public static Attack AdultBlueDragonTail {
+            get {
+                return new Attack("Tail", 12, new Damage(DamageType.BLUDGEONING, "2d8+7"), 15);
+            }
+        }
+        public static Attack AdultBrassDragonBite {
+            get {
+                return new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10);
+            }
+        }
+        public static Attack AdultBrassDragonClaw {
+            get {
+                return new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+            }
+        }
+        public static Attack AdultBrassDragonTail {
+            get {
+                return new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
+            }
+        }
+        public static Attack AdultBronzeDragonBite {
+            get {
+                return new Attack("Bite", 12, new Damage(DamageType.PIERCING, "2d10+7"), 10);
+            }
+        }
+        public static Attack AdultBronzeDragonClaw {
+            get {
+                return new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d6+7"), 5);
+            }
+        }
+        public static Attack AdultBronzeDragonTail {
+            get {
+                return new Attack("Tail", 12, new Damage(DamageType.BLUDGEONING, "2d8+7"), 15);
+            }
+        }
+        public static Attack AdultCopperDragonBite {
+            get {
+                return new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10);
+            }
+        }
+        public static Attack AdultCopperDragonClaw {
+            get {
+                return new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+            }
+        }
+        public static Attack AdultCopperDragonTail {
+            get {
+                return new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
+            }
+        }
+        public static Attack AdultGoldDragonBite {
+            get {
+                return new Attack("Bite", 14, new Damage(DamageType.PIERCING, "2d10+8"), 10);
+            }
+        }
+        public static Attack AdultGoldDragonClaw {
+            get {
+                return new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d6+8"), 5);
+            }
+        }
+        public static Attack AdultGoldDragonTail {
+            get {
+                return new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "2d8+8"), 15);
+            }
+        }
+        public static Attack AdultGreenDragonBite {
+            get {
+                return new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10, new Damage(DamageType.POISON, "2d6"));
+            }
+        }
+        public static Attack AdultGreenDragonClaw {
+            get {
+                return new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+            }
+        }
+        public static Attack AdultGreenDragonTail {
+            get {
+                return new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
+            }
+        }
+        public static Attack AdultRedDragonBite {
+            get {
+                return new Attack("Bite", 14, new Damage(DamageType.PIERCING, "2d10+8"), 10, new Damage(DamageType.FIRE, "2d6"));
+            }
+        }
+        public static Attack AdultRedDragonClaw {
+            get {
+                return new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d6+8"), 5);
+            }
+        }
+        public static Attack AdultRedDragonTail {
+            get {
+                return new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "2d8+8"), 15);
+            }
+        }
+        public static Attack AdultSilverDragonBite {
+            get {
+                return new Attack("Bite", 13, new Damage(DamageType.PIERCING, "2d10+8"), 10);
+            }
+        }
+        public static Attack AdultSilverDragonClaw {
+            get {
+                return new Attack("Claw", 13, new Damage(DamageType.SLASHING, "2d6+8"), 5);
+            }
+        }
+        public static Attack AdultSilverDragonTail {
+            get {
+                return new Attack("Tail", 13, new Damage(DamageType.BLUDGEONING, "2d8+8"), 15);
+            }
+        }
+        public static Attack AdultWhiteDragonBite {
+            get {
+                return new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10, new Damage(DamageType.COLD, "1d8"));
+            }
+        }
+        public static Attack AdultWhiteDragonClaw {
+            get {
+                return new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+            }
+        }
+        public static Attack AdultWhiteDragonTail {
+            get {
+                return new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
+            }
+        }
+        public static Attack AirElementalSlam {
+            get {
+                return new Attack("Slam", 8, new Damage(DamageType.BLUDGEONING, "2d8+5"), 5);
+            }
+        }
+        public static Attack AncientBlackDragonBite {
+            get {
+                return new Attack("Bite", 15, new Damage(DamageType.PIERCING, "2d10+8"), 15, new Damage(DamageType.ACID, "2d8"));
+            }
+        }
+        public static Attack AncientBlackDragonClaw {
+            get {
+                return new Attack("Claw", 15, new Damage(DamageType.SLASHING, "2d6+8"), 10);
+            }
+        }
+        public static Attack AncientBlackDragonTail {
+            get {
+                return new Attack("Tail", 15, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
+            }
+        }
+        public static Attack AncientBlueDragonBite {
+            get {
+                return new Attack("Bite", 16, new Damage(DamageType.PIERCING, "2d10+9"), 15, new Damage(DamageType.LIGHTNING, "2d10"));
+            }
+        }
+        public static Attack AncientBlueDragonClaw {
+            get {
+                return new Attack("Claw", 16, new Damage(DamageType.SLASHING, "2d6+9"), 10);
+            }
+        }
+        public static Attack AncientBlueDragonTail {
+            get {
+                return new Attack("Tail", 16, new Damage(DamageType.BLUDGEONING, "2d8+9"), 20);
+            }
+        }
+        public static Attack AncientBrassDragonBite {
+            get {
+                return new Attack("Bite", 14, new Damage(DamageType.PIERCING, "2d10+8"), 15);
+            }
+        }
+        public static Attack AncientBrassDragonClaw {
+            get {
+                return new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d6+8"), 10);
+            }
+        }
+        public static Attack AncientBrassDragonTail {
+            get {
+                return new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
+            }
+        }
+        public static Attack AncientBronzeDragonBite {
+            get {
+                return new Attack("Bite", 16, new Damage(DamageType.PIERCING, "2d10+9"), 15);
+            }
+        }
+        public static Attack AncientBronzeDragonClaw {
+            get {
+                return new Attack("Claw", 16, new Damage(DamageType.SLASHING, "2d6+9"), 10);
+            }
+        }
+        public static Attack AncientBronzeDragonTail {
+            get {
+                return new Attack("Tail", 16, new Damage(DamageType.BLUDGEONING, "2d8+9"), 20);
+            }
+        }
+        public static Attack AncientCopperDragonBite {
+            get {
+                return new Attack("Bite", 15, new Damage(DamageType.PIERCING, "2d10+8"), 15);
+            }
+        }
+        public static Attack AncientCopperDragonClaw {
+            get {
+                return new Attack("Claw", 15, new Damage(DamageType.SLASHING, "2d6+8"), 10);
+            }
+        }
+        public static Attack AncientCopperDragonTail {
+            get {
+                return new Attack("Tail", 15, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
+            }
+        }
+        public static Attack AncientGoldDragonBite {
+            get {
+                return new Attack("Bite", 17, new Damage(DamageType.PIERCING, "2d10+10"), 15);
+            }
+        }
+        public static Attack AncientGoldDragonClaw {
+            get {
+                return new Attack("Claw", 17, new Damage(DamageType.SLASHING, "2d6+10"), 10);
+            }
+        }
+        public static Attack AncientGoldDragonTail {
+            get {
+                return new Attack("Tail", 17, new Damage(DamageType.BLUDGEONING, "2d8+10"), 20);
+            }
+        }
+        public static Attack AncientGreenDragonBite {
+            get {
+                return new Attack("Bite", 15, new Damage(DamageType.PIERCING, "2d10+8"), 15, new Damage(DamageType.POISON, "3d6"));
+            }
+        }
+        public static Attack AncientGreenDragonClaw {
+            get {
+                return new Attack("Claw", 15, new Damage(DamageType.SLASHING, "4d6+8"), 10);
+            }
+        }
+        public static Attack AncientGreenDragonTail {
+            get {
+                return new Attack("Tail", 15, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
+            }
+        }
+        public static Attack AncientRedDragonBite {
+            get {
+                return new Attack("Bite", 17, new Damage(DamageType.PIERCING, "2d10+10"), 15, new Damage(DamageType.FIRE, "4d6"));
+            }
+        }
+        public static Attack AncientRedDragonClaw {
+            get {
+                return new Attack("Claw", 17, new Damage(DamageType.SLASHING, "2d6+10"), 10);
+            }
+        }
+        public static Attack AncientRedDragonTail {
+            get {
+                return new Attack("Tail", 17, new Damage(DamageType.BLUDGEONING, "2d8+10"), 20);
+            }
+        }
+        public static Attack AncientSilverDragonBite {
+            get {
+                return new Attack("Bite", 17, new Damage(DamageType.PIERCING, "2d10+10"), 15);
+            }
+        }
+        public static Attack AncientSilverDragonClaw {
+            get {
+                return new Attack("Claw", 17, new Damage(DamageType.SLASHING, "2d6+10"), 10);
+            }
+        }
+        public static Attack AncientSilverDragonTail {
+            get {
+                return new Attack("Tail", 17, new Damage(DamageType.BLUDGEONING, "2d8+10"), 20);
+            }
+        }
+        public static Attack AncientWhiteDragonBite {
+            get {
+                return new Attack("Bite", 14, new Damage(DamageType.PIERCING, "2d10+8"), 15, new Damage(DamageType.COLD, "2d8"));
+            }
+        }
+        public static Attack AncientWhiteDragonClaw {
+            get {
+                return new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d6+8"), 10);
+            }
+        }
+        public static Attack AncientWhiteDragonTail {
+            get {
+                return new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
+            }
+        }
+        public static Attack AndrosphinxClaw {
+            get {
+                return new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d10+6"), 5);
+            }
+        }
+        public static Attack AnimatedArmorSlam {
+            get {
+                return new Attack("Slam", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
+            }
+        }
         public static AttackEffect AnkhegBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 13, Monsters.Ankheg.Size + 1);
         };
-        public static readonly Attack AnkhegBite = new Attack("Bite", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, new Damage(DamageType.ACID, "1d6"), AnkhegBiteEffect);
-        public static readonly Attack ApeFist = new Attack("Fist", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5);
-        public static readonly Attack ApeRock = new Attack("Rock", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5, 25, 50);
-        public static readonly Attack ArchmageDaggerMelee = new Attack("Dagger", 6, new Damage(DamageType.PIERCING, "1d4+2"), 5);
-        public static readonly Attack ArchmageDaggerRanged = new Attack("Dagger", 6, new Damage(DamageType.PIERCING, "1d4+2"), 5, 20, 60);
+        public static Attack AnkhegBite {
+            get {
+                return new Attack("Bite", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, new Damage(DamageType.ACID, "1d6"), AnkhegBiteEffect);
+            }
+        }
+        public static Attack ApeFist {
+            get {
+                return new Attack("Fist", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5);
+            }
+        }
+        public static Attack ApeRock {
+            get {
+                return new Attack("Rock", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5, 25, 50);
+            }
+        }
+        public static Attack ArchmageDaggerMelee {
+            get {
+                return new Attack("Dagger", 6, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+            }
+        }
+        public static Attack ArchmageDaggerRanged {
+            get {
+                return new Attack("Dagger", 6, new Damage(DamageType.PIERCING, "1d4+2"), 5, 20, 60);
+            }
+        }
         public static AttackEffect AssassinShortswordEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, AssassinShortsword, "7d6", 15);
         };
-        public static readonly Attack AssassinShortsword = new Attack("Shortsword", 6, new Damage(DamageType.PIERCING, "1d6+3"), 5, null, AssassinShortswordEffect);
-        public static readonly Attack AssassinLight_Crossbow = new Attack("Light Crossbow", 6, new Damage(DamageType.PIERCING, "1d8+3"), 5, 80, 320);
-        public static readonly Attack AwakenedShrubRake = new Attack("Rake", 1, new Damage(DamageType.SLASHING, "1d4-1"), 5);
-        public static readonly Attack AwakenedTreeSlam = new Attack("Slam", 6, new Damage(DamageType.BLUDGEONING, "3d6+4"), 10);
-        public static readonly Attack AxeBeakBeak = new Attack("Beak", 4, new Damage(DamageType.SLASHING, "1d8+2"), 5);
-        public static readonly Attack AzerWarhammer = new Attack("Warhammer", 5, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, new Damage(DamageType.FIRE, "1d6"));
-        public static readonly Attack NightHagClaws = new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d8+4"), 5);
-        public static readonly Attack OgreGreatclub = new Attack("Greatclub", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
-        public static readonly Attack OgreJavelin = new Attack("Javelin", 6, new Damage(DamageType.PIERCING, "2d6+4"), 30, 120);
-        public static readonly Attack OrcGreataxe = new Attack("Greataxe", 5, new Damage(DamageType.SLASHING, "1d12+3"), 5);
-        public static readonly Attack OrcJavelin = new Attack("Javelin", 5, new Damage(DamageType.PIERCING, "1d6+3"), 30, 120);
-        public static readonly Attack ShadowStrengthDrain = new Attack("Strength Drain", 4, new Damage(DamageType.NECROTIC, "2d6+2"), 5);
-        public static readonly Attack TarrasqueBite = new Attack("Bite", 19, new Damage(DamageType.PIERCING, "4d12+10"), 10);
-        public static readonly Attack TarrasqueClaw = new Attack("Claw", 19, new Damage(DamageType.SLASHING, "4d8+10"), 15);
-        public static readonly Attack TarrasqueHorns = new Attack("Horns", 19, new Damage(DamageType.PIERCING, "4d10+10"), 10);
-        public static readonly Attack TarrasqueTail = new Attack("Tail", 19, new Damage(DamageType.BLUDGEONING, "4d6+10"), 20);
+        public static Attack AssassinShortsword {
+            get {
+                return new Attack("Shortsword", 6, new Damage(DamageType.PIERCING, "1d6+3"), 5, null, AssassinShortswordEffect);
+            }
+        }
+        public static Attack AssassinLight_Crossbow {
+            get {
+                return new Attack("Light Crossbow", 6, new Damage(DamageType.PIERCING, "1d8+3"), 5, 80, 320);
+            }
+        }
+        public static Attack AwakenedShrubRake {
+            get {
+                return new Attack("Rake", 1, new Damage(DamageType.SLASHING, "1d4-1"), 5);
+            }
+        }
+        public static Attack AwakenedTreeSlam {
+            get {
+                return new Attack("Slam", 6, new Damage(DamageType.BLUDGEONING, "3d6+4"), 10);
+            }
+        }
+        public static Attack AxeBeakBeak {
+            get {
+                return new Attack("Beak", 4, new Damage(DamageType.SLASHING, "1d8+2"), 5);
+            }
+        }
+        public static Attack AzerWarhammer {
+            get {
+                return new Attack("Warhammer", 5, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, new Damage(DamageType.FIRE, "1d6"));
+            }
+        }
     }
 
     public partial struct Monsters {
@@ -371,7 +669,7 @@ namespace srd5 {
             get {
                 Monster ancientBlackDragon = new Monster(
                     Monsters.Type.DRAGON, Monsters.ID.ANCIENT_BLACK_DRAGON, Alignment.CHAOTIC_EVIL, 27, 14, 25, 16, 15, 19, 22, "21d20+147", 40, 21,
-                    new Attack[] { Attacks.AncientBlackDragonClaw, Attacks.AncientBlackDragonTail }, new Attack[] { }, Size.GARGANTUAN
+                    new Attack[] { Attacks.AncientBlackDragonBite, Attacks.AncientBlackDragonClaw, Attacks.AncientBlackDragonTail }, new Attack[] { }, Size.GARGANTUAN
                 );
                 ancientBlackDragon.AddProficiency(Proficiency.DEXTERITY);
                 ancientBlackDragon.AddProficiency(Proficiency.CONSTITUTION);
@@ -637,7 +935,7 @@ namespace srd5 {
             get {
                 Monster ape = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.APE, Alignment.UNALIGNED, 16, 14, 14, 6, 12, 7, 12, "3d8+6", 40, ChallengeRating.HALF,
-                    new Attack[] { Attacks.ApeFist }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.ApeFist }, new Attack[] { Attacks.ApeRock }, Size.MEDIUM
                 );
                 ape.AddProficiency(Proficiency.ATHLETICS);
                 ape.AddProficiency(Proficiency.PERCEPTION);
@@ -669,7 +967,7 @@ namespace srd5 {
             get {
                 Monster assassin = new Monster(
                     Monsters.Type.HUMANOID, Monsters.ID.ASSASSIN, Alignment.UNALIGNED, 11, 16, 14, 13, 11, 10, 15, "12d8+24", 40, 8,
-                    new Attack[] { Attacks.AssassinShortsword }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { Attacks.AssassinShortsword }, new Attack[] { Attacks.AssassinLight_Crossbow }, Size.MEDIUM
                 );
                 assassin.AddProficiency(Proficiency.DEXTERITY);
                 assassin.AddProficiency(Proficiency.INTELLIGENCE);
@@ -740,79 +1038,6 @@ namespace srd5 {
                 azer.AddFeat(Feat.HEATED_WEAPONS);
                 azer.AddFeat(Feat.ILLUMINATION_10FT);
                 return azer;
-            }
-        }
-
-
-        public static Monster Ogre {
-            get {
-                return new Monster(
-                    Monsters.Type.GIANT, Monsters.ID.OGRE, Alignment.CHAOTIC_EVIL, 19, 8, 16, 5, 7, 7, 11, "7d10+21", 40, 2,
-                    new Attack[] { Attacks.OgreGreatclub }, new Attack[] { Attacks.OgreJavelin }, Size.LARGE
-                );
-            }
-        }
-
-        public static Monster NightHag {
-            get {
-                Monster hag = new Monster(
-                    Monsters.Type.FIEND, Monsters.ID.NIGHT_HAG, Alignment.NEUTRAL_EVIL, 18, 15, 16, 16, 14, 16, 17, "15d8+45", 30, 5,
-                    new Attack[] { Attacks.NightHagClaws }, Attacks.None, Size.MEDIUM, 14
-                );
-                AvailableSpells spells = new AvailableSpells(AbilityType.CHARISMA);
-                spells.AddKnownSpell(Spells.MagicMissile, Spells.DetectMagic, Spells.PlaneShift, Spells.RayofEnfeeblement, Spells.Sleep);
-                hag.AddAvailableSpells(spells);
-                hag.AddInnateSpellcasting(
-                    new InnateSpellcasting(Spells.MagicMissile, InnateSpellcasting.Frequencies.AT_WILL),
-                    new InnateSpellcasting(Spells.DetectMagic, InnateSpellcasting.Frequencies.AT_WILL),
-                    new InnateSpellcasting(Spells.PlaneShift, InnateSpellcasting.Frequencies.TWICE_PER_DAY),
-                    new InnateSpellcasting(Spells.RayofEnfeeblement, InnateSpellcasting.Frequencies.TWICE_PER_DAY),
-                    new InnateSpellcasting(Spells.Sleep, InnateSpellcasting.Frequencies.TWICE_PER_DAY)
-                );
-                return hag;
-            }
-        }
-
-        public static Monster Orc {
-            get {
-                Monster orc = new Monster(
-                    Monsters.Type.HUMANOID, Monsters.ID.ORC, Alignment.CHAOTIC_EVIL, 16, 12, 16, 7, 11, 10, 13, "2d8+6", 30, ChallengeRating.HALF,
-                    new Attack[] { Attacks.OrcGreataxe }, new Attack[] { Attacks.OrcJavelin }, Size.MEDIUM, 0
-                );
-                return orc;
-            }
-        }
-
-        public static Monster Shadow {
-            get {
-                Monster shadow = new Monster(
-                    Monsters.Type.UNDEAD, Monsters.ID.SHADOW, Alignment.CHAOTIC_EVIL, 6, 14, 13, 6, 10, 8, 12, "3d8+3", 40, ChallengeRating.HALF,
-                    new Attack[] { Attacks.ShadowStrengthDrain }, Attacks.None, Size.MEDIUM, 0
-                );
-                shadow.AddEffects(Effect.VULNERABILITY_RADIANT);
-                shadow.AddEffects(Effect.RESISTANCE_ACID, Effect.RESISTANCE_COLD, Effect.RESISTANCE_LIGHTNING, Effect.RESISTANCE_THUNDER, Effect.RESISTANCE_NONMAGIC);
-                shadow.AddEffects(Effect.IMMUNITY_NECROTIC, Effect.IMMUNITY_POISON);
-                shadow.AddEffects(Effect.IMMUNITY_EXHAUSTION, Effect.IMMUNITY_FRIGHTENED, Effect.IMMUNITY_GRAPPLED, Effect.IMMUNITY_PARALYZED, Effect.IMMUNITY_PETRIFIED, Effect.IMMUNITY_POISONED, Effect.IMMUNITY_PRONE, Effect.IMMUNITY_RESTRAINED);
-                return shadow;
-            }
-        }
-
-        public static Monster Tarrasque {
-            get {
-                Monster tarrasque = new Monster(
-                    Monsters.Type.MONSTROSITY, Monsters.ID.TARRASQUE, Alignment.UNALIGNED, 30, 11, 30, 3, 11, 11, 25, "33d20+330", 40, 30,
-                    new Attack[] { Attacks.TarrasqueBite, Attacks.TarrasqueHorns, Attacks.TarrasqueTail, Attacks.TarrasqueClaw, Attacks.TarrasqueClaw },
-                    Attacks.None, Size.GARGANTUAN, 0
-                );
-                tarrasque.AddFeats(Feat.LEGENDARY_RESISTANCE, Feat.MAGIC_RESISTANCE, Feat.REFLECTIVE_CARAPACE, Feat.SIEGE_MONSTER);
-                tarrasque.AddEffects(Effect.IMMUNITY_FIRE, Effect.IMMUNITY_POISON, Effect.IMMUNITY_NONMAGIC);
-                tarrasque.AddEffects(Effect.IMMUNITY_CHARMED, Effect.IMMUNITY_FRIGHTENED, Effect.IMMUNITY_PARALYZED, Effect.IMMUNITY_POISONED);
-
-                tarrasque.AddProficiency(Proficiency.INTELLIGENCE);
-                tarrasque.AddProficiency(Proficiency.WISDOM);
-                tarrasque.AddProficiency(Proficiency.CHARISMA);
-
-                return tarrasque;
             }
         }
     }

@@ -31,10 +31,22 @@ namespace srd5 {
             return pansyMonster;
         }
 
+        private Monster pansyMonsterThatDies = createPansyMonsterThatDies();
+
+        private static Monster createPansyMonsterThatDies() {
+            Monster pansyMonster = new Monster(
+                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d1", 40, 16,
+                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
+            );
+            pansyMonster.AddEffects(Effect.FAIL_STRENGTH_CHECK, Effect.FAIL_DEXERITY_CHECK, Effect.FAIL_CONSTITUTION_CHECK);
+            return pansyMonster;
+        }
+
         private void restoreMonsters() {
             uberMonster = createUberMonster();
             averageMonster = createAverageMonster();
             pansyMonster = createPansyMonster();
+            pansyMonsterThatDies = createPansyMonsterThatDies();
         }
 
         private readonly Dices dices = new Dices("1d12-1");
@@ -43,13 +55,16 @@ namespace srd5 {
             return (DamageType)value;
         }
 
-        private void attackEffectTest(AttackEffect effect) {
+        private void attackEffectTest(AttackEffect effect, bool guaranteedLethal = false) {
             for (int i = 0; i < 10; i++) {
                 restoreMonsters();
                 effect.Invoke(Monsters.Aboleth, uberMonster);
                 effect.Invoke(Monsters.Aboleth, averageMonster);
                 effect.Invoke(Monsters.Aboleth, pansyMonster);
-
+                if (guaranteedLethal) {
+                    effect.Invoke(Monsters.Aboleth, pansyMonsterThatDies);
+                    Assert.True(pansyMonsterThatDies.Dead);
+                }
                 for (int j = 0; j < 20; j++) {
                     uberMonster.TakeDamage(randomDamageType(), Dice.D4.Value);
                     uberMonster.EscapeFromGrapple();
@@ -192,6 +207,150 @@ namespace srd5 {
         }
 
         [Fact]
+        public void TestAttackEffects_H() {
+            attackEffectTest(Attacks.HalfRedDragonVeteranLongswordEffect);
+            attackEffectTest(Attacks.HomunculusBiteEffect);
+            attackEffectTest(Attacks.HornedDevilHurlFlameEffect);
+            attackEffectTest(Attacks.HornedDevilTailEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_I() {
+            attackEffectTest(Attacks.ImpStingEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_K() {
+            attackEffectTest(Attacks.KrakenBiteEffect);
+            attackEffectTest(Attacks.KrakenTentacleEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_L() {
+            attackEffectTest(Attacks.LichParalyzingTouchEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_M() {
+            attackEffectTest(Attacks.MagminTouchEffect);
+            attackEffectTest(Attacks.MammothStompEffect);
+            attackEffectTest(Attacks.MarilithTailEffect);
+            attackEffectTest(Attacks.MastiffBiteEffect);
+            attackEffectTest(Attacks.MerrowHarpoonEffect);
+            attackEffectTest(Attacks.MimicPseudopodEffect);
+            attackEffectTest(Attacks.MummyLordRottingFistEffect);
+            attackEffectTest(Attacks.MummyRottingFistEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_O() {
+            attackEffectTest(Attacks.OctopusInkCloudEffect);
+            attackEffectTest(Attacks.OctopusTentaclesEffect);
+            attackEffectTest(Attacks.OtyughBiteEffect);
+            attackEffectTest(Attacks.OtyughTentacleEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_P() {
+            attackEffectTest(Attacks.PhaseSpiderBiteEffect);
+            attackEffectTest(Attacks.PitFiendBiteEffect);
+            attackEffectTest(Attacks.PoisonousSnakeBiteEffect);
+            attackEffectTest(Attacks.PseudodragonStingEffect);
+            attackEffectTest(Attacks.PurpleWormTailStingerEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_Q() {
+            attackEffectTest(Attacks.QuasitClawEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_R() {
+            attackEffectTest(Attacks.RakshasaClawEffect);
+            attackEffectTest(Attacks.RemorhazBiteEffect);
+            attackEffectTest(Attacks.RocTalonsEffect);
+            attackEffectTest(Attacks.RoperTendrilEffect);
+            attackEffectTest(Attacks.RugOfSmotheringSmotherEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_S() {
+            attackEffectTest(Attacks.SalamanderTailEffect);
+            attackEffectTest(Attacks.ScorpionStingEffect);
+            attackEffectTest(Attacks.ScoutLongbowEffect);
+            attackEffectTest(Attacks.ShadowStrengthDrainEffect);
+            attackEffectTest(Attacks.SolarSlayingLongbowEffect, true);
+            attackEffectTest(Attacks.SpecterLifeDrainEffect, true);
+            attackEffectTest(Attacks.SpiderBiteEffect);
+            attackEffectTest(Attacks.SpiritNagaBiteEffect);
+            attackEffectTest(Attacks.SpriteShortbowEffect);
+            attackEffectTest(Attacks.StirgeBloodDrainEffect);
+            attackEffectTest(Attacks.StoneGiantRockEffect);
+            attackEffectTest(Attacks.SuccubusDrainingKissEffect, true);
+            attackEffectTest(Attacks.SwarmOfBatsBitesEffect);
+            attackEffectTest(Attacks.SwarmOfBeetlesBitesEffect);
+            attackEffectTest(Attacks.SwarmOfCentipedesBitesEffect);
+            attackEffectTest(Attacks.SwarmOfInsectsBitesEffect);
+            attackEffectTest(Attacks.SwarmOfPoisonousSnakesBitesEffect);
+            attackEffectTest(Attacks.SwarmOfQuippersBitesEffect);
+            attackEffectTest(Attacks.SwarmOfRatsBitesEffect);
+            attackEffectTest(Attacks.SwarmOfRavensBeaksEffect);
+            attackEffectTest(Attacks.SwarmOfSpidersBitesEffect);
+            attackEffectTest(Attacks.SwarmOfWaspsBitesEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_T() {
+            attackEffectTest(Attacks.TarrasqueBiteEffect);
+            attackEffectTest(Attacks.TarrasqueTailEffect);
+            attackEffectTest(Attacks.TriceratopsStompEffect);
+            attackEffectTest(Attacks.TyrannosaurusRexBiteEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_U() {
+            // None here
+        }
+
+        [Fact]
+        public void TestAttackEffects_V() {
+            attackEffectTest(Attacks.VampireBiteEffect);
+            attackEffectTest(Attacks.VampireSpawnBiteEffect);
+            attackEffectTest(Attacks.VampireSpawnClawsEffect);
+            attackEffectTest(Attacks.VampireUnarmedStrikeEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_W() {
+            attackEffectTest(Attacks.WerebearBiteEffect);
+            attackEffectTest(Attacks.WereboarTusksEffect);
+            attackEffectTest(Attacks.WereratBiteEffect);
+            attackEffectTest(Attacks.WeretigerBiteEffect);
+            attackEffectTest(Attacks.WerewolfBiteEffect);
+            attackEffectTest(Attacks.WightLifeDrainEffect, true);
+            attackEffectTest(Attacks.WinterWolfBiteEffect);
+            attackEffectTest(Attacks.WolfBiteEffect);
+            attackEffectTest(Attacks.WorgBiteEffect);
+            attackEffectTest(Attacks.WraithLifeDrainEffect, true);
+            attackEffectTest(Attacks.WyvernStingerEffect);
+        }
+
+        [Fact]
+        public void TestAttackEffects_X() {
+            // None here
+        }
+
+        [Fact]
+        public void TestAttackEffects_Y() {
+            // None here
+        }
+
+        [Fact]
+        public void TestAttackEffects_Z() {
+            // None here
+        }
+
+        [Fact]
         public void AssassinShortswordTest() {
             Monster undead = Monsters.Ghost; // immune to poison
             int hitpoints = undead.HitPoints;
@@ -213,9 +372,19 @@ namespace srd5 {
             Monster golem = Monsters.ClayGolem;
             Monster shadow = Monsters.Shadow;
             Attacks.BeardedDevilGlaiveEffect.Invoke(Monsters.Aboleth, golem); // don't affect construct
-            Assert.False(golem.HasEffect(Effect.INFERNAL_WOUND));
+            Assert.False(golem.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL));
             Attacks.BeardedDevilGlaiveEffect.Invoke(Monsters.Aboleth, shadow); // don't affect undead
-            Assert.False(shadow.HasEffect(Effect.INFERNAL_WOUND));
+            Assert.False(shadow.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL));
+        }
+
+        [Fact]
+        public void HornedDeveilTailEffect() {
+            Monster golem = Monsters.ClayGolem;
+            Monster shadow = Monsters.Shadow;
+            Attacks.HornedDevilTailEffect.Invoke(Monsters.Aboleth, golem); // don't affect construct
+            Assert.False(golem.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL));
+            Attacks.HornedDevilTailEffect.Invoke(Monsters.Aboleth, shadow); // don't affect undead
+            Assert.False(shadow.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL));
         }
 
         [Fact]
@@ -375,6 +544,12 @@ namespace srd5 {
             hp = target1.HitPoints;
             Attacks.GiantElkHoovesEffect.Invoke(Monsters.GiantElk, target1);
             Assert.True(target1.HitPoints < hp);
+            hp = target1.HitPoints;
+            Attacks.MammothStompEffect.Invoke(Monsters.Mammoth, target1);
+            Assert.True(target1.HitPoints < hp);
+            hp = target1.HitPoints;
+            Attacks.TriceratopsStompEffect.Invoke(Monsters.Triceratops, target1);
+            Assert.True(target1.HitPoints < hp);
         }
 
         [Fact]
@@ -413,6 +588,112 @@ namespace srd5 {
             Assert.True(n00b1.HasCondition(ConditionType.GRAPPLED_DC11));
             Assert.True(n00b2.HasCondition(ConditionType.GRAPPLED_DC11));
             Assert.False(n00b3.HasCondition(ConditionType.GRAPPLED_DC11));
+        }
+
+        [Fact]
+        public void GrapplingEffectTest() {
+            // Water Elemental cannot be grappled
+            Monster waterElemental = Monsters.WaterElemental;
+            for (int i = 0; i < 100; i++) {
+                AttackEffects.GrapplingEffect(Monsters.AdultBlackDragon, waterElemental, 20, Size.GARGANTUAN);
+            }
+            Assert.False(waterElemental.HasCondition(ConditionType.GRAPPLED_DC20));
+        }
+
+        [Fact]
+        public void HomunculusBiteEffectTest() {
+            Monster bandit = Monsters.Bandit;
+            while (!bandit.HasEffect(Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS)) {
+                Attacks.HomunculusBiteEffect(Monsters.Homunculus, bandit);
+            }
+            Assert.True(bandit.HasEffect(Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS));
+            for (int i = 0; i < 101; i++) {
+                bandit.OnEndOfTurn();
+            }
+            Assert.False(bandit.HasEffect(Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS));
+        }
+
+        [Fact]
+        public void KrakenTest() {
+            Monster pansyMonster = createPansyMonster();
+            Monster uberMonster = createUberMonster();
+            Monster luckyMonster = createPansyMonster();
+            Monster kraken = Monsters.Kraken;
+            // Grab the monsters
+            for (int i = 0; i < 5; i++) {
+                Attacks.KrakenTentacleEffect.Invoke(kraken, pansyMonster);
+                Attacks.KrakenTentacleEffect.Invoke(kraken, uberMonster);
+            }
+            Assert.True(pansyMonster.HasCondition(ConditionType.GRAPPLED_DC18));
+            Assert.True(pansyMonster.HasCondition(ConditionType.GRAPPLED_DC18));
+            Assert.False(luckyMonster.HasCondition(ConditionType.GRAPPLED_DC18));
+            // Try to swallow the monsters
+            Attacks.KrakenBiteEffect.Invoke(kraken, pansyMonster);
+            Assert.True(pansyMonster.HasEffect(Effect.KRAKEN_SWALLOW));
+            Attacks.KrakenBiteEffect(kraken, uberMonster); // cannot swallow huge monsters
+            Assert.False(uberMonster.HasEffect(Effect.KRAKEN_SWALLOW));
+            Attacks.KrakenBiteEffect(kraken, luckyMonster); // cannot swallow monsters that are not grappled
+            Assert.False(luckyMonster.HasEffect(Effect.KRAKEN_SWALLOW));
+            int hitpoints = pansyMonster.HitPoints;
+            // digest the monster
+            kraken.OnStartOfTurn();
+            Assert.True(pansyMonster.HitPoints < hitpoints);
+            hitpoints = pansyMonster.HitPoints;
+            pansyMonster.RemoveEffect(Effect.KRAKEN_SWALLOW);
+            kraken.OnStartOfTurn();
+            Assert.Equal(hitpoints, pansyMonster.HitPoints);
+        }
+
+        [Fact]
+        public void PhaseSpiderBiteEffect() {
+            Monster pansy = createPansyMonsterThatDies();
+            Attacks.PhaseSpiderBiteEffect(Monsters.PhaseSpider, pansy);
+            Assert.True(pansy.HasEffect(Effect.PHASE_SPIDER_POISON));
+        }
+
+        [Fact]
+        public void SolarTest() {
+            bool died = false;
+            bool survived = false;
+            for (int i = 0; i < 100; i++) {
+                Monster bandit = Monsters.Bandit;
+                Attacks.SolarSlayingLongbowEffect(Monsters.Solar, bandit);
+                if (bandit.Dead) {
+                    died = true;
+                } else {
+                    survived = true;
+                }
+            }
+            Assert.True(died && survived);
+        }
+
+        [Fact]
+        public void StirgeBloodDrainEffectTest() {
+            Monster stirge1 = Monsters.Stirge;
+            Monster stirge2 = Monsters.Stirge;
+            Monster stirge3 = Monsters.Stirge;
+            Monster ogre = Monsters.Ogre;
+            int hpOgre = ogre.HitPoints;
+            // Undead and Constructs are immune
+            Monster zombie = Monsters.OgreZombie;
+            int hpZombie = zombie.HitPoints;
+            Monster golem = Monsters.IronGolem;
+            int hpGolem = golem.HitPoints;
+            Attacks.StirgeBloodDrainEffect(stirge1, ogre);
+            ogre.OnStartOfTurn();
+            ogre.RemoveEffect(Effect.STIRGE_BLOOD_DRAIN_EFFECT);
+            ogre.OnStartOfTurn();
+            Assert.Null(ogre.StartOfTurnEvents[0]);
+            Assert.True(hpOgre > ogre.HitPoints);
+            Assert.True(stirge1.HasEffect(Effect.STIRGE_BLOOD_DRAINING));
+            Attacks.StirgeBloodDrainEffect(stirge2, zombie);
+            zombie.OnStartOfTurn();
+            Assert.Equal(hpZombie, zombie.HitPoints);
+            Assert.False(stirge2.HasEffect(Effect.STIRGE_BLOOD_DRAINING));
+            Attacks.StirgeBloodDrainEffect(stirge3, golem);
+            golem.OnStartOfTurn();
+            Assert.Equal(hpGolem, golem.HitPoints);
+            Assert.False(stirge3.HasEffect(Effect.STIRGE_BLOOD_DRAINING));
         }
     }
 }

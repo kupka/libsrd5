@@ -6,7 +6,8 @@ namespace srd5 {
             GREATER_RESTORATION,
             REMOVE_DISEASE,
             REMOVE_CURSE,
-            AFTER_24_HOURS
+            AFTER_24_HOURS,
+            LONG_REST
         }
 
         public int Amount { get; private set; }
@@ -54,6 +55,7 @@ namespace srd5 {
         public Proficiency[] Proficiencies { get { return proficiencies; } }
         protected Proficiency[] proficiencies = new Proficiency[0];
         public int EffectiveLevel { get; protected set; }
+        public bool Dead { get; internal set; } = false;
         public AvailableSpells[] AvailableSpells {
             get {
                 return availableSpells;
@@ -135,11 +137,24 @@ namespace srd5 {
             GlobalEvents.ChangedCondition(this, condition);
             return true;
         }
+
+        public void AddConditions(params ConditionType[] conditions) {
+            foreach (ConditionType condition in conditions) {
+                AddCondition(condition);
+            }
+        }
+
         public void RemoveCondition(ConditionType condition) {
             RemoveResult result = Utils.RemoveSingle<ConditionType>(ref conditions, condition);
             if (result == RemoveResult.REMOVED_AND_GONE)
                 condition.Unapply(this);
             GlobalEvents.ChangedCondition(this, condition, true);
+        }
+
+        public void RemoveConditions(params ConditionType[] conditions) {
+            foreach (ConditionType condition in conditions) {
+                RemoveCondition(condition);
+            }
         }
 
         public bool HasCondition(ConditionType condition) {
@@ -198,8 +213,8 @@ namespace srd5 {
             return IsProficient(proficiency);
         }
 
-        public void TakeDamage(DamageType type, string amount) {
-            TakeDamage(type, new Dices(amount).Roll());
+        public int TakeDamage(DamageType type, string amount) {
+            return TakeDamage(type, new Dices(amount).Roll());
         }
 
         /// <summary>
@@ -226,6 +241,7 @@ namespace srd5 {
         /// </summary>
         public void HealDamage(int amount) {
             if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
+            if (HasEffect(Effect.CURSE_MUMMY_ROT)) return; // Cannot regain hit points
             if (HitPoints == 0) RemoveCondition(ConditionType.UNCONSCIOUS);
             GlobalEvents.ReceivedHealing(this, amount);
             HitPoints = Math.Min(HitPoints + amount, HitPointsMax);
@@ -276,8 +292,7 @@ namespace srd5 {
         }
 
         public bool DC(object source, int dc, AbilityType type, bool advantage = false, bool disadvantage = false) {
-            int finalValue;
-            return DC(source, dc, type, out finalValue, advantage, disadvantage);
+            return DC(source, dc, type, out _, advantage, disadvantage);
         }
 
 
@@ -377,20 +392,20 @@ namespace srd5 {
             }
         }
 
-        private TurnEvent[] startOfTurnEvents = new TurnEvent[0];
+        internal TurnEvent[] StartOfTurnEvents = new TurnEvent[0];
 
         /// <summary>
         /// Adds a piece of code to be evaluated at the start of this combattatant's turn
         /// </summary>
         public void AddStartOfTurnEvent(TurnEvent turnEvent) {
-            Utils.Push<TurnEvent>(ref startOfTurnEvents, turnEvent);
+            Utils.Push<TurnEvent>(ref StartOfTurnEvents, turnEvent);
         }
 
         public void OnStartOfTurn() {
-            for (int i = 0; i < startOfTurnEvents.Length; i++) {
-                if (startOfTurnEvents[i] == null) continue;
-                if (startOfTurnEvents[i](this)) {
-                    startOfTurnEvents[i] = null;
+            for (int i = 0; i < StartOfTurnEvents.Length; i++) {
+                if (StartOfTurnEvents[i] == null) continue;
+                if (StartOfTurnEvents[i](this)) {
+                    StartOfTurnEvents[i] = null;
                 }
             }
         }
@@ -502,6 +517,11 @@ namespace srd5 {
             disadvantage = disadvantage || target.HasEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
             disadvantage = disadvantage || (ranged && (distance <= 5 || distance > attack.RangeNormal));
             return disadvantage;
+        }
+
+        internal void Die() {
+            // TODO: Implement what happens when this Combattant dies
+            Dead = true;
         }
     }
 

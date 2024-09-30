@@ -44,10 +44,10 @@ namespace srd5 {
                         int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
                         bool hit = caster.Attack(attack, target, distance, true, true);
                         if (hit) {
-                            bool undead = (target is Monster) && ((Monster)target).Type == Monsters.Type.UNDEAD;
-                            target.AddEffect(Effect.CANNOT_REGENERATE_HITPOINTS);
+                            bool undead = (target is Monster monster) && monster.Type == Monsters.Type.UNDEAD;
+                            target.AddEffect(Effect.CANNOT_REGAIN_HITPOINTS);
                             caster.AddStartOfTurnEvent(delegate (Combattant combattant) {
-                                target.RemoveEffect(Effect.CANNOT_REGENERATE_HITPOINTS);
+                                target.RemoveEffect(Effect.CANNOT_REGAIN_HITPOINTS);
                                 return true;
                             });
                             if (undead) {

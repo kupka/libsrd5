@@ -24,6 +24,7 @@ namespace srd5 {
             MONSTROSITY,
             OOZE,
             PLANT,
+            SWARM,
             UNDEAD
         }
 

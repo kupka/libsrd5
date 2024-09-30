@@ -439,7 +439,7 @@ namespace srd5 {
                 case Feat.TRAMPLING_CHARGE_GORGON:
                 case Feat.TRAMPLING_CHARGE_HORSE:
                 case Feat.TRAMPLING_CHARGE_MAMMOTH:
-                case Feat.TRAMPLING_CHARGE_TRICERATOS:
+                case Feat.TRAMPLING_CHARGE_TRICERATOPS:
                     return "Trampling Charge";
                 case Feat.TRANSPARENT:
                     return "Transparent";
@@ -971,7 +971,7 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "If the horse moves at least 20 ft. straight toward a creature and then hits it with a hooves attack on the same turn, that target must succeed on a DC 14 Strength saving throw or be knocked prone. If the target is prone, the horse can make another attack with its hooves against it as a bonus action.";
                 case Feat.TRAMPLING_CHARGE_MAMMOTH:
                     return "If the mammoth moves at least 20 ft. straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 18 Strength saving throw or be knocked prone. If the target is prone, the mammoth can make one stomp attack against it as a bonus action.";
-                case Feat.TRAMPLING_CHARGE_TRICERATOS:
+                case Feat.TRAMPLING_CHARGE_TRICERATOPS:
                     return "If the triceratops moves at least 20 ft. straight toward a creature and then hits it with a gore attack on the same turn, that target must succeed on a DC 13 Strength saving throw or be knocked prone. If the target is prone, the triceratops can make one stomp attack against it as a bonus action.";
                 case Feat.TRANSPARENT:
                     return "Even when in plain sight, it takes a successful DC 15 Wisdom (Perception) check to spot a cube that has neither moved nor attacked. A creature that tries to enter its space while unaware is surprised.";

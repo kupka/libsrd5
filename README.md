@@ -21,11 +21,19 @@ Add the nuget package to your .NET project and start coding!
 
 ```dotnet add <yourproject>.csproj package libsrd5```
 
-You can find examples how to integrate libsrd5 in a Blazor and Unity3D project [here](https://github.com/kupka/libsrd5-examples).
+You can find examples how to integrate libsrd5 in a Blazor and Unity3D project [here](https://github.com/kupka/libsrd5-examples). 
+This example uses a very outdated version of libsrd5, an update will probably arrive end 2024.
 
 ## Copyright
 
-libsrd5 Copyright 2021-2023, Thomas Kupka
+libsrd5 Copyright 2021-2024, Thomas Kupka
+
+## Current Status
+
+The latest milestone finally contains **all** the monsters and their attacks from the SRD, though not all attack effects are fully implemented.
+However, a ton already works, such as poison and grappling effects.
+
+Next milestone will concentrate on implementing the spell effects, then I will work on the character classes.
 
 ## Acknowledgements
 

@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Runtime.InteropServices;
 
 namespace srd5 {
     public enum Effect {
@@ -105,7 +107,7 @@ namespace srd5 {
         FAIL_STRENGTH_CHECK,
         FAIL_DEXERITY_CHECK,
         FAIL_CONSTITUTION_CHECK,
-        CANNOT_REGENERATE_HITPOINTS,
+        CANNOT_REGAIN_HITPOINTS,
         GRAPPLING,
 
         // Spell Effects
@@ -116,7 +118,14 @@ namespace srd5 {
         LONGSTRIDER,
         RAY_OF_FROST,
         RESISTANCE,
-
+        // Curses
+        CURSE_MUMMY_ROT,
+        CURSE_RAKSHASA,
+        CURSE_WEREBEAR,
+        CURSE_WEREBOAR,
+        CURSE_WERERAT,
+        CURSE_WERETIGER,
+        CURSE_WEREWOLF,
         // Attack Effects
         ABOLETH_DISEASE_TENTACLE,
         BEARDED_DEVIL_POISON,
@@ -128,12 +137,29 @@ namespace srd5 {
         ERINYES_POISON,
         ETTERCAP_POISON,
         ETTERCAP_WEB,
-        FIRE_ELEMENTAL_TOUCH,
+        FIRE_ELEMENTAL_IGNITE,
         GHAST_CLAWS_PARALYZATION,
         GHOUL_CLAWS_PARALYZATION,
         GIANT_RAT_DISEASED_BITE,
         GIANT_SPIDER_WEB,
-        INFERNAL_WOUND,
+        HOMUNCULUS_POISON,
+        HOMUNCULUS_POISON_UNCONCIOUSNESS,
+        INFERNAL_WOUND_BEARDED_DEVIL,
+        INFERNAL_WOUND_HORNED_DEVIL,
+        KRAKEN_SWALLOW,
+        LICH_PARALYZATION,
+        MAGMIN_IGNITE,
+        OTYUGH_DISEASE,
+        PHASE_SPIDER_POISON,
+        PSEUDO_DRAGON_POISON,
+        PSEUDO_DRAGON_POISON_UNCONSCIOUS,
+        QUASIT_POISON,
+        PIT_FIEND_POISON,
+        RUG_SMOTHER,
+        SPRITE_POISON,
+        SPRITE_POISON_UNCONCIOUS,
+        STIRGE_BLOOD_DRAIN_EFFECT,
+        STIRGE_BLOOD_DRAINING,
         UNABLE_TO_BREATHE,
 
         // Feat Effects
@@ -167,6 +193,9 @@ namespace srd5 {
 
     public static class EffectExtension {
         public static void Apply(this Effect effect, Combattant combattant) {
+            int turn = 0;
+            int duration;
+            int dc;
             switch (effect) {
                 case Effect.HEAVY_ARMOR_SPEED_PENALITY:
                     combattant.Speed -= 10;
@@ -181,7 +210,9 @@ namespace srd5 {
                 case Effect.ONE_EXTRA_ATTACK:
                 case Effect.TWO_EXTRA_ATTACKS:
                 case Effect.THREE_EXTRA_ATTACKS:
-                    ((CharacterSheet)combattant).RecalculateAttacks();
+                    if (combattant is CharacterSheet sheet) {
+                        sheet.RecalculateAttacks();
+                    };
                     break;
                 case Effect.LONGSTRIDER:
                     combattant.Speed += 10;
@@ -206,26 +237,31 @@ namespace srd5 {
                 case Effect.DROW_POISON:
                 case Effect.ERINYES_POISON:
                 case Effect.ETTERCAP_POISON:
+                case Effect.HOMUNCULUS_POISON:
                     combattant.AddCondition(ConditionType.POISONED);
                     break;
                 case Effect.ETTERCAP_WEB:
                     combattant.AddCondition(ConditionType.RESTRAINED);
                     break;
-                case Effect.FIRE_ELEMENTAL_TOUCH:
+                case Effect.FIRE_ELEMENTAL_IGNITE:
                     combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
-                        if (!combattant1.HasEffect(Effect.FIRE_ELEMENTAL_TOUCH)) return true;
+                        if (!combattant1.HasEffect(effect)) return true;
                         combattant1.TakeDamage(DamageType.FIRE, "1d10");
                         return false;
                     });
                     break;
                 case Effect.GHAST_CLAWS_PARALYZATION:
                 case Effect.GHOUL_CLAWS_PARALYZATION:
+                case Effect.LICH_PARALYZATION:
                     combattant.AddCondition(ConditionType.PARALYZED);
-                    int turn = 0;
+                    dc = 10;
+                    duration = 10; // one minute 
+                    if (effect == Effect.LICH_PARALYZATION) dc = 18;
                     combattant.AddEndOfTurnEvent(delegate (Combattant combattant1) {
-                        bool success = combattant1.DC(Effect.GHAST_CLAWS_PARALYZATION, 10, AbilityType.CONSTITUTION);
-                        if (turn++ > 9) success = true;
-                        if (success) combattant1.RemoveEffect(Effect.GHAST_CLAWS_PARALYZATION);
+                        if (!combattant1.HasEffect(effect)) return true;
+                        bool success = combattant1.DC(effect, dc, AbilityType.CONSTITUTION);
+                        if (turn++ >= duration) success = true;
+                        if (success) combattant1.RemoveEffect(effect);
                         return success;
                     });
                     break;
@@ -234,6 +270,82 @@ namespace srd5 {
                     // Until the disease is cured, the target can't regain hit points except by magical means, 
                     // and the target's hit point maximum decreases by 3 (1d6) every 24 hours. 
                     // If the target's hit point maximum drops to 0 as a result of this disease, the target dies.
+                    break;
+                case Effect.CURSE_MUMMY_ROT:
+                    // TODO: The cursed target can't regain hit points, and its hit point maximum decreases by 10 
+                    // (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, 
+                    // the target dies, and its body turns to dust. The curse lasts until removed by the remove curse 
+                    // spell or other magic.
+                    break;
+                case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
+                    combattant.AddConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
+                    break;
+                case Effect.MAGMIN_IGNITE:
+                    combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
+                        if (!combattant1.HasEffect(effect)) return true;
+                        combattant1.TakeDamage(DamageType.FIRE, "1d6");
+                        return false;
+                    });
+                    break;
+                case Effect.OTYUGH_DISEASE:
+                    combattant.AddCondition(ConditionType.POISONED);
+                    // TODO: Every 24 hours that elapse, the target must repeat the saving throw, 
+                    // reducing its hit point maximum by 5 (1d10) on a failure. The disease is cured on a success. 
+                    // The target dies if the disease reduces its hit point maximum to 0. 
+                    // This reduction to the target's hit point maximum lasts until the disease is cured.
+                    break;
+                case Effect.PHASE_SPIDER_POISON:
+                    combattant.AddConditions(ConditionType.POISONED, ConditionType.PARALYZED);
+                    break;
+                case Effect.PIT_FIEND_POISON:
+                    combattant.AddCondition(ConditionType.POISONED);
+                    combattant.AddEffect(Effect.CANNOT_REGAIN_HITPOINTS);
+                    combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
+                        if (!combattant1.HasEffect(effect)) return true;
+                        combattant1.TakeDamage(DamageType.POISON, "6d6");
+                        return false;
+                    });
+                    combattant.AddEndOfTurnEvent(delegate (Combattant combattant1) {
+                        if (!combattant1.HasEffect(effect)) return true;
+                        if (combattant.DC(effect, 21, AbilityType.CONSTITUTION)) {
+                            combattant.RemoveEffect(effect);
+                            return true;
+                        }
+                        return false;
+                    });
+                    break;
+                case Effect.PSEUDO_DRAGON_POISON:
+                case Effect.SPRITE_POISON:
+                    combattant.AddCondition(ConditionType.POISONED);
+                    break;
+                case Effect.PSEUDO_DRAGON_POISON_UNCONSCIOUS:
+                case Effect.SPRITE_POISON_UNCONCIOUS:
+                    combattant.AddCondition(ConditionType.UNCONSCIOUS);
+                    // TODO: If the saving throw fails by 5 or more, the target falls unconscious for the same duration, 
+                    // or until it takes damage or another creature uses an action to shake it awake.
+                    break;
+                case Effect.QUASIT_POISON:
+                    combattant.AddCondition(ConditionType.POISONED);
+                    dc = 10;
+                    duration = 10; // one minute
+                    combattant.AddEndOfTurnEvent(delegate (Combattant combattant1) {
+                        if (!combattant1.HasEffect(effect)) return true;
+                        bool success = combattant1.DC(effect, dc, AbilityType.CONSTITUTION);
+                        if (turn++ >= duration) success = true;
+                        if (success) combattant1.RemoveEffect(effect);
+                        return success;
+                    });
+                    break;
+                case Effect.RUG_SMOTHER:
+                    if (!combattant.HasEffect(Effect.IMMUNITY_BLINDED)) combattant.AddCondition(ConditionType.BLINDED);
+                    combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
+                        if (combattant.HasCondition(ConditionType.GRAPPLED_DC13)) {
+                            combattant.TakeDamage(DamageType.BLUDGEONING, "2d6+3");
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    });
                     break;
             }
         }
@@ -253,7 +365,9 @@ namespace srd5 {
                 case Effect.ONE_EXTRA_ATTACK:
                 case Effect.TWO_EXTRA_ATTACKS:
                 case Effect.THREE_EXTRA_ATTACKS:
-                    ((CharacterSheet)combattant).RecalculateAttacks();
+                    if (combattant is CharacterSheet sheet) {
+                        sheet.RecalculateAttacks();
+                    };
                     break;
                 case Effect.LONGSTRIDER:
                     combattant.Speed -= 10;
@@ -274,6 +388,7 @@ namespace srd5 {
                 case Effect.DROW_POISON:
                 case Effect.ERINYES_POISON:
                 case Effect.ETTERCAP_POISON:
+                case Effect.HOMUNCULUS_POISON:
                     combattant.RemoveCondition(ConditionType.POISONED);
                     break;
                 case Effect.ETTERCAP_WEB:
@@ -281,7 +396,37 @@ namespace srd5 {
                     break;
                 case Effect.GHAST_CLAWS_PARALYZATION:
                 case Effect.GHOUL_CLAWS_PARALYZATION:
+                case Effect.LICH_PARALYZATION:
                     combattant.RemoveCondition(ConditionType.PARALYZED);
+                    break;
+                case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
+                    combattant.RemoveConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
+                    break;
+                case Effect.OTYUGH_DISEASE:
+                    combattant.RemoveCondition(ConditionType.POISONED);
+                    // TODO: Every 24 hours that elapse, the target must repeat the saving throw, 
+                    // reducing its hit point maximum by 5 (1d10) on a failure. The disease is cured on a success. 
+                    // The target dies if the disease reduces its hit point maximum to 0. 
+                    // This reduction to the target's hit point maximum lasts until the disease is cured.
+                    break;
+                case Effect.PHASE_SPIDER_POISON:
+                    combattant.RemoveConditions(ConditionType.POISONED, ConditionType.PARALYZED);
+                    break;
+                case Effect.PIT_FIEND_POISON:
+                    combattant.RemoveCondition(ConditionType.POISONED);
+                    combattant.RemoveEffect(Effect.CANNOT_REGAIN_HITPOINTS);
+                    break;
+                case Effect.PSEUDO_DRAGON_POISON:
+                    combattant.RemoveCondition(ConditionType.POISONED);
+                    break;
+                case Effect.PSEUDO_DRAGON_POISON_UNCONSCIOUS:
+                    combattant.RemoveCondition(ConditionType.UNCONSCIOUS);
+                    break;
+                case Effect.QUASIT_POISON:
+                    combattant.RemoveCondition(ConditionType.POISONED);
+                    break;
+                case Effect.RUG_SMOTHER:
+                    combattant.RemoveCondition(ConditionType.BLINDED);
                     break;
             }
         }
@@ -306,6 +451,10 @@ namespace srd5 {
                     combattant.Constitution.RemoveMinimumBaseValue(19);
                     break;
             }
+        }
+
+        public static bool IsCurse(this Effect effect) {
+            return Enum.GetName(typeof(Effect), effect).StartsWith("CURSE_");
         }
     }
 }

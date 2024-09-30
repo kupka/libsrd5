@@ -111,6 +111,11 @@ namespace srd5 {
             Type = type;
             Dices = new Dices(diceString);
         }
+
+        public Damage(DamageType type, int value) {
+            Type = type;
+            Dices = new Dices(value, 1, 0);
+        }
     }
 
 
@@ -145,7 +150,7 @@ namespace srd5 {
     }
 
     public abstract class Item {
-        private int id = Random.Get(1, int.MaxValue);
+        private readonly int id = Random.Get(1, int.MaxValue);
         public string Name { get; protected set; }
         public ItemType Type { get; protected set; }
 

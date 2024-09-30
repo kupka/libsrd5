@@ -15,16 +15,16 @@ namespace srd5 {
         /// <param name="withRestrained">With true, the target is restrained as well as grappled</param>
         /// <param name="lockAttackToTarget">If set, then this attack will have the target locked (e.g. can only Bite the grappled target)</param>
         /// <param name="maxTargets">Amount of targets the attacker can grapple (e.g. Crabs can grapple one target with each of their two claws)</param>
-        public static void GrapplingEffect(Combattant attacker, Combattant target, int dc, Size maxSize, bool withRestrained = false, Attack lockAttackToTarget = null, int maxTargets = 1) {
+        public static bool GrapplingEffect(Combattant attacker, Combattant target, int dc, Size maxSize, bool withRestrained = false, Attack lockAttackToTarget = null, int maxTargets = 1) {
             ConditionType grapplingType = (ConditionType)Enum.Parse(typeof(ConditionType), "GRAPPLED_DC" + dc);
-            if (target.HasCondition(grapplingType)) return;
-            if (target.Size > maxSize) return;
+            if (target.HasCondition(grapplingType)) return false;
+            if (target.Size > maxSize) return false;
             int grappling = 0;
             foreach (Effect effect in attacker.Effects) {
                 if (effect == Effect.GRAPPLING) grappling++;
             }
-            if (grappling >= maxTargets) return;
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
+            if (grappling >= maxTargets) return false;
+            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return false;
             attacker.AddEffect(Effect.GRAPPLING);
             if (withRestrained && !target.HasEffect(Effect.IMMUNITY_RESTRAINED))
                 target.AddCondition(ConditionType.RESTRAINED);
@@ -45,6 +45,7 @@ namespace srd5 {
                 }
                 return false;
             });
+            return true;
         }
 
         /// <summary>
@@ -55,10 +56,12 @@ namespace srd5 {
         /// <param name="dices">The dice string describing how much damage is taken (e.g. "3d6+3")</param>
         /// <param name="dc">How difficult the DC is to receive only half of the dices' damage</param>
         /// <param name="ability">Which ability is used for the DC (default Constitution)</param>
+        /// <param name="dcAvoidsDamage">If true, all damage is avoided instead of halved on successful DC. (default false)</param>
         /// <returns></returns>
-        public static int PoisonEffect(Combattant target, Attack source, string dices, int dc, AbilityType ability = AbilityType.CONSTITUTION) {
+        public static int PoisonEffect(Combattant target, Attack source, string dices, int dc, AbilityType ability = AbilityType.CONSTITUTION, bool dcAvoidsDamage = false) {
             if (target.IsImmune(DamageType.POISON)) return 0;
-            bool success = target.DC(source, 12, AbilityType.CONSTITUTION);
+            bool success = target.DC(source, dc, ability);
+            if (dcAvoidsDamage && success) return 0;
             int amount = new Dices(dices).Roll();
             if (success) amount /= 2;
             amount = target.TakeDamage(DamageType.POISON, amount);

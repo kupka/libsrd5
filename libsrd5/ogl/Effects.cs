@@ -158,6 +158,8 @@ namespace srd5 {
         RUG_SMOTHER,
         SPRITE_POISON,
         SPRITE_POISON_UNCONCIOUS,
+        STIRGE_BLOOD_DRAIN_EFFECT,
+        STIRGE_BLOOD_DRAINING,
         UNABLE_TO_BREATHE,
 
         // Feat Effects

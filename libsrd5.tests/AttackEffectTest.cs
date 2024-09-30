@@ -547,6 +547,9 @@ namespace srd5 {
             hp = target1.HitPoints;
             Attacks.MammothStompEffect.Invoke(Monsters.Mammoth, target1);
             Assert.True(target1.HitPoints < hp);
+            hp = target1.HitPoints;
+            Attacks.TriceratopsStompEffect.Invoke(Monsters.Triceratops, target1);
+            Assert.True(target1.HitPoints < hp);
         }
 
         [Fact]
@@ -588,6 +591,16 @@ namespace srd5 {
         }
 
         [Fact]
+        public void GrapplingEffectTest() {
+            // Water Elemental cannot be grappled
+            Monster waterElemental = Monsters.WaterElemental;
+            for (int i = 0; i < 100; i++) {
+                AttackEffects.GrapplingEffect(Monsters.AdultBlackDragon, waterElemental, 20, Size.GARGANTUAN);
+            }
+            Assert.False(waterElemental.HasCondition(ConditionType.GRAPPLED_DC20));
+        }
+
+        [Fact]
         public void KrakenTest() {
             Monster pansyMonster = createPansyMonster();
             Monster uberMonster = createUberMonster();
@@ -615,6 +628,13 @@ namespace srd5 {
         }
 
         [Fact]
+        public void PhaseSpiderBiteEffect() {
+            Monster pansy = createPansyMonsterThatDies();
+            Attacks.PhaseSpiderBiteEffect(Monsters.PhaseSpider, pansy);
+            Assert.True(pansy.HasEffect(Effect.PHASE_SPIDER_POISON));
+        }
+
+        [Fact]
         public void SolarTest() {
             bool died = false;
             bool survived = false;
@@ -628,6 +648,32 @@ namespace srd5 {
                 }
             }
             Assert.True(died && survived);
+        }
+
+        [Fact]
+        public void StirgeBloodDrainEffectTest() {
+            Monster stirge1 = Monsters.Stirge;
+            Monster stirge2 = Monsters.Stirge;
+            Monster stirge3 = Monsters.Stirge;
+            Monster ogre = Monsters.Ogre;
+            int hpOgre = ogre.HitPoints;
+            // Undead and Constructs are immune
+            Monster zombie = Monsters.OgreZombie;
+            int hpZombie = zombie.HitPoints;
+            Monster golem = Monsters.IronGolem;
+            int hpGolem = golem.HitPoints;
+            Attacks.StirgeBloodDrainEffect(stirge1, ogre);
+            ogre.OnStartOfTurn();
+            Assert.True(hpOgre > ogre.HitPoints);
+            Assert.True(stirge1.HasEffect(Effect.STIRGE_BLOOD_DRAINING));
+            Attacks.StirgeBloodDrainEffect(stirge2, zombie);
+            zombie.OnStartOfTurn();
+            Assert.Equal(hpZombie, zombie.HitPoints);
+            Assert.False(stirge2.HasEffect(Effect.STIRGE_BLOOD_DRAINING));
+            Attacks.StirgeBloodDrainEffect(stirge3, golem);
+            golem.OnStartOfTurn();
+            Assert.Equal(hpGolem, golem.HitPoints);
+            Assert.False(stirge3.HasEffect(Effect.STIRGE_BLOOD_DRAINING));
         }
     }
 }

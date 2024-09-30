@@ -201,8 +201,11 @@ namespace srd5 {
                 if (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT) return;
             }
             // TODO: the stirge attaches to the target. While attached, the stirge doesn't attack.
+            target.AddEffect(Effect.STIRGE_BLOOD_DRAIN_EFFECT);
+            attacker.AddEffect(Effect.STIRGE_BLOOD_DRAINING);
             int damage = 0;
             target.AddStartOfTurnEvent(delegate (Combattant combattant) {
+                if (!target.HasEffect(Effect.STIRGE_BLOOD_DRAIN_EFFECT)) return true;
                 int delta = Dice.Roll("1d4+3");
                 damage += delta;
                 target.TakeDamage(DamageType.TRUE_DAMAGE, "1d4+3");

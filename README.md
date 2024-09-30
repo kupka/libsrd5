@@ -25,7 +25,14 @@ You can find examples how to integrate libsrd5 in a Blazor and Unity3D project [
 
 ## Copyright
 
-libsrd5 Copyright 2021-2023, Thomas Kupka
+libsrd5 Copyright 2021-2024, Thomas Kupka
+
+## Current Status
+
+The latest milestone finally contains **all** the monsters and their attacks from the SRD, though not all attack effects are fully implemented.
+However, a ton already works, such as poison and grappling effects.
+
+Next milestone will concentrate on implementing the spell effects.
 
 ## Acknowledgements
 

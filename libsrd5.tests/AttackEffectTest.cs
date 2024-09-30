@@ -601,6 +601,19 @@ namespace srd5 {
         }
 
         [Fact]
+        public void HomunculusBiteEffectTest() {
+            Monster bandit = Monsters.Bandit;
+            while (!bandit.HasEffect(Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS)) {
+                Attacks.HomunculusBiteEffect(Monsters.Homunculus, bandit);
+            }
+            Assert.True(bandit.HasEffect(Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS));
+            for (int i = 0; i < 101; i++) {
+                bandit.OnEndOfTurn();
+            }
+            Assert.False(bandit.HasEffect(Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS));
+        }
+
+        [Fact]
         public void KrakenTest() {
             Monster pansyMonster = createPansyMonster();
             Monster uberMonster = createUberMonster();

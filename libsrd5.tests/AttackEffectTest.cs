@@ -31,10 +31,22 @@ namespace srd5 {
             return pansyMonster;
         }
 
+        private Monster pansyMonsterThatDies = createPansyMonsterThatDies();
+
+        private static Monster createPansyMonsterThatDies() {
+            Monster pansyMonster = new Monster(
+                    Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d1", 40, 16,
+                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
+            );
+            pansyMonster.AddEffects(Effect.FAIL_STRENGTH_CHECK, Effect.FAIL_DEXERITY_CHECK, Effect.FAIL_CONSTITUTION_CHECK);
+            return pansyMonster;
+        }
+
         private void restoreMonsters() {
             uberMonster = createUberMonster();
             averageMonster = createAverageMonster();
             pansyMonster = createPansyMonster();
+            pansyMonsterThatDies = createPansyMonsterThatDies();
         }
 
         private readonly Dices dices = new Dices("1d12-1");
@@ -43,13 +55,16 @@ namespace srd5 {
             return (DamageType)value;
         }
 
-        private void attackEffectTest(AttackEffect effect) {
+        private void attackEffectTest(AttackEffect effect, bool guaranteedLethal = false) {
             for (int i = 0; i < 10; i++) {
                 restoreMonsters();
                 effect.Invoke(Monsters.Aboleth, uberMonster);
                 effect.Invoke(Monsters.Aboleth, averageMonster);
                 effect.Invoke(Monsters.Aboleth, pansyMonster);
-
+                if (guaranteedLethal) {
+                    effect.Invoke(Monsters.Aboleth, pansyMonsterThatDies);
+                    Assert.True(pansyMonsterThatDies.Dead);
+                }
                 for (int j = 0; j < 20; j++) {
                     uberMonster.TakeDamage(randomDamageType(), Dice.D4.Value);
                     uberMonster.EscapeFromGrapple();
@@ -264,13 +279,14 @@ namespace srd5 {
             attackEffectTest(Attacks.ScorpionStingEffect);
             attackEffectTest(Attacks.ScoutLongbowEffect);
             attackEffectTest(Attacks.ShadowStrengthDrainEffect);
-            attackEffectTest(Attacks.SolarSlayingLongbowEffect);
-            attackEffectTest(Attacks.SpecterLifeDrainEffect);
+            attackEffectTest(Attacks.SolarSlayingLongbowEffect, true);
+            attackEffectTest(Attacks.SpecterLifeDrainEffect, true);
+            attackEffectTest(Attacks.SpiderBiteEffect);
             attackEffectTest(Attacks.SpiritNagaBiteEffect);
             attackEffectTest(Attacks.SpriteShortbowEffect);
             attackEffectTest(Attacks.StirgeBloodDrainEffect);
             attackEffectTest(Attacks.StoneGiantRockEffect);
-            attackEffectTest(Attacks.SuccubusDrainingKissEffect);
+            attackEffectTest(Attacks.SuccubusDrainingKissEffect, true);
             attackEffectTest(Attacks.SwarmOfBatsBitesEffect);
             attackEffectTest(Attacks.SwarmOfBeetlesBitesEffect);
             attackEffectTest(Attacks.SwarmOfCentipedesBitesEffect);
@@ -311,11 +327,11 @@ namespace srd5 {
             attackEffectTest(Attacks.WereratBiteEffect);
             attackEffectTest(Attacks.WeretigerBiteEffect);
             attackEffectTest(Attacks.WerewolfBiteEffect);
-            attackEffectTest(Attacks.WightLifeDrainEffect);
+            attackEffectTest(Attacks.WightLifeDrainEffect, true);
             attackEffectTest(Attacks.WinterWolfBiteEffect);
             attackEffectTest(Attacks.WolfBiteEffect);
             attackEffectTest(Attacks.WorgBiteEffect);
-            attackEffectTest(Attacks.WraithLifeDrainEffect);
+            attackEffectTest(Attacks.WraithLifeDrainEffect, true);
             attackEffectTest(Attacks.WyvernStingerEffect);
         }
 

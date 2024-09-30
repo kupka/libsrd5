@@ -53,5 +53,18 @@ namespace srd5 {
                 bandit.OnDamageTaken();
             }
         }
+
+        [Fact]
+        public void QuasitPoisonEffectTest() {
+            Combattant bandit = Monsters.Bandit;
+            while (!bandit.HasEffect(Effect.QUASIT_POISON)) {
+                bandit.AddEffect(Effect.QUASIT_POISON);
+                bandit.OnEndOfTurn();
+            }
+            Assert.True(bandit.HasCondition(ConditionType.POISONED));
+            bandit.RemoveEffect(Effect.QUASIT_POISON);
+            bandit.OnEndOfTurn();
+            Assert.False(bandit.HasCondition(ConditionType.POISONED));
+        }
     }
 }

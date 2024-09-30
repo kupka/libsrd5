@@ -664,6 +664,9 @@ namespace srd5 {
             int hpGolem = golem.HitPoints;
             Attacks.StirgeBloodDrainEffect(stirge1, ogre);
             ogre.OnStartOfTurn();
+            ogre.RemoveEffect(Effect.STIRGE_BLOOD_DRAIN_EFFECT);
+            ogre.OnStartOfTurn();
+            Assert.Null(ogre.StartOfTurnEvents[0]);
             Assert.True(hpOgre > ogre.HitPoints);
             Assert.True(stirge1.HasEffect(Effect.STIRGE_BLOOD_DRAINING));
             Attacks.StirgeBloodDrainEffect(stirge2, zombie);

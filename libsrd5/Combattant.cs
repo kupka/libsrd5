@@ -392,20 +392,20 @@ namespace srd5 {
             }
         }
 
-        private TurnEvent[] startOfTurnEvents = new TurnEvent[0];
+        internal TurnEvent[] StartOfTurnEvents = new TurnEvent[0];
 
         /// <summary>
         /// Adds a piece of code to be evaluated at the start of this combattatant's turn
         /// </summary>
         public void AddStartOfTurnEvent(TurnEvent turnEvent) {
-            Utils.Push<TurnEvent>(ref startOfTurnEvents, turnEvent);
+            Utils.Push<TurnEvent>(ref StartOfTurnEvents, turnEvent);
         }
 
         public void OnStartOfTurn() {
-            for (int i = 0; i < startOfTurnEvents.Length; i++) {
-                if (startOfTurnEvents[i] == null) continue;
-                if (startOfTurnEvents[i](this)) {
-                    startOfTurnEvents[i] = null;
+            for (int i = 0; i < StartOfTurnEvents.Length; i++) {
+                if (StartOfTurnEvents[i] == null) continue;
+                if (StartOfTurnEvents[i](this)) {
+                    StartOfTurnEvents[i] = null;
                 }
             }
         }

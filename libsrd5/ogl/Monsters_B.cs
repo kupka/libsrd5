@@ -94,8 +94,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect BeardedDevilGlaiveEffect = delegate (Combattant attacker, Combattant target) {
             // do not affect undead and constructs
-            if (target is Monster) {
-                Monster monster = (Monster)target;
+            if (target is Monster monster) {
                 if (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT) return;
             }
             if (target.DC(BeardedDevilGlaive, 12, AbilityType.CONSTITUTION)) return;
@@ -151,8 +150,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect BlackPuddingPseudopodEffect = delegate (Combattant attacker, Combattant target) {
-            if (target is CharacterSheet) {
-                CharacterSheet sheet = (CharacterSheet)target;
+            if (target is CharacterSheet sheet) {
                 Armor armor = sheet.Inventory.Armor;
                 // permanently reduce armor ac by 1 if armor isn't magical. armor is destroyed if reduced to 10 or below by this.
                 if (armor == null || armor.HasProperty(ArmorProperty.MAGIC)) return;

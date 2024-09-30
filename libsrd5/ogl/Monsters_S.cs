@@ -135,13 +135,15 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SpecterLifeDrainEffect = delegate (Combattant attacker, Combattant target) {
-            // FIXME: Amount of damage taken is not known here
-            // TODO: The target must succeed on a DC 10 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. 
-            // This reduction lasts until the creature finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.
+            int damage = target.TakeDamage(DamageType.NECROTIC, "3d6");
+            target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
+            if (target.HitPointsMax == 0) {
+                target.Die();
+            }
         };
         public static Attack SpecterLifeDrain {
             get {
-                return new Attack("Life Drain", 4, new Damage(DamageType.NECROTIC, "3d6"), 5, null, SpecterLifeDrainEffect);
+                return new Attack("Life Drain", 4, new Damage(DamageType.NECROTIC, 0), 5, null, SpecterLifeDrainEffect);
             }
         }
         public static readonly AttackEffect SpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -200,7 +202,7 @@ namespace srd5 {
             }
             // TODO: the stirge attaches to the target. While attached, the stirge doesn't attack.
             int damage = 0;
-            attacker.AddStartOfTurnEvent(delegate (Combattant combattant) {
+            target.AddStartOfTurnEvent(delegate (Combattant combattant) {
                 int delta = Dice.Roll("1d4+3");
                 damage += delta;
                 target.TakeDamage(DamageType.TRUE_DAMAGE, "1d4+3");
@@ -789,7 +791,7 @@ namespace srd5 {
             get {
                 Monster stormGiant = new Monster(
                     Monsters.Type.GIANT, Monsters.ID.STORM_GIANT, Alignment.CHAOTIC_GOOD, 29, 14, 20, 16, 18, 18, 16, "20d12+100", 40, 13,
-                    new Attack[] { Attacks.StormGiantGreatsword }, new Attack[] { }, Size.HUGE
+                    new Attack[] { Attacks.StormGiantGreatsword }, new Attack[] { Attacks.StormGiantRock }, Size.HUGE
                 );
                 stormGiant.AddProficiency(Proficiency.STRENGTH);
                 stormGiant.AddProficiency(Proficiency.CONSTITUTION);

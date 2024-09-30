@@ -194,7 +194,7 @@ namespace srd5 {
             get {
                 Monster hawk = new Monster(
                     Monsters.Type.BEAST, Monsters.ID.HAWK, Alignment.UNALIGNED, 5, 16, 8, 2, 14, 6, 13, "1d4-1", 40, 0,
-                    new Attack[] { }, new Attack[] { }, Size.TINY
+                    new Attack[] { Attacks.HawkTalons }, new Attack[] { }, Size.TINY
                 );
                 hawk.AddProficiency(Proficiency.PERCEPTION);
                 hawk.AddFeat(Feat.KEEN_SIGHT);

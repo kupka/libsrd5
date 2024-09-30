@@ -43,7 +43,13 @@ namespace srd5 {
                 if (effect == Effect.IMMUNITY_TRUE_DAMAGE || effect == Effect.RESISTANCE_TRUE_DAMAGE || effect == Effect.VULNERABILITY_TRUE_DAMAGE) continue;
                 bandit.AddEffect(effect);
                 Assert.True(bandit.HasEffect(effect));
+                bandit.OnStartOfTurn();
+                bandit.OnEndOfTurn();
+                bandit.OnDamageTaken();
                 bandit.RemoveEffect(effect);
+                bandit.OnStartOfTurn();
+                bandit.OnEndOfTurn();
+                bandit.OnDamageTaken();
                 Assert.False(bandit.HasEffect(effect));
             }
         }

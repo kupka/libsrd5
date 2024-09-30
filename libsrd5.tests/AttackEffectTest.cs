@@ -625,6 +625,10 @@ namespace srd5 {
             // digest the monster
             kraken.OnStartOfTurn();
             Assert.True(pansyMonster.HitPoints < hitpoints);
+            hitpoints = pansyMonster.HitPoints;
+            pansyMonster.RemoveEffect(Effect.KRAKEN_SWALLOW);
+            kraken.OnStartOfTurn();
+            Assert.Equal(hitpoints, pansyMonster.HitPoints);
         }
 
         [Fact]

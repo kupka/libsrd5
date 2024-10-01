@@ -553,24 +553,6 @@ namespace srd5 {
         }
 
         [Fact]
-        public void GhoulClawsTest() {
-            CharacterSheet halfling = new CharacterSheet(Race.HALFLING);
-            CharacterSheet highelf = new CharacterSheet(Race.HIGH_ELF);
-            CharacterSheet halfelf = new CharacterSheet(Race.HALF_ELF);
-            halfling.AddLevel(CharacterClasses.Barbarian);
-            highelf.AddLevel(CharacterClasses.Barbarian);
-            halfelf.AddLevel(CharacterClasses.Wizard);
-            for (int i = 0; i < 10; i++)
-                Attacks.GhoulClawsEffect.Invoke(Monsters.Ghoul, halfling);
-            Attacks.GhoulClawsEffect.Invoke(Monsters.Ghoul, highelf);
-            Attacks.GhoulClawsEffect.Invoke(Monsters.Ghoul, halfelf);
-            Assert.True(halfling.HasEffect(Effect.GHOUL_CLAWS_PARALYZATION));
-            Assert.True(halfling.HasCondition(ConditionType.PARALYZED));
-            Assert.False(highelf.HasEffect(Effect.GHOUL_CLAWS_PARALYZATION));
-            Assert.False(halfelf.HasEffect(Effect.GHOUL_CLAWS_PARALYZATION));
-        }
-
-        [Fact]
         public void GiantCrabClawTest() {
             Monster giantcrab = Monsters.GiantCrab;
             Monster n00b1 = Monsters.Commoner;

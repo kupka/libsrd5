@@ -45,7 +45,7 @@ namespace srd5 {
                 Assert.True(bandit.HasEffect(effect));
                 bandit.OnStartOfTurn();
                 bandit.OnEndOfTurn();
-                bandit.OnDamageTaken();
+                bandit.OnDamageTaken(); 
                 bandit.RemoveEffect(effect);
                 Assert.False(bandit.HasEffect(effect));
                 bandit.OnStartOfTurn();
@@ -65,6 +65,19 @@ namespace srd5 {
             bandit.RemoveEffect(Effect.QUASIT_POISON);
             bandit.OnEndOfTurn();
             Assert.False(bandit.HasCondition(ConditionType.POISONED));
+        }
+
+        [Fact]
+        public void LichParalyzingTouchEffectTest() {
+            Combattant bandit = Monsters.Bandit;
+            while (!bandit.HasEffect(Effect.LICH_PARALYZATION)) {
+                bandit.AddEffect(Effect.LICH_PARALYZATION);
+                bandit.OnEndOfTurn();
+            }
+            Assert.True(bandit.HasCondition(ConditionType.PARALYZED));
+            bandit.RemoveEffect(Effect.LICH_PARALYZATION);
+            bandit.OnEndOfTurn();
+            Assert.False(bandit.HasCondition(ConditionType.PARALYZED));
         }
     }
 }

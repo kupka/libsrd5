@@ -42,7 +42,17 @@ namespace srd5 {
             return pansyMonster;
         }
 
+        // Monsters of each type, also a hero
+        private Combattant[] allCombattantTypes;
+
         private void restoreMonsters() {
+            CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
+            hero.AddLevel(CharacterClasses.Druid);
+            allCombattantTypes = [
+                Monsters.Badger, Monsters.Solar, Monsters.IronGolem, Monsters.AncientBlackDragon, Monsters.FireElemental,
+                Monsters.Dryad, Monsters.BarbedDevil, Monsters.HillGiant, Monsters.Bandit, Monsters.BlackPudding,
+                Monsters.Treant, Monsters.SwarmOfQuippers, Monsters.Zombie, hero
+             ];
             uberMonster = createUberMonster();
             averageMonster = createAverageMonster();
             pansyMonster = createPansyMonster();
@@ -61,6 +71,9 @@ namespace srd5 {
                 effect.Invoke(Monsters.Aboleth, uberMonster);
                 effect.Invoke(Monsters.Aboleth, averageMonster);
                 effect.Invoke(Monsters.Aboleth, pansyMonster);
+                foreach (Combattant combattant in allCombattantTypes) {
+                    effect.Invoke(Monsters.Aboleth, combattant);
+                }
                 if (guaranteedLethal) {
                     effect.Invoke(Monsters.Aboleth, pansyMonsterThatDies);
                     Assert.True(pansyMonsterThatDies.Dead);
@@ -78,6 +91,12 @@ namespace srd5 {
                     pansyMonster.EscapeFromGrapple();
                     pansyMonster.OnStartOfTurn();
                     pansyMonster.OnEndOfTurn();
+                    foreach (Combattant combattant in allCombattantTypes) {
+                        combattant.TakeDamage(randomDamageType(), Dice.D4.Value);
+                        combattant.EscapeFromGrapple();
+                        combattant.OnStartOfTurn();
+                        combattant.OnEndOfTurn();
+                    }
                 }
 
                 foreach (Effect eff in uberMonster.Effects) {

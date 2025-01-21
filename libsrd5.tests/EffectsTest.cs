@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Xunit;
 
 namespace srd5 {
@@ -45,7 +44,7 @@ namespace srd5 {
                 Assert.True(bandit.HasEffect(effect));
                 bandit.OnStartOfTurn();
                 bandit.OnEndOfTurn();
-                bandit.OnDamageTaken(); 
+                bandit.OnDamageTaken();
                 bandit.RemoveEffect(effect);
                 Assert.False(bandit.HasEffect(effect));
                 bandit.OnStartOfTurn();

@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace srd5 {
@@ -12,7 +11,7 @@ namespace srd5 {
             Monster orc = Monsters.Orc;
             Monster shadow = Monsters.Shadow;
             Battleground2D ground = new Battleground2D(10, 10);
-            Random.State = 1;
+            Random.State = 2;
             ground.AddCombattant(wizard, 5, 5);
             ground.AddCombattant(orc, 7, 7);
             ground.AddCombattant(shadow, 8, 8);

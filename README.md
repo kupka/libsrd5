@@ -22,11 +22,11 @@ Add the nuget package to your .NET project and start coding!
 ```dotnet add <yourproject>.csproj package libsrd5```
 
 You can find examples how to integrate libsrd5 in a Blazor and Unity3D project [here](https://github.com/kupka/libsrd5-examples). 
-This example uses a very outdated version of libsrd5, an update will probably arrive end 2024.
+This example uses a very outdated version of libsrd5, an update will probably arrive in spring 2025.
 
 ## Copyright
 
-libsrd5 Copyright 2021-2024, Thomas Kupka
+libsrd5 Copyright 2021-2025, Thomas Kupka
 
 ## Current Status
 

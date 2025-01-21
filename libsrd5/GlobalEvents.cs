@@ -10,10 +10,11 @@ namespace srd5 {
             HEALED,
             CONDITION,
             DC,
-            SPELL,
-            SPELL_WITHOUT_EFFECT,
+            AFFECT_BY_SPELL,
+            CAST_SPELL,
             EQUIPMENT,
-            EFFECT_ACTIVATED
+            EFFECT_ACTIVATED,
+            DEATH
         }
         public static event EventHandler<EventArgs> Handlers;
 
@@ -142,7 +143,7 @@ namespace srd5 {
 
         internal static void AffectBySpell(Combattant caster, Spells.ID spell, Combattant target, bool affected) {
             if (Handlers == null) return;
-            Handlers(EventTypes.SPELL, new SpellAffection(caster, spell, target, affected));
+            Handlers(EventTypes.AFFECT_BY_SPELL, new SpellAffection(caster, spell, target, affected));
         }
 
         public class ActionFailed : EventArgs {
@@ -228,19 +229,32 @@ namespace srd5 {
             Handlers(EventTypes.EFFECT_ACTIVATED, new FeatActivated(source, feat));
         }
 
-        public class SpellWithoutEffect : EventArgs {
+        public class SpellCast : EventArgs {
             public Combattant Caster { get; private set; }
             public Spells.ID Spell { get; private set; }
 
-            public SpellWithoutEffect(Combattant caster, Spells.ID spell) {
+            public SpellCast(Combattant caster, Spells.ID spell) {
                 Caster = caster;
                 Spell = spell;
             }
         }
 
-        public static void EffectlessSpell(Combattant caster, Spells.ID spell) {
+        public static void CastSpell(Combattant caster, Spells.ID spell) {
             if (Handlers == null) return;
-            Handlers(EventTypes.SPELL_WITHOUT_EFFECT, new SpellWithoutEffect(caster, spell));
+            Handlers(EventTypes.CAST_SPELL, new SpellCast(caster, spell));
+        }
+
+        public class Death : EventArgs {
+            public Combattant Victim { get; private set; }
+
+            public Death(Combattant victim) {
+                Victim = victim;
+            }
+        }
+
+        public static void Die(Combattant victim) {
+            if (Handlers == null) return;
+            Handlers(EventTypes.DEATH, new Death(victim));
         }
     }
 }

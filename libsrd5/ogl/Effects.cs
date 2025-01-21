@@ -93,9 +93,16 @@ namespace srd5 {
         IGNORE_SNOW_PENALITY,
 
         // Abilities
-        CONSTITUION_19,
+        CONSTITUTION_19,
         INTELLIGENCE_19,
 
+        // Death Saves Effects when not stabilized
+        FIGHTING_DEATH,
+        FIGHTING_DEATH_SAVE_FAIL_1,
+        FIGHTING_DEATH_SAVE_FAIL_2,
+        FIGHTING_DEATH_SAVE_SUCCESS_1,
+        FIGHTING_DEATH_SAVE_SUCCESS_2,
+        FIGHTING_DEATH_STABILIZED,
 
         // Misc./Special
         DOUBLE_PROFICIENCY_BONUS_HISTORY,
@@ -126,6 +133,7 @@ namespace srd5 {
         CURSE_WERERAT,
         CURSE_WERETIGER,
         CURSE_WEREWOLF,
+        GUIDANCE,
         // Attack Effects
         ABOLETH_DISEASE_TENTACLE,
         BEARDED_DEVIL_POISON,
@@ -163,7 +171,7 @@ namespace srd5 {
         UNABLE_TO_BREATHE,
 
         // Feat Effects
-        LEGENDARY_RESISTANCE
+        LEGENDARY_RESISTANCE,
     }
 
     public static class Effects {
@@ -200,7 +208,7 @@ namespace srd5 {
                 case Effect.HEAVY_ARMOR_SPEED_PENALITY:
                     combattant.Speed -= 10;
                     break;
-                case Effect.CONSTITUION_19:
+                case Effect.CONSTITUTION_19:
                 case Effect.INTELLIGENCE_19:
                     applyAbilityEffect(effect, combattant);
                     break;
@@ -348,6 +356,64 @@ namespace srd5 {
                         }
                     });
                     break;
+                case Effect.FIGHTING_DEATH:
+                    combattant.AddStartOfTurnEvent(delegate () {
+                        // Don't roll if stabilized
+                        if (combattant.HasEffect(Effect.FIGHTING_DEATH_STABILIZED)) {
+                            combattant.RemoveEffect(Effect.FIGHTING_DEATH);
+                            return true;
+                        }
+                        // Death Save is DC10 with no Ability
+                        int deathSaveRoll = Dice.D20.Value;
+                        bool success = deathSaveRoll > 9;
+                        GlobalEvents.RolledDC(combattant, Effect.FIGHTING_DEATH, new Ability(AbilityType.NONE, 9), 10, deathSaveRoll, success);
+                        if (success) {
+                            // Critical success counts as 2 successes
+                            if (deathSaveRoll == 20) {
+                                if (combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_1) || combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_2)) {
+                                    combattant.RemoveEffect(Effect.FIGHTING_DEATH);
+                                    return true;
+                                } else {
+                                    combattant.AddEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_2);
+                                    return false;
+                                }
+                            } else if (combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_2)) {
+                                // third success => stabilized
+                                combattant.RemoveEffect(Effect.FIGHTING_DEATH);
+                                return true;
+                            } else if (combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_1)) {
+                                combattant.AddEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_2);
+                                return false;
+                            } else {
+                                combattant.AddEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_1);
+                                return false;
+                            }
+                        } else {
+                            // Critical fail counts as 2 fails
+                            if (deathSaveRoll == 1) {
+                                if (combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_1) || combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_2)) {
+                                    combattant.RemoveEffect(Effect.FIGHTING_DEATH);
+                                    combattant.Die();
+                                    return true;
+                                } else {
+                                    combattant.AddEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_2);
+                                    return false;
+                                }
+                            } else if (combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_2)) {
+                                // third fail => dead
+                                combattant.RemoveEffect(Effect.FIGHTING_DEATH);
+                                combattant.Die();
+                                return true;
+                            } else if (combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_1)) {
+                                combattant.AddEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_2);
+                                return false;
+                            } else {
+                                combattant.AddEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_1);
+                                return false;
+                            }
+                        }
+                    });
+                    break;
             }
         }
 
@@ -356,7 +422,7 @@ namespace srd5 {
                 case Effect.HEAVY_ARMOR_SPEED_PENALITY:
                     combattant.Speed += 10;
                     break;
-                case Effect.CONSTITUION_19:
+                case Effect.CONSTITUTION_19:
                 case Effect.INTELLIGENCE_19:
                     unapplyAbilityEffect(effect, combattant);
                     break;
@@ -432,6 +498,13 @@ namespace srd5 {
                 case Effect.CURSE_MUMMY_ROT:
                     combattant.RemoveEffect(Effect.CANNOT_REGAIN_HITPOINTS);
                     break;
+                case Effect.FIGHTING_DEATH:
+                    combattant.RemoveEffects(Effect.FIGHTING_DEATH_SAVE_FAIL_1,
+                                             Effect.FIGHTING_DEATH_SAVE_FAIL_2,
+                                             Effect.FIGHTING_DEATH_SAVE_SUCCESS_1,
+                                             Effect.FIGHTING_DEATH_SAVE_SUCCESS_2,
+                                             Effect.FIGHTING_DEATH_STABILIZED);
+                    break;
             }
         }
 
@@ -440,7 +513,7 @@ namespace srd5 {
                 case Effect.INTELLIGENCE_19:
                     combattant.Intelligence.AddMinimumBaseValue(19);
                     break;
-                case Effect.CONSTITUION_19:
+                case Effect.CONSTITUTION_19:
                     combattant.Constitution.AddMinimumBaseValue(19);
                     break;
             }
@@ -451,7 +524,7 @@ namespace srd5 {
                 case Effect.INTELLIGENCE_19:
                     combattant.Intelligence.RemoveMinimumBaseValue(19);
                     break;
-                case Effect.CONSTITUION_19:
+                case Effect.CONSTITUTION_19:
                     combattant.Constitution.RemoveMinimumBaseValue(19);
                     break;
             }

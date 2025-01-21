@@ -67,7 +67,7 @@ namespace srd5 {
 
         private static SpellCastEffect SpellWithoutEffect(ID spell) {
             return delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                GlobalEvents.EffectlessSpell(caster, spell);
+                GlobalEvents.CastSpell(caster, spell);
             };
         }
 
@@ -455,7 +455,7 @@ namespace srd5 {
         public static bool SpellAttack(Spells.ID id, Battleground ground, Combattant caster, Damage damage, int modifier, Combattant target, int range, DCEffect dCEffect = DCEffect.NO_EFFECT, int dc = 0) {
             int bonus = modifier + caster.ProficiencyBonus;
             Attack attack = new Attack(id.Name(), bonus, damage, 0, range, range);
-            int distance = ground.LocateCombattant(caster).Distance(ground.LocateCombattant(target));
+            int distance = ground.Distance(caster, target);
             bool hit = caster.Attack(attack, target, distance, true, true);
             GlobalEvents.AffectBySpell(caster, id, target, hit);
             return hit;

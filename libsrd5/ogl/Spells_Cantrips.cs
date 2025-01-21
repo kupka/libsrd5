@@ -49,9 +49,10 @@ namespace srd5 {
                     SpellDuration.INSTANTANEOUS, 0, 1, SpellWithoutEffect(ID.DANCING_LIGHTS)
         );
 
-        /* TODO */
-        public static readonly Spell Druidcraft = new Spell(Spells.ID.DRUIDCRAFT, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
-        /* TODO */
+        public static readonly Spell Druidcraft = new Spell(Spells.ID.DRUIDCRAFT, SpellSchool.TRANSMUTATION,
+                    SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS, SpellDuration.INSTANTANEOUS, 0, 0,
+                    SpellWithoutEffect(ID.DRUIDCRAFT));
+
         public static readonly Spell EldritchBlast = new Spell(Spells.ID.ELDRITCH_BLAST, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS, SpellDuration.INSTANTANEOUS, 0, 4,
             delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Damage damage = new Damage(DamageType.FORCE, "1d10");
@@ -69,8 +70,10 @@ namespace srd5 {
         );
 
         public static readonly Spell Guidance = new Spell(
-            ID.GUIDANCE, SpellSchool.DIVINATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VS,
-            SpellDuration.ONE_MINUTE, 0, 1, doNothing
+            ID.GUIDANCE, SpellSchool.DIVINATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 5, VS,
+            SpellDuration.ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                targets[0].AddEffect(Effect.GUIDANCE);
+            }
         );
 
         public static readonly Spell Light = new Spell(
@@ -88,23 +91,23 @@ namespace srd5 {
 
         public static readonly Spell MageHand = new Spell(
             ID.MENDING, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS,
-            SpellDuration.ONE_MINUTE, 0, 0, doNothing
+            SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.MAGE_HAND)
         );
 
 
         public static readonly Spell Mending = new Spell(
             ID.MENDING, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_MINUTE, 0, VSM,
-            SpellDuration.INSTANTANEOUS, 0, 1, doNothing
+            SpellDuration.INSTANTANEOUS, 0, 1, SpellWithoutEffect(ID.MENDING)
         );
 
         public static readonly Spell Message = new Spell(
             ID.MENDING, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ROUND, 120, VSM,
-            SpellDuration.ONE_ROUND, 0, 1, doNothing
+            SpellDuration.ONE_ROUND, 0, 1, SpellWithoutEffect(ID.MESSAGE)
         );
 
         public static readonly Spell MinorIllusion = new Spell(
             ID.MINOR_ILLUSION, SpellSchool.ILLUSION, SpellLevel.CANTRIP, CastingTime.ONE_ROUND, 30, SM,
-            SpellDuration.ONE_MINUTE, 0, 0, doNothing
+            SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.MINOR_ILLUSION)
         );
 
         /* TODO */
@@ -122,7 +125,7 @@ namespace srd5 {
 
         public static readonly Spell Prestidigitation = new Spell(
             ID.PRESTIDIGITATION, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 10, VS,
-            SpellDuration.ONE_HOUR, 0, 0, doNothing
+            SpellDuration.ONE_HOUR, 0, 0, SpellWithoutEffect(ID.PRESTIDIGITATION)
         );
 
 
@@ -161,7 +164,8 @@ namespace srd5 {
         );
 
         /* TODO */
-        public static readonly Spell SacredFlame = new Spell(Spells.ID.SACRED_FLAME, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        public static readonly Spell SacredFlame = new Spell(Spells.ID.SACRED_FLAME, SpellSchool.EVOCATION,
+                SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS, SpellDuration.INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.SACRED_FLAME));
 
         public static readonly Spell Shillelagh = new Spell(
             ID.SHILLELAGH, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.BONUS_ACTION, 0, VSM,
@@ -213,7 +217,13 @@ namespace srd5 {
         );
 
         /* TODO */
-        public static readonly Spell SpareTheDying = new Spell(Spells.ID.SPARE_THE_DYING, SpellSchool.NECROMANCY, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        public static readonly Spell SpareTheDying = new Spell(Spells.ID.SPARE_THE_DYING, SpellSchool.NECROMANCY, SpellLevel.CANTRIP,
+            CastingTime.ONE_ACTION, 5, VS, SpellDuration.INSTANTANEOUS, 0, 0,
+            delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                if (targets[0].HasEffect(Effect.FIGHTING_DEATH)) {
+                    targets[0].AddEffect(Effect.FIGHTING_DEATH_STABILIZED);
+                }
+            });
 
         /* TODO */
         public static readonly Spell Thaumaturgy = new Spell(Spells.ID.THAUMATURGY, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, V, SpellDuration.ONE_MINUTE, 0, 0, doNothing);

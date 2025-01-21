@@ -15,7 +15,7 @@ namespace srd5 {
         }
     }
 
-    public delegate void UsableEffect(Combattant user, Usable item, int expendedCharges, params Combattant[] targets);
+    public delegate void UsableEffect(Battleground ground, Combattant user, Usable item, int expendedCharges, params Combattant[] targets);
 
     public class Usable : Item {
         internal UsableEffect UsableEffect;

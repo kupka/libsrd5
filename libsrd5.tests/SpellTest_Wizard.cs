@@ -170,12 +170,21 @@ namespace srd5 {
             Monster badger1 = Monsters.Badger;
             badger1.AddCondition(ConditionType.UNCONSCIOUS);
             Monster badger2 = Monsters.Badger;
+            Monster badger3 = Monsters.Badger;
             Monster zombie = Monsters.Zombie;
             Monster bandit = Monsters.Bandit;
             bandit.AddEffect(Effect.IMMUNITY_CHARMED);
             Battleground ground = createBattleground(hag, badger1, zombie, hero, bandit, badger2);
-            Spells.Sleep.Cast(ground, hag, 18, SpellLevel.THIRD, hag.ProficiencyBonus, hero, badger1, zombie, badger2, bandit);
-            Assert.True(badger2.HasCondition(ConditionType.UNCONSCIOUS));
+            Spells.Sleep.Cast(ground, hag, 18, SpellLevel.THIRD, hag.ProficiencyBonus, badger3, hero, badger1, zombie, badger2, bandit);
+            Assert.True(badger2.HasCondition(ConditionType.UNCONSCIOUS) && badger3.HasCondition(ConditionType.UNCONSCIOUS));
+            // wake up after 1 minute
+            for (int i = 0; i < 10; i++) {
+                badger2.OnEndOfTurn();
+            }
+            // wake up after damage taken
+            badger3.OnDamageTaken();
+            badger3.OnEndOfTurn();
+            Assert.False(badger2.HasCondition(ConditionType.UNCONSCIOUS) || badger3.HasCondition(ConditionType.UNCONSCIOUS));
             Assert.False(zombie.HasCondition(ConditionType.UNCONSCIOUS) || bandit.HasCondition(ConditionType.UNCONSCIOUS));
         }
     }

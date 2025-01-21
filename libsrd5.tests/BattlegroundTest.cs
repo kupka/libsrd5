@@ -19,6 +19,7 @@ namespace srd5 {
             Assert.Equal(10, ground.LocateCombattant2D(hero).X);
             Assert.Equal(30, ground.LocateCombattant2D(badguy).Y);
             Assert.Equal(140, ground.LocateCombattant(hero).Distance(ground.LocateCombattant(badguy)));
+            Assert.Equal(140, ground.Distance(hero, badguy));
             Assert.Throws<Srd5ArgumentException>(delegate {
                 ground.LocateCombattant(hero).Distance(new ClassicLocation(ClassicLocation.Row.FRONT_LEFT));
             });
@@ -27,6 +28,7 @@ namespace srd5 {
             Assert.Equal(30, ground.LocateCombattant2D(badguy).X);
             Assert.Equal(30, ((Coord)ground.GetCurrentLocation()).X);
             Assert.Equal(140, ground.Distance(hero));
+            Assert.Equal(140, ground.Distance(badguy, hero));
             ground.Initialize(); // nothing should happen
             Assert.Equal(badguy.Name, ground.CurrentCombattant.Name);
             Assert.Equal(10, ground.LocateCombattant2D(hero).X);

@@ -497,6 +497,8 @@ namespace srd5 {
         [Fact]
         public void CannotEquipOrUseDestroyedItems() {
             CharacterSheet sheet = new CharacterSheet(Race.HILL_DWARF);
+            Battleground ground = new BattleGroundClassic();
+            ground.AddCombattant(sheet);
             sheet.AddLevel(CharacterClasses.Barbarian);
             sheet.HitPoints = 1;
             Armor chain = Armors.ChainMailArmor;
@@ -507,12 +509,12 @@ namespace srd5 {
             sheet.Equip(chain);
             sheet.Consume(null);
             sheet.Consume(potion);
-            sheet.Use(null, 7, sheet);
+            sheet.Use(null, 7, ground, sheet);
             int charges = wand.Charges;
-            sheet.Use(wand, charges + 1, sheet);
+            sheet.Use(wand, charges + 1, ground, sheet);
             Assert.Equal(charges, wand.Charges);
             wand.Destroy();
-            sheet.Use(wand, 7, sheet);
+            sheet.Use(wand, 7, ground, sheet);
             Assert.Null(sheet.Inventory.Armor);
             Assert.Equal(1, sheet.HitPoints);
         }
@@ -530,6 +532,37 @@ namespace srd5 {
             Assert.Equal(hpMax - 5, hero.HitPointsMax);
             hero.RemoveHitPointsMaximumModifiers(modifier1);
             Assert.Equal(hpMax + 5, hero.HitPointsMax);
+        }
+
+        [Fact]
+        public void InstantDeathTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
+            hero.AddLevel(CharacterClasses.Wizard);
+            hero.TakeDamage(DamageType.TRUE_DAMAGE, 100);
+            Assert.True(hero.Dead);
+        }
+
+        [Fact]
+        public void DeathSavesTest() {
+            int survived = 0, died = 0;
+            // try often for all possible outcomes
+            for (int i = 0; i < 100; i++) {
+                CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
+                hero.AddLevel(CharacterClasses.Wizard);
+                hero.TakeDamage(DamageType.TRUE_DAMAGE, hero.HitPointsMax);
+                Assert.True(hero.HasEffect(Effect.FIGHTING_DEATH));
+                for (int j = 0; j < 6; j++) {
+                    hero.OnStartOfTurn();
+                }
+                // either way, fighting for death must have been resolved
+                Assert.False(hero.HasEffect(Effect.FIGHTING_DEATH));
+                if (hero.Dead) {
+                    died++;
+                } else {
+                    survived++;
+                }
+            }
+            Assert.True(died + survived == 100);
         }
     }
 }

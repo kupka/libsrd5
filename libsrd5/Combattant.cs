@@ -108,6 +108,14 @@ namespace srd5 {
             if (result == RemoveResult.NOT_FOUND) return;
             if (result == RemoveResult.REMOVED_AND_GONE)
                 effect.Unapply(this);
+            // TODO: Check if multiple instances of Effects make sense at all
+            // If so, probably REMOVED_BUT_REMAINS should be handled somehow
+        }
+
+        public void RemoveEffects(params Effect[] effects) {
+            foreach (Effect effect in effects) {
+                RemoveEffect(effect);
+            }
         }
 
         public bool HasEffect(Effect effect) {
@@ -220,7 +228,7 @@ namespace srd5 {
         /// <summary>
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
-        public int TakeDamage(DamageType type, int amount, Spells.DCEffect dCEffect = Spells.DCEffect.NO_EFFECT, int dc = 0, AbilityType dcAbility = AbilityType.NONE, object dcSource = null) {
+        public int TakeDamage(DamageType type, int amount, Spells.DCEffect dCEffect = Spells.DCEffect.NO_EFFECT, int dc = 0, AbilityType dcAbility = AbilityType.CONSTITUTION, object dcSource = null) {
             if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
             if (IsImmune(type)) return 0;
             if (IsResistant(type)) amount /= 2;
@@ -232,14 +240,24 @@ namespace srd5 {
                 else if (success && dCEffect == Spells.DCEffect.NULLIFIES_DAMAGE)
                     return 0;
             }
-            if (HitPoints == 0) {
-                // TODO: Implement Death Saves
-                return amount;
-            }
             GlobalEvents.ReceivedDamage(this, amount, type);
-            HitPoints = Math.Max(0, HitPoints - amount);
-            OnDamageTaken();
-            if (HitPoints == 0) AddCondition(ConditionType.UNCONSCIOUS);
+            // Instant death when leftover damage exceeds max hitpoints
+            if (Math.Abs(HitPoints - amount) > HitPointsMax) {
+                HitPoints = 0;
+                Die();
+            } else {
+                HitPoints = Math.Max(0, HitPoints - amount);
+                OnDamageTaken();
+                // Heroes start death saves when reduced to 0 hitpoints, monsters die instantly
+                if (HitPoints == 0) {
+                    if (this is CharacterSheet && !HasEffect(Effect.FIGHTING_DEATH)) {
+                        AddCondition(ConditionType.UNCONSCIOUS);
+                        AddEffect(Effect.FIGHTING_DEATH);
+                    } else {
+                        Die();
+                    }
+                }
+            }
             return amount;
         }
 
@@ -249,7 +267,7 @@ namespace srd5 {
         public void HealDamage(int amount) {
             if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
             if (HasEffect(Effect.CANNOT_REGAIN_HITPOINTS)) return; // Cannot regain hit points
-            if (HitPoints == 0) RemoveCondition(ConditionType.UNCONSCIOUS);
+            if (HitPoints == 0) RemoveEffect(Effect.FIGHTING_DEATH);
             GlobalEvents.ReceivedHealing(this, amount);
             HitPoints = Math.Min(HitPoints + amount, HitPointsMax);
         }
@@ -285,7 +303,7 @@ namespace srd5 {
                     advantage = true;
             }
             Ability ability = GetAbility(type);
-            Dice d20 = srd5.Dice.D20;
+            Dice d20 = Dice.D20;
             int additionalModifiers = 0;
             if (HasEffect(Effect.RESISTANCE)) {
                 additionalModifiers += Dice.D4.Value;
@@ -327,6 +345,10 @@ namespace srd5 {
             }
             Dices.onDiceRolled(d20);
             finalValue = d20.Value + ability.Modifier + additionalModifiers;
+            if (HasEffect(Effect.GUIDANCE)) {
+                finalValue += Dice.D4.Value;
+                RemoveEffect(Effect.GUIDANCE);
+            }
             bool success = finalValue >= dc;
             if (d20.Value == 20) success = true;
             if (d20.Value == 1) success = false;
@@ -527,6 +549,7 @@ namespace srd5 {
 
         internal void Die() {
             // TODO: Implement what happens when this Combattant dies
+            GlobalEvents.Die(this);
             Dead = true;
         }
     }

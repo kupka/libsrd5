@@ -624,7 +624,7 @@ namespace srd5 {
     }
 
     public struct Amulets {
-        public static Amulet AmuletOfHealth { get { return new Amulet("Amulet of Health", new Effect[] { Effect.CONSTITUION_19 }); } }
+        public static Amulet AmuletOfHealth { get { return new Amulet("Amulet of Health", new Effect[] { Effect.CONSTITUTION_19 }); } }
     }
 
     public struct Bootss { // additional s because double plural ^_^
@@ -680,8 +680,8 @@ namespace srd5 {
     public struct Wands {
         public static Usable WandOfMagicMissiles {
             get {
-                return new Usable("Wand of Magic Missiles", ItemType.WAND, delegate (Combattant user, Usable item, int expendedCharges, Combattant[] targets) {
-                    Spells.MagicMissile.Cast(null, user, 0, (SpellLevel)expendedCharges, 0, targets);
+                return new Usable("Wand of Magic Missiles", ItemType.WAND, delegate (Battleground ground, Combattant user, Usable item, int expendedCharges, Combattant[] targets) {
+                    Spells.MagicMissile.Cast(ground, user, 0, (SpellLevel)expendedCharges, 0, targets);
                     item.Charges -= expendedCharges;
                     if (item.Charges == 0) {
                         int roll = Dice.D20.Value;

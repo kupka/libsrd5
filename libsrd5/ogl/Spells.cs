@@ -431,19 +431,19 @@ namespace srd5 {
             ZONE_OF_TRUTH,
         }
 
-        public static Damage DamageLevelScaling(Combattant caster, Dice dice, DamageType damageType) {
-            return new Damage(damageType, DicesLevelScaling(caster) + dice.ToString());
+        public static Damage DamageLevelScaling(Combattant caster, Die die, DamageType damageType) {
+            return new Damage(damageType, DicesLevelScaling(caster) + die.ToString());
         }
 
         public static int DicesLevelScaling(Combattant caster) {
-            int dices = 1;
+            int dice = 1;
             if (caster.EffectiveLevel > 16)
-                dices = 4;
+                dice = 4;
             else if (caster.EffectiveLevel > 10)
-                dices = 3;
+                dice = 3;
             else if (caster.EffectiveLevel > 4)
-                dices = 2;
-            return dices;
+                dice = 2;
+            return dice;
         }
 
         public enum DCEffect {
@@ -452,7 +452,7 @@ namespace srd5 {
             NULLIFIES_DAMAGE
         }
 
-        public static bool SpellAttack(Spells.ID id, Battleground ground, Combattant caster, Damage damage, int modifier, Combattant target, int range, DCEffect dCEffect = DCEffect.NO_EFFECT, int dc = 0) {
+        public static bool SpellAttack(ID id, Battleground ground, Combattant caster, Damage damage, int modifier, Combattant target, int range, DCEffect dCEffect = DCEffect.NO_EFFECT, int dc = 0) {
             int bonus = modifier + caster.ProficiencyBonus;
             Attack attack = new Attack(id.Name(), bonus, damage, 0, range, range);
             int distance = ground.Distance(caster, target);

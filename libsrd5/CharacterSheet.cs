@@ -57,8 +57,8 @@ namespace srd5 {
         public CharacterLevel[] Levels { get { return levels; } }
         private CharacterLevel[] levels = new CharacterLevel[0];
         public int Experience { get; set; } = 0;
-        public Dice[] HitDice { get { return hitDice; } }
-        private Dice[] hitDice = new Dice[0];
+        public Die[] HitDice { get { return hitDice; } }
+        private Die[] hitDice = new Die[0];
         public CharacterInventory Inventory { get; internal set; }
         public int AbilityPoints { get; internal set; }
         public int Attacks {
@@ -91,8 +91,8 @@ namespace srd5 {
             get {
                 int hp = 0;
                 int additionalHp = HasEffect(Effect.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
-                foreach (Dice dice in hitDice) {
-                    hp += dice.Value + Constitution.Modifier + additionalHp;
+                foreach (Die die in hitDice) {
+                    hp += die.Value + Constitution.Modifier + additionalHp;
                 }
                 hp += HitPointMaxiumModifiersSum;
                 return Math.Max(0, hp);
@@ -147,13 +147,13 @@ namespace srd5 {
         public CharacterSheet(Race race, bool classic = false) {
             Inventory = new CharacterInventory(this);
             if (classic) {
-                Dices dices = new Dices("3d6");
-                Strength.BaseValue = Math.Max(dices.Roll(), dices.Roll());
-                Constitution.BaseValue = Math.Max(dices.Roll(), dices.Roll());
-                Dexterity.BaseValue = Math.Max(dices.Roll(), dices.Roll());
-                Wisdom.BaseValue = Math.Max(dices.Roll(), dices.Roll());
-                Intelligence.BaseValue = Math.Max(dices.Roll(), dices.Roll());
-                Charisma.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+                Dice dice = new Dice("3d6");
+                Strength.BaseValue = Math.Max(dice.Roll(), dice.Roll());
+                Constitution.BaseValue = Math.Max(dice.Roll(), dice.Roll());
+                Dexterity.BaseValue = Math.Max(dice.Roll(), dice.Roll());
+                Wisdom.BaseValue = Math.Max(dice.Roll(), dice.Roll());
+                Intelligence.BaseValue = Math.Max(dice.Roll(), dice.Roll());
+                Charisma.BaseValue = Math.Max(dice.Roll(), dice.Roll());
             } else {
                 AbilityPoints = 14;
             }
@@ -415,7 +415,7 @@ namespace srd5 {
         }
 
         public void AddLevel(CharacterClass characterClass) {
-            Dice dice = Dice.Get(characterClass.HitDice);
+            Die die = srd5.Die.Get(characterClass.HitDie);
             int additionalHp = HasEffect(Effect.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
             EffectiveLevel++;
             foreach (CharacterLevel level in levels) {
@@ -424,8 +424,8 @@ namespace srd5 {
                         AddFeat(feat);
                     }
                     level.Levels++;
-                    Utils.Push<Dice>(ref hitDice, dice);
-                    HitPoints += dice.Value + additionalHp + Constitution.Modifier;
+                    Utils.Push<Die>(ref hitDice, die);
+                    HitPoints += die.Value + additionalHp + Constitution.Modifier;
                     updateAvailableSpells(level);
                     RecalculateAttacks();
                     return;
@@ -439,11 +439,11 @@ namespace srd5 {
             }
             newLevel.Levels = 1;
             if (levels.Length == 0) { // maximum hitpoints when this is the first level
-                dice.Value = dice.MaxValue;
+                die.Value = die.MaxValue;
             }
             Utils.Push<CharacterLevel>(ref levels, newLevel);
-            Utils.Push<Dice>(ref hitDice, dice);
-            HitPoints += dice.Value + additionalHp + Constitution.Modifier;
+            Utils.Push<Die>(ref hitDice, die);
+            HitPoints += die.Value + additionalHp + Constitution.Modifier;
             foreach (Proficiency proficiency in characterClass.Proficiencies) {
                 if (!IsProficient(proficiency)) {
                     Utils.Push<Proficiency>(ref proficiencies, proficiency);

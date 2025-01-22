@@ -57,9 +57,9 @@ namespace srd5 {
                         return;
                     }
                 }
-                int dices = (int)slot;
+                int dice = (int)slot;
                 GlobalEvents.AffectBySpell(caster, ID.CURE_WOUNDS, targets[0], true);
-                Dices healed = new Dices(dices, 8, modifier);
+                Dice healed = new Dice(dice, 8, modifier);
                 targets[0].HealDamage(healed.Roll());
             }
         );
@@ -159,8 +159,8 @@ namespace srd5 {
                         return;
                     };
                 }
-                int dices = (int)slot;
-                Dices healed = new Dices(dices, 4, modifier);
+                int dice = (int)slot;
+                Dice healed = new Dice(dice, 4, modifier);
                 GlobalEvents.AffectBySpell(caster, ID.HEALING_WORD, targets[0], true);
                 targets[0].HealDamage(healed.Roll());
             }
@@ -212,7 +212,7 @@ namespace srd5 {
                     if (target.HasFeat(Feat.REFLECTIVE_CARAPACE)) {
                         GlobalEvents.ActivateFeat(target, Feat.REFLECTIVE_CARAPACE);
                         GlobalEvents.AffectBySpell(caster, ID.MAGIC_MISSILE, target, false);
-                        if (Dice.D6.Value == 6) {
+                        if (Die.D6.Value == 6) {
                             target = caster;
                         }
                     }
@@ -246,8 +246,8 @@ namespace srd5 {
         /* TODO */
         public static readonly Spell Sleep = new Spell(Spells.ID.SLEEP, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VSM, SpellDuration.ONE_MINUTE, 20, 99,
             delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                Dices dices = new Dices(5 + ((int)slot - 1) * 2, Dice.D8.MaxValue, 0);
-                int remainingHitpoints = dices.Roll();
+                Dice dice = new Dice(5 + ((int)slot - 1) * 2, Die.D8.MaxValue, 0);
+                int remainingHitpoints = dice.Roll();
                 Array.Sort(targets, (t1, t2) => {
                     return t1.HitPoints.CompareTo(t2.HitPoints);
                 });
@@ -287,15 +287,15 @@ namespace srd5 {
         public static readonly Spell Thunderwave = new Spell(
             ID.THUNDERWAVE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 15, VS,
             SpellDuration.INSTANTANEOUS, 15, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                int dices = (int)slot + 1;
+                int dice = (int)slot + 1;
                 bool pushed = true;
                 foreach (Combattant target in targets) {
                     GlobalEvents.AffectBySpell(caster, ID.THUNDERWAVE, target, true);
                     if (target.DC(ID.THUNDERWAVE, dc, AbilityType.CONSTITUTION)) {
-                        dices = (int)(dices / 2);
+                        dice = (int)(dice / 2);
                         pushed = false;
                     }
-                    Damage damage = new Damage(DamageType.THUNDER, dices + "d8");
+                    Damage damage = new Damage(DamageType.THUNDER, dice + "d8");
                     target.TakeDamage(damage.Type, damage.Dices.Roll());
                     if (pushed) {
                         ground.Push(ground.LocateCombattant(caster), target, 10);

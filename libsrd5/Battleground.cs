@@ -244,7 +244,7 @@ namespace srd5 {
         public void AddCombattant(Combattant combattant) {
             if (Array.IndexOf(combattants, combattant) > -1) return;
             Utils.Push<Combattant>(ref combattants, combattant);
-            int roll = Dice.D20.Value + combattant.Dexterity.Modifier;
+            int roll = Die.D20.Value + combattant.Dexterity.Modifier;
             Utils.Push<int>(ref initiativeRolls, roll);
             GlobalEvents.RolledInitiative(combattant, roll);
         }

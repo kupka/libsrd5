@@ -82,7 +82,7 @@ namespace srd5 {
             if (target.DC(HomunculusBite, 10, AbilityType.CONSTITUTION, out int dc)) return;
             if (dc < 6) {
                 target.AddEffect(Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS);
-                int duration = Dice.D10.Value * 10;
+                int duration = Die.D10.Value * 10;
                 int turnsPassed = 0;
                 target.AddEndOfTurnEvent(delegate () {
                     if (++turnsPassed > duration) {

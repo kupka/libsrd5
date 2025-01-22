@@ -635,7 +635,7 @@ namespace srd5 {
         public static Consumable PotionOfHealing {
             get {
                 return new Consumable("Potion of Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
-                    Dices healing = new Dices("2d4+2");
+                    Dice healing = new Dice("2d4+2");
                     consumer.HealDamage(healing.Roll());
                     potion.Charges = 0;
                     potion.Destroyed = true;
@@ -646,7 +646,7 @@ namespace srd5 {
         public static Consumable PotionOfGreaterHealing {
             get {
                 return new Consumable("Potion of Greater Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
-                    Dices healing = new Dices("4d4+4");
+                    Dice healing = new Dice("4d4+4");
                     consumer.HealDamage(healing.Roll());
                     potion.Charges = 0;
                     potion.Destroyed = true;
@@ -657,7 +657,7 @@ namespace srd5 {
         public static Consumable PotionOfSuperiorHealing {
             get {
                 return new Consumable("Potion of Superior Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
-                    Dices healing = new Dices("8d4+8");
+                    Dice healing = new Dice("8d4+8");
                     consumer.HealDamage(healing.Roll());
                     potion.Charges = 0;
                     potion.Destroyed = true;
@@ -668,7 +668,7 @@ namespace srd5 {
         public static Consumable PotionOfSupremeHealing {
             get {
                 return new Consumable("Potion of Supreme Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
-                    Dices healing = new Dices("10d4+20");
+                    Dice healing = new Dice("10d4+20");
                     consumer.HealDamage(healing.Roll());
                     potion.Charges = 0;
                     potion.Destroyed = true;
@@ -684,7 +684,7 @@ namespace srd5 {
                     Spells.MagicMissile.Cast(ground, user, 0, (SpellLevel)expendedCharges, 0, targets);
                     item.Charges -= expendedCharges;
                     if (item.Charges == 0) {
-                        int roll = Dice.D20.Value;
+                        int roll = Die.D20.Value;
                         if (roll == 1) {
                             item.Destroyed = true;
                         }

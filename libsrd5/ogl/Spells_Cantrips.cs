@@ -5,7 +5,7 @@ namespace srd5 {
         public static readonly Spell AcidSplash = new Spell(
                     ID.ACID_SPLASH, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS,
                     SpellDuration.INSTANTANEOUS, 5, 2, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                        Damage damage = DamageLevelScaling(caster, Dice.D6, DamageType.ACID);
+                        Damage damage = DamageLevelScaling(caster, Die.D6, DamageType.ACID);
                         foreach (Combattant target in targets) {
                             int amount = damage.Dices.Roll();
                             if (!target.DC(ID.ACID_SPLASH, dc, AbilityType.DEXTERITY)) {
@@ -21,7 +21,7 @@ namespace srd5 {
         public static readonly Spell ChillTouch = new Spell(
                     ID.CHILL_TOUCH, SpellSchool.NECROMANCY, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS,
                     SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                        Damage damage = DamageLevelScaling(caster, Dice.D8, DamageType.NECROTIC);
+                        Damage damage = DamageLevelScaling(caster, Die.D8, DamageType.NECROTIC);
                         Combattant target = targets[0];
                         bool hit = SpellAttack(ID.CHILL_TOUCH, ground, caster, damage, modifier, target, 120);
                         if (hit) {
@@ -49,11 +49,11 @@ namespace srd5 {
                     SpellDuration.INSTANTANEOUS, 0, 1, SpellWithoutEffect(ID.DANCING_LIGHTS)
         );
 
-        public static readonly Spell Druidcraft = new Spell(Spells.ID.DRUIDCRAFT, SpellSchool.TRANSMUTATION,
+        public static readonly Spell Druidcraft = new Spell(ID.DRUIDCRAFT, SpellSchool.TRANSMUTATION,
                     SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS, SpellDuration.INSTANTANEOUS, 0, 0,
                     SpellWithoutEffect(ID.DRUIDCRAFT));
 
-        public static readonly Spell EldritchBlast = new Spell(Spells.ID.ELDRITCH_BLAST, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS, SpellDuration.INSTANTANEOUS, 0, 4,
+        public static readonly Spell EldritchBlast = new Spell(ID.ELDRITCH_BLAST, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS, SpellDuration.INSTANTANEOUS, 0, 4,
             delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Damage damage = new Damage(DamageType.FORCE, "1d10");
                 for (int i = 0; i < DicesLevelScaling(caster); i++) {
@@ -64,7 +64,7 @@ namespace srd5 {
         public static readonly Spell FireBolt = new Spell(
                 ID.FIRE_BOLT, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS,
                 SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Damage damage = DamageLevelScaling(caster, Dice.D10, DamageType.FIRE);
+                    Damage damage = DamageLevelScaling(caster, Die.D10, DamageType.FIRE);
                     SpellAttack(ID.FIRE_BOLT, ground, caster, damage, modifier, targets[0], 120);
                 }
         );
@@ -110,9 +110,8 @@ namespace srd5 {
             SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.MINOR_ILLUSION)
         );
 
-        /* TODO */
-        public static readonly Spell PoisonSpray = new Spell(Spells.ID.POISON_SPRAY, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 10, VS, SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-            Damage damage = DamageLevelScaling(caster, Dice.D12, DamageType.POISON);
+        public static readonly Spell PoisonSpray = new Spell(ID.POISON_SPRAY, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 10, VS, SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            Damage damage = DamageLevelScaling(caster, Die.D12, DamageType.POISON);
             Combattant target = targets[0];
             int amount = damage.Dices.Roll();
             if (target.DC(ID.POISON_SPRAY, dc, AbilityType.CONSTITUTION)) {
@@ -133,7 +132,7 @@ namespace srd5 {
             ID.PRODUCE_FLAME, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS,
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 int bonus = modifier + caster.ProficiencyBonus;
-                Damage damage = DamageLevelScaling(caster, Dice.D8, DamageType.FIRE);
+                Damage damage = DamageLevelScaling(caster, Die.D8, DamageType.FIRE);
                 SpellAttack(ID.PRODUCE_FLAME, ground, caster, damage, modifier, targets[0], 30);
             }
         );
@@ -142,7 +141,7 @@ namespace srd5 {
             ID.RAY_OF_FROST, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS,
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 int bonus = modifier + caster.ProficiencyBonus;
-                Damage damage = DamageLevelScaling(caster, Dice.D8, DamageType.COLD);
+                Damage damage = DamageLevelScaling(caster, Die.D8, DamageType.COLD);
                 Combattant target = targets[0];
                 bool hit = SpellAttack(ID.RAY_OF_FROST, ground, caster, damage, modifier, target, 60);
                 if (hit) {
@@ -163,8 +162,7 @@ namespace srd5 {
             }
         );
 
-        /* TODO */
-        public static readonly Spell SacredFlame = new Spell(Spells.ID.SACRED_FLAME, SpellSchool.EVOCATION,
+        public static readonly Spell SacredFlame = new Spell(ID.SACRED_FLAME, SpellSchool.EVOCATION,
                 SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS, SpellDuration.INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.SACRED_FLAME));
 
         public static readonly Spell Shillelagh = new Spell(
@@ -189,12 +187,12 @@ namespace srd5 {
                 GlobalEvents.AffectBySpell(caster, ID.SHILLELAGH, caster, true);
                 foreach (Attack attack in sheet.MeleeAttacks) {
                     attack.Name = ID.SHILLELAGH.Name();
-                    attack.Damage.Dices = new Dices(1, 8, modifier);
+                    attack.Damage.Dices = new Dice(1, 8, modifier);
                     attack.AttackBonus = modifier + sheet.ProficiencyBonus;
                 }
                 if (caster.BonusAttack != null) {
                     caster.BonusAttack.Name = ID.SHILLELAGH.Name();
-                    caster.BonusAttack.Damage.Dices = new Dices(1, 8, modifier);
+                    caster.BonusAttack.Damage.Dices = new Dice(1, 8, modifier);
                     caster.BonusAttack.AttackBonus = modifier + sheet.ProficiencyBonus;
                 }
             }
@@ -203,7 +201,7 @@ namespace srd5 {
         public static readonly Spell ShockingGrasp = new Spell(
             ID.SHOCKING_GRASP, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 5, VS,
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                Damage damage = DamageLevelScaling(caster, Dice.D8, DamageType.LIGHTNING);
+                Damage damage = DamageLevelScaling(caster, Die.D8, DamageType.LIGHTNING);
                 Combattant target = targets[0];
                 bool hit = SpellAttack(ID.SHOCKING_GRASP, ground, caster, damage, modifier, target, 5);
                 if (hit) {
@@ -216,8 +214,7 @@ namespace srd5 {
             }
         );
 
-        /* TODO */
-        public static readonly Spell SpareTheDying = new Spell(Spells.ID.SPARE_THE_DYING, SpellSchool.NECROMANCY, SpellLevel.CANTRIP,
+        public static readonly Spell SpareTheDying = new Spell(ID.SPARE_THE_DYING, SpellSchool.NECROMANCY, SpellLevel.CANTRIP,
             CastingTime.ONE_ACTION, 5, VS, SpellDuration.INSTANTANEOUS, 0, 0,
             delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 if (targets[0].HasEffect(Effect.FIGHTING_DEATH)) {
@@ -225,8 +222,7 @@ namespace srd5 {
                 }
             });
 
-        /* TODO */
-        public static readonly Spell Thaumaturgy = new Spell(Spells.ID.THAUMATURGY, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, V, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+        public static readonly Spell Thaumaturgy = new Spell(ID.THAUMATURGY, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, V, SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.THAUMATURGY));
 
         public static readonly Spell TrueStrike = new Spell(
             ID.TRUE_STRIKE, SpellSchool.DIVINATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, S,
@@ -246,7 +242,24 @@ namespace srd5 {
             }
         );
 
-        /* TODO */
-        public static readonly Spell ViciousMockery = new Spell(Spells.ID.VICIOUS_MOCKERY, SpellSchool.ENCHANTMENT, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, V, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        public static readonly Spell ViciousMockery = new Spell(ID.VICIOUS_MOCKERY, SpellSchool.ENCHANTMENT, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, V, SpellDuration.INSTANTANEOUS, 0, 0,
+            delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                Damage damage = DamageLevelScaling(caster, Die.D4, DamageType.PSYCHIC);
+                Combattant target = targets[0];
+                int damageTaken = target.TakeDamage(damage.Type, damage.Dices.Roll(), DCEffect.NULLIFIES_DAMAGE, dc, AbilityType.WISDOM, ID.VICIOUS_MOCKERY);
+                if (damageTaken == 0) {
+                    GlobalEvents.AffectBySpell(caster, ID.VICIOUS_MOCKERY, target, false);
+                } else {
+                    GlobalEvents.AffectBySpell(caster, ID.VICIOUS_MOCKERY, target, true);
+                    target.AddEffect(Effect.DISADVANTAGE_ON_ATTACK);
+                    target.AddEndOfTurnEvent(
+                        delegate () {
+                            target.RemoveEffect(Effect.DISADVANTAGE_ON_ATTACK);
+                            return true;
+                        }
+                    );
+                }
+            }
+        );
     }
 }

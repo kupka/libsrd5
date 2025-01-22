@@ -72,7 +72,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect DjinniScimitarEffect = delegate (Combattant attacker, Combattant target) {
-            if (Dice.D20.Value > 10) {
+            if (Die.D20.Value > 10) {
                 target.TakeDamage(DamageType.LIGHTNING, "1d6");
             } else {
                 target.TakeDamage(DamageType.THUNDER, "1d6");

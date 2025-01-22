@@ -364,7 +364,7 @@ namespace srd5 {
                             return true;
                         }
                         // Death Save is DC10 with no Ability
-                        int deathSaveRoll = Dice.D20.Value;
+                        int deathSaveRoll = Die.D20.Value;
                         bool success = deathSaveRoll > 9;
                         GlobalEvents.RolledDC(combattant, Effect.FIGHTING_DEATH, new Ability(AbilityType.NONE, 9), 10, deathSaveRoll, success);
                         if (success) {

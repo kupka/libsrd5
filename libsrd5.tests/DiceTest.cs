@@ -7,69 +7,69 @@ namespace srd5 {
     public class DiceTest {
         [Fact]
         public void D2Test() {
-            Dice dice = Dice.D2;
-            Assert.InRange<int>(dice.Value, 1, 2);
+            Die die = Die.D2;
+            Assert.InRange<int>(die.Value, 1, 2);
         }
 
         [Fact]
         public void D3Test() {
-            Dice dice = Dice.D3;
-            Assert.InRange<int>(dice.Value, 1, 3);
+            Die die = Die.D3;
+            Assert.InRange<int>(die.Value, 1, 3);
         }
 
         [Fact]
         public void D4Test() {
-            Dice dice = Dice.D4;
-            Assert.InRange<int>(dice.Value, 1, 4);
+            Die die = Die.D4;
+            Assert.InRange<int>(die.Value, 1, 4);
         }
 
         [Fact]
         public void D6Test() {
-            Dice dice = Dice.D6;
-            Assert.InRange<int>(dice.Value, 1, 6);
+            Die die = Die.D6;
+            Assert.InRange<int>(die.Value, 1, 6);
         }
 
         [Fact]
         public void D8Test() {
-            Dice dice = Dice.D8;
-            Assert.InRange<int>(dice.Value, 1, 8);
+            Die die = Die.D8;
+            Assert.InRange<int>(die.Value, 1, 8);
         }
 
         [Fact]
         public void D10Test() {
-            Dice dice = Dice.D10;
-            Assert.InRange<int>(dice.Value, 1, 10);
+            Die die = Die.D10;
+            Assert.InRange<int>(die.Value, 1, 10);
         }
 
         [Fact]
         public void D12Test() {
-            Dice dice = Dice.D12;
-            Assert.InRange<int>(dice.Value, 1, 12);
+            Die die = Die.D12;
+            Assert.InRange<int>(die.Value, 1, 12);
         }
 
         [Fact]
         public void D20Test() {
-            Dice d20 = Dice.D20;
-            Assert.InRange<int>(d20.Value, 1, 20);
+            Die die = Die.D20;
+            Assert.InRange<int>(die.Value, 1, 20);
         }
 
         [Fact]
         public void D100Test() {
-            Dice dice = Dice.D100;
-            Assert.InRange<int>(dice.Value, 1, 100);
+            Die die = Die.D100;
+            Assert.InRange<int>(die.Value, 1, 100);
         }
 
         [Fact]
         public void NotADiceTest() {
             Assert.Throws<Srd5ArgumentException>(delegate {
-                Dice.Get(21);
+                Die.Get(21);
             });
         }
 
         [Fact]
         public void AnotherNotADiceTest() {
             Assert.Throws<Srd5FormatException>(delegate {
-                new Dices("3d7+3");
+                new Dice("3d7+3");
             });
         }
 
@@ -77,8 +77,8 @@ namespace srd5 {
         public void DisAdvantageTest() {
             int advantageRolls = 0, disadvantageRolls = 0;
             for (int i = 0; i < 10; i++) {
-                advantageRolls += Dice.D20Advantage.Value;
-                disadvantageRolls += Dice.D20Disadvantage.Value;
+                advantageRolls += Die.D20Advantage.Value;
+                disadvantageRolls += Die.D20Disadvantage.Value;
             }
             Assert.True(advantageRolls > disadvantageRolls);
         }
@@ -91,11 +91,11 @@ namespace srd5 {
         [InlineData("5d3+10", 15, 25)]
         [InlineData("1111d12+889", 2000, 14221)]
         public void ParseTest(string diceString, int min, int max) {
-            Dices parsed = new Dices(diceString);
+            Dice parsed = new Dice(diceString);
             Assert.Equal(diceString, parsed.ToString());
             Assert.Equal(min, parsed.Min);
             Assert.Equal(max, parsed.Max);
-            int result = Dice.Roll(diceString);
+            int result = Die.Roll(diceString);
             Assert.InRange<long>(result, min, max);
         }
 
@@ -106,26 +106,26 @@ namespace srd5 {
         [InlineData("3d6+x")]
         [InlineData("3d6-41n")]
         public void InvalidDiceTest(string diceString) {
-            Assert.Throws<Srd5FormatException>(delegate { new Dices(diceString); });
+            Assert.Throws<Srd5FormatException>(delegate { new Dice(diceString); });
         }
 
         [Fact]
         public void DiceRolledEventTest() {
             int receivedValue = 0;
-            Dices.DiceRolled += delegate (object sender, DiceRolledEvent e) {
+            Dice.DiceRolled += delegate (object sender, DiceRolledEvent e) {
                 receivedValue += e.Value;
             };
-            int value = Dice.Roll("2d6+5");
+            int value = Die.Roll("2d6+5");
             Assert.Equal(value, receivedValue);
-            value += Dice.D20.Value;
+            value += Die.D20.Value;
             Assert.Equal(value, receivedValue);
         }
 
         [Fact]
         public void DicesConstructorTest() {
-            Assert.Equal("2d6+3", new Dices(2, 6, 3).ToString());
-            Assert.Equal("1d12", new Dices(1, 12, 0).ToString());
-            Assert.Equal("3d8-2", new Dices(3, 8, -2).ToString());
+            Assert.Equal("2d6+3", new Dice(2, 6, 3).ToString());
+            Assert.Equal("1d12", new Dice(1, 12, 0).ToString());
+            Assert.Equal("3d8-2", new Dice(3, 8, -2).ToString());
         }
     }
 }

@@ -222,7 +222,7 @@ namespace srd5 {
         }
 
         public int TakeDamage(DamageType type, string amount) {
-            return TakeDamage(type, new Dices(amount).Roll());
+            return TakeDamage(type, new Dice(amount).Roll());
         }
 
         /// <summary>
@@ -303,10 +303,10 @@ namespace srd5 {
                     advantage = true;
             }
             Ability ability = GetAbility(type);
-            Dice d20 = Dice.D20;
+            Die d20 = srd5.Die.D20;
             int additionalModifiers = 0;
             if (HasEffect(Effect.RESISTANCE)) {
-                additionalModifiers += Dice.D4.Value;
+                additionalModifiers += srd5.Die.D4.Value;
                 RemoveEffect(Effect.RESISTANCE);
                 GlobalEvents.ActivateEffect(this, Effect.RESISTANCE);
             }
@@ -324,7 +324,7 @@ namespace srd5 {
 
         public bool DC(object source, int dc, Skill skill, out int finalValue, bool advantage = false, bool disadvantage = false) {
             Ability ability = GetAbility(skill.Ability());
-            Dice d20 = srd5.Dice.D20;
+            Die d20 = srd5.Die.D20;
             int additionalModifiers = 0;
             if (IsProficient(skill)) {
                 additionalModifiers += ProficiencyBonus;
@@ -336,17 +336,17 @@ namespace srd5 {
             return DC(source, dc, skill, out int finalValue, advantage, disadvantage);
         }
 
-        private bool dc(object source, int dc, int additionalModifiers, Dice d20, Ability ability, bool advantage, bool disadvantage, out int finalValue) {
+        private bool dc(object source, int dc, int additionalModifiers, Die d20, Ability ability, bool advantage, bool disadvantage, out int finalValue) {
             if (advantage && !disadvantage) {
-                d20 = srd5.Dice.D20Advantage;
+                d20 = srd5.Die.D20Advantage;
             }
             if (disadvantage && !advantage) {
-                d20 = srd5.Dice.D20Disadvantage;
+                d20 = srd5.Die.D20Disadvantage;
             }
-            Dices.onDiceRolled(d20);
+            Dice.onDiceRolled(d20);
             finalValue = d20.Value + ability.Modifier + additionalModifiers;
             if (HasEffect(Effect.GUIDANCE)) {
-                finalValue += Dice.D4.Value;
+                finalValue += srd5.Die.D4.Value;
                 RemoveEffect(Effect.GUIDANCE);
             }
             bool success = finalValue >= dc;
@@ -468,20 +468,20 @@ namespace srd5 {
             // special effects
             if (spell && ranged && target.HasFeat(Feat.REFLECTIVE_CARAPACE)) {
                 GlobalEvents.ActivateFeat(target, Feat.REFLECTIVE_CARAPACE);
-                if (Dice.D6.Value == 6) { // reflect back on 6
+                if (srd5.Die.D6.Value == 6) { // reflect back on 6
                     this.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll());
                 }
                 return false;
             }
-            int attackRoll = Dice.D20.Value;
+            int attackRoll = srd5.Die.D20.Value;
             // Determine advantage and disadvantage
             bool hasAdvantage = attackAdvantageEffect(attack, target, distance, ranged, spell);
             bool hasDisadvantage = attackDisadvantageEffect(attack, target, distance, ranged, spell);
             applyAttackModifyingEffects(ref hasAdvantage, ref hasDisadvantage, ref attack, ref target);
             if (hasAdvantage && !hasDisadvantage)
-                attackRoll = Dice.D20Advantage.Value;
+                attackRoll = srd5.Die.D20Advantage.Value;
             else if (hasDisadvantage && !hasAdvantage)
-                attackRoll = Dice.D20Disadvantage.Value;
+                attackRoll = srd5.Die.D20Disadvantage.Value;
             bool criticalHit = attackRoll == 20;
             bool criticalMiss = attackRoll == 1;
             if (criticalMiss) {

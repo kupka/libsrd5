@@ -4,7 +4,7 @@ namespace srd5 {
     public struct CharacterClass {
         public Class Class { get; internal set; }
 
-        public int HitDice { get; internal set; }
+        public int HitDie { get; internal set; }
 
         public Proficiency[] Proficiencies { get; internal set; }
 

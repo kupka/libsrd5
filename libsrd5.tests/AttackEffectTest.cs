@@ -59,9 +59,9 @@ namespace srd5 {
             pansyMonsterThatDies = createPansyMonsterThatDies();
         }
 
-        private readonly Dices dices = new("1d12-1");
+        private readonly Dice dice = new("1d12-1");
         private DamageType randomDamageType() {
-            int value = dices.Roll();
+            int value = dice.Roll();
             return (DamageType)value;
         }
 
@@ -79,20 +79,20 @@ namespace srd5 {
                     Assert.True(pansyMonsterThatDies.Dead);
                 }
                 for (int j = 0; j < 20; j++) {
-                    uberMonster.TakeDamage(randomDamageType(), Dice.D4.Value);
+                    uberMonster.TakeDamage(randomDamageType(), Die.D4.Value);
                     uberMonster.EscapeFromGrapple();
                     uberMonster.OnStartOfTurn();
                     uberMonster.OnEndOfTurn();
-                    averageMonster.TakeDamage(randomDamageType(), Dice.D4.Value);
+                    averageMonster.TakeDamage(randomDamageType(), Die.D4.Value);
                     averageMonster.EscapeFromGrapple();
                     averageMonster.OnStartOfTurn();
                     averageMonster.OnEndOfTurn();
-                    pansyMonster.TakeDamage(randomDamageType(), Dice.D4.Value);
+                    pansyMonster.TakeDamage(randomDamageType(), Die.D4.Value);
                     pansyMonster.EscapeFromGrapple();
                     pansyMonster.OnStartOfTurn();
                     pansyMonster.OnEndOfTurn();
                     foreach (Combattant combattant in allCombattantTypes) {
-                        combattant.TakeDamage(randomDamageType(), Dice.D4.Value);
+                        combattant.TakeDamage(randomDamageType(), Die.D4.Value);
                         combattant.EscapeFromGrapple();
                         combattant.OnStartOfTurn();
                         combattant.OnEndOfTurn();

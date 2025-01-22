@@ -209,11 +209,11 @@ namespace srd5 {
         public void HitPointsTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HUMAN);
             sheet.AddLevel(CharacterClasses.Druid);
-            Assert.Equal(CharacterClasses.Druid.HitDice, sheet.HitPoints);
-            Assert.Equal(CharacterClasses.Druid.HitDice, sheet.HitPointsMax);
+            Assert.Equal(CharacterClasses.Druid.HitDie, sheet.HitPoints);
+            Assert.Equal(CharacterClasses.Druid.HitDie, sheet.HitPointsMax);
             sheet.AddLevel(CharacterClasses.Barbarian);
-            Assert.InRange(sheet.HitPoints, CharacterClasses.Druid.HitDice + 1, CharacterClasses.Druid.HitDice + CharacterClasses.Barbarian.HitDice);
-            Assert.InRange(sheet.HitPointsMax, CharacterClasses.Druid.HitDice + 1, CharacterClasses.Druid.HitDice + CharacterClasses.Barbarian.HitDice);
+            Assert.InRange(sheet.HitPoints, CharacterClasses.Druid.HitDie + 1, CharacterClasses.Druid.HitDie + CharacterClasses.Barbarian.HitDie);
+            Assert.InRange(sheet.HitPointsMax, CharacterClasses.Druid.HitDie + 1, CharacterClasses.Druid.HitDie + CharacterClasses.Barbarian.HitDie);
         }
 
         [Fact]
@@ -386,13 +386,13 @@ namespace srd5 {
             CharacterSheet sheet = new CharacterSheet(Race.HALFLING);
             Weapon quarterstaff = Weapons.Quarterstaff;
             sheet.Equip(quarterstaff);
-            Assert.Equal(8, sheet.MeleeAttacks[0].Damage.Dices.Dice);
+            Assert.Equal(8, sheet.MeleeAttacks[0].Damage.Dices.Die);
             int ac = sheet.ArmorClass;
             Shield shield = Shields.Shield;
             Assert.Equal(quarterstaff, sheet.Inventory.MainHand);
             sheet.Equip(shield);
             Assert.Equal(ac + shield.AC, sheet.ArmorClass);
-            Assert.Equal(6, sheet.MeleeAttacks[0].Damage.Dices.Dice);
+            Assert.Equal(6, sheet.MeleeAttacks[0].Damage.Dices.Die);
         }
 
         [Fact]

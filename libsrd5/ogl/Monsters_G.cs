@@ -146,7 +146,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect GiantElkHoovesEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return;
-            int amount = new Dices("4d8+4").Roll(); // FIXME: Cannot crit because attack roll is not available here
+            int amount = new Dice("4d8+4").Roll(); // FIXME: Cannot crit because attack roll is not available here
             target.TakeDamage(DamageType.BLUDGEONING, amount);
         };
         public static Attack GiantElkHooves {

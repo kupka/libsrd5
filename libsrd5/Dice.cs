@@ -1,11 +1,11 @@
 using System;
 
 namespace srd5 {
-    public struct Dice {
-        public static Dice Get(int max) {
+    public struct Die {
+        public static Die Get(int max) {
             switch (max) {
-                case 0: // constant 0, not an actual dice
-                case 1: // constant 1, not an actual dice
+                case 0: // constant 0, not an actual die
+                case 1: // constant 1, not an actual die
                 case 2:
                 case 3:
                 case 4:
@@ -15,68 +15,68 @@ namespace srd5 {
                 case 12:
                 case 20:
                 case 100:
-                    Dice dice = new Dice();
-                    dice.MaxValue = max;
-                    dice.Value = Random.Get(Math.Min(max, 1), max);
-                    Dices.onDiceRolled(dice);
-                    return dice;
+                    Die die = new Die();
+                    die.MaxValue = max;
+                    die.Value = Random.Get(Math.Min(max, 1), max);
+                    Dice.onDiceRolled(die);
+                    return die;
                 default:
                     throw new Srd5ArgumentException("No such dice d" + max);
             }
         }
 
-        public static Dice D2 {
+        public static Die D2 {
             get {
                 return Get(2);
             }
         }
 
-        public static Dice D3 {
+        public static Die D3 {
             get {
                 return Get(3);
             }
         }
 
-        public static Dice D4 {
+        public static Die D4 {
             get {
                 return Get(4);
             }
         }
 
-        public static Dice D6 {
+        public static Die D6 {
             get {
                 return Get(6);
             }
         }
 
-        public static Dice D8 {
+        public static Die D8 {
             get {
                 return Get(8);
             }
         }
 
-        public static Dice D10 {
+        public static Die D10 {
             get {
                 return Get(10);
             }
         }
 
-        public static Dice D12 {
+        public static Die D12 {
             get {
                 return Get(12);
             }
         }
 
-        public static Dice D20 {
+        public static Die D20 {
             get {
                 return Get(20);
             }
         }
 
-        public static Dice D20Advantage {
+        public static Die D20Advantage {
             get {
-                Dice first = Get(20);
-                Dice second = Get(20);
+                Die first = Get(20);
+                Die second = Get(20);
                 if (first.Value >= second.Value)
                     return first;
                 else
@@ -84,10 +84,10 @@ namespace srd5 {
             }
         }
 
-        public static Dice D20Disadvantage {
+        public static Die D20Disadvantage {
             get {
-                Dice first = Get(20);
-                Dice second = Get(20);
+                Die first = Get(20);
+                Die second = Get(20);
                 if (first.Value <= second.Value)
                     return first;
                 else
@@ -95,7 +95,7 @@ namespace srd5 {
             }
         }
 
-        public static Dice D100 {
+        public static Die D100 {
             get {
                 return Get(100);
             }
@@ -112,7 +112,7 @@ namespace srd5 {
         }
 
         public static int Roll(string diceString) {
-            Dices parsed = new Dices(diceString);
+            Dice parsed = new Dice(diceString);
             return parsed.Roll();
         }
 
@@ -127,19 +127,19 @@ namespace srd5 {
 
     public class DiceRolledEvent : EventArgs {
         internal static DiceRolledEventSource source { get; set; }
-        public Dices Dices { get; private set; }
+        public Dice Dices { get; private set; }
         public int Value { get; private set; }
         public DiceRolledEventSource Source { get; private set; }
 
-        public DiceRolledEvent(Dices dices, int value) {
-            Dices = dices;
+        public DiceRolledEvent(Dice dice, int value) {
+            Dices = dice;
             Value = value;
             Source = source;
             source = null;
         }
     }
 
-    public struct Dices {
+    public struct Dice {
         internal int Modifier {
             get;
             private set;
@@ -150,7 +150,7 @@ namespace srd5 {
             private set;
         }
 
-        internal int Dice {
+        internal int Die {
             get;
             private set;
         }
@@ -163,7 +163,7 @@ namespace srd5 {
 
         public int Max {
             get {
-                return Math.Max(0, Amount * Dice + Modifier);
+                return Math.Max(0, Amount * Die + Modifier);
             }
         }
 
@@ -172,22 +172,22 @@ namespace srd5 {
             return diceString;
         }
 
-        internal Dices(int amount, int dice, int modifier) {
+        internal Dice(int amount, int die, int modifier) {
             Amount = amount;
-            Dice = dice;
+            Die = die;
             Modifier = modifier;
             string modifierString = "";
             if (modifier > 0)
                 modifierString = "+" + modifier;
             else if (modifier < 0)
                 modifierString += modifier;
-            diceString = amount + "d" + dice + modifierString;
+            diceString = amount + "d" + die + modifierString;
         }
 
-        internal Dices(string diceString) {
+        internal Dice(string diceString) {
             this.diceString = diceString;
             Amount = 1;
-            Dice = 0;
+            Die = 0;
             Modifier = 0;
             bool negativeModifier = false;
             int state = 0; // 0 = Start, 1 = Dice, 2 = Modifier
@@ -211,10 +211,10 @@ namespace srd5 {
                         }
                     case 1:
                         if (char.IsDigit(c)) {
-                            if (Dice > 0) {
-                                Dice *= 10;
+                            if (Die > 0) {
+                                Die *= 10;
                             }
-                            Dice += int.Parse(c.ToString());
+                            Die += int.Parse(c.ToString());
                             break;
                         } else if (c == '+') {
                             state = 2;
@@ -241,7 +241,7 @@ namespace srd5 {
             if (negativeModifier) {
                 Modifier *= -1;
             }
-            switch (Dice) {
+            switch (Die) {
                 case 0:
                 case 1:
                 case 2:
@@ -262,7 +262,7 @@ namespace srd5 {
         public int Roll() {
             int result = Modifier;
             for (int i = 0; i < Amount; i++) {
-                result += Random.Get(Math.Min(Dice, 1), Dice);
+                result += Random.Get(Math.Min(Die, 1), Die);
             }
             int value = Math.Max(0, result);
             onDiceRolled(this, value);
@@ -274,7 +274,7 @@ namespace srd5 {
             int result = Modifier;
             for (int i = 0; i < Amount; i++) {
                 for (int j = 0; j < times; j++) {
-                    result += Random.Get(1, Dice);
+                    result += Random.Get(1, Die);
                 }
             }
             int value = Math.Max(0, result);
@@ -285,17 +285,17 @@ namespace srd5 {
         // Event Handling
         public static event EventHandler<DiceRolledEvent> DiceRolled;
 
-        internal static void onDiceRolled(Dices dices, int value) {
+        internal static void onDiceRolled(Dice dice, int value) {
             if (DiceRolled == null) return;
-            DiceRolledEvent diceRolledEvent = new DiceRolledEvent(dices, value);
-            DiceRolled(dices, diceRolledEvent);
+            DiceRolledEvent diceRolledEvent = new DiceRolledEvent(dice, value);
+            DiceRolled(dice, diceRolledEvent);
         }
 
-        internal static void onDiceRolled(Dice dice) {
+        internal static void onDiceRolled(Die die) {
             if (DiceRolled == null) return;
-            Dices dices = new Dices(dice.ToString());
-            DiceRolledEvent diceRolledEvent = new DiceRolledEvent(dices, dice.Value);
-            DiceRolled(dices, diceRolledEvent);
+            Dice dice = new Dice(die.ToString());
+            DiceRolledEvent diceRolledEvent = new DiceRolledEvent(dice, die.Value);
+            DiceRolled(dice, diceRolledEvent);
         }
     }
 }

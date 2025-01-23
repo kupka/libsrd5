@@ -29,9 +29,37 @@ namespace srd5 {
                 ogre.HealDamage(-100);
             });
             ogre.TakeDamage(DamageType.PIERCING, ogre.HitPoints);
-            Assert.True(ogre.HasCondition(ConditionType.UNCONSCIOUS));
-            ogre.HealDamage(1);
-            Assert.False(ogre.HasCondition(ConditionType.UNCONSCIOUS));
+            Assert.True(ogre.Dead);
+        }
+
+        [Fact]
+        public void TakeDamageTestWithDCHalves() {
+            Combattant ogre = Monsters.Ogre;
+            int tookFullDamage = 0, tookHalfDamage = 0;
+            for (int i = 0; i < 10; i++) {
+                int damageTaken = ogre.TakeDamage(DamageType.TRUE_DAMAGE, 2, Spells.DCEffect.HALVES_DAMAGE, 10, AbilityType.DEXTERITY);
+                if (damageTaken == 2) {
+                    tookFullDamage++;
+                } else if (damageTaken == 1) {
+                    tookHalfDamage++;
+                }
+            }
+            Assert.Equal(10, tookFullDamage + tookHalfDamage);
+        }
+
+        [Fact]
+        public void TakeDamageTestWithDCNullify() {
+            Combattant ogre = Monsters.Ogre;
+            int tookFullDamage = 0, tookNoDamage = 0;
+            for (int i = 0; i < 10; i++) {
+                int damageTaken = ogre.TakeDamage(DamageType.TRUE_DAMAGE, 2, Spells.DCEffect.NULLIFIES_DAMAGE, 10, AbilityType.DEXTERITY);
+                if (damageTaken == 2) {
+                    tookFullDamage++;
+                } else if (damageTaken == 0) {
+                    tookNoDamage++;
+                }
+            }
+            Assert.Equal(10, tookFullDamage + tookNoDamage);
         }
 
         [Fact]
@@ -160,6 +188,14 @@ namespace srd5 {
                 success = combattant.Attack(combattant.MeleeAttacks[0], bat, 5);
             }
             Assert.True(success);
+        }
+
+        [Fact]
+        public void OutOfReachTest() {
+            Combattant ogre = Monsters.Ogre;
+            Combattant bat = Monsters.Bat;
+            Assert.False(ogre.Attack(Attacks.OgreGreatclub, bat, 8));
+
         }
     }
 }

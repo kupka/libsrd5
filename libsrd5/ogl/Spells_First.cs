@@ -57,9 +57,9 @@ namespace srd5 {
                         return;
                     }
                 }
-                int dices = (int)slot;
+                int dice = (int)slot;
                 GlobalEvents.AffectBySpell(caster, ID.CURE_WOUNDS, targets[0], true);
-                Dices healed = new Dices(dices, 8, modifier);
+                Dice healed = new Dice(dice, 8, modifier);
                 targets[0].HealDamage(healed.Roll());
             }
         );
@@ -92,11 +92,11 @@ namespace srd5 {
                         GlobalEvents.AffectBySpell(caster, ID.ENTANGLE, target, true);
                         target.AddEffect(Effect.ENTANGLE);
                         int rounds = 10;
-                        target.AddEndOfTurnEvent(delegate (Combattant combattant) {
+                        target.AddEndOfTurnEvent(delegate () {
                             rounds--;
                             bool done = rounds <= 0;
                             if (done)
-                                combattant.RemoveEffect(Effect.ENTANGLE);
+                                target.RemoveEffect(Effect.ENTANGLE);
                             return done;
                         });
                     }
@@ -117,11 +117,11 @@ namespace srd5 {
                         GlobalEvents.AffectBySpell(caster, ID.FAERIE_FIRE, target, true);
                         target.AddEffect(Effect.FAIRIE_FIRE);
                         int rounds = 10;
-                        target.AddEndOfTurnEvent(delegate (Combattant combattant) {
+                        target.AddEndOfTurnEvent(delegate () {
                             rounds--;
                             bool done = rounds <= 0;
                             if (done)
-                                combattant.RemoveEffect(Effect.FAIRIE_FIRE);
+                                target.RemoveEffect(Effect.FAIRIE_FIRE);
                             return done;
                         });
                     }
@@ -159,8 +159,8 @@ namespace srd5 {
                         return;
                     };
                 }
-                int dices = (int)slot;
-                Dices healed = new Dices(dices, 4, modifier);
+                int dice = (int)slot;
+                Dice healed = new Dice(dice, 4, modifier);
                 GlobalEvents.AffectBySpell(caster, ID.HEALING_WORD, targets[0], true);
                 targets[0].HealDamage(healed.Roll());
             }
@@ -212,7 +212,7 @@ namespace srd5 {
                     if (target.HasFeat(Feat.REFLECTIVE_CARAPACE)) {
                         GlobalEvents.ActivateFeat(target, Feat.REFLECTIVE_CARAPACE);
                         GlobalEvents.AffectBySpell(caster, ID.MAGIC_MISSILE, target, false);
-                        if (Dice.D6.Value == 6) {
+                        if (Die.D6.Value == 6) {
                             target = caster;
                         }
                     }
@@ -244,7 +244,40 @@ namespace srd5 {
         /* TODO */
         public static readonly Spell SilentImage = new Spell(Spells.ID.SILENT_IMAGE, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.TEN_MINUTES, 15, 0, doNothing);
         /* TODO */
-        public static readonly Spell Sleep = new Spell(Spells.ID.SLEEP, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VSM, SpellDuration.ONE_MINUTE, 20, 99, doNothing);
+        public static readonly Spell Sleep = new Spell(Spells.ID.SLEEP, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VSM, SpellDuration.ONE_MINUTE, 20, 99,
+            delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                Dice dice = new Dice(5 + ((int)slot - 1) * 2, Die.D8.MaxValue, 0);
+                int remainingHitpoints = dice.Roll();
+                Array.Sort(targets, (t1, t2) => {
+                    return t1.HitPoints.CompareTo(t2.HitPoints);
+                });
+                for (int i = 0; i < targets.Length && targets[i].HitPoints <= remainingHitpoints; i++) {
+                    Combattant target = targets[i];
+                    // ignoring unconscious creatures
+                    if (target.HasCondition(ConditionType.UNCONSCIOUS)) continue;
+                    // Undead and creatures immune to being charmed aren't affected by this spell
+                    if (target.HasEffect(Effect.IMMUNITY_CHARMED)) continue;
+                    if (target is Monster monster && monster.Type == Monsters.Type.UNDEAD) continue;
+                    // substract hitpoints and make target unconcious for one minute (10 rounds)
+                    int remainingRounds = 10;
+                    remainingHitpoints -= target.HitPoints;
+                    target.AddCondition(ConditionType.UNCONSCIOUS);
+                    bool targetTookDamage = false;
+                    target.AddDamageTakenEvent(delegate () {
+                        targetTookDamage = true;
+                        return true;
+                    });
+
+                    target.AddEndOfTurnEvent(delegate () {
+                        remainingRounds--;
+                        if (targetTookDamage || remainingRounds < 1) {
+                            target.RemoveCondition(ConditionType.UNCONSCIOUS);
+                            return true;
+                        }
+                        return false;
+                    });
+                }
+            });
 
         public static readonly Spell SpeakWithAnimals = new Spell(
             ID.SPEAK_WITH_ANIMALS, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS,
@@ -254,15 +287,15 @@ namespace srd5 {
         public static readonly Spell Thunderwave = new Spell(
             ID.THUNDERWAVE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 15, VS,
             SpellDuration.INSTANTANEOUS, 15, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                int dices = (int)slot + 1;
+                int dice = (int)slot + 1;
                 bool pushed = true;
                 foreach (Combattant target in targets) {
                     GlobalEvents.AffectBySpell(caster, ID.THUNDERWAVE, target, true);
                     if (target.DC(ID.THUNDERWAVE, dc, AbilityType.CONSTITUTION)) {
-                        dices = (int)(dices / 2);
+                        dice = (int)(dice / 2);
                         pushed = false;
                     }
-                    Damage damage = new Damage(DamageType.THUNDER, dices + "d8");
+                    Damage damage = new Damage(DamageType.THUNDER, dice + "d8");
                     target.TakeDamage(damage.Type, damage.Dices.Roll());
                     if (pushed) {
                         ground.Push(ground.LocateCombattant(caster), target, 10);

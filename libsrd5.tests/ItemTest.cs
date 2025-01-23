@@ -4,6 +4,15 @@ using Xunit;
 
 namespace srd5 {
     public class ItemTest {
+        private BattleGroundClassic createBattleground(Combattant caster, params Combattant[] targets) {
+            BattleGroundClassic ground = new BattleGroundClassic();
+            ground.AddCombattant(caster, ClassicLocation.Row.FRONT_LEFT);
+            foreach (Combattant target in targets) {
+                ground.AddCombattant(target, ClassicLocation.Row.FRONT_RIGHT);
+            }
+            return ground;
+        }
+
         [Fact]
         public void NameEqualTest() {
             Weapon club1 = Weapons.Club;
@@ -67,10 +76,10 @@ namespace srd5 {
             Consumable[] potions = new Consumable[] { Potions.PotionOfHealing, Potions.PotionOfGreaterHealing,
                                     Potions.PotionOfSuperiorHealing, Potions.PotionOfSupremeHealing };
             foreach (Consumable potion in potions) {
-                hero.TakeDamage(DamageType.SLASHING, 15);
-                Assert.True(hero.HasCondition(ConditionType.UNCONSCIOUS));
+                hero.TakeDamage(DamageType.SLASHING, hero.HitPointsMax);
+                Assert.True(hero.HasEffect(Effect.FIGHTING_DEATH));
                 hero.Consume(potion);
-                Assert.False(hero.HasCondition(ConditionType.UNCONSCIOUS));
+                Assert.False(hero.HasEffect(Effect.FIGHTING_DEATH));
             }
         }
 
@@ -78,10 +87,11 @@ namespace srd5 {
         public void WandOfMagicMissilesTest() {
             CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             Monster shadow = Monsters.Shadow;
+            Battleground ground = createBattleground(hero, shadow);
             Usable wand = Wands.WandOfMagicMissiles;
             hero.Inventory.AddToBag(wand);
             while (!wand.Destroyed) {
-                hero.Use(wand, 7, shadow);
+                hero.Use(wand, 7, ground, shadow);
                 wand.Charges = 7;
             }
             Assert.True(wand.Destroyed);

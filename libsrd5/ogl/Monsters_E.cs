@@ -22,7 +22,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect ElephantStompEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return;
-            int amount = new Dices("3d10+6").Roll(); // FIXME: Cannot crit because attack roll is not available here
+            int amount = new Dice("3d10+6").Roll(); // FIXME: Cannot crit because attack roll is not available here
             target.TakeDamage(DamageType.BLUDGEONING, amount);
         };
         public static Attack ElephantStomp {
@@ -37,7 +37,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect ElkHoovesEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return;
-            int amount = new Dices("2d4+3").Roll(); // FIXME: Cannot crit because attack roll is not available here
+            int amount = new Dice("2d4+3").Roll(); // FIXME: Cannot crit because attack roll is not available here
             target.TakeDamage(DamageType.BLUDGEONING, amount);
         };
         public static Attack ElkHooves {
@@ -72,9 +72,9 @@ namespace srd5 {
             if (success) return;
             target.AddEffect(Effect.ETTERCAP_POISON);
             int turn = 0;
-            target.AddEndOfTurnEvent(delegate (Combattant combattant) {
-                success = combattant.DC(EttercapBite, 11, AbilityType.CONSTITUTION);
-                if ((turn++) > 10) success = true;
+            target.AddEndOfTurnEvent(delegate () {
+                success = target.DC(EttercapBite, 11, AbilityType.CONSTITUTION);
+                if (turn++ > 10) success = true;
                 if (success) target.RemoveEffect(Effect.ETTERCAP_POISON);
                 return success;
             });

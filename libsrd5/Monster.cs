@@ -75,7 +75,7 @@ namespace srd5 {
             Wisdom.BaseValue = wisdom;
             Charisma.BaseValue = charisma;
             ArmorClass = armorClass;
-            int hp = new Dices(hitDice).Roll();
+            int hp = new Dice(hitDice).Roll();
             HitPointsMax = hp;
             HitPoints = hp;
             Speed = speed;

@@ -18,7 +18,7 @@ namespace srd5 {
             get {
                 CharacterClass barbarian = new CharacterClass();
                 barbarian.Class = Class.BARBARIAN;
-                barbarian.HitDice = 12;
+                barbarian.HitDie = 12;
                 barbarian.Proficiencies = new Proficiency[]{
                                 Proficiency.STRENGTH,
                                 Proficiency.CONSTITUTION,
@@ -60,7 +60,7 @@ namespace srd5 {
             get {
                 CharacterClass druid = new CharacterClass();
                 druid.Class = Class.DRUID;
-                druid.HitDice = 8;
+                druid.HitDie = 8;
                 druid.Proficiencies = new Proficiency[]{
                                 Proficiency.INTELLIGENCE,
                                 Proficiency.WISDOM,
@@ -134,7 +134,7 @@ namespace srd5 {
             get {
                 CharacterClass wizard = new CharacterClass();
                 wizard.Class = Class.WIZARD;
-                wizard.HitDice = 6;
+                wizard.HitDie = 6;
                 wizard.Proficiencies = new Proficiency[]{
                                 Proficiency.INTELLIGENCE,
                                 Proficiency.WISDOM,
@@ -192,6 +192,39 @@ namespace srd5 {
                 };
                 wizard.MustPrepareSpells = true;
                 return wizard;
+            }
+        }
+
+        public static CharacterClass Bard {
+            get {
+                // TODO: Implement Bard
+                CharacterClass bard = new CharacterClass();
+                bard.Class = Class.BARD;
+                bard.HitDie = 8;
+                bard.Proficiencies = new Proficiency[] { };
+                bard.Feats = new Feat[][] {
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                    new Feat[] { },
+                };
+                return bard;
             }
         }
     }

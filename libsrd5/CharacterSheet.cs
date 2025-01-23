@@ -32,7 +32,7 @@ namespace srd5 {
         }
         public Item[] Bag { get { return bag; } }
         private Item[] bag = new Item[0];
-        private CharacterSheet owner;
+        private readonly CharacterSheet owner;
 
         public CharacterInventory(CharacterSheet owner) {
             this.owner = owner;
@@ -57,8 +57,8 @@ namespace srd5 {
         public CharacterLevel[] Levels { get { return levels; } }
         private CharacterLevel[] levels = new CharacterLevel[0];
         public int Experience { get; set; } = 0;
-        public Dice[] HitDice { get { return hitDice; } }
-        private Dice[] hitDice = new Dice[0];
+        public Die[] HitDice { get { return hitDice; } }
+        private Die[] hitDice = new Die[0];
         public CharacterInventory Inventory { get; internal set; }
         public int AbilityPoints { get; internal set; }
         public int Attacks {
@@ -79,8 +79,8 @@ namespace srd5 {
                 if (Inventory.Armor != null) {
                     ac = Inventory.Armor.AC + Math.Min(Inventory.Armor.MaxDexBonus, Dexterity.Modifier);
                 }
-                if (Inventory.OffHand != null && Inventory.OffHand is Shield) {
-                    Shield shield = (Shield)Inventory.OffHand;
+                if (Inventory.OffHand != null && Inventory.OffHand is Shield shield1) {
+                    Shield shield = shield1;
                     ac += shield.AC;
                 }
                 return ac + ArmorClassModifier;
@@ -91,8 +91,8 @@ namespace srd5 {
             get {
                 int hp = 0;
                 int additionalHp = HasEffect(Effect.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
-                foreach (Dice dice in hitDice) {
-                    hp += dice.Value + Constitution.Modifier + additionalHp;
+                foreach (Die die in hitDice) {
+                    hp += die.Value + Constitution.Modifier + additionalHp;
                 }
                 hp += HitPointMaxiumModifiersSum;
                 return Math.Max(0, hp);
@@ -147,13 +147,13 @@ namespace srd5 {
         public CharacterSheet(Race race, bool classic = false) {
             Inventory = new CharacterInventory(this);
             if (classic) {
-                Dices dices = new Dices("3d6");
-                Strength.BaseValue = Math.Max(dices.Roll(), dices.Roll());
-                Constitution.BaseValue = Math.Max(dices.Roll(), dices.Roll());
-                Dexterity.BaseValue = Math.Max(dices.Roll(), dices.Roll());
-                Wisdom.BaseValue = Math.Max(dices.Roll(), dices.Roll());
-                Intelligence.BaseValue = Math.Max(dices.Roll(), dices.Roll());
-                Charisma.BaseValue = Math.Max(dices.Roll(), dices.Roll());
+                Dice dice = new Dice("3d6");
+                Strength.BaseValue = Math.Max(dice.Roll(), dice.Roll());
+                Constitution.BaseValue = Math.Max(dice.Roll(), dice.Roll());
+                Dexterity.BaseValue = Math.Max(dice.Roll(), dice.Roll());
+                Wisdom.BaseValue = Math.Max(dice.Roll(), dice.Roll());
+                Intelligence.BaseValue = Math.Max(dice.Roll(), dice.Roll());
+                Charisma.BaseValue = Math.Max(dice.Roll(), dice.Roll());
             } else {
                 AbilityPoints = 14;
             }
@@ -415,7 +415,7 @@ namespace srd5 {
         }
 
         public void AddLevel(CharacterClass characterClass) {
-            Dice dice = Dice.Get(characterClass.HitDice);
+            Die die = srd5.Die.Get(characterClass.HitDie);
             int additionalHp = HasEffect(Effect.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
             EffectiveLevel++;
             foreach (CharacterLevel level in levels) {
@@ -424,25 +424,26 @@ namespace srd5 {
                         AddFeat(feat);
                     }
                     level.Levels++;
-                    Utils.Push<Dice>(ref hitDice, dice);
-                    HitPoints += dice.Value + additionalHp + Constitution.Modifier;
+                    Utils.Push<Die>(ref hitDice, die);
+                    HitPoints += die.Value + additionalHp + Constitution.Modifier;
                     updateAvailableSpells(level);
                     RecalculateAttacks();
                     return;
                 }
             }
-            CharacterLevel newLevel = new CharacterLevel();
-            newLevel.Class = characterClass;
+            CharacterLevel newLevel = new CharacterLevel {
+                Class = characterClass
+            };
             foreach (Feat feat in characterClass.Feats[0]) {
                 AddFeat(feat);
             }
             newLevel.Levels = 1;
             if (levels.Length == 0) { // maximum hitpoints when this is the first level
-                dice.Value = dice.MaxValue;
+                die.Value = die.MaxValue;
             }
             Utils.Push<CharacterLevel>(ref levels, newLevel);
-            Utils.Push<Dice>(ref hitDice, dice);
-            HitPoints += dice.Value + additionalHp + Constitution.Modifier;
+            Utils.Push<Die>(ref hitDice, die);
+            HitPoints += die.Value + additionalHp + Constitution.Modifier;
             foreach (Proficiency proficiency in characterClass.Proficiencies) {
                 if (!IsProficient(proficiency)) {
                     Utils.Push<Proficiency>(ref proficiencies, proficiency);
@@ -469,8 +470,9 @@ namespace srd5 {
             }
             // If no such entry is available yet, add one
             if (spells == null) {
-                spells = new AvailableSpells(level.Class);
-                spells.CharacterClass = level.Class;
+                spells = new AvailableSpells(level.Class) {
+                    CharacterClass = level.Class
+                };
                 AddAvailableSpells(spells);
             }
             // Set the slots according to the new level
@@ -532,11 +534,11 @@ namespace srd5 {
                 Inventory.RemoveFromBag(item);
         }
 
-        public void Use(Usable item, int expendedCharges, params Combattant[] targets) {
+        public void Use(Usable item, int expendedCharges, Battleground ground = null, params Combattant[] targets) {
             expendedCharges = Math.Max(1, expendedCharges); // cannot expend less than a single charge
             if (item == null || item.Charges < expendedCharges || item.Destroyed) return;
             GlobalEvents.ChangeEquipment(this, item, GlobalEvents.EquipmentChanged.Events.USED);
-            item.UsableEffect(this, item, expendedCharges, targets);
+            item.UsableEffect(ground, this, item, expendedCharges, targets);
             if (item.Destroyed)
                 Inventory.RemoveFromBag(item);
         }

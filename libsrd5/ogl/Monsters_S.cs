@@ -196,17 +196,14 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect StirgeBloodDrainEffect = delegate (Combattant attacker, Combattant target) {
-            if (target is Monster monster) {
-                // Bloodless are immune
-                if (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT) return;
-            }
+            if (target is Monster monster && (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT)) return;
             // TODO: the stirge attaches to the target. While attached, the stirge doesn't attack.
             target.AddEffect(Effect.STIRGE_BLOOD_DRAIN_EFFECT);
             attacker.AddEffect(Effect.STIRGE_BLOOD_DRAINING);
             int damage = 0;
-            target.AddStartOfTurnEvent(delegate (Combattant combattant) {
+            target.AddStartOfTurnEvent(delegate () {
                 if (!target.HasEffect(Effect.STIRGE_BLOOD_DRAIN_EFFECT)) return true;
-                int delta = Dice.Roll("1d4+3");
+                int delta = Die.Roll("1d4+3");
                 damage += delta;
                 target.TakeDamage(DamageType.TRUE_DAMAGE, "1d4+3");
                 return damage >= 10;
@@ -251,7 +248,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SuccubusDrainingKissEffect = delegate (Combattant attacker, Combattant target) {
             bool success = target.DC(SuccubusDrainingKiss, 15, AbilityType.CONSTITUTION);
-            int damage = Dice.Roll("5d10+5");
+            int damage = Die.Roll("5d10+5");
             if (success) damage /= 2;
             target.TakeDamage(DamageType.PSYCHIC, damage);
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));

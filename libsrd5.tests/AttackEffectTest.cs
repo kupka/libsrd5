@@ -23,7 +23,7 @@ namespace srd5 {
         private Monster pansyMonster = createPansyMonster();
 
         private static Monster createPansyMonster() {
-            Monster pansyMonster = new Monster(
+            Monster pansyMonster = new(
                     Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
                     new Attack[] { }, new Attack[] { }, Size.MEDIUM
             );
@@ -34,7 +34,7 @@ namespace srd5 {
         private Monster pansyMonsterThatDies = createPansyMonsterThatDies();
 
         private static Monster createPansyMonsterThatDies() {
-            Monster pansyMonster = new Monster(
+            Monster pansyMonster = new(
                     Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d1", 40, 16,
                     new Attack[] { }, new Attack[] { }, Size.MEDIUM
             );
@@ -42,16 +42,26 @@ namespace srd5 {
             return pansyMonster;
         }
 
+        // Monsters of each type, also a hero
+        private Combattant[] allCombattantTypes;
+
         private void restoreMonsters() {
+            CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
+            hero.AddLevel(CharacterClasses.Druid);
+            allCombattantTypes = [
+                Monsters.Badger, Monsters.Solar, Monsters.IronGolem, Monsters.AncientBlackDragon, Monsters.FireElemental,
+                Monsters.Dryad, Monsters.BarbedDevil, Monsters.HillGiant, Monsters.Bandit, Monsters.BlackPudding,
+                Monsters.Treant, Monsters.SwarmOfQuippers, Monsters.Zombie, hero
+             ];
             uberMonster = createUberMonster();
             averageMonster = createAverageMonster();
             pansyMonster = createPansyMonster();
             pansyMonsterThatDies = createPansyMonsterThatDies();
         }
 
-        private readonly Dices dices = new Dices("1d12-1");
+        private readonly Dice dice = new("1d12-1");
         private DamageType randomDamageType() {
-            int value = dices.Roll();
+            int value = dice.Roll();
             return (DamageType)value;
         }
 
@@ -61,23 +71,32 @@ namespace srd5 {
                 effect.Invoke(Monsters.Aboleth, uberMonster);
                 effect.Invoke(Monsters.Aboleth, averageMonster);
                 effect.Invoke(Monsters.Aboleth, pansyMonster);
+                foreach (Combattant combattant in allCombattantTypes) {
+                    effect.Invoke(Monsters.Aboleth, combattant);
+                }
                 if (guaranteedLethal) {
                     effect.Invoke(Monsters.Aboleth, pansyMonsterThatDies);
                     Assert.True(pansyMonsterThatDies.Dead);
                 }
                 for (int j = 0; j < 20; j++) {
-                    uberMonster.TakeDamage(randomDamageType(), Dice.D4.Value);
+                    uberMonster.TakeDamage(randomDamageType(), Die.D4.Value);
                     uberMonster.EscapeFromGrapple();
                     uberMonster.OnStartOfTurn();
                     uberMonster.OnEndOfTurn();
-                    averageMonster.TakeDamage(randomDamageType(), Dice.D4.Value);
+                    averageMonster.TakeDamage(randomDamageType(), Die.D4.Value);
                     averageMonster.EscapeFromGrapple();
                     averageMonster.OnStartOfTurn();
                     averageMonster.OnEndOfTurn();
-                    pansyMonster.TakeDamage(randomDamageType(), Dice.D4.Value);
+                    pansyMonster.TakeDamage(randomDamageType(), Die.D4.Value);
                     pansyMonster.EscapeFromGrapple();
                     pansyMonster.OnStartOfTurn();
                     pansyMonster.OnEndOfTurn();
+                    foreach (Combattant combattant in allCombattantTypes) {
+                        combattant.TakeDamage(randomDamageType(), Die.D4.Value);
+                        combattant.EscapeFromGrapple();
+                        combattant.OnStartOfTurn();
+                        combattant.OnEndOfTurn();
+                    }
                 }
 
                 foreach (Effect eff in uberMonster.Effects) {
@@ -389,7 +408,7 @@ namespace srd5 {
 
         [Fact]
         public void BlackPuddingPseudopodEffect() {
-            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            CharacterSheet hero = new(Race.HUMAN);
             hero.AddLevel(CharacterClasses.Barbarian);
             Attacks.BlackPuddingPseudopodEffect.Invoke(Monsters.Aboleth, hero);
             hero.Equip(Armors.LeatherArmor);
@@ -453,7 +472,7 @@ namespace srd5 {
 
         [Fact]
         public void CrocodileBiteTest() {
-            Monster crocodile = new Monster(
+            Monster crocodile = new(
                 Monsters.Type.BEAST, Monsters.ID.CROCODILE, Alignment.UNALIGNED, 15, 10, 13, 2, 10, 5, 12, "3d10+3", 40, ChallengeRating.HALF,
                 new Attack[] { Attacks.CrocodileBite, Attacks.AbolethTail }, new Attack[] { }, Size.LARGE
             );

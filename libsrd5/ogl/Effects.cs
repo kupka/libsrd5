@@ -93,9 +93,16 @@ namespace srd5 {
         IGNORE_SNOW_PENALITY,
 
         // Abilities
-        CONSTITUION_19,
+        CONSTITUTION_19,
         INTELLIGENCE_19,
 
+        // Death Saves Effects when not stabilized
+        FIGHTING_DEATH,
+        FIGHTING_DEATH_SAVE_FAIL_1,
+        FIGHTING_DEATH_SAVE_FAIL_2,
+        FIGHTING_DEATH_SAVE_SUCCESS_1,
+        FIGHTING_DEATH_SAVE_SUCCESS_2,
+        FIGHTING_DEATH_STABILIZED,
 
         // Misc./Special
         DOUBLE_PROFICIENCY_BONUS_HISTORY,
@@ -126,6 +133,7 @@ namespace srd5 {
         CURSE_WERERAT,
         CURSE_WERETIGER,
         CURSE_WEREWOLF,
+        GUIDANCE,
         // Attack Effects
         ABOLETH_DISEASE_TENTACLE,
         BEARDED_DEVIL_POISON,
@@ -163,7 +171,7 @@ namespace srd5 {
         UNABLE_TO_BREATHE,
 
         // Feat Effects
-        LEGENDARY_RESISTANCE
+        LEGENDARY_RESISTANCE,
     }
 
     public static class Effects {
@@ -200,7 +208,7 @@ namespace srd5 {
                 case Effect.HEAVY_ARMOR_SPEED_PENALITY:
                     combattant.Speed -= 10;
                     break;
-                case Effect.CONSTITUION_19:
+                case Effect.CONSTITUTION_19:
                 case Effect.INTELLIGENCE_19:
                     applyAbilityEffect(effect, combattant);
                     break;
@@ -244,9 +252,9 @@ namespace srd5 {
                     combattant.AddCondition(ConditionType.RESTRAINED);
                     break;
                 case Effect.FIRE_ELEMENTAL_IGNITE:
-                    combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
-                        if (!combattant1.HasEffect(effect)) return true;
-                        combattant1.TakeDamage(DamageType.FIRE, "1d10");
+                    combattant.AddStartOfTurnEvent(delegate () {
+                        if (!combattant.HasEffect(effect)) return true;
+                        combattant.TakeDamage(DamageType.FIRE, "1d10");
                         return false;
                     });
                     break;
@@ -257,11 +265,11 @@ namespace srd5 {
                     dc = 10;
                     duration = 10; // one minute 
                     if (effect == Effect.LICH_PARALYZATION) dc = 18;
-                    combattant.AddEndOfTurnEvent(delegate (Combattant combattant1) {
-                        if (!combattant1.HasEffect(effect)) return true;
-                        bool success = combattant1.DC(effect, dc, AbilityType.CONSTITUTION);
+                    combattant.AddEndOfTurnEvent(delegate () {
+                        if (!combattant.HasEffect(effect)) return true;
+                        bool success = combattant.DC(effect, dc, AbilityType.CONSTITUTION);
                         if (turn++ >= duration) success = true;
-                        if (success) combattant1.RemoveEffect(effect);
+                        if (success) combattant.RemoveEffect(effect);
                         return success;
                     });
                     break;
@@ -276,14 +284,15 @@ namespace srd5 {
                     // (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, 
                     // the target dies, and its body turns to dust. The curse lasts until removed by the remove curse 
                     // spell or other magic.
+                    combattant.AddEffect(Effect.CANNOT_REGAIN_HITPOINTS);
                     break;
                 case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
                     combattant.AddConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
                     break;
                 case Effect.MAGMIN_IGNITE:
-                    combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
-                        if (!combattant1.HasEffect(effect)) return true;
-                        combattant1.TakeDamage(DamageType.FIRE, "1d6");
+                    combattant.AddStartOfTurnEvent(delegate () {
+                        if (!combattant.HasEffect(effect)) return true;
+                        combattant.TakeDamage(DamageType.FIRE, "1d6");
                         return false;
                     });
                     break;
@@ -300,13 +309,13 @@ namespace srd5 {
                 case Effect.PIT_FIEND_POISON:
                     combattant.AddCondition(ConditionType.POISONED);
                     combattant.AddEffect(Effect.CANNOT_REGAIN_HITPOINTS);
-                    combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
-                        if (!combattant1.HasEffect(effect)) return true;
-                        combattant1.TakeDamage(DamageType.POISON, "6d6");
+                    combattant.AddStartOfTurnEvent(delegate () {
+                        if (!combattant.HasEffect(effect)) return true;
+                        combattant.TakeDamage(DamageType.POISON, "6d6");
                         return false;
                     });
-                    combattant.AddEndOfTurnEvent(delegate (Combattant combattant1) {
-                        if (!combattant1.HasEffect(effect)) return true;
+                    combattant.AddEndOfTurnEvent(delegate () {
+                        if (!combattant.HasEffect(effect)) return true;
                         if (combattant.DC(effect, 21, AbilityType.CONSTITUTION)) {
                             combattant.RemoveEffect(effect);
                             return true;
@@ -328,22 +337,80 @@ namespace srd5 {
                     combattant.AddCondition(ConditionType.POISONED);
                     dc = 10;
                     duration = 10; // one minute
-                    combattant.AddEndOfTurnEvent(delegate (Combattant combattant1) {
-                        if (!combattant1.HasEffect(effect)) return true;
-                        bool success = combattant1.DC(effect, dc, AbilityType.CONSTITUTION);
+                    combattant.AddEndOfTurnEvent(delegate () {
+                        if (!combattant.HasEffect(effect)) return true;
+                        bool success = combattant.DC(effect, dc, AbilityType.CONSTITUTION);
                         if (turn++ >= duration) success = true;
-                        if (success) combattant1.RemoveEffect(effect);
+                        if (success) combattant.RemoveEffect(effect);
                         return success;
                     });
                     break;
                 case Effect.RUG_SMOTHER:
                     if (!combattant.HasEffect(Effect.IMMUNITY_BLINDED)) combattant.AddCondition(ConditionType.BLINDED);
-                    combattant.AddStartOfTurnEvent(delegate (Combattant combattant1) {
+                    combattant.AddStartOfTurnEvent(delegate () {
                         if (combattant.HasCondition(ConditionType.GRAPPLED_DC13)) {
                             combattant.TakeDamage(DamageType.BLUDGEONING, "2d6+3");
                             return false;
                         } else {
                             return true;
+                        }
+                    });
+                    break;
+                case Effect.FIGHTING_DEATH:
+                    combattant.AddStartOfTurnEvent(delegate () {
+                        // Don't roll if stabilized
+                        if (combattant.HasEffect(Effect.FIGHTING_DEATH_STABILIZED)) {
+                            combattant.RemoveEffect(Effect.FIGHTING_DEATH);
+                            return true;
+                        }
+                        // Death Save is DC10 with no Ability
+                        int deathSaveRoll = Die.D20.Value;
+                        bool success = deathSaveRoll > 9;
+                        GlobalEvents.RolledDC(combattant, Effect.FIGHTING_DEATH, new Ability(AbilityType.NONE, 9), 10, deathSaveRoll, success);
+                        if (success) {
+                            // Critical success counts as 2 successes
+                            if (deathSaveRoll == 20) {
+                                if (combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_1) || combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_2)) {
+                                    combattant.RemoveEffect(Effect.FIGHTING_DEATH);
+                                    return true;
+                                } else {
+                                    combattant.AddEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_2);
+                                    return false;
+                                }
+                            } else if (combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_2)) {
+                                // third success => stabilized
+                                combattant.RemoveEffect(Effect.FIGHTING_DEATH);
+                                return true;
+                            } else if (combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_1)) {
+                                combattant.AddEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_2);
+                                return false;
+                            } else {
+                                combattant.AddEffect(Effect.FIGHTING_DEATH_SAVE_SUCCESS_1);
+                                return false;
+                            }
+                        } else {
+                            // Critical fail counts as 2 fails
+                            if (deathSaveRoll == 1) {
+                                if (combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_1) || combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_2)) {
+                                    combattant.RemoveEffect(Effect.FIGHTING_DEATH);
+                                    combattant.Die();
+                                    return true;
+                                } else {
+                                    combattant.AddEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_2);
+                                    return false;
+                                }
+                            } else if (combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_2)) {
+                                // third fail => dead
+                                combattant.RemoveEffect(Effect.FIGHTING_DEATH);
+                                combattant.Die();
+                                return true;
+                            } else if (combattant.HasEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_1)) {
+                                combattant.AddEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_2);
+                                return false;
+                            } else {
+                                combattant.AddEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_1);
+                                return false;
+                            }
                         }
                     });
                     break;
@@ -355,7 +422,7 @@ namespace srd5 {
                 case Effect.HEAVY_ARMOR_SPEED_PENALITY:
                     combattant.Speed += 10;
                     break;
-                case Effect.CONSTITUION_19:
+                case Effect.CONSTITUTION_19:
                 case Effect.INTELLIGENCE_19:
                     unapplyAbilityEffect(effect, combattant);
                     break;
@@ -428,6 +495,16 @@ namespace srd5 {
                 case Effect.RUG_SMOTHER:
                     combattant.RemoveCondition(ConditionType.BLINDED);
                     break;
+                case Effect.CURSE_MUMMY_ROT:
+                    combattant.RemoveEffect(Effect.CANNOT_REGAIN_HITPOINTS);
+                    break;
+                case Effect.FIGHTING_DEATH:
+                    combattant.RemoveEffects(Effect.FIGHTING_DEATH_SAVE_FAIL_1,
+                                             Effect.FIGHTING_DEATH_SAVE_FAIL_2,
+                                             Effect.FIGHTING_DEATH_SAVE_SUCCESS_1,
+                                             Effect.FIGHTING_DEATH_SAVE_SUCCESS_2,
+                                             Effect.FIGHTING_DEATH_STABILIZED);
+                    break;
             }
         }
 
@@ -436,7 +513,7 @@ namespace srd5 {
                 case Effect.INTELLIGENCE_19:
                     combattant.Intelligence.AddMinimumBaseValue(19);
                     break;
-                case Effect.CONSTITUION_19:
+                case Effect.CONSTITUTION_19:
                     combattant.Constitution.AddMinimumBaseValue(19);
                     break;
             }
@@ -447,7 +524,7 @@ namespace srd5 {
                 case Effect.INTELLIGENCE_19:
                     combattant.Intelligence.RemoveMinimumBaseValue(19);
                     break;
-                case Effect.CONSTITUION_19:
+                case Effect.CONSTITUTION_19:
                     combattant.Constitution.RemoveMinimumBaseValue(19);
                     break;
             }

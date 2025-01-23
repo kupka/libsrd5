@@ -244,7 +244,7 @@ namespace srd5 {
         public void AddCombattant(Combattant combattant) {
             if (Array.IndexOf(combattants, combattant) > -1) return;
             Utils.Push<Combattant>(ref combattants, combattant);
-            int roll = Dice.D20.Value + combattant.Dexterity.Modifier;
+            int roll = Die.D20.Value + combattant.Dexterity.Modifier;
             Utils.Push<int>(ref initiativeRolls, roll);
             GlobalEvents.RolledInitiative(combattant, roll);
         }
@@ -359,7 +359,7 @@ namespace srd5 {
             }
             // check if targets are in range
             foreach (Combattant target in targets) {
-                int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
+                int distance = Distance(target);
                 if (distance > spell.Range) {
                     GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.TARGET_OUT_OF_RANGE);
                     return false;
@@ -368,7 +368,7 @@ namespace srd5 {
             // if the spell has an area of effect, check that all targets are within this area of the first target
             if (spell.AreaOfEffect > 0) {
                 for (int i = 1; i < targets.Length; i++) {
-                    int distance = LocateCombattant(targets[0]).Distance(LocateCombattant(targets[i]));
+                    int distance = Distance(targets[0], targets[i]);
                     if (distance > spell.AreaOfEffect) {
                         GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.TARGET_OUT_OF_RANGE);
                         return false;
@@ -411,7 +411,7 @@ namespace srd5 {
 
         private bool doBonusMeleeAttack(Combattant target) {
             bool success = false;
-            int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
+            int distance = Distance(target);
             Attack attack = CurrentCombattant.BonusAttack;
             if (attack == null || distance > attack.Reach) return false;
             success = true;
@@ -421,7 +421,7 @@ namespace srd5 {
 
         private bool doBonusRangedAttack(Combattant target) {
             bool success = false;
-            int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
+            int distance = Distance(target);
             Attack attack = CurrentCombattant.BonusAttack;
             if (attack == null || distance > attack.RangeLong) return false;
             success = true;
@@ -431,7 +431,7 @@ namespace srd5 {
 
         private bool doFullMeleeAttack(Combattant target) {
             bool success = false;
-            int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
+            int distance = Distance(target);
             foreach (Attack attack in CurrentCombattant.MeleeAttacks) {
                 if (distance > attack.Reach) continue; // skip attack when out of reach
                 success = true;
@@ -442,7 +442,7 @@ namespace srd5 {
 
         private bool doFullRangedAttack(Combattant target) {
             bool success = false;
-            int distance = LocateCombattant(target).Distance(LocateCombattant(CurrentCombattant));
+            int distance = Distance(target);
             foreach (Attack attack in CurrentCombattant.RangedAttacks) {
                 if (distance > attack.RangeLong) continue; // skip attack when out of range
                 success = true;
@@ -479,6 +479,13 @@ namespace srd5 {
         /// </summary>
         public int Distance(Combattant target) {
             return GetCurrentLocation().Distance(LocateCombattant(target));
+        }
+
+        /// <summary>
+        /// Returns the distance between two combattants.
+        /// </summary>
+        public int Distance(Combattant combattant1, Combattant combattant2) {
+            return LocateCombattant(combattant1).Distance(LocateCombattant(combattant2));
         }
 
         // Events

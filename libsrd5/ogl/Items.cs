@@ -624,7 +624,7 @@ namespace srd5 {
     }
 
     public struct Amulets {
-        public static Amulet AmuletOfHealth { get { return new Amulet("Amulet of Health", new Effect[] { Effect.CONSTITUION_19 }); } }
+        public static Amulet AmuletOfHealth { get { return new Amulet("Amulet of Health", new Effect[] { Effect.CONSTITUTION_19 }); } }
     }
 
     public struct Bootss { // additional s because double plural ^_^
@@ -635,7 +635,7 @@ namespace srd5 {
         public static Consumable PotionOfHealing {
             get {
                 return new Consumable("Potion of Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
-                    Dices healing = new Dices("2d4+2");
+                    Dice healing = new Dice("2d4+2");
                     consumer.HealDamage(healing.Roll());
                     potion.Charges = 0;
                     potion.Destroyed = true;
@@ -646,7 +646,7 @@ namespace srd5 {
         public static Consumable PotionOfGreaterHealing {
             get {
                 return new Consumable("Potion of Greater Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
-                    Dices healing = new Dices("4d4+4");
+                    Dice healing = new Dice("4d4+4");
                     consumer.HealDamage(healing.Roll());
                     potion.Charges = 0;
                     potion.Destroyed = true;
@@ -657,7 +657,7 @@ namespace srd5 {
         public static Consumable PotionOfSuperiorHealing {
             get {
                 return new Consumable("Potion of Superior Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
-                    Dices healing = new Dices("8d4+8");
+                    Dice healing = new Dice("8d4+8");
                     consumer.HealDamage(healing.Roll());
                     potion.Charges = 0;
                     potion.Destroyed = true;
@@ -668,7 +668,7 @@ namespace srd5 {
         public static Consumable PotionOfSupremeHealing {
             get {
                 return new Consumable("Potion of Supreme Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
-                    Dices healing = new Dices("10d4+20");
+                    Dice healing = new Dice("10d4+20");
                     consumer.HealDamage(healing.Roll());
                     potion.Charges = 0;
                     potion.Destroyed = true;
@@ -680,11 +680,11 @@ namespace srd5 {
     public struct Wands {
         public static Usable WandOfMagicMissiles {
             get {
-                return new Usable("Wand of Magic Missiles", ItemType.WAND, delegate (Combattant user, Usable item, int expendedCharges, Combattant[] targets) {
-                    Spells.MagicMissile.Cast(null, user, 0, (SpellLevel)expendedCharges, 0, targets);
+                return new Usable("Wand of Magic Missiles", ItemType.WAND, delegate (Battleground ground, Combattant user, Usable item, int expendedCharges, Combattant[] targets) {
+                    Spells.MagicMissile.Cast(ground, user, 0, (SpellLevel)expendedCharges, 0, targets);
                     item.Charges -= expendedCharges;
                     if (item.Charges == 0) {
-                        int roll = Dice.D20.Value;
+                        int roll = Die.D20.Value;
                         if (roll == 1) {
                             item.Destroyed = true;
                         }

@@ -215,17 +215,17 @@ namespace srd5 {
 
         [Fact]
         public void EntangleTest() {
-            DefaultSpellTest(Spells.Entangle, 14, SpellLevel.FIRST, null, Effect.ENTANGLE, 100);
+            DefaultSpellTest(Spells.Entangle, 14, SpellLevel.FIRST, null, Effect.SPELL_ENTANGLE, 100);
         }
 
         [Fact]
         public void FairieFireTest() {
-            DefaultSpellTest(Spells.FaerieFire, 14, SpellLevel.SECOND, null, Effect.FAIRIE_FIRE, 100);
+            DefaultSpellTest(Spells.FaerieFire, 14, SpellLevel.SECOND, null, Effect.SPELL_FAIRIE_FIRE, 100);
         }
 
         [Fact]
         public void JumpTest() {
-            DefaultSpellTest(Spells.Jump, 14, SpellLevel.THIRD, null, Effect.JUMP, null);
+            DefaultSpellTest(Spells.Jump, 14, SpellLevel.THIRD, null, Effect.SPELL_JUMP, null);
         }
 
         [Fact]
@@ -234,7 +234,7 @@ namespace srd5 {
             int speed = hero.Speed;
             Spells.Longstrider.Cast(hero, 10, SpellLevel.FIRST, 0);
             Assert.True(hero.Speed > speed);
-            hero.RemoveEffect(Effect.LONGSTRIDER);
+            hero.RemoveEffect(Effect.SPELL_LONGSTRIDER);
             Assert.Equal(speed, hero.Speed);
         }
 
@@ -289,9 +289,9 @@ namespace srd5 {
         public void ResistanceTest() {
             CharacterSheet hero = new CharacterSheet(Race.GNOME);
             Spells.Resistance.Cast(hero, 10, SpellLevel.FIRST, 0);
-            Assert.True(hero.HasEffect(Effect.RESISTANCE));
+            Assert.True(hero.HasEffect(Effect.SPELL_RESISTANCE));
             hero.DC(null, 10, AbilityType.STRENGTH);
-            Assert.False(hero.HasEffect(Effect.RESISTANCE));
+            Assert.False(hero.HasEffect(Effect.SPELL_RESISTANCE));
         }
     }
 }

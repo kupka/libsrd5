@@ -118,13 +118,17 @@ namespace srd5 {
         GRAPPLING,
 
         // Spell Effects
-        ENTANGLE,
-        FAIRIE_FIRE,
-        JUMP,
-        LIGHT,
-        LONGSTRIDER,
-        RAY_OF_FROST,
-        RESISTANCE,
+        SPELL_BANE,
+        SPELL_BLESS,
+        SPELL_ENTANGLE,
+        SPELL_FAIRIE_FIRE,
+        SPELL_JUMP,
+        SPELL_LIGHT,
+        SPELL_LONGSTRIDER,
+        SPELL_RAY_OF_FROST,
+        SPELL_RESISTANCE,
+        SPELL_GUIDANCE,
+        SPELL_DIVINE_FAVOR,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,
@@ -133,7 +137,6 @@ namespace srd5 {
         CURSE_WERERAT,
         CURSE_WERETIGER,
         CURSE_WEREWOLF,
-        GUIDANCE,
         // Attack Effects
         ABOLETH_DISEASE_TENTACLE,
         BEARDED_DEVIL_POISON,
@@ -222,13 +225,13 @@ namespace srd5 {
                         sheet.RecalculateAttacks();
                     };
                     break;
-                case Effect.LONGSTRIDER:
+                case Effect.SPELL_LONGSTRIDER:
                     combattant.Speed += 10;
                     break;
-                case Effect.ENTANGLE:
+                case Effect.SPELL_ENTANGLE:
                     combattant.AddCondition(ConditionType.RESTRAINED);
                     break;
-                case Effect.FAIRIE_FIRE:
+                case Effect.SPELL_FAIRIE_FIRE:
                     combattant.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
                     break;
                 case Effect.IMMUNITY_TRUE_DAMAGE:
@@ -436,13 +439,13 @@ namespace srd5 {
                         sheet.RecalculateAttacks();
                     };
                     break;
-                case Effect.LONGSTRIDER:
+                case Effect.SPELL_LONGSTRIDER:
                     combattant.Speed -= 10;
                     break;
-                case Effect.ENTANGLE:
+                case Effect.SPELL_ENTANGLE:
                     combattant.RemoveCondition(ConditionType.RESTRAINED);
                     break;
-                case Effect.FAIRIE_FIRE:
+                case Effect.SPELL_FAIRIE_FIRE:
                     combattant.RemoveEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
                     break;
                 case Effect.COUATL_POISON:

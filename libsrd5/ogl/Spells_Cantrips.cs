@@ -56,7 +56,7 @@ namespace srd5 {
         public static readonly Spell EldritchBlast = new Spell(ID.ELDRITCH_BLAST, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS, SpellDuration.INSTANTANEOUS, 0, 4,
             delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Damage damage = new Damage(DamageType.FORCE, "1d10");
-                for (int i = 0; i < DicesLevelScaling(caster); i++) {
+                for (int i = 0; i < DiceLevelScaling(caster); i++) {
                     SpellAttack(ID.ELDRITCH_BLAST, ground, caster, damage, modifier, targets[i], 120);
                 }
             });
@@ -72,7 +72,7 @@ namespace srd5 {
         public static readonly Spell Guidance = new Spell(
             ID.GUIDANCE, SpellSchool.DIVINATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 5, VS,
             SpellDuration.ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                targets[0].AddEffect(Effect.GUIDANCE);
+                targets[0].AddEffect(Effect.SPELL_GUIDANCE);
             }
         );
 
@@ -84,7 +84,7 @@ namespace srd5 {
                     GlobalEvents.AffectBySpell(caster, ID.LIGHT, target, false);
                 } else {
                     GlobalEvents.AffectBySpell(caster, ID.LIGHT, target, true);
-                    target.AddEffect(Effect.LIGHT);
+                    target.AddEffect(Effect.SPELL_LIGHT);
                 }
             }
         );
@@ -145,9 +145,9 @@ namespace srd5 {
                 Combattant target = targets[0];
                 bool hit = SpellAttack(ID.RAY_OF_FROST, ground, caster, damage, modifier, target, 60);
                 if (hit) {
-                    target.AddEffect(Effect.RAY_OF_FROST);
+                    target.AddEffect(Effect.SPELL_RAY_OF_FROST);
                     caster.AddStartOfTurnEvent(delegate () {
-                        target.RemoveEffect(Effect.RAY_OF_FROST);
+                        target.RemoveEffect(Effect.SPELL_RAY_OF_FROST);
                         return true;
                     });
                 }
@@ -158,7 +158,7 @@ namespace srd5 {
             ID.RESISTANCE, SpellSchool.ABJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VSM,
             SpellDuration.ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 GlobalEvents.AffectBySpell(caster, ID.RESISTANCE, targets[0], true);
-                targets[0].AddEffect(Effect.RESISTANCE);
+                targets[0].AddEffect(Effect.SPELL_RESISTANCE);
             }
         );
 
@@ -246,7 +246,7 @@ namespace srd5 {
             delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Damage damage = DamageLevelScaling(caster, Die.D4, DamageType.PSYCHIC);
                 Combattant target = targets[0];
-                int damageTaken = target.TakeDamage(damage.Type, damage.Dices.Roll(), DCEffect.NULLIFIES_DAMAGE, dc, AbilityType.WISDOM, ID.VICIOUS_MOCKERY);
+                int damageTaken = target.TakeDamage(damage.Type, damage.Dices.Roll(), DCEffect.NULLIFIES_DAMAGE, dc, AbilityType.WISDOM, ID.VICIOUS_MOCKERY, out _);
                 if (damageTaken == 0) {
                     GlobalEvents.AffectBySpell(caster, ID.VICIOUS_MOCKERY, target, false);
                 } else {

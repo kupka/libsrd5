@@ -18,9 +18,9 @@ namespace srd5 {
             CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             hero.AddLevel(CharacterClasses.Barbarian);
             Spells.Guidance.Cast(hero, 10, SpellLevel.FIRST, 0);
-            Assert.True(hero.HasEffect(Effect.GUIDANCE));
+            Assert.True(hero.HasEffect(Effect.SPELL_GUIDANCE));
             hero.DC(Attacks.AbolethTail, 12, AbilityType.STRENGTH);
-            Assert.False(hero.HasEffect(Effect.GUIDANCE));
+            Assert.False(hero.HasEffect(Effect.SPELL_GUIDANCE));
         }
     }
 }

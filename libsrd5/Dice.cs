@@ -21,7 +21,7 @@ namespace srd5 {
                     Dice.onDiceRolled(die);
                     return die;
                 default:
-                    throw new Srd5ArgumentException("No such dice d" + max);
+                    throw new Srd5ArgumentException("No such die d" + max);
             }
         }
 

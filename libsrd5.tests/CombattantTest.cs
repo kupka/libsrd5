@@ -37,7 +37,7 @@ namespace srd5 {
             Combattant ogre = Monsters.Ogre;
             int tookFullDamage = 0, tookHalfDamage = 0;
             for (int i = 0; i < 10; i++) {
-                int damageTaken = ogre.TakeDamage(DamageType.TRUE_DAMAGE, 2, Spells.DCEffect.HALVES_DAMAGE, 10, AbilityType.DEXTERITY);
+                int damageTaken = ogre.TakeDamage(DamageType.TRUE_DAMAGE, 2, Spells.DCEffect.HALVES_DAMAGE, 10, AbilityType.DEXTERITY, this, out _);
                 if (damageTaken == 2) {
                     tookFullDamage++;
                 } else if (damageTaken == 1) {
@@ -52,7 +52,7 @@ namespace srd5 {
             Combattant ogre = Monsters.Ogre;
             int tookFullDamage = 0, tookNoDamage = 0;
             for (int i = 0; i < 10; i++) {
-                int damageTaken = ogre.TakeDamage(DamageType.TRUE_DAMAGE, 2, Spells.DCEffect.NULLIFIES_DAMAGE, 10, AbilityType.DEXTERITY);
+                int damageTaken = ogre.TakeDamage(DamageType.TRUE_DAMAGE, 2, Spells.DCEffect.NULLIFIES_DAMAGE, 10, AbilityType.DEXTERITY, this, out _);
                 if (damageTaken == 2) {
                     tookFullDamage++;
                 } else if (damageTaken == 0) {

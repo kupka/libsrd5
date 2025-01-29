@@ -54,7 +54,7 @@ namespace srd5 {
 
         [Fact]
         public void LightTest() {
-            DefaultSpellTest(Spells.Light, 12, SpellLevel.CANTRIP, null, Effect.LIGHT, null);
+            DefaultSpellTest(Spells.Light, 12, SpellLevel.CANTRIP, null, Effect.SPELL_LIGHT, null);
         }
 
         [Fact]
@@ -78,9 +78,9 @@ namespace srd5 {
             Spells.RayOfFrost.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, shadow);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
             Spells.RayOfFrost.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, shadow);
-            Assert.True(shadow.HasEffect(Effect.RAY_OF_FROST));
+            Assert.True(shadow.HasEffect(Effect.SPELL_RAY_OF_FROST));
             wizard.OnStartOfTurn();
-            Assert.False(shadow.HasEffect(Effect.RAY_OF_FROST));
+            Assert.False(shadow.HasEffect(Effect.SPELL_RAY_OF_FROST));
         }
 
         [Fact]

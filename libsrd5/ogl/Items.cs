@@ -675,6 +675,16 @@ namespace srd5 {
                 }, ItemRarity.VERY_RARE);
             }
         }
+
+        public static Consumable Goodberry {
+            get {
+                return new Consumable("Goodberry", ItemType.POTION, delegate (Combattant consumer, Consumable berry) {
+                    consumer.HealDamage(1);
+                    berry.Charges = 0;
+                    berry.Destroyed = true;
+                }, ItemRarity.COMMON);
+            }
+        }
     }
 
     public struct Wands {

@@ -374,7 +374,7 @@ namespace srd5 {
                     bonusMissiles = Math.Min(1, bonusMissiles);
                     missilesTotal -= bonusMissiles;
                     for (int m = 0; m < missilesTotal / targets.Length + bonusMissiles; m++) {
-                        target.TakeDamage(damage.Type, damage.Dices.Roll());
+                        target.TakeDamage(damage.Type, damage.Dice.Roll());
                     }
                 }
             }

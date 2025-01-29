@@ -7,7 +7,7 @@ namespace srd5 {
                     SpellDuration.INSTANTANEOUS, 5, 2, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         Damage damage = DamageLevelScaling(caster, Die.D6, DamageType.ACID);
                         foreach (Combattant target in targets) {
-                            int amount = damage.Dices.Roll();
+                            int amount = damage.Dice.Roll();
                             if (!target.DC(ID.ACID_SPLASH, dc, AbilityType.DEXTERITY)) {
                                 GlobalEvents.AffectBySpell(caster, ID.ACID_SPLASH, target, true);
                                 target.TakeDamage(damage.Type, amount);
@@ -113,7 +113,7 @@ namespace srd5 {
         public static readonly Spell PoisonSpray = new Spell(ID.POISON_SPRAY, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 10, VS, SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
             Damage damage = DamageLevelScaling(caster, Die.D12, DamageType.POISON);
             Combattant target = targets[0];
-            int amount = damage.Dices.Roll();
+            int amount = damage.Dice.Roll();
             if (target.DC(ID.POISON_SPRAY, dc, AbilityType.CONSTITUTION)) {
                 GlobalEvents.AffectBySpell(caster, ID.POISON_SPRAY, target, false);
             } else {
@@ -187,12 +187,12 @@ namespace srd5 {
                 GlobalEvents.AffectBySpell(caster, ID.SHILLELAGH, caster, true);
                 foreach (Attack attack in sheet.MeleeAttacks) {
                     attack.Name = ID.SHILLELAGH.Name();
-                    attack.Damage.Dices = new Dice(1, 8, modifier);
+                    attack.Damage.Dice = new Dice(1, 8, modifier);
                     attack.AttackBonus = modifier + sheet.ProficiencyBonus;
                 }
                 if (caster.BonusAttack != null) {
                     caster.BonusAttack.Name = ID.SHILLELAGH.Name();
-                    caster.BonusAttack.Damage.Dices = new Dice(1, 8, modifier);
+                    caster.BonusAttack.Damage.Dice = new Dice(1, 8, modifier);
                     caster.BonusAttack.AttackBonus = modifier + sheet.ProficiencyBonus;
                 }
             }
@@ -246,7 +246,7 @@ namespace srd5 {
             delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Damage damage = DamageLevelScaling(caster, Die.D4, DamageType.PSYCHIC);
                 Combattant target = targets[0];
-                int damageTaken = target.TakeDamage(damage.Type, damage.Dices.Roll(), DCEffect.NULLIFIES_DAMAGE, dc, AbilityType.WISDOM, ID.VICIOUS_MOCKERY, out _);
+                int damageTaken = target.TakeDamage(damage.Type, damage.Dice.Roll(), DCEffect.NULLIFIES_DAMAGE, dc, AbilityType.WISDOM, ID.VICIOUS_MOCKERY, out _);
                 if (damageTaken == 0) {
                     GlobalEvents.AffectBySpell(caster, ID.VICIOUS_MOCKERY, target, false);
                 } else {

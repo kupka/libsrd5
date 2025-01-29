@@ -512,7 +512,7 @@ namespace srd5 {
             if (spell && ranged && target.HasFeat(Feat.REFLECTIVE_CARAPACE)) {
                 GlobalEvents.ActivateFeat(target, Feat.REFLECTIVE_CARAPACE);
                 if (srd5.Die.D6.Value == 6) { // reflect back on 6
-                    this.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll());
+                    this.TakeDamage(attack.Damage.Type, attack.Damage.Dice.Roll());
                 }
                 return false;
             }
@@ -550,11 +550,11 @@ namespace srd5 {
             if (criticalHit) {
                 int times = 2;
                 if (attack.HasProperty(srd5.Attack.Property.TRIPLE_DICE_ON_CRIT)) times = 3;
-                target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.RollCritical(times) + bonusDamage);
-                if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.RollCritical(times));
+                target.TakeDamage(attack.Damage.Type, attack.Damage.Dice.RollCritical(times) + bonusDamage);
+                if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dice.RollCritical(times));
             } else {
-                target.TakeDamage(attack.Damage.Type, attack.Damage.Dices.Roll() + bonusDamage);
-                if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dices.Roll());
+                target.TakeDamage(attack.Damage.Type, attack.Damage.Dice.Roll() + bonusDamage);
+                if (attack.AdditionalDamage != null) target.TakeDamage(attack.AdditionalDamage.Type, attack.AdditionalDamage.Dice.Roll());
             }
             // Hit effect
             attack.ApplyEffectOnHit(this, target);

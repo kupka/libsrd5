@@ -127,12 +127,12 @@ namespace srd5 {
 
     public class DiceRolledEvent : EventArgs {
         internal static DiceRolledEventSource source { get; set; }
-        public Dice Dices { get; private set; }
+        public Dice Dice { get; private set; }
         public int Value { get; private set; }
         public DiceRolledEventSource Source { get; private set; }
 
         public DiceRolledEvent(Dice dice, int value) {
-            Dices = dice;
+            Dice = dice;
             Value = value;
             Source = source;
             source = null;

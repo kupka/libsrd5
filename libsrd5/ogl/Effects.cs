@@ -137,7 +137,6 @@ namespace srd5 {
         CURSE_WERERAT,
         CURSE_WERETIGER,
         CURSE_WEREWOLF,
-        GUIDANCE,
         // Attack Effects
         ABOLETH_DISEASE_TENTACLE,
         BEARDED_DEVIL_POISON,

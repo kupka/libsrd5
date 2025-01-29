@@ -71,7 +71,7 @@ namespace srd5 {
         private static Weapon createMagicWeapon(Weapon input, string name, WeaponProperty[] props) {
             return new Weapon(
                 name,
-                input.Damage.Dices.ToString(),
+                input.Damage.Dice.ToString(),
                 input.Damage.Type,
                 props,
                 input.Proficiencies,

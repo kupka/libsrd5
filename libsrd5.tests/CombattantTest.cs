@@ -13,14 +13,14 @@ namespace srd5 {
             ogre.AddEffect(Effect.RESISTANCE_LIGHTNING);
             int hp = ogre.HitPoints;
             Damage cold = new Damage(DamageType.COLD, "1d6+5");
-            ogre.TakeDamage(cold.Type, cold.Dices.RollCritical());
+            ogre.TakeDamage(cold.Type, cold.Dice.RollCritical());
             Assert.InRange<int>(ogre.HitPoints, hp - 34, hp - 14);
             hp = ogre.HitPoints;
             Damage acid = new Damage(DamageType.ACID, "1d4+3");
-            ogre.TakeDamage(acid.Type, acid.Dices.Roll());
+            ogre.TakeDamage(acid.Type, acid.Dice.Roll());
             Assert.Equal(hp, ogre.HitPoints);
             Damage lightning = new Damage(DamageType.LIGHTNING, "1d12");
-            ogre.TakeDamage(lightning.Type, lightning.Dices.Roll());
+            ogre.TakeDamage(lightning.Type, lightning.Dice.Roll());
             Assert.InRange<int>(ogre.HitPoints, hp - 6, hp);
             Assert.Throws<Srd5ArgumentException>(delegate {
                 ogre.TakeDamage(DamageType.ACID, -100);

@@ -35,7 +35,7 @@ namespace srd5 {
 
         /* Absorb Damage. Returns amount of damage that could not be absorbed. */
         public int Absorb(int amount) {
-            int spillOver = Math.Min(0, amount - Amount);
+            int spillOver = Math.Max(0, amount - Amount);
             Amount = Math.Max(0, Amount - amount);
             return spillOver;
         }
@@ -251,8 +251,8 @@ namespace srd5 {
             return IsProficient(proficiency);
         }
 
-        public int TakeDamage(DamageType type, string amount, Spells.DCEffect dCEffect, int dc, AbilityType dcAbility, object dcSource, out bool dcResult) {
-            return TakeDamage(type, new Dice(amount).Roll(), dCEffect, dc, dcAbility, dcSource, out dcResult);
+        public int TakeDamage(DamageType type, string amount, Spells.DCEffect dCEffect, int dc, AbilityType dcAbility, object dcSource, out bool dcSuccess) {
+            return TakeDamage(type, new Dice(amount).Roll(), dCEffect, dc, dcAbility, dcSource, out dcSuccess);
         }
 
         public int TakeDamage(DamageType type, int amount) {
@@ -266,17 +266,17 @@ namespace srd5 {
         /// <summary>
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
-        public int TakeDamage(DamageType type, int amount, Spells.DCEffect dCEffect, int dc, AbilityType dcAbility, object dcSource, out bool dcResult) {
-            dcResult = false;
+        public int TakeDamage(DamageType type, int amount, Spells.DCEffect dCEffect, int dc, AbilityType dcAbility, object dcSource, out bool dcSuccess) {
+            dcSuccess = false;
             if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
             if (IsImmune(type)) return 0;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;
             if (dc > 0) {
-                dcResult = DC(dcSource, dc, dcAbility);
-                if (dcResult && dCEffect == Spells.DCEffect.HALVES_DAMAGE)
+                dcSuccess = DC(dcSource, dc, dcAbility);
+                if (dcSuccess && dCEffect == Spells.DCEffect.HALVES_DAMAGE)
                     amount /= 2;
-                else if (dcResult && dCEffect == Spells.DCEffect.NULLIFIES_DAMAGE)
+                else if (dcSuccess && dCEffect == Spells.DCEffect.NULLIFIES_DAMAGE)
                     return 0;
             }
             GlobalEvents.ReceivedDamage(this, amount, type);

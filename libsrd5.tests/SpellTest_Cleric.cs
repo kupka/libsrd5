@@ -6,7 +6,7 @@ namespace srd5 {
         public void SpareTheDyingTest() {
             CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             hero.AddLevel(CharacterClasses.Barbarian);
-            hero.TakeDamage(DamageType.TRUE_DAMAGE, hero.HitPointsMax);
+            hero.TakeDamage(this, DamageType.TRUE_DAMAGE, hero.HitPointsMax);
             Assert.True(hero.HasEffect(Effect.FIGHTING_DEATH));
             Spells.SpareTheDying.Cast(hero, 16, SpellLevel.CANTRIP, 0);
             hero.OnStartOfTurn();

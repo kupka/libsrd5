@@ -129,6 +129,8 @@ namespace srd5 {
         SPELL_RESISTANCE,
         SPELL_GUIDANCE,
         SPELL_DIVINE_FAVOR,
+        SPELL_HIDEOUS_LAUGHTER,
+        SPELL_COMMAND_GROVEL,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,
@@ -257,7 +259,7 @@ namespace srd5 {
                 case Effect.FIRE_ELEMENTAL_IGNITE:
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (!combattant.HasEffect(effect)) return true;
-                        combattant.TakeDamage(DamageType.FIRE, "1d10");
+                        combattant.TakeDamage(effect, DamageType.FIRE, "1d10");
                         return false;
                     });
                     break;
@@ -295,7 +297,7 @@ namespace srd5 {
                 case Effect.MAGMIN_IGNITE:
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (!combattant.HasEffect(effect)) return true;
-                        combattant.TakeDamage(DamageType.FIRE, "1d6");
+                        combattant.TakeDamage(effect, DamageType.FIRE, "1d6");
                         return false;
                     });
                     break;
@@ -314,7 +316,7 @@ namespace srd5 {
                     combattant.AddEffect(Effect.CANNOT_REGAIN_HITPOINTS);
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (!combattant.HasEffect(effect)) return true;
-                        combattant.TakeDamage(DamageType.POISON, "6d6");
+                        combattant.TakeDamage(effect, DamageType.POISON, "6d6");
                         return false;
                     });
                     combattant.AddEndOfTurnEvent(delegate () {
@@ -352,7 +354,7 @@ namespace srd5 {
                     if (!combattant.HasEffect(Effect.IMMUNITY_BLINDED)) combattant.AddCondition(ConditionType.BLINDED);
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (combattant.HasCondition(ConditionType.GRAPPLED_DC13)) {
-                            combattant.TakeDamage(DamageType.BLUDGEONING, "2d6+3");
+                            combattant.TakeDamage(effect, DamageType.BLUDGEONING, "2d6+3");
                             return false;
                         } else {
                             return true;
@@ -416,6 +418,10 @@ namespace srd5 {
                             }
                         }
                     });
+                    break;
+                case Effect.SPELL_COMMAND_GROVEL:
+                case Effect.SPELL_HIDEOUS_LAUGHTER:
+                    combattant.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
                     break;
             }
         }
@@ -507,6 +513,10 @@ namespace srd5 {
                                              Effect.FIGHTING_DEATH_SAVE_SUCCESS_1,
                                              Effect.FIGHTING_DEATH_SAVE_SUCCESS_2,
                                              Effect.FIGHTING_DEATH_STABILIZED);
+                    break;
+                case Effect.SPELL_COMMAND_GROVEL:
+                case Effect.SPELL_HIDEOUS_LAUGHTER:
+                    combattant.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
                     break;
             }
         }

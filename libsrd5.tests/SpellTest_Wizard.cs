@@ -181,10 +181,12 @@ namespace srd5 {
                 badger2.OnEndOfTurn();
             }
             // wake up after damage taken
-            badger3.OnDamageTaken();
+            badger3.OnDamageTaken(hero, new Damage(DamageType.TRUE_DAMAGE, 1));
             badger3.OnEndOfTurn();
-            Assert.False(badger2.HasCondition(ConditionType.UNCONSCIOUS) || badger3.HasCondition(ConditionType.UNCONSCIOUS));
-            Assert.False(zombie.HasCondition(ConditionType.UNCONSCIOUS) || bandit.HasCondition(ConditionType.UNCONSCIOUS));
+            Assert.False(badger2.HasCondition(ConditionType.UNCONSCIOUS));
+            Assert.False(badger3.HasCondition(ConditionType.UNCONSCIOUS));
+            Assert.False(zombie.HasCondition(ConditionType.UNCONSCIOUS));
+            Assert.False(bandit.HasCondition(ConditionType.UNCONSCIOUS));
         }
     }
 }

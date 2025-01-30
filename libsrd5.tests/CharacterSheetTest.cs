@@ -473,7 +473,7 @@ namespace srd5 {
         public void LongRestTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HALFLING);
             sheet.AddLevel(CharacterClasses.Barbarian);
-            sheet.TakeDamage(DamageType.SLASHING, 2);
+            sheet.TakeDamage(this, DamageType.SLASHING, 2);
             Assert.True(sheet.HitPointsMax > sheet.HitPoints);
             sheet.LongRest();
             Assert.Equal(sheet.HitPointsMax, sheet.HitPoints);
@@ -538,7 +538,7 @@ namespace srd5 {
         public void InstantDeathTest() {
             CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
             hero.AddLevel(CharacterClasses.Wizard);
-            hero.TakeDamage(DamageType.TRUE_DAMAGE, 100);
+            hero.TakeDamage(this, DamageType.TRUE_DAMAGE, 100);
             Assert.True(hero.Dead);
         }
 
@@ -549,7 +549,7 @@ namespace srd5 {
             for (int i = 0; i < 100; i++) {
                 CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
                 hero.AddLevel(CharacterClasses.Wizard);
-                hero.TakeDamage(DamageType.TRUE_DAMAGE, hero.HitPointsMax);
+                hero.TakeDamage(this, DamageType.TRUE_DAMAGE, hero.HitPointsMax);
                 Assert.True(hero.HasEffect(Effect.FIGHTING_DEATH));
                 for (int j = 0; j < 6; j++) {
                     hero.OnStartOfTurn();

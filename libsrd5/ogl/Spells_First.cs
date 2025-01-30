@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace srd5 {
     public partial struct Spells {
@@ -58,7 +59,7 @@ namespace srd5 {
         public static readonly Spell BurningHands = new Spell(ID.BURNING_HANDS, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 15, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
             Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 6, 3);
             foreach (Combattant target in targets) {
-                target.TakeDamage(DamageType.FIRE, dice.Roll(), DCEffect.HALVES_DAMAGE, dc, AbilityType.DEXTERITY, ID.BURNING_HANDS, out _);
+                target.TakeDamage(ID.BURNING_HANDS, DamageType.FIRE, dice.Roll(), DCEffect.HALVES_DAMAGE, dc, AbilityType.DEXTERITY, out _);
                 GlobalEvents.AffectBySpell(caster, ID.BURNING_HANDS, target, true);
             }
         });
@@ -118,9 +119,9 @@ namespace srd5 {
                 affected = false;
             } else {
                 target.AddCondition(ConditionType.PRONE);
-                target.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
+                target.AddEffect(Effect.SPELL_COMMAND_GROVEL);
                 target.AddEndOfTurnEvent(delegate () {
-                    target.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
+                    target.RemoveEffect(Effect.SPELL_COMMAND_GROVEL);
                     return true;
                 });
             }
@@ -301,7 +302,7 @@ namespace srd5 {
             // Should only affect targets that damaged the caster but we can't determine this here
             Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 10, 2);
             Combattant target = targets[0];
-            target.TakeDamage(DamageType.FIRE, dice.Roll(), DCEffect.HALVES_DAMAGE, dc, AbilityType.DEXTERITY, ID.HELLISH_REBUKE, out _);
+            target.TakeDamage(ID.HELLISH_REBUKE, DamageType.FIRE, dice.Roll(), DCEffect.HALVES_DAMAGE, dc, AbilityType.DEXTERITY, out _);
             GlobalEvents.AffectBySpell(caster, ID.HELLISH_REBUKE, target, true);
         });
 
@@ -323,8 +324,35 @@ namespace srd5 {
                 }
             });
         });
-        /* TODO */
-        public static readonly Spell HideousLaughter = new Spell(ID.HIDEOUS_LAUGHTER, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+
+        public static readonly Spell HideousLaughter = new Spell(ID.HIDEOUS_LAUGHTER, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            Combattant target = targets[0];
+            if (target.Intelligence.Value < 5 || target.DC(ID.HIDEOUS_LAUGHTER, dc, AbilityType.WISDOM)) {
+                GlobalEvents.AffectBySpell(caster, ID.HIDEOUS_LAUGHTER, target, false);
+            } else {
+                GlobalEvents.AffectBySpell(caster, ID.HIDEOUS_LAUGHTER, target, true);
+                target.AddCondition(ConditionType.PRONE);
+                target.AddEffects(Effect.SPELL_HIDEOUS_LAUGHTER);
+                int remainingRounds = 10;
+                target.AddDamageTakenEvent(delegate (object source, Damage damage) {
+                    if (target.DC(ID.HIDEOUS_LAUGHTER, dc, AbilityType.WISDOM, out _, true)) {
+                        remainingRounds = 0;
+                        target.RemoveEffects(Effect.SPELL_HIDEOUS_LAUGHTER);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                target.AddEndOfTurnEvent(delegate () {
+                    if (--remainingRounds < 1 || target.DC(ID.HIDEOUS_LAUGHTER, dc, AbilityType.WISDOM)) {
+                        target.RemoveEffects(Effect.SPELL_HIDEOUS_LAUGHTER);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+            }
+        });
         /* TODO */
         public static readonly Spell HuntersMark = new Spell(ID.HUNTERS_MARK, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 90, V, SpellDuration.ONE_HOUR, 0, 0, doNothing);
         /* TODO */
@@ -374,7 +402,7 @@ namespace srd5 {
                     bonusMissiles = Math.Min(1, bonusMissiles);
                     missilesTotal -= bonusMissiles;
                     for (int m = 0; m < missilesTotal / targets.Length + bonusMissiles; m++) {
-                        target.TakeDamage(damage.Type, damage.Dice.Roll());
+                        target.TakeDamage(ID.MAGIC_MISSILE, damage.Type, damage.Dice.Roll());
                     }
                 }
             }
@@ -416,14 +444,13 @@ namespace srd5 {
                     remainingHitpoints -= target.HitPoints;
                     target.AddCondition(ConditionType.UNCONSCIOUS);
                     bool targetTookDamage = false;
-                    target.AddDamageTakenEvent(delegate () {
+                    target.AddDamageTakenEvent(delegate (object source, Damage damage) {
                         targetTookDamage = true;
                         return true;
                     });
 
                     target.AddEndOfTurnEvent(delegate () {
-                        remainingRounds--;
-                        if (targetTookDamage || remainingRounds < 1) {
+                        if (targetTookDamage || --remainingRounds < 1) {
                             target.RemoveCondition(ConditionType.UNCONSCIOUS);
                             return true;
                         }
@@ -443,7 +470,7 @@ namespace srd5 {
                 Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 8);
                 foreach (Combattant target in targets) {
                     GlobalEvents.AffectBySpell(caster, ID.THUNDERWAVE, target, true);
-                    target.TakeDamage(DamageType.THUNDER, dice.Roll(), DCEffect.HALVES_DAMAGE, dc, AbilityType.CONSTITUTION, ID.THUNDERWAVE, out bool dcResult);
+                    target.TakeDamage(ID.THUNDERWAVE, DamageType.THUNDER, dice.Roll(), DCEffect.HALVES_DAMAGE, dc, AbilityType.CONSTITUTION, out bool dcResult);
                     if (!dcResult) {
                         ground.Push(ground.LocateCombattant(caster), target, 10);
                     }

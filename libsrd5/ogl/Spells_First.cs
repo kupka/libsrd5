@@ -234,7 +234,10 @@ namespace srd5 {
             caster.AddTemporaryHitpoints(temporaryHitpoints, SpellDuration.ONE_HOUR, ID.FALSE_LIFE);
         });
 
-        public static readonly Spell FeatherFall = new Spell(ID.FEATHER_FALL, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.REACTION, 60, VM, SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.FEATHER_FALL));
+        public static readonly Spell FeatherFall = new Spell(ID.FEATHER_FALL, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.REACTION, 60, VM, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            Combattant target = targets[0];
+            target.AddEffect(Effect.SPELL_FEATHER_FALL);
+        });
 
         public static readonly Spell FindFamiliar = new Spell(ID.FIND_FAMILIAR, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_HOUR, 10, VSM, SpellDuration.INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.FIND_FAMILIAR));
 
@@ -353,14 +356,26 @@ namespace srd5 {
                 });
             }
         });
-        /* TODO */
-        public static readonly Spell HuntersMark = new Spell(ID.HUNTERS_MARK, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 90, V, SpellDuration.ONE_HOUR, 0, 0, doNothing);
-        /* TODO */
-        public static readonly Spell Identify = new Spell(ID.IDENTIFY, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_MINUTE, 0, VSM, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
-        /* TODO */
-        public static readonly Spell IllusoryScript = new Spell(ID.ILLUSORY_SCRIPT, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_MINUTE, 0, SM, SpellDuration.TEN_DAYS, 0, 0, doNothing);
-        /* TODO */
-        public static readonly Spell InflictWounds = new Spell(ID.INFLICT_WOUNDS, SpellSchool.NECROMANCY, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+
+        public static readonly Spell HuntersMark = new Spell(ID.HUNTERS_MARK, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 90, V, SpellDuration.ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            Combattant target = targets[0];
+            target.AddDamageTakenEvent(delegate (object source, Damage damage) {
+                if (caster == source) {
+                    target.TakeDamage(ID.HUNTERS_MARK, DamageType.TRUE_DAMAGE, "1d6");
+                }
+                return false;
+            });
+        });
+        /* TODO: At some point we will want to have unidentified items*/
+        public static readonly Spell Identify = new Spell(ID.IDENTIFY, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_MINUTE, 0, VSM, SpellDuration.INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.IDENTIFY));
+
+        public static readonly Spell IllusoryScript = new Spell(ID.ILLUSORY_SCRIPT, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_MINUTE, 0, SM, SpellDuration.TEN_DAYS, 0, 0, SpellWithoutEffect(ID.ILLUSORY_SCRIPT));
+
+        public static readonly Spell InflictWounds = new Spell(ID.INFLICT_WOUNDS, SpellSchool.NECROMANCY, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            Combattant target = targets[0];
+            Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 10, 2);
+            SpellAttack(ID.INFLICT_WOUNDS, ground, caster, new Damage(DamageType.NECROTIC, dice.Roll()), modifier, target, 5);
+        });
 
         public static readonly Spell Jump = new Spell(
             ID.JUMP, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM,
@@ -381,7 +396,11 @@ namespace srd5 {
         );
 
         /* TODO */
-        public static readonly Spell MageArmor = new Spell(ID.MAGE_ARMOR, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.EIGHT_HOURS, 0, 0, doNothing);
+        public static readonly Spell MageArmor = new Spell(ID.MAGE_ARMOR, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.EIGHT_HOURS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            if (targets[0] is CharacterSheet hero && hero.Inventory.Armor == null) {
+                hero.Equip(Armors.MageArmor);
+            }
+        });
 
         public static readonly Spell MagicMissile = new Spell(
             ID.MAGIC_MISSILE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, VS,

@@ -612,6 +612,12 @@ namespace srd5 {
                            new ArmorProperty[] { ArmorProperty.HEAVY, ArmorProperty.STEALTH_DISADVANTAGE, ArmorProperty.METAL }, 150000, 65);
             }
         }
+
+        public static Armor MageArmor {
+            get {
+                return new Armor("Mage armor", 13, 10, 0, Proficiency.LIGHT_ARMOR, new ArmorProperty[] { }, 0, 0);
+            }
+        }
     }
 
     public struct Rings {

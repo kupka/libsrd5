@@ -131,6 +131,7 @@ namespace srd5 {
         SPELL_DIVINE_FAVOR,
         SPELL_HIDEOUS_LAUGHTER,
         SPELL_COMMAND_GROVEL,
+        SPELL_FEATHER_FALL,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,

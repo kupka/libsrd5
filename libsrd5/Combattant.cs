@@ -607,6 +607,18 @@ namespace srd5 {
                                         || HasCondition(ConditionType.EXHAUSTED_3)
                                         || HasCondition(ConditionType.POISONED)
                                         || HasCondition(ConditionType.PRONE);
+            if (!disadvantage && target.HasEffect(Effect.SPELL_PROTECTION_FROM_EVIL_AND_GOOD) && this is Monster monster) {
+                switch(monster.Type) {
+                    case Monsters.Type.ABERRATION:
+                    case Monsters.Type.CELESTIAL:
+                    case Monsters.Type.ELEMENTAL:
+                    case Monsters.Type.FEY:
+                    case Monsters.Type.FIEND:
+                    case Monsters.Type.UNDEAD:
+                        disadvantage = true;
+                        break;
+                }
+            }            
             disadvantage = disadvantage || (ranged && (distance <= 5 || distance > attack.RangeNormal));
             return disadvantage;
         }

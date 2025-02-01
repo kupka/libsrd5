@@ -395,10 +395,13 @@ namespace srd5 {
             }
         );
 
-        /* TODO */
         public static readonly Spell MageArmor = new Spell(ID.MAGE_ARMOR, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.EIGHT_HOURS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-            if (targets[0] is CharacterSheet hero && hero.Inventory.Armor == null) {
+            Combattant target = targets[0];
+            if (target is CharacterSheet hero && hero.Inventory.Armor == null) {
+                GlobalEvents.AffectBySpell(caster, ID.MAGE_ARMOR, hero, true);
                 hero.Equip(Armors.MageArmor);
+            } else {
+                GlobalEvents.AffectBySpell(caster, ID.MAGE_ARMOR, target, true);
             }
         });
 
@@ -427,23 +430,54 @@ namespace srd5 {
             }
         );
 
-        /* TODO */
-        public static readonly Spell ProtectionfromEvilandGood = new Spell(ID.PROTECTION_FROM_EVIL_AND_GOOD, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.TEN_MINUTES, 0, 0, doNothing);
-        /* TODO */
+        public static readonly Spell ProtectionfromEvilandGood = new Spell(ID.PROTECTION_FROM_EVIL_AND_GOOD, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.TEN_MINUTES, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            GlobalEvents.AffectBySpell(caster, ID.PROTECTION_FROM_EVIL_AND_GOOD, targets[0], true);
+            targets[0].AddEffect(Effect.SPELL_PROTECTION_FROM_EVIL_AND_GOOD);
+        });
 
         public static readonly Spell PurifyFoodAndDrink = new Spell(
             ID.PURIFY_FOOD_AND_DRINK, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 10, VS,
-            SpellDuration.INSTANTANEOUS, 5, 0, doNothing
+            SpellDuration.INSTANTANEOUS, 5, 0, SpellWithoutEffect(ID.PURIFY_FOOD_AND_DRINK)
         );
 
-        public static readonly Spell Sanctuary = new Spell(ID.SANCTUARY, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
-        /* TODO */
-        public static readonly Spell Shield = new Spell(ID.SHIELD, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.REACTION, 0, VS, SpellDuration.ONE_ROUND, 0, 0, doNothing);
-        /* TODO */
-        public static readonly Spell ShieldofFaith = new Spell(ID.SHIELD_OF_FAITH, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 60, VSM, SpellDuration.TEN_MINUTES, 0, 0, doNothing);
-        /* TODO */
-        public static readonly Spell SilentImage = new Spell(ID.SILENT_IMAGE, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.TEN_MINUTES, 15, 0, doNothing);
-        /* TODO */
+        // TODO: Right now, we don't have a means to redirect a target
+        public static readonly Spell Sanctuary = new Spell(ID.SANCTUARY, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.SANCTUARY));
+
+        public static readonly Spell Shield = new Spell(ID.SHIELD, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.REACTION, 0, VS, SpellDuration.ONE_ROUND, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            // TODO: Implement Reaction and apply bonus to reaction attack or nullify Magic Missile
+            GlobalEvents.AffectBySpell(caster, ID.SHIELD, caster, true);
+            caster.AddEffect(Effect.SPELL_SHIELD);
+            caster.ArmorClassModifier += 5;
+            caster.AddStartOfTurnEvent(delegate() {
+                caster.ArmorClassModifier -= 5;
+                caster.RemoveEffect(Effect.SPELL_SHIELD);
+                return true;
+            });
+        });
+
+        public static readonly Spell ShieldofFaith = new Spell(ID.SHIELD_OF_FAITH, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 60, VSM, SpellDuration.TEN_MINUTES, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            Combattant target = targets[0];
+            if(target.HasEffect(Effect.SPELL_SHIELD_OF_FAITH)) {
+                GlobalEvents.AffectBySpell(caster, ID.SHIELD_OF_FAITH, target, false);
+            } else {
+                GlobalEvents.AffectBySpell(caster, ID.SHIELD_OF_FAITH, target, false);
+                target.AddEffect(Effect.SPELL_SHIELD_OF_FAITH);
+                target.ArmorClassModifier += 2;
+                int remainingRounds = 100;
+                target.AddEndOfTurnEvent(delegate() {
+                    if (--remainingRounds == 0) {
+                        target.ArmorClassModifier -= 2;
+                        target.RemoveEffect(Effect.SPELL_SHIELD_OF_FAITH);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+            }
+        });
+        
+        public static readonly Spell SilentImage = new Spell(ID.SILENT_IMAGE, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.TEN_MINUTES, 15, 0, SpellWithoutEffect(ID.SILENT_IMAGE));
+
         public static readonly Spell Sleep = new Spell(ID.SLEEP, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VSM, SpellDuration.ONE_MINUTE, 20, 99,
             delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                 Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 8, 5, 0, 2);
@@ -480,7 +514,7 @@ namespace srd5 {
 
         public static readonly Spell SpeakWithAnimals = new Spell(
             ID.SPEAK_WITH_ANIMALS, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS,
-            SpellDuration.TEN_MINUTES, 0, 0, doNothing
+            SpellDuration.TEN_MINUTES, 0, 0, SpellWithoutEffect(ID.SPEAK_WITH_ANIMALS)
         );
 
         public static readonly Spell Thunderwave = new Spell(
@@ -497,8 +531,7 @@ namespace srd5 {
             }
         );
 
-        /* TODO */
-        public static readonly Spell UnseenServant = new Spell(ID.UNSEEN_SERVANT, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+        public static readonly Spell UnseenServant = new Spell(ID.UNSEEN_SERVANT, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.ONE_HOUR, 0, 0, SpellWithoutEffect(ID.UNSEEN_SERVANT));
 
     }
 }

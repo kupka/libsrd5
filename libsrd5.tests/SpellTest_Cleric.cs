@@ -6,7 +6,7 @@ namespace srd5 {
         public void SpareTheDyingTest() {
             CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             hero.AddLevel(CharacterClasses.Barbarian);
-            hero.TakeDamage(DamageType.TRUE_DAMAGE, hero.HitPointsMax);
+            hero.TakeDamage(this, DamageType.TRUE_DAMAGE, hero.HitPointsMax);
             Assert.True(hero.HasEffect(Effect.FIGHTING_DEATH));
             Spells.SpareTheDying.Cast(hero, 16, SpellLevel.CANTRIP, 0);
             hero.OnStartOfTurn();
@@ -18,9 +18,9 @@ namespace srd5 {
             CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             hero.AddLevel(CharacterClasses.Barbarian);
             Spells.Guidance.Cast(hero, 10, SpellLevel.FIRST, 0);
-            Assert.True(hero.HasEffect(Effect.GUIDANCE));
+            Assert.True(hero.HasEffect(Effect.SPELL_GUIDANCE));
             hero.DC(Attacks.AbolethTail, 12, AbilityType.STRENGTH);
-            Assert.False(hero.HasEffect(Effect.GUIDANCE));
+            Assert.False(hero.HasEffect(Effect.SPELL_GUIDANCE));
         }
     }
 }

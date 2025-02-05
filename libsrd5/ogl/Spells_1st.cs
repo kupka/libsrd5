@@ -1,6 +1,4 @@
 using System;
-using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace srd5 {
     public partial struct Spells {
@@ -99,7 +97,7 @@ namespace srd5 {
                 if (target.HasCondition(ConditionType.UNCONSCIOUS)) continue;
                 // Creatures immune to being blinded aren't affected by this spell
                 if (target.HasEffect(Effect.IMMUNITY_BLINDED)) continue;
-                // substract hitpoints and make target unconcious for one round
+                // substract hitpoints and make target blind for one round
                 remainingHitpoints -= target.HitPoints;
                 target.AddCondition(ConditionType.BLINDED);
                 caster.AddStartOfTurnEvent(delegate () {
@@ -448,7 +446,7 @@ namespace srd5 {
             GlobalEvents.AffectBySpell(caster, ID.SHIELD, caster, true);
             caster.AddEffect(Effect.SPELL_SHIELD);
             caster.ArmorClassModifier += 5;
-            caster.AddStartOfTurnEvent(delegate() {
+            caster.AddStartOfTurnEvent(delegate () {
                 caster.ArmorClassModifier -= 5;
                 caster.RemoveEffect(Effect.SPELL_SHIELD);
                 return true;
@@ -457,14 +455,14 @@ namespace srd5 {
 
         public static readonly Spell ShieldofFaith = new Spell(ID.SHIELD_OF_FAITH, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 60, VSM, SpellDuration.TEN_MINUTES, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
             Combattant target = targets[0];
-            if(target.HasEffect(Effect.SPELL_SHIELD_OF_FAITH)) {
+            if (target.HasEffect(Effect.SPELL_SHIELD_OF_FAITH)) {
                 GlobalEvents.AffectBySpell(caster, ID.SHIELD_OF_FAITH, target, false);
             } else {
                 GlobalEvents.AffectBySpell(caster, ID.SHIELD_OF_FAITH, target, false);
                 target.AddEffect(Effect.SPELL_SHIELD_OF_FAITH);
                 target.ArmorClassModifier += 2;
                 int remainingRounds = 100;
-                target.AddEndOfTurnEvent(delegate() {
+                target.AddEndOfTurnEvent(delegate () {
                     if (--remainingRounds == 0) {
                         target.ArmorClassModifier -= 2;
                         target.RemoveEffect(Effect.SPELL_SHIELD_OF_FAITH);
@@ -475,7 +473,7 @@ namespace srd5 {
                 });
             }
         });
-        
+
         public static readonly Spell SilentImage = new Spell(ID.SILENT_IMAGE, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.TEN_MINUTES, 15, 0, SpellWithoutEffect(ID.SILENT_IMAGE));
 
         public static readonly Spell Sleep = new Spell(ID.SLEEP, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VSM, SpellDuration.ONE_MINUTE, 20, 99,

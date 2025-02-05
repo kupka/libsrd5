@@ -188,5 +188,30 @@ namespace srd5 {
             Assert.False(zombie.HasCondition(ConditionType.UNCONSCIOUS));
             Assert.False(bandit.HasCondition(ConditionType.UNCONSCIOUS));
         }
+
+        [Fact]
+        public void FalseLifeTest() {
+            Monster hag = Monsters.NightHag;
+            Spells.FalseLife.Cast(hag, 0, SpellLevel.FIRST, 0);
+            hag.TakeDamage(this, DamageType.FIRE, 1);
+            Assert.Equal(hag.HitPointsMax, hag.HitPoints);
+            hag.TakeDamage(this, DamageType.FIRE, 30);
+            Assert.True(hag.HitPointsMax > hag.HitPoints);
+            hag.HealDamage(100);
+            Spells.FalseLife.Cast(hag, 0, SpellLevel.NINETH, 0);
+            Spells.FalseLife.Cast(hag, 0, SpellLevel.THIRD, 0);
+            hag.TakeDamage(this, DamageType.FIRE, 30);
+            Assert.Equal(hag.HitPointsMax, hag.HitPoints);
+        }
+
+        [Fact]
+        public void BurningHandsTest() {
+            DamagingSpellTesting(Spells.BurningHands, 12, DamageType.FIRE);
+        }
+
+        [Fact]
+        public void ColorSprayTest() {
+            DefaultSpellTest(Spells.ColorSpray, 12, SpellLevel.FIRST, ConditionType.BLINDED, null, 1);
+        }
     }
 }

@@ -22,5 +22,15 @@ namespace srd5 {
             hero.DC(Attacks.AbolethTail, 12, AbilityType.STRENGTH);
             Assert.False(hero.HasEffect(Effect.SPELL_GUIDANCE));
         }
+
+        [Fact]
+        public void BaneTest() {
+            DefaultSpellTest(Spells.Bane, 12, SpellLevel.FIFTH, null, Effect.SPELL_BANE, 10);
+        }
+
+        [Fact]
+        public void BlessTest() {
+            DefaultSpellTest(Spells.Bless, 12, SpellLevel.FIFTH, null, Effect.SPELL_BLESS, 10);
+        }
     }
 }

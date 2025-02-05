@@ -25,9 +25,9 @@ namespace srd5 {
                 } else {
                     target.AddEffect(Effect.SPELL_BANE);
                     GlobalEvents.AffectBySpell(caster, ID.BANE, target, true);
-                    int maxRounds = 10;
+                    int remainingRounds = 10;
                     target.AddEndOfTurnEvent(delegate () {
-                        if (maxRounds++ > 10) {
+                        if (--remainingRounds < 1) {
                             target.RemoveEffect(Effect.SPELL_BANE);
                             return true;
                         } else {
@@ -42,9 +42,9 @@ namespace srd5 {
             foreach (Combattant target in targets) {
                 target.AddEffect(Effect.SPELL_BLESS);
                 GlobalEvents.AffectBySpell(caster, ID.BLESS, target, true);
-                int maxRounds = 10;
+                int remainingRounds = 10;
                 target.AddEndOfTurnEvent(delegate () {
-                    if (maxRounds++ > 10) {
+                    if (--remainingRounds < 1) {
                         target.RemoveEffect(Effect.SPELL_BLESS);
                         return true;
                     } else {
@@ -85,7 +85,7 @@ namespace srd5 {
             }
         );
 
-        public static readonly Spell ColorSpray = new Spell(ID.COLOR_SPRAY, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_ROUND, 15, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+        public static readonly Spell ColorSpray = new Spell(ID.COLOR_SPRAY, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_ROUND, 15, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
             Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 10, 5, 0, 2);
             int remainingHitpoints = dice.Roll();
             Array.Sort(targets, (t1, t2) => {
@@ -165,9 +165,9 @@ namespace srd5 {
         public static readonly Spell DivineFavor = new Spell(ID.DIVINE_FAVOR, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 0, VS, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
             GlobalEvents.AffectBySpell(caster, ID.DIVINE_FAVOR, caster, true);
             caster.AddEffect(Effect.SPELL_DIVINE_FAVOR);
-            int maxRounds = 10;
+            int remainingRounds = 10;
             caster.AddEndOfTurnEvent(delegate () {
-                if (maxRounds++ > 10) {
+                if (--remainingRounds < 1) {
                     caster.RemoveEffect(Effect.SPELL_DIVINE_FAVOR);
                     return true;
                 } else {
@@ -186,15 +186,15 @@ namespace srd5 {
                         GlobalEvents.AffectBySpell(caster, ID.ENTANGLE, target, true);
                         target.AddEffect(Effect.SPELL_ENTANGLE);
                         target.AddCondition(ConditionType.RESTRAINED);
-                        int rounds = 10;
+                        int remainingRounds = 10;
                         target.AddEndOfTurnEvent(delegate () {
-                            rounds--;
-                            bool done = rounds <= 0;
-                            if (done) {
+                            if (--remainingRounds < 1) {
                                 target.RemoveEffect(Effect.SPELL_ENTANGLE);
                                 target.RemoveCondition(ConditionType.RESTRAINED);
+                                return true;
+                            } else {
+                                return false;
                             }
-                            return done;
                         });
                     }
                 }
@@ -213,13 +213,14 @@ namespace srd5 {
                     } else {
                         GlobalEvents.AffectBySpell(caster, ID.FAERIE_FIRE, target, true);
                         target.AddEffect(Effect.SPELL_FAIRIE_FIRE);
-                        int rounds = 10;
+                        int remainingRounds = 10;
                         target.AddEndOfTurnEvent(delegate () {
-                            rounds--;
-                            bool done = rounds <= 0;
-                            if (done)
+                            if (--remainingRounds < 1) {
                                 target.RemoveEffect(Effect.SPELL_FAIRIE_FIRE);
-                            return done;
+                                return true;
+                            } else {
+                                return false;
+                            }
                         });
                     }
                 }
@@ -232,9 +233,20 @@ namespace srd5 {
             caster.AddTemporaryHitpoints(temporaryHitpoints, SpellDuration.ONE_HOUR, ID.FALSE_LIFE);
         });
 
-        public static readonly Spell FeatherFall = new Spell(ID.FEATHER_FALL, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.REACTION, 60, VM, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-            Combattant target = targets[0];
-            target.AddEffect(Effect.SPELL_FEATHER_FALL);
+        public static readonly Spell FeatherFall = new Spell(ID.FEATHER_FALL, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.REACTION, 60, VM, SpellDuration.ONE_MINUTE, 0, 5, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            foreach (Combattant target in targets) {
+                target.AddEffect(Effect.SPELL_FEATHER_FALL);
+                GlobalEvents.AffectBySpell(caster, ID.FEATHER_FALL, target, true);
+                int remainingRounds = 10;
+                target.AddEndOfTurnEvent(delegate () {
+                    if (--remainingRounds < 1) {
+                        target.RemoveEffect(Effect.SPELL_FEATHER_FALL);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+            }
         });
 
         public static readonly Spell FindFamiliar = new Spell(ID.FIND_FAMILIAR, SpellSchool.CONJURATION, SpellLevel.FIRST, CastingTime.ONE_HOUR, 10, VSM, SpellDuration.INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.FIND_FAMILIAR));
@@ -314,10 +326,10 @@ namespace srd5 {
             target.AddStartOfTurnEvent(delegate () {
                 target.AddTemporaryHitpoints(modifier, SpellDuration.ONE_MINUTE, ID.HEROISM);
                 remainingTurns--;
-                return remainingTurns == 0;
+                return remainingTurns < 1;
             });
             target.AddEndOfTurnEvent(delegate () {
-                if (remainingTurns == 0) {
+                if (remainingTurns < 1) {
                     target.RemoveTemporaryHitpoints(ID.HEROISM);
                     return true;
                 } else {
@@ -463,7 +475,7 @@ namespace srd5 {
                 target.ArmorClassModifier += 2;
                 int remainingRounds = 100;
                 target.AddEndOfTurnEvent(delegate () {
-                    if (--remainingRounds == 0) {
+                    if (--remainingRounds < 1) {
                         target.ArmorClassModifier -= 2;
                         target.RemoveEffect(Effect.SPELL_SHIELD_OF_FAITH);
                         return true;

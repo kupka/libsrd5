@@ -213,5 +213,16 @@ namespace srd5 {
         public void ColorSprayTest() {
             DefaultSpellTest(Spells.ColorSpray, 12, SpellLevel.FIRST, ConditionType.BLINDED, null, 1);
         }
+
+        [Fact]
+        public void FeatherFallTest() {
+            DefaultSpellTest(Spells.FeatherFall, 12, SpellLevel.FIRST, null, Effect.SPELL_FEATHER_FALL, 10);
+        }
+
+        [Fact]
+        public void GreaseTest() {
+            DefaultSpellTest(Spells.Grease, 12, SpellLevel.FIRST, ConditionType.PRONE, null, null);
+        }
+
     }
 }

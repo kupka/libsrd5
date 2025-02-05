@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Xunit;
 
 namespace srd5 {
@@ -136,6 +137,8 @@ namespace srd5 {
         private void DefaultSpellTest(Spell spell, int dc, SpellLevel slot, ConditionType? checkForCondition, Effect? checkForEffect, int? simulateTurns, Monsters.Type monsterType = Monsters.Type.BEAST) {
             if (checkForCondition == null && checkForEffect == null) throw new ArgumentException("Don't use is when not checking for Condition and/or Effect");
             CharacterSheet hero = new CharacterSheet(Race.DRAGONBORN, true);
+            Combattant nonMonster1 = new CharacterSheet(Race.HILL_DWARF);
+            Combattant nonMonster2 = new CharacterSheet(Race.HIGH_ELF);
             Monster orc1 = Monsters.Orc;
             Monster orc2 = Monsters.Orc;
             Monster orc3 = Monsters.Orc;
@@ -153,11 +156,14 @@ namespace srd5 {
             Battleground ground = createBattleground(hero, orc1, orc2, orc3, badger, zombie, dragon);
             Random.State = 1;
             if (spell.MaximumTargets > 1) {
+                spell.Cast(ground, hero, dc, slot, 0, nonMonster1, nonMonster2);
                 spell.Cast(ground, hero, dc, slot, 0, orc1, orc2);
                 spell.Cast(ground, hero, dc, slot, 0, orc3, badger);
                 spell.Cast(ground, hero, dc, slot, 0, zombie, dragon);
                 spell.Cast(ground, hero, dc, slot, 0, typed, typedImmune);
             } else {
+                spell.Cast(ground, hero, dc, slot, 0, nonMonster1);
+                spell.Cast(ground, hero, dc, slot, 0, nonMonster2);
                 spell.Cast(ground, hero, dc, slot, 0, orc1);
                 spell.Cast(ground, hero, dc, slot, 0, orc2);
                 spell.Cast(ground, hero, dc, slot, 0, orc3);
@@ -170,20 +176,22 @@ namespace srd5 {
             if (checkForCondition != null) {
                 ConditionType cond = (ConditionType)checkForCondition;
                 Assert.True(
-                    orc1.HasCondition(cond) || orc2.HasCondition(cond) || orc3.HasCondition(cond) || badger.HasCondition(cond) || zombie.HasCondition(cond) || dragon.HasCondition(cond) || typed.HasCondition(cond)
+                    hero.HasCondition(cond) || nonMonster1.HasCondition(cond) || nonMonster2.HasCondition(cond) || orc1.HasCondition(cond) || orc2.HasCondition(cond) || orc3.HasCondition(cond) || badger.HasCondition(cond) || zombie.HasCondition(cond) || dragon.HasCondition(cond) || typed.HasCondition(cond)
                 );
                 Assert.False(typedImmune.HasCondition(cond));
             }
             if (checkForEffect != null) {
                 Effect eff = (Effect)checkForEffect;
                 Assert.True(
-                    orc1.HasEffect(eff) || orc2.HasEffect(eff) || orc3.HasEffect(eff) || badger.HasEffect(eff) || zombie.HasEffect(eff) || dragon.HasEffect(eff) || typed.HasEffect(eff)
+                    hero.HasEffect(eff) || nonMonster1.HasEffect(eff) || nonMonster2.HasEffect(eff) || orc1.HasEffect(eff) || orc2.HasEffect(eff) || orc3.HasEffect(eff) || badger.HasEffect(eff) || zombie.HasEffect(eff) || dragon.HasEffect(eff) || typed.HasEffect(eff)
                 );
             }
             if (simulateTurns != null) {
                 int turns = (int)simulateTurns;
                 for (int i = 0; i < turns; i++) {
                     hero.OnStartOfTurn();
+                    nonMonster1.OnStartOfTurn();
+                    nonMonster2.OnStartOfTurn();
                     orc1.OnStartOfTurn();
                     orc2.OnStartOfTurn();
                     orc3.OnStartOfTurn();
@@ -194,6 +202,8 @@ namespace srd5 {
                     typedImmune.OnStartOfTurn();
 
                     hero.OnEndOfTurn();
+                    nonMonster1.OnEndOfTurn();
+                    nonMonster2.OnEndOfTurn();
                     orc1.OnEndOfTurn();
                     orc2.OnEndOfTurn();
                     orc3.OnEndOfTurn();
@@ -206,13 +216,13 @@ namespace srd5 {
                 if (checkForCondition != null) {
                     ConditionType cond = (ConditionType)checkForCondition;
                     Assert.False(
-                        orc1.HasCondition(cond) || orc2.HasCondition(cond) || orc3.HasCondition(cond) || badger.HasCondition(cond) || zombie.HasCondition(cond) || dragon.HasCondition(cond) || typed.HasCondition(cond)
+                        hero.HasCondition(cond) || nonMonster1.HasCondition(cond) || nonMonster2.HasCondition(cond) || orc1.HasCondition(cond) || orc2.HasCondition(cond) || orc3.HasCondition(cond) || badger.HasCondition(cond) || zombie.HasCondition(cond) || dragon.HasCondition(cond) || typed.HasCondition(cond)
                     );
                 }
                 if (checkForEffect != null) {
                     Effect eff = (Effect)checkForEffect;
                     Assert.False(
-                        orc1.HasEffect(eff) || orc2.HasEffect(eff) || orc3.HasEffect(eff) || badger.HasEffect(eff) || zombie.HasEffect(eff) || dragon.HasEffect(eff) || typed.HasEffect(eff)
+                        hero.HasEffect(eff) || nonMonster1.HasEffect(eff) || nonMonster2.HasEffect(eff) || orc1.HasEffect(eff) || orc2.HasEffect(eff) || orc3.HasEffect(eff) || badger.HasEffect(eff) || zombie.HasEffect(eff) || dragon.HasEffect(eff) || typed.HasEffect(eff)
                     );
                 }
             }
@@ -337,6 +347,14 @@ namespace srd5 {
         [Fact]
         public void AnimalFriendshipTest() {
             DefaultSpellTest(Spells.AnimalFriendship, 14, SpellLevel.FIRST, ConditionType.CHARMED, null, null, Monsters.Type.BEAST);
+        }
+
+        [Fact]
+        public void GoodberryTest() {
+            CharacterSheet hero = new CharacterSheet(Race.GNOME);
+            Spells.Goodberry.Cast(hero, 12, SpellLevel.FIRST, 0);
+            Assert.True(hero.Inventory.Bag.Length > 0);
+            Assert.True(hero.Inventory.Bag[0].Name == Potions.Goodberry.Name);
         }
     }
 }

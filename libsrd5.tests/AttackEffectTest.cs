@@ -579,7 +579,7 @@ namespace srd5 {
             halfling.AddLevel(CharacterClasses.Barbarian);
             highelf.AddLevel(CharacterClasses.Barbarian);
             halfelf.AddLevel(CharacterClasses.Wizard);
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 100; i++)
                 Attacks.GhoulClawsEffect.Invoke(Monsters.Ghoul, halfling);
             Attacks.GhoulClawsEffect.Invoke(Monsters.Ghoul, highelf);
             Attacks.GhoulClawsEffect.Invoke(Monsters.Ghoul, halfelf);

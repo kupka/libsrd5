@@ -32,5 +32,18 @@ namespace srd5 {
         public void BlessTest() {
             DefaultSpellTest(Spells.Bless, 12, SpellLevel.FIFTH, null, Effect.SPELL_BLESS, 10);
         }
+
+        [Fact]
+        public void CommandTest() {
+            DefaultSpellTest(Spells.Command, 12, SpellLevel.THIRD, ConditionType.PRONE, Effect.SPELL_COMMAND_GROVEL, null);
+            DefaultSpellTest(Spells.Command, 12, SpellLevel.THIRD, null, Effect.SPELL_COMMAND_GROVEL, 1);
+        }
+
+        [Fact]
+        public void DivineFavorTest() {
+            DefaultSpellTest(Spells.DivineFavor, 12, SpellLevel.SECOND, null, Effect.SPELL_DIVINE_FAVOR, 10);
+        }
+
+        
     }
 }

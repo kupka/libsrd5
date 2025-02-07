@@ -33,7 +33,7 @@ namespace srd5 {
             target.RemoveCondition(ConditionType.GRAPPLED_DC18);
             target.AddEffect(Effect.KRAKEN_SWALLOW);
             // While swallowed, the creature is blinded and restrained
-            target.AddConditions(ConditionType.BLINDED, ConditionType.RESTRAINED);
+            target.AddCondition(ConditionType.BLINDED, ConditionType.RESTRAINED);
             // TODO: it has total cover against attacks and other effects outside the kraken
             // and it takes 42 (12d6) acid damage at the start of each of the kraken's turns
             attacker.AddStartOfTurnEvent(delegate () {

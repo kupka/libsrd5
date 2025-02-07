@@ -148,31 +148,26 @@ namespace srd5 {
             Monster dragon = Monsters.AncientBlackDragon;
             Monster typed = new Monster(monsterType, Monsters.ID.MANTICORE, Alignment.UNALIGNED, 10, 10, 10, 10, 10, 10, 10, "5d8", 30, 2, new Attack[0], new Attack[0], Size.MEDIUM, 5);
             Monster typedImmune = new Monster(monsterType, Monsters.ID.MANTICORE, Alignment.UNALIGNED, 10, 10, 10, 10, 10, 10, 10, "5d8", 30, 2, new Attack[0], new Attack[0], Size.MEDIUM, 5);
-            typedImmune.AddEffects(Effect.IMMUNITY_ACID, Effect.IMMUNITY_BLINDED, Effect.IMMUNITY_BLUDGEONING, Effect.IMMUNITY_CHARMED, Effect.IMMUNITY_COLD, Effect.IMMUNITY_DAMAGE_FROM_SPELLS,
+            typedImmune.AddEffect(Effect.IMMUNITY_ACID, Effect.IMMUNITY_BLINDED, Effect.IMMUNITY_BLUDGEONING, Effect.IMMUNITY_CHARMED, Effect.IMMUNITY_COLD, Effect.IMMUNITY_DAMAGE_FROM_SPELLS,
                 Effect.IMMUNITY_DEAFENED, Effect.IMMUNITY_EXHAUSTION, Effect.IMMUNITY_FIRE, Effect.IMMUNITY_FORCE, Effect.IMMUNITY_FRIGHTENED, Effect.IMMUNITY_GRAPPLED, Effect.IMMUNITY_INCAPACITATED,
                 Effect.IMMUNITY_INVISIBLE, Effect.IMMUNITY_LIGHTNING, Effect.IMMUNITY_NECROTIC, Effect.IMMUNITY_NONMAGIC, Effect.IMMUNITY_PARALYZED, Effect.IMMUNITY_PETRIFIED, Effect.IMMUNITY_PIERCING,
                 Effect.IMMUNITY_POISON, Effect.IMMUNITY_POISONED, Effect.IMMUNITY_PRONE, Effect.IMMUNITY_PSYCHIC, Effect.IMMUNITY_RADIANT, Effect.IMMUNITY_RESTRAINED, Effect.IMMUNITY_SLEEP,
                 Effect.IMMUNITY_SLEEP, Effect.IMMUNITY_STUNNED, Effect.IMMUNITY_THUNDER, Effect.IMMUNITY_UNCONSCIOUS);
 
+            Combattant[] targets = new Combattant[] {
+                nonMonster1, nonMonster2, orc1, orc2, orc3, badger, zombie, dragon, typed, typedImmune
+            };
+
             Battleground ground = createBattleground(hero, nonMonster1, nonMonster2, orc1, orc2, orc3, badger, zombie, dragon, typed, typedImmune);
             Random.State = 1;
             if (spell.MaximumTargets > 1) {
-                spell.Cast(ground, hero, dc, slot, 0, nonMonster1, nonMonster2);
-                spell.Cast(ground, hero, dc, slot, 0, orc1, orc2);
-                spell.Cast(ground, hero, dc, slot, 0, orc3, badger);
-                spell.Cast(ground, hero, dc, slot, 0, zombie, dragon);
-                spell.Cast(ground, hero, dc, slot, 0, typed, typedImmune);
+                for (int i = 0; i < 5; i++) {
+                    spell.Cast(ground, hero, dc, slot, 0, targets[2 * i], targets[2 * i + 1]);
+                }
             } else {
-                spell.Cast(ground, hero, dc, slot, 0, nonMonster1);
-                spell.Cast(ground, hero, dc, slot, 0, nonMonster2);
-                spell.Cast(ground, hero, dc, slot, 0, orc1);
-                spell.Cast(ground, hero, dc, slot, 0, orc2);
-                spell.Cast(ground, hero, dc, slot, 0, orc3);
-                spell.Cast(ground, hero, dc, slot, 0, badger);
-                spell.Cast(ground, hero, dc, slot, 0, zombie);
-                spell.Cast(ground, hero, dc, slot, 0, dragon);
-                spell.Cast(ground, hero, dc, slot, 0, typed);
-                spell.Cast(ground, hero, dc, slot, 0, typedImmune);
+                foreach (Combattant target in targets) {
+                    spell.Cast(ground, hero, dc, slot, 0, target);
+                }
             }
             if (checkForCondition != null) {
                 ConditionType cond = (ConditionType)checkForCondition;
@@ -192,29 +187,20 @@ namespace srd5 {
                 for (int i = 0; i < turns; i++) {
                     hero.OnEndOfTurn();
 
-                    nonMonster1.OnStartOfTurn();
-                    nonMonster2.OnStartOfTurn();
-                    orc1.OnStartOfTurn();
-                    orc2.OnStartOfTurn();
-                    orc3.OnStartOfTurn();
-                    badger.OnStartOfTurn();
-                    zombie.OnStartOfTurn();
-                    dragon.OnStartOfTurn();
-                    typed.OnStartOfTurn();
-                    typedImmune.OnStartOfTurn();
+                    foreach (Combattant target in targets) {
+                        target.OnStartOfTurn();
+                    }
 
                     hero.OnStartOfTurn();
                     hero.OnEndOfTurn();
-                    nonMonster1.OnEndOfTurn();
-                    nonMonster2.OnEndOfTurn();
-                    orc1.OnEndOfTurn();
-                    orc2.OnEndOfTurn();
-                    orc3.OnEndOfTurn();
-                    badger.OnEndOfTurn();
-                    zombie.OnEndOfTurn();
-                    dragon.OnEndOfTurn();
-                    typed.OnEndOfTurn();
-                    typedImmune.OnEndOfTurn();
+
+                    foreach (Combattant target in targets) {
+                        target.OnEndOfTurn();
+                    }
+
+                    foreach (Combattant target in targets) {
+                        target.OnDamageTaken(this, new Damage(DamageType.THUNDER, 1));
+                    }
                 }
                 if (checkForCondition != null) {
                     ConditionType cond = (ConditionType)checkForCondition;

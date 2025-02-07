@@ -27,7 +27,7 @@ namespace srd5 {
                     Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
                     new Attack[] { }, new Attack[] { }, Size.MEDIUM
             );
-            pansyMonster.AddEffects(Effect.FAIL_STRENGTH_CHECK, Effect.FAIL_DEXERITY_CHECK, Effect.FAIL_CONSTITUTION_CHECK);
+            pansyMonster.AddEffect(Effect.FAIL_STRENGTH_CHECK, Effect.FAIL_DEXERITY_CHECK, Effect.FAIL_CONSTITUTION_CHECK);
             return pansyMonster;
         }
 
@@ -38,7 +38,7 @@ namespace srd5 {
                     Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d1", 40, 16,
                     new Attack[] { }, new Attack[] { }, Size.MEDIUM
             );
-            pansyMonster.AddEffects(Effect.FAIL_STRENGTH_CHECK, Effect.FAIL_DEXERITY_CHECK, Effect.FAIL_CONSTITUTION_CHECK);
+            pansyMonster.AddEffect(Effect.FAIL_STRENGTH_CHECK, Effect.FAIL_DEXERITY_CHECK, Effect.FAIL_CONSTITUTION_CHECK);
             return pansyMonster;
         }
 

@@ -126,18 +126,18 @@ namespace srd5 {
             }
         }
 
-        public void AddEffect(Effect effect) {
+        private void addEffect(Effect effect) {
             bool pushed = Utils.PushUnique<Effect>(ref effects, effect);
             if (pushed) effect.Apply(this);
         }
 
-        public void AddEffects(params Effect[] effects) {
+        public void AddEffect(params Effect[] effects) {
             foreach (Effect effect in effects) {
-                AddEffect(effect);
+                addEffect(effect);
             }
         }
 
-        public void RemoveEffect(Effect effect) {
+        private void removeEffect(Effect effect) {
             RemoveResult result = Utils.RemoveSingle<Effect>(ref effects, effect);
             if (result == RemoveResult.NOT_FOUND) return;
             if (result == RemoveResult.REMOVED_AND_GONE) effect.Unapply(this);
@@ -145,9 +145,9 @@ namespace srd5 {
             // If so, probably REMOVED_BUT_REMAINS should be handled somehow
         }
 
-        public void RemoveEffects(params Effect[] effects) {
+        public void RemoveEffect(params Effect[] effects) {
             foreach (Effect effect in effects) {
-                RemoveEffect(effect);
+                removeEffect(effect);
             }
         }
 
@@ -170,7 +170,7 @@ namespace srd5 {
             return Array.IndexOf(feats, feat) > -1;
         }
 
-        public bool AddCondition(ConditionType condition) {
+        public bool addCondition(ConditionType condition) {
             // don't add if immune
             if (HasEffect(srd5.Effects.Immunity(condition))) return false;
             if (Utils.PushUnique<ConditionType>(ref conditions, condition)) condition.Apply(this);
@@ -178,21 +178,25 @@ namespace srd5 {
             return true;
         }
 
-        public void AddConditions(params ConditionType[] conditions) {
+        public bool AddCondition(params ConditionType[] conditions) {
+            bool added = true;
             foreach (ConditionType condition in conditions) {
-                AddCondition(condition);
+                if (!addCondition(condition)) {
+                    added = false;
+                }
             }
+            return added;
         }
 
-        public void RemoveCondition(ConditionType condition) {
+        private void removeCondition(ConditionType condition) {
             RemoveResult result = Utils.RemoveSingle<ConditionType>(ref conditions, condition);
             if (result == RemoveResult.REMOVED_AND_GONE) condition.Unapply(this);
             GlobalEvents.ChangedCondition(this, condition, true);
         }
 
-        public void RemoveConditions(params ConditionType[] conditions) {
+        public void RemoveCondition(params ConditionType[] conditions) {
             foreach (ConditionType condition in conditions) {
-                RemoveCondition(condition);
+                removeCondition(condition);
             }
         }
 

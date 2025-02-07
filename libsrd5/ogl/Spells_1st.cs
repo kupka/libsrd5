@@ -348,21 +348,30 @@ namespace srd5 {
                 GlobalEvents.AffectBySpell(caster, ID.HIDEOUS_LAUGHTER, target, false);
             } else {
                 GlobalEvents.AffectBySpell(caster, ID.HIDEOUS_LAUGHTER, target, true);
-                target.AddCondition(ConditionType.PRONE);
-                target.AddEffects(Effect.SPELL_HIDEOUS_LAUGHTER);
+                target.AddCondition(ConditionType.PRONE, ConditionType.INCAPACITATED);
+                target.AddEffect(Effect.SPELL_HIDEOUS_LAUGHTER);
                 int remainingRounds = 10;
+                bool madeDC = false;
                 target.AddDamageTakenEvent(delegate (object source, Damage damage) {
-                    if (target.DC(ID.HIDEOUS_LAUGHTER, dc, AbilityType.WISDOM, out _, true)) {
+                    if (madeDC) {
+                        return true;
+                    } else if (target.DC(ID.HIDEOUS_LAUGHTER, dc, AbilityType.WISDOM, out _, true)) {
+                        madeDC = true;
                         remainingRounds = 0;
-                        target.RemoveEffects(Effect.SPELL_HIDEOUS_LAUGHTER);
+                        target.RemoveEffect(Effect.SPELL_HIDEOUS_LAUGHTER);
+                        target.RemoveCondition(ConditionType.INCAPACITATED);
                         return true;
                     } else {
                         return false;
                     }
                 });
                 target.AddEndOfTurnEvent(delegate () {
-                    if (--remainingRounds < 1 || target.DC(ID.HIDEOUS_LAUGHTER, dc, AbilityType.WISDOM)) {
-                        target.RemoveEffects(Effect.SPELL_HIDEOUS_LAUGHTER);
+                    if (madeDC) {
+                        return true;
+                    } else if (--remainingRounds < 1 || target.DC(ID.HIDEOUS_LAUGHTER, dc, AbilityType.WISDOM)) {
+                        madeDC = true;
+                        target.RemoveEffect(Effect.SPELL_HIDEOUS_LAUGHTER);
+                        target.RemoveCondition(ConditionType.INCAPACITATED);
                         return true;
                     } else {
                         return false;

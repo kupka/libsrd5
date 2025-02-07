@@ -296,7 +296,7 @@ namespace srd5 {
                     combattant.AddEffect(Effect.CANNOT_REGAIN_HITPOINTS);
                     break;
                 case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
-                    combattant.AddConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
+                    combattant.AddCondition(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
                     break;
                 case Effect.MAGMIN_IGNITE:
                     combattant.AddStartOfTurnEvent(delegate () {
@@ -313,7 +313,7 @@ namespace srd5 {
                     // This reduction to the target's hit point maximum lasts until the disease is cured.
                     break;
                 case Effect.PHASE_SPIDER_POISON:
-                    combattant.AddConditions(ConditionType.POISONED, ConditionType.PARALYZED);
+                    combattant.AddCondition(ConditionType.POISONED, ConditionType.PARALYZED);
                     break;
                 case Effect.PIT_FIEND_POISON:
                     combattant.AddCondition(ConditionType.POISONED);
@@ -480,7 +480,7 @@ namespace srd5 {
                     combattant.RemoveCondition(ConditionType.PARALYZED);
                     break;
                 case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
-                    combattant.RemoveConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
+                    combattant.RemoveCondition(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
                     break;
                 case Effect.OTYUGH_DISEASE:
                     combattant.RemoveCondition(ConditionType.POISONED);
@@ -490,7 +490,7 @@ namespace srd5 {
                     // This reduction to the target's hit point maximum lasts until the disease is cured.
                     break;
                 case Effect.PHASE_SPIDER_POISON:
-                    combattant.RemoveConditions(ConditionType.POISONED, ConditionType.PARALYZED);
+                    combattant.RemoveCondition(ConditionType.POISONED, ConditionType.PARALYZED);
                     break;
                 case Effect.PIT_FIEND_POISON:
                     combattant.RemoveCondition(ConditionType.POISONED);
@@ -512,7 +512,7 @@ namespace srd5 {
                     combattant.RemoveEffect(Effect.CANNOT_REGAIN_HITPOINTS);
                     break;
                 case Effect.FIGHTING_DEATH:
-                    combattant.RemoveEffects(Effect.FIGHTING_DEATH_SAVE_FAIL_1,
+                    combattant.RemoveEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_1,
                                              Effect.FIGHTING_DEATH_SAVE_FAIL_2,
                                              Effect.FIGHTING_DEATH_SAVE_SUCCESS_1,
                                              Effect.FIGHTING_DEATH_SAVE_SUCCESS_2,

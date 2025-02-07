@@ -50,5 +50,9 @@ namespace srd5 {
             DefaultSpellTest(Spells.GuidingBolt, 12, SpellLevel.NINETH, null, Effect.ADVANTAGE_ON_BEING_ATTACKED, 1);
         }
 
+        [Fact]
+        public void InflictWoundsTest() {
+            DamagingSpellTesting(Spells.InflictWounds, 15, DamageType.NECROTIC);
+        }
     }
 }

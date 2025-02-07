@@ -224,5 +224,10 @@ namespace srd5 {
             DefaultSpellTest(Spells.Grease, 12, SpellLevel.FIRST, ConditionType.PRONE, null, null);
         }
 
+        [Fact]
+        public void HideousLaughterTest() {
+            DefaultSpellTest(Spells.HideousLaughter, 25, SpellLevel.THIRD, ConditionType.INCAPACITATED, Effect.SPELL_HIDEOUS_LAUGHTER, 10);
+        }
+
     }
 }

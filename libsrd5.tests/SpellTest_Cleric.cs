@@ -44,6 +44,11 @@ namespace srd5 {
             DefaultSpellTest(Spells.DivineFavor, 12, SpellLevel.SECOND, null, Effect.SPELL_DIVINE_FAVOR, 10);
         }
 
-        
+        [Fact]
+        public void GuidingBoltTest() {
+            DamagingSpellTesting(Spells.GuidingBolt, 12, DamageType.RADIANT);
+            DefaultSpellTest(Spells.GuidingBolt, 12, SpellLevel.NINETH, null, Effect.ADVANTAGE_ON_BEING_ATTACKED, 1);
+        }
+
     }
 }

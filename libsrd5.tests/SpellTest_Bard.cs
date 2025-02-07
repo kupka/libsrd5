@@ -1,3 +1,4 @@
+using System.Data;
 using Xunit;
 
 namespace srd5 {
@@ -21,6 +22,16 @@ namespace srd5 {
             Spells.ViciousMockery.Cast(ground, bard, 1, SpellLevel.CANTRIP, 2, goblin2);
             Assert.True(goblin2.HitPointsMax == goblin2.HitPoints);
             Assert.False(goblin2.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
+        }
+
+        [Fact]
+        public void HeroismTest() {
+            Monster goblin = Monsters.Goblin;
+            Spells.Heroism.Cast(goblin, 12, SpellLevel.FIRST, 5);
+            goblin.OnStartOfTurn();
+            goblin.TakeDamage(this, DamageType.ACID, 1);
+            Assert.Equal(goblin.HitPointsMax, goblin.HitPoints);
+            DefaultSpellTest(Spells.Heroism, 12, SpellLevel.THIRD, null, Effect.IMMUNITY_FRIGHTENED, 10);
         }
     }
 }

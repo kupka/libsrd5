@@ -24,5 +24,10 @@ namespace srd5 {
                 Spells.PoisonSpray.Cast(ground, hag, 12, SpellLevel.CANTRIP, hag.ProficiencyBonus, badger, badger, badger);
             Assert.True(badger.HitPoints < hp);
         }
+
+        [Fact]
+        public void HellishRebukeTest() {
+            DamagingSpellTesting(Spells.HellishRebuke, 12, DamageType.FIRE);
+        }
     }
 }

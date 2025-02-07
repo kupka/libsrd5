@@ -284,12 +284,15 @@ namespace srd5 {
             if (hit) {
                 target.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
                 bool removeNextRound = false;
+                caster.AddStartOfTurnEvent(delegate () {
+                    removeNextRound = true;
+                    return true;
+                });
                 caster.AddEndOfTurnEvent(delegate () {
                     if (removeNextRound) {
                         target.RemoveEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
                         return true;
                     } else {
-                        removeNextRound = true;
                         return false;
                     }
                 });
@@ -330,6 +333,7 @@ namespace srd5 {
             });
             target.AddEndOfTurnEvent(delegate () {
                 if (remainingTurns < 1) {
+                    target.RemoveEffect(Effect.IMMUNITY_FRIGHTENED);
                     target.RemoveTemporaryHitpoints(ID.HEROISM);
                     return true;
                 } else {

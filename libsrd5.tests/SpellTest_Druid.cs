@@ -137,6 +137,7 @@ namespace srd5 {
         private void DefaultSpellTest(Spell spell, int dc, SpellLevel slot, ConditionType? checkForCondition, Effect? checkForEffect, int? simulateTurns, Monsters.Type monsterType = Monsters.Type.BEAST) {
             if (checkForCondition == null && checkForEffect == null) throw new ArgumentException("Don't use is when not checking for Condition and/or Effect");
             CharacterSheet hero = new CharacterSheet(Race.DRAGONBORN, true);
+            hero.AddLevels(CharacterClasses.Wizard, CharacterClasses.Druid, CharacterClasses.Bard, CharacterClasses.Barbarian);
             Combattant nonMonster1 = new CharacterSheet(Race.HILL_DWARF);
             Combattant nonMonster2 = new CharacterSheet(Race.HIGH_ELF);
             Monster orc1 = Monsters.Orc;
@@ -153,7 +154,7 @@ namespace srd5 {
                 Effect.IMMUNITY_POISON, Effect.IMMUNITY_POISONED, Effect.IMMUNITY_PRONE, Effect.IMMUNITY_PSYCHIC, Effect.IMMUNITY_RADIANT, Effect.IMMUNITY_RESTRAINED, Effect.IMMUNITY_SLEEP,
                 Effect.IMMUNITY_SLEEP, Effect.IMMUNITY_STUNNED, Effect.IMMUNITY_THUNDER, Effect.IMMUNITY_UNCONSCIOUS);
 
-            Battleground ground = createBattleground(hero, orc1, orc2, orc3, badger, zombie, dragon);
+            Battleground ground = createBattleground(hero, nonMonster1, nonMonster2, orc1, orc2, orc3, badger, zombie, dragon, typed, typedImmune);
             Random.State = 1;
             if (spell.MaximumTargets > 1) {
                 spell.Cast(ground, hero, dc, slot, 0, nonMonster1, nonMonster2);
@@ -189,7 +190,8 @@ namespace srd5 {
             if (simulateTurns != null) {
                 int turns = (int)simulateTurns;
                 for (int i = 0; i < turns; i++) {
-                    hero.OnStartOfTurn();
+                    hero.OnEndOfTurn();
+
                     nonMonster1.OnStartOfTurn();
                     nonMonster2.OnStartOfTurn();
                     orc1.OnStartOfTurn();
@@ -201,6 +203,7 @@ namespace srd5 {
                     typed.OnStartOfTurn();
                     typedImmune.OnStartOfTurn();
 
+                    hero.OnStartOfTurn();
                     hero.OnEndOfTurn();
                     nonMonster1.OnEndOfTurn();
                     nonMonster2.OnEndOfTurn();

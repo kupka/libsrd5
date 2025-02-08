@@ -29,7 +29,7 @@ namespace srd5 {
             Assert.False(club.Equals(dagger));
             Assert.False(club.Equals(null));
             Assert.False(club.Equals("not an item"));
-            Assert.False(club.IsThisA(null));
+            Assert.False(club.Is(null));
             Assert.False(club.Equals(Armors.HideArmor));
         }
 
@@ -38,7 +38,7 @@ namespace srd5 {
             Weapon club1 = Weapons.Club;
             Weapon club2 = Weapons.Club;
             Assert.False(club1.Equals(club2));
-            Assert.True(club1.IsThisA(club2));
+            Assert.True(club1.Is(club2));
         }
 
         [Fact]

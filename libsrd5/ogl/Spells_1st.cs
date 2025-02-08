@@ -23,34 +23,14 @@ namespace srd5 {
                 if (target.DC(ID.BANE, dc, AbilityType.CHARISMA)) {
                     GlobalEvents.AffectBySpell(caster, ID.BANE, target, false);
                 } else {
-                    target.AddEffect(Effect.SPELL_BANE);
-                    GlobalEvents.AffectBySpell(caster, ID.BANE, target, true);
-                    int remainingRounds = 10;
-                    target.AddEndOfTurnEvent(delegate () {
-                        if (--remainingRounds < 1) {
-                            target.RemoveEffect(Effect.SPELL_BANE);
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    });
+                    AddEffectForDuration(ID.BANE, caster, target, Effect.SPELL_BANE, SpellDuration.ONE_MINUTE);
                 }
             }
         });
 
         public static readonly Spell Bless = new Spell(ID.BLESS, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
             foreach (Combattant target in targets) {
-                target.AddEffect(Effect.SPELL_BLESS);
-                GlobalEvents.AffectBySpell(caster, ID.BLESS, target, true);
-                int remainingRounds = 10;
-                target.AddEndOfTurnEvent(delegate () {
-                    if (--remainingRounds < 1) {
-                        target.RemoveEffect(Effect.SPELL_BLESS);
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
+                AddEffectForDuration(ID.BLESS, caster, target, Effect.SPELL_BLESS, SpellDuration.ONE_MINUTE);
             }
         });
 
@@ -136,15 +116,16 @@ namespace srd5 {
         public static readonly Spell CureWounds = new Spell(
             ID.CURE_WOUNDS, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 5, VS,
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                if (targets[0] is Monster monster) {
+                Combattant target = targets[0];
+                if (target is Monster monster) {
                     if (monster.Type == Monsters.Type.CONSTRUCT || monster.Type == Monsters.Type.UNDEAD) {
                         GlobalEvents.AffectBySpell(caster, ID.CURE_WOUNDS, monster, false);
                         return;
                     }
                 }
                 Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 8, 1, modifier);
-                GlobalEvents.AffectBySpell(caster, ID.CURE_WOUNDS, targets[0], true);
-                targets[0].HealDamage(dice.Roll());
+                GlobalEvents.AffectBySpell(caster, ID.CURE_WOUNDS, target, true);
+                target.HealDamage(dice.Roll());
             }
         );
 
@@ -163,17 +144,8 @@ namespace srd5 {
         public static readonly Spell DisguiseSelf = new Spell(ID.DISGUISE_SELF, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS, SpellDuration.ONE_HOUR, 0, 0, SpellWithoutEffect(ID.DISGUISE_SELF));
 
         public static readonly Spell DivineFavor = new Spell(ID.DIVINE_FAVOR, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 0, VS, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-            GlobalEvents.AffectBySpell(caster, ID.DIVINE_FAVOR, caster, true);
-            caster.AddEffect(Effect.SPELL_DIVINE_FAVOR);
-            int remainingRounds = 10;
-            caster.AddEndOfTurnEvent(delegate () {
-                if (--remainingRounds < 1) {
-                    caster.RemoveEffect(Effect.SPELL_DIVINE_FAVOR);
-                    return true;
-                } else {
-                    return false;
-                }
-            });
+            Combattant target = targets[0];
+            AddEffectForDuration(ID.BANE, caster, target, Effect.SPELL_DIVINE_FAVOR, SpellDuration.ONE_MINUTE);
         });
 
         public static readonly Spell Entangle = new Spell(
@@ -183,19 +155,7 @@ namespace srd5 {
                     if (target.DC(ID.ENTANGLE, dc, AbilityType.STRENGTH)) {
                         GlobalEvents.AffectBySpell(caster, ID.ENTANGLE, target, false);
                     } else {
-                        GlobalEvents.AffectBySpell(caster, ID.ENTANGLE, target, true);
-                        target.AddEffect(Effect.SPELL_ENTANGLE);
-                        target.AddCondition(ConditionType.RESTRAINED);
-                        int remainingRounds = 10;
-                        target.AddEndOfTurnEvent(delegate () {
-                            if (--remainingRounds < 1) {
-                                target.RemoveEffect(Effect.SPELL_ENTANGLE);
-                                target.RemoveCondition(ConditionType.RESTRAINED);
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        });
+                        AddEffectAndConditionForDuration(ID.ENTANGLE, caster, target, Effect.SPELL_ENTANGLE, ConditionType.RESTRAINED, SpellDuration.ONE_MINUTE);
                     }
                 }
             }
@@ -211,17 +171,7 @@ namespace srd5 {
                     if (target.DC(ID.FAERIE_FIRE, dc, AbilityType.DEXTERITY)) {
                         GlobalEvents.AffectBySpell(caster, ID.FAERIE_FIRE, target, false);
                     } else {
-                        GlobalEvents.AffectBySpell(caster, ID.FAERIE_FIRE, target, true);
-                        target.AddEffect(Effect.SPELL_FAIRIE_FIRE);
-                        int remainingRounds = 10;
-                        target.AddEndOfTurnEvent(delegate () {
-                            if (--remainingRounds < 1) {
-                                target.RemoveEffect(Effect.SPELL_FAIRIE_FIRE);
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        });
+                        AddEffectForDuration(ID.FAERIE_FIRE, caster, target, Effect.SPELL_FAIRIE_FIRE, SpellDuration.ONE_MINUTE);
                     }
                 }
             }
@@ -235,17 +185,7 @@ namespace srd5 {
 
         public static readonly Spell FeatherFall = new Spell(ID.FEATHER_FALL, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.REACTION, 60, VM, SpellDuration.ONE_MINUTE, 0, 5, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
             foreach (Combattant target in targets) {
-                target.AddEffect(Effect.SPELL_FEATHER_FALL);
-                GlobalEvents.AffectBySpell(caster, ID.FEATHER_FALL, target, true);
-                int remainingRounds = 10;
-                target.AddEndOfTurnEvent(delegate () {
-                    if (--remainingRounds < 1) {
-                        target.RemoveEffect(Effect.SPELL_FEATHER_FALL);
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
+                AddEffectForDuration(ID.FEATHER_FALL, caster, target, Effect.SPELL_FEATHER_FALL, SpellDuration.ONE_MINUTE);
             }
         });
 
@@ -302,15 +242,16 @@ namespace srd5 {
         public static readonly Spell HealingWord = new Spell(
             ID.HEALING_WORD, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 60, V,
             SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                if (targets[0] is Monster monster) {
+                Combattant target = targets[0];
+                if (target is Monster monster) {
                     if (monster.Type == Monsters.Type.CONSTRUCT || monster.Type == Monsters.Type.UNDEAD) {
                         GlobalEvents.AffectBySpell(caster, ID.HEALING_WORD, monster, false);
                         return;
                     };
                 }
                 Dice healed = DiceSlotScaling(SpellLevel.FIRST, slot, 4, 1, modifier);
-                GlobalEvents.AffectBySpell(caster, ID.HEALING_WORD, targets[0], true);
-                targets[0].HealDamage(healed.Roll());
+                GlobalEvents.AffectBySpell(caster, ID.HEALING_WORD, target, true);
+                target.HealDamage(healed.Roll());
             }
         );
 
@@ -328,8 +269,7 @@ namespace srd5 {
             int remainingTurns = 10;
             target.AddStartOfTurnEvent(delegate () {
                 target.AddTemporaryHitpoints(modifier, SpellDuration.ONE_MINUTE, ID.HEROISM);
-                remainingTurns--;
-                return remainingTurns < 1;
+                return --remainingTurns < 1;
             });
             target.AddEndOfTurnEvent(delegate () {
                 if (remainingTurns < 1) {
@@ -383,7 +323,7 @@ namespace srd5 {
         public static readonly Spell HuntersMark = new Spell(ID.HUNTERS_MARK, SpellSchool.DIVINATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 90, V, SpellDuration.ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
             Combattant target = targets[0];
             target.AddDamageTakenEvent(delegate (object source, Damage damage) {
-                if (caster == source) {
+                if (caster.Equals(source)) {
                     target.TakeDamage(ID.HUNTERS_MARK, DamageType.TRUE_DAMAGE, "1d6");
                 }
                 return false;
@@ -447,15 +387,21 @@ namespace srd5 {
                     bonusMissiles = Math.Min(1, bonusMissiles);
                     missilesTotal -= bonusMissiles;
                     for (int m = 0; m < missilesTotal / targets.Length + bonusMissiles; m++) {
-                        target.TakeDamage(ID.MAGIC_MISSILE, damage.Type, damage.Dice.Roll());
+                        if (target.HasEffect(Effect.SPELL_SHIELD)) {
+                            target.TakeDamage(ID.MAGIC_MISSILE, damage.Type, 0);
+                        } else {
+                            target.TakeDamage(ID.MAGIC_MISSILE, damage.Type, damage.Dice.Roll());
+                        }
                     }
                 }
             }
         );
 
         public static readonly Spell ProtectionfromEvilandGood = new Spell(ID.PROTECTION_FROM_EVIL_AND_GOOD, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.TEN_MINUTES, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-            GlobalEvents.AffectBySpell(caster, ID.PROTECTION_FROM_EVIL_AND_GOOD, targets[0], true);
-            targets[0].AddEffect(Effect.SPELL_PROTECTION_FROM_EVIL_AND_GOOD);
+            // TODO: The target also can't be charmed, frightened, or possessed by them. If the target is already charmed, frightened, 
+            //       or possessed by such a creature, the target has advantage on any new saving throw against the relevant effect.
+            Combattant target = targets[0];
+            AddEffectForDuration(ID.PROTECTION_FROM_EVIL_AND_GOOD, caster, target, Effect.SPELL_PROTECTION_FROM_EVIL_AND_GOOD, SpellDuration.TEN_MINUTES);
         });
 
         public static readonly Spell PurifyFoodAndDrink = new Spell(
@@ -467,7 +413,7 @@ namespace srd5 {
         public static readonly Spell Sanctuary = new Spell(ID.SANCTUARY, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.SANCTUARY));
 
         public static readonly Spell Shield = new Spell(ID.SHIELD, SpellSchool.ABJURATION, SpellLevel.FIRST, CastingTime.REACTION, 0, VS, SpellDuration.ONE_ROUND, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-            // TODO: Implement Reaction and apply bonus to reaction attack or nullify Magic Missile
+            // TODO: Right now, there is no way to apply the +5 AC buff to the attack that this spell is used as a reaction
             GlobalEvents.AffectBySpell(caster, ID.SHIELD, caster, true);
             caster.AddEffect(Effect.SPELL_SHIELD);
             caster.ArmorClassModifier += 5;
@@ -483,7 +429,7 @@ namespace srd5 {
             if (target.HasEffect(Effect.SPELL_SHIELD_OF_FAITH)) {
                 GlobalEvents.AffectBySpell(caster, ID.SHIELD_OF_FAITH, target, false);
             } else {
-                GlobalEvents.AffectBySpell(caster, ID.SHIELD_OF_FAITH, target, false);
+                GlobalEvents.AffectBySpell(caster, ID.SHIELD_OF_FAITH, target, true);
                 target.AddEffect(Effect.SPELL_SHIELD_OF_FAITH);
                 target.ArmorClassModifier += 2;
                 int remainingRounds = 100;

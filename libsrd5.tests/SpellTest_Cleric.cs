@@ -54,5 +54,21 @@ namespace srd5 {
         public void InflictWoundsTest() {
             DamagingSpellTesting(Spells.InflictWounds, 15, DamageType.NECROTIC);
         }
+
+        [Fact]
+        public void ProtectionfromEvilandGoodTest() {
+            DefaultSpellTest(Spells.ProtectionfromEvilandGood, 12, SpellLevel.SECOND, null, Effect.SPELL_PROTECTION_FROM_EVIL_AND_GOOD, 100);
+        }
+
+        [Fact]
+        public void ShieldofFaithTest() {
+            Monster acolyte = Monsters.Acolyte;
+            int ac = acolyte.ArmorClass;
+            Spells.ShieldofFaith.Cast(acolyte, 10, SpellLevel.FIRST, 0);
+            Assert.Equal(ac + 2, acolyte.ArmorClass);
+            Spells.ShieldofFaith.Cast(acolyte, 10, SpellLevel.FIRST, 0);
+            Assert.Equal(ac + 2, acolyte.ArmorClass);
+            DefaultSpellTest(Spells.ShieldofFaith, 10, SpellLevel.SECOND, null, Effect.SPELL_SHIELD_OF_FAITH, 100);
+        }
     }
 }

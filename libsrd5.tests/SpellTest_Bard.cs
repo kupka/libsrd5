@@ -31,6 +31,7 @@ namespace srd5 {
             goblin.OnStartOfTurn();
             goblin.TakeDamage(this, DamageType.ACID, 1);
             Assert.Equal(goblin.HitPointsMax, goblin.HitPoints);
+            goblin.OnEndOfTurn();
             DefaultSpellTest(Spells.Heroism, 12, SpellLevel.THIRD, null, Effect.IMMUNITY_FRIGHTENED, 10);
         }
     }

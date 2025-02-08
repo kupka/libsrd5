@@ -170,7 +170,7 @@ namespace srd5 {
             return id == ((Item)other).id;
         }
 
-        public bool IsThisA(Item other) {
+        public bool Is(Item other) {
             if (other == null) return false;
             return Name == other.Name;
         }

@@ -54,6 +54,16 @@ namespace srd5 {
             }
         }
 
+        private int baseArmorClass = 0;
+        public override int ArmorClass {
+            get {
+                return baseArmorClass + ArmorClassModifier;
+            }
+            internal set {
+                baseArmorClass = value;
+            }
+        }
+
         // Abilities that can be cast like spell, but do not require any
         // Spell Slot to be expended. "Innate Spellcasting"
         private InnateSpellcasting[] innateSpellCasting = new InnateSpellcasting[0];

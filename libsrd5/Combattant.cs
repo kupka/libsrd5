@@ -51,7 +51,7 @@ namespace srd5 {
         public Ability Intelligence { get; internal set; } = new Ability(AbilityType.INTELLIGENCE, 10);
         public Ability Wisdom { get; internal set; } = new Ability(AbilityType.WISDOM, 10);
         public Ability Charisma { get; internal set; } = new Ability(AbilityType.CHARISMA, 10);
-        public virtual int ArmorClass { get; internal set; }
+        public abstract int ArmorClass { get; internal set; }
         public int ArmorClassModifier { get; internal set; }
         public int HitPoints { get; set; }
         public virtual int HitPointsMax {
@@ -121,7 +121,7 @@ namespace srd5 {
         }
 
         public void RemoveTemporaryHitpoints(object source) {
-            if (temporaryHitpoints.Source == source) {
+            if (temporaryHitpoints.Source.Equals(source)) {
                 temporaryHitpoints = new TemporaryHitpoints(0, SpellDuration.INSTANTANEOUS, null);
             }
         }

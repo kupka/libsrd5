@@ -179,7 +179,7 @@ namespace srd5 {
                     GlobalEvents.AffectBySpell(caster, ID.SHILLELAGH, caster, false);
                     return;
                 }
-                if (!sheet.Inventory.MainHand.IsThisA(Weapons.Club) && !sheet.Inventory.MainHand.IsThisA(Weapons.Quarterstaff)) {
+                if (!sheet.Inventory.MainHand.Is(Weapons.Club) && !sheet.Inventory.MainHand.Is(Weapons.Quarterstaff)) {
                     GlobalEvents.AffectBySpell(caster, ID.SHILLELAGH, caster, false);
                     return;
                 }

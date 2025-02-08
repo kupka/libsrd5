@@ -52,6 +52,9 @@ namespace srd5 {
             Assert.Equal(14, sheet.ArmorClass);
             sheet.Equip(chainShirt);
             Assert.Equal(15, sheet.ArmorClass);
+            Assert.Throws<Srd5Exception>(delegate () {
+                sheet.ArmorClass = 20;
+            });
         }
 
         [Fact]

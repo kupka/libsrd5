@@ -229,5 +229,34 @@ namespace srd5 {
             DefaultSpellTest(Spells.HideousLaughter, 25, SpellLevel.THIRD, ConditionType.INCAPACITATED, Effect.SPELL_HIDEOUS_LAUGHTER, 10);
         }
 
+        [Fact]
+        public void MageArmorTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HALF_ORC);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            int ac = hero.ArmorClass;
+            Spells.MageArmor.Cast(hero, 10, SpellLevel.FIRST, 0);
+            Assert.True(hero.ArmorClass > ac);
+            Assert.True(hero.Inventory.Armor.Is(Armors.MageArmor));
+            ac = hero.ArmorClass;
+            hero.Equip(Armors.HideArmor);
+            Assert.True(hero.ArmorClass < ac);
+            Spells.MageArmor.Cast(hero, 10, SpellLevel.FIRST, 0);
+            Assert.True(hero.Inventory.Armor.Is(Armors.HideArmor));
+            Monster rat = Monsters.Rat;
+            ac = rat.ArmorClass;
+            Spells.MageArmor.Cast(rat, 12, SpellLevel.THIRD, 2);
+            Assert.Equal(ac, rat.ArmorClass);
+        }
+
+        [Fact]
+        public void ShieldTest() {
+            Monster hag = Monsters.NightHag;
+            int ac = hag.ArmorClass;
+            Spells.Shield.Cast(hag, 10, SpellLevel.FIRST, 0);
+            Assert.Equal(ac + 5, hag.ArmorClass);
+            Spells.MagicMissile.Cast(hag, 12, SpellLevel.THIRD, 0);
+            Assert.Equal(hag.HitPointsMax, hag.HitPoints);
+            DefaultSpellTest(Spells.Shield, 12, Spells.Shield.Level, null, Effect.SPELL_SHIELD, 1);
+        }
     }
 }

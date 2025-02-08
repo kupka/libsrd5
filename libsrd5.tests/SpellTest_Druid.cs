@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Xunit;
 
 namespace srd5 {
@@ -13,6 +12,17 @@ namespace srd5 {
                 ground.AddCombattant(target, ClassicLocation.Row.FRONT_RIGHT);
             }
             return ground;
+        }
+
+        [Fact]
+        public void DiceSlotScalingTest() {
+            Dice dice = Spells.DiceSlotScaling(SpellLevel.FIRST, SpellLevel.SECOND, 6, 1, 2, 2);
+            Assert.Equal("3d6+2", dice.ToString());
+            dice = Spells.DiceSlotScaling(SpellLevel.FIRST, SpellLevel.THIRD, 8, 1, -2, 2);
+            Assert.Equal("5d8-2", dice.ToString());
+            Assert.Throws<Srd5ArgumentException>(delegate {
+                dice = Spells.DiceSlotScaling(SpellLevel.THIRD, SpellLevel.SECOND, 6, 1, 2, 2);
+            });
         }
 
 
@@ -119,7 +129,7 @@ namespace srd5 {
                 Assert.Equal(hero.ProficiencyBonus + hero.Strength.Modifier, hero.MeleeAttacks[0].AttackBonus);
                 Spells.Shillelagh.Cast(hero, 0, SpellLevel.CANTRIP, hero.Wisdom.Modifier);
                 Assert.Equal(hero.ProficiencyBonus + hero.Wisdom.Modifier, hero.MeleeAttacks[0].AttackBonus);
-                if (hero.Inventory.MainHand.IsThisA(Weapons.Quarterstaff)) {
+                if (hero.Inventory.MainHand.Is(Weapons.Quarterstaff)) {
                     Assert.Equal(Spells.ID.SHILLELAGH.Name(), hero.BonusAttack.Name);
                 }
             }
@@ -162,11 +172,11 @@ namespace srd5 {
             Random.State = 1;
             if (spell.MaximumTargets > 1) {
                 for (int i = 0; i < 5; i++) {
-                    spell.Cast(ground, hero, dc, slot, 0, targets[2 * i], targets[2 * i + 1]);
+                    spell.Cast(ground, hero, dc, slot, 5, targets[2 * i], targets[2 * i + 1]);
                 }
             } else {
                 foreach (Combattant target in targets) {
-                    spell.Cast(ground, hero, dc, slot, 0, target);
+                    spell.Cast(ground, hero, dc, slot, 5, target);
                 }
             }
             if (checkForCondition != null) {
@@ -341,9 +351,14 @@ namespace srd5 {
         [Fact]
         public void GoodberryTest() {
             CharacterSheet hero = new CharacterSheet(Race.GNOME);
+            hero.AddLevel(CharacterClasses.Druid);
             Spells.Goodberry.Cast(hero, 12, SpellLevel.FIRST, 0);
             Assert.True(hero.Inventory.Bag.Length > 0);
             Assert.True(hero.Inventory.Bag[0].Name == Potions.Goodberry.Name);
+            hero.TakeDamage(this, DamageType.TRUE_DAMAGE, 1);
+            Assert.Equal(hero.HitPointsMax - 1, hero.HitPoints);
+            hero.Consume(Potions.Goodberry);
+            Assert.Equal(hero.HitPointsMax, hero.HitPoints);
         }
     }
 }

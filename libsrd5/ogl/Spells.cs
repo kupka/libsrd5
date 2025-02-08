@@ -490,5 +490,35 @@ namespace srd5 {
             GlobalEvents.AffectBySpell(caster, id, target, hit);
             return hit;
         }
+
+        public static void AddEffectForDuration(ID id, Combattant caster, Combattant target, Effect effect, SpellDuration duration) {
+            GlobalEvents.AffectBySpell(caster, id, target, true);
+            target.AddEffect(effect);
+            int remainingRounds = (int)duration / 6;
+            target.AddEndOfTurnEvent(delegate () {
+                if (--remainingRounds < 1) {
+                    target.RemoveEffect(effect);
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+
+        public static void AddEffectAndConditionForDuration(ID id, Combattant caster, Combattant target, Effect effect, ConditionType condition, SpellDuration duration) {
+            GlobalEvents.AffectBySpell(caster, id, target, true);
+            target.AddEffect(effect);
+            target.AddCondition(condition);
+            int remainingRounds = (int)duration / 6;
+            target.AddEndOfTurnEvent(delegate () {
+                if (--remainingRounds < 1) {
+                    target.RemoveEffect(effect);
+                    target.RemoveCondition(condition);
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
     }
 }

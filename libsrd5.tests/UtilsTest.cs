@@ -24,5 +24,13 @@ namespace srd5 {
             a = new int[] { 3, 20, 3 };
             Assert.Equal(20, Utils.Max<int>(a));
         }
+
+        [Fact]
+        public void GuidClassTest() {
+            Monster aboleth = Monsters.Aboleth;
+            Assert.True(aboleth.Equals(aboleth));
+            Assert.False(aboleth.Equals(Monsters.Aboleth));
+            Assert.False(aboleth.Equals("Aboleth"));
+        }
     }
 }

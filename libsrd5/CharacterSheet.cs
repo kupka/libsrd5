@@ -85,6 +85,9 @@ namespace srd5 {
                 }
                 return ac + ArmorClassModifier;
             }
+            internal set {
+                throw new Srd5Exception("Cannot set Armorclass directly.");
+            }
         }
 
         public override int HitPointsMax {

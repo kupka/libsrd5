@@ -106,6 +106,16 @@ namespace srd5 {
         }
 
         [Fact]
+        public void DCEffectTest() {
+            Combattant ogre = Monsters.Ogre;
+            ogre.AddEffect(Effect.SPELL_BANE, Effect.SPELL_BLESS, Effect.SPELL_DIVINE_FAVOR);
+            ogre.DC(this, 20, AbilityType.STRENGTH, out _);
+            for (int i = 0; i < 10; i++) {
+                ogre.Attack(Attacks.OgreGreatclub, Monsters.Rat, 5);
+            }
+        }
+
+        [Fact]
         public void DCTest() {
             Combattant orc = Monsters.Orc;
             Assert.True(orc.DC(null, 2, AbilityType.WISDOM, true, false));

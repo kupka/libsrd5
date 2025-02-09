@@ -259,6 +259,32 @@ namespace srd5 {
         }
 
         [Fact]
+        public void SpecialConditionTest2() {
+            ConditionType[] conditions = new ConditionType[] {
+                ConditionType.PRONE,
+                ConditionType.RESTRAINED,
+                ConditionType.STUNNED,
+                ConditionType.PARALYZED,
+                ConditionType.UNCONSCIOUS,
+                ConditionType.BLINDED,
+                ConditionType.PETRIFIED
+            };
+            foreach (ConditionType condition in conditions) {
+                Monster ogre = Monsters.Ogre;
+                Monster goblin = Monsters.Goblin;
+                Battleground2D ground = new Battleground2D(5, 5);
+                ground.AddCombattant(ogre, 1, 1);
+                ground.AddCombattant(goblin, 1, 2);
+                goblin.AddCondition(condition);
+                while (ground.CurrentCombattant != ogre) {
+                    ground.NextPhase();
+                }
+                ground.NextPhase();
+                Assert.True(ground.MeleeAttackAction(goblin));
+            }
+        }
+
+        [Fact]
         public void CastMagicMissileTest() {
             Battleground2D ground = new Battleground2D(30, 30);
             CharacterSheet hero = new CharacterSheet(Race.TIEFLING, true);

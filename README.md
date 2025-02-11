@@ -32,14 +32,14 @@ libsrd5 Copyright 2021-2025, Thomas Kupka
 
 | Topic                 | Status            | Remark                   |
 ------------------------|-------------------|--------------------------|
-| General Functionality | 🟩🟩🟩🟩🟩🟩🟩🟩⬛⬛ | This includes rolling dice, casting spells, attacking etc. |
-| Character Classes     | 🟩🟩🟩🟩⬛⬛⬛⬛⬛⬛ | Work to some degree, but needs a lot of detailling. |
-| Character Races       | 🟩🟩🟩🟩🟩⬛⬛⬛⬛⬛ | All races available, but pretty bare functionality. |
-| Monsters              | 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬛ | All Monsters are available, most are fully functional! |
-| Spells                | 🟩🟩🟩⬛⬛⬛⬛⬛⬛⬛ | All Spells are available, Cantrips and 1st Level fully implemented. **Current focus of work**. |
-| Feats                 | 🟩⬛⬛⬛⬛⬛⬛⬛⬛⬛ | Only very basic functionality available. |
-| Items                 | 🟩🟩🟩🟩🟩🟩⬛⬛⬛⬛ | Weapons, Armors (incl. magic) are available. Unique artifacts missing. |
-| Descriptions          | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 | Done! Everything mentioned in the SRD5 is available in the library. |
+| General <br> Functionality | 🟩🟩🟩🟩🟩🟩🟩🟩⬛⬛ | This includes rolling dice, <br> casting spells, attacking etc. |
+| Character <br> Classes     | 🟩🟩🟩🟩⬛⬛⬛⬛⬛⬛ | Work to some degree, <br> but needs a lot of detailling. |
+| Character <br> Races       | 🟩🟩🟩🟩🟩⬛⬛⬛⬛⬛ | All races available, <br> but pretty bare functionality. |
+| Monsters              | 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬛ | All Monsters are available, <br> most are fully functional! |
+| Spells                | 🟩🟩🟩⬛⬛⬛⬛⬛⬛⬛ | All Spells are available, <br> Cantrips and 1st Level <br> fully implemented.<br> **Current focus of work**. |
+| Feats                 | 🟩⬛⬛⬛⬛⬛⬛⬛⬛⬛ | Only very basic <br> functionality available. |
+| Items                 | 🟩🟩🟩🟩🟩🟩⬛⬛⬛⬛ | Weapons, Armors (incl. magic) <br> are available. <br> Unique artifacts missing. |
+| Descriptions          | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 | Done! Everything mentioned<br> in the SRD5 is available<br> in the library. |
 
 ## Acknowledgements
 

@@ -449,6 +449,12 @@ namespace srd5 {
                 Assert.False(battle.RangedAttackAction(bandit));
             else
                 Assert.False(battle.RangedAttackAction(ogre));
+            Assert.Throws<Srd5ArgumentException>(
+                delegate () {
+                    battle.NextPhase();
+                    battle.RangedAttackAction(battle.CurrentCombattant);
+                }
+            );
             while (bandit.HitPoints > 0) {
                 while (battle.NextPhase() != TurnPhase.ACTION) ;
                 Assert.Throws<Srd5ArgumentException>(delegate { battle.RangedAttackAction(null); });

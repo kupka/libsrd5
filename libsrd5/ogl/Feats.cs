@@ -347,7 +347,7 @@ namespace srd5 {
                     combattant.Charisma.BaseValue++;
                     break;
                 case Feat.LEGENDARY_RESISTANCE:
-                    combattant.AddEffects(Effect.LEGENDARY_RESISTANCE, Effect.LEGENDARY_RESISTANCE, Effect.LEGENDARY_RESISTANCE);
+                    combattant.AddEffect(Effect.LEGENDARY_RESISTANCE, Effect.LEGENDARY_RESISTANCE, Effect.LEGENDARY_RESISTANCE);
                     break;
             }
         }

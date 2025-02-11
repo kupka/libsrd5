@@ -28,7 +28,7 @@ namespace srd5 {
         [Fact]
         public void AutoFailDCTest() {
             Monster orc = Monsters.Orc;
-            orc.AddEffects(Effect.FAIL_DEXERITY_CHECK, Effect.FAIL_STRENGTH_CHECK);
+            orc.AddEffect(Effect.FAIL_DEXERITY_CHECK, Effect.FAIL_STRENGTH_CHECK);
             Assert.False(orc.DC(Spells.ID.HOLD_PERSON, 2, AbilityType.STRENGTH, true));
             Assert.False(orc.DC(Weapons.Blowgun, 2, AbilityType.DEXTERITY));
         }

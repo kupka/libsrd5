@@ -118,13 +118,23 @@ namespace srd5 {
         GRAPPLING,
 
         // Spell Effects
-        ENTANGLE,
-        FAIRIE_FIRE,
-        JUMP,
-        LIGHT,
-        LONGSTRIDER,
-        RAY_OF_FROST,
-        RESISTANCE,
+        SPELL_BANE,
+        SPELL_BLESS,
+        SPELL_ENTANGLE,
+        SPELL_FAIRIE_FIRE,
+        SPELL_JUMP,
+        SPELL_LIGHT,
+        SPELL_LONGSTRIDER,
+        SPELL_RAY_OF_FROST,
+        SPELL_RESISTANCE,
+        SPELL_GUIDANCE,
+        SPELL_DIVINE_FAVOR,
+        SPELL_HIDEOUS_LAUGHTER,
+        SPELL_COMMAND_GROVEL,
+        SPELL_FEATHER_FALL,
+        SPELL_PROTECTION_FROM_EVIL_AND_GOOD,
+        SPELL_SHIELD,
+        SPELL_SHIELD_OF_FAITH,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,
@@ -133,7 +143,6 @@ namespace srd5 {
         CURSE_WERERAT,
         CURSE_WERETIGER,
         CURSE_WEREWOLF,
-        GUIDANCE,
         // Attack Effects
         ABOLETH_DISEASE_TENTACLE,
         BEARDED_DEVIL_POISON,
@@ -222,13 +231,13 @@ namespace srd5 {
                         sheet.RecalculateAttacks();
                     };
                     break;
-                case Effect.LONGSTRIDER:
+                case Effect.SPELL_LONGSTRIDER:
                     combattant.Speed += 10;
                     break;
-                case Effect.ENTANGLE:
+                case Effect.SPELL_ENTANGLE:
                     combattant.AddCondition(ConditionType.RESTRAINED);
                     break;
-                case Effect.FAIRIE_FIRE:
+                case Effect.SPELL_FAIRIE_FIRE:
                     combattant.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
                     break;
                 case Effect.IMMUNITY_TRUE_DAMAGE:
@@ -254,7 +263,7 @@ namespace srd5 {
                 case Effect.FIRE_ELEMENTAL_IGNITE:
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (!combattant.HasEffect(effect)) return true;
-                        combattant.TakeDamage(DamageType.FIRE, "1d10");
+                        combattant.TakeDamage(effect, DamageType.FIRE, "1d10");
                         return false;
                     });
                     break;
@@ -287,12 +296,12 @@ namespace srd5 {
                     combattant.AddEffect(Effect.CANNOT_REGAIN_HITPOINTS);
                     break;
                 case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
-                    combattant.AddConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
+                    combattant.AddCondition(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
                     break;
                 case Effect.MAGMIN_IGNITE:
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (!combattant.HasEffect(effect)) return true;
-                        combattant.TakeDamage(DamageType.FIRE, "1d6");
+                        combattant.TakeDamage(effect, DamageType.FIRE, "1d6");
                         return false;
                     });
                     break;
@@ -304,14 +313,14 @@ namespace srd5 {
                     // This reduction to the target's hit point maximum lasts until the disease is cured.
                     break;
                 case Effect.PHASE_SPIDER_POISON:
-                    combattant.AddConditions(ConditionType.POISONED, ConditionType.PARALYZED);
+                    combattant.AddCondition(ConditionType.POISONED, ConditionType.PARALYZED);
                     break;
                 case Effect.PIT_FIEND_POISON:
                     combattant.AddCondition(ConditionType.POISONED);
                     combattant.AddEffect(Effect.CANNOT_REGAIN_HITPOINTS);
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (!combattant.HasEffect(effect)) return true;
-                        combattant.TakeDamage(DamageType.POISON, "6d6");
+                        combattant.TakeDamage(effect, DamageType.POISON, "6d6");
                         return false;
                     });
                     combattant.AddEndOfTurnEvent(delegate () {
@@ -349,7 +358,7 @@ namespace srd5 {
                     if (!combattant.HasEffect(Effect.IMMUNITY_BLINDED)) combattant.AddCondition(ConditionType.BLINDED);
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (combattant.HasCondition(ConditionType.GRAPPLED_DC13)) {
-                            combattant.TakeDamage(DamageType.BLUDGEONING, "2d6+3");
+                            combattant.TakeDamage(effect, DamageType.BLUDGEONING, "2d6+3");
                             return false;
                         } else {
                             return true;
@@ -414,6 +423,10 @@ namespace srd5 {
                         }
                     });
                     break;
+                case Effect.SPELL_COMMAND_GROVEL:
+                case Effect.SPELL_HIDEOUS_LAUGHTER:
+                    combattant.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
+                    break;
             }
         }
 
@@ -436,13 +449,13 @@ namespace srd5 {
                         sheet.RecalculateAttacks();
                     };
                     break;
-                case Effect.LONGSTRIDER:
+                case Effect.SPELL_LONGSTRIDER:
                     combattant.Speed -= 10;
                     break;
-                case Effect.ENTANGLE:
+                case Effect.SPELL_ENTANGLE:
                     combattant.RemoveCondition(ConditionType.RESTRAINED);
                     break;
-                case Effect.FAIRIE_FIRE:
+                case Effect.SPELL_FAIRIE_FIRE:
                     combattant.RemoveEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
                     break;
                 case Effect.COUATL_POISON:
@@ -467,7 +480,7 @@ namespace srd5 {
                     combattant.RemoveCondition(ConditionType.PARALYZED);
                     break;
                 case Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS:
-                    combattant.RemoveConditions(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
+                    combattant.RemoveCondition(ConditionType.POISONED, ConditionType.UNCONSCIOUS);
                     break;
                 case Effect.OTYUGH_DISEASE:
                     combattant.RemoveCondition(ConditionType.POISONED);
@@ -477,7 +490,7 @@ namespace srd5 {
                     // This reduction to the target's hit point maximum lasts until the disease is cured.
                     break;
                 case Effect.PHASE_SPIDER_POISON:
-                    combattant.RemoveConditions(ConditionType.POISONED, ConditionType.PARALYZED);
+                    combattant.RemoveCondition(ConditionType.POISONED, ConditionType.PARALYZED);
                     break;
                 case Effect.PIT_FIEND_POISON:
                     combattant.RemoveCondition(ConditionType.POISONED);
@@ -499,11 +512,15 @@ namespace srd5 {
                     combattant.RemoveEffect(Effect.CANNOT_REGAIN_HITPOINTS);
                     break;
                 case Effect.FIGHTING_DEATH:
-                    combattant.RemoveEffects(Effect.FIGHTING_DEATH_SAVE_FAIL_1,
+                    combattant.RemoveEffect(Effect.FIGHTING_DEATH_SAVE_FAIL_1,
                                              Effect.FIGHTING_DEATH_SAVE_FAIL_2,
                                              Effect.FIGHTING_DEATH_SAVE_SUCCESS_1,
                                              Effect.FIGHTING_DEATH_SAVE_SUCCESS_2,
                                              Effect.FIGHTING_DEATH_STABILIZED);
+                    break;
+                case Effect.SPELL_COMMAND_GROVEL:
+                case Effect.SPELL_HIDEOUS_LAUGHTER:
+                    combattant.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
                     break;
             }
         }

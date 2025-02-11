@@ -85,6 +85,9 @@ namespace srd5 {
                 }
                 return ac + ArmorClassModifier;
             }
+            internal set {
+                throw new Srd5Exception("Cannot set Armorclass directly.");
+            }
         }
 
         public override int HitPointsMax {
@@ -197,7 +200,7 @@ namespace srd5 {
             }
             Weapon weapon = Inventory.MainHand;
             int modifier = calculateModifier(weapon);
-            dmgString = concatDamageString(weapon.Damage.Dices.ToString(), modifier);
+            dmgString = concatDamageString(weapon.Damage.Dice.ToString(), modifier);
             if (weapon.HasProperty(WeaponProperty.VERSATILE) && Inventory.OffHand == null) {
                 // increase damage dice because versatile weapon is used two-handed
                 dmgString = dmgString.Replace("d10", "d12");
@@ -215,7 +218,7 @@ namespace srd5 {
             if (Inventory.OffHand == null || !(Inventory.OffHand is Weapon)) return;
             weapon = (Weapon)Inventory.OffHand;
             modifier = calculateModifier(weapon);
-            dmgString = concatDamageString(weapon.Damage.Dices.ToString(), modifier);
+            dmgString = concatDamageString(weapon.Damage.Dice.ToString(), modifier);
             if (modifier > 0) modifier = 0; // only negative modifiers for bonus action
             BonusAttack = srd5.Attack.FromWeapon(AttackProficiency, dmgString, weapon);
         }

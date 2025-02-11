@@ -29,7 +29,7 @@ namespace srd5 {
             Assert.False(club.Equals(dagger));
             Assert.False(club.Equals(null));
             Assert.False(club.Equals("not an item"));
-            Assert.False(club.IsThisA(null));
+            Assert.False(club.Is(null));
             Assert.False(club.Equals(Armors.HideArmor));
         }
 
@@ -38,7 +38,7 @@ namespace srd5 {
             Weapon club1 = Weapons.Club;
             Weapon club2 = Weapons.Club;
             Assert.False(club1.Equals(club2));
-            Assert.True(club1.IsThisA(club2));
+            Assert.True(club1.Is(club2));
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace srd5 {
             Consumable[] potions = new Consumable[] { Potions.PotionOfHealing, Potions.PotionOfGreaterHealing,
                                     Potions.PotionOfSuperiorHealing, Potions.PotionOfSupremeHealing };
             foreach (Consumable potion in potions) {
-                hero.TakeDamage(DamageType.SLASHING, hero.HitPointsMax);
+                hero.TakeDamage(this, DamageType.SLASHING, hero.HitPointsMax);
                 Assert.True(hero.HasEffect(Effect.FIGHTING_DEATH));
                 hero.Consume(potion);
                 Assert.False(hero.HasEffect(Effect.FIGHTING_DEATH));

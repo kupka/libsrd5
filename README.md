@@ -28,12 +28,18 @@ This example uses a very outdated version of libsrd5, an update will probably ar
 
 libsrd5 Copyright 2021-2025, Thomas Kupka
 
-## Current Status
+## Current Status (Version 0.3.1)
 
-The latest milestone finally contains **all** the monsters and their attacks from the SRD, though not all attack effects are fully implemented.
-However, a ton already works, such as poison and grappling effects.
-
-Next milestone will concentrate on implementing the spell effects, then I will work on the character classes.
+| Topic                 | Status            | Remark                   |
+------------------------|-------------------|--------------------------|
+| General <br> Functionality | 🟩🟩🟩🟩🟩🟩🟩🟩⬛⬛ | This includes rolling dice, <br> casting spells, attacking etc. |
+| Character <br> Classes     | 🟩🟩🟩🟩⬛⬛⬛⬛⬛⬛ | Work to some degree, <br> but needs a lot of detailling. |
+| Character <br> Races       | 🟩🟩🟩🟩🟩⬛⬛⬛⬛⬛ | All races available, <br> but pretty bare functionality. |
+| Monsters              | 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬛ | All Monsters are available, <br> most are fully functional! |
+| Spells                | 🟩🟩🟩⬛⬛⬛⬛⬛⬛⬛ | All Spells are available, <br> Cantrips and 1st Level <br> fully implemented.<br> **Current focus of work**. |
+| Feats                 | 🟩⬛⬛⬛⬛⬛⬛⬛⬛⬛ | Only very basic <br> functionality available. |
+| Items                 | 🟩🟩🟩🟩🟩🟩⬛⬛⬛⬛ | Weapons, Armors (incl. magic) <br> are available. <br> Unique artifacts missing. |
+| Descriptions          | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 | Done! Everything mentioned<br> in the SRD5 is available<br> in the library. |
 
 ## Acknowledgements
 

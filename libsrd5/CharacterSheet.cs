@@ -418,7 +418,7 @@ namespace srd5 {
         }
 
         public void AddLevel(CharacterClass characterClass) {
-            Die die = srd5.Die.Get(characterClass.HitDie);
+            Die die = srd5.Die.D(characterClass.HitDie);
             int additionalHp = HasEffect(Effect.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
             EffectiveLevel++;
             foreach (CharacterLevel level in levels) {

@@ -67,7 +67,7 @@ namespace srd5 {
 
         public override bool Equals(object obj) {
             if (obj is GuidClass other) {
-                return this.Guid.Equals(other.Guid);
+                return Guid.Equals(other.Guid);
             } else {
                 return false;
             }

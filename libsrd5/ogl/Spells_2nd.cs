@@ -1,9 +1,19 @@
-using System;
+using static srd5.Die;
 
 namespace srd5 {
     public partial struct Spells {
-        /* TODO */
-        public static readonly Spell AcidArrow = new Spell(Spells.ID.ACID_ARROW, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 90, VSM, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        public static readonly Spell AcidArrow = new Spell(Spells.ID.ACID_ARROW, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 90, VSM, SpellDuration.INSTANTANEOUS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            Combattant target = targets[0];
+            Dice dice = DiceSlotScaling(SpellLevel.SECOND, slot, D4, 4, 0, 1);
+            Dice additionalDice = DiceSlotScaling(SpellLevel.SECOND, slot, D4, 2, 0, 1);
+            bool hit = SpellAttack(ID.ACID_ARROW, ground, caster, DamageType.ACID, dice, 0, target, 90, DamageMitigation.HALVES_DAMAGE);
+            if (hit) {
+                target.AddEndOfTurnEvent(delegate () {
+                    target.TakeDamage(Effect.SPELL_ACID_ARRORW_BURN, DamageType.ACID, additionalDice);
+                    return true;
+                });
+            }
+        });
         /* TODO */
         public static readonly Spell Aid = new Spell(Spells.ID.AID, SpellSchool.ABJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.EIGHT_HOURS, 0, 0, doNothing);
         /* TODO */

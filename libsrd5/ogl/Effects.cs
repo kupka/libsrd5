@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Runtime.InteropServices;
+using static srd5.Die;
 
 namespace srd5 {
     public enum Effect {
@@ -135,6 +134,7 @@ namespace srd5 {
         SPELL_PROTECTION_FROM_EVIL_AND_GOOD,
         SPELL_SHIELD,
         SPELL_SHIELD_OF_FAITH,
+        SPELL_ACID_ARRORW_BURN,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,
@@ -373,7 +373,7 @@ namespace srd5 {
                             return true;
                         }
                         // Death Save is DC10 with no Ability
-                        int deathSaveRoll = Die.D20.Value;
+                        int deathSaveRoll = D20.Value;
                         bool success = deathSaveRoll > 9;
                         GlobalEvents.RolledDC(combattant, Effect.FIGHTING_DEATH, new Ability(AbilityType.NONE, 9), 10, deathSaveRoll, success);
                         if (success) {

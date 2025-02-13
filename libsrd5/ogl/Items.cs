@@ -1,3 +1,5 @@
+using static srd5.Die;
+
 namespace srd5 {
     public enum WeaponProperty {
         AMMUNITION,
@@ -700,7 +702,7 @@ namespace srd5 {
                     Spells.MagicMissile.Cast(ground, user, 0, (SpellLevel)expendedCharges, 0, targets);
                     item.Charges -= expendedCharges;
                     if (item.Charges == 0) {
-                        int roll = Die.D20.Value;
+                        int roll = D20.Value;
                         if (roll == 1) {
                             item.Destroyed = true;
                         }

@@ -1,3 +1,5 @@
+using static srd5.Die;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack SaberToothedTigerBite {
@@ -203,7 +205,7 @@ namespace srd5 {
             int damage = 0;
             target.AddStartOfTurnEvent(delegate () {
                 if (!target.HasEffect(Effect.STIRGE_BLOOD_DRAIN_EFFECT)) return true;
-                int delta = Die.Roll("1d4+3");
+                int delta = Roll("1d4+3");
                 damage += delta;
                 target.TakeDamage(attacker, DamageType.TRUE_DAMAGE, "1d4+3");
                 return damage >= 10;
@@ -248,7 +250,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SuccubusDrainingKissEffect = delegate (Combattant attacker, Combattant target) {
             bool success = target.DC(SuccubusDrainingKiss, 15, AbilityType.CONSTITUTION);
-            int damage = Die.Roll("5d10+5");
+            int damage = Roll("5d10+5");
             if (success) damage /= 2;
             target.TakeDamage(attacker, DamageType.PSYCHIC, damage);
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));

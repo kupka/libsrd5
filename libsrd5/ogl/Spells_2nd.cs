@@ -14,8 +14,20 @@ namespace srd5 {
                 });
             }
         });
-        /* TODO */
-        public static readonly Spell Aid = new Spell(Spells.ID.AID, SpellSchool.ABJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.EIGHT_HOURS, 0, 0, doNothing);
+
+        public static readonly Spell Aid = new Spell(Spells.ID.AID, SpellSchool.ABJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.EIGHT_HOURS, 0, 3, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            int amount = 5 * ((int)slot - 1);
+            foreach (Combattant target in targets) {
+                if (target.HasEffect(Effect.SPELL_AID)) {
+                    GlobalEvents.AffectBySpell(caster, ID.AID, target, false);
+                } else {
+                    target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(amount, HitPointMaxiumModifier.RemovedByEffect.AFTER_8_HOURS));
+                    target.HealDamage(amount);
+                    target.AddEffect(Effect.SPELL_AID);
+                    GlobalEvents.AffectBySpell(caster, ID.AID, target, true);
+                }
+            }
+        });
         /* TODO */
         public static readonly Spell AlterSelf = new Spell(Spells.ID.ALTER_SELF, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VS, SpellDuration.ONE_HOUR, 0, 0, doNothing);
         /* TODO */

@@ -7,6 +7,7 @@ namespace srd5 {
             GREATER_RESTORATION,
             REMOVE_DISEASE,
             REMOVE_CURSE,
+            AFTER_8_HOURS,
             AFTER_24_HOURS,
             LONG_REST
         }

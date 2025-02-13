@@ -135,6 +135,7 @@ namespace srd5 {
         SPELL_SHIELD,
         SPELL_SHIELD_OF_FAITH,
         SPELL_ACID_ARRORW_BURN,
+        SPELL_AID,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,

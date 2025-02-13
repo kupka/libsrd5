@@ -57,7 +57,11 @@ namespace srd5 {
         private int baseArmorClass = 0;
         public override int ArmorClass {
             get {
-                return baseArmorClass + ArmorClassModifier;
+                int ac = baseArmorClass + ArmorClassModifier;
+                if (HasEffect(Effect.SPELL_BARKSKIN) && ac < 16)
+                    return 16;
+                else
+                    return ac;
             }
             internal set {
                 baseArmorClass = value;

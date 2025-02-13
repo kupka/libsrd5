@@ -361,5 +361,22 @@ namespace srd5 {
             hero.Consume(Potions.Goodberry);
             Assert.Equal(hero.HitPointsMax, hero.HitPoints);
         }
+
+        [Fact]
+        public void BarkskinTest() {
+            Monster rat = Monsters.Rat;
+            Monster dragon = Monsters.AncientBlackDragon;
+            Spells.Barkskin.Cast(rat, 10, SpellLevel.FOURTH, 5);
+            Assert.Equal(16, rat.ArmorClass);
+            Assert.True(dragon.ArmorClass > 16);
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
+            hero.AddLevels(CharacterClasses.Barbarian);
+            hero.Strength.BaseValue = 20;
+            hero.Dexterity.BaseValue = 14;
+            Spells.Barkskin.Cast(hero, 10, SpellLevel.SECOND, 0);
+            Assert.Equal(16, hero.ArmorClass);
+            hero.Equip(Armors.PlateArmor);
+            Assert.True(hero.ArmorClass > 16);
+        }
     }
 }

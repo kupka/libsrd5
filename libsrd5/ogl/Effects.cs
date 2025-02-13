@@ -137,6 +137,8 @@ namespace srd5 {
         SPELL_ACID_ARRORW_BURN,
         SPELL_AID,
         SPELL_ALTER_SELF_CLAWS,
+        SPELL_BARKSKIN,
+        SPELL_BLINDNESS_DEAFNESS,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,

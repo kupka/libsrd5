@@ -507,15 +507,15 @@ namespace srd5 {
             });
         }
 
-        internal static void AddEffectAndConditionForDuration(ID id, Combattant caster, Combattant target, Effect effect, ConditionType condition, SpellDuration duration) {
+        internal static void AddEffectAndConditionsForDuration(ID id, Combattant caster, Combattant target, SpellDuration duration, Effect effect, params ConditionType[] conditions) {
             GlobalEvents.AffectBySpell(caster, id, target, true);
             target.AddEffect(effect);
-            target.AddCondition(condition);
+            target.AddCondition(conditions);
             int remainingRounds = (int)duration / 6;
             target.AddEndOfTurnEvent(delegate () {
                 if (--remainingRounds < 1) {
                     target.RemoveEffect(effect);
-                    target.RemoveCondition(condition);
+                    target.RemoveCondition(conditions);
                     return true;
                 } else {
                     return false;

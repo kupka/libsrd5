@@ -156,7 +156,7 @@ namespace srd5 {
                     if (target.DC(ID.ENTANGLE, dc, AbilityType.STRENGTH)) {
                         GlobalEvents.AffectBySpell(caster, ID.ENTANGLE, target, false);
                     } else {
-                        AddEffectAndConditionForDuration(ID.ENTANGLE, caster, target, Effect.SPELL_ENTANGLE, ConditionType.RESTRAINED, SpellDuration.ONE_MINUTE);
+                        AddEffectAndConditionsForDuration(ID.ENTANGLE, caster, target, SpellDuration.ONE_MINUTE, Effect.SPELL_ENTANGLE, ConditionType.RESTRAINED);
                     }
                 }
             }

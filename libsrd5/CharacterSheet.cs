@@ -83,7 +83,11 @@ namespace srd5 {
                     Shield shield = shield1;
                     ac += shield.AC;
                 }
-                return ac + ArmorClassModifier;
+                ac += ArmorClassModifier;
+                if (HasEffect(Effect.SPELL_BARKSKIN) && ac < 16)
+                    return 16;
+                else
+                    return ac;
             }
             internal set {
                 throw new Srd5Exception("Cannot set Armorclass directly.");

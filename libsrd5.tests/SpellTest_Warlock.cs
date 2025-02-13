@@ -20,8 +20,9 @@ namespace srd5 {
             Monster badger = Monsters.Badger;
             Battleground ground = createBattleground(hag, badger);
             int hp = badger.HitPoints;
-            for (int i = 0; i < 5; i++)
-                Spells.PoisonSpray.Cast(ground, hag, 12, SpellLevel.CANTRIP, hag.ProficiencyBonus, badger, badger, badger);
+            Spells.PoisonSpray.Cast(ground, hag, 1, SpellLevel.CANTRIP, hag.ProficiencyBonus, badger);
+            Assert.Equal(badger.HitPointsMax, badger.HitPoints);
+            Spells.PoisonSpray.Cast(ground, hag, 25, SpellLevel.CANTRIP, hag.ProficiencyBonus, badger, badger, badger);
             Assert.True(badger.HitPoints < hp);
         }
 

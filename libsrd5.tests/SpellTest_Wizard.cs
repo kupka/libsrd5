@@ -289,5 +289,10 @@ namespace srd5 {
             hero.RemoveEffect(Effect.SPELL_ALTER_SELF_CLAWS);
             Assert.True(hero.Inventory.MainHand == null);
         }
+
+        [Fact]
+        public void BlindnessDeafnessTest() {
+            DefaultSpellTest(Spells.BlindnessDeafness, 12, SpellLevel.THIRD, ConditionType.BLINDED, Effect.SPELL_BLINDNESS_DEAFNESS, 10);
+        }
     }
 }

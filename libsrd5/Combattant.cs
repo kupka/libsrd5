@@ -226,6 +226,7 @@ namespace srd5 {
         }
 
         public bool IsProficient(Proficiency proficiency) {
+            if (proficiency == Proficiency.ANY) return true;
             return Array.IndexOf(proficiencies, proficiency) > -1;
         }
 

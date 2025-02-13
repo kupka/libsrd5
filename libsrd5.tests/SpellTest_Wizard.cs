@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace srd5 {
@@ -272,6 +273,21 @@ namespace srd5 {
                 ogre.OnEndOfTurn();
                 Assert.True(hp == ogre.HitPoints);
             }
+        }
+
+        [Fact]
+        public void AlterSelfTest() {
+            Monster hag = Monsters.NightHag;
+            Spells.AlterSelf.Cast(hag, 10, SpellLevel.SECOND, 0);
+            Assert.True(hag.HasEffect(Effect.SPELL_ALTER_SELF_CLAWS));
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
+            Item club = Weapons.Club;
+            hero.Equip(club);
+            Spells.AlterSelf.Cast(hero, 10, SpellLevel.FIFTH, 5);
+            Assert.True(hero.Inventory.MainHand.Is(Weapons.Claws));
+            Assert.True(Array.IndexOf(hero.Inventory.Bag, club) == 0);
+            hero.RemoveEffect(Effect.SPELL_ALTER_SELF_CLAWS);
+            Assert.True(hero.Inventory.MainHand == null);
         }
     }
 }

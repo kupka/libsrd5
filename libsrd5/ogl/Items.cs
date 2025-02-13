@@ -506,6 +506,18 @@ namespace srd5 {
                );
             }
         }
+
+        // Natural Weapons from Alter Self
+        public static Weapon Claws {
+            get {
+                return new Weapon(
+                            "Claws", "1d6+1", DamageType.BLUDGEONING,
+                            new WeaponProperty[] { WeaponProperty.MAGIC },
+                            new Proficiency[] { Proficiency.ANY },
+                            0, 0
+                );
+            }
+        }
     }
 
     public struct Shields {

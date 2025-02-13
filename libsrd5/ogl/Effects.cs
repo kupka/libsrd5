@@ -136,6 +136,7 @@ namespace srd5 {
         SPELL_SHIELD_OF_FAITH,
         SPELL_ACID_ARRORW_BURN,
         SPELL_AID,
+        SPELL_ALTER_SELF_CLAWS,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,
@@ -428,6 +429,12 @@ namespace srd5 {
                 case Effect.SPELL_HIDEOUS_LAUGHTER:
                     combattant.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
                     break;
+                case Effect.SPELL_ALTER_SELF_CLAWS:
+                    if (combattant is CharacterSheet hero) {
+                        hero.Unequip(hero.Inventory.MainHand);
+                        hero.Equip(Weapons.Claws);
+                    }
+                    break;
             }
         }
 
@@ -522,6 +529,13 @@ namespace srd5 {
                 case Effect.SPELL_COMMAND_GROVEL:
                 case Effect.SPELL_HIDEOUS_LAUGHTER:
                     combattant.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
+                    break;
+                case Effect.SPELL_ALTER_SELF_CLAWS:
+                    if (combattant is CharacterSheet hero) {
+                        if (hero.Inventory.MainHand.Is(Weapons.Claws)) {
+                            hero.Inventory.MainHand = null;
+                        }
+                    }
                     break;
             }
         }

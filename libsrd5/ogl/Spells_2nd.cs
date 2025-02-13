@@ -28,8 +28,13 @@ namespace srd5 {
                 }
             }
         });
-        /* TODO */
-        public static readonly Spell AlterSelf = new Spell(Spells.ID.ALTER_SELF, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VS, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+
+        public static readonly Spell AlterSelf = new Spell(Spells.ID.ALTER_SELF, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VS, SpellDuration.ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            // TODO: Aquatic Adaption and Change Appearance require work elsewhere
+            // We cannot chose the type of weapons so let's grow Claws
+            caster.AddEffect(Effect.SPELL_ALTER_SELF_CLAWS);
+            GlobalEvents.AffectBySpell(caster, ID.ALTER_SELF, caster, true);
+        });
         /* TODO */
         public static readonly Spell AnimalMessenger = new Spell(Spells.ID.ANIMAL_MESSENGER, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_DAY, 0, 0, doNothing);
         /* TODO */

@@ -1,4 +1,5 @@
 using Xunit;
+using static srd5.Die;
 
 namespace srd5 {
     public class AttackEffectTest {
@@ -79,20 +80,20 @@ namespace srd5 {
                     Assert.True(pansyMonsterThatDies.Dead);
                 }
                 for (int j = 0; j < 20; j++) {
-                    uberMonster.TakeDamage(effect, randomDamageType(), Die.D4.Value);
+                    uberMonster.TakeDamage(effect, randomDamageType(), D4.Value);
                     uberMonster.EscapeFromGrapple();
                     uberMonster.OnStartOfTurn();
                     uberMonster.OnEndOfTurn();
-                    averageMonster.TakeDamage(effect, randomDamageType(), Die.D4.Value);
+                    averageMonster.TakeDamage(effect, randomDamageType(), D4.Value);
                     averageMonster.EscapeFromGrapple();
                     averageMonster.OnStartOfTurn();
                     averageMonster.OnEndOfTurn();
-                    pansyMonster.TakeDamage(effect, randomDamageType(), Die.D4.Value);
+                    pansyMonster.TakeDamage(effect, randomDamageType(), D4.Value);
                     pansyMonster.EscapeFromGrapple();
                     pansyMonster.OnStartOfTurn();
                     pansyMonster.OnEndOfTurn();
                     foreach (Combattant combattant in allCombattantTypes) {
-                        combattant.TakeDamage(effect, randomDamageType(), Die.D4.Value);
+                        combattant.TakeDamage(effect, randomDamageType(), D4.Value);
                         combattant.EscapeFromGrapple();
                         combattant.OnStartOfTurn();
                         combattant.OnEndOfTurn();

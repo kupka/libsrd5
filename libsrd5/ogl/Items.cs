@@ -1,3 +1,5 @@
+using static srd5.Die;
+
 namespace srd5 {
     public enum WeaponProperty {
         AMMUNITION,
@@ -504,6 +506,18 @@ namespace srd5 {
                );
             }
         }
+
+        // Natural Weapons from Alter Self
+        public static Weapon Claws {
+            get {
+                return new Weapon(
+                            "Claws", "1d6+1", DamageType.BLUDGEONING,
+                            new WeaponProperty[] { WeaponProperty.MAGIC },
+                            new Proficiency[] { Proficiency.ANY },
+                            0, 0
+                );
+            }
+        }
     }
 
     public struct Shields {
@@ -700,7 +714,7 @@ namespace srd5 {
                     Spells.MagicMissile.Cast(ground, user, 0, (SpellLevel)expendedCharges, 0, targets);
                     item.Charges -= expendedCharges;
                     if (item.Charges == 0) {
-                        int roll = Die.D20.Value;
+                        int roll = D20.Value;
                         if (roll == 1) {
                             item.Destroyed = true;
                         }

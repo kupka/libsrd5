@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using static srd5.Die;
 
 namespace srd5 {
     public class Tile {
@@ -244,7 +245,7 @@ namespace srd5 {
         public void AddCombattant(Combattant combattant) {
             if (Array.IndexOf(combattants, combattant) > -1) return;
             Utils.Push<Combattant>(ref combattants, combattant);
-            int roll = Die.D20.Value + combattant.Dexterity.Modifier;
+            int roll = D20.Value + combattant.Dexterity.Modifier;
             Utils.Push<int>(ref initiativeRolls, roll);
             GlobalEvents.RolledInitiative(combattant, roll);
         }

@@ -1,4 +1,4 @@
-using System;
+using static srd5.Die;
 using Xunit;
 
 namespace srd5 {
@@ -7,62 +7,62 @@ namespace srd5 {
     public class DiceTest {
         [Fact]
         public void D2Test() {
-            Die die = Die.D2;
+            Die die = D2;
             Assert.InRange<int>(die.Value, 1, 2);
         }
 
         [Fact]
         public void D3Test() {
-            Die die = Die.D3;
+            Die die = D3;
             Assert.InRange<int>(die.Value, 1, 3);
         }
 
         [Fact]
         public void D4Test() {
-            Die die = Die.D4;
+            Die die = D4;
             Assert.InRange<int>(die.Value, 1, 4);
         }
 
         [Fact]
         public void D6Test() {
-            Die die = Die.D6;
+            Die die = D6;
             Assert.InRange<int>(die.Value, 1, 6);
         }
 
         [Fact]
         public void D8Test() {
-            Die die = Die.D8;
+            Die die = D8;
             Assert.InRange<int>(die.Value, 1, 8);
         }
 
         [Fact]
         public void D10Test() {
-            Die die = Die.D10;
+            Die die = D10;
             Assert.InRange<int>(die.Value, 1, 10);
         }
 
         [Fact]
         public void D12Test() {
-            Die die = Die.D12;
+            Die die = D12;
             Assert.InRange<int>(die.Value, 1, 12);
         }
 
         [Fact]
         public void D20Test() {
-            Die die = Die.D20;
+            Die die = D20;
             Assert.InRange<int>(die.Value, 1, 20);
         }
 
         [Fact]
         public void D100Test() {
-            Die die = Die.D100;
+            Die die = D100;
             Assert.InRange<int>(die.Value, 1, 100);
         }
 
         [Fact]
         public void NotADiceTest() {
             Assert.Throws<Srd5ArgumentException>(delegate {
-                Die.Get(21);
+                D(21);
             });
         }
 
@@ -77,8 +77,8 @@ namespace srd5 {
         public void DisAdvantageTest() {
             int advantageRolls = 0, disadvantageRolls = 0;
             for (int i = 0; i < 10; i++) {
-                advantageRolls += Die.D20Advantage.Value;
-                disadvantageRolls += Die.D20Disadvantage.Value;
+                advantageRolls += D20Advantage.Value;
+                disadvantageRolls += D20Disadvantage.Value;
             }
             Assert.True(advantageRolls > disadvantageRolls);
         }
@@ -95,7 +95,7 @@ namespace srd5 {
             Assert.Equal(diceString, parsed.ToString());
             Assert.Equal(min, parsed.Min);
             Assert.Equal(max, parsed.Max);
-            int result = Die.Roll(diceString);
+            int result = Roll(diceString);
             Assert.InRange<long>(result, min, max);
         }
 
@@ -115,9 +115,9 @@ namespace srd5 {
             Dice.DiceRolled += delegate (object sender, DiceRolledEvent e) {
                 receivedValue += e.Value;
             };
-            int value = Die.Roll("2d6+5");
+            int value = Roll("2d6+5");
             Assert.Equal(value, receivedValue);
-            value += Die.D20.Value;
+            value += D20.Value;
             Assert.Equal(value, receivedValue);
         }
 

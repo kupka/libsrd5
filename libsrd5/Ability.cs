@@ -2,8 +2,10 @@ using System;
 
 namespace srd5 {
     public class Ability {
+        public static readonly Ability NONE = new Ability(AbilityType.NONE, 10);
         public int Modifier {
             get {
+                if (Type == AbilityType.NONE) return 0;
                 if (Value <= 1) {
                     return -5;
                 } else if (Value > 29) {

@@ -2,7 +2,7 @@ using System;
 
 namespace srd5 {
     public struct Die {
-        public static Die Get(int max) {
+        public static Die D(int max) {
             switch (max) {
                 case 0: // constant 0, not an actual die
                 case 1: // constant 1, not an actual die
@@ -15,9 +15,10 @@ namespace srd5 {
                 case 12:
                 case 20:
                 case 100:
-                    Die die = new Die();
-                    die.MaxValue = max;
-                    die.Value = Random.Get(Math.Min(max, 1), max);
+                    Die die = new Die {
+                        MaxValue = max,
+                        Value = Random.Get(Math.Min(max, 1), max)
+                    };
                     Dice.onDiceRolled(die);
                     return die;
                 default:
@@ -27,56 +28,56 @@ namespace srd5 {
 
         public static Die D2 {
             get {
-                return Get(2);
+                return D(2);
             }
         }
 
         public static Die D3 {
             get {
-                return Get(3);
+                return D(3);
             }
         }
 
         public static Die D4 {
             get {
-                return Get(4);
+                return D(4);
             }
         }
 
         public static Die D6 {
             get {
-                return Get(6);
+                return D(6);
             }
         }
 
         public static Die D8 {
             get {
-                return Get(8);
+                return D(8);
             }
         }
 
         public static Die D10 {
             get {
-                return Get(10);
+                return D(10);
             }
         }
 
         public static Die D12 {
             get {
-                return Get(12);
+                return D(12);
             }
         }
 
         public static Die D20 {
             get {
-                return Get(20);
+                return D(20);
             }
         }
 
         public static Die D20Advantage {
             get {
-                Die first = Get(20);
-                Die second = Get(20);
+                Die first = D(20);
+                Die second = D(20);
                 if (first.Value >= second.Value)
                     return first;
                 else
@@ -86,8 +87,8 @@ namespace srd5 {
 
         public static Die D20Disadvantage {
             get {
-                Die first = Get(20);
-                Die second = Get(20);
+                Die first = D(20);
+                Die second = D(20);
                 if (first.Value <= second.Value)
                     return first;
                 else
@@ -97,7 +98,7 @@ namespace srd5 {
 
         public static Die D100 {
             get {
-                return Get(100);
+                return D(100);
             }
         }
 
@@ -171,6 +172,8 @@ namespace srd5 {
         public override string ToString() {
             return diceString;
         }
+
+        internal Dice(int amount, Die die, int modifier = 0) : this(amount, die.MaxValue, modifier) { }
 
         internal Dice(int amount, int die, int modifier) {
             Amount = amount;

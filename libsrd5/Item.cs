@@ -116,6 +116,11 @@ namespace srd5 {
             Type = type;
             Dice = new Dice(value, 1, 0);
         }
+
+        public Damage(DamageType type, Dice dice) {
+            Type = type;
+            Dice = dice;
+        }
     }
 
 

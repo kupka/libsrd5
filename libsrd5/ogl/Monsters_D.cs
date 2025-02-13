@@ -1,3 +1,5 @@
+using static srd5.Die;
+
 namespace srd5 {
     public partial struct Attacks {
         public static readonly AttackEffect DarkmantleCrushEffect = delegate (Combattant attacker, Combattant target) {
@@ -72,7 +74,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect DjinniScimitarEffect = delegate (Combattant attacker, Combattant target) {
-            if (Die.D20.Value > 10) {
+            if (D20.Value > 10) {
                 target.TakeDamage(attacker, DamageType.LIGHTNING, "1d6");
             } else {
                 target.TakeDamage(attacker, DamageType.THUNDER, "1d6");

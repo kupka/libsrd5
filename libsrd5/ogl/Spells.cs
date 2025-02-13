@@ -433,16 +433,9 @@ namespace srd5 {
         }
 
         /// <summary>
-        /// Scales damage by 4th, 10th and 17th level of the caster.
-        /// </summary>
-        public static Damage DamageLevelScaling(Combattant caster, Die die, DamageType damageType) {
-            return new Damage(damageType, DiceLevelScaling(caster) + die.ToString());
-        }
-
-        /// <summary>
         /// Scales dice by 4th, 10th and 17th level of the caster.
         /// </summary>
-        public static int DiceLevelScaling(Combattant caster) {
+        internal static Dice DiceLevelScaling(Combattant caster, Die die) {
             int dice = 1;
             if (caster.EffectiveLevel > 16)
                 dice = 4;
@@ -450,7 +443,7 @@ namespace srd5 {
                 dice = 3;
             else if (caster.EffectiveLevel > 4)
                 dice = 2;
-            return dice;
+            return new Dice(dice, die);
         }
 
         /// <summary>
@@ -460,38 +453,47 @@ namespace srd5 {
         /// DiceSlotScaling(SpellSlot.FIRST, SpellSlot.SECOND, 8, 3, 5, 2) results in a Dice that refers to "5d8+5",
         /// since it adds 1 slot of 2 dice d8 to the base 3 dice with a modifier of 5
         /// </example>
-        public static Dice DiceSlotScaling(SpellLevel minimumSlot, SpellLevel actualSlot, int die, int dice = 1, int modifier = 0, int additionalDiePerSlot = 1) {
+        internal static Dice DiceSlotScaling(SpellLevel minimumSlot, SpellLevel actualSlot, Die die, int dice = 1, int modifier = 0, int additionalDiePerSlot = 1) {
             if (minimumSlot > actualSlot) throw new Srd5ArgumentException("This spell cannot be cast at slot " + actualSlot);
             int diff = (actualSlot - minimumSlot) * additionalDiePerSlot;
             dice += diff;
-            string diceString = dice + "d" + die;
+            string diceString = dice + die.ToString();
             if (modifier > 0) diceString += "+" + modifier;
             if (modifier < 0) diceString += modifier;
             return new Dice(diceString);
         }
 
         /// <summary>
-        /// Defines the result of the successful DC
+        /// Defines the effect on damage in case of a  successful DC roll or other conditions such as failed attack roll
         /// </summary>
-        public enum DCEffect {
-            NO_EFFECT,
-            HALVES_DAMAGE,
-            NULLIFIES_DAMAGE
+        public enum DamageMitigation {
+            NO_EFFECT, // do not modify damage
+            HALVES_DAMAGE, // divide damage by two
+            NULLIFIES_DAMAGE // set damage to zero
         }
 
         /// <summary>
         /// Does a Spell Attack roll against the target, applies the damage. Returns whether the attack roll succeeded or not.
         /// </summary>
-        public static bool SpellAttack(ID id, Battleground ground, Combattant caster, Damage damage, int modifier, Combattant target, int range, DCEffect dCEffect = DCEffect.NO_EFFECT, int dc = 0) {
+        public static bool SpellAttack(ID id, Battleground ground, Combattant caster, DamageType damageType, Dice dice, int modifier, Combattant target, int range, DamageMitigation missEffect = DamageMitigation.NULLIFIES_DAMAGE, DamageMitigation dCEffect = DamageMitigation.NO_EFFECT, int dc = 0, AbilityType dcAbility = AbilityType.DEXTERITY) {
+            return SpellAttack(id, ground, caster, damageType, dice, modifier, target, range, missEffect, dCEffect, dc, out _);
+        }
+
+        internal static bool SpellAttack(ID id, Battleground ground, Combattant caster, DamageType damageType, Dice dice, int modifier, Combattant target, int range, DamageMitigation missEffect, DamageMitigation dCEffect, int dc, out bool dcResult) {
             int bonus = modifier + caster.ProficiencyBonus;
-            Attack attack = new Attack(id.Name(), bonus, damage, 0, range, range);
+            Attack attack = new Attack(id.Name(), bonus, new Damage(damageType, dice), 0, range, range);
             int distance = ground.Distance(caster, target);
-            bool hit = caster.Attack(attack, target, distance, true, true);
-            GlobalEvents.AffectBySpell(caster, id, target, hit);
+            bool hit = caster.Attack(attack, target, distance, true, true, dCEffect, dc, AbilityType.NONE, out dcResult);
+            if (missEffect == DamageMitigation.NULLIFIES_DAMAGE) {
+                GlobalEvents.AffectBySpell(caster, id, target, hit);
+            } else if (missEffect == DamageMitigation.HALVES_DAMAGE) {
+                GlobalEvents.AffectBySpell(caster, id, target, true);
+                target.TakeDamage(id, damageType, dice.Roll() / 2);
+            }
             return hit;
         }
 
-        public static void AddEffectForDuration(ID id, Combattant caster, Combattant target, Effect effect, SpellDuration duration) {
+        internal static void AddEffectForDuration(ID id, Combattant caster, Combattant target, Effect effect, SpellDuration duration) {
             GlobalEvents.AffectBySpell(caster, id, target, true);
             target.AddEffect(effect);
             int remainingRounds = (int)duration / 6;
@@ -505,7 +507,7 @@ namespace srd5 {
             });
         }
 
-        public static void AddEffectAndConditionForDuration(ID id, Combattant caster, Combattant target, Effect effect, ConditionType condition, SpellDuration duration) {
+        internal static void AddEffectAndConditionForDuration(ID id, Combattant caster, Combattant target, Effect effect, ConditionType condition, SpellDuration duration) {
             GlobalEvents.AffectBySpell(caster, id, target, true);
             target.AddEffect(effect);
             target.AddCondition(condition);

@@ -1,4 +1,5 @@
 using System;
+using static srd5.Die;
 
 namespace srd5 {
     public partial struct Spells {
@@ -35,9 +36,9 @@ namespace srd5 {
         });
 
         public static readonly Spell BurningHands = new Spell(ID.BURNING_HANDS, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 15, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-            Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 6, 3);
+            Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, D6, 3);
             foreach (Combattant target in targets) {
-                target.TakeDamage(ID.BURNING_HANDS, DamageType.FIRE, dice.Roll(), DCEffect.HALVES_DAMAGE, dc, AbilityType.DEXTERITY, out _);
+                target.TakeDamage(ID.BURNING_HANDS, DamageType.FIRE, dice.Roll(), DamageMitigation.HALVES_DAMAGE, dc, AbilityType.DEXTERITY, out _);
                 GlobalEvents.AffectBySpell(caster, ID.BURNING_HANDS, target, true);
             }
         });
@@ -66,7 +67,7 @@ namespace srd5 {
         );
 
         public static readonly Spell ColorSpray = new Spell(ID.COLOR_SPRAY, SpellSchool.ILLUSION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_ROUND, 15, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-            Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 10, 5, 0, 2);
+            Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, D10, 5, 0, 2);
             int remainingHitpoints = dice.Roll();
             Array.Sort(targets, (t1, t2) => {
                 return t1.HitPoints.CompareTo(t2.HitPoints);
@@ -123,7 +124,7 @@ namespace srd5 {
                         return;
                     }
                 }
-                Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 8, 1, modifier);
+                Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, D8, 1, modifier);
                 GlobalEvents.AffectBySpell(caster, ID.CURE_WOUNDS, target, true);
                 target.HealDamage(dice.Roll());
             }
@@ -178,7 +179,7 @@ namespace srd5 {
         );
 
         public static readonly Spell FalseLife = new Spell(ID.FALSE_LIFE, SpellSchool.NECROMANCY, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-            int temporaryHitpoints = Die.D4.Value + 4 + ((int)slot - 1) * 5;
+            int temporaryHitpoints = D4.Value + 4 + ((int)slot - 1) * 5;
             GlobalEvents.AffectBySpell(caster, ID.FALSE_LIFE, caster, true);
             caster.AddTemporaryHitpoints(temporaryHitpoints, SpellDuration.ONE_HOUR, ID.FALSE_LIFE);
         });
@@ -219,8 +220,8 @@ namespace srd5 {
 
         public static readonly Spell GuidingBolt = new Spell(ID.GUIDING_BOLT, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 120, VS, SpellDuration.ONE_ROUND, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
             Combattant target = targets[0];
-            Damage damage = new Damage(DamageType.RADIANT, DiceSlotScaling(SpellLevel.FIRST, slot, 6, 3).Roll());
-            bool hit = SpellAttack(ID.GUIDING_BOLT, ground, caster, damage, modifier, target, 120);
+            Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, D6, 3);
+            bool hit = SpellAttack(ID.GUIDING_BOLT, ground, caster, DamageType.RADIANT, dice, modifier, target, 120);
             if (hit) {
                 target.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
                 bool removeNextRound = false;
@@ -249,7 +250,7 @@ namespace srd5 {
                         return;
                     };
                 }
-                Dice healed = DiceSlotScaling(SpellLevel.FIRST, slot, 4, 1, modifier);
+                Dice healed = DiceSlotScaling(SpellLevel.FIRST, slot, D4, 1, modifier);
                 GlobalEvents.AffectBySpell(caster, ID.HEALING_WORD, target, true);
                 target.HealDamage(healed.Roll());
             }
@@ -257,9 +258,9 @@ namespace srd5 {
 
         public static readonly Spell HellishRebuke = new Spell(ID.HELLISH_REBUKE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.REACTION, 60, VS, SpellDuration.INSTANTANEOUS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
             // Should only affect targets that damaged the caster but we can't determine this here
-            Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 10, 2);
+            Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, D10, 2);
             Combattant target = targets[0];
-            target.TakeDamage(ID.HELLISH_REBUKE, DamageType.FIRE, dice.Roll(), DCEffect.HALVES_DAMAGE, dc, AbilityType.DEXTERITY, out _);
+            target.TakeDamage(ID.HELLISH_REBUKE, DamageType.FIRE, dice.Roll(), DamageMitigation.HALVES_DAMAGE, dc, AbilityType.DEXTERITY, out _);
             GlobalEvents.AffectBySpell(caster, ID.HELLISH_REBUKE, target, true);
         });
 
@@ -336,8 +337,8 @@ namespace srd5 {
 
         public static readonly Spell InflictWounds = new Spell(ID.INFLICT_WOUNDS, SpellSchool.NECROMANCY, SpellLevel.FIRST, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
             Combattant target = targets[0];
-            Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 10, 2);
-            SpellAttack(ID.INFLICT_WOUNDS, ground, caster, new Damage(DamageType.NECROTIC, dice.Roll()), modifier, target, 5);
+            Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, D10, 2);
+            SpellAttack(ID.INFLICT_WOUNDS, ground, caster, DamageType.NECROTIC, dice, modifier, target, 5);
         });
 
         public static readonly Spell Jump = new Spell(
@@ -378,7 +379,7 @@ namespace srd5 {
                     if (target.HasFeat(Feat.REFLECTIVE_CARAPACE)) {
                         GlobalEvents.ActivateFeat(target, Feat.REFLECTIVE_CARAPACE);
                         GlobalEvents.AffectBySpell(caster, ID.MAGIC_MISSILE, target, false);
-                        if (Die.D6.Value == 6) {
+                        if (D6.Value == 6) {
                             target = caster;
                         }
                     }
@@ -449,7 +450,7 @@ namespace srd5 {
 
         public static readonly Spell Sleep = new Spell(ID.SLEEP, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 90, VSM, SpellDuration.ONE_MINUTE, 20, 99,
             delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 8, 5, 0, 2);
+                Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, D8, 5, 0, 2);
                 int remainingHitpoints = dice.Roll();
                 Array.Sort(targets, (t1, t2) => {
                     return t1.HitPoints.CompareTo(t2.HitPoints);
@@ -489,10 +490,10 @@ namespace srd5 {
         public static readonly Spell Thunderwave = new Spell(
             ID.THUNDERWAVE, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.ONE_ACTION, 15, VS,
             SpellDuration.INSTANTANEOUS, 15, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, 8);
+                Dice dice = DiceSlotScaling(SpellLevel.FIRST, slot, D8);
                 foreach (Combattant target in targets) {
                     GlobalEvents.AffectBySpell(caster, ID.THUNDERWAVE, target, true);
-                    target.TakeDamage(ID.THUNDERWAVE, DamageType.THUNDER, dice.Roll(), DCEffect.HALVES_DAMAGE, dc, AbilityType.CONSTITUTION, out bool dcResult);
+                    target.TakeDamage(ID.THUNDERWAVE, DamageType.THUNDER, dice, DamageMitigation.HALVES_DAMAGE, dc, AbilityType.CONSTITUTION, out bool dcResult);
                     if (!dcResult) {
                         ground.Push(ground.LocateCombattant(caster), target, 10);
                     }

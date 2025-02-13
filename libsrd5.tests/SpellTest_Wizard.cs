@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace srd5 {
@@ -257,6 +258,36 @@ namespace srd5 {
             Spells.MagicMissile.Cast(hag, 12, SpellLevel.THIRD, 0);
             Assert.Equal(hag.HitPointsMax, hag.HitPoints);
             DefaultSpellTest(Spells.Shield, 12, Spells.Shield.Level, null, Effect.SPELL_SHIELD, 1);
+        }
+
+        [Fact]
+        public void AcidArrowTest() {
+            for (int i = 0; i < 10; i++) {
+                Monster hag = Monsters.NightHag;
+                Monster ogre = Monsters.Ogre;
+                Battleground ground = createBattleground(hag, ogre);
+                Spells.AcidArrow.Cast(ground, hag, 12, SpellLevel.THIRD, 0, ogre);
+                ogre.OnEndOfTurn();
+                Assert.True(ogre.HitPointsMax > ogre.HitPoints);
+                int hp = ogre.HitPoints;
+                ogre.OnEndOfTurn();
+                Assert.True(hp == ogre.HitPoints);
+            }
+        }
+
+        [Fact]
+        public void AlterSelfTest() {
+            Monster hag = Monsters.NightHag;
+            Spells.AlterSelf.Cast(hag, 10, SpellLevel.SECOND, 0);
+            Assert.True(hag.HasEffect(Effect.SPELL_ALTER_SELF_CLAWS));
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
+            Item club = Weapons.Club;
+            hero.Equip(club);
+            Spells.AlterSelf.Cast(hero, 10, SpellLevel.FIFTH, 5);
+            Assert.True(hero.Inventory.MainHand.Is(Weapons.Claws));
+            Assert.True(Array.IndexOf(hero.Inventory.Bag, club) == 0);
+            hero.RemoveEffect(Effect.SPELL_ALTER_SELF_CLAWS);
+            Assert.True(hero.Inventory.MainHand == null);
         }
     }
 }

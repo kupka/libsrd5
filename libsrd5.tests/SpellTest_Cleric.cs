@@ -82,5 +82,18 @@ namespace srd5 {
             Assert.Equal(ac + 2, acolyte.ArmorClass);
             DefaultSpellTest(Spells.ShieldofFaith, 10, SpellLevel.SECOND, null, Effect.SPELL_SHIELD_OF_FAITH, 100);
         }
+
+        [Fact]
+        public void AidTest() {
+            Monster ogre = Monsters.Ogre;
+            int hpExpected = ogre.HitPointsMax + 10;
+            Spells.Aid.Cast(ogre, 12, SpellLevel.THIRD, 0);
+            Assert.Equal(hpExpected, ogre.HitPointsMax);
+            Assert.Equal(hpExpected, ogre.HitPoints);
+            // Aditional cast does nothing
+            Spells.Aid.Cast(ogre, 12, SpellLevel.THIRD, 0);
+            Assert.Equal(hpExpected, ogre.HitPointsMax);
+            Assert.Equal(hpExpected, ogre.HitPoints);
+        }
     }
 }

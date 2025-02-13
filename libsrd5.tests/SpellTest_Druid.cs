@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using static srd5.Die;
 
 namespace srd5 {
     [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
@@ -16,12 +17,12 @@ namespace srd5 {
 
         [Fact]
         public void DiceSlotScalingTest() {
-            Dice dice = Spells.DiceSlotScaling(SpellLevel.FIRST, SpellLevel.SECOND, 6, 1, 2, 2);
+            Dice dice = Spells.DiceSlotScaling(SpellLevel.FIRST, SpellLevel.SECOND, D6, 1, 2, 2);
             Assert.Equal("3d6+2", dice.ToString());
-            dice = Spells.DiceSlotScaling(SpellLevel.FIRST, SpellLevel.THIRD, 8, 1, -2, 2);
+            dice = Spells.DiceSlotScaling(SpellLevel.FIRST, SpellLevel.THIRD, D8, 1, -2, 2);
             Assert.Equal("5d8-2", dice.ToString());
             Assert.Throws<Srd5ArgumentException>(delegate {
-                dice = Spells.DiceSlotScaling(SpellLevel.THIRD, SpellLevel.SECOND, 6, 1, 2, 2);
+                dice = Spells.DiceSlotScaling(SpellLevel.THIRD, SpellLevel.SECOND, D6, 1, 2, 2);
             });
         }
 
@@ -310,16 +311,16 @@ namespace srd5 {
         public void ThunderwaveTest() {
             CharacterSheet hero = new CharacterSheet(Race.GNOME);
             hero.AddLevel(CharacterClasses.Druid);
-            Monster badger = Monsters.GiantBadger;
+            Monster badger = Monsters.Badger;
             int hps = badger.HitPoints;
             Random.State = 1;
             Battleground2D ground = new Battleground2D(10, 10);
             ground.AddCombattant(hero, 3, 3);
             ground.AddCombattant(badger, 5, 5);
             Assert.Equal(5, ground.LocateCombattant2D(badger).X);
-            Spells.Thunderwave.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
-            Spells.Thunderwave.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
-            Spells.Thunderwave.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(ground, hero, 25, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(ground, hero, 25, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(ground, hero, 25, SpellLevel.FIRST, 0, badger);
             Assert.True(badger.HitPoints < hps);
             Assert.True(ground.LocateCombattant2D(badger).X > 5);
 
@@ -327,9 +328,9 @@ namespace srd5 {
             badger.HealDamage(1000);
             classic.AddCombattant(hero, ClassicLocation.Row.FRONT_LEFT);
             classic.AddCombattant(badger, ClassicLocation.Row.FRONT_RIGHT);
-            Spells.Thunderwave.Cast(classic, hero, 10, SpellLevel.FIRST, 0, badger);
-            Spells.Thunderwave.Cast(classic, hero, 10, SpellLevel.FIRST, 0, badger);
-            Spells.Thunderwave.Cast(classic, hero, 10, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(classic, hero, 25, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(classic, hero, 25, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(classic, hero, 25, SpellLevel.FIRST, 0, badger);
             Assert.True(badger.HitPoints < hps);
             Assert.Equal(ClassicLocation.Row.BACK_RIGHT, classic.LocateClassicCombattant(badger).Location);
         }

@@ -258,5 +258,20 @@ namespace srd5 {
             Assert.Equal(hag.HitPointsMax, hag.HitPoints);
             DefaultSpellTest(Spells.Shield, 12, Spells.Shield.Level, null, Effect.SPELL_SHIELD, 1);
         }
+
+        [Fact]
+        public void AcidArrowTest() {
+            for (int i = 0; i < 10; i++) {
+                Monster hag = Monsters.NightHag;
+                Monster ogre = Monsters.Ogre;
+                Battleground ground = createBattleground(hag, ogre);
+                Spells.AcidArrow.Cast(ground, hag, 12, SpellLevel.THIRD, 0, ogre);
+                ogre.OnEndOfTurn();
+                Assert.True(ogre.HitPointsMax > ogre.HitPoints);
+                int hp = ogre.HitPoints;
+                ogre.OnEndOfTurn();
+                Assert.True(hp == ogre.HitPoints);
+            }
+        }
     }
 }

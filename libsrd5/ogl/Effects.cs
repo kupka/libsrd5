@@ -139,6 +139,7 @@ namespace srd5 {
         SPELL_ALTER_SELF_CLAWS,
         SPELL_BARKSKIN,
         SPELL_BLINDNESS_DEAFNESS,
+        SPELL_BLUR,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,
@@ -437,6 +438,10 @@ namespace srd5 {
                         hero.Equip(Weapons.Claws);
                     }
                     break;
+                case Effect.SPELL_BLUR:
+                    combattant.AddEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
+                    break;
+
             }
         }
 
@@ -538,6 +543,9 @@ namespace srd5 {
                             hero.Inventory.MainHand = null;
                         }
                     }
+                    break;
+                case Effect.SPELL_BLUR:
+                    combattant.RemoveEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
                     break;
             }
         }

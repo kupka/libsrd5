@@ -64,8 +64,9 @@ namespace srd5 {
             }
         });
 
-        /* TODO */
-        public static readonly Spell Blur = new Spell(ID.BLUR, SpellSchool.ILLUSION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, V, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+        public static readonly Spell Blur = new Spell(ID.BLUR, SpellSchool.ILLUSION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, V, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            AddEffectForDuration(ID.BLUR, caster, caster, Effect.SPELL_BLUR, SpellDuration.ONE_MINUTE);
+        });
         /* TODO */
         public static readonly Spell BrandingSmite = new Spell(ID.BRANDING_SMITE, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.BONUS_ACTION, 0, V, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
         /* TODO */

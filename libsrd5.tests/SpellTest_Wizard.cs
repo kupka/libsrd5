@@ -294,5 +294,10 @@ namespace srd5 {
         public void BlindnessDeafnessTest() {
             DefaultSpellTest(Spells.BlindnessDeafness, 12, SpellLevel.THIRD, ConditionType.BLINDED, Effect.SPELL_BLINDNESS_DEAFNESS, 10);
         }
+
+        [Fact]
+        public void BlurTest() {
+            DefaultSpellTest(Spells.Blur, 12, SpellLevel.THIRD, null, Effect.DISADVANTAGE_ON_BEING_ATTACKED, 10);
+        }
     }
 }

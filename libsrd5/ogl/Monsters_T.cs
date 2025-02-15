@@ -2,6 +2,7 @@ namespace srd5 {
     public partial struct Attacks {
         public static readonly AttackEffect TarrasqueBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 20, Size.GARGANTUAN, true, TarrasqueBite, 1);
+            return false;
         };
         public static Attack TarrasqueBite {
             get {
@@ -9,9 +10,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect TarrasqueTailEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_PRONE)) return;
-            if (target.DC(TarrasqueTail, 20, AbilityType.STRENGTH)) return;
+            if (target.HasEffect(Effect.IMMUNITY_PRONE)) return false;
+            if (target.DC(TarrasqueTail, 20, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
+            return false;
         };
         public static Attack TarrasqueTail {
             get {
@@ -69,8 +71,9 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect TriceratopsStompEffect = delegate (Combattant attacker, Combattant target) {
-            if (!target.HasCondition(ConditionType.PRONE)) return;
+            if (!target.HasCondition(ConditionType.PRONE)) return false;
             target.TakeDamage(attacker, DamageType.BLUDGEONING, "3d10+6");
+            return false;
         };
         public static Attack TriceratopsStomp {
             get {
@@ -94,6 +97,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect TyrannosaurusRexBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 17, Size.MEDIUM, true, TyrannosaurusRexBite);
+            return false;
         };
         public static Attack TyrannosaurusRexBite {
             get {

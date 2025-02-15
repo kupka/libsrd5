@@ -1,10 +1,11 @@
 namespace srd5 {
     public partial struct Attacks {
         public static readonly AttackEffect QuasitClawEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
-            if (target.DC(QuasitClaw, 10, AbilityType.CONSTITUTION)) return;
+            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.DC(QuasitClaw, 10, AbilityType.CONSTITUTION)) return false;
             target.TakeDamage(attacker, DamageType.POISON, "2d4");
             target.AddEffect(Effect.QUASIT_POISON);
+            return false;
         };
         public static Attack QuasitClaw {
             get {

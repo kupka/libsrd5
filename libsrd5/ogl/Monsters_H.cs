@@ -2,8 +2,6 @@ using static srd5.Die;
 
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly AttackEffect HalfRedDragonVeteranLongswordEffect = delegate (Combattant attacker, Combattant target) {
-        };
         public static Attack HalfRedDragonVeteranLongsword {
             get {
                 return new Attack("Longsword", 5, new Damage(DamageType.SLASHING, "1d10+3"), 5);
@@ -80,8 +78,8 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect HomunculusBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
-            if (target.DC(HomunculusBite, 10, AbilityType.CONSTITUTION, out int dc)) return;
+            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.DC(HomunculusBite, 10, AbilityType.CONSTITUTION, out int dc)) return false;
             if (dc < 6) {
                 target.AddEffect(Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS);
                 int duration = D10.Value * 10;
@@ -104,6 +102,7 @@ namespace srd5 {
                     return false;
                 });
             }
+            return false;
         };
         public static Attack HomunculusBite {
             get {
@@ -112,8 +111,8 @@ namespace srd5 {
         }
         public static readonly AttackEffect HornedDevilTailEffect = delegate (Combattant attacker, Combattant target) {
             // do not affect undead and constructs
-            if (target is Monster monster && (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT)) return;
-            if (target.DC(BeardedDevilGlaive, 17, AbilityType.CONSTITUTION)) return;
+            if (target is Monster monster && (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT)) return false;
+            if (target.DC(BeardedDevilGlaive, 17, AbilityType.CONSTITUTION)) return false;
             // TODO: Any creature can take an action to stanch the wound with a successful DC 12 Wisdom (Medicine) check.
             // The wound also closes if the target receives magical healing.
             // add infernal wound affect if newly applied
@@ -128,6 +127,7 @@ namespace srd5 {
             }
             // increase infernal wound stack by one
             target.AddEffect(Effect.INFERNAL_WOUND_HORNED_DEVIL);
+            return false;
         };
         public static Attack HornedDevilTail {
             get {
@@ -136,6 +136,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect HornedDevilHurlFlameEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: If the target is a flammable object that isn't being worn or carried, it also catches fire.
+            return false;
         };
         public static Attack HornedDevilHurlFlame {
             get {

@@ -26,8 +26,8 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect KrakenBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (!target.HasCondition(ConditionType.GRAPPLED_DC18)) return;
-            if (target.Size > Size.LARGE) return;
+            if (!target.HasCondition(ConditionType.GRAPPLED_DC18)) return false;
+            if (target.Size > Size.LARGE) return false;
             // If the target is a Large or smaller creature grappled by the kraken, that creature is swallowed, and the grapple ends.
             attacker.RemoveEffect(Effect.GRAPPLING);
             target.RemoveCondition(ConditionType.GRAPPLED_DC18);
@@ -46,6 +46,7 @@ namespace srd5 {
             // regurgitate all swallowed creatures, which fall prone in a space within 10 feet of the kraken. 
             // If the kraken dies, a swallowed creature is no longer restrained by it and can escape from 
             // the corpse using 15 feet of movement, exiting prone.
+            return false;
         };
         public static Attack KrakenBite {
             get {
@@ -55,6 +56,7 @@ namespace srd5 {
 
         public static readonly AttackEffect KrakenTentacleEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 18, Size.GARGANTUAN, true, null, 10);
+            return false;
         };
         public static Attack KrakenTentacle {
             get {

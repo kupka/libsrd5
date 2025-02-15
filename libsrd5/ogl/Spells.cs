@@ -453,11 +453,11 @@ namespace srd5 {
         /// DiceSlotScaling(SpellSlot.FIRST, SpellSlot.SECOND, 8, 3, 5, 2) results in a Dice that refers to "5d8+5",
         /// since it adds 1 slot of 2 dice d8 to the base 3 dice with a modifier of 5
         /// </example>
-        internal static Dice DiceSlotScaling(SpellLevel minimumSlot, SpellLevel actualSlot, Die die, int dice = 1, int modifier = 0, int additionalDiePerSlot = 1) {
+        internal static Dice DiceSlotScaling(SpellLevel minimumSlot, SpellLevel actualSlot, Die die, int minDice = 1, int modifier = 0, int additionalDiePerSlot = 1) {
             if (minimumSlot > actualSlot) throw new Srd5ArgumentException("This spell cannot be cast at slot " + actualSlot);
             int diff = (actualSlot - minimumSlot) * additionalDiePerSlot;
-            dice += diff;
-            string diceString = dice + die.ToString();
+            minDice += diff;
+            string diceString = minDice + die.ToString();
             if (modifier > 0) diceString += "+" + modifier;
             if (modifier < 0) diceString += modifier;
             return new Dice(diceString);

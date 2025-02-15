@@ -26,8 +26,8 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect ChainDevilChainEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return;
-            if (attacker.HasEffect(Effect.GRAPPLING)) return;
+            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return false;
+            if (attacker.HasEffect(Effect.GRAPPLING)) return false;
             attacker.AddEffect(Effect.GRAPPLING);
             target.AddCondition(ConditionType.GRAPPLED_DC14);
             target.AddCondition(ConditionType.RESTRAINED);
@@ -40,6 +40,7 @@ namespace srd5 {
                 target.TakeDamage(attacker, DamageType.PIERCING, "2d6");
                 return false;
             });
+            return false;
         };
         public static Attack ChainDevilChain {
             get {
@@ -63,6 +64,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect ChuulPincerEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 14, Size.LARGE, false, null, 2);
+            return false;
         };
         public static Attack ChuulPincer {
             get {
@@ -70,11 +72,12 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect ClayGolemSlamEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.DC(ClayGolemSlam, 15, AbilityType.CONSTITUTION)) return;
+            if (target.DC(ClayGolemSlam, 15, AbilityType.CONSTITUTION)) return false; ;
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-16, HitPointMaxiumModifier.RemovedByEffect.GREATER_RESTORATION)); // FIXME: Amount should be equal to actual damage, not average
             if (target.HitPointsMax <= 0) {
-                // TODO: target dies
+                target.Die();
             }
+            return false;
         };
         public static Attack ClayGolemSlam {
             get {
@@ -82,8 +85,8 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect CloakerBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.Size > Size.LARGE) return;
-            if (attacker.HasEffect(Effect.ATTACHED_TO_TARGET)) return;
+            if (target.Size > Size.LARGE) return false;
+            if (attacker.HasEffect(Effect.ATTACHED_TO_TARGET)) return false;
             attacker.AddEffect(Effect.ATTACHED_TO_TARGET);
             attacker.AddEffect(Effect.ADVANTAGE_ON_ATTACK);
             foreach (Attack attack in attacker.MeleeAttacks) {
@@ -92,6 +95,7 @@ namespace srd5 {
             }
             target.AddCondition(ConditionType.BLINDED);
             target.AddEffect(Effect.UNABLE_TO_BREATHE);
+            return false;
         };
         public static Attack CloakerBite {
             get {
@@ -114,13 +118,14 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect CockatriceBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.DC(CockatriceBite, 12, AbilityType.CONSTITUTION)) return;
+            if (target.DC(CockatriceBite, 12, AbilityType.CONSTITUTION)) return false;
             target.AddCondition(ConditionType.RESTRAINED);
             target.AddEndOfTurnEvent(delegate () {
                 if (!target.DC(CockatriceBite, 11, AbilityType.CONSTITUTION)) target.AddCondition(ConditionType.PETRIFIED);
                 target.RemoveCondition(ConditionType.RESTRAINED);
                 return true;
             });
+            return false;
         };
         public static Attack CockatriceBite {
             get {
@@ -134,6 +139,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect ConstrictorSnakeConstrictEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 14, Monsters.ConstrictorSnake.Size + 1, true);
+            return false;
         };
         public static Attack ConstrictorSnakeConstrict {
             get {
@@ -151,13 +157,14 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect CouatlBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
-            if (target.DC(CouatlBite, 13, AbilityType.CONSTITUTION)) return;
+            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.DC(CouatlBite, 13, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(Effect.COUATL_POISON);
             target.AddDamageTakenEvent(delegate (object source, Damage damage) {
                 target.RemoveEffect(Effect.COUATL_POISON);
                 return true;
             });
+            return false;
         };
         public static Attack CouatlBite {
             get {
@@ -166,6 +173,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect CouatlConstrictEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 15, Monsters.Couatl.Size + 1, true);
+            return false;
         };
         public static Attack CouatlConstrict {
             get {
@@ -179,6 +187,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect CrocodileBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 12, Monsters.Crocodile.Size + 1, true, CrocodileBite);
+            return false;
         };
         public static Attack CrocodileBite {
             get {

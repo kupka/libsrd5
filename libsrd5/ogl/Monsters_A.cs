@@ -2,14 +2,15 @@ namespace srd5 {
     public partial struct Attacks {
         public static readonly Attack[] None = new Attack[0];
         public static AttackEffect AbolethTentacleEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.DC(AbolethTentacle, 14, AbilityType.CONSTITUTION)) return;
+            if (target.DC(AbolethTentacle, 14, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(Effect.ABOLETH_DISEASE_TENTACLE);
+            return false;
         };
         public static Attack AbolethTentacle {
             get {
                 return new Attack("Tentacle", 9, new Damage(DamageType.BLUDGEONING, "2d6+5"), 10, null, AbolethTentacleEffect);
             }
-        } 
+        }
         public static Attack AbolethTail {
             get {
                 return new Attack("Tail", 9, new Damage(DamageType.BLUDGEONING, "3d6+5"), 10);
@@ -337,6 +338,7 @@ namespace srd5 {
         }
         public static AttackEffect AnkhegBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 13, Monsters.Ankheg.Size + 1);
+            return false;
         };
         public static Attack AnkhegBite {
             get {
@@ -365,6 +367,7 @@ namespace srd5 {
         }
         public static AttackEffect AssassinShortswordEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, AssassinShortsword, "7d6", 15);
+            return false;
         };
         public static Attack AssassinShortsword {
             get {

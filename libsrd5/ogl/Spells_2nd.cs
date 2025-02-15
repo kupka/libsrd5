@@ -67,8 +67,21 @@ namespace srd5 {
         public static readonly Spell Blur = new Spell(ID.BLUR, SpellSchool.ILLUSION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, V, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
             AddEffectForDuration(ID.BLUR, caster, caster, Effect.SPELL_BLUR, SpellDuration.ONE_MINUTE);
         });
-        /* TODO */
-        public static readonly Spell BrandingSmite = new Spell(ID.BRANDING_SMITE, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.BONUS_ACTION, 0, V, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+
+        public static readonly Spell BrandingSmite = new Spell(ID.BRANDING_SMITE, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.BONUS_ACTION, 0, V, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            Dice dice = DiceSlotScaling(SpellLevel.SECOND, slot, D6, 2);
+            Damage additionalDamage = new Damage(DamageType.RADIANT, dice);
+            foreach (Attack attack in caster.MeleeAttacks) {
+                attack.AddAdditionalDamage(additionalDamage);
+                attack.AddAttackEffect(delegate (Combattant attacker, Combattant target) {
+                    foreach (Attack meleeAttack in caster.MeleeAttacks) {
+                        meleeAttack.RemoveAdditionalDamage(additionalDamage);
+                    }
+                    return true;
+                });
+            }
+        });
+
         /* TODO */
         public static readonly Spell CalmEmotions = new Spell(ID.CALM_EMOTIONS, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VS, SpellDuration.ONE_MINUTE, 20, 0, doNothing);
         /* TODO */

@@ -17,7 +17,8 @@ namespace srd5 {
         }
         public static AttackEffect BalorWhipEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: THE TARGET MUST SUCCEED ON A DC 20 STRENGTH SAVING THROW OR BE PULLED UP TO 25 FEET TOWARD THE BALOR
-            if (target.DC(BalorWhip, 20, AbilityType.STRENGTH)) return;
+            if (target.DC(BalorWhip, 20, AbilityType.STRENGTH)) return false;
+            return false;
         };
         public static Attack BalorWhip {
             get {
@@ -75,8 +76,8 @@ namespace srd5 {
             }
         }
         public static AttackEffect BeardedDevilBeardEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION)) return;
-            if (target.IsImmune(DamageType.POISON)) return;
+            if (target.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION)) return false;
+            if (target.IsImmune(DamageType.POISON)) return false;
             target.AddEffect(Effect.BEARDED_DEVIL_POISON);
             int turn = 0;
             target.AddEndOfTurnEvent(delegate () {
@@ -86,6 +87,7 @@ namespace srd5 {
                 }
                 return success;
             });
+            return false;
         };
         public static Attack BeardedDevilBeard {
             get {
@@ -95,9 +97,9 @@ namespace srd5 {
         public static readonly AttackEffect BeardedDevilGlaiveEffect = delegate (Combattant attacker, Combattant target) {
             // do not affect undead and constructs
             if (target is Monster monster) {
-                if (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT) return;
+                if (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT) return false;
             }
-            if (target.DC(BeardedDevilGlaive, 12, AbilityType.CONSTITUTION)) return;
+            if (target.DC(BeardedDevilGlaive, 12, AbilityType.CONSTITUTION)) return false;
             // add infernal wound affect if newly applied
             if (!target.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL)) {
                 target.AddStartOfTurnEvent(delegate () {
@@ -110,6 +112,7 @@ namespace srd5 {
             }
             // increase infernal wound stack by one
             target.AddEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL);
+            return false;
         };
         public static Attack BeardedDevilGlaive {
             get {
@@ -123,6 +126,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect BehirConstrictEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 16, Monsters.Behir.Size + 1);
+            return false;
         };
         public static Attack BehirConstrict {
             get {
@@ -153,13 +157,14 @@ namespace srd5 {
             if (target is CharacterSheet sheet) {
                 Armor armor = sheet.Inventory.Armor;
                 // permanently reduce armor ac by 1 if armor isn't magical. armor is destroyed if reduced to 10 or below by this.
-                if (armor == null || armor.HasProperty(ArmorProperty.MAGIC)) return;
+                if (armor == null || armor.HasProperty(ArmorProperty.MAGIC)) return false;
                 armor.AC--;
                 if (armor.AC < 11) {
                     sheet.Unequip(armor);
                     armor.Destroy();
                 }
             }
+            return false;
         };
         public static Attack BlackPuddingPseudopod {
             get {
@@ -192,8 +197,8 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect BoneDevilStingEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.DC(BoneDevilSting, 14, AbilityType.CONSTITUTION)) return;
-            if (target.IsImmune(DamageType.POISON)) return;
+            if (target.DC(BoneDevilSting, 14, AbilityType.CONSTITUTION)) return false;
+            if (target.IsImmune(DamageType.POISON)) return false;
             target.AddEffect(Effect.BONE_DEVIL_POISON);
             target.AddEndOfTurnEvent(delegate () {
                 bool success = target.DC(BoneDevilSting, 14, AbilityType.CONSTITUTION);
@@ -202,6 +207,7 @@ namespace srd5 {
                 }
                 return success;
             });
+            return false;
         };
         public static Attack BoneDevilSting {
             get {

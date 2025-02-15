@@ -21,9 +21,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect WerebearBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return;
-            if (target.DC(WerebearBite, 14, AbilityType.CONSTITUTION)) return;
+            if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return false;
+            if (target.DC(WerebearBite, 14, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(Effect.CURSE_WEREBEAR);
+            return false;
         };
         public static Attack WerebearBite {
             get {
@@ -56,9 +57,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect WereboarTusksEffect = delegate (Combattant attacker, Combattant target) {
-            if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return;
-            if (target.DC(WereboarTusks, 12, AbilityType.CONSTITUTION)) return;
+            if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return false;
+            if (target.DC(WereboarTusks, 12, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(Effect.CURSE_WEREBOAR);
+            return false;
         };
         public static Attack WereboarTusks {
             get {
@@ -91,9 +93,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect WereratBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return;
-            if (target.DC(WereratBite, 11, AbilityType.CONSTITUTION)) return;
+            if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return false;
+            if (target.DC(WereratBite, 11, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(Effect.CURSE_WERERAT);
+            return false;
         };
         public static Attack WereratHybridFormBite {
             get {
@@ -126,9 +129,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect WeretigerBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return;
-            if (target.DC(WeretigerBite, 13, AbilityType.CONSTITUTION)) return;
+            if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return false;
+            if (target.DC(WeretigerBite, 13, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(Effect.CURSE_WERETIGER);
+            return false;
         };
         public static Attack WeretigerHybridFormBite {
             get {
@@ -171,9 +175,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect WerewolfBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return;
-            if (target.DC(WerewolfBite, 12, AbilityType.CONSTITUTION)) return;
+            if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return false;
+            if (target.DC(WerewolfBite, 12, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(Effect.CURSE_WEREWOLF);
+            return false;
         };
         public static Attack WerewolfHybridFormBite {
             get {
@@ -205,6 +210,7 @@ namespace srd5 {
             // TODO: A humanoid slain by this attack rises 24 hours later as a zombie under the wight's control, 
             // unless the humanoid is restored to life or its body is destroyed. 
             // The wight can have no more than twelve zombies under its control at one time.
+            return false;
         };
         public static Attack WightLifeDrain {
             get {
@@ -227,9 +233,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect WinterWolfBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_PRONE)) return;
-            if (target.DC(WinterWolfBite, 14, AbilityType.STRENGTH)) return;
+            if (target.HasEffect(Effect.IMMUNITY_PRONE)) return false;
+            if (target.DC(WinterWolfBite, 14, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
+            return false;
         };
         public static Attack WinterWolfBite {
             get {
@@ -237,9 +244,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect WolfBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_PRONE)) return;
-            if (target.DC(WolfBite, 11, AbilityType.STRENGTH)) return;
+            if (target.HasEffect(Effect.IMMUNITY_PRONE)) return false;
+            if (target.DC(WolfBite, 11, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
+            return false;
         };
         public static Attack WolfBite {
             get {
@@ -247,9 +255,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect WorgBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_PRONE)) return;
-            if (target.DC(WorgBite, 13, AbilityType.STRENGTH)) return;
+            if (target.HasEffect(Effect.IMMUNITY_PRONE)) return false;
+            if (target.DC(WorgBite, 13, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
+            return false;
         };
         public static Attack WorgBite {
             get {
@@ -262,6 +271,7 @@ namespace srd5 {
             if (target.HitPointsMax == 0) {
                 target.Die();
             }
+            return false;
         };
         public static Attack WraithLifeDrain {
             get {
@@ -270,6 +280,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect WyvernStingerEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, WyvernStinger, "7d6", 15);
+            return false;
         };
         public static Attack WyvernStinger {
             get {

@@ -39,6 +39,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SalamanderTailEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 14, Size.HUGE, true, SalamanderTail, 1);
+            return false;
         };
         public static Attack SalamanderTail {
             get {
@@ -62,14 +63,13 @@ namespace srd5 {
         }
         public static readonly AttackEffect ScorpionStingEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, ScorpionSting, "1d8", 9);
+            return false;
         };
         public static Attack ScorpionSting {
             get {
                 return new Attack("Sting", 2, new Damage(DamageType.PIERCING, 1), 5, null, ScorpionStingEffect);
             }
         }
-        public static readonly AttackEffect ScoutLongbowEffect = delegate (Combattant attacker, Combattant target) {
-        };
         public static Attack ScoutLongbow {
             get {
                 return new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 150, 600);
@@ -89,6 +89,7 @@ namespace srd5 {
             // TODO: the target's Strength score is reduced by 1d4. The target dies if this reduces its Strength to 0. 
             // Otherwise, the reduction lasts until the target finishes a short or long rest.
             // If a non-evil humanoid dies from this attack, a new shadow rises from the corpse 1d4 hours later.
+            return false;
         };
         public static Attack ShadowStrengthDrain {
             get {
@@ -121,10 +122,11 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SolarSlayingLongbowEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HitPoints > 190) return;
+            if (target.HitPoints > 190) return false;
             bool success = target.DC(SolarSlayingLongbow, 15, AbilityType.CONSTITUTION);
-            if (success) return;
+            if (success) return false;
             target.Die();
+            return false;
         };
         public static Attack SolarSlayingLongbow {
             get {
@@ -142,6 +144,7 @@ namespace srd5 {
             if (target.HitPointsMax == 0) {
                 target.Die();
             }
+            return false;
         };
         public static Attack SpecterLifeDrain {
             get {
@@ -150,6 +153,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, SpiderBite, "1d4", 9, AbilityType.CONSTITUTION, true);
+            return false;
         };
         public static Attack SpiderBite {
             get {
@@ -158,6 +162,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SpiritNagaBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, SpiritNagaBite, "7d8", 13);
+            return false;
         };
         public static Attack SpiritNagaBite {
             get {
@@ -165,12 +170,13 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SpriteShortbowEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
-            if (target.DC(SpriteShortbow, 10, AbilityType.CONSTITUTION, out int roll)) return;
+            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.DC(SpriteShortbow, 10, AbilityType.CONSTITUTION, out int roll)) return false;
             target.AddEffect(Effect.SPRITE_POISON);
             if (roll <= 5) {
                 target.AddEffect(Effect.SPRITE_POISON_UNCONCIOUS);
             }
+            return false;
         };
         public static Attack SpriteShortbow {
             get {
@@ -198,7 +204,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect StirgeBloodDrainEffect = delegate (Combattant attacker, Combattant target) {
-            if (target is Monster monster && (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT)) return;
+            if (target is Monster monster && (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT)) return false;
             // TODO: the stirge attaches to the target. While attached, the stirge doesn't attack.
             target.AddEffect(Effect.STIRGE_BLOOD_DRAIN_EFFECT);
             attacker.AddEffect(Effect.STIRGE_BLOOD_DRAINING);
@@ -210,8 +216,8 @@ namespace srd5 {
                 target.TakeDamage(attacker, DamageType.TRUE_DAMAGE, "1d4+3");
                 return damage >= 10;
             });
-
-            // A creature, including the target, can use its action to detach the stirge.
+            // TODO: A creature, including the target, can use its action to detach the stirge.
+            return false;
         };
         public static Attack StirgeBloodDrain {
             get {
@@ -219,9 +225,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect StoneGiantRockEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_PRONE)) return;
-            if (target.DC(StoneGiantRock, 17, AbilityType.STRENGTH)) return;
+            if (target.HasEffect(Effect.IMMUNITY_PRONE)) return false;
+            if (target.DC(StoneGiantRock, 17, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
+            return false;
         };
         public static Attack StoneGiantRock {
             get {
@@ -257,6 +264,7 @@ namespace srd5 {
             if (target.HitPointsMax <= 0) {
                 target.Die();
             }
+            return false;
         };
         public static Attack SuccubusDrainingKiss {
             get {
@@ -269,8 +277,9 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfBatsBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
             target.TakeDamage(attacker, DamageType.PIERCING, "1d4");
+            return false;
         };
         public static Attack SwarmOfBatsBites {
             get {
@@ -278,8 +287,9 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfBeetlesBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
             target.TakeDamage(attacker, DamageType.PIERCING, "2d4");
+            return false;
         };
         public static Attack SwarmOfBeetlesBites {
             get {
@@ -287,10 +297,11 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfCentipedesBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
             target.TakeDamage(attacker, DamageType.PIERCING, "2d4");
             // TODO: A creature reduced to 0 hit points by a swarm of centipedes is stable but poisoned for 1 hour, 
             // even after regaining hit points, and paralyzed while poisoned in this way.
+            return false;
         };
         public static Attack SwarmOfCentipedesBites {
             get {
@@ -298,8 +309,9 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfInsectsBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
             target.TakeDamage(attacker, DamageType.PIERCING, "2d4");
+            return false;
         };
         public static Attack SwarmOfInsectsBites {
             get {
@@ -307,9 +319,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfPoisonousSnakesBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
             target.TakeDamage(attacker, DamageType.PIERCING, "1d6");
             AttackEffects.PoisonEffect(target, SwarmOfPoisonousSnakesBites, "4d6", 10);
+            return false;
         };
         public static Attack SwarmOfPoisonousSnakesBites {
             get {
@@ -317,8 +330,9 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfQuippersBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
             target.TakeDamage(attacker, DamageType.PIERCING, "2d6");
+            return false;
         };
         public static Attack SwarmOfQuippersBites {
             get {
@@ -326,8 +340,9 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfRatsBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
             target.TakeDamage(attacker, DamageType.PIERCING, "1d6");
+            return false;
         };
         public static Attack SwarmOfRatsBites {
             get {
@@ -335,8 +350,9 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfRavensBeaksEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
             target.TakeDamage(attacker, DamageType.PIERCING, "1d6");
+            return false;
         };
         public static Attack SwarmOfRavensBeaks {
             get {
@@ -344,8 +360,9 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfSpidersBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
             target.TakeDamage(attacker, DamageType.PIERCING, "2d4");
+            return false;
         };
         public static Attack SwarmOfSpidersBites {
             get {
@@ -353,8 +370,9 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SwarmOfWaspsBitesEffect = delegate (Combattant attacker, Combattant target) {
-            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return;
+            if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
             target.TakeDamage(attacker, DamageType.PIERCING, "2d4");
+            return false;
         };
         public static Attack SwarmOfWaspsBites {
             get {

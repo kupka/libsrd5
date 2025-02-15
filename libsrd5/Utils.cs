@@ -65,6 +65,8 @@ namespace srd5 {
     public abstract class GuidClass {
         public Guid Guid { get; private set; } = Guid.NewGuid();
 
+        public virtual string Name { get; internal set; }
+
         public override bool Equals(object obj) {
             if (obj is GuidClass other) {
                 return Guid.Equals(other.Guid);
@@ -75,6 +77,22 @@ namespace srd5 {
 
         public override int GetHashCode() {
             return Guid.GetHashCode();
+        }
+
+        public bool Is(object other) {
+            if (other is GuidClass guidClass && other.GetType() == GetType()) {
+                if (Name == null) {
+                    return false;
+                } else {
+                    return Name.Equals(guidClass.Name);
+                }
+            } else {
+                return false;
+            }
+        }
+
+        public override string ToString() {
+            return Name + "#" + Guid;
         }
     }
 }

@@ -3,8 +3,8 @@ using static srd5.Die;
 namespace srd5 {
     public partial struct Attacks {
         public static readonly AttackEffect DarkmantleCrushEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.Size > Size.MEDIUM) return;
-            if (attacker.HasEffect(Effect.ATTACHED_TO_TARGET)) return;
+            if (target.Size > Size.MEDIUM) return false;
+            if (attacker.HasEffect(Effect.ATTACHED_TO_TARGET)) return false;
             attacker.AddEffect(Effect.ATTACHED_TO_TARGET);
             attacker.AddEffect(Effect.ADVANTAGE_ON_ATTACK);
             foreach (Attack attack in attacker.MeleeAttacks) {
@@ -12,6 +12,7 @@ namespace srd5 {
             }
             target.AddCondition(ConditionType.BLINDED);
             target.AddEffect(Effect.UNABLE_TO_BREATHE);
+            return false;
         };
         public static Attack DarkmantleCrush {
             get {
@@ -19,9 +20,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect DeathDogBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
-            if (target.DC(DeathDogBite, 12, AbilityType.CONSTITUTION)) return;
+            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.DC(DeathDogBite, 12, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(Effect.DEATH_DOG_DISEASE);
+            return false;
         };
         public static Attack DeathDogBite {
             get {
@@ -29,8 +31,8 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect DeepGnomeSvirfneblinPoisonedDartEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
-            if (target.DC(DeepGnomeSvirfneblinPoisonedDart, 12, AbilityType.CONSTITUTION)) return;
+            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.DC(DeepGnomeSvirfneblinPoisonedDart, 12, AbilityType.CONSTITUTION)) return false;
             target.AddCondition(ConditionType.POISONED);
             int turn = 0;
             target.AddEndOfTurnEvent(delegate () {
@@ -43,6 +45,7 @@ namespace srd5 {
                 }
                 return false;
             });
+            return false;
         };
         public static Attack DeepGnomeSvirfneblinPoisonedDart {
             get {
@@ -65,8 +68,9 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect DireWolfBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.DC(DireWolfBite, 13, AbilityType.STRENGTH)) return;
+            if (target.DC(DireWolfBite, 13, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
+            return false;
         };
         public static Attack DireWolfBite {
             get {
@@ -79,6 +83,7 @@ namespace srd5 {
             } else {
                 target.TakeDamage(attacker, DamageType.THUNDER, "1d6");
             }
+            return false;
         };
         public static Attack DjinniScimitar {
             get {
@@ -96,9 +101,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect DragonTurtleTailEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.DC(DragonTurtleTail, 20, AbilityType.STRENGTH)) return;
+            if (target.DC(DragonTurtleTail, 20, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
             // TODO: Push 10ft away
+            return false;
         };
         public static Attack DragonTurtleTail {
             get {
@@ -141,8 +147,8 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect DrowHandCrossbowEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
-            if (target.DC(DrowHandCrossbow, 13, AbilityType.CONSTITUTION, out int value)) return;
+            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.DC(DrowHandCrossbow, 13, AbilityType.CONSTITUTION, out int value)) return false;
             target.AddEffect(Effect.DROW_POISON);
             if (value < 9) {
                 target.AddCondition(ConditionType.UNCONSCIOUS);
@@ -153,6 +159,7 @@ namespace srd5 {
                 target.RemoveCondition(ConditionType.UNCONSCIOUS);
                 return true;
             });
+            return false;
         };
         public static Attack DrowHandCrossbow {
             get {

@@ -228,7 +228,6 @@ namespace srd5 {
 
         [Fact]
         public void TestAttackEffects_H() {
-            attackEffectTest(Attacks.HalfRedDragonVeteranLongswordEffect);
             attackEffectTest(Attacks.HomunculusBiteEffect);
             attackEffectTest(Attacks.HornedDevilHurlFlameEffect);
             attackEffectTest(Attacks.HornedDevilTailEffect);
@@ -297,7 +296,6 @@ namespace srd5 {
         public void TestAttackEffects_S() {
             attackEffectTest(Attacks.SalamanderTailEffect);
             attackEffectTest(Attacks.ScorpionStingEffect);
-            attackEffectTest(Attacks.ScoutLongbowEffect);
             attackEffectTest(Attacks.ShadowStrengthDrainEffect);
             attackEffectTest(Attacks.SolarSlayingLongbowEffect, true);
             attackEffectTest(Attacks.SpecterLifeDrainEffect, true);

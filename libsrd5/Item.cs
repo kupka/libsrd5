@@ -103,7 +103,7 @@ namespace srd5 {
         }
     }
 
-    public class Damage {
+    public class Damage : GuidClass {
         public DamageType Type { get; internal set; }
         public Dice Dice { get; internal set; }
 
@@ -154,9 +154,7 @@ namespace srd5 {
         }
     }
 
-    public abstract class Item {
-        private readonly int id = Random.Get(1, int.MaxValue);
-        public string Name { get; protected set; }
+    public abstract class Item : GuidClass {
         public ItemType Type { get; protected set; }
 
         public Proficiency[] Proficiencies { get; protected set; }
@@ -168,25 +166,6 @@ namespace srd5 {
         public bool Destroyed { get; internal set; } = false;
 
         public ItemRarity Rarity { get; internal set; } = ItemRarity.COMMON;
-
-        public override bool Equals(object other) {
-            if (other == null) return false;
-            if (!(other is Item)) return false;
-            return id == ((Item)other).id;
-        }
-
-        public bool Is(Item other) {
-            if (other == null) return false;
-            return Name == other.Name;
-        }
-
-        public override int GetHashCode() {
-            return id;
-        }
-
-        public override string ToString() {
-            return Name + "#" + id;
-        }
 
         public void Destroy() {
             Destroyed = true;

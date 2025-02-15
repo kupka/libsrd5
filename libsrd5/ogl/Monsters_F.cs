@@ -1,10 +1,11 @@
 namespace srd5 {
     public partial struct Attacks {
         public static readonly AttackEffect FireElementalTouchEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.FIRE)) return;
-            if (target.HasEffect(Effect.FIRE_ELEMENTAL_IGNITE)) return;
+            if (target.IsImmune(DamageType.FIRE)) return false;
+            if (target.HasEffect(Effect.FIRE_ELEMENTAL_IGNITE)) return false;
             target.AddEffect(Effect.FIRE_ELEMENTAL_IGNITE);
             // TODO: Add means to remove effect ("Until a creature takes an action to douse the fire...")
+            return false;
         };
         public static Attack FireElementalTouch {
             get {

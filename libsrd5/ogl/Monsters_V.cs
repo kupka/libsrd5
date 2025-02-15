@@ -2,6 +2,7 @@ namespace srd5 {
     public partial struct Attacks {
         public static readonly AttackEffect VampireUnarmedStrikeEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: Instead of dealing damage, the vampire can grapple the target (escape DC 18).
+            return false;
         };
         public static Attack VampireUnarmedStrike {
             get {
@@ -14,6 +15,7 @@ namespace srd5 {
             attacker.HealDamage(damage);
             // TODO:  The target dies if this effect reduces its hit point maximum to 0. 
             // A humanoid slain in this way and then buried in the ground rises the following night as a vampire spawn under the vampire's control.
+            return false;
         };
         public static Attack VampireBite {
             get {
@@ -29,6 +31,7 @@ namespace srd5 {
             int damage = target.TakeDamage(attacker, DamageType.NECROTIC, "2d6");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
             attacker.HealDamage(damage);
+            return false;
         };
         public static Attack VampireSpawnBite {
             get {
@@ -37,6 +40,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect VampireSpawnClawsEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: Instead of dealing damage, the vampire can grapple the target (escape DC 13).
+            return false;
         };
         public static Attack VampireSpawnClaws {
             get {

@@ -2,6 +2,7 @@ namespace srd5 {
     public partial struct Attacks {
         public static readonly AttackEffect RakshasaClawEffect = delegate (Combattant attacker, Combattant target) {
             target.AddEffect(Effect.CURSE_RAKSHASA);
+            return false;
         };
         public static Attack RakshasaClaw {
             get {
@@ -30,6 +31,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect RemorhazBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 17, Size.GARGANTUAN, true, RemorhazBite);
+            return false;
         };
         public static Attack RemorhazBite {
             get {
@@ -48,6 +50,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect RocTalonsEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 19, Size.GARGANTUAN, true, RocTalons);
+            return false;
         };
         public static Attack RocTalons {
             get {
@@ -62,6 +65,7 @@ namespace srd5 {
 
         public static readonly AttackEffect RoperTendrilEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 15, Size.HUGE, true, RoperTendril, 6);
+            return false;
         };
         public static Attack RoperTendril {
             get {
@@ -80,6 +84,7 @@ namespace srd5 {
             if (AttackEffects.GrapplingEffect(attacker, target, 13, Size.MEDIUM, true, RugOfSmotheringSmother, 1)) {
                 target.AddEffect(Effect.RUG_SMOTHER);
             }
+            return false;
         };
         public static Attack RugOfSmotheringSmother {
             get {

@@ -1,7 +1,7 @@
 using System;
 
 namespace srd5 {
-    public delegate void AttackEffect(Combattant attacker, Combattant target);
+    public delegate bool AttackEffect(Combattant attacker, Combattant target);
 
     public struct AttackEffects {
 
@@ -74,14 +74,29 @@ namespace srd5 {
             TRIPLE_DICE_ON_CRIT
         }
 
-        public string Name { get; set; }
         public int AttackBonus { get; internal set; }
         public Damage Damage { get; internal set; }
-        public Damage AdditionalDamage { get; internal set; }
+        private Damage[] additionalDamages;
+        public Damage[] AdditionalDamage {
+            get {
+                return additionalDamages;
+            }
+            private set {
+                additionalDamages = value;
+            }
+        }
         public int Reach { get; internal set; }
         public int RangeNormal { get; internal set; }
         public int RangeLong { get; internal set; }
-        public AttackEffect EffectOnHit { get; internal set; }
+        private AttackEffect[] effectsOnHit;
+        public AttackEffect[] EffectOnHit {
+            get {
+                return effectsOnHit;
+            }
+            private set {
+                effectsOnHit = value;
+            }
+        }
         private Attack.Property[] properties = new Attack.Property[0];
         public Attack.Property[] Properties {
             get {
@@ -94,34 +109,26 @@ namespace srd5 {
             Name = name;
             AttackBonus = attackBonus;
             Damage = damage;
-            AdditionalDamage = additionalDamage;
+            if (additionalDamage == null) {
+                AdditionalDamage = new Damage[0];
+            } else {
+                AdditionalDamage = new Damage[] { additionalDamage };
+            }
             Reach = reach;
             RangeNormal = rangeNormal;
             RangeLong = rangeLong;
-            EffectOnHit = effectOnHit;
+            if (effectOnHit == null) {
+                EffectOnHit = new AttackEffect[0];
+            } else {
+                EffectOnHit = new AttackEffect[] { effectOnHit };
+            }
         }
 
-        public Attack(string name, int attackBonus, Damage damage, int reach, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
-            Name = name;
-            AttackBonus = attackBonus;
-            Damage = damage;
-            AdditionalDamage = additionalDamage;
-            Reach = reach;
-            RangeNormal = 0;
-            RangeLong = 0;
-            EffectOnHit = effectOnHit;
-        }
+        public Attack(string name, int attackBonus, Damage damage, int reach, Damage additionalDamage = null, AttackEffect effectOnHit = null)
+            : this(name, attackBonus, damage, reach, 0, 0, additionalDamage, effectOnHit) { }
 
-        public Attack(string name, int attackBonus, Damage damage, int rangeNormal, int rangeLong, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
-            Name = name;
-            AttackBonus = attackBonus;
-            Damage = damage;
-            AdditionalDamage = additionalDamage;
-            Reach = 0;
-            RangeNormal = rangeNormal;
-            RangeLong = rangeLong;
-            EffectOnHit = effectOnHit;
-        }
+        public Attack(string name, int attackBonus, Damage damage, int rangeNormal, int rangeLong, Damage additionalDamage = null, AttackEffect effectOnHit = null)
+            : this(name, attackBonus, damage, 0, rangeNormal, rangeLong, additionalDamage, effectOnHit) { }
 
         public static Attack FromWeapon(int attackBonus, string damageString, Weapon weapon, Damage additionalDamage = null) {
             return new Attack(weapon.Name, attackBonus,
@@ -129,8 +136,13 @@ namespace srd5 {
         }
 
         public void ApplyEffectOnHit(Combattant attacker, Combattant target) {
-            if (EffectOnHit == null) return;
-            EffectOnHit(attacker, target);
+            AttackEffect[] toRemove = new AttackEffect[0];
+            foreach (AttackEffect effect in EffectOnHit) {
+                if (effect(attacker, target)) {
+                    Utils.Push<AttackEffect>(ref toRemove, effect);
+                }
+            }
+            RemoveAttackEffect(toRemove);
         }
 
         public bool HasProperty(Attack.Property property) {
@@ -142,6 +154,26 @@ namespace srd5 {
                 Utils.Push<Attack.Property>(ref this.properties, properties[i]);
             }
             return this;
+        }
+
+        internal void AddAdditionalDamage(params Damage[] additionalDamage) {
+            Utils.Push<Damage>(ref this.additionalDamages, additionalDamage);
+        }
+
+        internal void RemoveAdditionalDamage(params Damage[] additionalDamage) {
+            foreach (Damage damage in additionalDamage) {
+                Utils.RemoveSingle<Damage>(ref this.additionalDamages, damage);
+            }
+        }
+
+        internal void AddAttackEffect(params AttackEffect[] attackEffects) {
+            Utils.Push<AttackEffect>(ref this.effectsOnHit, attackEffects);
+        }
+
+        internal void RemoveAttackEffect(params AttackEffect[] attackEffects) {
+            foreach (AttackEffect effect in attackEffects) {
+                Utils.RemoveSingle<AttackEffect>(ref this.effectsOnHit, effect);
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect OctopusTentaclesEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 10, Monsters.Octopus.Size++, false, Attacks.OctopusTentacles, 1);
+            return false;
         };
         public static Attack OctopusTentacles {
             get {
@@ -17,6 +18,7 @@ namespace srd5 {
             // TODO: A 5-foot-radius cloud of ink extends all around the octopus if it is underwater. 
             // The area is heavily obscured for 1 minute, although a significant current can disperse the ink. 
             // After releasing the ink, the octopus can use the Dash action as a bonus action.
+            return false;
         };
         public static Attack OctopusInkCloud {
             get {
@@ -70,8 +72,9 @@ namespace srd5 {
         }
         public static readonly AttackEffect OtyughBiteEffect = delegate (Combattant attacker, Combattant target) {
             bool success = target.DC(OtyughBite, 15, AbilityType.CONSTITUTION);
-            if (success) return;
+            if (success) return false;
             target.AddEffect(Effect.OTYUGH_DISEASE);
+            return false;
         };
         public static Attack OtyughBite {
             get {
@@ -80,6 +83,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect OtyughTentacleEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 13, Size.MEDIUM, true, null, 2);
+            return false;
         };
         public static Attack OtyughTentacle {
             get {

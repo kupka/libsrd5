@@ -22,6 +22,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect ImpStingEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, ImpSting, "1d4+3", 11);
+            return false;
         };
         public static Attack ImpSting {
             get {

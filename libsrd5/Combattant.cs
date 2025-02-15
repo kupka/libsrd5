@@ -44,7 +44,6 @@ namespace srd5 {
 
     public abstract class Combattant : GuidClass {
         public int Speed { get; internal set; } = 30;
-        public virtual string Name { get; set; }
         public Alignment Alignment { get; set; }
         public Ability Strength { get; internal set; } = new Ability(AbilityType.STRENGTH, 10);
         public Ability Dexterity { get; internal set; } = new Ability(AbilityType.DEXTERITY, 10);
@@ -567,10 +566,14 @@ namespace srd5 {
                 int times = 2;
                 if (attack.HasProperty(srd5.Attack.Property.TRIPLE_DICE_ON_CRIT)) times = 3;
                 target.TakeDamage(this, attack.Damage.Type, attack.Damage.Dice.RollCritical(times) + bonusDamage, dCEffect, dc, dcAbility, out dcSuccess);
-                if (attack.AdditionalDamage != null) target.TakeDamage(this, attack.AdditionalDamage.Type, attack.AdditionalDamage.Dice.RollCritical(times), dCEffect, dc, dcAbility, out dcSuccess);
+                foreach (Damage additionalDamage in attack.AdditionalDamage) {
+                    target.TakeDamage(this, additionalDamage.Type, additionalDamage.Dice.RollCritical(times), dCEffect, dc, dcAbility, out dcSuccess);
+                }
             } else {
                 target.TakeDamage(this, attack.Damage.Type, attack.Damage.Dice.Roll() + bonusDamage, dCEffect, dc, dcAbility, out dcSuccess);
-                if (attack.AdditionalDamage != null) target.TakeDamage(this, attack.AdditionalDamage.Type, attack.AdditionalDamage.Dice.Roll(), dCEffect, dc, dcAbility, out dcSuccess);
+                foreach (Damage additionalDamage in attack.AdditionalDamage) {
+                    target.TakeDamage(this, additionalDamage.Type, additionalDamage.Dice.Roll(), dCEffect, dc, dcAbility, out dcSuccess);
+                }
             }
             // Hit effect
             attack.ApplyEffectOnHit(this, target);

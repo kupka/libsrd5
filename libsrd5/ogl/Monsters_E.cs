@@ -21,9 +21,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect ElephantStompEffect = delegate (Combattant attacker, Combattant target) {
-            if (!target.HasCondition(ConditionType.PRONE)) return;
+            if (!target.HasCondition(ConditionType.PRONE)) return false;
             int amount = new Dice("3d10+6").Roll(); // FIXME: Cannot crit because attack roll is not available here
             target.TakeDamage(attacker, DamageType.BLUDGEONING, amount);
+            return false;
         };
         public static Attack ElephantStomp {
             get {
@@ -36,9 +37,10 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect ElkHoovesEffect = delegate (Combattant attacker, Combattant target) {
-            if (!target.HasCondition(ConditionType.PRONE)) return;
+            if (!target.HasCondition(ConditionType.PRONE)) return false;
             int amount = new Dice("2d4+3").Roll(); // FIXME: Cannot crit because attack roll is not available here
             target.TakeDamage(attacker, DamageType.BLUDGEONING, amount);
+            return false;
         };
         public static Attack ElkHooves {
             get {
@@ -56,10 +58,11 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect ErinyesLongbowEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
+            if (target.IsImmune(DamageType.POISON)) return false;
             bool success = target.DC(ErinyesLongbow, 14, AbilityType.CONSTITUTION);
-            if (success) return;
+            if (success) return false;
             target.AddEffect(Effect.ERINYES_POISON);
+            return false;
         };
         public static Attack ErinyesLongbow {
             get {
@@ -67,9 +70,9 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect EttercapBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
+            if (target.IsImmune(DamageType.POISON)) return false;
             bool success = target.DC(EttercapBite, 11, AbilityType.CONSTITUTION);
-            if (success) return;
+            if (success) return false;
             target.AddEffect(Effect.ETTERCAP_POISON);
             int turn = 0;
             target.AddEndOfTurnEvent(delegate () {
@@ -78,6 +81,7 @@ namespace srd5 {
                 if (success) target.RemoveEffect(Effect.ETTERCAP_POISON);
                 return success;
             });
+            return false;
         };
         public static Attack EttercapBite {
             get {
@@ -85,11 +89,12 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect EttercapWebEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.Size > Size.LARGE) return;
-            if (target.HasEffect(Effect.IMMUNITY_RESTRAINED)) return;
+            if (target.Size > Size.LARGE) return false;
+            if (target.HasEffect(Effect.IMMUNITY_RESTRAINED)) return false;
             target.AddEffect(Effect.ETTERCAP_WEB);
             // TODO: As an action, the restrained creature can make a DC 11 Strength check, escaping from the webbing on a success.
             // TODO: The effect ends if the webbing is destroyed. The webbing has AC 10, 5 hit points, is vulnerable to fire damage and immune to bludgeoning damage.
+            return false;
         };
         public static Attack EttercapWeb {
             get {

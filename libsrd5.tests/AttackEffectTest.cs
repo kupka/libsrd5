@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 using static srd5.Die;
 
@@ -26,7 +27,7 @@ namespace srd5 {
         private static Monster createPansyMonster() {
             Monster pansyMonster = new(
                     Monsters.Type.BEAST, Monsters.ID.GOAT, Alignment.LAWFUL_EVIL, 2, 1, 1, 1, 1, 1, 1, "1d6+10000", 40, 16,
-                    new Attack[] { }, new Attack[] { }, Size.MEDIUM
+                    new Attack[] { }, new Attack[] { }, Size.SMALL
             );
             pansyMonster.AddEffect(Effect.FAIL_STRENGTH_CHECK, Effect.FAIL_DEXERITY_CHECK, Effect.FAIL_CONSTITUTION_CHECK);
             return pansyMonster;
@@ -69,15 +70,19 @@ namespace srd5 {
         private void attackEffectTest(AttackEffect effect, bool guaranteedLethal = false) {
             for (int i = 0; i < 10; i++) {
                 restoreMonsters();
-                effect.Invoke(Monsters.Aboleth, uberMonster);
-                effect.Invoke(Monsters.Aboleth, averageMonster);
-                effect.Invoke(Monsters.Aboleth, pansyMonster);
-                foreach (Combattant combattant in allCombattantTypes) {
-                    effect.Invoke(Monsters.Aboleth, combattant);
-                }
-                if (guaranteedLethal) {
-                    effect.Invoke(Monsters.Aboleth, pansyMonsterThatDies);
-                    Assert.True(pansyMonsterThatDies.Dead);
+                Monster aboleth = Monsters.Aboleth;
+                for (int m = 0; m < 5; m++) {
+                    effect.Invoke(aboleth, uberMonster);
+                    effect.Invoke(aboleth, averageMonster);
+                    effect.Invoke(aboleth, pansyMonster);
+                    foreach (Combattant combattant in allCombattantTypes) {
+                        effect.Invoke(aboleth, combattant);
+                    }
+                    if (guaranteedLethal) {
+                        effect.Invoke(aboleth, pansyMonsterThatDies);
+                        Assert.True(pansyMonsterThatDies.Dead);
+                    }
+                    aboleth.HitPoints = (int)Math.Floor(aboleth.HitPoints / 1.5);
                 }
                 for (int j = 0; j < 20; j++) {
                     uberMonster.TakeDamage(effect, randomDamageType(), D4.Value);

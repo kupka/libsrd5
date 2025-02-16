@@ -97,12 +97,15 @@ namespace srd5 {
                 AddEffectForDuration(ID.CALM_EMOTIONS, caster, target, Effect.SPELL_CALM_EMOTIONS, SpellDuration.ONE_MINUTE);
             }
         });
-        /* TODO */
-        public static readonly Spell ContinualFlame = new Spell(ID.CONTINUAL_FLAME, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.UNTIL_DISPELLED, 0, 0, doNothing);
-        /* TODO */
-        public static readonly Spell Darkness = new Spell(ID.DARKNESS, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VM, SpellDuration.TEN_MINUTES, 15, 0, doNothing);
-        /* TODO */
-        public static readonly Spell Darkvision = new Spell(ID.DARKVISION, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.EIGHT_HOURS, 0, 0, doNothing);
+
+        public static readonly Spell ContinualFlame = new Spell(ID.CONTINUAL_FLAME, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.UNTIL_DISPELLED, 0, 0, SpellWithoutEffect(ID.CONTINUAL_FLAME));
+
+        public static readonly Spell Darkness = new Spell(ID.DARKNESS, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VM, SpellDuration.TEN_MINUTES, 15, 0, SpellWithoutEffect(ID.DARKNESS));
+
+        public static readonly Spell Darkvision = new Spell(ID.DARKVISION, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.EIGHT_HOURS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            Combattant target = targets[0];
+            AddEffectForDuration(ID.DARKVISION, caster, target, Effect.SPELL_DARKVISION, SpellDuration.EIGHT_HOURS);
+        });
         /* TODO */
         public static readonly Spell DetectThoughts = new Spell(ID.DETECT_THOUGHTS, SpellSchool.DIVINATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
         /* TODO */

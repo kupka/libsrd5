@@ -145,12 +145,16 @@ namespace srd5 {
             Spells.Shillelagh.Cast(Monsters.Goblin, 0, SpellLevel.CANTRIP, 3);
         }
 
+        private void DefaultSpellTest(Spell spell, int dc, SpellLevel slot, ConditionType? checkForCondition, Effect? checkForEffect, SpellDuration simulateTurns, Monsters.Type monsterType = Monsters.Type.BEAST) {
+            DefaultSpellTest(spell, dc, slot, checkForCondition, checkForEffect, (int)simulateTurns / 6, monsterType);
+        }
+
         private void DefaultSpellTest(Spell spell, int dc, SpellLevel slot, ConditionType? checkForCondition, Effect? checkForEffect, int? simulateTurns, Monsters.Type monsterType = Monsters.Type.BEAST) {
             if (checkForCondition == null && checkForEffect == null) throw new ArgumentException("Don't use is when not checking for Condition and/or Effect");
             CharacterSheet hero = new CharacterSheet(Race.DRAGONBORN, true);
             hero.AddLevels(CharacterClasses.Wizard, CharacterClasses.Druid, CharacterClasses.Bard, CharacterClasses.Barbarian);
-            Combattant nonMonster1 = new CharacterSheet(Race.HILL_DWARF);
-            Combattant nonMonster2 = new CharacterSheet(Race.HIGH_ELF);
+            Combattant nonMonster1 = new CharacterSheet(Race.HUMAN);
+            Combattant nonMonster2 = new CharacterSheet(Race.HALFLING);
             Monster orc1 = Monsters.Orc;
             Monster orc2 = Monsters.Orc;
             Monster orc3 = Monsters.Orc;
@@ -377,6 +381,11 @@ namespace srd5 {
             Assert.Equal(16, hero.ArmorClass);
             hero.Equip(Armors.PlateArmor);
             Assert.True(hero.ArmorClass > 16);
+        }
+
+        [Fact]
+        public void DarkvisionTest() {
+            DefaultSpellTest(Spells.Darkvision, 20, SpellLevel.SECOND, null, Effect.DARKVISION, SpellDuration.EIGHT_HOURS);
         }
     }
 }

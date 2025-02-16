@@ -130,6 +130,7 @@ namespace srd5 {
         SPELL_CALM_EMOTIONS_CHARMED_SUPRESSED,
         SPELL_CALM_EMOTIONS_FRIGHTENED_SUPRESSED,
         SPELL_COMMAND_GROVEL,
+        SPELL_DARKVISION,
         SPELL_DIVINE_FAVOR,
         SPELL_ENTANGLE,
         SPELL_FAIRIE_FIRE,
@@ -455,7 +456,9 @@ namespace srd5 {
                         combattant.RemoveCondition(ConditionType.FRIGHTENED);
                     }
                     break;
-
+                case Effect.SPELL_DARKVISION:
+                    combattant.AddEffect(Effect.DARKVISION);
+                    break;
             }
         }
 
@@ -571,6 +574,9 @@ namespace srd5 {
                         combattant.RemoveEffect(Effect.SPELL_CALM_EMOTIONS_FRIGHTENED_SUPRESSED);
                         // TODO: Add all effects here that cause frightened. If still present, re-apply condition.
                     }
+                    break;
+                case Effect.SPELL_DARKVISION:
+                    combattant.RemoveEffect(Effect.DARKVISION);
                     break;
             }
         }

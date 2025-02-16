@@ -107,7 +107,7 @@ namespace srd5 {
 
         public InnateSpellcasting InnateSpellcastingBySpell(Spell spell) {
             foreach (InnateSpellcasting isc in InnateSpellCasting) {
-                if (spell == isc.Spell) return isc;
+                if (spell.Is(isc.Spell)) return isc;
             }
             return null;
         }

@@ -1,5 +1,5 @@
 namespace srd5 {
-    public class Spell {
+    public class Spell : GuidClass {
         public Spells.ID ID { get; private set; }
         public SpellSchool School { get; private set; }
         public SpellLevel Level { get; private set; }
@@ -9,7 +9,7 @@ namespace srd5 {
         public SpellDuration Duration { get; private set; }
         public int AreaOfEffect { get; private set; }
         public int MaximumTargets { get; private set; }
-        public string Name {
+        public override string Name {
             get {
                 return ID.Name();
             }

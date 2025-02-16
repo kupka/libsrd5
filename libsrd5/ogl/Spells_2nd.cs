@@ -82,8 +82,21 @@ namespace srd5 {
             }
         });
 
-        /* TODO */
-        public static readonly Spell CalmEmotions = new Spell(ID.CALM_EMOTIONS, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VS, SpellDuration.ONE_MINUTE, 20, 0, doNothing);
+        public static readonly Spell CalmEmotions = new Spell(ID.CALM_EMOTIONS, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VS, SpellDuration.ONE_MINUTE, 20, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            // TODO: Here, only the immunity to being charmed and frightned is implemented
+            // Alternatively, you can make a target indifferent about creatures of your choice that it is hostile toward. 
+            // This indifference ends if the target is attacked or harmed by a spell or if it witnesses any of its friends being harmed. 
+            // When the spell ends, the creature becomes hostile again, unless the GM rules otherwise.
+            foreach (Combattant target in targets) {
+                if (target is Monster monster) {
+                    if (monster.Type != Monsters.Type.HUMANOID) {
+                        GlobalEvents.AffectBySpell(caster, ID.CALM_EMOTIONS, target, false);
+                        continue;
+                    }
+                }
+                AddEffectForDuration(ID.CALM_EMOTIONS, caster, target, Effect.SPELL_CALM_EMOTIONS, SpellDuration.ONE_MINUTE);
+            }
+        });
         /* TODO */
         public static readonly Spell ContinualFlame = new Spell(ID.CONTINUAL_FLAME, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.UNTIL_DISPELLED, 0, 0, doNothing);
         /* TODO */

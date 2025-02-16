@@ -34,5 +34,29 @@ namespace srd5 {
             goblin.OnEndOfTurn();
             DefaultSpellTest(Spells.Heroism, 12, SpellLevel.THIRD, null, Effect.IMMUNITY_FRIGHTENED, 10);
         }
+
+        [Fact]
+        public void CalmEmotionsTest() {
+            Monster badger = Monsters.Badger;
+            badger.AddCondition(ConditionType.CHARMED);
+            Monster bandit = Monsters.Bandit;
+            bandit.AddCondition(ConditionType.CHARMED);
+            CharacterSheet coward = new CharacterSheet(Race.GNOME);
+            coward.AddCondition(ConditionType.FRIGHTENED);
+            Monster solar = Monsters.Solar;
+            Battleground ground = createBattleground(solar, badger, bandit, coward);
+            Spells.CalmEmotions.Cast(ground, solar, 20, SpellLevel.SEVENTH, 10, badger, bandit, coward);
+            Assert.True(badger.HasCondition(ConditionType.CHARMED));
+            Assert.False(bandit.HasCondition(ConditionType.CHARMED));
+            Assert.False(coward.HasCondition(ConditionType.FRIGHTENED));
+
+            // TODO: Add effects here that will be restored after Calm Emotions expires
+            Assert.True(bandit.HasEffect(Effect.SPELL_CALM_EMOTIONS_CHARMED_SUPRESSED));
+            bandit.RemoveEffect(Effect.SPELL_CALM_EMOTIONS);
+            Assert.False(bandit.HasEffect(Effect.SPELL_CALM_EMOTIONS_CHARMED_SUPRESSED));
+            Assert.True(coward.HasEffect(Effect.SPELL_CALM_EMOTIONS_FRIGHTENED_SUPRESSED));
+            coward.RemoveEffect(Effect.SPELL_CALM_EMOTIONS);
+            Assert.False(coward.HasEffect(Effect.SPELL_CALM_EMOTIONS_FRIGHTENED_SUPRESSED));
+        }
     }
 }

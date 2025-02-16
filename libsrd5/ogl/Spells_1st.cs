@@ -13,6 +13,7 @@ namespace srd5 {
                     && !monster.HasEffect(Effect.IMMUNITY_CHARMED)
                     // Wisdom save with advantage since we assume a fight
                     && !monster.DC(ID.ANIMAL_FRIENDSHIP, dc, AbilityType.WISDOM, false, true)) {
+                monster.AddEffect(Effect.SPELL_ANIMAL_FRIENDSHIP);
                 monster.AddCondition(ConditionType.CHARMED);
                 GlobalEvents.AffectBySpell(caster, ID.ANIMAL_FRIENDSHIP, target, true);
             } else {

@@ -117,29 +117,33 @@ namespace srd5 {
         GRAPPLING,
 
         // Spell Effects
-        SPELL_BANE,
-        SPELL_BLESS,
-        SPELL_ENTANGLE,
-        SPELL_FAIRIE_FIRE,
-        SPELL_JUMP,
-        SPELL_LIGHT,
-        SPELL_LONGSTRIDER,
-        SPELL_RAY_OF_FROST,
-        SPELL_RESISTANCE,
-        SPELL_GUIDANCE,
-        SPELL_DIVINE_FAVOR,
-        SPELL_HIDEOUS_LAUGHTER,
-        SPELL_COMMAND_GROVEL,
-        SPELL_FEATHER_FALL,
-        SPELL_PROTECTION_FROM_EVIL_AND_GOOD,
-        SPELL_SHIELD,
-        SPELL_SHIELD_OF_FAITH,
         SPELL_ACID_ARRORW_BURN,
         SPELL_AID,
         SPELL_ALTER_SELF_CLAWS,
+        SPELL_ANIMAL_FRIENDSHIP,
+        SPELL_BANE,
         SPELL_BARKSKIN,
+        SPELL_BLESS,
         SPELL_BLINDNESS_DEAFNESS,
         SPELL_BLUR,
+        SPELL_CALM_EMOTIONS,
+        SPELL_CALM_EMOTIONS_CHARMED_SUPRESSED,
+        SPELL_CALM_EMOTIONS_FRIGHTENED_SUPRESSED,
+        SPELL_COMMAND_GROVEL,
+        SPELL_DIVINE_FAVOR,
+        SPELL_ENTANGLE,
+        SPELL_FAIRIE_FIRE,
+        SPELL_FEATHER_FALL,
+        SPELL_GUIDANCE,
+        SPELL_HIDEOUS_LAUGHTER,
+        SPELL_JUMP,
+        SPELL_LIGHT,
+        SPELL_LONGSTRIDER,
+        SPELL_PROTECTION_FROM_EVIL_AND_GOOD,
+        SPELL_RAY_OF_FROST,
+        SPELL_RESISTANCE,
+        SPELL_SHIELD,
+        SPELL_SHIELD_OF_FAITH,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,
@@ -441,6 +445,16 @@ namespace srd5 {
                 case Effect.SPELL_BLUR:
                     combattant.AddEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
                     break;
+                case Effect.SPELL_CALM_EMOTIONS:
+                    if (combattant.HasCondition(ConditionType.CHARMED)) {
+                        combattant.AddEffect(Effect.SPELL_CALM_EMOTIONS_CHARMED_SUPRESSED);
+                        combattant.RemoveCondition(ConditionType.CHARMED);
+                    }
+                    if (combattant.HasCondition(ConditionType.FRIGHTENED)) {
+                        combattant.AddEffect(Effect.SPELL_CALM_EMOTIONS_FRIGHTENED_SUPRESSED);
+                        combattant.RemoveCondition(ConditionType.FRIGHTENED);
+                    }
+                    break;
 
             }
         }
@@ -546,6 +560,17 @@ namespace srd5 {
                     break;
                 case Effect.SPELL_BLUR:
                     combattant.RemoveEffect(Effect.DISADVANTAGE_ON_BEING_ATTACKED);
+                    break;
+                case Effect.SPELL_CALM_EMOTIONS:
+                    if (combattant.HasEffect(Effect.SPELL_CALM_EMOTIONS_CHARMED_SUPRESSED)) {
+                        combattant.RemoveEffect(Effect.SPELL_CALM_EMOTIONS_CHARMED_SUPRESSED);
+                        // TODO: Add all effects here that cause charmed. If still present, re-apply condition.
+                        // NOTE: Animal Friendship doesn't apply to Humanoids, so it is not valid here
+                    }
+                    if (combattant.HasEffect(Effect.SPELL_CALM_EMOTIONS_FRIGHTENED_SUPRESSED)) {
+                        combattant.RemoveEffect(Effect.SPELL_CALM_EMOTIONS_FRIGHTENED_SUPRESSED);
+                        // TODO: Add all effects here that cause frightened. If still present, re-apply condition.
+                    }
                     break;
             }
         }

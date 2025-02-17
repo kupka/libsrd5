@@ -428,5 +428,44 @@ namespace srd5 {
             }
             Assert.True(successesWithAdvantage > successesWithoutAdvantage);
         }
+
+        [Fact]
+        public void EnlargeTest() {
+            Spell spell = Spells.EnlargeReduce;
+            spell.Variant = SpellVariant.ENLARGE;
+            Monster bandit = Monsters.Bandit;
+            Size size = bandit.Size;
+            bandit.AddEffect(Effect.SPELL_REDUCE);
+            Assert.True(bandit.Size < size);
+            spell.Cast(bandit, 12, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size == size);
+            spell.Cast(bandit, 12, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size > size);
+            size = bandit.Size;
+            spell.Cast(bandit, 12, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size == size);
+            bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
+        }
+
+        [Fact]
+        public void ReduceTest() {
+            Spell spell = Spells.EnlargeReduce;
+            spell.Variant = SpellVariant.REDUCE;
+            Monster bandit = Monsters.Bandit;
+            Size size = bandit.Size;
+            spell.Cast(bandit, 1, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size == size);
+            bandit.AddEffect(Effect.SPELL_ENLARGE);
+            Assert.True(bandit.Size > size);
+            spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size == size);
+            spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size < size);
+            size = bandit.Size;
+            spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size == size);
+            bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
+            bandit.DC(this, 20, AbilityType.STRENGTH);
+        }
     }
 }

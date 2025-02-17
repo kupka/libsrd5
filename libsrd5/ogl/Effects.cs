@@ -70,7 +70,7 @@ namespace srd5 {
         IMMUNITY_STUNNED,
         IMMUNITY_UNCONSCIOUS,
 
-        // Advantage on Save Throws
+        // Advantage on Save Throws/Skill Checks
         ADVANTAGE_SAVE_POISON,
         ADVANTAGE_SAVE_CHARM,
         ADVANTAGE_CONSTITUTION_SAVES,
@@ -79,6 +79,13 @@ namespace srd5 {
         ADVANTAGE_CHARISMA_SAVES,
         ADVANTAGE_INTELLIGENCE_SAVES,
         ADVANTAGE_WISDOM_SAVES,
+        // Disadvantage of Save Throws/Skill Checks
+        DISADVANTAGE_CONSTITUTION_SAVES,
+        DISADVANTAGE_STRENGTH_SAVES,
+        DISADVANTAGE_DEXTERITY_SAVES,
+        DISADVANTAGE_CHARISMA_SAVES,
+        DISADVANTAGE_INTELLIGENCE_SAVES,
+        DISADVANTAGE_WISDOM_SAVES,
         // Attack modifiers
         ADVANTAGE_ON_ATTACK,
         DISADVANTAGE_ON_ATTACK,
@@ -138,6 +145,7 @@ namespace srd5 {
         SPELL_DARKVISION,
         SPELL_DIVINE_FAVOR,
         SPELL_ENHANCE_ABILITY,
+        SPELL_ENLARGE,
         SPELL_ENTANGLE,
         SPELL_FAIRIE_FIRE,
         SPELL_FEATHER_FALL,
@@ -148,6 +156,7 @@ namespace srd5 {
         SPELL_LONGSTRIDER,
         SPELL_PROTECTION_FROM_EVIL_AND_GOOD,
         SPELL_RAY_OF_FROST,
+        SPELL_REDUCE,
         SPELL_RESISTANCE,
         SPELL_SHIELD,
         SPELL_SHIELD_OF_FAITH,
@@ -465,6 +474,12 @@ namespace srd5 {
                 case Effect.SPELL_DARKVISION:
                     combattant.AddEffect(Effect.DARKVISION);
                     break;
+                case Effect.SPELL_ENLARGE:
+                    combattant.Size++;
+                    break;
+                case Effect.SPELL_REDUCE:
+                    combattant.Size--;
+                    break;
             }
         }
 
@@ -583,6 +598,12 @@ namespace srd5 {
                     break;
                 case Effect.SPELL_DARKVISION:
                     combattant.RemoveEffect(Effect.DARKVISION);
+                    break;
+                case Effect.SPELL_ENLARGE:
+                    combattant.Size--;
+                    break;
+                case Effect.SPELL_REDUCE:
+                    combattant.Size++;
                     break;
             }
         }

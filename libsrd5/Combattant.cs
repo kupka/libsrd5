@@ -353,9 +353,11 @@ namespace srd5 {
                 if (source is Spells.ID && HasFeat(Feat.MAGIC_RESISTANCE))
                     advantage = true;
             }
-            // Check for Advantage Effect
+            // Check for (Dis-)Advantage Effect
             Effect advantageEffect = (Effect)Enum.Parse(typeof(Effect), "ADVANTAGE_" + Enum.GetName(typeof(AbilityType), type) + "_SAVES");
+            Effect disadvantageEffect = (Effect)Enum.Parse(typeof(Effect), "DISADVANTAGE_" + Enum.GetName(typeof(AbilityType), type) + "_SAVES");
             if (HasEffect(advantageEffect)) advantage = true;
+            if (HasEffect(disadvantageEffect)) disadvantage = true;
             Ability ability = GetAbility(type);
             int additionalModifiers = 0;
             if (HasEffect(Effect.SPELL_RESISTANCE)) {
@@ -565,17 +567,19 @@ namespace srd5 {
             GlobalEvents.RolledAttack(this, attack, target, attackRoll.Value, true, criticalHit);
             int bonusDamage = 0;
             if (HasEffect(Effect.SPELL_DIVINE_FAVOR)) bonusDamage += D4.Value;
+            if (HasEffect(Effect.SPELL_ENLARGE)) bonusDamage += D4.Value;
+            if (HasEffect(Effect.SPELL_REDUCE)) bonusDamage -= D4.Value;
             if (criticalHit) {
                 int times = 2;
                 if (attack.HasProperty(srd5.Attack.Property.TRIPLE_DICE_ON_CRIT)) times = 3;
-                target.TakeDamage(this, attack.Damage.Type, attack.Damage.Dice.RollCritical(times) + bonusDamage, dCEffect, dc, dcAbility, out dcSuccess);
+                target.TakeDamage(this, attack.Damage.Type, Math.Max(1, attack.Damage.Dice.RollCritical(times) + bonusDamage), dCEffect, dc, dcAbility, out dcSuccess);
                 foreach (Damage additionalDamage in attack.AdditionalDamage) {
-                    target.TakeDamage(this, additionalDamage.Type, additionalDamage.Dice.RollCritical(times), dCEffect, dc, dcAbility, out dcSuccess);
+                    target.TakeDamage(this, additionalDamage.Type, Math.Max(1, additionalDamage.Dice.RollCritical(times)), dCEffect, dc, dcAbility, out dcSuccess);
                 }
             } else {
-                target.TakeDamage(this, attack.Damage.Type, attack.Damage.Dice.Roll() + bonusDamage, dCEffect, dc, dcAbility, out dcSuccess);
+                target.TakeDamage(this, attack.Damage.Type, Math.Max(1, attack.Damage.Dice.Roll() + bonusDamage), dCEffect, dc, dcAbility, out dcSuccess);
                 foreach (Damage additionalDamage in attack.AdditionalDamage) {
-                    target.TakeDamage(this, additionalDamage.Type, additionalDamage.Dice.Roll(), dCEffect, dc, dcAbility, out dcSuccess);
+                    target.TakeDamage(this, additionalDamage.Type, Math.Max(1, additionalDamage.Dice.Roll()), dCEffect, dc, dcAbility, out dcSuccess);
                 }
             }
             // Hit effect

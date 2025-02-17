@@ -70,6 +70,9 @@ namespace srd5 {
         EAGLES_SPLENDOR,
         FOX_CUNNING,
         OWLS_WISDOM,
+        // Enlarge/Reduce
+        ENLARGE,
+        REDUCE,
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);

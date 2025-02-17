@@ -204,7 +204,6 @@ namespace srd5 {
                                 AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_WISDOM_SAVES);
                                 break;
                             case SpellVariant.BEARS_ENDURANCE:
-                            default:
                                 AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_CONSTITUTION_SAVES);
                                 target.AddTemporaryHitpoints(Roll("2d6"), SpellDuration.ONE_HOUR, ID.ENHANCE_ABILITY);
                                 break;
@@ -217,7 +216,35 @@ namespace srd5 {
         /* TODO */
         public static Spell EnlargeReduce {
             get {
-                return new Spell(ID.ENLARGE_REDUCE, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+                Spell spell = new Spell(ID.ENLARGE_REDUCE, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0);
+                spell.Variants = new SpellVariant[] { SpellVariant.ENLARGE, SpellVariant.REDUCE };
+                spell.Variant = SpellVariant.ENLARGE;
+                spell.CastEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    switch (spell.Variant) {
+                        case SpellVariant.ENLARGE:
+                            if (target.HasEffect(Effect.SPELL_ENLARGE)) {
+                                GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, false);
+                            } else if (target.HasEffect(Effect.SPELL_REDUCE)) {
+                                GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, true);
+                                target.RemoveEffect(Effect.SPELL_REDUCE, Effect.DISADVANTAGE_STRENGTH_SAVES);
+                            } else {
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENLARGE, Effect.ADVANTAGE_STRENGTH_SAVES);
+                            }
+                            break;
+                        case SpellVariant.REDUCE:
+                            if (target.HasEffect(Effect.SPELL_REDUCE) || target.DC(spell.ID, dc, AbilityType.CONSTITUTION)) {
+                                GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, false);
+                            } else if (target.HasEffect(Effect.SPELL_ENLARGE)) {
+                                GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, true);
+                                target.RemoveEffect(Effect.SPELL_ENLARGE, Effect.ADVANTAGE_STRENGTH_SAVES);
+                            } else {
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_REDUCE, Effect.DISADVANTAGE_STRENGTH_SAVES);
+                            }
+                            break;
+                    }
+                };
+                return spell;
             }
         }
         /* TODO */

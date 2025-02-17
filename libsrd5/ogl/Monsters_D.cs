@@ -422,6 +422,8 @@ namespace srd5 {
                 druid.AddProficiency(Proficiency.NATURE);
                 druid.AddProficiency(Proficiency.PERCEPTION);
                 druid.AddFeat(Feat.SPELLCASTING_DRUID);
+                AvailableSpells cantrips = new AvailableSpells(AbilityType.WISDOM);
+                druid.AddAvailableSpells(cantrips);
                 return druid;
             }
         }

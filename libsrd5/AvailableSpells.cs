@@ -33,10 +33,22 @@ namespace srd5 {
             Utils.Push<Spell>(ref knownSpells, spells);
         }
 
+        public void RemoveKnownSpell(params Spell[] spells) {
+            foreach (Spell spell in spells) {
+                Utils.RemoveSingle<Spell>(ref knownSpells, spell);
+            }
+        }
+
         public void AddPreparedSpell(params Spell[] spells) {
             foreach (Spell spell in spells)
                 if (Array.IndexOf(knownSpells, spell) == -1) return;
             Utils.Push<Spell>(ref preparedSpells, spells);
+        }
+
+        public void RemovePreparedSpell(params Spell[] spells) {
+            foreach (Spell spell in spells) {
+                Utils.RemoveSingle<Spell>(ref preparedSpells, spell);
+            }
         }
 
         /// <summary>

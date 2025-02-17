@@ -247,28 +247,50 @@ namespace srd5 {
                 return spell;
             }
         }
-        /* TODO */
+
         public static Spell Enthrall {
             get {
-                return new Spell(ID.ENTHRALL, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VS, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+                // TODO: Probably when perception checks are implemented, we can make use of Enthrall
+                return new Spell(ID.ENTHRALL, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VS, SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.ENTHRALL));
             }
         }
-        /* TODO */
+
         public static Spell FindSteed {
             get {
-                return new Spell(ID.FIND_STEED, SpellSchool.CONJURATION, SpellLevel.SECOND, CastingTime.TEN_MINUTES, 30, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+                // TODO: Should be implemeted once/if mounts are implemented
+                return new Spell(ID.FIND_STEED, SpellSchool.CONJURATION, SpellLevel.SECOND, CastingTime.TEN_MINUTES, 30, VS, SpellDuration.INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.FIND_STEED));
             }
         }
-        /* TODO */
+
         public static Spell FindTraps {
             get {
+                // TODO: Should be implemented once/if traps are implemented
                 return new Spell(ID.FIND_TRAPS, SpellSchool.DIVINATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 120, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
             }
         }
-        /* TODO */
+
         public static Spell FlameBlade {
             get {
-                return new Spell(ID.FLAME_BLADE, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.BONUS_ACTION, 0, VSM, SpellDuration.TEN_MINUTES, 0, 0, doNothing);
+                return new Spell(ID.FLAME_BLADE, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.BONUS_ACTION, 0, VSM, SpellDuration.TEN_MINUTES, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    // This is modelled by creating a Cantrip that the druid can use. After the Duration, the cantrip is removed
+                    int dice = 3 + ((int)slot - 2) / 2;
+                    Damage damage = new Damage(DamageType.FIRE, new Dice(dice, D6));
+                    Spell flamingBladeCantrip = new Spell(ID.FLAME_BLADE, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 5, V, SpellDuration.INSTANTANEOUS, 0, 0, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                        SpellAttack(ID.FLAME_BLADE, ground2, caster2, damage.Type, damage.Dice, modifier2, targets2[0], 5);
+                    });
+                    caster.AvailableSpells[0].AddKnownSpell(flamingBladeCantrip);
+                    caster.AvailableSpells[0].AddPreparedSpell(flamingBladeCantrip);
+                    int remainingRounds = (int)SpellDuration.TEN_MINUTES / 6;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds < 1) {
+                            caster.AvailableSpells[0].RemoveKnownSpell(flamingBladeCantrip);
+                            caster.AvailableSpells[0].RemovePreparedSpell(flamingBladeCantrip);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                });
             }
         }
         /* TODO */

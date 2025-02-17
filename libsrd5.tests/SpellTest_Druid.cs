@@ -467,5 +467,22 @@ namespace srd5 {
             bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
             bandit.DC(this, 20, AbilityType.STRENGTH);
         }
+
+        [Fact]
+        public void FlameBladeTest() {
+            Monster druid = Monsters.Druid;
+            Monster bandit = Monsters.Bandit;
+            bandit.ArmorClass = 0;
+            bandit.HitPoints = 6;
+            Battleground ground = createBattleground(druid, bandit);
+            Spells.FlameBlade.Cast(druid, 10, SpellLevel.NINETH, 0);
+            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAME_BLADE);
+            druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
+            Assert.True(bandit.Dead);
+            for (int i = 0; i < (int)SpellDuration.TEN_MINUTES / 6; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.True(druid.AvailableSpells[0].PreparedSpells.Length == 0);
+        }
     }
 }

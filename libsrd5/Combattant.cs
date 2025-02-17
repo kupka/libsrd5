@@ -353,6 +353,9 @@ namespace srd5 {
                 if (source is Spells.ID && HasFeat(Feat.MAGIC_RESISTANCE))
                     advantage = true;
             }
+            // Check for Advantage Effect
+            Effect advantageEffect = (Effect)Enum.Parse(typeof(Effect), "ADVANTAGE_" + Enum.GetName(typeof(AbilityType), type) + "_SAVES");
+            if (HasEffect(advantageEffect)) advantage = true;
             Ability ability = GetAbility(type);
             int additionalModifiers = 0;
             if (HasEffect(Effect.SPELL_RESISTANCE)) {

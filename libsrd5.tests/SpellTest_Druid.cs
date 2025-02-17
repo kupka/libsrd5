@@ -395,5 +395,38 @@ namespace srd5 {
         public void DarkvisionTest() {
             DefaultSpellTest(Spells.Darkvision, 20, SpellLevel.SECOND, null, Effect.DARKVISION, SpellDuration.EIGHT_HOURS);
         }
+
+        [Fact]
+        public void EnhanceAbilityTest() {
+            SpellVariant[] variants = new SpellVariant[] { SpellVariant.BEARS_ENDURANCE, SpellVariant.BULLS_STRENGTH, SpellVariant.CATS_GRACE, SpellVariant.EAGLES_SPLENDOR, SpellVariant.FOX_CUNNING, SpellVariant.OWLS_WISDOM };
+            Effect[] effects = new Effect[] { Effect.ADVANTAGE_CONSTITUTION_SAVES, Effect.ADVANTAGE_STRENGTH_SAVES, Effect.ADVANTAGE_DEXTERITY_SAVES, Effect.ADVANTAGE_CHARISMA_SAVES, Effect.ADVANTAGE_INTELLIGENCE_SAVES, Effect.ADVANTAGE_WISDOM_SAVES };
+            AbilityType[] abilities = new AbilityType[] { AbilityType.CONSTITUTION, AbilityType.STRENGTH, AbilityType.DEXTERITY, AbilityType.CHARISMA, AbilityType.INTELLIGENCE, AbilityType.WISDOM };
+            int successesWithoutAdvantage = 0;
+            int successesWithAdvantage = 0;
+            for (int i = 0; i < variants.Length; i++) {
+                Monster bandit1 = Monsters.Bandit;
+                Monster bandit2 = Monsters.Bandit;
+                Monster bandit3 = Monsters.Bandit;
+                Monster acolyte = Monsters.Acolyte;
+                Battleground ground = createBattleground(acolyte, bandit1, bandit2, bandit3);
+                SpellVariant variant = variants[i];
+                AbilityType ability = abilities[i];
+                Effect effect = effects[i];
+                Spell spell = Spells.EnhanceAbility;
+                spell.Variant = variant;
+                spell.Cast(ground, acolyte, 12, SpellLevel.THIRD, 2, bandit1, bandit2, bandit3);
+                Assert.True(bandit1.HasEffect(effect));
+                Assert.True(bandit2.HasEffect(effect));
+                Assert.False(bandit3.HasEffect(effect));
+                if (i == 0) {
+                    spell.Variant = SpellVariant.BULLS_STRENGTH;
+                    spell.Cast(ground, acolyte, 12, SpellLevel.THIRD, 2, bandit1);
+                    Assert.False(bandit1.HasEffect(Effect.ADVANTAGE_STRENGTH_SAVES));
+                }
+                if (bandit1.DC(this, 15, ability)) successesWithAdvantage++;
+                if (bandit3.DC(this, 15, ability)) successesWithoutAdvantage++;
+            }
+            Assert.True(successesWithAdvantage > successesWithoutAdvantage);
+        }
     }
 }

@@ -103,7 +103,7 @@ namespace srd5 {
         public static Spell Blur {
             get {
                 return new Spell(ID.BLUR, SpellSchool.ILLUSION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, V, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    AddEffectForDuration(ID.BLUR, caster, caster, Effect.SPELL_BLUR, SpellDuration.ONE_MINUTE);
+                    AddEffectsForDuration(ID.BLUR, caster, caster, SpellDuration.ONE_MINUTE, Effect.SPELL_BLUR);
                 });
             }
         }
@@ -140,7 +140,7 @@ namespace srd5 {
                                 continue;
                             }
                         }
-                        AddEffectForDuration(ID.CALM_EMOTIONS, caster, target, Effect.SPELL_CALM_EMOTIONS, SpellDuration.ONE_MINUTE);
+                        AddEffectsForDuration(ID.CALM_EMOTIONS, caster, target, SpellDuration.ONE_MINUTE, Effect.SPELL_CALM_EMOTIONS);
                     }
                 });
             }
@@ -162,7 +162,7 @@ namespace srd5 {
             get {
                 return new Spell(ID.DARKVISION, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.EIGHT_HOURS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
-                    AddEffectForDuration(ID.DARKVISION, caster, target, Effect.SPELL_DARKVISION, SpellDuration.EIGHT_HOURS);
+                    AddEffectsForDuration(ID.DARKVISION, caster, target, SpellDuration.EIGHT_HOURS, Effect.SPELL_DARKVISION);
                 });
             }
         }
@@ -175,7 +175,43 @@ namespace srd5 {
         /* TODO */
         public static Spell EnhanceAbility {
             get {
-                return new Spell(ID.ENHANCE_ABILITY, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+                Spell spell = new Spell(ID.ENHANCE_ABILITY, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 7);
+                spell.Variants = new SpellVariant[] { SpellVariant.BEARS_ENDURANCE, SpellVariant.BULLS_STRENGTH, SpellVariant.CATS_GRACE, SpellVariant.EAGLES_SPLENDOR, SpellVariant.FOX_CUNNING, SpellVariant.OWLS_WISDOM };
+                spell.Variant = SpellVariant.BEARS_ENDURANCE;
+                spell.CastEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    int maxTargets = (int)slot - 1;
+                    for (int i = 0; i < maxTargets && i < targets.Length; i++) {
+                        Combattant target = targets[i];
+                        if (target.HasEffect(Effect.SPELL_ENHANCE_ABILITY)) {
+                            GlobalEvents.AffectBySpell(caster, ID.ENHANCE_ABILITY, target, false);
+                            return;
+                        }
+                        switch (spell.Variant) {
+                            case SpellVariant.BULLS_STRENGTH:
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_STRENGTH_SAVES);
+                                // TODO: Double carrying capacity
+                                break;
+                            case SpellVariant.CATS_GRACE:
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_DEXTERITY_SAVES);
+                                break;
+                            case SpellVariant.EAGLES_SPLENDOR:
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_CHARISMA_SAVES);
+                                break;
+                            case SpellVariant.FOX_CUNNING:
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_INTELLIGENCE_SAVES);
+                                break;
+                            case SpellVariant.OWLS_WISDOM:
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_WISDOM_SAVES);
+                                break;
+                            case SpellVariant.BEARS_ENDURANCE:
+                            default:
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_CONSTITUTION_SAVES);
+                                target.AddTemporaryHitpoints(Roll("2d6"), SpellDuration.ONE_HOUR, ID.ENHANCE_ABILITY);
+                                break;
+                        }
+                    }
+                };
+                return spell;
             }
         }
         /* TODO */

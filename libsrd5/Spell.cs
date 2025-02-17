@@ -1,3 +1,5 @@
+using System;
+
 namespace srd5 {
     public class Spell : GuidClass {
         public Spells.ID ID { get; private set; }
@@ -14,11 +16,30 @@ namespace srd5 {
                 return ID.Name();
             }
         }
-        private readonly SpellCastEffect cast;
+        public SpellVariant[] Variants {
+            get;
+            internal set;
+        }
+
+        private SpellVariant variant = SpellVariant.NONE;
+        public SpellVariant Variant {
+            get {
+                return variant;
+            }
+            set {
+                if (Array.IndexOf(Variants, value) > -1) {
+                    variant = value;
+                }
+            }
+        }
+        internal SpellCastEffect CastEffect {
+            get;
+            set;
+        }
 
         public Spell(Spells.ID id, SpellSchool school, SpellLevel level, CastingTime castingTime,
                      int range, SpellComponent[] components, SpellDuration duration,
-                     int areaOfEffect, int maximumTargets, SpellCastEffect effect) {
+                     int areaOfEffect, int maximumTargets, SpellCastEffect castEffect = null) {
             ID = id;
             School = school;
             Level = level;
@@ -28,7 +49,8 @@ namespace srd5 {
             Duration = duration;
             AreaOfEffect = areaOfEffect;
             MaximumTargets = maximumTargets;
-            cast = effect;
+            CastEffect = castEffect;
+            Variants = new SpellVariant[0];
         }
 
         /* Cast a Spell that doesn't require a battleground, because it does not target
@@ -36,12 +58,12 @@ namespace srd5 {
         public void Cast(Combattant caster, int dc, SpellLevel slot, int modifier) {
             BattleGroundClassic ground = new BattleGroundClassic();
             ground.AddCombattant(caster, ClassicLocation.Row.FRONT_LEFT);
-            cast(ground, caster, dc, slot, modifier, caster);
+            CastEffect(ground, caster, dc, slot, modifier, caster);
         }
 
         /* Cast a spell on one or more targets */
         public void Cast(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets) {
-            cast(ground, caster, dc, slot, modifier, targets);
+            CastEffect(ground, caster, dc, slot, modifier, targets);
         }
 
         public override bool Equals(object obj) {

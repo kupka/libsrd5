@@ -61,6 +61,17 @@ namespace srd5 {
         UNTIL_DISPELLED = 99999999
     }
 
+    public enum SpellVariant {
+        NONE,
+        // Enhance Ability
+        BEARS_ENDURANCE,
+        BULLS_STRENGTH,
+        CATS_GRACE,
+        EAGLES_SPLENDOR,
+        FOX_CUNNING,
+        OWLS_WISDOM,
+    }
+
     public delegate void SpellCastEffect(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);
 
     public partial struct Spells {
@@ -493,13 +504,13 @@ namespace srd5 {
             return hit;
         }
 
-        internal static void AddEffectForDuration(ID id, Combattant caster, Combattant target, Effect effect, SpellDuration duration) {
+        internal static void AddEffectsForDuration(ID id, Combattant caster, Combattant target, SpellDuration duration, params Effect[] effects) {
             GlobalEvents.AffectBySpell(caster, id, target, true);
-            target.AddEffect(effect);
+            target.AddEffect(effects);
             int remainingRounds = (int)duration / 6;
             target.AddEndOfTurnEvent(delegate () {
                 if (--remainingRounds < 1) {
-                    target.RemoveEffect(effect);
+                    target.RemoveEffect(effects);
                     return true;
                 } else {
                     return false;

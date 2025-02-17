@@ -36,7 +36,7 @@ namespace srd5 {
                         if (target.DC(ID.BANE, dc, AbilityType.CHARISMA)) {
                             GlobalEvents.AffectBySpell(caster, ID.BANE, target, false);
                         } else {
-                            AddEffectForDuration(ID.BANE, caster, target, Effect.SPELL_BANE, SpellDuration.ONE_MINUTE);
+                            AddEffectsForDuration(ID.BANE, caster, target, SpellDuration.ONE_MINUTE, Effect.SPELL_BANE);
                         }
                     }
                 });
@@ -48,7 +48,7 @@ namespace srd5 {
             get {
                 return new Spell(ID.BLESS, SpellSchool.ENCHANTMENT, SpellLevel.FIRST, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     foreach (Combattant target in targets) {
-                        AddEffectForDuration(ID.BLESS, caster, target, Effect.SPELL_BLESS, SpellDuration.ONE_MINUTE);
+                        AddEffectsForDuration(ID.BLESS, caster, target, SpellDuration.ONE_MINUTE, Effect.SPELL_BLESS);
                     }
                 });
             }
@@ -214,7 +214,7 @@ namespace srd5 {
             get {
                 return new Spell(ID.DIVINE_FAVOR, SpellSchool.EVOCATION, SpellLevel.FIRST, CastingTime.BONUS_ACTION, 0, VS, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
-                    AddEffectForDuration(ID.BANE, caster, target, Effect.SPELL_DIVINE_FAVOR, SpellDuration.ONE_MINUTE);
+                    AddEffectsForDuration(ID.BANE, caster, target, SpellDuration.ONE_MINUTE, Effect.SPELL_DIVINE_FAVOR);
                 });
             }
         }
@@ -252,7 +252,7 @@ namespace srd5 {
                             if (target.DC(ID.FAERIE_FIRE, dc, AbilityType.DEXTERITY)) {
                                 GlobalEvents.AffectBySpell(caster, ID.FAERIE_FIRE, target, false);
                             } else {
-                                AddEffectForDuration(ID.FAERIE_FIRE, caster, target, Effect.SPELL_FAIRIE_FIRE, SpellDuration.ONE_MINUTE);
+                                AddEffectsForDuration(ID.FAERIE_FIRE, caster, target, SpellDuration.ONE_MINUTE, Effect.SPELL_FAIRIE_FIRE);
                             }
                         }
                     }
@@ -274,7 +274,7 @@ namespace srd5 {
             get {
                 return new Spell(ID.FEATHER_FALL, SpellSchool.TRANSMUTATION, SpellLevel.FIRST, CastingTime.REACTION, 60, VM, SpellDuration.ONE_MINUTE, 0, 5, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     foreach (Combattant target in targets) {
-                        AddEffectForDuration(ID.FEATHER_FALL, caster, target, Effect.SPELL_FEATHER_FALL, SpellDuration.ONE_MINUTE);
+                        AddEffectsForDuration(ID.FEATHER_FALL, caster, target, SpellDuration.ONE_MINUTE, Effect.SPELL_FEATHER_FALL);
                     }
                 });
             }
@@ -567,7 +567,7 @@ namespace srd5 {
                     // TODO: The target also can't be charmed, frightened, or possessed by them. If the target is already charmed, frightened, 
                     //       or possessed by such a creature, the target has advantage on any new saving throw against the relevant effect.
                     Combattant target = targets[0];
-                    AddEffectForDuration(ID.PROTECTION_FROM_EVIL_AND_GOOD, caster, target, Effect.SPELL_PROTECTION_FROM_EVIL_AND_GOOD, SpellDuration.TEN_MINUTES);
+                    AddEffectsForDuration(ID.PROTECTION_FROM_EVIL_AND_GOOD, caster, target, SpellDuration.TEN_MINUTES, Effect.SPELL_PROTECTION_FROM_EVIL_AND_GOOD);
                 });
             }
         }

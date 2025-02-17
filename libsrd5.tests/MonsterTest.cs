@@ -22,6 +22,7 @@ namespace srd5 {
         public void AllMonsterTest() {
             foreach (PropertyInfo property in typeof(Monsters).GetProperties()) {
                 object o = property.GetMethod.Invoke(null, null);
+                Assert.True(o is Monster);
             }
         }
 

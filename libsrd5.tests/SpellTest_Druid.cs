@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Xunit;
 using static srd5.Die;
 
@@ -6,6 +7,13 @@ namespace srd5 {
     [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
     [Collection("SingleThreaded")]
     public partial class SpellTest {
+        [Fact]
+        public void AllSpellsTest() {
+            foreach (PropertyInfo property in typeof(Spells).GetProperties()) {
+                object o = property.GetMethod.Invoke(null, null);
+                Assert.True(o is Spell);
+            }
+        }
         private BattleGroundClassic createBattleground(Combattant caster, params Combattant[] targets) {
             BattleGroundClassic ground = new BattleGroundClassic();
             ground.AddCombattant(caster, ClassicLocation.Row.FRONT_LEFT);

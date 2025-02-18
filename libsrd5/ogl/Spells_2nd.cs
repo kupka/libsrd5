@@ -280,7 +280,7 @@ namespace srd5 {
                     });
                     caster.AvailableSpells[0].AddKnownSpell(flamingBladeCantrip);
                     caster.AvailableSpells[0].AddPreparedSpell(flamingBladeCantrip);
-                    int remainingRounds = (int)SpellDuration.TEN_MINUTES / 6;
+                    int remainingRounds = (int)SpellDuration.TEN_MINUTES;
                     caster.AddEndOfTurnEvent(delegate () {
                         if (--remainingRounds < 1) {
                             caster.AvailableSpells[0].RemoveKnownSpell(flamingBladeCantrip);
@@ -293,10 +293,36 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell FlamingSphere {
             get {
-                return new Spell(ID.FLAMING_SPHERE, SpellSchool.CONJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+                // "As a bonus action, you can move the sphere up to 30 feet. If you ram the sphere into a creature, 
+                // that creature must make the saving throw against the sphere's damage, and the sphere stops moving this turn."
+                //
+                // Note: Since we cannot currently place objects on a Battlefield and move them around, 
+                // the current implementation sort of implies that the sphere is following the caster and can
+                // be sent on a target within 30 feet as a bonus action
+                return new Spell(ID.FLAMING_SPHERE, SpellSchool.CONJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    // This is modelled by creating a Cantrip that the caster can use. After the Duration, the cantrip is removed
+                    Dice dice = DiceSlotScaling(SpellLevel.SECOND, slot, D6, 2);
+                    Damage damage = new Damage(DamageType.FIRE, dice);
+                    Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.BONUS_ACTION, 30, V, SpellDuration.INSTANTANEOUS, 0, 0, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                        Combattant target = targets2[0];
+                        target.TakeDamage(ID.FLAMING_SPHERE, DamageType.FIRE, dice, DamageMitigation.HALVES_DAMAGE, dc2, AbilityType.DEXTERITY, out _);
+                    });
+                    caster.AvailableSpells[0].AddKnownSpell(flamingSphereCantrip);
+                    caster.AvailableSpells[0].AddPreparedSpell(flamingSphereCantrip);
+                    int remainingRounds = (int)SpellDuration.ONE_MINUTE;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds < 1) {
+                            caster.AvailableSpells[0].RemoveKnownSpell(flamingSphereCantrip);
+                            caster.AvailableSpells[0].RemovePreparedSpell(flamingSphereCantrip);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                });
             }
         }
         /* TODO */

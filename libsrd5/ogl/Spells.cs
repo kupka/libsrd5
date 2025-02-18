@@ -48,16 +48,16 @@ namespace srd5 {
     public enum SpellDuration {
         SPECIAL = -1,
         INSTANTANEOUS = 0,
-        ONE_ROUND = 6,
-        ONE_MINUTE = 60,
-        TEN_MINUTES = 60 * 10,
-        ONE_HOUR = 3600,
-        TWO_HOURS = 3600 * 2,
-        EIGHT_HOURS = 3600 * 8,
-        ONE_DAY = 86400,
-        SEVEN_DAYS = 86400 * 7,
-        TEN_DAYS = 86400 * 10,
-        THIRTY_DAYS = 86400 * 30,
+        ONE_ROUND = 1,
+        ONE_MINUTE = 10,
+        TEN_MINUTES = 10 * 10,
+        ONE_HOUR = 60 * 10,
+        TWO_HOURS = 2 * 60 * 10,
+        EIGHT_HOURS = 8 * 60 * 10,
+        ONE_DAY = 24 * 60 * 10,
+        SEVEN_DAYS = 7 * 24 * 60 * 10,
+        TEN_DAYS = 10 * 24 * 60 * 10,
+        THIRTY_DAYS = 30 * 24 * 60 * 10,
         UNTIL_DISPELLED = 99999999
     }
 
@@ -510,7 +510,7 @@ namespace srd5 {
         internal static void AddEffectsForDuration(ID id, Combattant caster, Combattant target, SpellDuration duration, params Effect[] effects) {
             GlobalEvents.AffectBySpell(caster, id, target, true);
             target.AddEffect(effects);
-            int remainingRounds = (int)duration / 6;
+            int remainingRounds = (int)duration;
             target.AddEndOfTurnEvent(delegate () {
                 if (--remainingRounds < 1) {
                     target.RemoveEffect(effects);
@@ -525,7 +525,7 @@ namespace srd5 {
             GlobalEvents.AffectBySpell(caster, id, target, true);
             target.AddEffect(effect);
             target.AddCondition(conditions);
-            int remainingRounds = (int)duration / 6;
+            int remainingRounds = (int)duration;
             target.AddEndOfTurnEvent(delegate () {
                 if (--remainingRounds < 1) {
                     target.RemoveEffect(effect);

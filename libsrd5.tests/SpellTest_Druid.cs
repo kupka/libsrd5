@@ -154,7 +154,7 @@ namespace srd5 {
         }
 
         private void DefaultSpellTest(Spell spell, int dc, SpellLevel slot, ConditionType? checkForCondition, Effect? checkForEffect, SpellDuration simulateTurns, Monsters.Type monsterType = Monsters.Type.BEAST) {
-            DefaultSpellTest(spell, dc, slot, checkForCondition, checkForEffect, (int)simulateTurns / 6, monsterType);
+            DefaultSpellTest(spell, dc, slot, checkForCondition, checkForEffect, (int)simulateTurns, monsterType);
         }
 
         private void DefaultSpellTest(Spell spell, int dc, SpellLevel slot, ConditionType? checkForCondition, Effect? checkForEffect, int? simulateTurns, Monsters.Type monsterType = Monsters.Type.BEAST) {
@@ -479,7 +479,23 @@ namespace srd5 {
             Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAME_BLADE);
             druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
             Assert.True(bandit.Dead);
-            for (int i = 0; i < (int)SpellDuration.TEN_MINUTES / 6; i++) {
+            for (int i = 0; i < (int)SpellDuration.TEN_MINUTES; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.True(druid.AvailableSpells[0].PreparedSpells.Length == 0);
+        }
+
+        [Fact]
+        public void FlamingSphereTest() {
+            Monster druid = Monsters.Druid;
+            Monster bandit = Monsters.Bandit;
+            bandit.HitPoints = 6;
+            Battleground ground = createBattleground(druid, bandit);
+            Spells.FlamingSphere.Cast(druid, 10, SpellLevel.SIXTH, 0);
+            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAMING_SPHERE);
+            druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
+            Assert.True(bandit.Dead);
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
                 druid.OnEndOfTurn();
             }
             Assert.True(druid.AvailableSpells[0].PreparedSpells.Length == 0);

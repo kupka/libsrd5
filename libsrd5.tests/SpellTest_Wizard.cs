@@ -299,5 +299,28 @@ namespace srd5 {
         public void BlurTest() {
             DefaultSpellTest(Spells.Blur, 12, SpellLevel.THIRD, null, Effect.DISADVANTAGE_ON_BEING_ATTACKED, 10);
         }
+
+        [Fact]
+        public void InvisibilityTest() {
+            Monster hag1 = Monsters.NightHag;
+            Monster hag2 = Monsters.NightHag;
+            Monster badger = Monsters.Badger;
+            Battleground ground = createBattleground(hag2, badger);
+            Spells.Invisibility.Cast(hag1, 10, SpellLevel.SECOND, 5);
+            Spells.Invisibility.Cast(hag2, 10, SpellLevel.FOURTH, -1);
+            Assert.True(hag1.HasCondition(ConditionType.INVISIBLE));
+            Assert.True(hag2.HasCondition(ConditionType.INVISIBLE));
+            hag1.Attack(Attacks.NightHagClaws, badger, 5);
+            hag1.OnEndOfTurn();
+            hag2.OnEndOfTurn();
+            Assert.False(hag1.HasCondition(ConditionType.INVISIBLE));
+            Assert.True(hag2.HasCondition(ConditionType.INVISIBLE));
+            Spells.Invisibility.Cast(hag1, 10, SpellLevel.THIRD, 0);
+            Assert.True(hag1.HasCondition(ConditionType.INVISIBLE));
+            Assert.True(hag2.HasCondition(ConditionType.INVISIBLE));
+            Spells.AcidArrow.Cast(ground, hag2, 12, SpellLevel.SECOND, 5, badger);
+            Assert.True(hag1.HasCondition(ConditionType.INVISIBLE));
+            Assert.False(hag2.HasCondition(ConditionType.INVISIBLE));
+        }
     }
 }

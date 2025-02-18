@@ -17,6 +17,8 @@ namespace srd5 {
             DEATH
         }
         public static event EventHandler<EventArgs> Handlers;
+        public static event EventHandler<AttackRolled> AttackRolledHandlers;
+        public static event EventHandler<SpellCast> SpellCastHandlers;
 
         public class InitiativeRolled : EventArgs {
             public Combattant Roller { get; private set; }
@@ -52,8 +54,10 @@ namespace srd5 {
         }
 
         internal static void RolledAttack(Combattant attacker, Attack attack, Combattant target, int roll, bool hit, bool criticalHit = false) {
-            if (Handlers == null) return;
-            Handlers(EventTypes.ATTACKED, new AttackRolled(attacker, attack, target, roll, hit, criticalHit));
+            if (Handlers != null)
+                Handlers(EventTypes.ATTACKED, new AttackRolled(attacker, attack, target, roll, hit, criticalHit));
+            if (AttackRolledHandlers != null)
+                AttackRolledHandlers(EventTypes.ATTACKED, new AttackRolled(attacker, attack, target, roll, hit, criticalHit));
         }
 
         public class DamageReceived : EventArgs {
@@ -240,8 +244,10 @@ namespace srd5 {
         }
 
         public static void CastSpell(Combattant caster, Spells.ID spell) {
-            if (Handlers == null) return;
-            Handlers(EventTypes.CAST_SPELL, new SpellCast(caster, spell));
+            if (Handlers != null)
+                Handlers(EventTypes.CAST_SPELL, new SpellCast(caster, spell));
+            if (SpellCastHandlers != null)
+                SpellCastHandlers(EventTypes.CAST_SPELL, new SpellCast(caster, spell));
         }
 
         public class Death : EventArgs {

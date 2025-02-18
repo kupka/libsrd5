@@ -82,7 +82,7 @@ namespace srd5 {
 
         private static SpellCastEffect SpellWithoutEffect(ID spell) {
             return delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                GlobalEvents.CastSpell(caster, spell);
+                // Intentionally empty
             };
         }
 

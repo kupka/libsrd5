@@ -1,3 +1,4 @@
+using System;
 using static srd5.Die;
 
 namespace srd5 {
@@ -352,10 +353,11 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell HeatMetal {
             get {
-                return new Spell(ID.HEAT_METAL, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+                // TODO: In order to support this, we would need to give Monsters weapons and armors
+                return new Spell(ID.HEAT_METAL, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.HEAT_METAL));
             }
         }
 
@@ -393,10 +395,34 @@ namespace srd5 {
             }
         }
 
-        /* TODO */
         public static Spell Invisibility {
             get {
-                return new Spell(ID.INVISIBILITY, SpellSchool.ILLUSION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.INVISIBILITY, SpellSchool.ILLUSION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    target.AddCondition(ConditionType.INVISIBLE);
+                    bool spellEnded = false;
+                    EventHandler<GlobalEvents.AttackRolled> attackHandler = delegate (object sender, GlobalEvents.AttackRolled attack) {
+                        if (attack.Attacker.Equals(target)) {
+                            target.RemoveCondition(ConditionType.INVISIBLE);
+                            spellEnded = true;
+                        }
+                    };
+                    EventHandler<GlobalEvents.SpellCast> castHandler = delegate (object sender, GlobalEvents.SpellCast cast) {
+                        if (cast.Caster.Equals(target)) {
+                            target.RemoveCondition(ConditionType.INVISIBLE);
+                            spellEnded = true;
+                        }
+                    };
+                    GlobalEvents.AttackRolledHandlers += attackHandler;
+                    GlobalEvents.SpellCastHandlers += castHandler;
+                    target.AddEndOfTurnEvent(delegate () {
+                        if (spellEnded) {
+                            GlobalEvents.AttackRolledHandlers -= attackHandler;
+                            GlobalEvents.SpellCastHandlers -= castHandler;
+                        }
+                        return spellEnded;
+                    });
+                });
             }
         }
         /* TODO */

@@ -325,16 +325,31 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell GentleRepose {
             get {
-                return new Spell(ID.GENTLE_REPOSE, SpellSchool.NECROMANCY, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.TEN_DAYS, 0, 0, doNothing);
+                return new Spell(ID.GENTLE_REPOSE, SpellSchool.NECROMANCY, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.TEN_DAYS, 0, 0, SpellWithoutEffect(ID.GENTLE_REPOSE));
             }
         }
         /* TODO */
         public static Spell GustofWind {
             get {
-                return new Spell(ID.GUST_OF_WIND, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_MINUTE, 60, 0, doNothing);
+                return new Spell(ID.GUST_OF_WIND, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_MINUTE, 60, 5, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    // Fix the location where the spell was cast to create the push-vector
+                    Location location = ground.LocateCombattant(caster);
+                    foreach (Combattant target in targets) {
+                        AddEffectsForDuration(ID.GUST_OF_WIND, caster, target, SpellDuration.ONE_MINUTE, Effect.SPELL_GUST_OF_WIND);
+                        int remainingRounds = (int)SpellDuration.ONE_MINUTE;
+                        target.AddStartOfTurnEvent(delegate () {
+                            if (--remainingRounds < 1) {
+                                return true;
+                            } else if (!target.DC(ID.GUST_OF_WIND, dc, AbilityType.STRENGTH)) {
+                                ground.Push(location, target, 15);
+                            }
+                            return false;
+                        });
+                    }
+                });
             }
         }
         /* TODO */

@@ -500,5 +500,24 @@ namespace srd5 {
             }
             Assert.True(druid.AvailableSpells[0].PreparedSpells.Length == 0);
         }
+
+        [Fact]
+        public void GustofWindTest() {
+            Monster druid = Monsters.Druid;
+            Monster bandit = Monsters.Bandit;
+            bandit.HitPoints = 6;
+            Battleground ground = createBattleground(druid, bandit);
+            Location location = ground.LocateCombattant(bandit);
+            int speed = bandit.Speed;
+            Spells.GustofWind.Cast(ground, druid, 30, SpellLevel.SECOND, 20, bandit);
+            Assert.True(bandit.HasEffect(Effect.SPELL_GUST_OF_WIND));
+            Assert.True(bandit.Speed < speed);
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
+                bandit.OnStartOfTurn();
+                bandit.OnEndOfTurn();
+            }
+            Assert.True(location.Distance(ground.LocateCombattant(bandit)) > 0);
+            Assert.True(bandit.Speed == speed);
+        }
     }
 }

@@ -150,6 +150,7 @@ namespace srd5 {
         SPELL_FAIRIE_FIRE,
         SPELL_FEATHER_FALL,
         SPELL_GUIDANCE,
+        SPELL_GUST_OF_WIND,
         SPELL_HIDEOUS_LAUGHTER,
         SPELL_JUMP,
         SPELL_LIGHT,
@@ -254,7 +255,8 @@ namespace srd5 {
                 case Effect.THREE_EXTRA_ATTACKS:
                     if (combattant is CharacterSheet sheet) {
                         sheet.RecalculateAttacks();
-                    };
+                    }
+                    ;
                     break;
                 case Effect.SPELL_LONGSTRIDER:
                     combattant.Speed += 10;
@@ -480,6 +482,9 @@ namespace srd5 {
                 case Effect.SPELL_REDUCE:
                     combattant.Size--;
                     break;
+                case Effect.SPELL_GUST_OF_WIND:
+                    combattant.Speed /= 2;
+                    break;
             }
         }
 
@@ -500,7 +505,8 @@ namespace srd5 {
                 case Effect.THREE_EXTRA_ATTACKS:
                     if (combattant is CharacterSheet sheet) {
                         sheet.RecalculateAttacks();
-                    };
+                    }
+                    ;
                     break;
                 case Effect.SPELL_LONGSTRIDER:
                     combattant.Speed -= 10;
@@ -604,6 +610,9 @@ namespace srd5 {
                     break;
                 case Effect.SPELL_REDUCE:
                     combattant.Size++;
+                    break;
+                case Effect.SPELL_GUST_OF_WIND:
+                    combattant.Speed *= 2;
                     break;
             }
         }

@@ -73,6 +73,12 @@ namespace srd5 {
         // Enlarge/Reduce
         ENLARGE,
         REDUCE,
+        // Lesser Restoration
+        BLINDNESS,
+        DEAFNESS,
+        PARALYZATION,
+        POISON,
+        DISEASE,
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);

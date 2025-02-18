@@ -1,14 +1,18 @@
 using System;
 using static srd5.Die;
+using static srd5.SpellVariant;
+using static srd5.SpellSchool;
+using static srd5.SpellLevel;
+using static srd5.SpellDuration;
 
 namespace srd5 {
     public partial struct Spells {
         public static Spell AcidArrow {
             get {
-                return new Spell(ID.ACID_ARROW, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 90, VSM, SpellDuration.INSTANTANEOUS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.ACID_ARROW, EVOCATION, SECOND, CastingTime.ONE_ACTION, 90, VSM, INSTANTANEOUS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
-                    Dice dice = DiceSlotScaling(SpellLevel.SECOND, slot, D4, 4, 0, 1);
-                    Dice additionalDice = DiceSlotScaling(SpellLevel.SECOND, slot, D4, 2, 0, 1);
+                    Dice dice = DiceSlotScaling(SECOND, slot, D4, 4, 0, 1);
+                    Dice additionalDice = DiceSlotScaling(SECOND, slot, D4, 2, 0, 1);
                     bool hit = SpellAttack(ID.ACID_ARROW, ground, caster, DamageType.ACID, dice, 0, target, 90, DamageMitigation.HALVES_DAMAGE);
                     if (hit) {
                         target.AddEndOfTurnEvent(delegate () {
@@ -22,7 +26,7 @@ namespace srd5 {
 
         public static Spell Aid {
             get {
-                return new Spell(ID.AID, SpellSchool.ABJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.EIGHT_HOURS, 0, 3, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.AID, ABJURATION, SECOND, CastingTime.ONE_ACTION, 30, VSM, EIGHT_HOURS, 0, 3, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     int amount = 5 * ((int)slot - 1);
                     foreach (Combattant target in targets) {
                         if (target.HasEffect(Effect.SPELL_AID)) {
@@ -40,7 +44,7 @@ namespace srd5 {
 
         public static Spell AlterSelf {
             get {
-                return new Spell(ID.ALTER_SELF, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VS, SpellDuration.ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.ALTER_SELF, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     // TODO: Aquatic Adaption and Change Appearance require work elsewhere
                     // We cannot chose the type of weapons so let's grow Claws
                     caster.AddEffect(Effect.SPELL_ALTER_SELF_CLAWS);
@@ -51,31 +55,31 @@ namespace srd5 {
 
         public static Spell AnimalMessenger {
             get {
-                return new Spell(ID.ANIMAL_MESSENGER, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_DAY, 0, 0, SpellWithoutEffect(ID.ANIMAL_MESSENGER));
+                return new Spell(ID.ANIMAL_MESSENGER, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 30, VSM, ONE_DAY, 0, 0, SpellWithoutEffect(ID.ANIMAL_MESSENGER));
             }
         }
 
         public static Spell ArcaneLock {
             get {
-                return new Spell(ID.ARCANE_LOCK, SpellSchool.ABJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.UNTIL_DISPELLED, 0, 0, SpellWithoutEffect(ID.ARCANE_LOCK));
+                return new Spell(ID.ARCANE_LOCK, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, UNTIL_DISPELLED, 0, 0, SpellWithoutEffect(ID.ARCANE_LOCK));
             }
         }
 
         public static Spell ArcanistsMagicAura {
             get {
-                return new Spell(ID.ARCANISTS_MAGIC_AURA, SpellSchool.ILLUSION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_DAY, 0, 0, SpellWithoutEffect(ID.ARCANISTS_MAGIC_AURA));
+                return new Spell(ID.ARCANISTS_MAGIC_AURA, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_DAY, 0, 0, SpellWithoutEffect(ID.ARCANISTS_MAGIC_AURA));
             }
         }
 
         public static Spell Augury {
             get {
-                return new Spell(ID.AUGURY, SpellSchool.DIVINATION, SpellLevel.SECOND, CastingTime.ONE_MINUTE, 0, VSM, SpellDuration.INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.AUGURY));
+                return new Spell(ID.AUGURY, DIVINATION, SECOND, CastingTime.ONE_MINUTE, 0, VSM, INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.AUGURY));
             }
         }
 
         public static Spell Barkskin {
             get {
-                return new Spell(ID.BARKSKIN, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.BARKSKIN, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     target.AddEffect(Effect.SPELL_BARKSKIN);
                     GlobalEvents.AffectBySpell(caster, ID.BARKSKIN, target, true);
@@ -85,7 +89,7 @@ namespace srd5 {
 
         public static Spell BlindnessDeafness {
             get {
-                return new Spell(ID.BLINDNESS_DEAFNESS, SpellSchool.NECROMANCY, SpellLevel.SECOND, CastingTime.ONE_ACTION, 30, V, SpellDuration.ONE_MINUTE, 0, 6, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.BLINDNESS_DEAFNESS, NECROMANCY, SECOND, CastingTime.ONE_ACTION, 30, V, ONE_MINUTE, 0, 6, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     // SRD5 says target is either blinded or deafened, but we do both
                     // otherwise we would need to split this into two spells
                     int maxTargets = (int)slot - 1;
@@ -94,7 +98,7 @@ namespace srd5 {
                         if (target.DC(ID.BLINDNESS_DEAFNESS, dc, AbilityType.CONSTITUTION)) {
                             GlobalEvents.AffectBySpell(caster, ID.BLINDNESS_DEAFNESS, target, false);
                         } else {
-                            AddEffectAndConditionsForDuration(ID.BLINDNESS_DEAFNESS, caster, target, SpellDuration.ONE_MINUTE, Effect.SPELL_BLINDNESS_DEAFNESS, ConditionType.BLINDED, ConditionType.DEAFENED);
+                            AddEffectAndConditionsForDuration(ID.BLINDNESS_DEAFNESS, caster, target, ONE_MINUTE, Effect.SPELL_BLINDNESS_DEAFNESS, ConditionType.BLINDED, ConditionType.DEAFENED);
                         }
                     }
                 });
@@ -103,16 +107,16 @@ namespace srd5 {
 
         public static Spell Blur {
             get {
-                return new Spell(ID.BLUR, SpellSchool.ILLUSION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, V, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    AddEffectsForDuration(ID.BLUR, caster, caster, SpellDuration.ONE_MINUTE, Effect.SPELL_BLUR);
+                return new Spell(ID.BLUR, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, V, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    AddEffectsForDuration(ID.BLUR, caster, caster, ONE_MINUTE, Effect.SPELL_BLUR);
                 });
             }
         }
 
         public static Spell BrandingSmite {
             get {
-                return new Spell(ID.BRANDING_SMITE, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.BONUS_ACTION, 0, V, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Dice dice = DiceSlotScaling(SpellLevel.SECOND, slot, D6, 2);
+                return new Spell(ID.BRANDING_SMITE, EVOCATION, SECOND, CastingTime.BONUS_ACTION, 0, V, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Dice dice = DiceSlotScaling(SECOND, slot, D6, 2);
                     Damage additionalDamage = new Damage(DamageType.RADIANT, dice);
                     foreach (Attack attack in caster.MeleeAttacks) {
                         attack.AddAdditionalDamage(additionalDamage);
@@ -129,7 +133,7 @@ namespace srd5 {
 
         public static Spell CalmEmotions {
             get {
-                return new Spell(ID.CALM_EMOTIONS, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VS, SpellDuration.ONE_MINUTE, 20, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.CALM_EMOTIONS, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 60, VS, ONE_MINUTE, 20, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     // TODO: Here, only the immunity to being charmed and frightned is implemented
                     // Alternatively, you can make a target indifferent about creatures of your choice that it is hostile toward. 
                     // This indifference ends if the target is attacked or harmed by a spell or if it witnesses any of its friends being harmed. 
@@ -141,7 +145,7 @@ namespace srd5 {
                                 continue;
                             }
                         }
-                        AddEffectsForDuration(ID.CALM_EMOTIONS, caster, target, SpellDuration.ONE_MINUTE, Effect.SPELL_CALM_EMOTIONS);
+                        AddEffectsForDuration(ID.CALM_EMOTIONS, caster, target, ONE_MINUTE, Effect.SPELL_CALM_EMOTIONS);
                     }
                 });
             }
@@ -149,36 +153,36 @@ namespace srd5 {
 
         public static Spell ContinualFlame {
             get {
-                return new Spell(ID.CONTINUAL_FLAME, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.UNTIL_DISPELLED, 0, 0, SpellWithoutEffect(ID.CONTINUAL_FLAME));
+                return new Spell(ID.CONTINUAL_FLAME, EVOCATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, UNTIL_DISPELLED, 0, 0, SpellWithoutEffect(ID.CONTINUAL_FLAME));
             }
         }
 
         public static Spell Darkness {
             get {
-                return new Spell(ID.DARKNESS, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VM, SpellDuration.TEN_MINUTES, 15, 0, SpellWithoutEffect(ID.DARKNESS));
+                return new Spell(ID.DARKNESS, EVOCATION, SECOND, CastingTime.ONE_ACTION, 60, VM, TEN_MINUTES, 15, 0, SpellWithoutEffect(ID.DARKNESS));
             }
         }
 
         public static Spell Darkvision {
             get {
-                return new Spell(ID.DARKVISION, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.EIGHT_HOURS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.DARKVISION, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, EIGHT_HOURS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
-                    AddEffectsForDuration(ID.DARKVISION, caster, target, SpellDuration.EIGHT_HOURS, Effect.SPELL_DARKVISION);
+                    AddEffectsForDuration(ID.DARKVISION, caster, target, EIGHT_HOURS, Effect.SPELL_DARKVISION);
                 });
             }
         }
 
         public static Spell DetectThoughts {
             get {
-                return new Spell(ID.DETECT_THOUGHTS, SpellSchool.DIVINATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.DETECT_THOUGHTS));
+                return new Spell(ID.DETECT_THOUGHTS, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.DETECT_THOUGHTS));
             }
         }
         /* TODO */
         public static Spell EnhanceAbility {
             get {
-                Spell spell = new Spell(ID.ENHANCE_ABILITY, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 7);
-                spell.Variants = new SpellVariant[] { SpellVariant.BEARS_ENDURANCE, SpellVariant.BULLS_STRENGTH, SpellVariant.CATS_GRACE, SpellVariant.EAGLES_SPLENDOR, SpellVariant.FOX_CUNNING, SpellVariant.OWLS_WISDOM };
-                spell.Variant = SpellVariant.BEARS_ENDURANCE;
+                Spell spell = new Spell(ID.ENHANCE_ABILITY, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 7);
+                spell.Variants = new SpellVariant[] { BEARS_ENDURANCE, BULLS_STRENGTH, CATS_GRACE, EAGLES_SPLENDOR, FOX_CUNNING, OWLS_WISDOM };
+                spell.Variant = BEARS_ENDURANCE;
                 spell.CastEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     int maxTargets = (int)slot - 1;
                     for (int i = 0; i < maxTargets && i < targets.Length; i++) {
@@ -188,25 +192,25 @@ namespace srd5 {
                             return;
                         }
                         switch (spell.Variant) {
-                            case SpellVariant.BULLS_STRENGTH:
+                            case BULLS_STRENGTH:
                                 AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_STRENGTH_SAVES);
                                 // TODO: Double carrying capacity
                                 break;
-                            case SpellVariant.CATS_GRACE:
+                            case CATS_GRACE:
                                 AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_DEXTERITY_SAVES);
                                 break;
-                            case SpellVariant.EAGLES_SPLENDOR:
+                            case EAGLES_SPLENDOR:
                                 AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_CHARISMA_SAVES);
                                 break;
-                            case SpellVariant.FOX_CUNNING:
+                            case FOX_CUNNING:
                                 AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_INTELLIGENCE_SAVES);
                                 break;
-                            case SpellVariant.OWLS_WISDOM:
+                            case OWLS_WISDOM:
                                 AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_WISDOM_SAVES);
                                 break;
-                            case SpellVariant.BEARS_ENDURANCE:
+                            case BEARS_ENDURANCE:
                                 AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_CONSTITUTION_SAVES);
-                                target.AddTemporaryHitpoints(Roll("2d6"), SpellDuration.ONE_HOUR, ID.ENHANCE_ABILITY);
+                                target.AddTemporaryHitpoints(Roll("2d6"), ONE_HOUR, ID.ENHANCE_ABILITY);
                                 break;
                         }
                     }
@@ -217,13 +221,13 @@ namespace srd5 {
         /* TODO */
         public static Spell EnlargeReduce {
             get {
-                Spell spell = new Spell(ID.ENLARGE_REDUCE, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_MINUTE, 0, 0);
-                spell.Variants = new SpellVariant[] { SpellVariant.ENLARGE, SpellVariant.REDUCE };
-                spell.Variant = SpellVariant.ENLARGE;
+                Spell spell = new Spell(ID.ENLARGE_REDUCE, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 30, VSM, ONE_MINUTE, 0, 0);
+                spell.Variants = new SpellVariant[] { ENLARGE, REDUCE };
+                spell.Variant = ENLARGE;
                 spell.CastEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     switch (spell.Variant) {
-                        case SpellVariant.ENLARGE:
+                        case ENLARGE:
                             if (target.HasEffect(Effect.SPELL_ENLARGE)) {
                                 GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, false);
                             } else if (target.HasEffect(Effect.SPELL_REDUCE)) {
@@ -233,7 +237,7 @@ namespace srd5 {
                                 AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENLARGE, Effect.ADVANTAGE_STRENGTH_SAVES);
                             }
                             break;
-                        case SpellVariant.REDUCE:
+                        case REDUCE:
                             if (target.HasEffect(Effect.SPELL_REDUCE) || target.DC(spell.ID, dc, AbilityType.CONSTITUTION)) {
                                 GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, false);
                             } else if (target.HasEffect(Effect.SPELL_ENLARGE)) {
@@ -252,36 +256,36 @@ namespace srd5 {
         public static Spell Enthrall {
             get {
                 // TODO: Probably when perception checks are implemented, we can make use of Enthrall
-                return new Spell(ID.ENTHRALL, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VS, SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.ENTHRALL));
+                return new Spell(ID.ENTHRALL, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 60, VS, ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.ENTHRALL));
             }
         }
 
         public static Spell FindSteed {
             get {
                 // TODO: Should be implemeted once/if mounts are implemented
-                return new Spell(ID.FIND_STEED, SpellSchool.CONJURATION, SpellLevel.SECOND, CastingTime.TEN_MINUTES, 30, VS, SpellDuration.INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.FIND_STEED));
+                return new Spell(ID.FIND_STEED, CONJURATION, SECOND, CastingTime.TEN_MINUTES, 30, VS, INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.FIND_STEED));
             }
         }
 
         public static Spell FindTraps {
             get {
                 // TODO: Should be implemented once/if traps are implemented
-                return new Spell(ID.FIND_TRAPS, SpellSchool.DIVINATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 120, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.FIND_TRAPS, DIVINATION, SECOND, CastingTime.ONE_ACTION, 120, VS, INSTANTANEOUS, 0, 0, doNothing);
             }
         }
 
         public static Spell FlameBlade {
             get {
-                return new Spell(ID.FLAME_BLADE, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.BONUS_ACTION, 0, VSM, SpellDuration.TEN_MINUTES, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.FLAME_BLADE, EVOCATION, SECOND, CastingTime.BONUS_ACTION, 0, VSM, TEN_MINUTES, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     // This is modelled by creating a Cantrip that the druid can use. After the Duration, the cantrip is removed
                     int dice = 3 + ((int)slot - 2) / 2;
                     Damage damage = new Damage(DamageType.FIRE, new Dice(dice, D6));
-                    Spell flamingBladeCantrip = new Spell(ID.FLAME_BLADE, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 5, V, SpellDuration.INSTANTANEOUS, 0, 0, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                    Spell flamingBladeCantrip = new Spell(ID.FLAME_BLADE, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 5, V, INSTANTANEOUS, 0, 0, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         SpellAttack(ID.FLAME_BLADE, ground2, caster2, damage.Type, damage.Dice, modifier2, targets2[0], 5);
                     });
                     caster.AvailableSpells[0].AddKnownSpell(flamingBladeCantrip);
                     caster.AvailableSpells[0].AddPreparedSpell(flamingBladeCantrip);
-                    int remainingRounds = (int)SpellDuration.TEN_MINUTES;
+                    int remainingRounds = (int)TEN_MINUTES;
                     caster.AddEndOfTurnEvent(delegate () {
                         if (--remainingRounds < 1) {
                             caster.AvailableSpells[0].RemoveKnownSpell(flamingBladeCantrip);
@@ -303,17 +307,17 @@ namespace srd5 {
                 // Note: Since we cannot currently place objects on a Battlefield and move them around, 
                 // the current implementation sort of implies that the sphere is following the caster and can
                 // be sent on a target within 30 feet as a bonus action
-                return new Spell(ID.FLAMING_SPHERE, SpellSchool.CONJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.FLAMING_SPHERE, CONJURATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     // This is modelled by creating a Cantrip that the caster can use. After the Duration, the cantrip is removed
-                    Dice dice = DiceSlotScaling(SpellLevel.SECOND, slot, D6, 2);
+                    Dice dice = DiceSlotScaling(SECOND, slot, D6, 2);
                     Damage damage = new Damage(DamageType.FIRE, dice);
-                    Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.BONUS_ACTION, 30, V, SpellDuration.INSTANTANEOUS, 0, 0, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                    Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 30, V, INSTANTANEOUS, 0, 0, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         Combattant target = targets2[0];
                         target.TakeDamage(ID.FLAMING_SPHERE, DamageType.FIRE, dice, DamageMitigation.HALVES_DAMAGE, dc2, AbilityType.DEXTERITY, out _);
                     });
                     caster.AvailableSpells[0].AddKnownSpell(flamingSphereCantrip);
                     caster.AvailableSpells[0].AddPreparedSpell(flamingSphereCantrip);
-                    int remainingRounds = (int)SpellDuration.ONE_MINUTE;
+                    int remainingRounds = (int)ONE_MINUTE;
                     caster.AddEndOfTurnEvent(delegate () {
                         if (--remainingRounds < 1) {
                             caster.AvailableSpells[0].RemoveKnownSpell(flamingSphereCantrip);
@@ -329,18 +333,18 @@ namespace srd5 {
 
         public static Spell GentleRepose {
             get {
-                return new Spell(ID.GENTLE_REPOSE, SpellSchool.NECROMANCY, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.TEN_DAYS, 0, 0, SpellWithoutEffect(ID.GENTLE_REPOSE));
+                return new Spell(ID.GENTLE_REPOSE, NECROMANCY, SECOND, CastingTime.ONE_ACTION, 0, VSM, TEN_DAYS, 0, 0, SpellWithoutEffect(ID.GENTLE_REPOSE));
             }
         }
         /* TODO */
         public static Spell GustofWind {
             get {
-                return new Spell(ID.GUST_OF_WIND, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_MINUTE, 60, 5, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.GUST_OF_WIND, EVOCATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_MINUTE, 60, 5, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     // Fix the location where the spell was cast to create the push-vector
                     Location location = ground.LocateCombattant(caster);
                     foreach (Combattant target in targets) {
-                        AddEffectsForDuration(ID.GUST_OF_WIND, caster, target, SpellDuration.ONE_MINUTE, Effect.SPELL_GUST_OF_WIND);
-                        int remainingRounds = (int)SpellDuration.ONE_MINUTE;
+                        AddEffectsForDuration(ID.GUST_OF_WIND, caster, target, ONE_MINUTE, Effect.SPELL_GUST_OF_WIND);
+                        int remainingRounds = (int)ONE_MINUTE;
                         target.AddStartOfTurnEvent(delegate () {
                             if (--remainingRounds < 1) {
                                 return true;
@@ -357,15 +361,15 @@ namespace srd5 {
         public static Spell HeatMetal {
             get {
                 // TODO: In order to support this, we would need to give Monsters weapons and armors
-                return new Spell(ID.HEAT_METAL, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.HEAT_METAL));
+                return new Spell(ID.HEAT_METAL, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.HEAT_METAL));
             }
         }
 
         public static Spell HoldPerson {
             get {
                 return new Spell(
-                           ID.HOLD_PERSON, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM,
-                           SpellDuration.ONE_MINUTE, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                           ID.HOLD_PERSON, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 60, VSM,
+                           ONE_MINUTE, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                                // one target per slot above 2nd
                                for (int i = 0; i < (int)slot - 1 && i < targets.Length; i++) {
                                    Combattant target = targets[i];
@@ -397,7 +401,7 @@ namespace srd5 {
 
         public static Spell Invisibility {
             get {
-                return new Spell(ID.INVISIBILITY, SpellSchool.ILLUSION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.INVISIBILITY, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     target.AddCondition(ConditionType.INVISIBLE);
                     bool spellEnded = false;
@@ -425,160 +429,189 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell Knock {
             get {
-                return new Spell(ID.KNOCK, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, V, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+                // TODO: Should be implemented once locked items are available
+                return new Spell(ID.KNOCK, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 60, V, INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.KNOCK));
             }
         }
-        /* TODO */
+
         public static Spell LesserRestoration {
             get {
-                return new Spell(ID.LESSER_RESTORATION, SpellSchool.ABJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+                Spell spell = new Spell(ID.LESSER_RESTORATION, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, INSTANTANEOUS, 0, 0);
+                spell.Variants = new SpellVariant[] { BLINDNESS, DEAFNESS, PARALYZATION, POISON, DISEASE };
+                spell.CastEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    GlobalEvents.AffectBySpell(caster, ID.LESSER_RESTORATION, target, true);
+                    switch (spell.Variant) {
+                        case BLINDNESS:
+                            target.RemoveCondition(ConditionType.BLINDED);
+                            break;
+                        case DEAFNESS:
+                            target.RemoveCondition(ConditionType.DEAFENED);
+                            break;
+                        case PARALYZATION:
+                            target.RemoveCondition(ConditionType.PARALYZED);
+                            break;
+                        case POISON:
+                            target.RemoveCondition(ConditionType.POISONED);
+                            break;
+                        case DISEASE:
+                            foreach (Effect effect in target.Effects) {
+                                if (effect.IsDisease()) {
+                                    target.RemoveEffect(effect);
+                                    break;
+                                }
+                            }
+                            break;
+                    }
+                };
+                return spell;
             }
         }
         /* TODO */
         public static Spell Levitate {
             get {
-                return new Spell(ID.LEVITATE, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.TEN_MINUTES, 0, 0, doNothing);
+                return new Spell(ID.LEVITATE, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, TEN_MINUTES, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell LocateAnimalsorPlants {
             get {
-                return new Spell(ID.LOCATE_ANIMALS_OR_PLANTS, SpellSchool.DIVINATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.LOCATE_ANIMALS_OR_PLANTS, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, INSTANTANEOUS, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell LocateObject {
             get {
-                return new Spell(ID.LOCATE_OBJECT, SpellSchool.DIVINATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.TEN_MINUTES, 0, 0, doNothing);
+                return new Spell(ID.LOCATE_OBJECT, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell MagicMouth {
             get {
-                return new Spell(ID.MAGIC_MOUTH, SpellSchool.ILLUSION, SpellLevel.SECOND, CastingTime.ONE_MINUTE, 30, VSM, SpellDuration.UNTIL_DISPELLED, 0, 0, doNothing);
+                return new Spell(ID.MAGIC_MOUTH, ILLUSION, SECOND, CastingTime.ONE_MINUTE, 30, VSM, UNTIL_DISPELLED, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell MagicWeapon {
             get {
-                return new Spell(ID.MAGIC_WEAPON, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.BONUS_ACTION, 0, VS, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.MAGIC_WEAPON, TRANSMUTATION, SECOND, CastingTime.BONUS_ACTION, 0, VS, ONE_HOUR, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell MirrorImage {
             get {
-                return new Spell(ID.MIRROR_IMAGE, SpellSchool.ILLUSION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VS, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.MIRROR_IMAGE, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell MistyStep {
             get {
-                return new Spell(ID.MISTY_STEP, SpellSchool.CONJURATION, SpellLevel.SECOND, CastingTime.BONUS_ACTION, 0, V, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.MISTY_STEP, CONJURATION, SECOND, CastingTime.BONUS_ACTION, 0, V, INSTANTANEOUS, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell Moonbeam {
             get {
-                return new Spell(ID.MOONBEAM, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 120, VSM, SpellDuration.ONE_MINUTE, 5, 0, doNothing);
+                return new Spell(ID.MOONBEAM, EVOCATION, SECOND, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 5, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell PassWithoutTrace {
             get {
-                return new Spell(ID.PASS_WITHOUT_TRACE, SpellSchool.ABJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.PASS_WITHOUT_TRACE, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell PrayerofHealing {
             get {
-                return new Spell(ID.PRAYER_OF_HEALING, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.TEN_MINUTES, 30, V, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.PRAYER_OF_HEALING, EVOCATION, SECOND, CastingTime.TEN_MINUTES, 30, V, INSTANTANEOUS, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell ProtectionfromPoison {
             get {
-                return new Spell(ID.PROTECTION_FROM_POISON, SpellSchool.ABJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VS, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.PROTECTION_FROM_POISON, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell RayofEnfeeblement {
             get {
-                return new Spell(ID.RAY_OF_ENFEEBLEMENT, SpellSchool.NECROMANCY, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VS, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.RAY_OF_ENFEEBLEMENT, NECROMANCY, SECOND, CastingTime.ONE_ACTION, 60, VS, ONE_MINUTE, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell RopeTrick {
             get {
-                return new Spell(ID.ROPE_TRICK, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.ROPE_TRICK, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell ScorchingRay {
             get {
-                return new Spell(ID.SCORCHING_RAY, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 120, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.SCORCHING_RAY, EVOCATION, SECOND, CastingTime.ONE_ACTION, 120, VS, INSTANTANEOUS, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell SeeInvisibility {
             get {
-                return new Spell(ID.SEE_INVISIBILITY, SpellSchool.DIVINATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.SEE_INVISIBILITY, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell Shatter {
             get {
-                return new Spell(ID.SHATTER, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.INSTANTANEOUS, 10, 0, doNothing);
+                return new Spell(ID.SHATTER, EVOCATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, INSTANTANEOUS, 10, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell Silence {
             get {
-                return new Spell(ID.SILENCE, SpellSchool.ILLUSION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 120, VS, SpellDuration.TEN_MINUTES, 20, 0, doNothing);
+                return new Spell(ID.SILENCE, ILLUSION, SECOND, CastingTime.ONE_ACTION, 120, VS, TEN_MINUTES, 20, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell SpiderClimb {
             get {
-                return new Spell(ID.SPIDER_CLIMB, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.SPIDER_CLIMB, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell SpikeGrowth {
             get {
-                return new Spell(ID.SPIKE_GROWTH, SpellSchool.TRANSMUTATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 150, VSM, SpellDuration.TEN_MINUTES, 20, 0, doNothing);
+                return new Spell(ID.SPIKE_GROWTH, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 150, VSM, TEN_MINUTES, 20, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell SpiritualWeapon {
             get {
-                return new Spell(ID.SPIRITUAL_WEAPON, SpellSchool.EVOCATION, SpellLevel.SECOND, CastingTime.BONUS_ACTION, 60, VS, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.SPIRITUAL_WEAPON, EVOCATION, SECOND, CastingTime.BONUS_ACTION, 60, VS, ONE_MINUTE, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell Suggestion {
             get {
-                return new Spell(ID.SUGGESTION, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 30, VM, SpellDuration.EIGHT_HOURS, 0, 0, doNothing);
+                return new Spell(ID.SUGGESTION, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 30, VM, EIGHT_HOURS, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell WardingBond {
             get {
-                return new Spell(ID.WARDING_BOND, SpellSchool.ABJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.WARDING_BOND, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell Web {
             get {
-                return new Spell(ID.WEB, SpellSchool.CONJURATION, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.ONE_HOUR, 20, 0, doNothing);
+                return new Spell(ID.WEB, CONJURATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, ONE_HOUR, 20, 0, doNothing);
             }
         }
         /* TODO */
         public static Spell ZoneofTruth {
             get {
-                return new Spell(ID.ZONE_OF_TRUTH, SpellSchool.ENCHANTMENT, SpellLevel.SECOND, CastingTime.ONE_ACTION, 60, VS, SpellDuration.TEN_MINUTES, 15, 0, doNothing);
+                return new Spell(ID.ZONE_OF_TRUTH, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 60, VS, TEN_MINUTES, 15, 0, doNothing);
             }
         }
     }

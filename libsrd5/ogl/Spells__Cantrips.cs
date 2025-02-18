@@ -1,12 +1,16 @@
+using System;
 using static srd5.Die;
+using static srd5.SpellSchool;
+using static srd5.SpellLevel;
+using static srd5.SpellDuration;
 
 namespace srd5 {
     public partial struct Spells {
         public static Spell AcidSplash {
             get {
                 return new Spell(
-                    ID.ACID_SPLASH, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS,
-                    SpellDuration.INSTANTANEOUS, 5, 2, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    ID.ACID_SPLASH, CONJURATION, CANTRIP, CastingTime.ONE_ACTION, 60, VS,
+                    INSTANTANEOUS, 5, 2, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         Dice dice = DiceLevelScaling(caster, D6);
                         foreach (Combattant target in targets) {
                             if (!target.DC(ID.ACID_SPLASH, dc, AbilityType.DEXTERITY)) {
@@ -24,8 +28,8 @@ namespace srd5 {
         public static Spell ChillTouch {
             get {
                 return new Spell(
-                    ID.CHILL_TOUCH, SpellSchool.NECROMANCY, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS,
-                    SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    ID.CHILL_TOUCH, NECROMANCY, CANTRIP, CastingTime.ONE_ACTION, 120, VS,
+                    INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         Dice dice = DiceLevelScaling(caster, D8);
                         Combattant target = targets[0];
                         bool hit = SpellAttack(ID.CHILL_TOUCH, ground, caster, DamageType.NECROTIC, dice, modifier, target, 120);
@@ -54,16 +58,16 @@ namespace srd5 {
         public static Spell DancingLights {
             get {
                 return new Spell(
-                    ID.DANCING_LIGHTS, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_MINUTE, 120, VSM,
-                    SpellDuration.INSTANTANEOUS, 0, 1, SpellWithoutEffect(ID.DANCING_LIGHTS)
+                    ID.DANCING_LIGHTS, EVOCATION, CANTRIP, CastingTime.ONE_MINUTE, 120, VSM,
+                    INSTANTANEOUS, 0, 1, SpellWithoutEffect(ID.DANCING_LIGHTS)
                 );
             }
         }
 
         public static Spell Druidcraft {
             get {
-                return new Spell(ID.DRUIDCRAFT, SpellSchool.TRANSMUTATION,
-                    SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS, SpellDuration.INSTANTANEOUS, 0, 0,
+                return new Spell(ID.DRUIDCRAFT, TRANSMUTATION,
+                    CANTRIP, CastingTime.ONE_ACTION, 30, VS, INSTANTANEOUS, 0, 0,
                     SpellWithoutEffect(ID.DRUIDCRAFT)
                 );
             }
@@ -71,7 +75,7 @@ namespace srd5 {
 
         public static Spell EldritchBlast {
             get {
-                return new Spell(ID.ELDRITCH_BLAST, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS, SpellDuration.INSTANTANEOUS, 0, 4,
+                return new Spell(ID.ELDRITCH_BLAST, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 120, VS, INSTANTANEOUS, 0, 4,
                     delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         Damage damage = new Damage(DamageType.FORCE, "1d10");
                         Dice dice = DiceLevelScaling(caster, D10);
@@ -86,8 +90,8 @@ namespace srd5 {
         public static Spell FireBolt {
             get {
                 return new Spell(
-                    ID.FIRE_BOLT, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 120, VS,
-                    SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    ID.FIRE_BOLT, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 120, VS,
+                    INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         Dice dice = DiceLevelScaling(caster, D10);
                         SpellAttack(ID.FIRE_BOLT, ground, caster, DamageType.FIRE, dice, modifier, targets[0], 120);
                     }
@@ -98,8 +102,8 @@ namespace srd5 {
         public static Spell Guidance {
             get {
                 return new Spell(
-                    ID.GUIDANCE, SpellSchool.DIVINATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 5, VS,
-                    SpellDuration.ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    ID.GUIDANCE, DIVINATION, CANTRIP, CastingTime.ONE_ACTION, 5, VS,
+                    ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         targets[0].AddEffect(Effect.SPELL_GUIDANCE);
                     }
                 );
@@ -109,8 +113,8 @@ namespace srd5 {
         public static Spell Light {
             get {
                 return new Spell(
-                    ID.LIGHT, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VM,
-                    SpellDuration.ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    ID.LIGHT, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 0, VM,
+                    ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         Combattant target = targets[0];
                         if (target.DC(ID.LIGHT, dc, AbilityType.DEXTERITY)) {
                             GlobalEvents.AffectBySpell(caster, ID.LIGHT, target, false);
@@ -126,8 +130,8 @@ namespace srd5 {
         public static Spell MageHand {
             get {
                 return new Spell(
-                    ID.MENDING, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS,
-                    SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.MAGE_HAND)
+                    ID.MENDING, CONJURATION, CANTRIP, CastingTime.ONE_ACTION, 30, VS,
+                    ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.MAGE_HAND)
                 );
             }
         }
@@ -136,8 +140,8 @@ namespace srd5 {
         public static Spell Mending {
             get {
                 return new Spell(
-                    ID.MENDING, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_MINUTE, 0, VSM,
-                    SpellDuration.INSTANTANEOUS, 0, 1, SpellWithoutEffect(ID.MENDING)
+                    ID.MENDING, TRANSMUTATION, CANTRIP, CastingTime.ONE_MINUTE, 0, VSM,
+                    INSTANTANEOUS, 0, 1, SpellWithoutEffect(ID.MENDING)
                 );
             }
         }
@@ -145,8 +149,8 @@ namespace srd5 {
         public static Spell Message {
             get {
                 return new Spell(
-                    ID.MENDING, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ROUND, 120, VSM,
-                    SpellDuration.ONE_ROUND, 0, 1, SpellWithoutEffect(ID.MESSAGE)
+                    ID.MENDING, TRANSMUTATION, CANTRIP, CastingTime.ONE_ROUND, 120, VSM,
+                    ONE_ROUND, 0, 1, SpellWithoutEffect(ID.MESSAGE)
                 );
             }
         }
@@ -154,15 +158,15 @@ namespace srd5 {
         public static Spell MinorIllusion {
             get {
                 return new Spell(
-                    ID.MINOR_ILLUSION, SpellSchool.ILLUSION, SpellLevel.CANTRIP, CastingTime.ONE_ROUND, 30, SM,
-                    SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.MINOR_ILLUSION)
+                    ID.MINOR_ILLUSION, ILLUSION, CANTRIP, CastingTime.ONE_ROUND, 30, SM,
+                    ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.MINOR_ILLUSION)
                 );
             }
         }
 
         public static Spell PoisonSpray {
             get {
-                return new Spell(ID.POISON_SPRAY, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 10, VS, SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.POISON_SPRAY, CONJURATION, CANTRIP, CastingTime.ONE_ACTION, 10, VS, INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Dice dice = DiceLevelScaling(caster, D12);
                     Combattant target = targets[0];
                     if (target.DC(ID.POISON_SPRAY, dc, AbilityType.CONSTITUTION)) {
@@ -178,8 +182,8 @@ namespace srd5 {
         public static Spell Prestidigitation {
             get {
                 return new Spell(
-                    ID.PRESTIDIGITATION, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 10, VS,
-                    SpellDuration.ONE_HOUR, 0, 0, SpellWithoutEffect(ID.PRESTIDIGITATION)
+                    ID.PRESTIDIGITATION, TRANSMUTATION, CANTRIP, CastingTime.ONE_ACTION, 10, VS,
+                    ONE_HOUR, 0, 0, SpellWithoutEffect(ID.PRESTIDIGITATION)
                 );
             }
         }
@@ -188,8 +192,8 @@ namespace srd5 {
         public static Spell ProduceFlame {
             get {
                 return new Spell(
-                    ID.PRODUCE_FLAME, SpellSchool.CONJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, VS,
-                    SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    ID.PRODUCE_FLAME, CONJURATION, CANTRIP, CastingTime.ONE_ACTION, 30, VS,
+                    INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         int bonus = modifier + caster.ProficiencyBonus;
                         Dice dice = DiceLevelScaling(caster, D8);
                         SpellAttack(ID.PRODUCE_FLAME, ground, caster, DamageType.FIRE, dice, modifier, targets[0], 30);
@@ -201,8 +205,8 @@ namespace srd5 {
         public static Spell RayOfFrost {
             get {
                 return new Spell(
-                    ID.RAY_OF_FROST, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS,
-                    SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    ID.RAY_OF_FROST, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 60, VS,
+                    INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         int bonus = modifier + caster.ProficiencyBonus;
                         Dice dice = DiceLevelScaling(caster, D8);
                         Combattant target = targets[0];
@@ -222,8 +226,8 @@ namespace srd5 {
         public static Spell Resistance {
             get {
                 return new Spell(
-                    ID.RESISTANCE, SpellSchool.ABJURATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 0, VSM,
-                    SpellDuration.ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    ID.RESISTANCE, ABJURATION, CANTRIP, CastingTime.ONE_ACTION, 0, VSM,
+                    ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         GlobalEvents.AffectBySpell(caster, ID.RESISTANCE, targets[0], true);
                         targets[0].AddEffect(Effect.SPELL_RESISTANCE);
                     }
@@ -234,7 +238,7 @@ namespace srd5 {
         public static Spell SacredFlame {
             get {
                 return new Spell(
-                    ID.SACRED_FLAME, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, VS, SpellDuration.INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.SACRED_FLAME)
+                    ID.SACRED_FLAME, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 60, VS, INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.SACRED_FLAME)
                 );
             }
         }
@@ -242,8 +246,8 @@ namespace srd5 {
         public static Spell Shillelagh {
             get {
                 return new Spell(
-                    ID.SHILLELAGH, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.BONUS_ACTION, 0, VSM,
-                    SpellDuration.ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    ID.SHILLELAGH, TRANSMUTATION, CANTRIP, CastingTime.BONUS_ACTION, 0, VSM,
+                    ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         // can only be cast by PCs or NPCs
                         if (!(caster is CharacterSheet)) {
                             GlobalEvents.AffectBySpell(caster, ID.SHILLELAGH, caster, false);
@@ -279,8 +283,8 @@ namespace srd5 {
         public static Spell ShockingGrasp {
             get {
                 return new Spell(
-                    ID.SHOCKING_GRASP, SpellSchool.EVOCATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 5, VS,
-                    SpellDuration.INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    ID.SHOCKING_GRASP, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 5, VS,
+                    INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         Dice dice = DiceLevelScaling(caster, D8);
                         Combattant target = targets[0];
                         bool hit = SpellAttack(ID.SHOCKING_GRASP, ground, caster, DamageType.LIGHTNING, dice, modifier, target, 5);
@@ -298,8 +302,8 @@ namespace srd5 {
 
         public static Spell SpareTheDying {
             get {
-                return new Spell(ID.SPARE_THE_DYING, SpellSchool.NECROMANCY, SpellLevel.CANTRIP,
-                    CastingTime.ONE_ACTION, 5, VS, SpellDuration.INSTANTANEOUS, 0, 0,
+                return new Spell(ID.SPARE_THE_DYING, NECROMANCY, CANTRIP,
+                    CastingTime.ONE_ACTION, 5, VS, INSTANTANEOUS, 0, 0,
                     delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         if (targets[0].HasEffect(Effect.FIGHTING_DEATH)) {
                             targets[0].AddEffect(Effect.FIGHTING_DEATH_STABILIZED);
@@ -311,15 +315,15 @@ namespace srd5 {
 
         public static Spell Thaumaturgy {
             get {
-                return new Spell(ID.THAUMATURGY, SpellSchool.TRANSMUTATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, V, SpellDuration.ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.THAUMATURGY));
+                return new Spell(ID.THAUMATURGY, TRANSMUTATION, CANTRIP, CastingTime.ONE_ACTION, 30, V, ONE_MINUTE, 0, 0, SpellWithoutEffect(ID.THAUMATURGY));
             }
         }
 
         public static Spell TrueStrike {
             get {
                 return new Spell(
-                    ID.TRUE_STRIKE, SpellSchool.DIVINATION, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 30, S,
-                    SpellDuration.ONE_ROUND, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    ID.TRUE_STRIKE, DIVINATION, CANTRIP, CastingTime.ONE_ACTION, 30, S,
+                    ONE_ROUND, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         int turn = ground.Turn;
                         caster.AddAttackModifyingEffect(delegate (ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combattant target) {
                             if (ground.Turn > turn + 1) return true; // no longer active
@@ -339,7 +343,7 @@ namespace srd5 {
 
         public static Spell ViciousMockery {
             get {
-                return new Spell(ID.VICIOUS_MOCKERY, SpellSchool.ENCHANTMENT, SpellLevel.CANTRIP, CastingTime.ONE_ACTION, 60, V, SpellDuration.INSTANTANEOUS, 0, 0,
+                return new Spell(ID.VICIOUS_MOCKERY, ENCHANTMENT, CANTRIP, CastingTime.ONE_ACTION, 60, V, INSTANTANEOUS, 0, 0,
                     delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         Dice dice = DiceLevelScaling(caster, D4);
                         Combattant target = targets[0];

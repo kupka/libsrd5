@@ -78,5 +78,11 @@ namespace srd5 {
             bandit.OnEndOfTurn();
             Assert.False(bandit.HasCondition(ConditionType.PARALYZED));
         }
+
+        [Fact]
+        public void DiseaseTest() {
+            Assert.True(Effect.DEATH_DOG_DISEASE.IsDisease());
+            Assert.False(Effect.CURSE_MUMMY_ROT.IsDisease());
+        }
     }
 }

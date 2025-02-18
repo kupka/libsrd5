@@ -519,5 +519,37 @@ namespace srd5 {
             Assert.True(location.Distance(ground.LocateCombattant(bandit)) > 0);
             Assert.True(bandit.Speed == speed);
         }
+
+        [Fact]
+        public void LesserRestorationTest() {
+            Monster druid = Monsters.Druid;
+            druid.AddCondition(ConditionType.BLINDED, ConditionType.DEAFENED, ConditionType.POISONED, ConditionType.PARALYZED);
+            druid.AddEffect(Effect.ADVANTAGE_DEXTERITY_SAVES, Effect.DEATH_DOG_DISEASE, Effect.ABOLETH_DISEASE_TENTACLE);
+            Spell lesserRestoration = Spells.LesserRestoration;
+            lesserRestoration.Variant = SpellVariant.DISEASE;
+            lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
+            Assert.False(druid.HasEffect(Effect.DEATH_DOG_DISEASE));
+            Assert.True(druid.HasEffect(Effect.ADVANTAGE_DEXTERITY_SAVES));
+            Assert.True(druid.HasEffect(Effect.ABOLETH_DISEASE_TENTACLE));
+
+            lesserRestoration.Variant = SpellVariant.PARALYZATION;
+            lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
+            Assert.False(druid.HasCondition(ConditionType.PARALYZED));
+            Assert.True(druid.HasCondition(ConditionType.POISONED));
+
+            lesserRestoration.Variant = SpellVariant.POISON;
+            lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
+            Assert.False(druid.HasCondition(ConditionType.POISONED));
+            Assert.True(druid.HasCondition(ConditionType.DEAFENED));
+
+            lesserRestoration.Variant = SpellVariant.DEAFNESS;
+            lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
+            Assert.False(druid.HasCondition(ConditionType.DEAFENED));
+            Assert.True(druid.HasCondition(ConditionType.BLINDED));
+
+            lesserRestoration.Variant = SpellVariant.BLINDNESS;
+            lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
+            Assert.False(druid.HasCondition(ConditionType.BLINDED));
+        }
     }
 }

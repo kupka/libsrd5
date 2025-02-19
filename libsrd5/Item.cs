@@ -141,7 +141,15 @@ namespace srd5 {
 
         public Damage Damage { get; private set; }
 
-        public WeaponProperty[] Properties { get; private set; }
+        internal WeaponProperty[] properties;
+        public WeaponProperty[] Properties {
+            get {
+                return (WeaponProperty[])properties.Clone();
+            }
+            private set {
+                properties = value;
+            }
+        }
 
         public int RangeNormal { get; private set; }
 

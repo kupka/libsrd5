@@ -9,7 +9,7 @@ namespace srd5 {
     public partial struct Spells {
         public static Spell AcidArrow {
             get {
-                return new Spell(ID.ACID_ARROW, EVOCATION, SECOND, CastingTime.ONE_ACTION, 90, VSM, INSTANTANEOUS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.ACID_ARROW, EVOCATION, SECOND, CastingTime.ONE_ACTION, 90, VSM, INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     Dice dice = DiceSlotScaling(SECOND, slot, D4, 4, 0, 1);
                     Dice additionalDice = DiceSlotScaling(SECOND, slot, D4, 2, 0, 1);
@@ -79,7 +79,7 @@ namespace srd5 {
 
         public static Spell Barkskin {
             get {
-                return new Spell(ID.BARKSKIN, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.BARKSKIN, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     target.AddEffect(Effect.SPELL_BARKSKIN);
                     GlobalEvents.AffectBySpell(caster, ID.BARKSKIN, target, true);
@@ -165,7 +165,7 @@ namespace srd5 {
 
         public static Spell Darkvision {
             get {
-                return new Spell(ID.DARKVISION, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, EIGHT_HOURS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.DARKVISION, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, EIGHT_HOURS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     AddEffectsForDuration(ID.DARKVISION, caster, target, EIGHT_HOURS, Effect.SPELL_DARKVISION);
                 });
@@ -221,7 +221,7 @@ namespace srd5 {
         /* TODO */
         public static Spell EnlargeReduce {
             get {
-                Spell spell = new Spell(ID.ENLARGE_REDUCE, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 30, VSM, ONE_MINUTE, 0, 0);
+                Spell spell = new Spell(ID.ENLARGE_REDUCE, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 30, VSM, ONE_MINUTE, 0, 1);
                 spell.Variants = new SpellVariant[] { ENLARGE, REDUCE };
                 spell.Variant = ENLARGE;
                 spell.CastEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
@@ -281,7 +281,7 @@ namespace srd5 {
                     int dice = 3 + ((int)slot - 2) / 2;
                     Damage damage = new Damage(DamageType.FIRE, new Dice(dice, D6));
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
-                    Spell flamingBladeCantrip = new Spell(ID.FLAME_BLADE, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 5, V, INSTANTANEOUS, 0, 0, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                    Spell flamingBladeCantrip = new Spell(ID.FLAME_BLADE, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 5, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         SpellAttack(ID.FLAME_BLADE, ground2, caster2, damage.Type, damage.Dice, modifier2, targets2[0], 5);
                     });
                     caster.AvailableSpells[0].AddKnownSpell(flamingBladeCantrip);
@@ -313,7 +313,7 @@ namespace srd5 {
                     Dice dice = DiceSlotScaling(SECOND, slot, D6, 2);
                     Damage damage = new Damage(DamageType.FIRE, dice);
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
-                    Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 30, V, INSTANTANEOUS, 0, 0, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                    Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 30, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         Combattant target = targets2[0];
                         target.TakeDamage(ID.FLAMING_SPHERE, DamageType.FIRE, dice, DamageMitigation.HALVES_DAMAGE, dc2, AbilityType.DEXTERITY, out _);
                     });
@@ -403,7 +403,7 @@ namespace srd5 {
 
         public static Spell Invisibility {
             get {
-                return new Spell(ID.INVISIBILITY, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.INVISIBILITY, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     target.AddCondition(ConditionType.INVISIBLE);
                     bool spellEnded = false;
@@ -441,7 +441,7 @@ namespace srd5 {
 
         public static Spell LesserRestoration {
             get {
-                Spell spell = new Spell(ID.LESSER_RESTORATION, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, INSTANTANEOUS, 0, 0);
+                Spell spell = new Spell(ID.LESSER_RESTORATION, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, INSTANTANEOUS, 0, 1);
                 spell.Variants = new SpellVariant[] { BLINDNESS, DEAFNESS, PARALYZATION, POISON, DISEASE };
                 spell.CastEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
@@ -477,7 +477,7 @@ namespace srd5 {
             get {
                 // We assume that this spell is used for Crowd Control to make a target incapable of melee attacks but also immune to melee attacks
                 // Ranged attacks should work normally. The Weight limit of 500 pounds is translated to a maximum size of Large
-                return new Spell(ID.LEVITATE, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, TEN_MINUTES, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.LEVITATE, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, TEN_MINUTES, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     if (target.Size > Size.LARGE || target.DC(ID.LEVITATE, dc, AbilityType.CONSTITUTION)) {
                         GlobalEvents.AffectBySpell(caster, ID.LEVITATE, target, false);
@@ -487,28 +487,56 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
-        public static Spell LocateAnimalsorPlants {
+
+        public static Spell LocateAnimalsOrPlants {
             get {
-                return new Spell(ID.LOCATE_ANIMALS_OR_PLANTS, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.LOCATE_ANIMALS_OR_PLANTS, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.LOCATE_ANIMALS_OR_PLANTS));
             }
         }
-        /* TODO */
+
         public static Spell LocateObject {
             get {
-                return new Spell(ID.LOCATE_OBJECT, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 0, 0, doNothing);
+                return new Spell(ID.LOCATE_OBJECT, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 0, 0, SpellWithoutEffect(ID.LOCATE_OBJECT));
             }
         }
-        /* TODO */
+
         public static Spell MagicMouth {
             get {
-                return new Spell(ID.MAGIC_MOUTH, ILLUSION, SECOND, CastingTime.ONE_MINUTE, 30, VSM, UNTIL_DISPELLED, 0, 0, doNothing);
+                return new Spell(ID.MAGIC_MOUTH, ILLUSION, SECOND, CastingTime.ONE_MINUTE, 30, VSM, UNTIL_DISPELLED, 0, 0, SpellWithoutEffect(ID.MAGIC_MOUTH));
             }
         }
-        /* TODO */
+
         public static Spell MagicWeapon {
             get {
-                return new Spell(ID.MAGIC_WEAPON, TRANSMUTATION, SECOND, CastingTime.BONUS_ACTION, 0, VS, ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.MAGIC_WEAPON, TRANSMUTATION, SECOND, CastingTime.BONUS_ACTION, 0, VS, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    // Since we cannot directly target a Weapon, we check the mainhand of the target if it is a nonmagic weapon
+                    if (target is CharacterSheet hero && hero.Inventory.MainHand is Weapon) {
+                        Weapon weapon = hero.Inventory.MainHand;
+                        if (weapon.HasProperty(WeaponProperty.MAGIC)) {
+                            GlobalEvents.AffectBySpell(caster, ID.MAGIC_WEAPON, target, false);
+                        } else {
+                            GlobalEvents.AffectBySpell(caster, ID.MAGIC_WEAPON, target, true);
+                            WeaponProperty plus = WeaponProperty.PLUS_1;
+                            if ((int)slot > 5)
+                                plus = WeaponProperty.PLUS_3;
+                            else if ((int)slot > 3)
+                                plus = WeaponProperty.PLUS_2;
+                            Utils.Push<WeaponProperty>(ref weapon.properties, WeaponProperty.MAGIC, plus);
+                            int remainingRounds = (int)ONE_HOUR;
+                            target.AddEndOfTurnEvent(delegate () {
+                                if (--remainingRounds < 1) {
+                                    Utils.RemoveSingle<WeaponProperty>(ref weapon.properties, WeaponProperty.MAGIC);
+                                    Utils.RemoveSingle<WeaponProperty>(ref weapon.properties, plus);
+                                    return true;
+                                }
+                                return false;
+                            });
+                        }
+                    } else {
+                        GlobalEvents.AffectBySpell(caster, ID.MAGIC_WEAPON, target, false);
+                    }
+                });
             }
         }
         /* TODO */

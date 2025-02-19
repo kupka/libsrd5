@@ -327,5 +327,38 @@ namespace srd5 {
         public void LevitateTest() {
             DefaultSpellTest(Spells.Levitate, 15, SpellLevel.SECOND, null, Effect.CANNOT_BE_MELEE_ATTACKED, Spells.Levitate.Duration);
         }
+
+        [Fact]
+        public void MagicWeaponTest() {
+            int failures = 0;
+            EventHandler<GlobalEvents.SpellAffection> handler = delegate (object source, GlobalEvents.SpellAffection args) {
+                if (!args.Affected) failures++;
+            };
+            GlobalEvents.SpellAffectionHandlers += handler;
+            Spells.MagicWeapon.Cast(Monsters.Druid, 10, SpellLevel.SIXTH, 5); // fail #1
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
+            Spells.MagicWeapon.Cast(hero, 10, SpellLevel.SIXTH, 5); // fail #2
+            hero.Equip(Weapons.CreatePlus1Weapon(Weapons.Handaxe));
+            Spells.MagicWeapon.Cast(hero, 10, SpellLevel.SIXTH, 5); // fail #3
+            hero.Inventory.MainHand = Weapons.Longsword;
+            Spells.MagicWeapon.Cast(hero, 10, SpellLevel.THIRD, 5);
+            Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.MAGIC));
+            Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.PLUS_1));
+            hero.Inventory.MainHand = Weapons.Longsword;
+            Spells.MagicWeapon.Cast(hero, 10, SpellLevel.FIFTH, 5);
+            Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.MAGIC));
+            Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.PLUS_2));
+            hero.Inventory.MainHand = Weapons.Longsword;
+            Spells.MagicWeapon.Cast(hero, 10, SpellLevel.NINETH, 5);
+            Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.MAGIC));
+            Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.PLUS_3));
+            GlobalEvents.SpellAffectionHandlers -= handler;
+            Assert.Equal(3, failures);
+            for (int i = 0; i < (int)Spells.MagicWeapon.Duration; i++) {
+                hero.OnEndOfTurn();
+            }
+            Assert.False(hero.Inventory.MainHand.HasProperty(WeaponProperty.MAGIC));
+            Assert.False(hero.Inventory.MainHand.HasProperty(WeaponProperty.PLUS_3));
+        }
     }
 }

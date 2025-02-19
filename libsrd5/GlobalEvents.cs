@@ -19,6 +19,7 @@ namespace srd5 {
         public static event EventHandler<EventArgs> Handlers;
         public static event EventHandler<AttackRolled> AttackRolledHandlers;
         public static event EventHandler<SpellCast> SpellCastHandlers;
+        public static event EventHandler<SpellAffection> SpellAffectionHandlers;
 
         public class InitiativeRolled : EventArgs {
             public Combattant Roller { get; private set; }
@@ -146,8 +147,10 @@ namespace srd5 {
         }
 
         internal static void AffectBySpell(Combattant caster, Spells.ID spell, Combattant target, bool affected) {
-            if (Handlers == null) return;
-            Handlers(EventTypes.AFFECT_BY_SPELL, new SpellAffection(caster, spell, target, affected));
+            if (Handlers != null)
+                Handlers(EventTypes.AFFECT_BY_SPELL, new SpellAffection(caster, spell, target, affected));
+            if (SpellAffectionHandlers != null)
+                SpellAffectionHandlers(EventTypes.AFFECT_BY_SPELL, new SpellAffection(caster, spell, target, affected));
         }
 
         public class ActionFailed : EventArgs {

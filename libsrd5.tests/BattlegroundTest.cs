@@ -363,6 +363,7 @@ namespace srd5 {
                 ground.NextPhase();
             }
             ground.NextPhase();
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.THIRD, hag.AvailableSpells[0]));
             Assert.True(ground.SpellCastAction(Spells.Sleep, SpellLevel.FIRST, hag.AvailableSpells[0], ogre));
             ground.NextPhase();
             while (ground.CurrentCombattant != hag) {

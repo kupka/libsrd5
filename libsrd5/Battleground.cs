@@ -360,6 +360,11 @@ namespace srd5 {
                 GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_NUMBER_OF_TARGETS);
                 return false;
             }
+            // check that a target is set when the spells requires so
+            if (spell.MaximumTargets > 0 && targets.Length == 0) {
+                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_NUMBER_OF_TARGETS);
+                return false;
+            }
             // check if targets are in range
             foreach (Combattant target in targets) {
                 int distance = Distance(target);

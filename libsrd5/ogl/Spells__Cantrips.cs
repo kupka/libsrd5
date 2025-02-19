@@ -59,7 +59,7 @@ namespace srd5 {
             get {
                 return new Spell(
                     ID.DANCING_LIGHTS, EVOCATION, CANTRIP, CastingTime.ONE_MINUTE, 120, VSM,
-                    INSTANTANEOUS, 0, 1, SpellWithoutEffect(ID.DANCING_LIGHTS)
+                    INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.DANCING_LIGHTS)
                 );
             }
         }
@@ -141,7 +141,7 @@ namespace srd5 {
             get {
                 return new Spell(
                     ID.MENDING, TRANSMUTATION, CANTRIP, CastingTime.ONE_MINUTE, 0, VSM,
-                    INSTANTANEOUS, 0, 1, SpellWithoutEffect(ID.MENDING)
+                    INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.MENDING)
                 );
             }
         }
@@ -150,7 +150,7 @@ namespace srd5 {
             get {
                 return new Spell(
                     ID.MENDING, TRANSMUTATION, CANTRIP, CastingTime.ONE_ROUND, 120, VSM,
-                    ONE_ROUND, 0, 1, SpellWithoutEffect(ID.MESSAGE)
+                    ONE_ROUND, 0, 0, SpellWithoutEffect(ID.MESSAGE)
                 );
             }
         }
@@ -194,9 +194,10 @@ namespace srd5 {
                 return new Spell(
                     ID.PRODUCE_FLAME, CONJURATION, CANTRIP, CastingTime.ONE_ACTION, 30, VS,
                     INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                        Combattant target = targets[0];
                         int bonus = modifier + caster.ProficiencyBonus;
                         Dice dice = DiceLevelScaling(caster, D8);
-                        SpellAttack(ID.PRODUCE_FLAME, ground, caster, DamageType.FIRE, dice, modifier, targets[0], 30);
+                        SpellAttack(ID.PRODUCE_FLAME, ground, caster, DamageType.FIRE, dice, modifier, target, 30);
                     }
                 );
             }
@@ -252,7 +253,8 @@ namespace srd5 {
                         if (!(caster is CharacterSheet)) {
                             GlobalEvents.AffectBySpell(caster, ID.SHILLELAGH, caster, false);
                             return;
-                        };
+                        }
+                        ;
                         CharacterSheet sheet = (CharacterSheet)caster;
                         // spell requires a quarterstaff or club
                         if (sheet.Inventory.MainHand == null) {
@@ -303,10 +305,11 @@ namespace srd5 {
         public static Spell SpareTheDying {
             get {
                 return new Spell(ID.SPARE_THE_DYING, NECROMANCY, CANTRIP,
-                    CastingTime.ONE_ACTION, 5, VS, INSTANTANEOUS, 0, 0,
+                    CastingTime.ONE_ACTION, 5, VS, INSTANTANEOUS, 0, 1,
                     delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                        if (targets[0].HasEffect(Effect.FIGHTING_DEATH)) {
-                            targets[0].AddEffect(Effect.FIGHTING_DEATH_STABILIZED);
+                        Combattant target = targets[0];
+                        if (target.HasEffect(Effect.FIGHTING_DEATH)) {
+                            target.AddEffect(Effect.FIGHTING_DEATH_STABILIZED);
                         }
                     }
                 );
@@ -343,7 +346,7 @@ namespace srd5 {
 
         public static Spell ViciousMockery {
             get {
-                return new Spell(ID.VICIOUS_MOCKERY, ENCHANTMENT, CANTRIP, CastingTime.ONE_ACTION, 60, V, INSTANTANEOUS, 0, 0,
+                return new Spell(ID.VICIOUS_MOCKERY, ENCHANTMENT, CANTRIP, CastingTime.ONE_ACTION, 60, V, INSTANTANEOUS, 0, 1,
                     delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         Dice dice = DiceLevelScaling(caster, D4);
                         Combattant target = targets[0];

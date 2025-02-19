@@ -207,6 +207,12 @@ namespace srd5 {
             }
             if (simulateTurns != null) {
                 int turns = (int)simulateTurns;
+                if (checkForEffect != null) {
+                    orc3.RemoveEffect((Effect)checkForEffect);
+                }
+                if (checkForCondition != null) {
+                    orc3.RemoveCondition((ConditionType)checkForCondition);
+                }
                 for (int i = 0; i < turns; i++) {
                     hero.OnEndOfTurn();
 

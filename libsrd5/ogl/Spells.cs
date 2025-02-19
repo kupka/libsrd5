@@ -514,11 +514,29 @@ namespace srd5 {
         }
 
         internal static void AddEffectsForDuration(ID id, Combattant caster, Combattant target, SpellDuration duration, params Effect[] effects) {
+            if (target.HasEffect(effects[0])) {
+                GlobalEvents.AffectBySpell(caster, id, target, false);
+                return;
+            }
             GlobalEvents.AffectBySpell(caster, id, target, true);
             target.AddEffect(effects);
             int remainingRounds = (int)duration;
+            bool stillHasEffects = true;
+            target.AddStartOfTurnEvent(delegate () {
+                stillHasEffects = false;
+                foreach (Effect effect in (Effect[])effects.Clone()) {
+                    if (target.HasEffect(effect)) {
+                        stillHasEffects = true;
+                    } else {
+                        Utils.RemoveSingle<Effect>(ref effects, effect);
+                    }
+                }
+                return !stillHasEffects;
+            });
             target.AddEndOfTurnEvent(delegate () {
-                if (--remainingRounds < 1) {
+                if (!stillHasEffects) {
+                    return true;
+                } else if (--remainingRounds < 1) {
                     target.RemoveEffect(effects);
                     return true;
                 } else {
@@ -532,9 +550,25 @@ namespace srd5 {
             target.AddEffect(effect);
             target.AddCondition(conditions);
             int remainingRounds = (int)duration;
+            bool stillHasEffect = false;
+            bool stillHasConditions = false;
+            target.AddStartOfTurnEvent(delegate () {
+                stillHasEffect = target.HasEffect(effect);
+                foreach (ConditionType condition in (ConditionType[])conditions.Clone()) {
+                    if (target.HasCondition(condition)) {
+                        stillHasConditions = true;
+                    } else {
+                        Utils.RemoveSingle<ConditionType>(ref conditions, condition);
+                    }
+                }
+                return !stillHasEffect && !stillHasConditions;
+            });
             target.AddEndOfTurnEvent(delegate () {
-                if (--remainingRounds < 1) {
-                    target.RemoveEffect(effect);
+                if (!stillHasEffect && !stillHasConditions) {
+                    return true;
+                } else if (--remainingRounds < 1) {
+                    if (stillHasEffect)
+                        target.RemoveEffect(effect);
                     target.RemoveCondition(conditions);
                     return true;
                 } else {

@@ -542,7 +542,9 @@ namespace srd5 {
         /* TODO */
         public static Spell MirrorImage {
             get {
-                return new Spell(ID.MIRROR_IMAGE, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.MIRROR_IMAGE, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+
+                });
             }
         }
         /* TODO */

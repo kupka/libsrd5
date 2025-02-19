@@ -86,22 +86,22 @@ namespace srd5 {
                 }
                 for (int j = 0; j < 20; j++) {
                     uberMonster.TakeDamage(effect, randomDamageType(), D4.Value);
-                    uberMonster.EscapeFromGrapple();
                     uberMonster.OnStartOfTurn();
                     uberMonster.OnEndOfTurn();
+                    uberMonster.EscapeFromGrapple();
                     averageMonster.TakeDamage(effect, randomDamageType(), D4.Value);
-                    averageMonster.EscapeFromGrapple();
                     averageMonster.OnStartOfTurn();
                     averageMonster.OnEndOfTurn();
+                    averageMonster.EscapeFromGrapple();
                     pansyMonster.TakeDamage(effect, randomDamageType(), D4.Value);
-                    pansyMonster.EscapeFromGrapple();
                     pansyMonster.OnStartOfTurn();
                     pansyMonster.OnEndOfTurn();
+                    pansyMonster.EscapeFromGrapple();
                     foreach (Combattant combattant in allCombattantTypes) {
                         combattant.TakeDamage(effect, randomDamageType(), D4.Value);
-                        combattant.EscapeFromGrapple();
                         combattant.OnStartOfTurn();
                         combattant.OnEndOfTurn();
+                        combattant.EscapeFromGrapple();
                     }
                 }
 

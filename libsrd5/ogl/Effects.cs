@@ -97,7 +97,8 @@ namespace srd5 {
         ONE_EXTRA_ATTACK,
         TWO_EXTRA_ATTACKS,
         THREE_EXTRA_ATTACKS,
-
+        CANNOT_MELEE_ATTACK,
+        CANNOT_BE_MELEE_ATTACKED,
         // Movement
         NO_SPEED_PENALITY_FOR_HEAVY_ARMOR,
         HEAVY_ARMOR_SPEED_PENALITY,
@@ -154,6 +155,7 @@ namespace srd5 {
         SPELL_GUST_OF_WIND,
         SPELL_HIDEOUS_LAUGHTER,
         SPELL_JUMP,
+        SPELL_LEVITATE,
         SPELL_LIGHT,
         SPELL_LONGSTRIDER,
         SPELL_PROTECTION_FROM_EVIL_AND_GOOD,
@@ -257,7 +259,6 @@ namespace srd5 {
                     if (combattant is CharacterSheet sheet) {
                         sheet.RecalculateAttacks();
                     }
-                    ;
                     break;
                 case SPELL_LONGSTRIDER:
                     combattant.Speed += 10;

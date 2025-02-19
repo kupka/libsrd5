@@ -322,5 +322,10 @@ namespace srd5 {
             Assert.True(hag1.HasCondition(ConditionType.INVISIBLE));
             Assert.False(hag2.HasCondition(ConditionType.INVISIBLE));
         }
+
+        [Fact]
+        public void LevitateTest() {
+            DefaultSpellTest(Spells.Levitate, 15, SpellLevel.SECOND, null, Effect.CANNOT_BE_MELEE_ATTACKED, Spells.Levitate.Duration);
+        }
     }
 }

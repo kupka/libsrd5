@@ -256,6 +256,13 @@ namespace srd5 {
             hero.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
             Assert.False(ground.MeleeAttackAction(ogre));
             Assert.False(ground.RangedAttackAction(ogre));
+
+            hero.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
+            hero.AddEffect(Effect.CANNOT_MELEE_ATTACK);
+            Assert.False(ground.MeleeAttackAction(ogre));
+            hero.RemoveEffect(Effect.CANNOT_MELEE_ATTACK);
+            ogre.AddEffect(Effect.CANNOT_BE_MELEE_ATTACKED);
+            Assert.False(ground.MeleeAttackAction(ogre));
         }
 
         [Fact]

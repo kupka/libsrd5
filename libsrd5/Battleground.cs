@@ -287,9 +287,11 @@ namespace srd5 {
         /// </summary>
         public bool MeleeAttackAction(Combattant target) {
             if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) return false;
+            if (CurrentCombattant.HasEffect(Effect.CANNOT_MELEE_ATTACK)) return false;
             if (currentPhase == TurnPhase.MOVE) return false;
             if (target == null) throw new Srd5ArgumentException("target cannot be null");
             if (target == CurrentCombattant) throw new Srd5ArgumentException("cannot attack self");
+            if (target.HasEffect(Effect.CANNOT_BE_MELEE_ATTACKED)) return false;
             bool success = false;
             if (currentPhase == TurnPhase.ACTION)
                 success = doFullMeleeAttack(target);

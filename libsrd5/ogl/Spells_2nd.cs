@@ -280,6 +280,7 @@ namespace srd5 {
                     // This is modelled by creating a Cantrip that the druid can use. After the Duration, the cantrip is removed
                     int dice = 3 + ((int)slot - 2) / 2;
                     Damage damage = new Damage(DamageType.FIRE, new Dice(dice, D6));
+                    // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
                     Spell flamingBladeCantrip = new Spell(ID.FLAME_BLADE, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 5, V, INSTANTANEOUS, 0, 0, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         SpellAttack(ID.FLAME_BLADE, ground2, caster2, damage.Type, damage.Dice, modifier2, targets2[0], 5);
                     });
@@ -311,6 +312,7 @@ namespace srd5 {
                     // This is modelled by creating a Cantrip that the caster can use. After the Duration, the cantrip is removed
                     Dice dice = DiceSlotScaling(SECOND, slot, D6, 2);
                     Damage damage = new Damage(DamageType.FIRE, dice);
+                    // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
                     Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 30, V, INSTANTANEOUS, 0, 0, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         Combattant target = targets2[0];
                         target.TakeDamage(ID.FLAMING_SPHERE, DamageType.FIRE, dice, DamageMitigation.HALVES_DAMAGE, dc2, AbilityType.DEXTERITY, out _);
@@ -470,10 +472,19 @@ namespace srd5 {
                 return spell;
             }
         }
-        /* TODO */
+
         public static Spell Levitate {
             get {
-                return new Spell(ID.LEVITATE, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, TEN_MINUTES, 0, 0, doNothing);
+                // We assume that this spell is used for Crowd Control to make a target incapable of melee attacks but also immune to melee attacks
+                // Ranged attacks should work normally. The Weight limit of 500 pounds is translated to a maximum size of Large
+                return new Spell(ID.LEVITATE, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, TEN_MINUTES, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    if (target.Size > Size.LARGE || target.DC(ID.LEVITATE, dc, AbilityType.CONSTITUTION)) {
+                        GlobalEvents.AffectBySpell(caster, ID.LEVITATE, target, false);
+                        return;
+                    }
+                    AddEffectsForDuration(ID.LEVITATE, caster, target, TEN_MINUTES, Effect.SPELL_LEVITATE, Effect.CANNOT_BE_MELEE_ATTACKED, Effect.CANNOT_MELEE_ATTACK);
+                });
             }
         }
         /* TODO */

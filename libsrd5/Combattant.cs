@@ -71,9 +71,9 @@ namespace srd5 {
         private Effect[] effects = new Effect[0];
         public Feat[] Feats { get { return feats; } }
         private Feat[] feats = new Feat[0];
-        public ConditionType[] Conditions { get { return conditions; } }
+        public ConditionType[] Conditions { get { return (ConditionType[])conditions.Clone(); } }
         private ConditionType[] conditions = new ConditionType[0];
-        public Proficiency[] Proficiencies { get { return proficiencies; } }
+        public Proficiency[] Proficiencies { get { return (Proficiency[])proficiencies.Clone(); } }
         protected Proficiency[] proficiencies = new Proficiency[0];
         public int EffectiveLevel { get; protected set; }
         public bool Dead { get; internal set; } = false;

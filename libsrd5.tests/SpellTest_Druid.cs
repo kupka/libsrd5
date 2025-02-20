@@ -34,6 +34,20 @@ namespace srd5 {
             });
         }
 
+        [Fact]
+        public void EffectAndConditionTest() {
+            Monster bandit = Monsters.Bandit;
+            Spells.AddEffectAndConditionsForDuration(Spells.ID.AID, bandit, bandit, SpellDuration.ONE_MINUTE, Effect.SPELL_AID, ConditionType.BLINDED);
+            for (int i = 0; i < 3; i++) {
+                bandit.OnStartOfTurn();
+                bandit.OnEndOfTurn();
+                bandit.RemoveEffect(Effect.SPELL_AID);
+                bandit.RemoveCondition(ConditionType.BLINDED);
+            }
+            Assert.True(bandit.StartOfTurnEvents.Length == 0);
+            Assert.True(bandit.EndOfTurnEvents.Length == 0);
+        }
+
 
         [Fact]
         public void AcidSplashTest() {
@@ -459,6 +473,7 @@ namespace srd5 {
             spell.Variant = SpellVariant.REDUCE;
             Monster bandit = Monsters.Bandit;
             Size size = bandit.Size;
+            Random.State = 1;
             spell.Cast(bandit, 1, SpellLevel.SECOND, 3);
             Assert.True(bandit.Size == size);
             bandit.AddEffect(Effect.SPELL_ENLARGE);

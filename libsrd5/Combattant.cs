@@ -458,20 +458,19 @@ namespace srd5 {
         }
 
 
-        private TurnEvent[] endOfTurnEvents = new TurnEvent[0];
+        internal TurnEvent[] EndOfTurnEvents = new TurnEvent[0];
 
         /// <summary>
         /// Adds a piece of code to be evaluated at the end of this combattatant's turn
         /// </summary>
         public void AddEndOfTurnEvent(TurnEvent turnEvent) {
-            Utils.Push<TurnEvent>(ref endOfTurnEvents, turnEvent);
+            Utils.Push<TurnEvent>(ref EndOfTurnEvents, turnEvent);
         }
 
         public void OnEndOfTurn() {
-            for (int i = 0; i < endOfTurnEvents.Length; i++) {
-                if (endOfTurnEvents[i] == null) continue;
-                if (endOfTurnEvents[i]()) {
-                    endOfTurnEvents[i] = null;
+            foreach (TurnEvent turnEvent in (TurnEvent[])EndOfTurnEvents.Clone()) {
+                if (turnEvent()) {
+                    Utils.RemoveSingle<TurnEvent>(ref EndOfTurnEvents, turnEvent);
                 }
             }
         }
@@ -486,28 +485,26 @@ namespace srd5 {
         }
 
         public void OnStartOfTurn() {
-            for (int i = 0; i < StartOfTurnEvents.Length; i++) {
-                if (StartOfTurnEvents[i] == null) continue;
-                if (StartOfTurnEvents[i]()) {
-                    StartOfTurnEvents[i] = null;
+            foreach (TurnEvent turnEvent in (TurnEvent[])StartOfTurnEvents.Clone()) {
+                if (turnEvent()) {
+                    Utils.RemoveSingle<TurnEvent>(ref StartOfTurnEvents, turnEvent);
                 }
             }
         }
 
-        private DamageTakenEvent[] damageTakenEvents = new DamageTakenEvent[0];
+        internal DamageTakenEvent[] DamageTakenEvents = new DamageTakenEvent[0];
 
         /// <summary>
         /// Adds a piece of code to be evaluated when this combattatant takes damage
         /// </summary>
         public void AddDamageTakenEvent(DamageTakenEvent damageTakenEvent) {
-            Utils.Push<DamageTakenEvent>(ref damageTakenEvents, damageTakenEvent);
+            Utils.Push<DamageTakenEvent>(ref DamageTakenEvents, damageTakenEvent);
         }
 
         public void OnDamageTaken(object source, Damage damage) {
-            for (int i = 0; i < damageTakenEvents.Length; i++) {
-                if (damageTakenEvents[i] == null) continue;
-                if (damageTakenEvents[i](source, damage)) {
-                    damageTakenEvents[i] = null;
+            foreach (DamageTakenEvent damageEvent in (DamageTakenEvent[])DamageTakenEvents.Clone()) {
+                if (damageEvent(source, damage)) {
+                    Utils.RemoveSingle<DamageTakenEvent>(ref DamageTakenEvents, damageEvent);
                 }
             }
         }
@@ -594,10 +591,9 @@ namespace srd5 {
         }
 
         private void applyAttackModifyingEffects(ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combattant target) {
-            for (int i = 0; i < attackModifyingEffects.Length; i++) {
-                if (attackModifyingEffects[i] == null) continue;
-                if (attackModifyingEffects[i](ref advantage, ref disadvantage, ref attack, ref target)) {
-                    attackModifyingEffects[i] = null;
+            foreach (AttackModifyingEffect effect in (AttackModifyingEffect[])attackModifyingEffects.Clone()) {
+                if (effect(ref advantage, ref disadvantage, ref attack, ref target)) {
+                    Utils.RemoveSingle<AttackModifyingEffect>(ref attackModifyingEffects, effect);
                 }
             }
         }

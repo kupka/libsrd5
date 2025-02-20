@@ -550,10 +550,11 @@ namespace srd5 {
             target.AddEffect(effect);
             target.AddCondition(conditions);
             int remainingRounds = (int)duration;
-            bool stillHasEffect = false;
-            bool stillHasConditions = false;
+            bool stillHasEffect = true;
+            bool stillHasConditions = true;
             target.AddStartOfTurnEvent(delegate () {
                 stillHasEffect = target.HasEffect(effect);
+                stillHasConditions = false;
                 foreach (ConditionType condition in (ConditionType[])conditions.Clone()) {
                     if (target.HasCondition(condition)) {
                         stillHasConditions = true;

@@ -154,6 +154,7 @@ namespace srd5 {
         SPELL_GUIDANCE,
         SPELL_GUST_OF_WIND,
         SPELL_HIDEOUS_LAUGHTER,
+        SPELL_INVISIBILITY,
         SPELL_JUMP,
         SPELL_LEVITATE,
         SPELL_LIGHT,

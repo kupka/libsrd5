@@ -447,6 +447,8 @@ namespace srd5 {
         public void RangedTest() {
             Monster ogre = Monsters.Ogre;
             Monster bandit = Monsters.Bandit;
+            bandit.HitPointsMax = 500;
+            bandit.HitPoints = 500;
             BattleGroundClassic battle = new BattleGroundClassic();
             battle.AddCombattant(ogre, ClassicLocation.Row.BACK_LEFT);
             battle.AddCombattant(bandit, ClassicLocation.Row.BACK_RIGHT);

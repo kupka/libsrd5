@@ -543,7 +543,28 @@ namespace srd5 {
         public static Spell MirrorImage {
             get {
                 return new Spell(ID.MIRROR_IMAGE, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-
+                    caster.RemoveEffect(Effect.SPELL_MIRROR_IMAGE_1, Effect.SPELL_MIRROR_IMAGE_2, Effect.SPELL_MIRROR_IMAGE_3);
+                    caster.AddEffect(Effect.SPELL_MIRROR_IMAGE_3);
+                    bool spellEnded = false;
+                    caster.AddStartOfTurnEvent(delegate () {
+                        if (caster.HasEffect(Effect.SPELL_MIRROR_IMAGE_3) || caster.HasEffect(Effect.SPELL_MIRROR_IMAGE_2) || caster.HasEffect(Effect.SPELL_MIRROR_IMAGE_3)) {
+                            return false;
+                        } else {
+                            spellEnded = true;
+                            return true;
+                        }
+                    });
+                    int remainingRounds = (int)ONE_MINUTE;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (spellEnded) {
+                            return true;
+                        } else if (--remainingRounds < 1) {
+                            caster.RemoveEffect(Effect.SPELL_MIRROR_IMAGE_1, Effect.SPELL_MIRROR_IMAGE_2, Effect.SPELL_MIRROR_IMAGE_3);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
                 });
             }
         }

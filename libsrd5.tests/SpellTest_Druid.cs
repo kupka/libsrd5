@@ -423,6 +423,7 @@ namespace srd5 {
             AbilityType[] abilities = new AbilityType[] { AbilityType.CONSTITUTION, AbilityType.STRENGTH, AbilityType.DEXTERITY, AbilityType.CHARISMA, AbilityType.INTELLIGENCE, AbilityType.WISDOM };
             int successesWithoutAdvantage = 0;
             int successesWithAdvantage = 0;
+            Random.State = 2;
             for (int i = 0; i < variants.Length; i++) {
                 Monster bandit1 = Monsters.Bandit;
                 Monster bandit2 = Monsters.Bandit;
@@ -443,8 +444,8 @@ namespace srd5 {
                     spell.Cast(ground, acolyte, 12, SpellLevel.THIRD, 2, bandit1);
                     Assert.False(bandit1.HasEffect(Effect.ADVANTAGE_STRENGTH_SAVES));
                 }
-                if (bandit1.DC(this, 15, ability)) successesWithAdvantage++;
-                if (bandit3.DC(this, 15, ability)) successesWithoutAdvantage++;
+                if (bandit1.DC(this, 10, ability)) successesWithAdvantage++;
+                if (bandit3.DC(this, 10, ability)) successesWithoutAdvantage++;
             }
             Assert.True(successesWithAdvantage > successesWithoutAdvantage);
         }

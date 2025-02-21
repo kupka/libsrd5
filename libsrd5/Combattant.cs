@@ -554,6 +554,39 @@ namespace srd5 {
             // Apply special effects
             if (HasEffect(Effect.SPELL_BANE)) modifiedAttack -= D4.Value;
             if (HasEffect(Effect.SPELL_BLESS)) modifiedAttack += D4.Value;
+            // Mirror Image
+            bool attackedMirrorImage = false;
+            Effect mirrorToRemove = Effect.SPELL_MIRROR_IMAGE_3;
+            Effect? mirrorToAdd = Effect.SPELL_MIRROR_IMAGE_2;
+            int mirrorAttackRoll = D20.Value;
+            // determine if the target has such an effect and if so, whether to attack the mirror instead
+            if (target.HasEffect(Effect.SPELL_MIRROR_IMAGE_3)) {
+                if (mirrorAttackRoll > 5) {
+                    attackedMirrorImage = true;
+                }
+            } else if (target.HasEffect(Effect.SPELL_MIRROR_IMAGE_2)) {
+                if (mirrorAttackRoll > 7) {
+                    attackedMirrorImage = true;
+                    mirrorToRemove = Effect.SPELL_MIRROR_IMAGE_2;
+                    mirrorToAdd = Effect.SPELL_MIRROR_IMAGE_1;
+                }
+            } else if (target.HasEffect(Effect.SPELL_MIRROR_IMAGE_1)) {
+                if (mirrorAttackRoll > 10) {
+                    attackedMirrorImage = true;
+                    mirrorToRemove = Effect.SPELL_MIRROR_IMAGE_1;
+                    mirrorToAdd = null;
+                }
+            }
+            if (attackedMirrorImage && (criticalHit || modifiedAttack >= 10 + Dexterity.Modifier)) {
+                // mirror was attacked and hit and is therefore destroyed
+                target.RemoveEffect(mirrorToRemove);
+                if (mirrorToAdd is Effect effectToAdd) {
+                    target.AddEffect(effectToAdd);
+                }
+                GlobalEvents.RolledAttack(this, attack, target, attackRoll.Value, false);
+                GlobalEvents.AffectBySpell(target, Spells.ID.MIRROR_IMAGE, this, true);
+                return false;
+            }
             if (!criticalHit && modifiedAttack < target.ArmorClass) {
                 GlobalEvents.RolledAttack(this, attack, target, attackRoll.Value, false);
                 return false;

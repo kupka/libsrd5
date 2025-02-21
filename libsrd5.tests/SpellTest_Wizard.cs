@@ -360,5 +360,20 @@ namespace srd5 {
             Assert.False(hero.Inventory.MainHand.HasProperty(WeaponProperty.MAGIC));
             Assert.False(hero.Inventory.MainHand.HasProperty(WeaponProperty.PLUS_3));
         }
+
+        [Fact]
+        public void MirrorImageTest() {
+            DefaultSpellTest(Spells.MirrorImage, 12, SpellLevel.SECOND, null, Effect.SPELL_MIRROR_IMAGE_3, Spells.MirrorImage.Duration);
+            Monster hag = Monsters.NightHag;
+            Monster ogre = Monsters.Ogre;
+            Spells.MirrorImage.Cast(hag, 10, SpellLevel.FOURTH, 5);
+            for (int i = 0; i < 20; i++) {
+                ogre.Attack(Attacks.BadgerBite, hag, 5);
+                hag.OnStartOfTurn();
+            }
+            hag.OnEndOfTurn();
+            Assert.True(hag.StartOfTurnEvents.Length == 0);
+            Assert.True(hag.EndOfTurnEvents.Length == 0);
+        }
     }
 }

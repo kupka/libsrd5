@@ -412,7 +412,11 @@ namespace srd5 {
             }
             // Cast Spell
             int modifier = availableSpells.GetSpellcastingModifier(CurrentCombattant);
-            spell.Cast(this, CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, modifier, targets);
+            if (targets.Length > 0) {
+                spell.Cast(this, CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, modifier, targets);
+            } else {
+                spell.Cast(CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, modifier);
+            }
             NextPhase();
             return true;
         }

@@ -167,6 +167,17 @@ namespace srd5 {
             Spells.Shillelagh.Cast(Monsters.Goblin, 0, SpellLevel.CANTRIP, 3);
         }
 
+        [Fact]
+        public void SpellTargetTest() {
+            Monster druid = Monsters.Druid;
+            Monster bandit = Monsters.Bandit;
+            bandit.HitPoints = 6;
+            Battleground ground = createBattleground(druid, bandit);
+            Assert.Throws<Srd5ArgumentException>(delegate () {
+                Spells.Moonbeam.Cast(ground, druid, 10, SpellLevel.SIXTH, 0);
+            });
+        }
+
         private void DefaultSpellTest(Spell spell, int dc, SpellLevel slot, ConditionType? checkForCondition, Effect? checkForEffect, SpellDuration simulateTurns, Monsters.Type monsterType = Monsters.Type.BEAST) {
             DefaultSpellTest(spell, dc, slot, checkForCondition, checkForEffect, (int)simulateTurns, monsterType);
         }
@@ -573,5 +584,29 @@ namespace srd5 {
             lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
             Assert.False(druid.HasCondition(ConditionType.BLINDED));
         }
+
+
+        [Fact]
+        public void MoonbeamTest() {
+            Monster druid = Monsters.Druid;
+            Monster bandit = Monsters.Bandit;
+            Monster werewolf = Monsters.Werewolf;
+            bandit.HitPoints = 6;
+            Battleground ground = createBattleground(druid, bandit);
+            Spells.Moonbeam.Cast(ground, druid, 10, SpellLevel.SIXTH, 0, bandit);
+            Spells.Moonbeam.Cast(ground, druid, 10, SpellLevel.SIXTH, 0, werewolf);
+            Assert.True(bandit.Dead);
+            bandit = Monsters.Bandit;
+            bandit.HitPoints = 6;
+            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.MOONBEAM);
+            druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
+            druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, werewolf);
+            Assert.True(bandit.Dead);
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.True(druid.AvailableSpells[0].PreparedSpells.Length == 0);
+        }
+
     }
 }

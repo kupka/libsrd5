@@ -1,3 +1,5 @@
+using System;
+
 namespace srd5 {
     public enum Feat {
         NONE,
@@ -350,6 +352,10 @@ namespace srd5 {
                     combattant.AddEffect(Effect.LEGENDARY_RESISTANCE, Effect.LEGENDARY_RESISTANCE, Effect.LEGENDARY_RESISTANCE);
                     break;
             }
+        }
+
+        public static bool IsShapeChanger(this Feat feat) {
+            return Enum.GetName(typeof(Feat), feat).IndexOf("SHAPECHANGER") == 0;
         }
     }
 }

@@ -63,6 +63,7 @@ namespace srd5 {
 
         /* Cast a spell on one or more targets */
         public void Cast(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets) {
+            if (targets.Length < 1) throw new Srd5ArgumentException("targets must contain at least one element");
             GlobalEvents.CastSpell(caster, ID);
             CastEffect(ground, caster, dc, slot, modifier, targets);
         }

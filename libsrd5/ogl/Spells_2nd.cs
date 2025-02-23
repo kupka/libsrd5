@@ -314,8 +314,9 @@ namespace srd5 {
                     Damage damage = new Damage(DamageType.FIRE, dice);
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
                     Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 30, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
-                        Combattant target = targets2[0];
-                        target.TakeDamage(ID.FLAMING_SPHERE, DamageType.FIRE, dice, DamageMitigation.HALVES_DAMAGE, dc2, AbilityType.DEXTERITY, out _);
+                        Combattant target2 = targets2[0];
+                        GlobalEvents.AffectBySpell(caster2, ID.FLAMING_SPHERE, target2, true);
+                        target2.TakeDamage(ID.FLAMING_SPHERE, DamageType.FIRE, dice, DamageMitigation.HALVES_DAMAGE, dc2, AbilityType.DEXTERITY, out _);
                     });
                     caster.AvailableSpells[0].AddKnownSpell(flamingSphereCantrip);
                     caster.AvailableSpells[0].AddPreparedSpell(flamingSphereCantrip);
@@ -568,18 +569,77 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell MistyStep {
             get {
-                return new Spell(ID.MISTY_STEP, CONJURATION, SECOND, CastingTime.BONUS_ACTION, 0, V, INSTANTANEOUS, 0, 0, doNothing);
+                // TODO: At some point we want to allow teleporting on a battleground
+                return new Spell(ID.MISTY_STEP, CONJURATION, SECOND, CastingTime.BONUS_ACTION, 0, V, INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.MISTY_STEP));
             }
         }
-        /* TODO */
+
         public static Spell Moonbeam {
             get {
-                return new Spell(ID.MOONBEAM, EVOCATION, SECOND, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 5, 0, doNothing);
+                // Similar to Flaming Sphere, we model this as a temporary Cantrip that can be cast to damage enemies with a range of 60ft
+                return new Spell(ID.MOONBEAM, EVOCATION, SECOND, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 5, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    Dice dice = DiceSlotScaling(SECOND, slot, D10, 2);
+                    Damage damage = new Damage(DamageType.RADIANT, dice);
+                    GlobalEvents.AffectBySpell(caster, ID.MOONBEAM, target, true);
+                    bool shapeChanger = false;
+                    foreach (Feat feat in target.Feats) {
+                        if (feat.IsShapeChanger()) {
+                            shapeChanger = true;
+                        }
+                    }
+                    if (shapeChanger) {
+                        bool success = target.DC(ID.MOONBEAM, dc, AbilityType.CONSTITUTION, out _, false, true);
+                        int dmg = dice.Roll();
+                        if (success) {
+                            target.TakeDamage(ID.MOONBEAM, DamageType.RADIANT, dmg / 2);
+                        } else {
+                            target.TakeDamage(ID.MOONBEAM, DamageType.RADIANT, dmg);
+                        }
+                    } else {
+                        target.TakeDamage(ID.MOONBEAM, DamageType.RADIANT, dice, DamageMitigation.HALVES_DAMAGE, dc, AbilityType.CONSTITUTION, out _);
+                    }
+                    // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
+                    Spell moonbeamCantrip = new Spell(ID.MOONBEAM, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 60, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                        Combattant target2 = targets2[0];
+                        GlobalEvents.AffectBySpell(caster, ID.MOONBEAM, target2, true);
+                        bool shapeChanger2 = false;
+                        foreach (Feat feat in target2.Feats) {
+                            if (feat.IsShapeChanger()) {
+                                shapeChanger2 = true;
+                            }
+                        }
+                        if (shapeChanger2) {
+                            bool success = target2.DC(ID.MOONBEAM, dc2, AbilityType.CONSTITUTION, out _, false, true);
+                            int dmg = dice.Roll();
+                            if (success) {
+                                target2.TakeDamage(ID.MOONBEAM, DamageType.RADIANT, dmg / 2);
+                            } else {
+                                target2.TakeDamage(ID.MOONBEAM, DamageType.RADIANT, dmg);
+                            }
+                        } else {
+                            target2.TakeDamage(ID.MOONBEAM, DamageType.RADIANT, dice, DamageMitigation.HALVES_DAMAGE, dc2, AbilityType.CONSTITUTION, out _);
+                        }
+                    });
+                    caster.AvailableSpells[0].AddKnownSpell(moonbeamCantrip);
+                    caster.AvailableSpells[0].AddPreparedSpell(moonbeamCantrip);
+                    int remainingRounds = (int)ONE_MINUTE;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds < 1) {
+                            caster.AvailableSpells[0].RemoveKnownSpell(moonbeamCantrip);
+                            caster.AvailableSpells[0].RemovePreparedSpell(moonbeamCantrip);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                });
             }
         }
+
         /* TODO */
         public static Spell PassWithoutTrace {
             get {

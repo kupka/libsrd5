@@ -642,7 +642,7 @@ namespace srd5 {
 
         public static Spell PassWithoutTrace {
             get {
-                return new Spell(ID.PASS_WITHOUT_TRACE, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.PASS_WITHOUT_TRACE, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     foreach (Combattant target in targets) {
                         AddEffectsForDuration(ID.PASS_WITHOUT_TRACE, caster, target, ONE_HOUR, Effect.SPELL_PASS_WITHOUT_TRACE);
                     }
@@ -652,7 +652,7 @@ namespace srd5 {
 
         public static Spell PrayerofHealing {
             get {
-                return new Spell(ID.PRAYER_OF_HEALING, EVOCATION, SECOND, CastingTime.TEN_MINUTES, 30, V, INSTANTANEOUS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.PRAYER_OF_HEALING, EVOCATION, SECOND, CastingTime.TEN_MINUTES, 30, V, INSTANTANEOUS, 0, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Dice dice = DiceSlotScaling(SECOND, slot, D8, 2, modifier);
                     foreach (Combattant target in targets) {
                         if (target is Monster monster && (monster.Type == Monsters.Type.CONSTRUCT || monster.Type == Monsters.Type.UNDEAD)) {
@@ -665,10 +665,20 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell ProtectionfromPoison {
             get {
-                return new Spell(ID.PROTECTION_FROM_POISON, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.PROTECTION_FROM_POISON, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    GlobalEvents.AffectBySpell(caster, ID.PROTECTION_FROM_POISON, target, true);
+                    foreach (Effect effect in target.Effects) {
+                        if (effect.IsPoison()) {
+                            target.RemoveEffect(effect);
+                            break;
+                        }
+                    }
+                    AddEffectsForDuration(ID.PROTECTION_FROM_POISON, caster, target, ONE_HOUR, Effect.SPELL_PROTECTION_FROM_POISON);
+                });
             }
         }
         /* TODO */

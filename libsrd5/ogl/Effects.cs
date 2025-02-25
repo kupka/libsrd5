@@ -72,8 +72,8 @@ namespace srd5 {
         IMMUNITY_UNCONSCIOUS,
 
         // Advantage on Save Throws/Skill Checks
-        ADVANTAGE_SAVE_POISON,
-        ADVANTAGE_SAVE_CHARM,
+        ADVANTAGE_POISON_SAVES,
+        ADVANTAGE_CHARM_SAVES,
         ADVANTAGE_CONSTITUTION_SAVES,
         ADVANTAGE_STRENGTH_SAVES,
         ADVANTAGE_DEXTERITY_SAVES,
@@ -164,6 +164,7 @@ namespace srd5 {
         SPELL_MIRROR_IMAGE_3,
         SPELL_PASS_WITHOUT_TRACE,
         SPELL_PROTECTION_FROM_EVIL_AND_GOOD,
+        SPELL_PROTECTION_FROM_POISON,
         SPELL_RAY_OF_FROST,
         SPELL_REDUCE,
         SPELL_RESISTANCE,
@@ -492,6 +493,9 @@ namespace srd5 {
                 case SPELL_GUST_OF_WIND:
                     combattant.Speed /= 2;
                     break;
+                case SPELL_PROTECTION_FROM_POISON:
+                    combattant.AddEffect(ADVANTAGE_POISON_SAVES, RESISTANCE_POISON);
+                    break;
             }
         }
 
@@ -621,6 +625,10 @@ namespace srd5 {
                 case SPELL_GUST_OF_WIND:
                     combattant.Speed *= 2;
                     break;
+                case SPELL_PROTECTION_FROM_POISON:
+                    combattant.RemoveEffect(ADVANTAGE_POISON_SAVES, RESISTANCE_POISON);
+                    break;
+
             }
         }
 
@@ -652,6 +660,10 @@ namespace srd5 {
 
         public static bool IsDisease(this Effect effect) {
             return Enum.GetName(typeof(Effect), effect).IndexOf("DISEASE") > -1;
+        }
+
+        public static bool IsPoison(this Effect effect) {
+            return Enum.GetName(typeof(Effect), effect).IndexOf("POISON") > -1;
         }
     }
 }

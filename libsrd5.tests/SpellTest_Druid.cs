@@ -623,5 +623,14 @@ namespace srd5 {
             Assert.True(dexDCSuccess > strDCSuccess);
         }
 
+        [Fact]
+        public void ProtectionfromPoisonTest() {
+            DefaultSpellTest(Spells.ProtectionfromPoison, 12, SpellLevel.THIRD, null, Effect.ADVANTAGE_POISON_SAVES, SpellDuration.ONE_HOUR);
+            Monster ogre = Monsters.Ogre;
+            ogre.AddEffect(Effect.ABOLETH_DISEASE_TENTACLE, Effect.COUATL_POISON, Effect.DROW_POISON);
+            Spells.ProtectionfromPoison.Cast(ogre, 12, SpellLevel.SECOND, 2);
+            Assert.False(ogre.HasEffect(Effect.COUATL_POISON));
+        }
+
     }
 }

@@ -291,7 +291,7 @@ namespace srd5 {
                     break;
                 case Feat.DWARVEN_RESILIENCE:
                     combattant.AddEffect(Effect.RESISTANCE_POISON);
-                    combattant.AddEffect(Effect.ADVANTAGE_SAVE_POISON);
+                    combattant.AddEffect(Effect.ADVANTAGE_POISON_SAVES);
                     break;
                 case Feat.DWARVEN_SMITH:
                     combattant.AddProficiency(Proficiency.SMITH);
@@ -327,7 +327,7 @@ namespace srd5 {
                     break;
                 case Feat.FEY_ANCESTRY:
                     combattant.AddEffect(Effect.IMMUNITY_SLEEP);
-                    combattant.AddEffect(Effect.ADVANTAGE_SAVE_CHARM);
+                    combattant.AddEffect(Effect.ADVANTAGE_CHARM_SAVES);
                     break;
                 case Feat.HIGH_ELVEN_ABILITY_INCREASE:
                     combattant.Intelligence.BaseValue += 1;

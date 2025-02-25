@@ -152,7 +152,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, SpiderBite, "1d4", 9, AbilityType.CONSTITUTION, true);
+            AttackEffects.PoisonEffect(target, SpiderBite, "1d4", 9, AbilityType.CONSTITUTION, Spells.DamageMitigation.NULLIFIES_DAMAGE);
             return false;
         };
         public static Attack SpiderBite {

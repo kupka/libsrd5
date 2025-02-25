@@ -56,12 +56,13 @@ namespace srd5 {
         /// <param name="dice">The dice string describing how much damage is taken (e.g. "3d6+3")</param>
         /// <param name="dc">How difficult the DC is to receive only half of the dice' damage</param>
         /// <param name="ability">Which ability is used for the DC (default Constitution)</param>
-        /// <param name="dcAvoidsDamage">If true, all damage is avoided instead of halved on successful DC. (default false)</param>
+        /// <param name="damageMitigation">Determines what happens on a successful save (defaults to halves damage)</param>
         /// <returns></returns>
-        public static int PoisonEffect(Combattant target, Attack source, string dice, int dc, AbilityType ability = AbilityType.CONSTITUTION, bool dcAvoidsDamage = false) {
+        public static int PoisonEffect(Combattant target, Attack source, string dice, int dc, AbilityType ability = AbilityType.CONSTITUTION, Spells.DamageMitigation damageMitigation = Spells.DamageMitigation.HALVES_DAMAGE) {
             if (target.IsImmune(DamageType.POISON)) return 0;
-            bool success = target.DC(source, dc, ability);
-            if (dcAvoidsDamage && success) return 0;
+            bool advantage = target.HasEffect(Effect.ADVANTAGE_POISON_SAVES);
+            bool success = target.DC(source, dc, ability, out _, advantage);
+            if (damageMitigation == Spells.DamageMitigation.NULLIFIES_DAMAGE && success) return 0;
             int amount = new Dice(dice).Roll();
             if (success) amount /= 2;
             amount = target.TakeDamage(source, DamageType.POISON, amount);

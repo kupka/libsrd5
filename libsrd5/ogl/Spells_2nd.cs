@@ -692,16 +692,22 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell RopeTrick {
             get {
-                return new Spell(ID.ROPE_TRICK, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.ROPE_TRICK, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, SpellWithoutEffect(ID.ROPE_TRICK));
             }
         }
-        /* TODO */
+
         public static Spell ScorchingRay {
             get {
-                return new Spell(ID.SCORCHING_RAY, EVOCATION, SECOND, CastingTime.ONE_ACTION, 120, VS, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.SCORCHING_RAY, EVOCATION, SECOND, CastingTime.ONE_ACTION, 120, VS, INSTANTANEOUS, 0, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    int rays = (int)slot - 2 + 3;
+                    for (int i = 0; i < rays; i++) {
+                        Combattant target = targets[i % targets.Length];
+                        SpellAttack(ID.SCORCHING_RAY, ground, caster, DamageType.FIRE, new Dice("2d6"), modifier, target, 120);
+                    }
+                });
             }
         }
         /* TODO */

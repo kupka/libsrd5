@@ -388,5 +388,16 @@ namespace srd5 {
                 bandit.HealDamage(100);
             }
         }
+
+        [Fact]
+        public void ScorchingRayTest() {
+            Monster hag = Monsters.NightHag;
+            Monster orc = Monsters.Orc;
+            Monster bandit = Monsters.Bandit;
+            Battleground ground = createBattleground(hag, orc, bandit);
+            Spells.ScorchingRay.Cast(ground, hag, 20, SpellLevel.NINETH, 5, orc, bandit);
+            Assert.True(orc.Dead);
+            Assert.True(bandit.Dead);
+        }
     }
 }

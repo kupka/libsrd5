@@ -95,5 +95,24 @@ namespace srd5 {
             Assert.Equal(hpExpected, ogre.HitPointsMax);
             Assert.Equal(hpExpected, ogre.HitPoints);
         }
+
+        [Fact]
+        public void PrayerofHealingTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            cleric.AddLevel(CharacterClasses.Druid);
+            cleric.HitPoints = 1;
+            Monster ogre = Monsters.Ogre;
+            Monster shadow = Monsters.Shadow;
+            Monster golem = Monsters.ClayGolem;
+            ogre.HitPoints = 1;
+            shadow.HitPoints = 1;
+            golem.HitPoints = 1;
+            Battleground ground = createBattleground(cleric, ogre, shadow, golem);
+            Spells.PrayerofHealing.Cast(ground, cleric, 12, SpellLevel.NINETH, 50, cleric, ogre, shadow, golem);
+            Assert.Equal(cleric.HitPointsMax, cleric.HitPoints);
+            Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
+            Assert.Equal(1, shadow.HitPoints);
+            Assert.Equal(1, golem.HitPoints);
+        }
     }
 }

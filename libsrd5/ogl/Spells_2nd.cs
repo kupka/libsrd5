@@ -649,10 +649,20 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell PrayerofHealing {
             get {
-                return new Spell(ID.PRAYER_OF_HEALING, EVOCATION, SECOND, CastingTime.TEN_MINUTES, 30, V, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.PRAYER_OF_HEALING, EVOCATION, SECOND, CastingTime.TEN_MINUTES, 30, V, INSTANTANEOUS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Dice dice = DiceSlotScaling(SECOND, slot, D8, 2, modifier);
+                    foreach (Combattant target in targets) {
+                        if (target is Monster monster && (monster.Type == Monsters.Type.CONSTRUCT || monster.Type == Monsters.Type.UNDEAD)) {
+                            GlobalEvents.AffectBySpell(caster, ID.PRAYER_OF_HEALING, target, false);
+                        } else {
+                            GlobalEvents.AffectBySpell(caster, ID.PRAYER_OF_HEALING, target, true);
+                            target.HealDamage(dice.Roll());
+                        }
+                    }
+                });
             }
         }
         /* TODO */

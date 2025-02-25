@@ -710,10 +710,12 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell SeeInvisibility {
             get {
-                return new Spell(ID.SEE_INVISIBILITY, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.SEE_INVISIBILITY, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    AddEffectsForDuration(ID.SEE_INVISIBILITY, caster, caster, ONE_HOUR, Effect.SPELL_SEE_INVISIBILITY);
+                });
             }
         }
         /* TODO */

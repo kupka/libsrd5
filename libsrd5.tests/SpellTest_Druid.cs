@@ -12,6 +12,15 @@ namespace srd5 {
             foreach (PropertyInfo property in typeof(Spells).GetProperties()) {
                 object o = property.GetMethod.Invoke(null, null);
                 Assert.True(o is Spell);
+                Spell spell = (Spell)o;
+                Monster hag = Monsters.NightHag;
+                Monster bandit = Monsters.Bandit;
+                Battleground ground = createBattleground(hag, bandit);
+                if (spell.MaximumTargets == 0) {
+                    spell.Cast(hag, 10, SpellLevel.NINETH, 5);
+                } else {
+                    spell.Cast(ground, hag, 10, SpellLevel.NINETH, 20, bandit);
+                }
             }
         }
         private BattleGroundClassic createBattleground(Combattant caster, params Combattant[] targets) {

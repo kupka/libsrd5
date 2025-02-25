@@ -80,7 +80,7 @@ namespace srd5 {
                         Damage damage = new Damage(DamageType.FORCE, "1d10");
                         Dice dice = DiceLevelScaling(caster, D10);
                         for (int i = 0; i < dice.Amount; i++) {
-                            SpellAttack(ID.ELDRITCH_BLAST, ground, caster, DamageType.FORCE, new Dice("1d10"), modifier, targets[i], 120);
+                            SpellAttack(ID.ELDRITCH_BLAST, ground, caster, DamageType.FORCE, new Dice("1d10"), modifier, targets[i % targets.Length], 120);
                         }
                     }
                 );
@@ -104,7 +104,8 @@ namespace srd5 {
                 return new Spell(
                     ID.GUIDANCE, DIVINATION, CANTRIP, CastingTime.ONE_ACTION, 5, VS,
                     ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                        targets[0].AddEffect(Effect.SPELL_GUIDANCE);
+                        Combattant target = targets[0];
+                        AddEffectsForDuration(ID.GUIDANCE, caster, target, ONE_MINUTE, Effect.SPELL_GUIDANCE);
                     }
                 );
             }

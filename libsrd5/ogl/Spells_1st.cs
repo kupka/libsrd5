@@ -148,7 +148,9 @@ namespace srd5 {
 
         public static Spell ComprehendLanguages {
             get {
-                return new Spell(ID.COMPREHEND_LANGUAGES, DIVINATION, FIRST, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, SpellWithoutEffect(ID.COMPREHEND_LANGUAGES));
+                return new Spell(ID.COMPREHEND_LANGUAGES, DIVINATION, FIRST, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    AddEffectsForDuration(ID.COMPREHEND_LANGUAGES, caster, caster, ONE_HOUR, Effect.SPELL_COMPREHEND_LANGUAGES);
+                });
             }
         }
 
@@ -183,33 +185,33 @@ namespace srd5 {
 
         public static Spell DetectEvilandGood {
             get {
-                return new Spell(
-                    ID.DETECT_EVIL_AND_GOOD, DIVINATION, FIRST, CastingTime.ONE_ACTION, 0, VS, TEN_MINUTES, 30, 0, SpellWithoutEffect(ID.DETECT_EVIL_AND_GOOD)
-                );
+                return new Spell(ID.DETECT_EVIL_AND_GOOD, DIVINATION, FIRST, CastingTime.ONE_ACTION, 0, VS, TEN_MINUTES, 30, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    AddEffectsForDuration(ID.DETECT_EVIL_AND_GOOD, caster, caster, TEN_MINUTES, Effect.SPELL_DETECT_EVIL_AND_GOOD);
+                });
             }
         }
 
         public static Spell DetectMagic {
             get {
-                return new Spell(
-                    ID.DETECT_MAGIC, DIVINATION, FIRST, CastingTime.ONE_ACTION, 0, VS,
-                    TEN_MINUTES, 30, 0, SpellWithoutEffect(ID.DETECT_MAGIC)
-                );
+                return new Spell(ID.DETECT_MAGIC, DIVINATION, FIRST, CastingTime.ONE_ACTION, 0, VS, TEN_MINUTES, 30, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    AddEffectsForDuration(ID.DETECT_MAGIC, caster, caster, TEN_MINUTES, Effect.SPELL_DETECT_MAGIC);
+                });
             }
         }
 
         public static Spell DetectPoisonAndDisease {
             get {
-                return new Spell(
-                    ID.DETECT_POISON_AND_DISEASE, DIVINATION, FIRST, CastingTime.ONE_ACTION, 0, VSM,
-                    TEN_MINUTES, 30, 0, SpellWithoutEffect(ID.DETECT_POISON_AND_DISEASE)
-                );
+                return new Spell(ID.DETECT_POISON_AND_DISEASE, DIVINATION, FIRST, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 30, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    AddEffectsForDuration(ID.DETECT_POISON_AND_DISEASE, caster, caster, TEN_MINUTES, Effect.SPELL_DETECT_POISON_AND_DISEASE);
+                });
             }
         }
 
         public static Spell DisguiseSelf {
             get {
-                return new Spell(ID.DISGUISE_SELF, ILLUSION, FIRST, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 0, SpellWithoutEffect(ID.DISGUISE_SELF));
+                return new Spell(ID.DISGUISE_SELF, ILLUSION, FIRST, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    AddEffectsForDuration(ID.DISGUISE_SELF, caster, caster, ONE_HOUR, Effect.SPELL_DISGUISE_SELF);
+                });
             }
         }
 

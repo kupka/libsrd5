@@ -375,14 +375,13 @@ namespace srd5 {
             return DC(source, dc, type, out _, advantage, disadvantage);
         }
 
-
-
         public bool DC(object source, int dc, Skill skill, out int finalValue, bool advantage = false, bool disadvantage = false) {
             Ability ability = GetAbility(skill.Ability());
             int additionalModifiers = 0;
             if (IsProficient(skill)) {
                 additionalModifiers += ProficiencyBonus;
             }
+            if (HasEffect(Effect.SPELL_PASS_WITHOUT_TRACE) && skill == Skill.STEALTH) additionalModifiers += 10;
             return this.dc(source, dc, additionalModifiers, D20, ability, advantage, disadvantage, out finalValue);
         }
 
@@ -399,6 +398,7 @@ namespace srd5 {
             }
             Dice.onDiceRolled(d20);
             finalValue = d20.Value + ability.Modifier + additionalModifiers;
+            // Spell Effects
             if (HasEffect(Effect.SPELL_GUIDANCE)) {
                 finalValue += D4.Value;
                 RemoveEffect(Effect.SPELL_GUIDANCE);

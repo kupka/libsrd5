@@ -608,5 +608,20 @@ namespace srd5 {
             Assert.True(druid.AvailableSpells[0].PreparedSpells.Length == 0);
         }
 
+        [Fact]
+        public void PassWithoutTraceTest() {
+            Monster druid = Monsters.Druid;
+            druid.Dexterity.BaseValue = 10;
+            druid.Strength.BaseValue = 10;
+            int dexDCSuccess = 0;
+            int strDCSuccess = 0;
+            Spells.PassWithoutTrace.Cast(druid, 10, SpellLevel.SECOND, 0);
+            for (int i = 0; i < 20; i++) {
+                if (druid.DC(this, 15, Skill.ATHLETICS, out _)) strDCSuccess++;
+                if (druid.DC(this, 15, Skill.STEALTH, out _)) dexDCSuccess++;
+            }
+            Assert.True(dexDCSuccess > strDCSuccess);
+        }
+
     }
 }

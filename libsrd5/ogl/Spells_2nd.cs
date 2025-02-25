@@ -640,10 +640,13 @@ namespace srd5 {
             }
         }
 
-        /* TODO */
         public static Spell PassWithoutTrace {
             get {
-                return new Spell(ID.PASS_WITHOUT_TRACE, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.PASS_WITHOUT_TRACE, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    foreach (Combattant target in targets) {
+                        AddEffectsForDuration(ID.PASS_WITHOUT_TRACE, caster, target, ONE_HOUR, Effect.SPELL_PASS_WITHOUT_TRACE);
+                    }
+                });
             }
         }
         /* TODO */

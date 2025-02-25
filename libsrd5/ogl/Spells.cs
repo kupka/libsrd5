@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq.Expressions;
 
 namespace srd5 {
     public enum SpellSchool {
@@ -495,20 +496,24 @@ namespace srd5 {
         /// <summary>
         /// Does a Spell Attack roll against the target, applies the damage. Returns whether the attack roll succeeded or not.
         /// </summary>
-        public static bool SpellAttack(ID id, Battleground ground, Combattant caster, DamageType damageType, Dice dice, int modifier, Combattant target, int range, DamageMitigation missEffect = DamageMitigation.NULLIFIES_DAMAGE, DamageMitigation dCEffect = DamageMitigation.NO_EFFECT, int dc = 0, AbilityType dcAbility = AbilityType.DEXTERITY) {
+        public static bool SpellAttack(ID id, Battleground ground, Combattant caster, DamageType damageType, Dice? dice, int modifier, Combattant target, int range, DamageMitigation missEffect = DamageMitigation.NULLIFIES_DAMAGE, DamageMitigation dCEffect = DamageMitigation.NO_EFFECT, int dc = 0, AbilityType dcAbility = AbilityType.DEXTERITY) {
             return SpellAttack(id, ground, caster, damageType, dice, modifier, target, range, missEffect, dCEffect, dc, out _);
         }
 
-        internal static bool SpellAttack(ID id, Battleground ground, Combattant caster, DamageType damageType, Dice dice, int modifier, Combattant target, int range, DamageMitigation missEffect, DamageMitigation dCEffect, int dc, out bool dcResult) {
+        internal static bool SpellAttack(ID id, Battleground ground, Combattant caster, DamageType damageType, Dice? dice, int modifier, Combattant target, int range, DamageMitigation missEffect, DamageMitigation dCEffect, int dc, out bool dcResult) {
             int bonus = modifier + caster.ProficiencyBonus;
-            Attack attack = new Attack(id.Name(), bonus, new Damage(damageType, dice), 0, range, range);
+            Attack attack;
+            if (dice is Dice d)
+                attack = new Attack(id.Name(), bonus, new Damage(damageType, d), 0, range, range);
+            else
+                attack = new Attack(id.Name(), bonus, new Damage(damageType, 0), 0, range, range);
             int distance = ground.Distance(caster, target);
             bool hit = caster.Attack(attack, target, distance, true, true, dCEffect, dc, AbilityType.NONE, out dcResult);
             if (missEffect == DamageMitigation.NULLIFIES_DAMAGE) {
                 GlobalEvents.AffectBySpell(caster, id, target, hit);
             } else if (missEffect == DamageMitigation.HALVES_DAMAGE) {
                 GlobalEvents.AffectBySpell(caster, id, target, true);
-                target.TakeDamage(id, damageType, dice.Roll() / 2);
+                target.TakeDamage(id, damageType, attack.Damage.Dice.Roll() / 2);
             }
             return hit;
         }

@@ -596,20 +596,22 @@ namespace srd5 {
             if (target.HasEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT) && distance <= 5) criticalHit = true;
             GlobalEvents.RolledAttack(this, attack, target, attackRoll.Value, true, criticalHit);
             int bonusDamage = 0;
+            int damageDivisor = 1;
             if (HasEffect(Effect.SPELL_DIVINE_FAVOR)) bonusDamage += D4.Value;
             if (HasEffect(Effect.SPELL_ENLARGE)) bonusDamage += D4.Value;
             if (HasEffect(Effect.SPELL_REDUCE)) bonusDamage -= D4.Value;
+            if (HasEffect(Effect.SPELL_RAY_OF_ENFEEBLEMENT)) damageDivisor += 1;
             if (criticalHit) {
                 int times = 2;
                 if (attack.HasProperty(srd5.Attack.Property.TRIPLE_DICE_ON_CRIT)) times = 3;
-                target.TakeDamage(this, attack.Damage.Type, Math.Max(1, attack.Damage.Dice.RollCritical(times) + bonusDamage), dCEffect, dc, dcAbility, out dcSuccess);
+                target.TakeDamage(this, attack.Damage.Type, Math.Max(1, (attack.Damage.Dice.RollCritical(times) + bonusDamage) / damageDivisor), dCEffect, dc, dcAbility, out dcSuccess);
                 foreach (Damage additionalDamage in attack.AdditionalDamage) {
-                    target.TakeDamage(this, additionalDamage.Type, Math.Max(1, additionalDamage.Dice.RollCritical(times)), dCEffect, dc, dcAbility, out dcSuccess);
+                    target.TakeDamage(this, additionalDamage.Type, Math.Max(1, additionalDamage.Dice.RollCritical(times) / damageDivisor), dCEffect, dc, dcAbility, out dcSuccess);
                 }
             } else {
-                target.TakeDamage(this, attack.Damage.Type, Math.Max(1, attack.Damage.Dice.Roll() + bonusDamage), dCEffect, dc, dcAbility, out dcSuccess);
+                target.TakeDamage(this, attack.Damage.Type, Math.Max(1, (attack.Damage.Dice.Roll() + bonusDamage) / damageDivisor), dCEffect, dc, dcAbility, out dcSuccess);
                 foreach (Damage additionalDamage in attack.AdditionalDamage) {
-                    target.TakeDamage(this, additionalDamage.Type, Math.Max(1, additionalDamage.Dice.Roll()), dCEffect, dc, dcAbility, out dcSuccess);
+                    target.TakeDamage(this, additionalDamage.Type, Math.Max(1, additionalDamage.Dice.Roll() / damageDivisor), dCEffect, dc, dcAbility, out dcSuccess);
                 }
             }
             // Hit effect

@@ -668,7 +668,7 @@ namespace srd5 {
 
         public static Spell ProtectionfromPoison {
             get {
-                return new Spell(ID.PROTECTION_FROM_POISON, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.PROTECTION_FROM_POISON, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     GlobalEvents.AffectBySpell(caster, ID.PROTECTION_FROM_POISON, target, true);
                     foreach (Effect effect in target.Effects) {
@@ -681,10 +681,15 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell RayofEnfeeblement {
             get {
-                return new Spell(ID.RAY_OF_ENFEEBLEMENT, NECROMANCY, SECOND, CastingTime.ONE_ACTION, 60, VS, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.RAY_OF_ENFEEBLEMENT, NECROMANCY, SECOND, CastingTime.ONE_ACTION, 60, VS, ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    if (SpellAttack(ID.RAY_OF_ENFEEBLEMENT, ground, caster, DamageType.TRUE_DAMAGE, null, 0, target, 60)) {
+                        AddEffectsForDuration(ID.RAY_OF_ENFEEBLEMENT, caster, target, ONE_MINUTE, Effect.SPELL_RAY_OF_ENFEEBLEMENT);
+                    }
+                });
             }
         }
         /* TODO */

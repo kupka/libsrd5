@@ -375,5 +375,18 @@ namespace srd5 {
             Assert.True(hag.StartOfTurnEvents.Length == 0);
             Assert.True(hag.EndOfTurnEvents.Length == 0);
         }
+
+        [Fact]
+        public void RayofEnfeeblementTest() {
+            DefaultSpellTest(Spells.RayofEnfeeblement, 15, SpellLevel.SECOND, null, Effect.SPELL_RAY_OF_ENFEEBLEMENT, Spells.RayofEnfeeblement.Duration);
+            Monster ogre = Monsters.Ogre;
+            Monster bandit = Monsters.Bandit;
+            ogre.AddEffect(Effect.SPELL_RAY_OF_ENFEEBLEMENT);
+            for (int i = 0; i < 20; i++) {
+                ogre.Attack(Attacks.OgreGreatclub, bandit, 5); // could be fatal without effect
+                Assert.False(bandit.Dead);
+                bandit.HealDamage(100);
+            }
+        }
     }
 }

@@ -179,6 +179,7 @@ namespace srd5 {
         SPELL_SHIELD_OF_FAITH,
         SPELL_SILENCE,
         SPELL_SPIDER_CLIMB,
+        SPELL_SUGGESTION,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,
@@ -509,6 +510,9 @@ namespace srd5 {
                     combattant.AddEffect(IMMUNITY_THUNDER);
                     combattant.AddCondition(ConditionType.DEAFENED);
                     break;
+                case SPELL_SUGGESTION:
+                    combattant.AddEffect(CANNOT_TAKE_ACTIONS);
+                    break;
             }
         }
 
@@ -644,6 +648,9 @@ namespace srd5 {
                 case SPELL_SILENCE:
                     combattant.RemoveEffect(IMMUNITY_THUNDER);
                     combattant.RemoveCondition(ConditionType.DEAFENED);
+                    break;
+                case SPELL_SUGGESTION:
+                    combattant.RemoveEffect(CANNOT_TAKE_ACTIONS);
                     break;
             }
         }

@@ -793,10 +793,23 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell Suggestion {
             get {
-                return new Spell(ID.SUGGESTION, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 30, VM, EIGHT_HOURS, 0, 0, doNothing);
+                // In order to not make this spell too powerful (compare with Dominate line of spells)
+                // we make the target only unable to attack. Effect ends when the target takes damage.
+                return new Spell(ID.SUGGESTION, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 30, VM, EIGHT_HOURS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    if (target.HasEffect(IMMUNITY_CHARMED) || target.DC(ID.SUGGESTION, dc, WISDOM)) {
+                        GlobalEvents.AffectBySpell(caster, ID.SUGGESTION, target, false);
+                    } else {
+                        AddEffectsForDuration(ID.SUGGESTION, caster, target, EIGHT_HOURS, SPELL_SUGGESTION);
+                        target.AddDamageTakenEvent(delegate (object source, Damage damage) {
+                            target.RemoveEffect(SPELL_SUGGESTION);
+                            return true;
+                        });
+                    }
+                });
             }
         }
         /* TODO */

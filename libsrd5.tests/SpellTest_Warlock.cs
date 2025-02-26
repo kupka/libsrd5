@@ -31,5 +31,10 @@ namespace srd5 {
         public void HellishRebukeTest() {
             DamagingSpellTesting(Spells.HellishRebuke, 12, DamageType.FIRE);
         }
+
+        [Fact]
+        public void SuggestionTest() {
+            DefaultSpellTest(Spells.Suggestion, 15, SpellLevel.FOURTH, null, Effect.CANNOT_TAKE_ACTIONS, Spells.Suggestion.Duration);
+        }
     }
 }

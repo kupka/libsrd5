@@ -4,6 +4,10 @@ using static srd5.SpellVariant;
 using static srd5.SpellSchool;
 using static srd5.SpellLevel;
 using static srd5.SpellDuration;
+using static srd5.DamageType;
+using static srd5.Spells.DamageMitigation;
+using static srd5.Effect;
+using static srd5.AbilityType;
 
 namespace srd5 {
     public partial struct Spells {
@@ -13,10 +17,10 @@ namespace srd5 {
                     Combattant target = targets[0];
                     Dice dice = DiceSlotScaling(SECOND, slot, D4, 4, 0, 1);
                     Dice additionalDice = DiceSlotScaling(SECOND, slot, D4, 2, 0, 1);
-                    bool hit = SpellAttack(ID.ACID_ARROW, ground, caster, DamageType.ACID, dice, 0, target, 90, DamageMitigation.HALVES_DAMAGE);
+                    bool hit = SpellAttack(ID.ACID_ARROW, ground, caster, ACID, dice, 0, target, 90, HALVES_DAMAGE);
                     if (hit) {
                         target.AddEndOfTurnEvent(delegate () {
-                            target.TakeDamage(Effect.SPELL_ACID_ARRORW_BURN, DamageType.ACID, additionalDice);
+                            target.TakeDamage(SPELL_ACID_ARRORW_BURN, ACID, additionalDice);
                             return true;
                         });
                     }
@@ -29,12 +33,12 @@ namespace srd5 {
                 return new Spell(ID.AID, ABJURATION, SECOND, CastingTime.ONE_ACTION, 30, VSM, EIGHT_HOURS, 0, 3, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     int amount = 5 * ((int)slot - 1);
                     foreach (Combattant target in targets) {
-                        if (target.HasEffect(Effect.SPELL_AID)) {
+                        if (target.HasEffect(SPELL_AID)) {
                             GlobalEvents.AffectBySpell(caster, ID.AID, target, false);
                         } else {
                             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(amount, HitPointMaxiumModifier.RemovedByEffect.AFTER_8_HOURS));
                             target.HealDamage(amount);
-                            target.AddEffect(Effect.SPELL_AID);
+                            target.AddEffect(SPELL_AID);
                             GlobalEvents.AffectBySpell(caster, ID.AID, target, true);
                         }
                     }
@@ -47,7 +51,7 @@ namespace srd5 {
                 return new Spell(ID.ALTER_SELF, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     // TODO: Aquatic Adaption and Change Appearance require work elsewhere
                     // We cannot chose the type of weapons so let's grow Claws
-                    caster.AddEffect(Effect.SPELL_ALTER_SELF_CLAWS);
+                    caster.AddEffect(SPELL_ALTER_SELF_CLAWS);
                     GlobalEvents.AffectBySpell(caster, ID.ALTER_SELF, caster, true);
                 });
             }
@@ -81,7 +85,7 @@ namespace srd5 {
             get {
                 return new Spell(ID.BARKSKIN, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
-                    target.AddEffect(Effect.SPELL_BARKSKIN);
+                    target.AddEffect(SPELL_BARKSKIN);
                     GlobalEvents.AffectBySpell(caster, ID.BARKSKIN, target, true);
                 });
             }
@@ -95,10 +99,10 @@ namespace srd5 {
                     int maxTargets = (int)slot - 1;
                     for (int i = 0; i < maxTargets && i < targets.Length; i++) {
                         Combattant target = targets[i];
-                        if (target.DC(ID.BLINDNESS_DEAFNESS, dc, AbilityType.CONSTITUTION)) {
+                        if (target.DC(ID.BLINDNESS_DEAFNESS, dc, CONSTITUTION)) {
                             GlobalEvents.AffectBySpell(caster, ID.BLINDNESS_DEAFNESS, target, false);
                         } else {
-                            AddEffectAndConditionsForDuration(ID.BLINDNESS_DEAFNESS, caster, target, ONE_MINUTE, Effect.SPELL_BLINDNESS_DEAFNESS, ConditionType.BLINDED, ConditionType.DEAFENED);
+                            AddEffectAndConditionsForDuration(ID.BLINDNESS_DEAFNESS, caster, target, ONE_MINUTE, SPELL_BLINDNESS_DEAFNESS, ConditionType.BLINDED, ConditionType.DEAFENED);
                         }
                     }
                 });
@@ -108,7 +112,7 @@ namespace srd5 {
         public static Spell Blur {
             get {
                 return new Spell(ID.BLUR, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, V, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    AddEffectsForDuration(ID.BLUR, caster, caster, ONE_MINUTE, Effect.SPELL_BLUR);
+                    AddEffectsForDuration(ID.BLUR, caster, caster, ONE_MINUTE, SPELL_BLUR);
                 });
             }
         }
@@ -117,7 +121,7 @@ namespace srd5 {
             get {
                 return new Spell(ID.BRANDING_SMITE, EVOCATION, SECOND, CastingTime.BONUS_ACTION, 0, V, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Dice dice = DiceSlotScaling(SECOND, slot, D6, 2);
-                    Damage additionalDamage = new Damage(DamageType.RADIANT, dice);
+                    Damage additionalDamage = new Damage(RADIANT, dice);
                     foreach (Attack attack in caster.MeleeAttacks) {
                         attack.AddAdditionalDamage(additionalDamage);
                         attack.AddAttackEffect(delegate (Combattant attacker, Combattant target) {
@@ -145,7 +149,7 @@ namespace srd5 {
                                 continue;
                             }
                         }
-                        AddEffectsForDuration(ID.CALM_EMOTIONS, caster, target, ONE_MINUTE, Effect.SPELL_CALM_EMOTIONS);
+                        AddEffectsForDuration(ID.CALM_EMOTIONS, caster, target, ONE_MINUTE, SPELL_CALM_EMOTIONS);
                     }
                 });
             }
@@ -167,7 +171,7 @@ namespace srd5 {
             get {
                 return new Spell(ID.DARKVISION, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, EIGHT_HOURS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
-                    AddEffectsForDuration(ID.DARKVISION, caster, target, EIGHT_HOURS, Effect.SPELL_DARKVISION);
+                    AddEffectsForDuration(ID.DARKVISION, caster, target, EIGHT_HOURS, SPELL_DARKVISION);
                 });
             }
         }
@@ -187,29 +191,29 @@ namespace srd5 {
                     int maxTargets = (int)slot - 1;
                     for (int i = 0; i < maxTargets && i < targets.Length; i++) {
                         Combattant target = targets[i];
-                        if (target.HasEffect(Effect.SPELL_ENHANCE_ABILITY)) {
+                        if (target.HasEffect(SPELL_ENHANCE_ABILITY)) {
                             GlobalEvents.AffectBySpell(caster, ID.ENHANCE_ABILITY, target, false);
                             return;
                         }
                         switch (spell.Variant) {
                             case BULLS_STRENGTH:
-                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_STRENGTH_SAVES);
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, SPELL_ENHANCE_ABILITY, ADVANTAGE_STRENGTH_SAVES);
                                 // TODO: Double carrying capacity
                                 break;
                             case CATS_GRACE:
-                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_DEXTERITY_SAVES);
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, SPELL_ENHANCE_ABILITY, ADVANTAGE_DEXTERITY_SAVES);
                                 break;
                             case EAGLES_SPLENDOR:
-                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_CHARISMA_SAVES);
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, SPELL_ENHANCE_ABILITY, ADVANTAGE_CHARISMA_SAVES);
                                 break;
                             case FOX_CUNNING:
-                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_INTELLIGENCE_SAVES);
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, SPELL_ENHANCE_ABILITY, ADVANTAGE_INTELLIGENCE_SAVES);
                                 break;
                             case OWLS_WISDOM:
-                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_WISDOM_SAVES);
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, SPELL_ENHANCE_ABILITY, ADVANTAGE_WISDOM_SAVES);
                                 break;
                             case BEARS_ENDURANCE:
-                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENHANCE_ABILITY, Effect.ADVANTAGE_CONSTITUTION_SAVES);
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, SPELL_ENHANCE_ABILITY, ADVANTAGE_CONSTITUTION_SAVES);
                                 target.AddTemporaryHitpoints(Roll("2d6"), ONE_HOUR, ID.ENHANCE_ABILITY);
                                 break;
                         }
@@ -228,23 +232,23 @@ namespace srd5 {
                     Combattant target = targets[0];
                     switch (spell.Variant) {
                         case ENLARGE:
-                            if (target.HasEffect(Effect.SPELL_ENLARGE)) {
+                            if (target.HasEffect(SPELL_ENLARGE)) {
                                 GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, false);
-                            } else if (target.HasEffect(Effect.SPELL_REDUCE)) {
+                            } else if (target.HasEffect(SPELL_REDUCE)) {
                                 GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, true);
-                                target.RemoveEffect(Effect.SPELL_REDUCE, Effect.DISADVANTAGE_STRENGTH_SAVES);
+                                target.RemoveEffect(SPELL_REDUCE, DISADVANTAGE_STRENGTH_SAVES);
                             } else {
-                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_ENLARGE, Effect.ADVANTAGE_STRENGTH_SAVES);
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, SPELL_ENLARGE, ADVANTAGE_STRENGTH_SAVES);
                             }
                             break;
                         case REDUCE:
-                            if (target.HasEffect(Effect.SPELL_REDUCE) || target.DC(spell.ID, dc, AbilityType.CONSTITUTION)) {
+                            if (target.HasEffect(SPELL_REDUCE) || target.DC(spell.ID, dc, CONSTITUTION)) {
                                 GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, false);
-                            } else if (target.HasEffect(Effect.SPELL_ENLARGE)) {
+                            } else if (target.HasEffect(SPELL_ENLARGE)) {
                                 GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, true);
-                                target.RemoveEffect(Effect.SPELL_ENLARGE, Effect.ADVANTAGE_STRENGTH_SAVES);
+                                target.RemoveEffect(SPELL_ENLARGE, ADVANTAGE_STRENGTH_SAVES);
                             } else {
-                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, Effect.SPELL_REDUCE, Effect.DISADVANTAGE_STRENGTH_SAVES);
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, SPELL_REDUCE, DISADVANTAGE_STRENGTH_SAVES);
                             }
                             break;
                     }
@@ -279,7 +283,7 @@ namespace srd5 {
                 return new Spell(ID.FLAME_BLADE, EVOCATION, SECOND, CastingTime.BONUS_ACTION, 0, VSM, TEN_MINUTES, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     // This is modelled by creating a Cantrip that the druid can use. After the Duration, the cantrip is removed
                     int dice = 3 + ((int)slot - 2) / 2;
-                    Damage damage = new Damage(DamageType.FIRE, new Dice(dice, D6));
+                    Damage damage = new Damage(FIRE, new Dice(dice, D6));
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
                     Spell flamingBladeCantrip = new Spell(ID.FLAME_BLADE, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 5, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         SpellAttack(ID.FLAME_BLADE, ground2, caster2, damage.Type, damage.Dice, modifier2, targets2[0], 5);
@@ -311,12 +315,12 @@ namespace srd5 {
                 return new Spell(ID.FLAMING_SPHERE, CONJURATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     // This is modelled by creating a Cantrip that the caster can use. After the Duration, the cantrip is removed
                     Dice dice = DiceSlotScaling(SECOND, slot, D6, 2);
-                    Damage damage = new Damage(DamageType.FIRE, dice);
+                    Damage damage = new Damage(FIRE, dice);
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
                     Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 30, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         Combattant target2 = targets2[0];
                         GlobalEvents.AffectBySpell(caster2, ID.FLAMING_SPHERE, target2, true);
-                        target2.TakeDamage(ID.FLAMING_SPHERE, DamageType.FIRE, dice, DamageMitigation.HALVES_DAMAGE, dc2, AbilityType.DEXTERITY, out _);
+                        target2.TakeDamage(ID.FLAMING_SPHERE, FIRE, dice, HALVES_DAMAGE, dc2, DEXTERITY, out _);
                     });
                     caster.AvailableSpells[0].AddKnownSpell(flamingSphereCantrip);
                     caster.AvailableSpells[0].AddPreparedSpell(flamingSphereCantrip);
@@ -346,12 +350,12 @@ namespace srd5 {
                     // Fix the location where the spell was cast to create the push-vector
                     Location location = ground.LocateCombattant(caster);
                     foreach (Combattant target in targets) {
-                        AddEffectsForDuration(ID.GUST_OF_WIND, caster, target, ONE_MINUTE, Effect.SPELL_GUST_OF_WIND);
+                        AddEffectsForDuration(ID.GUST_OF_WIND, caster, target, ONE_MINUTE, SPELL_GUST_OF_WIND);
                         int remainingRounds = (int)ONE_MINUTE;
                         target.AddStartOfTurnEvent(delegate () {
                             if (--remainingRounds < 1) {
                                 return true;
-                            } else if (!target.DC(ID.GUST_OF_WIND, dc, AbilityType.STRENGTH)) {
+                            } else if (!target.DC(ID.GUST_OF_WIND, dc, STRENGTH)) {
                                 ground.Push(location, target, 15);
                             }
                             return false;
@@ -384,10 +388,10 @@ namespace srd5 {
                                        }
                                    }
                                    // Wisdom save
-                                   if (!target.DC(ID.HOLD_PERSON, dc, AbilityType.WISDOM) && target.AddCondition(ConditionType.PARALYZED)) {
+                                   if (!target.DC(ID.HOLD_PERSON, dc, WISDOM) && target.AddCondition(ConditionType.PARALYZED)) {
                                        GlobalEvents.AffectBySpell(caster, ID.HOLD_PERSON, target, true);
                                        target.AddEndOfTurnEvent(delegate () {
-                                           bool success = target.DC(ID.HOLD_PERSON, dc, AbilityType.WISDOM);
+                                           bool success = target.DC(ID.HOLD_PERSON, dc, WISDOM);
                                            if (success) {
                                                target.RemoveCondition(ConditionType.PARALYZED);
                                            }
@@ -443,7 +447,7 @@ namespace srd5 {
         public static Spell LesserRestoration {
             get {
                 Spell spell = new Spell(ID.LESSER_RESTORATION, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, INSTANTANEOUS, 0, 1);
-                spell.Variants = new SpellVariant[] { BLINDNESS, DEAFNESS, PARALYZATION, POISON, DISEASE };
+                spell.Variants = new SpellVariant[] { BLINDNESS, DEAFNESS, PARALYZATION, POISONS, DISEASES };
                 spell.CastEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     GlobalEvents.AffectBySpell(caster, ID.LESSER_RESTORATION, target, true);
@@ -457,10 +461,10 @@ namespace srd5 {
                         case PARALYZATION:
                             target.RemoveCondition(ConditionType.PARALYZED);
                             break;
-                        case POISON:
+                        case POISONS:
                             target.RemoveCondition(ConditionType.POISONED);
                             break;
-                        case DISEASE:
+                        case DISEASES:
                             foreach (Effect effect in target.Effects) {
                                 if (effect.IsDisease()) {
                                     target.RemoveEffect(effect);
@@ -480,11 +484,11 @@ namespace srd5 {
                 // Ranged attacks should work normally. The Weight limit of 500 pounds is translated to a maximum size of Large
                 return new Spell(ID.LEVITATE, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, TEN_MINUTES, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
-                    if (target.Size > Size.LARGE || target.DC(ID.LEVITATE, dc, AbilityType.CONSTITUTION)) {
+                    if (target.Size > Size.LARGE || target.DC(ID.LEVITATE, dc, CONSTITUTION)) {
                         GlobalEvents.AffectBySpell(caster, ID.LEVITATE, target, false);
                         return;
                     }
-                    AddEffectsForDuration(ID.LEVITATE, caster, target, TEN_MINUTES, Effect.SPELL_LEVITATE, Effect.CANNOT_BE_MELEE_ATTACKED, Effect.CANNOT_MELEE_ATTACK);
+                    AddEffectsForDuration(ID.LEVITATE, caster, target, TEN_MINUTES, SPELL_LEVITATE, CANNOT_BE_MELEE_ATTACKED, CANNOT_MELEE_ATTACK);
                 });
             }
         }
@@ -544,11 +548,11 @@ namespace srd5 {
         public static Spell MirrorImage {
             get {
                 return new Spell(ID.MIRROR_IMAGE, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    caster.RemoveEffect(Effect.SPELL_MIRROR_IMAGE_1, Effect.SPELL_MIRROR_IMAGE_2, Effect.SPELL_MIRROR_IMAGE_3);
-                    caster.AddEffect(Effect.SPELL_MIRROR_IMAGE_3);
+                    caster.RemoveEffect(SPELL_MIRROR_IMAGE_1, SPELL_MIRROR_IMAGE_2, SPELL_MIRROR_IMAGE_3);
+                    caster.AddEffect(SPELL_MIRROR_IMAGE_3);
                     bool spellEnded = false;
                     caster.AddStartOfTurnEvent(delegate () {
-                        if (caster.HasEffect(Effect.SPELL_MIRROR_IMAGE_3) || caster.HasEffect(Effect.SPELL_MIRROR_IMAGE_2) || caster.HasEffect(Effect.SPELL_MIRROR_IMAGE_3)) {
+                        if (caster.HasEffect(SPELL_MIRROR_IMAGE_3) || caster.HasEffect(SPELL_MIRROR_IMAGE_2) || caster.HasEffect(SPELL_MIRROR_IMAGE_3)) {
                             return false;
                         } else {
                             spellEnded = true;
@@ -560,7 +564,7 @@ namespace srd5 {
                         if (spellEnded) {
                             return true;
                         } else if (--remainingRounds < 1) {
-                            caster.RemoveEffect(Effect.SPELL_MIRROR_IMAGE_1, Effect.SPELL_MIRROR_IMAGE_2, Effect.SPELL_MIRROR_IMAGE_3);
+                            caster.RemoveEffect(SPELL_MIRROR_IMAGE_1, SPELL_MIRROR_IMAGE_2, SPELL_MIRROR_IMAGE_3);
                             return true;
                         } else {
                             return false;
@@ -583,7 +587,7 @@ namespace srd5 {
                 return new Spell(ID.MOONBEAM, EVOCATION, SECOND, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 5, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     Dice dice = DiceSlotScaling(SECOND, slot, D10, 2);
-                    Damage damage = new Damage(DamageType.RADIANT, dice);
+                    Damage damage = new Damage(RADIANT, dice);
                     GlobalEvents.AffectBySpell(caster, ID.MOONBEAM, target, true);
                     bool shapeChanger = false;
                     foreach (Feat feat in target.Feats) {
@@ -592,15 +596,15 @@ namespace srd5 {
                         }
                     }
                     if (shapeChanger) {
-                        bool success = target.DC(ID.MOONBEAM, dc, AbilityType.CONSTITUTION, out _, false, true);
+                        bool success = target.DC(ID.MOONBEAM, dc, CONSTITUTION, out _, false, true);
                         int dmg = dice.Roll();
                         if (success) {
-                            target.TakeDamage(ID.MOONBEAM, DamageType.RADIANT, dmg / 2);
+                            target.TakeDamage(ID.MOONBEAM, RADIANT, dmg / 2);
                         } else {
-                            target.TakeDamage(ID.MOONBEAM, DamageType.RADIANT, dmg);
+                            target.TakeDamage(ID.MOONBEAM, RADIANT, dmg);
                         }
                     } else {
-                        target.TakeDamage(ID.MOONBEAM, DamageType.RADIANT, dice, DamageMitigation.HALVES_DAMAGE, dc, AbilityType.CONSTITUTION, out _);
+                        target.TakeDamage(ID.MOONBEAM, RADIANT, dice, HALVES_DAMAGE, dc, CONSTITUTION, out _);
                     }
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
                     Spell moonbeamCantrip = new Spell(ID.MOONBEAM, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 60, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
@@ -613,15 +617,15 @@ namespace srd5 {
                             }
                         }
                         if (shapeChanger2) {
-                            bool success = target2.DC(ID.MOONBEAM, dc2, AbilityType.CONSTITUTION, out _, false, true);
+                            bool success = target2.DC(ID.MOONBEAM, dc2, CONSTITUTION, out _, false, true);
                             int dmg = dice.Roll();
                             if (success) {
-                                target2.TakeDamage(ID.MOONBEAM, DamageType.RADIANT, dmg / 2);
+                                target2.TakeDamage(ID.MOONBEAM, RADIANT, dmg / 2);
                             } else {
-                                target2.TakeDamage(ID.MOONBEAM, DamageType.RADIANT, dmg);
+                                target2.TakeDamage(ID.MOONBEAM, RADIANT, dmg);
                             }
                         } else {
-                            target2.TakeDamage(ID.MOONBEAM, DamageType.RADIANT, dice, DamageMitigation.HALVES_DAMAGE, dc2, AbilityType.CONSTITUTION, out _);
+                            target2.TakeDamage(ID.MOONBEAM, RADIANT, dice, HALVES_DAMAGE, dc2, CONSTITUTION, out _);
                         }
                     });
                     caster.AvailableSpells[0].AddKnownSpell(moonbeamCantrip);
@@ -644,7 +648,7 @@ namespace srd5 {
             get {
                 return new Spell(ID.PASS_WITHOUT_TRACE, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     foreach (Combattant target in targets) {
-                        AddEffectsForDuration(ID.PASS_WITHOUT_TRACE, caster, target, ONE_HOUR, Effect.SPELL_PASS_WITHOUT_TRACE);
+                        AddEffectsForDuration(ID.PASS_WITHOUT_TRACE, caster, target, ONE_HOUR, SPELL_PASS_WITHOUT_TRACE);
                     }
                 });
             }
@@ -677,7 +681,7 @@ namespace srd5 {
                             break;
                         }
                     }
-                    AddEffectsForDuration(ID.PROTECTION_FROM_POISON, caster, target, ONE_HOUR, Effect.SPELL_PROTECTION_FROM_POISON);
+                    AddEffectsForDuration(ID.PROTECTION_FROM_POISON, caster, target, ONE_HOUR, SPELL_PROTECTION_FROM_POISON);
                 });
             }
         }
@@ -686,8 +690,8 @@ namespace srd5 {
             get {
                 return new Spell(ID.RAY_OF_ENFEEBLEMENT, NECROMANCY, SECOND, CastingTime.ONE_ACTION, 60, VS, ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
-                    if (SpellAttack(ID.RAY_OF_ENFEEBLEMENT, ground, caster, DamageType.TRUE_DAMAGE, null, 0, target, 60)) {
-                        AddEffectsForDuration(ID.RAY_OF_ENFEEBLEMENT, caster, target, ONE_MINUTE, Effect.SPELL_RAY_OF_ENFEEBLEMENT);
+                    if (SpellAttack(ID.RAY_OF_ENFEEBLEMENT, ground, caster, TRUE_DAMAGE, null, 0, target, 60)) {
+                        AddEffectsForDuration(ID.RAY_OF_ENFEEBLEMENT, caster, target, ONE_MINUTE, SPELL_RAY_OF_ENFEEBLEMENT);
                     }
                 });
             }
@@ -705,7 +709,7 @@ namespace srd5 {
                     int rays = (int)slot - 2 + 3;
                     for (int i = 0; i < rays; i++) {
                         Combattant target = targets[i % targets.Length];
-                        SpellAttack(ID.SCORCHING_RAY, ground, caster, DamageType.FIRE, new Dice("2d6"), modifier, target, 120);
+                        SpellAttack(ID.SCORCHING_RAY, ground, caster, FIRE, new Dice("2d6"), modifier, target, 120);
                     }
                 });
             }
@@ -714,14 +718,22 @@ namespace srd5 {
         public static Spell SeeInvisibility {
             get {
                 return new Spell(ID.SEE_INVISIBILITY, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    AddEffectsForDuration(ID.SEE_INVISIBILITY, caster, caster, ONE_HOUR, Effect.SPELL_SEE_INVISIBILITY);
+                    AddEffectsForDuration(ID.SEE_INVISIBILITY, caster, caster, ONE_HOUR, SPELL_SEE_INVISIBILITY);
                 });
             }
         }
         /* TODO */
         public static Spell Shatter {
             get {
-                return new Spell(ID.SHATTER, EVOCATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, INSTANTANEOUS, 10, 0, doNothing);
+                return new Spell(ID.SHATTER, EVOCATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, INSTANTANEOUS, 15, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Dice dice = DiceSlotScaling(SECOND, slot, D8, 3);
+                    foreach (Combattant target in targets) {
+                        // Constructs have disadvantage on DC, not Flesh Golem though, since it is made from organic material
+                        bool disadvantage = target is Monster monster && monster.Type == Monsters.Type.CONSTRUCT && monster.ID != Monsters.ID.FLESH_GOLEM;
+                        GlobalEvents.AffectBySpell(caster, ID.SHATTER, target, true);
+                        target.TakeDamage(ID.SHATTER, THUNDER, dice, HALVES_DAMAGE, dc, CONSTITUTION, out _);
+                    }
+                });
             }
         }
         /* TODO */

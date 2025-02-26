@@ -78,8 +78,8 @@ namespace srd5 {
         BLINDNESS,
         DEAFNESS,
         PARALYZATION,
-        POISON,
-        DISEASE,
+        POISONS,
+        DISEASES,
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);

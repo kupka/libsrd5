@@ -275,14 +275,14 @@ namespace srd5 {
         /// <summary>
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
-        public int TakeDamage(object source, DamageType type, int amount, Spells.DamageMitigation dCEffect, int dc, AbilityType dcAbility, out bool dcSuccess) {
+        public int TakeDamage(object source, DamageType type, int amount, Spells.DamageMitigation dCEffect, int dc, AbilityType dcAbility, out bool dcSuccess, bool advantage = false, bool disadvantage = false) {
             dcSuccess = false;
             if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
             if (IsImmune(type)) return 0;
             if (IsResistant(type)) amount /= 2;
             if (IsVulnerable(type)) amount *= 2;
             if (dc > 0) {
-                dcSuccess = DC(source, dc, dcAbility);
+                dcSuccess = DC(source, dc, dcAbility, out _, advantage, disadvantage);
                 if (dcSuccess && dCEffect == Spells.DamageMitigation.HALVES_DAMAGE)
                     amount /= 2;
                 else if (dcSuccess && dCEffect == Spells.DamageMitigation.NULLIFIES_DAMAGE)

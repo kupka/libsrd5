@@ -748,10 +748,13 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell SpiderClimb {
             get {
-                return new Spell(ID.SPIDER_CLIMB, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.SPIDER_CLIMB, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    AddEffectsForDuration(ID.SPIDER_CLIMB, caster, target, ONE_HOUR, SPELL_SPIDER_CLIMB);
+                });
             }
         }
         /* TODO */

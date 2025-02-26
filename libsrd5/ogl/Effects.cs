@@ -178,6 +178,7 @@ namespace srd5 {
         SPELL_SHIELD,
         SPELL_SHIELD_OF_FAITH,
         SPELL_SILENCE,
+        SPELL_SPIDER_CLIMB,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,

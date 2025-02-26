@@ -119,5 +119,22 @@ namespace srd5 {
         public void SilenceTest() {
             DefaultSpellTest(Spells.Silence, 20, SpellLevel.FIFTH, ConditionType.DEAFENED, Effect.IMMUNITY_THUNDER, Spells.Silence.Duration);
         }
+
+        [Fact]
+        public void SpiritualWeaponTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            cleric.AddLevel(CharacterClasses.Druid);
+            Monster orc = Monsters.Orc;
+            Monster bandit = Monsters.Bandit;
+            Battleground ground = createBattleground(cleric, orc, bandit);
+            Spells.SpiritualWeapon.Cast(ground, cleric, 15, SpellLevel.FIFTH, 15, orc);
+            Assert.True(orc.HitPoints < orc.HitPointsMax);
+            cleric.AvailableSpells[0].KnownSpells[0].Cast(ground, cleric, 15, SpellLevel.CANTRIP, 15, bandit);
+            Assert.True(bandit.HitPoints < bandit.HitPointsMax);
+            for (int i = 0; i < (int)Spells.SpiritualWeapon.Duration; i++) {
+                cleric.OnEndOfTurn();
+            }
+            Assert.Empty(cleric.AvailableSpells[0].KnownSpells);
+        }
     }
 }

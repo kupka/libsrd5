@@ -603,13 +603,17 @@ namespace srd5 {
             bandit.HitPoints = 6;
             Battleground ground = createBattleground(druid, bandit);
             Spells.Moonbeam.Cast(ground, druid, 10, SpellLevel.SIXTH, 0, bandit);
-            Spells.Moonbeam.Cast(ground, druid, 10, SpellLevel.SIXTH, 0, werewolf);
+            for (int i = 0; i < 10; i++) {
+                Spells.Moonbeam.Cast(ground, druid, 10, SpellLevel.SIXTH, 0, werewolf);
+            }
             Assert.True(bandit.Dead);
             bandit = Monsters.Bandit;
             bandit.HitPoints = 6;
             Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.MOONBEAM);
             druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
-            druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, werewolf);
+            for (int i = 0; i < 10; i++) {
+                druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, werewolf);
+            }
             Assert.True(bandit.Dead);
             for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
                 druid.OnEndOfTurn();

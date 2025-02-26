@@ -399,5 +399,18 @@ namespace srd5 {
             Assert.True(orc.Dead);
             Assert.True(bandit.Dead);
         }
+
+        [Fact]
+        public void ShatterTest() {
+            Monster hag = Monsters.NightHag;
+            Monster orc = Monsters.Orc;
+            Monster stonegolem = Monsters.StoneGolem;
+            Monster fleshgolem = Monsters.FleshGolem;
+            Battleground ground = createBattleground(hag, orc, stonegolem, fleshgolem);
+            Spells.Shatter.Cast(ground, hag, 20, SpellLevel.FIFTH, 5, orc, stonegolem, fleshgolem);
+            Assert.True(orc.HitPointsMax > orc.HitPoints);
+            Assert.True(stonegolem.HitPointsMax > stonegolem.HitPoints);
+            Assert.True(fleshgolem.HitPointsMax > fleshgolem.HitPoints);
+        }
     }
 }

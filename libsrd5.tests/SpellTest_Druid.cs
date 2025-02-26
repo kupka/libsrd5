@@ -568,7 +568,7 @@ namespace srd5 {
             druid.AddCondition(ConditionType.BLINDED, ConditionType.DEAFENED, ConditionType.POISONED, ConditionType.PARALYZED);
             druid.AddEffect(Effect.ADVANTAGE_DEXTERITY_SAVES, Effect.DEATH_DOG_DISEASE, Effect.ABOLETH_DISEASE_TENTACLE);
             Spell lesserRestoration = Spells.LesserRestoration;
-            lesserRestoration.Variant = SpellVariant.DISEASE;
+            lesserRestoration.Variant = SpellVariant.DISEASES;
             lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
             Assert.False(druid.HasEffect(Effect.DEATH_DOG_DISEASE));
             Assert.True(druid.HasEffect(Effect.ADVANTAGE_DEXTERITY_SAVES));
@@ -579,7 +579,7 @@ namespace srd5 {
             Assert.False(druid.HasCondition(ConditionType.PARALYZED));
             Assert.True(druid.HasCondition(ConditionType.POISONED));
 
-            lesserRestoration.Variant = SpellVariant.POISON;
+            lesserRestoration.Variant = SpellVariant.POISONS;
             lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
             Assert.False(druid.HasCondition(ConditionType.POISONED));
             Assert.True(druid.HasCondition(ConditionType.DEAFENED));

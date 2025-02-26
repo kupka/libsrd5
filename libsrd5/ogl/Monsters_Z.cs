@@ -1,8 +1,11 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack ZombieSlam {
             get {
-                return new Attack("Slam", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5);
+                return new Attack("Slam", 3, new Damage(BLUDGEONING, "1d6+1"), 5);
             }
         }
     }
@@ -16,8 +19,8 @@ namespace srd5 {
                     new Attack[] { Attacks.ZombieSlam }, new Attack[] { }, Size.MEDIUM
                 );
                 zombie.AddProficiency(Proficiency.WISDOM);
-                zombie.AddEffect(Effect.IMMUNITY_POISON);
-                zombie.AddEffect(Effect.IMMUNITY_POISONED);
+                zombie.AddEffect(IMMUNITY_POISON);
+                zombie.AddEffect(IMMUNITY_POISONED);
                 zombie.AddFeat(Feat.UNDEAD_FORTITUDE);
                 return zombie;
             }

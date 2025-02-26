@@ -1,3 +1,6 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static readonly AttackEffect TarrasqueBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -6,93 +9,93 @@ namespace srd5 {
         };
         public static Attack TarrasqueBite {
             get {
-                return new Attack("Bite", 19, new Damage(DamageType.PIERCING, "4d12+10"), 10, null, TarrasqueBiteEffect);
+                return new Attack("Bite", 19, new Damage(PIERCING, "4d12+10"), 10, null, TarrasqueBiteEffect);
             }
         }
         public static readonly AttackEffect TarrasqueTailEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_PRONE)) return false;
+            if (target.HasEffect(IMMUNITY_PRONE)) return false;
             if (target.DC(TarrasqueTail, 20, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
             return false;
         };
         public static Attack TarrasqueTail {
             get {
-                return new Attack("Tail", 19, new Damage(DamageType.BLUDGEONING, "4d6+10"), 20, null, TarrasqueTailEffect);
+                return new Attack("Tail", 19, new Damage(BLUDGEONING, "4d6+10"), 20, null, TarrasqueTailEffect);
             }
         }
         public static Attack TarrasqueClaw {
             get {
-                return new Attack("Claw", 19, new Damage(DamageType.SLASHING, "4d8+10"), 15);
+                return new Attack("Claw", 19, new Damage(SLASHING, "4d8+10"), 15);
             }
         }
         public static Attack TarrasqueHorns {
             get {
-                return new Attack("Horns", 19, new Damage(DamageType.PIERCING, "4d10+10"), 10);
+                return new Attack("Horns", 19, new Damage(PIERCING, "4d10+10"), 10);
             }
         }
         public static Attack ThugMace {
             get {
-                return new Attack("Mace", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
+                return new Attack("Mace", 4, new Damage(BLUDGEONING, "1d6+2"), 5);
             }
         }
         public static Attack ThugHeavyCrossbow {
             get {
-                return new Attack("Heavy Crossbow", 2, new Damage(DamageType.PIERCING, "1d10"), 5, 100, 400);
+                return new Attack("Heavy Crossbow", 2, new Damage(PIERCING, "1d10"), 5, 100, 400);
             }
         }
         public static Attack TigerBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5);
+                return new Attack("Bite", 5, new Damage(PIERCING, "1d10+3"), 5);
             }
         }
         public static Attack TigerClaw {
             get {
-                return new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d8+3"), 5);
+                return new Attack("Claw", 5, new Damage(SLASHING, "1d8+3"), 5);
             }
         }
         public static Attack TreantSlam {
             get {
-                return new Attack("Slam", 10, new Damage(DamageType.BLUDGEONING, "3d6+6"), 5);
+                return new Attack("Slam", 10, new Damage(BLUDGEONING, "3d6+6"), 5);
             }
         }
         public static Attack TreantRock {
             get {
-                return new Attack("Rock", 10, new Damage(DamageType.BLUDGEONING, "4d10+6"), 5, 60, 180);
+                return new Attack("Rock", 10, new Damage(BLUDGEONING, "4d10+6"), 5, 60, 180);
             }
         }
         public static Attack TribalWarriorSpear {
             get {
-                return new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
+                return new Attack("Spear", 3, new Damage(PIERCING, "1d8+1"), 5);
             }
         }
         public static Attack TribalWarriorSpearRanged {
             get {
-                return new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d6+1"), 20, 60);
+                return new Attack("Spear", 3, new Damage(PIERCING, "1d6+1"), 20, 60);
             }
         }
         public static readonly AttackEffect TriceratopsStompEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
-            target.TakeDamage(attacker, DamageType.BLUDGEONING, "3d10+6");
+            target.TakeDamage(attacker, BLUDGEONING, "3d10+6");
             return false;
         };
         public static Attack TriceratopsStomp {
             get {
-                return new Attack("Stomp", 9, new Damage(DamageType.BLUDGEONING, 0), 5, null, TriceratopsStompEffect);
+                return new Attack("Stomp", 9, new Damage(BLUDGEONING, 0), 5, null, TriceratopsStompEffect);
             }
         }
         public static Attack TriceratopsGore {
             get {
-                return new Attack("Gore", 9, new Damage(DamageType.PIERCING, "4d8+6"), 5);
+                return new Attack("Gore", 9, new Damage(PIERCING, "4d8+6"), 5);
             }
         }
         public static Attack TrollBite {
             get {
-                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "1d6+4"), 5);
+                return new Attack("Bite", 7, new Damage(PIERCING, "1d6+4"), 5);
             }
         }
         public static Attack TrollClaw {
             get {
-                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+                return new Attack("Claw", 7, new Damage(SLASHING, "2d6+4"), 5);
             }
         }
         public static readonly AttackEffect TyrannosaurusRexBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -101,12 +104,12 @@ namespace srd5 {
         };
         public static Attack TyrannosaurusRexBite {
             get {
-                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "4d12+7"), 5, null, TyrannosaurusRexBiteEffect);
+                return new Attack("Bite", 10, new Damage(PIERCING, "4d12+7"), 5, null, TyrannosaurusRexBiteEffect);
             }
         }
         public static Attack TyrannosaurusRexTail {
             get {
-                return new Attack("Tail", 10, new Damage(DamageType.BLUDGEONING, "3d8+7"), 10);
+                return new Attack("Tail", 10, new Damage(BLUDGEONING, "3d8+7"), 10);
             }
         }
     }
@@ -122,13 +125,13 @@ namespace srd5 {
                 tarrasque.AddProficiency(Proficiency.INTELLIGENCE);
                 tarrasque.AddProficiency(Proficiency.WISDOM);
                 tarrasque.AddProficiency(Proficiency.CHARISMA);
-                tarrasque.AddEffect(Effect.IMMUNITY_FIRE);
-                tarrasque.AddEffect(Effect.IMMUNITY_POISON);
-                tarrasque.AddEffect(Effect.IMMUNITY_NONMAGIC);
-                tarrasque.AddEffect(Effect.IMMUNITY_CHARMED);
-                tarrasque.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                tarrasque.AddEffect(Effect.IMMUNITY_PARALYZED);
-                tarrasque.AddEffect(Effect.IMMUNITY_POISONED);
+                tarrasque.AddEffect(IMMUNITY_FIRE);
+                tarrasque.AddEffect(IMMUNITY_POISON);
+                tarrasque.AddEffect(IMMUNITY_NONMAGIC);
+                tarrasque.AddEffect(IMMUNITY_CHARMED);
+                tarrasque.AddEffect(IMMUNITY_FRIGHTENED);
+                tarrasque.AddEffect(IMMUNITY_PARALYZED);
+                tarrasque.AddEffect(IMMUNITY_POISONED);
                 tarrasque.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 tarrasque.AddFeat(Feat.MAGIC_RESISTANCE);
                 tarrasque.AddFeat(Feat.REFLECTIVE_CARAPACE);
@@ -172,9 +175,9 @@ namespace srd5 {
                     Monsters.Type.PLANT, Monsters.ID.TREANT, Alignment.CHAOTIC_GOOD, 23, 8, 21, 12, 16, 12, 16, "12d12+60", 40, 9,
                     new Attack[] { Attacks.TreantSlam }, new Attack[] { Attacks.TreantRock }, Size.HUGE
                 );
-                treant.AddEffect(Effect.VULNERABILITY_FIRE);
-                treant.AddEffect(Effect.RESISTANCE_BLUDGEONING);
-                treant.AddEffect(Effect.RESISTANCE_PIERCING);
+                treant.AddEffect(VULNERABILITY_FIRE);
+                treant.AddEffect(RESISTANCE_BLUDGEONING);
+                treant.AddEffect(RESISTANCE_PIERCING);
                 treant.AddFeat(Feat.FALSE_APPEARANCE);
                 treant.AddFeat(Feat.SIEGE_MONSTER);
                 return treant;

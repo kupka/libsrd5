@@ -1,40 +1,43 @@
 using static srd5.Die;
 
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack SaberToothedTigerBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d10+5"), 5);
+                return new Attack("Bite", 6, new Damage(PIERCING, "1d10+5"), 5);
             }
         }
         public static Attack SaberToothedTigerClaw {
             get {
-                return new Attack("Claw", 6, new Damage(DamageType.SLASHING, "2d6+5"), 5);
+                return new Attack("Claw", 6, new Damage(SLASHING, "2d6+5"), 5);
             }
         }
         public static Attack SahuaginSpearMelee {
             get {
-                return new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
+                return new Attack("Spear", 3, new Damage(PIERCING, "1d8+1"), 5);
             }
         }
         public static Attack SahuaginSpearRanged {
             get {
-                return new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 20, 60);
+                return new Attack("Spear", 3, new Damage(PIERCING, "1d8+1"), 20, 60);
             }
         }
         public static Attack SahuaginBite {
             get {
-                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d4+1"), 5);
+                return new Attack("Bite", 3, new Damage(PIERCING, "1d4+1"), 5);
             }
         }
         public static Attack SahuaginClaws {
             get {
-                return new Attack("Claws", 3, new Damage(DamageType.SLASHING, "1d4+1"), 5);
+                return new Attack("Claws", 3, new Damage(SLASHING, "1d4+1"), 5);
             }
         }
         public static Attack SalamanderSpear {
             get {
-                return new Attack("Spear", 7, new Damage(DamageType.PIERCING, "2d8+4"), 5, new Damage(DamageType.FIRE, "1d6"));
+                return new Attack("Spear", 7, new Damage(PIERCING, "2d8+4"), 5, new Damage(FIRE, "1d6"));
             }
         }
         public static readonly AttackEffect SalamanderTailEffect = delegate (Combattant attacker, Combattant target) {
@@ -43,22 +46,22 @@ namespace srd5 {
         };
         public static Attack SalamanderTail {
             get {
-                return new Attack("Tail", 7, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5, new Damage(DamageType.FIRE, "2d6"), SalamanderTailEffect);
+                return new Attack("Tail", 7, new Damage(BLUDGEONING, "2d6+4"), 5, new Damage(FIRE, "2d6"), SalamanderTailEffect);
             }
         }
         public static Attack SatyrRam {
             get {
-                return new Attack("Ram", 3, new Damage(DamageType.BLUDGEONING, "2d4+1"), 5);
+                return new Attack("Ram", 3, new Damage(BLUDGEONING, "2d4+1"), 5);
             }
         }
         public static Attack SatyrShortsword {
             get {
-                return new Attack("Shortsword", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
+                return new Attack("Shortsword", 5, new Damage(PIERCING, "1d6+3"), 5);
             }
         }
         public static Attack SatyrShortbow {
             get {
-                return new Attack("Shortbow", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5, 80, 320);
+                return new Attack("Shortbow", 5, new Damage(PIERCING, "1d6+3"), 5, 80, 320);
             }
         }
         public static readonly AttackEffect ScorpionStingEffect = delegate (Combattant attacker, Combattant target) {
@@ -67,22 +70,22 @@ namespace srd5 {
         };
         public static Attack ScorpionSting {
             get {
-                return new Attack("Sting", 2, new Damage(DamageType.PIERCING, 1), 5, null, ScorpionStingEffect);
+                return new Attack("Sting", 2, new Damage(PIERCING, 1), 5, null, ScorpionStingEffect);
             }
         }
         public static Attack ScoutLongbow {
             get {
-                return new Attack("Longbow", 4, new Damage(DamageType.PIERCING, "1d8+2"), 150, 600);
+                return new Attack("Longbow", 4, new Damage(PIERCING, "1d8+2"), 150, 600);
             }
         }
         public static Attack ScoutShortsword {
             get {
-                return new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Shortsword", 4, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack SeaHagClaws {
             get {
-                return new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
+                return new Attack("Claws", 5, new Damage(SLASHING, "2d6+3"), 5);
             }
         }
         public static readonly AttackEffect ShadowStrengthDrainEffect = delegate (Combattant attacker, Combattant target) {
@@ -93,32 +96,32 @@ namespace srd5 {
         };
         public static Attack ShadowStrengthDrain {
             get {
-                return new Attack("Strength Drain", 4, new Damage(DamageType.NECROTIC, "2d6+2"), 5, null, ShadowStrengthDrainEffect);
+                return new Attack("Strength Drain", 4, new Damage(NECROTIC, "2d6+2"), 5, null, ShadowStrengthDrainEffect);
             }
         }
         public static Attack ShamblingMoundSlam {
             get {
-                return new Attack("Slam", 7, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
+                return new Attack("Slam", 7, new Damage(BLUDGEONING, "2d8+4"), 5);
             }
         }
         public static Attack ShieldGuardianFist {
             get {
-                return new Attack("Fist", 7, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
+                return new Attack("Fist", 7, new Damage(BLUDGEONING, "2d6+4"), 5);
             }
         }
         public static Attack SilverDragonWyrmlingBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d10+4"), 5);
+                return new Attack("Bite", 6, new Damage(PIERCING, "1d10+4"), 5);
             }
         }
         public static Attack SkeletonShortsword {
             get {
-                return new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Shortsword", 4, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack SkeletonShortbow {
             get {
-                return new Attack("Shortbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 80, 320);
+                return new Attack("Shortbow", 4, new Damage(PIERCING, "1d6+2"), 5, 80, 320);
             }
         }
         public static readonly AttackEffect SolarSlayingLongbowEffect = delegate (Combattant attacker, Combattant target) {
@@ -130,16 +133,16 @@ namespace srd5 {
         };
         public static Attack SolarSlayingLongbow {
             get {
-                return new Attack("Slaying Longbow", 13, new Damage(DamageType.PIERCING, "2d8+6"), 150, 600, new Damage(DamageType.RADIANT, "6d8"), SolarSlayingLongbowEffect);
+                return new Attack("Slaying Longbow", 13, new Damage(PIERCING, "2d8+6"), 150, 600, new Damage(RADIANT, "6d8"), SolarSlayingLongbowEffect);
             }
         }
         public static Attack SolarGreatsword {
             get {
-                return new Attack("Greatsword", 15, new Damage(DamageType.SLASHING, "4d6+8"), 5, new Damage(DamageType.RADIANT, "6d8"));
+                return new Attack("Greatsword", 15, new Damage(SLASHING, "4d6+8"), 5, new Damage(RADIANT, "6d8"));
             }
         }
         public static readonly AttackEffect SpecterLifeDrainEffect = delegate (Combattant attacker, Combattant target) {
-            int damage = target.TakeDamage(attacker, DamageType.NECROTIC, "3d6");
+            int damage = target.TakeDamage(attacker, NECROTIC, "3d6");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
             if (target.HitPointsMax == 0) {
                 target.Die();
@@ -148,7 +151,7 @@ namespace srd5 {
         };
         public static Attack SpecterLifeDrain {
             get {
-                return new Attack("Life Drain", 4, new Damage(DamageType.NECROTIC, 0), 5, null, SpecterLifeDrainEffect);
+                return new Attack("Life Drain", 4, new Damage(NECROTIC, 0), 5, null, SpecterLifeDrainEffect);
             }
         }
         public static readonly AttackEffect SpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -157,7 +160,7 @@ namespace srd5 {
         };
         public static Attack SpiderBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, 1), 5, null, SpiderBiteEffect);
+                return new Attack("Bite", 4, new Damage(PIERCING, 1), 5, null, SpiderBiteEffect);
             }
         }
         public static readonly AttackEffect SpiritNagaBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -166,54 +169,54 @@ namespace srd5 {
         };
         public static Attack SpiritNagaBite {
             get {
-                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "1d6+4"), 5, null, SpiritNagaBiteEffect);
+                return new Attack("Bite", 7, new Damage(PIERCING, "1d6+4"), 5, null, SpiritNagaBiteEffect);
             }
         }
         public static readonly AttackEffect SpriteShortbowEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.IsImmune(POISON)) return false;
             if (target.DC(SpriteShortbow, 10, AbilityType.CONSTITUTION, out int roll)) return false;
-            target.AddEffect(Effect.SPRITE_POISON);
+            target.AddEffect(SPRITE_POISON);
             if (roll <= 5) {
-                target.AddEffect(Effect.SPRITE_POISON_UNCONCIOUS);
+                target.AddEffect(SPRITE_POISON_UNCONCIOUS);
             }
             return false;
         };
         public static Attack SpriteShortbow {
             get {
-                return new Attack("Shortbow", 6, new Damage(DamageType.PIERCING, 1), 5, null, SpriteShortbowEffect);
+                return new Attack("Shortbow", 6, new Damage(PIERCING, 1), 5, null, SpriteShortbowEffect);
             }
         }
         public static Attack SpriteLongsword {
             get {
-                return new Attack("Longsword", 2, new Damage(DamageType.SLASHING, "1d1"), 5);
+                return new Attack("Longsword", 2, new Damage(SLASHING, "1d1"), 5);
             }
         }
         public static Attack SpyShortsword {
             get {
-                return new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Shortsword", 4, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack SpyHandCrossbow {
             get {
-                return new Attack("Hand Crossbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 30, 120);
+                return new Attack("Hand Crossbow", 4, new Damage(PIERCING, "1d6+2"), 5, 30, 120);
             }
         }
         public static Attack SteamMephitClaws {
             get {
-                return new Attack("Claws", 2, new Damage(DamageType.SLASHING, "1d4"), 5, new Damage(DamageType.FIRE, "1d4"));
+                return new Attack("Claws", 2, new Damage(SLASHING, "1d4"), 5, new Damage(FIRE, "1d4"));
             }
         }
         public static readonly AttackEffect StirgeBloodDrainEffect = delegate (Combattant attacker, Combattant target) {
             if (target is Monster monster && (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT)) return false;
             // TODO: the stirge attaches to the target. While attached, the stirge doesn't attack.
-            target.AddEffect(Effect.STIRGE_BLOOD_DRAIN_EFFECT);
-            attacker.AddEffect(Effect.STIRGE_BLOOD_DRAINING);
+            target.AddEffect(STIRGE_BLOOD_DRAIN_EFFECT);
+            attacker.AddEffect(STIRGE_BLOOD_DRAINING);
             int damage = 0;
             target.AddStartOfTurnEvent(delegate () {
-                if (!target.HasEffect(Effect.STIRGE_BLOOD_DRAIN_EFFECT)) return true;
+                if (!target.HasEffect(STIRGE_BLOOD_DRAIN_EFFECT)) return true;
                 int delta = Roll("1d4+3");
                 damage += delta;
-                target.TakeDamage(attacker, DamageType.TRUE_DAMAGE, "1d4+3");
+                target.TakeDamage(attacker, TRUE_DAMAGE, "1d4+3");
                 return damage >= 10;
             });
             // TODO: A creature, including the target, can use its action to detach the stirge.
@@ -221,45 +224,45 @@ namespace srd5 {
         };
         public static Attack StirgeBloodDrain {
             get {
-                return new Attack("Blood Drain", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5, null, StirgeBloodDrainEffect);
+                return new Attack("Blood Drain", 5, new Damage(PIERCING, "1d4+3"), 5, null, StirgeBloodDrainEffect);
             }
         }
         public static readonly AttackEffect StoneGiantRockEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_PRONE)) return false;
+            if (target.HasEffect(IMMUNITY_PRONE)) return false;
             if (target.DC(StoneGiantRock, 17, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
             return false;
         };
         public static Attack StoneGiantRock {
             get {
-                return new Attack("Rock", 9, new Damage(DamageType.BLUDGEONING, "4d10+6"), 5, null, StoneGiantRockEffect);
+                return new Attack("Rock", 9, new Damage(BLUDGEONING, "4d10+6"), 5, null, StoneGiantRockEffect);
             }
         }
         public static Attack StoneGiantGreatclub {
             get {
-                return new Attack("Greatclub", 9, new Damage(DamageType.BLUDGEONING, "3d8+6"), 15);
+                return new Attack("Greatclub", 9, new Damage(BLUDGEONING, "3d8+6"), 15);
             }
         }
         public static Attack StoneGolemSlam {
             get {
-                return new Attack("Slam", 10, new Damage(DamageType.BLUDGEONING, "3d8+6"), 5);
+                return new Attack("Slam", 10, new Damage(BLUDGEONING, "3d8+6"), 5);
             }
         }
         public static Attack StormGiantGreatsword {
             get {
-                return new Attack("Greatsword", 14, new Damage(DamageType.SLASHING, "6d6+9"), 10);
+                return new Attack("Greatsword", 14, new Damage(SLASHING, "6d6+9"), 10);
             }
         }
         public static Attack StormGiantRock {
             get {
-                return new Attack("Rock", 14, new Damage(DamageType.BLUDGEONING, "4d12+9"), 5, 60, 240);
+                return new Attack("Rock", 14, new Damage(BLUDGEONING, "4d12+9"), 5, 60, 240);
             }
         }
         public static readonly AttackEffect SuccubusDrainingKissEffect = delegate (Combattant attacker, Combattant target) {
             bool success = target.DC(SuccubusDrainingKiss, 15, AbilityType.CONSTITUTION);
             int damage = Roll("5d10+5");
             if (success) damage /= 2;
-            target.TakeDamage(attacker, DamageType.PSYCHIC, damage);
+            target.TakeDamage(attacker, PSYCHIC, damage);
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
             if (target.HitPointsMax <= 0) {
                 target.Die();
@@ -268,115 +271,115 @@ namespace srd5 {
         };
         public static Attack SuccubusDrainingKiss {
             get {
-                return new Attack("Draining Kiss", 0, new Damage(DamageType.TRUE_DAMAGE, 0), 5, null, SuccubusDrainingKissEffect);
+                return new Attack("Draining Kiss", 0, new Damage(TRUE_DAMAGE, 0), 5, null, SuccubusDrainingKissEffect);
             }
         }
         public static Attack SuccubusClaw {
             get {
-                return new Attack("Claw)", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+                return new Attack("Claw)", 5, new Damage(SLASHING, "1d6+3"), 5);
             }
         }
         public static readonly AttackEffect SwarmOfBatsBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, DamageType.PIERCING, "1d4");
+            target.TakeDamage(attacker, PIERCING, "1d4");
             return false;
         };
         public static Attack SwarmOfBatsBites {
             get {
-                return new Attack("Bites", 4, new Damage(DamageType.PIERCING, "1d4"), 5, null, SwarmOfBatsBitesEffect);
+                return new Attack("Bites", 4, new Damage(PIERCING, "1d4"), 5, null, SwarmOfBatsBitesEffect);
             }
         }
         public static readonly AttackEffect SwarmOfBeetlesBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, DamageType.PIERCING, "2d4");
+            target.TakeDamage(attacker, PIERCING, "2d4");
             return false;
         };
         public static Attack SwarmOfBeetlesBites {
             get {
-                return new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfBeetlesBitesEffect);
+                return new Attack("Bites", 3, new Damage(PIERCING, "2d4"), 5, null, SwarmOfBeetlesBitesEffect);
             }
         }
         public static readonly AttackEffect SwarmOfCentipedesBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, DamageType.PIERCING, "2d4");
+            target.TakeDamage(attacker, PIERCING, "2d4");
             // TODO: A creature reduced to 0 hit points by a swarm of centipedes is stable but poisoned for 1 hour, 
             // even after regaining hit points, and paralyzed while poisoned in this way.
             return false;
         };
         public static Attack SwarmOfCentipedesBites {
             get {
-                return new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfCentipedesBitesEffect);
+                return new Attack("Bites", 3, new Damage(PIERCING, "2d4"), 5, null, SwarmOfCentipedesBitesEffect);
             }
         }
         public static readonly AttackEffect SwarmOfInsectsBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, DamageType.PIERCING, "2d4");
+            target.TakeDamage(attacker, PIERCING, "2d4");
             return false;
         };
         public static Attack SwarmOfInsectsBites {
             get {
-                return new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfInsectsBitesEffect);
+                return new Attack("Bites", 3, new Damage(PIERCING, "2d4"), 5, null, SwarmOfInsectsBitesEffect);
             }
         }
         public static readonly AttackEffect SwarmOfPoisonousSnakesBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, DamageType.PIERCING, "1d6");
+            target.TakeDamage(attacker, PIERCING, "1d6");
             AttackEffects.PoisonEffect(target, SwarmOfPoisonousSnakesBites, "4d6", 10);
             return false;
         };
         public static Attack SwarmOfPoisonousSnakesBites {
             get {
-                return new Attack("Bites", 6, new Damage(DamageType.PIERCING, "1d6"), 5, null, SwarmOfPoisonousSnakesBitesEffect);
+                return new Attack("Bites", 6, new Damage(PIERCING, "1d6"), 5, null, SwarmOfPoisonousSnakesBitesEffect);
             }
         }
         public static readonly AttackEffect SwarmOfQuippersBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, DamageType.PIERCING, "2d6");
+            target.TakeDamage(attacker, PIERCING, "2d6");
             return false;
         };
         public static Attack SwarmOfQuippersBites {
             get {
-                return new Attack("Bites", 5, new Damage(DamageType.PIERCING, "2d6"), 5, null, SwarmOfQuippersBitesEffect);
+                return new Attack("Bites", 5, new Damage(PIERCING, "2d6"), 5, null, SwarmOfQuippersBitesEffect);
             }
         }
         public static readonly AttackEffect SwarmOfRatsBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, DamageType.PIERCING, "1d6");
+            target.TakeDamage(attacker, PIERCING, "1d6");
             return false;
         };
         public static Attack SwarmOfRatsBites {
             get {
-                return new Attack("Bites", 2, new Damage(DamageType.PIERCING, "1d6"), 5, null, SwarmOfRatsBitesEffect);
+                return new Attack("Bites", 2, new Damage(PIERCING, "1d6"), 5, null, SwarmOfRatsBitesEffect);
             }
         }
         public static readonly AttackEffect SwarmOfRavensBeaksEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, DamageType.PIERCING, "1d6");
+            target.TakeDamage(attacker, PIERCING, "1d6");
             return false;
         };
         public static Attack SwarmOfRavensBeaks {
             get {
-                return new Attack("Beaks", 4, new Damage(DamageType.PIERCING, "1d6"), 5, null, SwarmOfRavensBeaksEffect);
+                return new Attack("Beaks", 4, new Damage(PIERCING, "1d6"), 5, null, SwarmOfRavensBeaksEffect);
             }
         }
         public static readonly AttackEffect SwarmOfSpidersBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, DamageType.PIERCING, "2d4");
+            target.TakeDamage(attacker, PIERCING, "2d4");
             return false;
         };
         public static Attack SwarmOfSpidersBites {
             get {
-                return new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfSpidersBitesEffect);
+                return new Attack("Bites", 3, new Damage(PIERCING, "2d4"), 5, null, SwarmOfSpidersBitesEffect);
             }
         }
         public static readonly AttackEffect SwarmOfWaspsBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, DamageType.PIERCING, "2d4");
+            target.TakeDamage(attacker, PIERCING, "2d4");
             return false;
         };
         public static Attack SwarmOfWaspsBites {
             get {
-                return new Attack("Bites", 3, new Damage(DamageType.PIERCING, "2d4"), 5, null, SwarmOfWaspsBitesEffect);
+                return new Attack("Bites", 3, new Damage(PIERCING, "2d4"), 5, null, SwarmOfWaspsBitesEffect);
             }
         }
     }
@@ -420,9 +423,9 @@ namespace srd5 {
                     Monsters.Type.ELEMENTAL, Monsters.ID.SALAMANDER, Alignment.NEUTRAL_EVIL, 18, 14, 15, 11, 10, 12, 15, "12d10+24", 40, 5,
                     new Attack[] { Attacks.SalamanderSpear, Attacks.SalamanderTail }, new Attack[] { }, Size.LARGE
                 );
-                salamander.AddEffect(Effect.VULNERABILITY_COLD);
-                salamander.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                salamander.AddEffect(Effect.IMMUNITY_FIRE);
+                salamander.AddEffect(VULNERABILITY_COLD);
+                salamander.AddEffect(RESISTANCE_NONMAGIC);
+                salamander.AddEffect(IMMUNITY_FIRE);
                 salamander.AddFeat(Feat.HEATED_BODY_2D6);
                 salamander.AddFeat(Feat.HEATED_WEAPONS);
                 return salamander;
@@ -504,23 +507,23 @@ namespace srd5 {
                     new Attack[] { Attacks.ShadowStrengthDrain }, new Attack[] { }, Size.MEDIUM
                 );
                 shadow.AddProficiency(Proficiency.STEALTH);
-                shadow.AddEffect(Effect.VULNERABILITY_RADIANT);
-                shadow.AddEffect(Effect.RESISTANCE_ACID);
-                shadow.AddEffect(Effect.RESISTANCE_COLD);
-                shadow.AddEffect(Effect.RESISTANCE_FIRE);
-                shadow.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                shadow.AddEffect(Effect.RESISTANCE_THUNDER);
-                shadow.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                shadow.AddEffect(Effect.IMMUNITY_NECROTIC);
-                shadow.AddEffect(Effect.IMMUNITY_POISON);
-                shadow.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                shadow.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                shadow.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                shadow.AddEffect(Effect.IMMUNITY_PARALYZED);
-                shadow.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                shadow.AddEffect(Effect.IMMUNITY_POISONED);
-                shadow.AddEffect(Effect.IMMUNITY_PRONE);
-                shadow.AddEffect(Effect.IMMUNITY_RESTRAINED);
+                shadow.AddEffect(VULNERABILITY_RADIANT);
+                shadow.AddEffect(RESISTANCE_ACID);
+                shadow.AddEffect(RESISTANCE_COLD);
+                shadow.AddEffect(RESISTANCE_FIRE);
+                shadow.AddEffect(RESISTANCE_LIGHTNING);
+                shadow.AddEffect(RESISTANCE_THUNDER);
+                shadow.AddEffect(RESISTANCE_NONMAGIC);
+                shadow.AddEffect(IMMUNITY_NECROTIC);
+                shadow.AddEffect(IMMUNITY_POISON);
+                shadow.AddEffect(IMMUNITY_EXHAUSTION);
+                shadow.AddEffect(IMMUNITY_FRIGHTENED);
+                shadow.AddEffect(IMMUNITY_GRAPPLED);
+                shadow.AddEffect(IMMUNITY_PARALYZED);
+                shadow.AddEffect(IMMUNITY_PETRIFIED);
+                shadow.AddEffect(IMMUNITY_POISONED);
+                shadow.AddEffect(IMMUNITY_PRONE);
+                shadow.AddEffect(IMMUNITY_RESTRAINED);
                 shadow.AddFeat(Feat.AMORPHOUS);
                 shadow.AddFeat(Feat.SHADOW_STEALTH);
                 shadow.AddFeat(Feat.SUNLIGHT_WEAKNESS);
@@ -536,12 +539,12 @@ namespace srd5 {
                     new Attack[] { Attacks.ShamblingMoundSlam }, new Attack[] { }, Size.LARGE
                 );
                 shamblingMound.AddProficiency(Proficiency.STEALTH);
-                shamblingMound.AddEffect(Effect.RESISTANCE_COLD);
-                shamblingMound.AddEffect(Effect.RESISTANCE_FIRE);
-                shamblingMound.AddEffect(Effect.IMMUNITY_LIGHTNING);
-                shamblingMound.AddEffect(Effect.IMMUNITY_BLINDED);
-                shamblingMound.AddEffect(Effect.IMMUNITY_BLINDED);
-                shamblingMound.AddEffect(Effect.IMMUNITY_EXHAUSTION);
+                shamblingMound.AddEffect(RESISTANCE_COLD);
+                shamblingMound.AddEffect(RESISTANCE_FIRE);
+                shamblingMound.AddEffect(IMMUNITY_LIGHTNING);
+                shamblingMound.AddEffect(IMMUNITY_BLINDED);
+                shamblingMound.AddEffect(IMMUNITY_BLINDED);
+                shamblingMound.AddEffect(IMMUNITY_EXHAUSTION);
                 shamblingMound.AddFeat(Feat.LIGHTNING_ABSORPTION);
                 return shamblingMound;
             }
@@ -554,12 +557,12 @@ namespace srd5 {
                     Monsters.Type.CONSTRUCT, Monsters.ID.SHIELD_GUARDIAN, Alignment.UNALIGNED, 18, 8, 18, 7, 10, 3, 17, "15d10+60", 40, 7,
                     new Attack[] { Attacks.ShieldGuardianFist }, new Attack[] { }, Size.LARGE
                 );
-                shieldGuardian.AddEffect(Effect.IMMUNITY_POISON);
-                shieldGuardian.AddEffect(Effect.IMMUNITY_CHARMED);
-                shieldGuardian.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                shieldGuardian.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                shieldGuardian.AddEffect(Effect.IMMUNITY_PARALYZED);
-                shieldGuardian.AddEffect(Effect.IMMUNITY_POISONED);
+                shieldGuardian.AddEffect(IMMUNITY_POISON);
+                shieldGuardian.AddEffect(IMMUNITY_CHARMED);
+                shieldGuardian.AddEffect(IMMUNITY_EXHAUSTION);
+                shieldGuardian.AddEffect(IMMUNITY_FRIGHTENED);
+                shieldGuardian.AddEffect(IMMUNITY_PARALYZED);
+                shieldGuardian.AddEffect(IMMUNITY_POISONED);
                 shieldGuardian.AddFeat(Feat.BOUND);
                 shieldGuardian.AddFeat(Feat.REGENERATION);
                 shieldGuardian.AddFeat(Feat.SPELL_STORING);
@@ -574,9 +577,9 @@ namespace srd5 {
                     Monsters.Type.PLANT, Monsters.ID.SHRIEKER, Alignment.UNALIGNED, 1, 1, 10, 1, 3, 1, 5, "3d8", 40, 0,
                     new Attack[] { }, new Attack[] { }, Size.MEDIUM
                 );
-                shrieker.AddEffect(Effect.IMMUNITY_BLINDED);
-                shrieker.AddEffect(Effect.IMMUNITY_BLINDED);
-                shrieker.AddEffect(Effect.IMMUNITY_FRIGHTENED);
+                shrieker.AddEffect(IMMUNITY_BLINDED);
+                shrieker.AddEffect(IMMUNITY_BLINDED);
+                shrieker.AddEffect(IMMUNITY_FRIGHTENED);
                 shrieker.AddFeat(Feat.FALSE_APPEARANCE);
                 return shrieker;
             }
@@ -595,7 +598,7 @@ namespace srd5 {
                 silverDragonWyrmling.AddProficiency(Proficiency.CHARISMA);
                 silverDragonWyrmling.AddProficiency(Proficiency.PERCEPTION);
                 silverDragonWyrmling.AddProficiency(Proficiency.STEALTH);
-                silverDragonWyrmling.AddEffect(Effect.IMMUNITY_COLD);
+                silverDragonWyrmling.AddEffect(IMMUNITY_COLD);
                 return silverDragonWyrmling;
             }
         }
@@ -607,10 +610,10 @@ namespace srd5 {
                     Monsters.Type.UNDEAD, Monsters.ID.SKELETON, Alignment.LAWFUL_EVIL, 10, 14, 15, 6, 8, 5, 13, "2d8+4", 40, ChallengeRating.QUARTER,
                     new Attack[] { Attacks.SkeletonShortsword }, new Attack[] { Attacks.SkeletonShortbow }, Size.MEDIUM
                 );
-                skeleton.AddEffect(Effect.VULNERABILITY_BLUDGEONING);
-                skeleton.AddEffect(Effect.IMMUNITY_POISON);
-                skeleton.AddEffect(Effect.IMMUNITY_POISONED);
-                skeleton.AddEffect(Effect.IMMUNITY_EXHAUSTION);
+                skeleton.AddEffect(VULNERABILITY_BLUDGEONING);
+                skeleton.AddEffect(IMMUNITY_POISON);
+                skeleton.AddEffect(IMMUNITY_POISONED);
+                skeleton.AddEffect(IMMUNITY_EXHAUSTION);
                 return skeleton;
             }
         }
@@ -626,14 +629,14 @@ namespace srd5 {
                 solar.AddProficiency(Proficiency.WISDOM);
                 solar.AddProficiency(Proficiency.CHARISMA);
                 solar.AddProficiency(Proficiency.PERCEPTION);
-                solar.AddEffect(Effect.RESISTANCE_RADIANT);
-                solar.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                solar.AddEffect(Effect.IMMUNITY_NECROTIC);
-                solar.AddEffect(Effect.IMMUNITY_POISON);
-                solar.AddEffect(Effect.IMMUNITY_CHARMED);
-                solar.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                solar.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                solar.AddEffect(Effect.IMMUNITY_POISONED);
+                solar.AddEffect(RESISTANCE_RADIANT);
+                solar.AddEffect(RESISTANCE_NONMAGIC);
+                solar.AddEffect(IMMUNITY_NECROTIC);
+                solar.AddEffect(IMMUNITY_POISON);
+                solar.AddEffect(IMMUNITY_CHARMED);
+                solar.AddEffect(IMMUNITY_EXHAUSTION);
+                solar.AddEffect(IMMUNITY_FRIGHTENED);
+                solar.AddEffect(IMMUNITY_POISONED);
                 solar.AddFeat(Feat.ANGELIC_WEAPONS_6D8);
                 solar.AddFeat(Feat.DIVINE_AWARENESS);
                 solar.AddFeat(Feat.INNATE_SPELLCASTING_SOLAR);
@@ -649,23 +652,23 @@ namespace srd5 {
                     Monsters.Type.UNDEAD, Monsters.ID.SPECTER, Alignment.CHAOTIC_EVIL, 1, 14, 11, 10, 10, 11, 12, "5d8", 40, 1,
                     new Attack[] { Attacks.SpecterLifeDrain }, new Attack[] { }, Size.MEDIUM
                 );
-                specter.AddEffect(Effect.RESISTANCE_ACID);
-                specter.AddEffect(Effect.RESISTANCE_COLD);
-                specter.AddEffect(Effect.RESISTANCE_FIRE);
-                specter.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                specter.AddEffect(Effect.RESISTANCE_THUNDER);
-                specter.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                specter.AddEffect(Effect.IMMUNITY_NECROTIC);
-                specter.AddEffect(Effect.IMMUNITY_POISON);
-                specter.AddEffect(Effect.IMMUNITY_CHARMED);
-                specter.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                specter.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                specter.AddEffect(Effect.IMMUNITY_PARALYZED);
-                specter.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                specter.AddEffect(Effect.IMMUNITY_POISONED);
-                specter.AddEffect(Effect.IMMUNITY_PRONE);
-                specter.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                specter.AddEffect(Effect.IMMUNITY_UNCONSCIOUS);
+                specter.AddEffect(RESISTANCE_ACID);
+                specter.AddEffect(RESISTANCE_COLD);
+                specter.AddEffect(RESISTANCE_FIRE);
+                specter.AddEffect(RESISTANCE_LIGHTNING);
+                specter.AddEffect(RESISTANCE_THUNDER);
+                specter.AddEffect(RESISTANCE_NONMAGIC);
+                specter.AddEffect(IMMUNITY_NECROTIC);
+                specter.AddEffect(IMMUNITY_POISON);
+                specter.AddEffect(IMMUNITY_CHARMED);
+                specter.AddEffect(IMMUNITY_EXHAUSTION);
+                specter.AddEffect(IMMUNITY_GRAPPLED);
+                specter.AddEffect(IMMUNITY_PARALYZED);
+                specter.AddEffect(IMMUNITY_PETRIFIED);
+                specter.AddEffect(IMMUNITY_POISONED);
+                specter.AddEffect(IMMUNITY_PRONE);
+                specter.AddEffect(IMMUNITY_RESTRAINED);
+                specter.AddEffect(IMMUNITY_UNCONSCIOUS);
                 specter.AddFeat(Feat.INCORPOREAL_MOVEMENT);
                 specter.AddFeat(Feat.SUNLIGHT_SENSITIVITY);
                 return specter;
@@ -698,9 +701,9 @@ namespace srd5 {
                 spiritNaga.AddProficiency(Proficiency.CONSTITUTION);
                 spiritNaga.AddProficiency(Proficiency.WISDOM);
                 spiritNaga.AddProficiency(Proficiency.CHARISMA);
-                spiritNaga.AddEffect(Effect.IMMUNITY_POISON);
-                spiritNaga.AddEffect(Effect.IMMUNITY_CHARMED);
-                spiritNaga.AddEffect(Effect.IMMUNITY_POISONED);
+                spiritNaga.AddEffect(IMMUNITY_POISON);
+                spiritNaga.AddEffect(IMMUNITY_CHARMED);
+                spiritNaga.AddEffect(IMMUNITY_POISONED);
                 spiritNaga.AddFeat(Feat.REJUVENATION_NAGA);
                 spiritNaga.AddFeat(Feat.SPELLCASTING_NAGA_11);
                 return spiritNaga;
@@ -746,9 +749,9 @@ namespace srd5 {
                     Monsters.Type.ELEMENTAL, Monsters.ID.STEAM_MEPHIT, Alignment.NEUTRAL_EVIL, 5, 11, 10, 11, 10, 12, 10, "6d6", 40, ChallengeRating.QUARTER,
                     new Attack[] { Attacks.SteamMephitClaws }, new Attack[] { }, Size.SMALL
                 );
-                steamMephit.AddEffect(Effect.IMMUNITY_FIRE);
-                steamMephit.AddEffect(Effect.IMMUNITY_POISON);
-                steamMephit.AddEffect(Effect.IMMUNITY_POISONED);
+                steamMephit.AddEffect(IMMUNITY_FIRE);
+                steamMephit.AddEffect(IMMUNITY_POISON);
+                steamMephit.AddEffect(IMMUNITY_POISONED);
                 steamMephit.AddFeat(Feat.DEATH_BURST_STEAM_MEPHIT);
                 steamMephit.AddFeat(Feat.INNATE_SPELLCASTING_STEAM_MEPHIT);
                 return steamMephit;
@@ -790,15 +793,15 @@ namespace srd5 {
                     Monsters.Type.CONSTRUCT, Monsters.ID.STONE_GOLEM, Alignment.UNALIGNED, 22, 9, 20, 3, 11, 1, 17, "17d10+85", 40, 10,
                     new Attack[] { Attacks.StoneGolemSlam }, new Attack[] { }, Size.LARGE
                 );
-                stoneGolem.AddEffect(Effect.IMMUNITY_POISON);
-                stoneGolem.AddEffect(Effect.IMMUNITY_PSYCHIC);
-                stoneGolem.AddEffect(Effect.IMMUNITY_NONMAGIC);
-                stoneGolem.AddEffect(Effect.IMMUNITY_CHARMED);
-                stoneGolem.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                stoneGolem.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                stoneGolem.AddEffect(Effect.IMMUNITY_PARALYZED);
-                stoneGolem.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                stoneGolem.AddEffect(Effect.IMMUNITY_POISONED);
+                stoneGolem.AddEffect(IMMUNITY_POISON);
+                stoneGolem.AddEffect(IMMUNITY_PSYCHIC);
+                stoneGolem.AddEffect(IMMUNITY_NONMAGIC);
+                stoneGolem.AddEffect(IMMUNITY_CHARMED);
+                stoneGolem.AddEffect(IMMUNITY_EXHAUSTION);
+                stoneGolem.AddEffect(IMMUNITY_FRIGHTENED);
+                stoneGolem.AddEffect(IMMUNITY_PARALYZED);
+                stoneGolem.AddEffect(IMMUNITY_PETRIFIED);
+                stoneGolem.AddEffect(IMMUNITY_POISONED);
                 stoneGolem.AddFeat(Feat.IMMUTABLE_FORM);
                 stoneGolem.AddFeat(Feat.MAGIC_RESISTANCE);
                 stoneGolem.AddFeat(Feat.MAGIC_WEAPONS);
@@ -821,9 +824,9 @@ namespace srd5 {
                 stormGiant.AddProficiency(Proficiency.ATHLETICS);
                 stormGiant.AddProficiency(Proficiency.HISTORY);
                 stormGiant.AddProficiency(Proficiency.PERCEPTION);
-                stormGiant.AddEffect(Effect.RESISTANCE_COLD);
-                stormGiant.AddEffect(Effect.IMMUNITY_LIGHTNING);
-                stormGiant.AddEffect(Effect.IMMUNITY_THUNDER);
+                stormGiant.AddEffect(RESISTANCE_COLD);
+                stormGiant.AddEffect(IMMUNITY_LIGHTNING);
+                stormGiant.AddEffect(IMMUNITY_THUNDER);
                 stormGiant.AddFeat(Feat.AMPHIBIOUS);
                 stormGiant.AddFeat(Feat.INNATE_SPELLCASTING_STORM_GIANT);
                 return stormGiant;
@@ -842,11 +845,11 @@ namespace srd5 {
                 succubus.AddProficiency(Proficiency.PERCEPTION);
                 succubus.AddProficiency(Proficiency.PERSUASION);
                 succubus.AddProficiency(Proficiency.STEALTH);
-                succubus.AddEffect(Effect.RESISTANCE_COLD);
-                succubus.AddEffect(Effect.RESISTANCE_FIRE);
-                succubus.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                succubus.AddEffect(Effect.RESISTANCE_POISON);
-                succubus.AddEffect(Effect.RESISTANCE_NONMAGIC);
+                succubus.AddEffect(RESISTANCE_COLD);
+                succubus.AddEffect(RESISTANCE_FIRE);
+                succubus.AddEffect(RESISTANCE_LIGHTNING);
+                succubus.AddEffect(RESISTANCE_POISON);
+                succubus.AddEffect(RESISTANCE_NONMAGIC);
                 succubus.AddFeat(Feat.TELEPATHIC_BOND_FIEND);
                 succubus.AddFeat(Feat.SHAPECHANGER_FIEND);
                 return succubus;
@@ -860,17 +863,17 @@ namespace srd5 {
                     Monsters.Type.SWARM, Monsters.ID.SWARM_OF_BATS, Alignment.UNALIGNED, 5, 15, 10, 2, 12, 4, 12, "5d8", 40, ChallengeRating.QUARTER,
                     new Attack[] { Attacks.SwarmOfBatsBites }, new Attack[] { }, Size.MEDIUM
                 );
-                swarmOfBats.AddEffect(Effect.RESISTANCE_BLUDGEONING);
-                swarmOfBats.AddEffect(Effect.RESISTANCE_PIERCING);
-                swarmOfBats.AddEffect(Effect.RESISTANCE_SLASHING);
-                swarmOfBats.AddEffect(Effect.IMMUNITY_CHARMED);
-                swarmOfBats.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                swarmOfBats.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                swarmOfBats.AddEffect(Effect.IMMUNITY_PARALYZED);
-                swarmOfBats.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                swarmOfBats.AddEffect(Effect.IMMUNITY_PRONE);
-                swarmOfBats.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                swarmOfBats.AddEffect(Effect.IMMUNITY_STUNNED);
+                swarmOfBats.AddEffect(RESISTANCE_BLUDGEONING);
+                swarmOfBats.AddEffect(RESISTANCE_PIERCING);
+                swarmOfBats.AddEffect(RESISTANCE_SLASHING);
+                swarmOfBats.AddEffect(IMMUNITY_CHARMED);
+                swarmOfBats.AddEffect(IMMUNITY_FRIGHTENED);
+                swarmOfBats.AddEffect(IMMUNITY_GRAPPLED);
+                swarmOfBats.AddEffect(IMMUNITY_PARALYZED);
+                swarmOfBats.AddEffect(IMMUNITY_PETRIFIED);
+                swarmOfBats.AddEffect(IMMUNITY_PRONE);
+                swarmOfBats.AddEffect(IMMUNITY_RESTRAINED);
+                swarmOfBats.AddEffect(IMMUNITY_STUNNED);
                 swarmOfBats.AddFeat(Feat.ECHOLOCATION);
                 swarmOfBats.AddFeat(Feat.KEEN_HEARING);
                 swarmOfBats.AddFeat(Feat.SWARM);
@@ -885,17 +888,17 @@ namespace srd5 {
                     Monsters.Type.SWARM, Monsters.ID.SWARM_OF_BEETLES, Alignment.UNALIGNED, 3, 13, 10, 1, 7, 1, 12, "5d8", 40, ChallengeRating.HALF,
                     new Attack[] { Attacks.SwarmOfBeetlesBites }, new Attack[] { }, Size.MEDIUM
                 );
-                swarmOfBeetles.AddEffect(Effect.RESISTANCE_BLUDGEONING);
-                swarmOfBeetles.AddEffect(Effect.RESISTANCE_PIERCING);
-                swarmOfBeetles.AddEffect(Effect.RESISTANCE_SLASHING);
-                swarmOfBeetles.AddEffect(Effect.IMMUNITY_CHARMED);
-                swarmOfBeetles.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                swarmOfBeetles.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                swarmOfBeetles.AddEffect(Effect.IMMUNITY_PARALYZED);
-                swarmOfBeetles.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                swarmOfBeetles.AddEffect(Effect.IMMUNITY_PRONE);
-                swarmOfBeetles.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                swarmOfBeetles.AddEffect(Effect.IMMUNITY_STUNNED);
+                swarmOfBeetles.AddEffect(RESISTANCE_BLUDGEONING);
+                swarmOfBeetles.AddEffect(RESISTANCE_PIERCING);
+                swarmOfBeetles.AddEffect(RESISTANCE_SLASHING);
+                swarmOfBeetles.AddEffect(IMMUNITY_CHARMED);
+                swarmOfBeetles.AddEffect(IMMUNITY_FRIGHTENED);
+                swarmOfBeetles.AddEffect(IMMUNITY_GRAPPLED);
+                swarmOfBeetles.AddEffect(IMMUNITY_PARALYZED);
+                swarmOfBeetles.AddEffect(IMMUNITY_PETRIFIED);
+                swarmOfBeetles.AddEffect(IMMUNITY_PRONE);
+                swarmOfBeetles.AddEffect(IMMUNITY_RESTRAINED);
+                swarmOfBeetles.AddEffect(IMMUNITY_STUNNED);
                 swarmOfBeetles.AddFeat(Feat.SWARM);
                 return swarmOfBeetles;
             }
@@ -908,17 +911,17 @@ namespace srd5 {
                     Monsters.Type.SWARM, Monsters.ID.SWARM_OF_CENTIPEDES, Alignment.UNALIGNED, 3, 13, 10, 1, 7, 1, 12, "5d8", 40, ChallengeRating.HALF,
                     new Attack[] { Attacks.SwarmOfCentipedesBites }, new Attack[] { }, Size.MEDIUM
                 );
-                swarmOfCentipedes.AddEffect(Effect.RESISTANCE_BLUDGEONING);
-                swarmOfCentipedes.AddEffect(Effect.RESISTANCE_PIERCING);
-                swarmOfCentipedes.AddEffect(Effect.RESISTANCE_SLASHING);
-                swarmOfCentipedes.AddEffect(Effect.IMMUNITY_CHARMED);
-                swarmOfCentipedes.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                swarmOfCentipedes.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                swarmOfCentipedes.AddEffect(Effect.IMMUNITY_PARALYZED);
-                swarmOfCentipedes.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                swarmOfCentipedes.AddEffect(Effect.IMMUNITY_PRONE);
-                swarmOfCentipedes.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                swarmOfCentipedes.AddEffect(Effect.IMMUNITY_STUNNED);
+                swarmOfCentipedes.AddEffect(RESISTANCE_BLUDGEONING);
+                swarmOfCentipedes.AddEffect(RESISTANCE_PIERCING);
+                swarmOfCentipedes.AddEffect(RESISTANCE_SLASHING);
+                swarmOfCentipedes.AddEffect(IMMUNITY_CHARMED);
+                swarmOfCentipedes.AddEffect(IMMUNITY_FRIGHTENED);
+                swarmOfCentipedes.AddEffect(IMMUNITY_GRAPPLED);
+                swarmOfCentipedes.AddEffect(IMMUNITY_PARALYZED);
+                swarmOfCentipedes.AddEffect(IMMUNITY_PETRIFIED);
+                swarmOfCentipedes.AddEffect(IMMUNITY_PRONE);
+                swarmOfCentipedes.AddEffect(IMMUNITY_RESTRAINED);
+                swarmOfCentipedes.AddEffect(IMMUNITY_STUNNED);
                 swarmOfCentipedes.AddFeat(Feat.SWARM);
                 return swarmOfCentipedes;
             }
@@ -931,17 +934,17 @@ namespace srd5 {
                     Monsters.Type.SWARM, Monsters.ID.SWARM_OF_INSECTS, Alignment.UNALIGNED, 3, 13, 10, 1, 7, 1, 12, "5d8", 40, ChallengeRating.HALF,
                     new Attack[] { Attacks.SwarmOfInsectsBites }, new Attack[] { }, Size.MEDIUM
                 );
-                swarmOfInsects.AddEffect(Effect.RESISTANCE_BLUDGEONING);
-                swarmOfInsects.AddEffect(Effect.RESISTANCE_PIERCING);
-                swarmOfInsects.AddEffect(Effect.RESISTANCE_SLASHING);
-                swarmOfInsects.AddEffect(Effect.IMMUNITY_CHARMED);
-                swarmOfInsects.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                swarmOfInsects.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                swarmOfInsects.AddEffect(Effect.IMMUNITY_PARALYZED);
-                swarmOfInsects.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                swarmOfInsects.AddEffect(Effect.IMMUNITY_PRONE);
-                swarmOfInsects.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                swarmOfInsects.AddEffect(Effect.IMMUNITY_STUNNED);
+                swarmOfInsects.AddEffect(RESISTANCE_BLUDGEONING);
+                swarmOfInsects.AddEffect(RESISTANCE_PIERCING);
+                swarmOfInsects.AddEffect(RESISTANCE_SLASHING);
+                swarmOfInsects.AddEffect(IMMUNITY_CHARMED);
+                swarmOfInsects.AddEffect(IMMUNITY_FRIGHTENED);
+                swarmOfInsects.AddEffect(IMMUNITY_GRAPPLED);
+                swarmOfInsects.AddEffect(IMMUNITY_PARALYZED);
+                swarmOfInsects.AddEffect(IMMUNITY_PETRIFIED);
+                swarmOfInsects.AddEffect(IMMUNITY_PRONE);
+                swarmOfInsects.AddEffect(IMMUNITY_RESTRAINED);
+                swarmOfInsects.AddEffect(IMMUNITY_STUNNED);
                 swarmOfInsects.AddFeat(Feat.SWARM);
                 return swarmOfInsects;
             }
@@ -954,17 +957,17 @@ namespace srd5 {
                     Monsters.Type.SWARM, Monsters.ID.SWARM_OF_POISONOUS_SNAKES, Alignment.UNALIGNED, 8, 18, 11, 1, 10, 3, 14, "8d8", 40, 2,
                     new Attack[] { Attacks.SwarmOfPoisonousSnakesBites }, new Attack[] { }, Size.MEDIUM
                 );
-                swarmOfPoisonousSnakes.AddEffect(Effect.RESISTANCE_BLUDGEONING);
-                swarmOfPoisonousSnakes.AddEffect(Effect.RESISTANCE_PIERCING);
-                swarmOfPoisonousSnakes.AddEffect(Effect.RESISTANCE_SLASHING);
-                swarmOfPoisonousSnakes.AddEffect(Effect.IMMUNITY_CHARMED);
-                swarmOfPoisonousSnakes.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                swarmOfPoisonousSnakes.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                swarmOfPoisonousSnakes.AddEffect(Effect.IMMUNITY_PARALYZED);
-                swarmOfPoisonousSnakes.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                swarmOfPoisonousSnakes.AddEffect(Effect.IMMUNITY_PRONE);
-                swarmOfPoisonousSnakes.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                swarmOfPoisonousSnakes.AddEffect(Effect.IMMUNITY_STUNNED);
+                swarmOfPoisonousSnakes.AddEffect(RESISTANCE_BLUDGEONING);
+                swarmOfPoisonousSnakes.AddEffect(RESISTANCE_PIERCING);
+                swarmOfPoisonousSnakes.AddEffect(RESISTANCE_SLASHING);
+                swarmOfPoisonousSnakes.AddEffect(IMMUNITY_CHARMED);
+                swarmOfPoisonousSnakes.AddEffect(IMMUNITY_FRIGHTENED);
+                swarmOfPoisonousSnakes.AddEffect(IMMUNITY_GRAPPLED);
+                swarmOfPoisonousSnakes.AddEffect(IMMUNITY_PARALYZED);
+                swarmOfPoisonousSnakes.AddEffect(IMMUNITY_PETRIFIED);
+                swarmOfPoisonousSnakes.AddEffect(IMMUNITY_PRONE);
+                swarmOfPoisonousSnakes.AddEffect(IMMUNITY_RESTRAINED);
+                swarmOfPoisonousSnakes.AddEffect(IMMUNITY_STUNNED);
                 swarmOfPoisonousSnakes.AddFeat(Feat.SWARM);
                 return swarmOfPoisonousSnakes;
             }
@@ -977,17 +980,17 @@ namespace srd5 {
                     Monsters.Type.SWARM, Monsters.ID.SWARM_OF_QUIPPERS, Alignment.UNALIGNED, 13, 16, 9, 1, 7, 2, 13, "8d8-8", 40, 1,
                     new Attack[] { Attacks.SwarmOfQuippersBites }, new Attack[] { }, Size.MEDIUM
                 );
-                swarmOfQuippers.AddEffect(Effect.RESISTANCE_BLUDGEONING);
-                swarmOfQuippers.AddEffect(Effect.RESISTANCE_PIERCING);
-                swarmOfQuippers.AddEffect(Effect.RESISTANCE_SLASHING);
-                swarmOfQuippers.AddEffect(Effect.IMMUNITY_CHARMED);
-                swarmOfQuippers.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                swarmOfQuippers.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                swarmOfQuippers.AddEffect(Effect.IMMUNITY_PARALYZED);
-                swarmOfQuippers.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                swarmOfQuippers.AddEffect(Effect.IMMUNITY_PRONE);
-                swarmOfQuippers.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                swarmOfQuippers.AddEffect(Effect.IMMUNITY_STUNNED);
+                swarmOfQuippers.AddEffect(RESISTANCE_BLUDGEONING);
+                swarmOfQuippers.AddEffect(RESISTANCE_PIERCING);
+                swarmOfQuippers.AddEffect(RESISTANCE_SLASHING);
+                swarmOfQuippers.AddEffect(IMMUNITY_CHARMED);
+                swarmOfQuippers.AddEffect(IMMUNITY_FRIGHTENED);
+                swarmOfQuippers.AddEffect(IMMUNITY_GRAPPLED);
+                swarmOfQuippers.AddEffect(IMMUNITY_PARALYZED);
+                swarmOfQuippers.AddEffect(IMMUNITY_PETRIFIED);
+                swarmOfQuippers.AddEffect(IMMUNITY_PRONE);
+                swarmOfQuippers.AddEffect(IMMUNITY_RESTRAINED);
+                swarmOfQuippers.AddEffect(IMMUNITY_STUNNED);
                 swarmOfQuippers.AddFeat(Feat.BLOOD_FRENZY);
                 swarmOfQuippers.AddFeat(Feat.SWARM);
                 swarmOfQuippers.AddFeat(Feat.WATER_BREATHING);
@@ -1002,17 +1005,17 @@ namespace srd5 {
                     Monsters.Type.SWARM, Monsters.ID.SWARM_OF_RATS, Alignment.UNALIGNED, 9, 11, 9, 2, 10, 3, 10, "7d8-7", 40, ChallengeRating.QUARTER,
                     new Attack[] { Attacks.SwarmOfRatsBites }, new Attack[] { }, Size.MEDIUM
                 );
-                swarmOfRats.AddEffect(Effect.RESISTANCE_BLUDGEONING);
-                swarmOfRats.AddEffect(Effect.RESISTANCE_PIERCING);
-                swarmOfRats.AddEffect(Effect.RESISTANCE_SLASHING);
-                swarmOfRats.AddEffect(Effect.IMMUNITY_CHARMED);
-                swarmOfRats.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                swarmOfRats.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                swarmOfRats.AddEffect(Effect.IMMUNITY_PARALYZED);
-                swarmOfRats.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                swarmOfRats.AddEffect(Effect.IMMUNITY_PRONE);
-                swarmOfRats.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                swarmOfRats.AddEffect(Effect.IMMUNITY_STUNNED);
+                swarmOfRats.AddEffect(RESISTANCE_BLUDGEONING);
+                swarmOfRats.AddEffect(RESISTANCE_PIERCING);
+                swarmOfRats.AddEffect(RESISTANCE_SLASHING);
+                swarmOfRats.AddEffect(IMMUNITY_CHARMED);
+                swarmOfRats.AddEffect(IMMUNITY_FRIGHTENED);
+                swarmOfRats.AddEffect(IMMUNITY_GRAPPLED);
+                swarmOfRats.AddEffect(IMMUNITY_PARALYZED);
+                swarmOfRats.AddEffect(IMMUNITY_PETRIFIED);
+                swarmOfRats.AddEffect(IMMUNITY_PRONE);
+                swarmOfRats.AddEffect(IMMUNITY_RESTRAINED);
+                swarmOfRats.AddEffect(IMMUNITY_STUNNED);
                 swarmOfRats.AddFeat(Feat.KEEN_SMELL);
                 swarmOfRats.AddFeat(Feat.SWARM);
                 return swarmOfRats;
@@ -1026,17 +1029,17 @@ namespace srd5 {
                     Monsters.Type.SWARM, Monsters.ID.SWARM_OF_RAVENS, Alignment.UNALIGNED, 6, 14, 8, 3, 12, 6, 12, "7d8-7", 40, ChallengeRating.QUARTER,
                     new Attack[] { Attacks.SwarmOfRavensBeaks }, new Attack[] { }, Size.MEDIUM
                 );
-                swarmOfRavens.AddEffect(Effect.RESISTANCE_BLUDGEONING);
-                swarmOfRavens.AddEffect(Effect.RESISTANCE_PIERCING);
-                swarmOfRavens.AddEffect(Effect.RESISTANCE_SLASHING);
-                swarmOfRavens.AddEffect(Effect.IMMUNITY_CHARMED);
-                swarmOfRavens.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                swarmOfRavens.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                swarmOfRavens.AddEffect(Effect.IMMUNITY_PARALYZED);
-                swarmOfRavens.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                swarmOfRavens.AddEffect(Effect.IMMUNITY_PRONE);
-                swarmOfRavens.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                swarmOfRavens.AddEffect(Effect.IMMUNITY_STUNNED);
+                swarmOfRavens.AddEffect(RESISTANCE_BLUDGEONING);
+                swarmOfRavens.AddEffect(RESISTANCE_PIERCING);
+                swarmOfRavens.AddEffect(RESISTANCE_SLASHING);
+                swarmOfRavens.AddEffect(IMMUNITY_CHARMED);
+                swarmOfRavens.AddEffect(IMMUNITY_FRIGHTENED);
+                swarmOfRavens.AddEffect(IMMUNITY_GRAPPLED);
+                swarmOfRavens.AddEffect(IMMUNITY_PARALYZED);
+                swarmOfRavens.AddEffect(IMMUNITY_PETRIFIED);
+                swarmOfRavens.AddEffect(IMMUNITY_PRONE);
+                swarmOfRavens.AddEffect(IMMUNITY_RESTRAINED);
+                swarmOfRavens.AddEffect(IMMUNITY_STUNNED);
                 swarmOfRavens.AddFeat(Feat.SWARM);
                 return swarmOfRavens;
             }
@@ -1049,16 +1052,16 @@ namespace srd5 {
                     Monsters.Type.SWARM, Monsters.ID.SWARM_OF_SPIDERS, Alignment.UNALIGNED, 3, 13, 10, 1, 7, 1, 12, "5d8", 40, ChallengeRating.HALF,
                     new Attack[] { Attacks.SwarmOfSpidersBites }, new Attack[] { }, Size.MEDIUM
                 );
-                swarmOfSpiders.AddEffect(Effect.RESISTANCE_BLUDGEONING);
-                swarmOfSpiders.AddEffect(Effect.RESISTANCE_PIERCING);
-                swarmOfSpiders.AddEffect(Effect.RESISTANCE_SLASHING);
-                swarmOfSpiders.AddEffect(Effect.IMMUNITY_CHARMED);
-                swarmOfSpiders.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                swarmOfSpiders.AddEffect(Effect.IMMUNITY_PARALYZED);
-                swarmOfSpiders.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                swarmOfSpiders.AddEffect(Effect.IMMUNITY_PRONE);
-                swarmOfSpiders.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                swarmOfSpiders.AddEffect(Effect.IMMUNITY_STUNNED);
+                swarmOfSpiders.AddEffect(RESISTANCE_BLUDGEONING);
+                swarmOfSpiders.AddEffect(RESISTANCE_PIERCING);
+                swarmOfSpiders.AddEffect(RESISTANCE_SLASHING);
+                swarmOfSpiders.AddEffect(IMMUNITY_CHARMED);
+                swarmOfSpiders.AddEffect(IMMUNITY_FRIGHTENED);
+                swarmOfSpiders.AddEffect(IMMUNITY_PARALYZED);
+                swarmOfSpiders.AddEffect(IMMUNITY_PETRIFIED);
+                swarmOfSpiders.AddEffect(IMMUNITY_PRONE);
+                swarmOfSpiders.AddEffect(IMMUNITY_RESTRAINED);
+                swarmOfSpiders.AddEffect(IMMUNITY_STUNNED);
                 swarmOfSpiders.AddFeat(Feat.SWARM);
                 swarmOfSpiders.AddFeat(Feat.SPIDER_CLIMB);
                 swarmOfSpiders.AddFeat(Feat.WEB_SENSE);
@@ -1074,17 +1077,17 @@ namespace srd5 {
                     Monsters.Type.SWARM, Monsters.ID.SWARM_OF_WASPS, Alignment.UNALIGNED, 3, 13, 10, 1, 7, 1, 12, "5d8", 40, ChallengeRating.HALF,
                     new Attack[] { Attacks.SwarmOfWaspsBites }, new Attack[] { }, Size.MEDIUM
                 );
-                swarmOfWasps.AddEffect(Effect.RESISTANCE_BLUDGEONING);
-                swarmOfWasps.AddEffect(Effect.RESISTANCE_PIERCING);
-                swarmOfWasps.AddEffect(Effect.RESISTANCE_SLASHING);
-                swarmOfWasps.AddEffect(Effect.IMMUNITY_CHARMED);
-                swarmOfWasps.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                swarmOfWasps.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                swarmOfWasps.AddEffect(Effect.IMMUNITY_PARALYZED);
-                swarmOfWasps.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                swarmOfWasps.AddEffect(Effect.IMMUNITY_PRONE);
-                swarmOfWasps.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                swarmOfWasps.AddEffect(Effect.IMMUNITY_STUNNED);
+                swarmOfWasps.AddEffect(RESISTANCE_BLUDGEONING);
+                swarmOfWasps.AddEffect(RESISTANCE_PIERCING);
+                swarmOfWasps.AddEffect(RESISTANCE_SLASHING);
+                swarmOfWasps.AddEffect(IMMUNITY_CHARMED);
+                swarmOfWasps.AddEffect(IMMUNITY_FRIGHTENED);
+                swarmOfWasps.AddEffect(IMMUNITY_GRAPPLED);
+                swarmOfWasps.AddEffect(IMMUNITY_PARALYZED);
+                swarmOfWasps.AddEffect(IMMUNITY_PETRIFIED);
+                swarmOfWasps.AddEffect(IMMUNITY_PRONE);
+                swarmOfWasps.AddEffect(IMMUNITY_RESTRAINED);
+                swarmOfWasps.AddEffect(IMMUNITY_STUNNED);
                 swarmOfWasps.AddFeat(Feat.SWARM);
                 return swarmOfWasps;
             }

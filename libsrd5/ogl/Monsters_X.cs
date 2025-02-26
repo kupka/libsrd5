@@ -1,13 +1,16 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack XornBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "3d6+3"), 5);
+                return new Attack("Bite", 6, new Damage(PIERCING, "3d6+3"), 5);
             }
         }
         public static Attack XornClaw {
             get {
-                return new Attack("Claw", 6, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+                return new Attack("Claw", 6, new Damage(SLASHING, "1d6+3"), 5);
             }
         }
     }
@@ -22,7 +25,7 @@ namespace srd5 {
                 );
                 xorn.AddProficiency(Proficiency.PERCEPTION);
                 xorn.AddProficiency(Proficiency.STEALTH);
-                xorn.AddEffect(Effect.RESISTANCE_NONMAGIC);
+                xorn.AddEffect(RESISTANCE_NONMAGIC);
                 xorn.AddFeat(Feat.EARTH_GLIDE);
                 xorn.AddFeat(Feat.STONE_CAMOUFLAGE);
                 xorn.AddFeat(Feat.TREASURE_SENSE);

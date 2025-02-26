@@ -1,102 +1,105 @@
 using static srd5.Die;
 
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack HalfRedDragonVeteranLongsword {
             get {
-                return new Attack("Longsword", 5, new Damage(DamageType.SLASHING, "1d10+3"), 5);
+                return new Attack("Longsword", 5, new Damage(SLASHING, "1d10+3"), 5);
             }
         }
         public static Attack HalfRedDragonVeteranShortsword {
             get {
-                return new Attack("Shortsword", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
+                return new Attack("Shortsword", 5, new Damage(PIERCING, "1d6+3"), 5);
             }
         }
         public static Attack HalfRedDragonVeteranHeavyCrossbow {
             get {
-                return new Attack("Heavy Crossbow", 3, new Damage(DamageType.PIERCING, "1d10+1"), 5, 100, 400);
+                return new Attack("Heavy Crossbow", 3, new Damage(PIERCING, "1d10+1"), 5, 100, 400);
             }
         }
         public static Attack HarpyClaws {
             get {
-                return new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+1"), 5);
+                return new Attack("Claws", 3, new Damage(SLASHING, "2d4+1"), 5);
             }
         }
         public static Attack HarpyClub {
             get {
-                return new Attack("Club", 3, new Damage(DamageType.BLUDGEONING, "1d4+1"), 5);
+                return new Attack("Club", 3, new Damage(BLUDGEONING, "1d4+1"), 5);
             }
         }
         public static Attack HawkTalons {
             get {
-                return new Attack("Talons", 5, new Damage(DamageType.SLASHING, 1), 5);
+                return new Attack("Talons", 5, new Damage(SLASHING, 1), 5);
             }
         }
         public static Attack HellHoundBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, new Damage(DamageType.FIRE, "2d6"));
+                return new Attack("Bite", 5, new Damage(PIERCING, "1d8+3"), 5, new Damage(FIRE, "2d6"));
             }
         }
         public static Attack HezrouBite {
             get {
-                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 5);
+                return new Attack("Bite", 7, new Damage(PIERCING, "2d10+4"), 5);
             }
         }
         public static Attack HezrouClaws {
             get {
-                return new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+                return new Attack("Claws", 7, new Damage(SLASHING, "2d6+4"), 5);
             }
         }
         public static Attack HillGiantGreatclub {
             get {
-                return new Attack("Greatclub", 8, new Damage(DamageType.BLUDGEONING, "3d8+5"), 10);
+                return new Attack("Greatclub", 8, new Damage(BLUDGEONING, "3d8+5"), 10);
             }
         }
         public static Attack HillGiantRock {
             get {
-                return new Attack("Rock", 8, new Damage(DamageType.BLUDGEONING, "3d10+5"), 5, 60, 240);
+                return new Attack("Rock", 8, new Damage(BLUDGEONING, "3d10+5"), 5, 60, 240);
             }
         }
         public static Attack HippogriffBeak {
             get {
-                return new Attack("Beak", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5);
+                return new Attack("Beak", 5, new Damage(PIERCING, "1d10+3"), 5);
             }
         }
         public static Attack HippogriffClaws {
             get {
-                return new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
+                return new Attack("Claws", 5, new Damage(SLASHING, "2d6+3"), 5);
             }
         }
         public static Attack HobgoblinLongsword {
             get {
-                return new Attack("Longsword", 3, new Damage(DamageType.SLASHING, "1d10+1"), 5);
+                return new Attack("Longsword", 3, new Damage(SLASHING, "1d10+1"), 5);
             }
         }
         public static Attack HobgoblinLongbow {
             get {
-                return new Attack("Longbow", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5, 150, 600);
+                return new Attack("Longbow", 3, new Damage(PIERCING, "1d8+1"), 5, 150, 600);
             }
         }
         public static readonly AttackEffect HomunculusBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.IsImmune(POISON)) return false;
             if (target.DC(HomunculusBite, 10, AbilityType.CONSTITUTION, out int dc)) return false;
             if (dc < 6) {
-                target.AddEffect(Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS);
+                target.AddEffect(HOMUNCULUS_POISON_UNCONCIOUSNESS);
                 int duration = D10.Value * 10;
                 int turnsPassed = 0;
                 target.AddEndOfTurnEvent(delegate () {
                     if (++turnsPassed > duration) {
-                        target.RemoveEffect(Effect.HOMUNCULUS_POISON_UNCONCIOUSNESS);
+                        target.RemoveEffect(HOMUNCULUS_POISON_UNCONCIOUSNESS);
                         return true;
                     }
                     return false;
                 });
             } else {
-                target.AddEffect(Effect.HOMUNCULUS_POISON);
+                target.AddEffect(HOMUNCULUS_POISON);
                 int turnsPassed = 0;
                 target.AddEndOfTurnEvent(delegate () {
                     if (++turnsPassed > 10) {
-                        target.RemoveEffect(Effect.HOMUNCULUS_POISON);
+                        target.RemoveEffect(HOMUNCULUS_POISON);
                         return true;
                     }
                     return false;
@@ -106,7 +109,7 @@ namespace srd5 {
         };
         public static Attack HomunculusBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, 1), 5, null, HomunculusBiteEffect);
+                return new Attack("Bite", 4, new Damage(PIERCING, 1), 5, null, HomunculusBiteEffect);
             }
         }
         public static readonly AttackEffect HornedDevilTailEffect = delegate (Combattant attacker, Combattant target) {
@@ -116,22 +119,22 @@ namespace srd5 {
             // TODO: Any creature can take an action to stanch the wound with a successful DC 12 Wisdom (Medicine) check.
             // The wound also closes if the target receives magical healing.
             // add infernal wound affect if newly applied
-            if (!target.HasEffect(Effect.INFERNAL_WOUND_HORNED_DEVIL)) {
+            if (!target.HasEffect(INFERNAL_WOUND_HORNED_DEVIL)) {
                 target.AddStartOfTurnEvent(delegate () {
                     foreach (Effect effect in target.Effects) {
-                        if (effect != Effect.INFERNAL_WOUND_HORNED_DEVIL) continue;
-                        target.TakeDamage(attacker, DamageType.TRUE_DAMAGE, "3d6");
+                        if (effect != INFERNAL_WOUND_HORNED_DEVIL) continue;
+                        target.TakeDamage(attacker, TRUE_DAMAGE, "3d6");
                     }
-                    return target.HasEffect(Effect.INFERNAL_WOUND_HORNED_DEVIL);
+                    return target.HasEffect(INFERNAL_WOUND_HORNED_DEVIL);
                 });
             }
             // increase infernal wound stack by one
-            target.AddEffect(Effect.INFERNAL_WOUND_HORNED_DEVIL);
+            target.AddEffect(INFERNAL_WOUND_HORNED_DEVIL);
             return false;
         };
         public static Attack HornedDevilTail {
             get {
-                return new Attack("Tail", 10, new Damage(DamageType.PIERCING, "1d8+6"), 5, null, HornedDevilTailEffect);
+                return new Attack("Tail", 10, new Damage(PIERCING, "1d8+6"), 5, null, HornedDevilTailEffect);
             }
         }
         public static readonly AttackEffect HornedDevilHurlFlameEffect = delegate (Combattant attacker, Combattant target) {
@@ -140,27 +143,27 @@ namespace srd5 {
         };
         public static Attack HornedDevilHurlFlame {
             get {
-                return new Attack("Hurl Flame", 7, new Damage(DamageType.FIRE, "4d6"), 150, 150, null, HornedDevilHurlFlameEffect);
+                return new Attack("Hurl Flame", 7, new Damage(FIRE, "4d6"), 150, 150, null, HornedDevilHurlFlameEffect);
             }
         }
         public static Attack HornedDevilFork {
             get {
-                return new Attack("Fork", 10, new Damage(DamageType.PIERCING, "2d8+6"), 10);
+                return new Attack("Fork", 10, new Damage(PIERCING, "2d8+6"), 10);
             }
         }
         public static Attack HunterSharkBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d8+4"), 5);
+                return new Attack("Bite", 6, new Damage(PIERCING, "2d8+4"), 5);
             }
         }
         public static Attack HydraBite {
             get {
-                return new Attack("Bite", 8, new Damage(DamageType.PIERCING, "1d10+5"), 10);
+                return new Attack("Bite", 8, new Damage(PIERCING, "1d10+5"), 10);
             }
         }
         public static Attack HyenaBite {
             get {
-                return new Attack("Bite", 2, new Damage(DamageType.PIERCING, "1d6"), 5);
+                return new Attack("Bite", 2, new Damage(PIERCING, "1d6"), 5);
             }
         }
     }
@@ -173,7 +176,7 @@ namespace srd5 {
                     Monsters.Type.HUMANOID, Monsters.ID.HALF_RED_DRAGON_VETERAN, Alignment.UNALIGNED, 16, 13, 14, 10, 11, 10, 18, "10d8+20", 40, 5,
                     new Attack[] { Attacks.HalfRedDragonVeteranLongsword, Attacks.HalfRedDragonVeteranShortsword }, new Attack[] { Attacks.HalfRedDragonVeteranHeavyCrossbow }, Size.MEDIUM
                 );
-                halfRedDragonVeteran.AddEffect(Effect.RESISTANCE_FIRE);
+                halfRedDragonVeteran.AddEffect(RESISTANCE_FIRE);
                 return halfRedDragonVeteran;
             }
         }
@@ -210,7 +213,7 @@ namespace srd5 {
                     new Attack[] { Attacks.HellHoundBite }, new Attack[] { }, Size.MEDIUM
                 );
                 hellHound.AddProficiency(Proficiency.PERCEPTION);
-                hellHound.AddEffect(Effect.IMMUNITY_FIRE);
+                hellHound.AddEffect(IMMUNITY_FIRE);
                 hellHound.AddFeat(Feat.KEEN_HEARING_AND_SMELL);
                 hellHound.AddFeat(Feat.PACK_TACTICS);
                 return hellHound;
@@ -227,12 +230,12 @@ namespace srd5 {
                 hezrou.AddProficiency(Proficiency.STRENGTH);
                 hezrou.AddProficiency(Proficiency.CONSTITUTION);
                 hezrou.AddProficiency(Proficiency.WISDOM);
-                hezrou.AddEffect(Effect.RESISTANCE_COLD);
-                hezrou.AddEffect(Effect.RESISTANCE_FIRE);
-                hezrou.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                hezrou.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                hezrou.AddEffect(Effect.IMMUNITY_POISON);
-                hezrou.AddEffect(Effect.IMMUNITY_POISONED);
+                hezrou.AddEffect(RESISTANCE_COLD);
+                hezrou.AddEffect(RESISTANCE_FIRE);
+                hezrou.AddEffect(RESISTANCE_LIGHTNING);
+                hezrou.AddEffect(RESISTANCE_NONMAGIC);
+                hezrou.AddEffect(IMMUNITY_POISON);
+                hezrou.AddEffect(IMMUNITY_POISONED);
                 hezrou.AddFeat(Feat.MAGIC_RESISTANCE);
                 hezrou.AddFeat(Feat.STENCH_HEZROU);
                 return hezrou;
@@ -283,9 +286,9 @@ namespace srd5 {
                     Monsters.Type.CONSTRUCT, Monsters.ID.HOMUNCULUS, Alignment.NEUTRAL, 4, 15, 11, 10, 10, 7, 13, "2d4", 40, 0,
                     new Attack[] { }, new Attack[] { }, Size.TINY
                 );
-                homunculus.AddEffect(Effect.IMMUNITY_POISON);
-                homunculus.AddEffect(Effect.IMMUNITY_CHARMED);
-                homunculus.AddEffect(Effect.IMMUNITY_POISONED);
+                homunculus.AddEffect(IMMUNITY_POISON);
+                homunculus.AddEffect(IMMUNITY_CHARMED);
+                homunculus.AddEffect(IMMUNITY_POISONED);
                 homunculus.AddFeat(Feat.TELEPATHIC_BOND_HOMUNCULUS);
                 return homunculus;
             }
@@ -302,11 +305,11 @@ namespace srd5 {
                 hornedDevil.AddProficiency(Proficiency.DEXTERITY);
                 hornedDevil.AddProficiency(Proficiency.WISDOM);
                 hornedDevil.AddProficiency(Proficiency.CHARISMA);
-                hornedDevil.AddEffect(Effect.RESISTANCE_COLD);
-                hornedDevil.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                hornedDevil.AddEffect(Effect.IMMUNITY_FIRE);
-                hornedDevil.AddEffect(Effect.IMMUNITY_POISON);
-                hornedDevil.AddEffect(Effect.IMMUNITY_POISONED);
+                hornedDevil.AddEffect(RESISTANCE_COLD);
+                hornedDevil.AddEffect(RESISTANCE_NONMAGIC);
+                hornedDevil.AddEffect(IMMUNITY_FIRE);
+                hornedDevil.AddEffect(IMMUNITY_POISON);
+                hornedDevil.AddEffect(IMMUNITY_POISONED);
                 hornedDevil.AddFeat(Feat.DEVILS_SIGHT);
                 hornedDevil.AddFeat(Feat.MAGIC_RESISTANCE);
                 return hornedDevil;

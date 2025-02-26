@@ -1,28 +1,31 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack NalfeshneeBite {
             get {
-                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "5d10+5"), 5);
+                return new Attack("Bite", 10, new Damage(PIERCING, "5d10+5"), 5);
             }
         }
         public static Attack NalfeshneeClaw {
             get {
-                return new Attack("Claw", 10, new Damage(DamageType.SLASHING, "3d6+5"), 10);
+                return new Attack("Claw", 10, new Damage(SLASHING, "3d6+5"), 10);
             }
         }
         public static Attack NightHagClaws {
             get {
-                return new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+                return new Attack("Claws", 7, new Damage(SLASHING, "2d8+4"), 5);
             }
         }
         public static Attack NightmareHooves {
             get {
-                return new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5, new Damage(DamageType.FIRE, "2d6"));
+                return new Attack("Hooves", 6, new Damage(BLUDGEONING, "2d8+4"), 5, new Damage(FIRE, "2d6"));
             }
         }
         public static Attack NobleRapier {
             get {
-                return new Attack("Rapier", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
+                return new Attack("Rapier", 3, new Damage(PIERCING, "1d8+1"), 5);
             }
         }
     }
@@ -39,12 +42,12 @@ namespace srd5 {
                 nalfeshnee.AddProficiency(Proficiency.INTELLIGENCE);
                 nalfeshnee.AddProficiency(Proficiency.WISDOM);
                 nalfeshnee.AddProficiency(Proficiency.CHARISMA);
-                nalfeshnee.AddEffect(Effect.RESISTANCE_COLD);
-                nalfeshnee.AddEffect(Effect.RESISTANCE_FIRE);
-                nalfeshnee.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                nalfeshnee.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                nalfeshnee.AddEffect(Effect.IMMUNITY_POISON);
-                nalfeshnee.AddEffect(Effect.IMMUNITY_POISONED);
+                nalfeshnee.AddEffect(RESISTANCE_COLD);
+                nalfeshnee.AddEffect(RESISTANCE_FIRE);
+                nalfeshnee.AddEffect(RESISTANCE_LIGHTNING);
+                nalfeshnee.AddEffect(RESISTANCE_NONMAGIC);
+                nalfeshnee.AddEffect(IMMUNITY_POISON);
+                nalfeshnee.AddEffect(IMMUNITY_POISONED);
                 nalfeshnee.AddFeat(Feat.MAGIC_RESISTANCE);
                 return nalfeshnee;
             }
@@ -61,10 +64,10 @@ namespace srd5 {
                 nightHag.AddProficiency(Proficiency.INSIGHT);
                 nightHag.AddProficiency(Proficiency.PERCEPTION);
                 nightHag.AddProficiency(Proficiency.STEALTH);
-                nightHag.AddEffect(Effect.RESISTANCE_COLD);
-                nightHag.AddEffect(Effect.RESISTANCE_FIRE);
-                nightHag.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                nightHag.AddEffect(Effect.IMMUNITY_CHARMED);
+                nightHag.AddEffect(RESISTANCE_COLD);
+                nightHag.AddEffect(RESISTANCE_FIRE);
+                nightHag.AddEffect(RESISTANCE_NONMAGIC);
+                nightHag.AddEffect(IMMUNITY_CHARMED);
                 nightHag.AddFeat(Feat.INNATE_SPELLCASTING_NIGHT_HAG);
                 nightHag.AddFeat(Feat.MAGIC_RESISTANCE);
                 nightHag.AddFeat(Feat.NIGHT_HAG_ITEMS);
@@ -90,7 +93,7 @@ namespace srd5 {
                     Monsters.Type.FIEND, Monsters.ID.NIGHTMARE, Alignment.NEUTRAL_EVIL, 18, 15, 16, 10, 13, 15, 13, "8d10+24", 40, 3,
                     new Attack[] { Attacks.NightmareHooves }, new Attack[] { }, Size.LARGE
                 );
-                nightmare.AddEffect(Effect.IMMUNITY_FIRE);
+                nightmare.AddEffect(IMMUNITY_FIRE);
                 nightmare.AddFeat(Feat.CONFER_FIRE_RESISTANCE);
                 nightmare.AddFeat(Feat.ILLUMINATION_10FT);
                 return nightmare;

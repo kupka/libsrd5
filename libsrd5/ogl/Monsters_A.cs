@@ -1,339 +1,342 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static readonly Attack[] None = new Attack[0];
         public static AttackEffect AbolethTentacleEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(AbolethTentacle, 14, AbilityType.CONSTITUTION)) return false;
-            target.AddEffect(Effect.ABOLETH_DISEASE_TENTACLE);
+            target.AddEffect(ABOLETH_DISEASE_TENTACLE);
             return false;
         };
         public static Attack AbolethTentacle {
             get {
-                return new Attack("Tentacle", 9, new Damage(DamageType.BLUDGEONING, "2d6+5"), 10, null, AbolethTentacleEffect);
+                return new Attack("Tentacle", 9, new Damage(BLUDGEONING, "2d6+5"), 10, null, AbolethTentacleEffect);
             }
         }
         public static Attack AbolethTail {
             get {
-                return new Attack("Tail", 9, new Damage(DamageType.BLUDGEONING, "3d6+5"), 10);
+                return new Attack("Tail", 9, new Damage(BLUDGEONING, "3d6+5"), 10);
             }
         }
         public static Attack AcolyteClub {
             get {
-                return new Attack("Club", 2, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
+                return new Attack("Club", 2, new Damage(BLUDGEONING, "1d4"), 5);
             }
         }
         public static Attack AdultBlackDragonBite {
             get {
-                return new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10, new Damage(DamageType.ACID, "1d8"));
+                return new Attack("Bite", 11, new Damage(PIERCING, "2d10+6"), 10, new Damage(ACID, "1d8"));
             }
         }
         public static Attack AdultBlackDragonClaw {
             get {
-                return new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+                return new Attack("Claw", 11, new Damage(SLASHING, "2d6+6"), 5);
             }
         }
         public static Attack AdultBlackDragonTail {
             get {
-                return new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
+                return new Attack("Tail", 11, new Damage(BLUDGEONING, "2d8+6"), 15);
             }
         }
         public static Attack AdultBlueDragonBite {
             get {
-                return new Attack("Bite", 12, new Damage(DamageType.PIERCING, "2d10+7"), 10, new Damage(DamageType.LIGHTNING, "1d10"));
+                return new Attack("Bite", 12, new Damage(PIERCING, "2d10+7"), 10, new Damage(LIGHTNING, "1d10"));
             }
         }
         public static Attack AdultBlueDragonClaw {
             get {
-                return new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d6+7"), 5);
+                return new Attack("Claw", 12, new Damage(SLASHING, "2d6+7"), 5);
             }
         }
         public static Attack AdultBlueDragonTail {
             get {
-                return new Attack("Tail", 12, new Damage(DamageType.BLUDGEONING, "2d8+7"), 15);
+                return new Attack("Tail", 12, new Damage(BLUDGEONING, "2d8+7"), 15);
             }
         }
         public static Attack AdultBrassDragonBite {
             get {
-                return new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10);
+                return new Attack("Bite", 11, new Damage(PIERCING, "2d10+6"), 10);
             }
         }
         public static Attack AdultBrassDragonClaw {
             get {
-                return new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+                return new Attack("Claw", 11, new Damage(SLASHING, "2d6+6"), 5);
             }
         }
         public static Attack AdultBrassDragonTail {
             get {
-                return new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
+                return new Attack("Tail", 11, new Damage(BLUDGEONING, "2d8+6"), 15);
             }
         }
         public static Attack AdultBronzeDragonBite {
             get {
-                return new Attack("Bite", 12, new Damage(DamageType.PIERCING, "2d10+7"), 10);
+                return new Attack("Bite", 12, new Damage(PIERCING, "2d10+7"), 10);
             }
         }
         public static Attack AdultBronzeDragonClaw {
             get {
-                return new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d6+7"), 5);
+                return new Attack("Claw", 12, new Damage(SLASHING, "2d6+7"), 5);
             }
         }
         public static Attack AdultBronzeDragonTail {
             get {
-                return new Attack("Tail", 12, new Damage(DamageType.BLUDGEONING, "2d8+7"), 15);
+                return new Attack("Tail", 12, new Damage(BLUDGEONING, "2d8+7"), 15);
             }
         }
         public static Attack AdultCopperDragonBite {
             get {
-                return new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10);
+                return new Attack("Bite", 11, new Damage(PIERCING, "2d10+6"), 10);
             }
         }
         public static Attack AdultCopperDragonClaw {
             get {
-                return new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+                return new Attack("Claw", 11, new Damage(SLASHING, "2d6+6"), 5);
             }
         }
         public static Attack AdultCopperDragonTail {
             get {
-                return new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
+                return new Attack("Tail", 11, new Damage(BLUDGEONING, "2d8+6"), 15);
             }
         }
         public static Attack AdultGoldDragonBite {
             get {
-                return new Attack("Bite", 14, new Damage(DamageType.PIERCING, "2d10+8"), 10);
+                return new Attack("Bite", 14, new Damage(PIERCING, "2d10+8"), 10);
             }
         }
         public static Attack AdultGoldDragonClaw {
             get {
-                return new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d6+8"), 5);
+                return new Attack("Claw", 14, new Damage(SLASHING, "2d6+8"), 5);
             }
         }
         public static Attack AdultGoldDragonTail {
             get {
-                return new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "2d8+8"), 15);
+                return new Attack("Tail", 14, new Damage(BLUDGEONING, "2d8+8"), 15);
             }
         }
         public static Attack AdultGreenDragonBite {
             get {
-                return new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10, new Damage(DamageType.POISON, "2d6"));
+                return new Attack("Bite", 11, new Damage(PIERCING, "2d10+6"), 10, new Damage(POISON, "2d6"));
             }
         }
         public static Attack AdultGreenDragonClaw {
             get {
-                return new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+                return new Attack("Claw", 11, new Damage(SLASHING, "2d6+6"), 5);
             }
         }
         public static Attack AdultGreenDragonTail {
             get {
-                return new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
+                return new Attack("Tail", 11, new Damage(BLUDGEONING, "2d8+6"), 15);
             }
         }
         public static Attack AdultRedDragonBite {
             get {
-                return new Attack("Bite", 14, new Damage(DamageType.PIERCING, "2d10+8"), 10, new Damage(DamageType.FIRE, "2d6"));
+                return new Attack("Bite", 14, new Damage(PIERCING, "2d10+8"), 10, new Damage(FIRE, "2d6"));
             }
         }
         public static Attack AdultRedDragonClaw {
             get {
-                return new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d6+8"), 5);
+                return new Attack("Claw", 14, new Damage(SLASHING, "2d6+8"), 5);
             }
         }
         public static Attack AdultRedDragonTail {
             get {
-                return new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "2d8+8"), 15);
+                return new Attack("Tail", 14, new Damage(BLUDGEONING, "2d8+8"), 15);
             }
         }
         public static Attack AdultSilverDragonBite {
             get {
-                return new Attack("Bite", 13, new Damage(DamageType.PIERCING, "2d10+8"), 10);
+                return new Attack("Bite", 13, new Damage(PIERCING, "2d10+8"), 10);
             }
         }
         public static Attack AdultSilverDragonClaw {
             get {
-                return new Attack("Claw", 13, new Damage(DamageType.SLASHING, "2d6+8"), 5);
+                return new Attack("Claw", 13, new Damage(SLASHING, "2d6+8"), 5);
             }
         }
         public static Attack AdultSilverDragonTail {
             get {
-                return new Attack("Tail", 13, new Damage(DamageType.BLUDGEONING, "2d8+8"), 15);
+                return new Attack("Tail", 13, new Damage(BLUDGEONING, "2d8+8"), 15);
             }
         }
         public static Attack AdultWhiteDragonBite {
             get {
-                return new Attack("Bite", 11, new Damage(DamageType.PIERCING, "2d10+6"), 10, new Damage(DamageType.COLD, "1d8"));
+                return new Attack("Bite", 11, new Damage(PIERCING, "2d10+6"), 10, new Damage(COLD, "1d8"));
             }
         }
         public static Attack AdultWhiteDragonClaw {
             get {
-                return new Attack("Claw", 11, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+                return new Attack("Claw", 11, new Damage(SLASHING, "2d6+6"), 5);
             }
         }
         public static Attack AdultWhiteDragonTail {
             get {
-                return new Attack("Tail", 11, new Damage(DamageType.BLUDGEONING, "2d8+6"), 15);
+                return new Attack("Tail", 11, new Damage(BLUDGEONING, "2d8+6"), 15);
             }
         }
         public static Attack AirElementalSlam {
             get {
-                return new Attack("Slam", 8, new Damage(DamageType.BLUDGEONING, "2d8+5"), 5);
+                return new Attack("Slam", 8, new Damage(BLUDGEONING, "2d8+5"), 5);
             }
         }
         public static Attack AncientBlackDragonBite {
             get {
-                return new Attack("Bite", 15, new Damage(DamageType.PIERCING, "2d10+8"), 15, new Damage(DamageType.ACID, "2d8"));
+                return new Attack("Bite", 15, new Damage(PIERCING, "2d10+8"), 15, new Damage(ACID, "2d8"));
             }
         }
         public static Attack AncientBlackDragonClaw {
             get {
-                return new Attack("Claw", 15, new Damage(DamageType.SLASHING, "2d6+8"), 10);
+                return new Attack("Claw", 15, new Damage(SLASHING, "2d6+8"), 10);
             }
         }
         public static Attack AncientBlackDragonTail {
             get {
-                return new Attack("Tail", 15, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
+                return new Attack("Tail", 15, new Damage(BLUDGEONING, "2d8+8"), 20);
             }
         }
         public static Attack AncientBlueDragonBite {
             get {
-                return new Attack("Bite", 16, new Damage(DamageType.PIERCING, "2d10+9"), 15, new Damage(DamageType.LIGHTNING, "2d10"));
+                return new Attack("Bite", 16, new Damage(PIERCING, "2d10+9"), 15, new Damage(LIGHTNING, "2d10"));
             }
         }
         public static Attack AncientBlueDragonClaw {
             get {
-                return new Attack("Claw", 16, new Damage(DamageType.SLASHING, "2d6+9"), 10);
+                return new Attack("Claw", 16, new Damage(SLASHING, "2d6+9"), 10);
             }
         }
         public static Attack AncientBlueDragonTail {
             get {
-                return new Attack("Tail", 16, new Damage(DamageType.BLUDGEONING, "2d8+9"), 20);
+                return new Attack("Tail", 16, new Damage(BLUDGEONING, "2d8+9"), 20);
             }
         }
         public static Attack AncientBrassDragonBite {
             get {
-                return new Attack("Bite", 14, new Damage(DamageType.PIERCING, "2d10+8"), 15);
+                return new Attack("Bite", 14, new Damage(PIERCING, "2d10+8"), 15);
             }
         }
         public static Attack AncientBrassDragonClaw {
             get {
-                return new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d6+8"), 10);
+                return new Attack("Claw", 14, new Damage(SLASHING, "2d6+8"), 10);
             }
         }
         public static Attack AncientBrassDragonTail {
             get {
-                return new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
+                return new Attack("Tail", 14, new Damage(BLUDGEONING, "2d8+8"), 20);
             }
         }
         public static Attack AncientBronzeDragonBite {
             get {
-                return new Attack("Bite", 16, new Damage(DamageType.PIERCING, "2d10+9"), 15);
+                return new Attack("Bite", 16, new Damage(PIERCING, "2d10+9"), 15);
             }
         }
         public static Attack AncientBronzeDragonClaw {
             get {
-                return new Attack("Claw", 16, new Damage(DamageType.SLASHING, "2d6+9"), 10);
+                return new Attack("Claw", 16, new Damage(SLASHING, "2d6+9"), 10);
             }
         }
         public static Attack AncientBronzeDragonTail {
             get {
-                return new Attack("Tail", 16, new Damage(DamageType.BLUDGEONING, "2d8+9"), 20);
+                return new Attack("Tail", 16, new Damage(BLUDGEONING, "2d8+9"), 20);
             }
         }
         public static Attack AncientCopperDragonBite {
             get {
-                return new Attack("Bite", 15, new Damage(DamageType.PIERCING, "2d10+8"), 15);
+                return new Attack("Bite", 15, new Damage(PIERCING, "2d10+8"), 15);
             }
         }
         public static Attack AncientCopperDragonClaw {
             get {
-                return new Attack("Claw", 15, new Damage(DamageType.SLASHING, "2d6+8"), 10);
+                return new Attack("Claw", 15, new Damage(SLASHING, "2d6+8"), 10);
             }
         }
         public static Attack AncientCopperDragonTail {
             get {
-                return new Attack("Tail", 15, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
+                return new Attack("Tail", 15, new Damage(BLUDGEONING, "2d8+8"), 20);
             }
         }
         public static Attack AncientGoldDragonBite {
             get {
-                return new Attack("Bite", 17, new Damage(DamageType.PIERCING, "2d10+10"), 15);
+                return new Attack("Bite", 17, new Damage(PIERCING, "2d10+10"), 15);
             }
         }
         public static Attack AncientGoldDragonClaw {
             get {
-                return new Attack("Claw", 17, new Damage(DamageType.SLASHING, "2d6+10"), 10);
+                return new Attack("Claw", 17, new Damage(SLASHING, "2d6+10"), 10);
             }
         }
         public static Attack AncientGoldDragonTail {
             get {
-                return new Attack("Tail", 17, new Damage(DamageType.BLUDGEONING, "2d8+10"), 20);
+                return new Attack("Tail", 17, new Damage(BLUDGEONING, "2d8+10"), 20);
             }
         }
         public static Attack AncientGreenDragonBite {
             get {
-                return new Attack("Bite", 15, new Damage(DamageType.PIERCING, "2d10+8"), 15, new Damage(DamageType.POISON, "3d6"));
+                return new Attack("Bite", 15, new Damage(PIERCING, "2d10+8"), 15, new Damage(POISON, "3d6"));
             }
         }
         public static Attack AncientGreenDragonClaw {
             get {
-                return new Attack("Claw", 15, new Damage(DamageType.SLASHING, "4d6+8"), 10);
+                return new Attack("Claw", 15, new Damage(SLASHING, "4d6+8"), 10);
             }
         }
         public static Attack AncientGreenDragonTail {
             get {
-                return new Attack("Tail", 15, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
+                return new Attack("Tail", 15, new Damage(BLUDGEONING, "2d8+8"), 20);
             }
         }
         public static Attack AncientRedDragonBite {
             get {
-                return new Attack("Bite", 17, new Damage(DamageType.PIERCING, "2d10+10"), 15, new Damage(DamageType.FIRE, "4d6"));
+                return new Attack("Bite", 17, new Damage(PIERCING, "2d10+10"), 15, new Damage(FIRE, "4d6"));
             }
         }
         public static Attack AncientRedDragonClaw {
             get {
-                return new Attack("Claw", 17, new Damage(DamageType.SLASHING, "2d6+10"), 10);
+                return new Attack("Claw", 17, new Damage(SLASHING, "2d6+10"), 10);
             }
         }
         public static Attack AncientRedDragonTail {
             get {
-                return new Attack("Tail", 17, new Damage(DamageType.BLUDGEONING, "2d8+10"), 20);
+                return new Attack("Tail", 17, new Damage(BLUDGEONING, "2d8+10"), 20);
             }
         }
         public static Attack AncientSilverDragonBite {
             get {
-                return new Attack("Bite", 17, new Damage(DamageType.PIERCING, "2d10+10"), 15);
+                return new Attack("Bite", 17, new Damage(PIERCING, "2d10+10"), 15);
             }
         }
         public static Attack AncientSilverDragonClaw {
             get {
-                return new Attack("Claw", 17, new Damage(DamageType.SLASHING, "2d6+10"), 10);
+                return new Attack("Claw", 17, new Damage(SLASHING, "2d6+10"), 10);
             }
         }
         public static Attack AncientSilverDragonTail {
             get {
-                return new Attack("Tail", 17, new Damage(DamageType.BLUDGEONING, "2d8+10"), 20);
+                return new Attack("Tail", 17, new Damage(BLUDGEONING, "2d8+10"), 20);
             }
         }
         public static Attack AncientWhiteDragonBite {
             get {
-                return new Attack("Bite", 14, new Damage(DamageType.PIERCING, "2d10+8"), 15, new Damage(DamageType.COLD, "2d8"));
+                return new Attack("Bite", 14, new Damage(PIERCING, "2d10+8"), 15, new Damage(COLD, "2d8"));
             }
         }
         public static Attack AncientWhiteDragonClaw {
             get {
-                return new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d6+8"), 10);
+                return new Attack("Claw", 14, new Damage(SLASHING, "2d6+8"), 10);
             }
         }
         public static Attack AncientWhiteDragonTail {
             get {
-                return new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "2d8+8"), 20);
+                return new Attack("Tail", 14, new Damage(BLUDGEONING, "2d8+8"), 20);
             }
         }
         public static Attack AndrosphinxClaw {
             get {
-                return new Attack("Claw", 12, new Damage(DamageType.SLASHING, "2d10+6"), 5);
+                return new Attack("Claw", 12, new Damage(SLASHING, "2d10+6"), 5);
             }
         }
         public static Attack AnimatedArmorSlam {
             get {
-                return new Attack("Slam", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
+                return new Attack("Slam", 4, new Damage(BLUDGEONING, "1d6+2"), 5);
             }
         }
         public static AttackEffect AnkhegBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -342,27 +345,27 @@ namespace srd5 {
         };
         public static Attack AnkhegBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, new Damage(DamageType.ACID, "1d6"), AnkhegBiteEffect);
+                return new Attack("Bite", 5, new Damage(SLASHING, "2d6+3"), 5, new Damage(ACID, "1d6"), AnkhegBiteEffect);
             }
         }
         public static Attack ApeFist {
             get {
-                return new Attack("Fist", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5);
+                return new Attack("Fist", 5, new Damage(BLUDGEONING, "1d6+3"), 5);
             }
         }
         public static Attack ApeRock {
             get {
-                return new Attack("Rock", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5, 25, 50);
+                return new Attack("Rock", 5, new Damage(BLUDGEONING, "1d6+3"), 5, 25, 50);
             }
         }
         public static Attack ArchmageDaggerMelee {
             get {
-                return new Attack("Dagger", 6, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+                return new Attack("Dagger", 6, new Damage(PIERCING, "1d4+2"), 5);
             }
         }
         public static Attack ArchmageDaggerRanged {
             get {
-                return new Attack("Dagger", 6, new Damage(DamageType.PIERCING, "1d4+2"), 5, 20, 60);
+                return new Attack("Dagger", 6, new Damage(PIERCING, "1d4+2"), 5, 20, 60);
             }
         }
         public static AttackEffect AssassinShortswordEffect = delegate (Combattant attacker, Combattant target) {
@@ -371,32 +374,32 @@ namespace srd5 {
         };
         public static Attack AssassinShortsword {
             get {
-                return new Attack("Shortsword", 6, new Damage(DamageType.PIERCING, "1d6+3"), 5, null, AssassinShortswordEffect);
+                return new Attack("Shortsword", 6, new Damage(PIERCING, "1d6+3"), 5, null, AssassinShortswordEffect);
             }
         }
         public static Attack AssassinLight_Crossbow {
             get {
-                return new Attack("Light Crossbow", 6, new Damage(DamageType.PIERCING, "1d8+3"), 5, 80, 320);
+                return new Attack("Light Crossbow", 6, new Damage(PIERCING, "1d8+3"), 5, 80, 320);
             }
         }
         public static Attack AwakenedShrubRake {
             get {
-                return new Attack("Rake", 1, new Damage(DamageType.SLASHING, "1d4-1"), 5);
+                return new Attack("Rake", 1, new Damage(SLASHING, "1d4-1"), 5);
             }
         }
         public static Attack AwakenedTreeSlam {
             get {
-                return new Attack("Slam", 6, new Damage(DamageType.BLUDGEONING, "3d6+4"), 10);
+                return new Attack("Slam", 6, new Damage(BLUDGEONING, "3d6+4"), 10);
             }
         }
         public static Attack AxeBeakBeak {
             get {
-                return new Attack("Beak", 4, new Damage(DamageType.SLASHING, "1d8+2"), 5);
+                return new Attack("Beak", 4, new Damage(SLASHING, "1d8+2"), 5);
             }
         }
         public static Attack AzerWarhammer {
             get {
-                return new Attack("Warhammer", 5, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, new Damage(DamageType.FIRE, "1d6"));
+                return new Attack("Warhammer", 5, new Damage(BLUDGEONING, "1d8+3"), 5, new Damage(FIRE, "1d6"));
             }
         }
     }
@@ -449,7 +452,7 @@ namespace srd5 {
                 adultBlackDragon.AddProficiency(Proficiency.CHARISMA);
                 adultBlackDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultBlackDragon.AddProficiency(Proficiency.STEALTH);
-                adultBlackDragon.AddEffect(Effect.IMMUNITY_ACID);
+                adultBlackDragon.AddEffect(IMMUNITY_ACID);
                 adultBlackDragon.AddFeat(Feat.AMPHIBIOUS);
                 adultBlackDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultBlackDragon;
@@ -469,7 +472,7 @@ namespace srd5 {
                 adultBlueDragon.AddProficiency(Proficiency.CHARISMA);
                 adultBlueDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultBlueDragon.AddProficiency(Proficiency.STEALTH);
-                adultBlueDragon.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                adultBlueDragon.AddEffect(IMMUNITY_LIGHTNING);
                 adultBlueDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultBlueDragon;
             }
@@ -490,7 +493,7 @@ namespace srd5 {
                 adultBrassDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultBrassDragon.AddProficiency(Proficiency.PERSUASION);
                 adultBrassDragon.AddProficiency(Proficiency.STEALTH);
-                adultBrassDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                adultBrassDragon.AddEffect(IMMUNITY_FIRE);
                 adultBrassDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultBrassDragon;
             }
@@ -510,7 +513,7 @@ namespace srd5 {
                 adultBronzeDragon.AddProficiency(Proficiency.INSIGHT);
                 adultBronzeDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultBronzeDragon.AddProficiency(Proficiency.STEALTH);
-                adultBronzeDragon.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                adultBronzeDragon.AddEffect(IMMUNITY_LIGHTNING);
                 adultBronzeDragon.AddFeat(Feat.AMPHIBIOUS);
                 adultBronzeDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultBronzeDragon;
@@ -531,7 +534,7 @@ namespace srd5 {
                 adultCopperDragon.AddProficiency(Proficiency.DECEPTION);
                 adultCopperDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultCopperDragon.AddProficiency(Proficiency.STEALTH);
-                adultCopperDragon.AddEffect(Effect.IMMUNITY_ACID);
+                adultCopperDragon.AddEffect(IMMUNITY_ACID);
                 adultCopperDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultCopperDragon;
             }
@@ -552,7 +555,7 @@ namespace srd5 {
                 adultGoldDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultGoldDragon.AddProficiency(Proficiency.PERSUASION);
                 adultGoldDragon.AddProficiency(Proficiency.STEALTH);
-                adultGoldDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                adultGoldDragon.AddEffect(IMMUNITY_FIRE);
                 adultGoldDragon.AddFeat(Feat.AMPHIBIOUS);
                 adultGoldDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultGoldDragon;
@@ -575,8 +578,8 @@ namespace srd5 {
                 adultGreenDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultGreenDragon.AddProficiency(Proficiency.PERSUASION);
                 adultGreenDragon.AddProficiency(Proficiency.STEALTH);
-                adultGreenDragon.AddEffect(Effect.IMMUNITY_POISON);
-                adultGreenDragon.AddEffect(Effect.IMMUNITY_POISONED);
+                adultGreenDragon.AddEffect(IMMUNITY_POISON);
+                adultGreenDragon.AddEffect(IMMUNITY_POISONED);
                 adultGreenDragon.AddFeat(Feat.AMPHIBIOUS);
                 adultGreenDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultGreenDragon;
@@ -596,7 +599,7 @@ namespace srd5 {
                 adultRedDragon.AddProficiency(Proficiency.CHARISMA);
                 adultRedDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultRedDragon.AddProficiency(Proficiency.STEALTH);
-                adultRedDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                adultRedDragon.AddEffect(IMMUNITY_FIRE);
                 adultRedDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultRedDragon;
             }
@@ -617,7 +620,7 @@ namespace srd5 {
                 adultSilverDragon.AddProficiency(Proficiency.HISTORY);
                 adultSilverDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultSilverDragon.AddProficiency(Proficiency.STEALTH);
-                adultSilverDragon.AddEffect(Effect.IMMUNITY_COLD);
+                adultSilverDragon.AddEffect(IMMUNITY_COLD);
                 adultSilverDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultSilverDragon;
             }
@@ -636,7 +639,7 @@ namespace srd5 {
                 adultWhiteDragon.AddProficiency(Proficiency.CHARISMA);
                 adultWhiteDragon.AddProficiency(Proficiency.PERCEPTION);
                 adultWhiteDragon.AddProficiency(Proficiency.STEALTH);
-                adultWhiteDragon.AddEffect(Effect.IMMUNITY_COLD);
+                adultWhiteDragon.AddEffect(IMMUNITY_COLD);
                 adultWhiteDragon.AddFeat(Feat.ICE_WALK);
                 adultWhiteDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return adultWhiteDragon;
@@ -650,18 +653,18 @@ namespace srd5 {
                     Monsters.Type.ELEMENTAL, Monsters.ID.AIR_ELEMENTAL, Alignment.NEUTRAL, 14, 20, 14, 6, 10, 6, 15, "12d10+24", 40, 5,
                     new Attack[] { Attacks.AirElementalSlam }, new Attack[] { }, Size.LARGE
                 );
-                airElemental.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                airElemental.AddEffect(Effect.RESISTANCE_THUNDER);
-                airElemental.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                airElemental.AddEffect(Effect.IMMUNITY_POISON);
-                airElemental.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                airElemental.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                airElemental.AddEffect(Effect.IMMUNITY_PARALYZED);
-                airElemental.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                airElemental.AddEffect(Effect.IMMUNITY_POISONED);
-                airElemental.AddEffect(Effect.IMMUNITY_PRONE);
-                airElemental.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                airElemental.AddEffect(Effect.IMMUNITY_UNCONSCIOUS);
+                airElemental.AddEffect(RESISTANCE_LIGHTNING);
+                airElemental.AddEffect(RESISTANCE_THUNDER);
+                airElemental.AddEffect(RESISTANCE_NONMAGIC);
+                airElemental.AddEffect(IMMUNITY_POISON);
+                airElemental.AddEffect(IMMUNITY_EXHAUSTION);
+                airElemental.AddEffect(IMMUNITY_GRAPPLED);
+                airElemental.AddEffect(IMMUNITY_PARALYZED);
+                airElemental.AddEffect(IMMUNITY_PETRIFIED);
+                airElemental.AddEffect(IMMUNITY_POISONED);
+                airElemental.AddEffect(IMMUNITY_PRONE);
+                airElemental.AddEffect(IMMUNITY_RESTRAINED);
+                airElemental.AddEffect(IMMUNITY_UNCONSCIOUS);
                 airElemental.AddFeat(Feat.AIR_FORM);
                 return airElemental;
             }
@@ -680,7 +683,7 @@ namespace srd5 {
                 ancientBlackDragon.AddProficiency(Proficiency.CHARISMA);
                 ancientBlackDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientBlackDragon.AddProficiency(Proficiency.STEALTH);
-                ancientBlackDragon.AddEffect(Effect.IMMUNITY_ACID);
+                ancientBlackDragon.AddEffect(IMMUNITY_ACID);
                 ancientBlackDragon.AddFeat(Feat.AMPHIBIOUS);
                 ancientBlackDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientBlackDragon;
@@ -700,7 +703,7 @@ namespace srd5 {
                 ancientBlueDragon.AddProficiency(Proficiency.CHARISMA);
                 ancientBlueDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientBlueDragon.AddProficiency(Proficiency.STEALTH);
-                ancientBlueDragon.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                ancientBlueDragon.AddEffect(IMMUNITY_LIGHTNING);
                 ancientBlueDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientBlueDragon;
             }
@@ -721,7 +724,7 @@ namespace srd5 {
                 ancientBrassDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientBrassDragon.AddProficiency(Proficiency.PERSUASION);
                 ancientBrassDragon.AddProficiency(Proficiency.STEALTH);
-                ancientBrassDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                ancientBrassDragon.AddEffect(IMMUNITY_FIRE);
                 ancientBrassDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientBrassDragon;
             }
@@ -741,7 +744,7 @@ namespace srd5 {
                 ancientBronzeDragon.AddProficiency(Proficiency.INSIGHT);
                 ancientBronzeDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientBronzeDragon.AddProficiency(Proficiency.STEALTH);
-                ancientBronzeDragon.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                ancientBronzeDragon.AddEffect(IMMUNITY_LIGHTNING);
                 ancientBronzeDragon.AddFeat(Feat.AMPHIBIOUS);
                 ancientBronzeDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientBronzeDragon;
@@ -762,7 +765,7 @@ namespace srd5 {
                 ancientCopperDragon.AddProficiency(Proficiency.DECEPTION);
                 ancientCopperDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientCopperDragon.AddProficiency(Proficiency.STEALTH);
-                ancientCopperDragon.AddEffect(Effect.IMMUNITY_ACID);
+                ancientCopperDragon.AddEffect(IMMUNITY_ACID);
                 ancientCopperDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientCopperDragon;
             }
@@ -783,7 +786,7 @@ namespace srd5 {
                 ancientGoldDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientGoldDragon.AddProficiency(Proficiency.PERSUASION);
                 ancientGoldDragon.AddProficiency(Proficiency.STEALTH);
-                ancientGoldDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                ancientGoldDragon.AddEffect(IMMUNITY_FIRE);
                 ancientGoldDragon.AddFeat(Feat.AMPHIBIOUS);
                 ancientGoldDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientGoldDragon;
@@ -806,8 +809,8 @@ namespace srd5 {
                 ancientGreenDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientGreenDragon.AddProficiency(Proficiency.PERSUASION);
                 ancientGreenDragon.AddProficiency(Proficiency.STEALTH);
-                ancientGreenDragon.AddEffect(Effect.IMMUNITY_POISON);
-                ancientGreenDragon.AddEffect(Effect.IMMUNITY_POISONED);
+                ancientGreenDragon.AddEffect(IMMUNITY_POISON);
+                ancientGreenDragon.AddEffect(IMMUNITY_POISONED);
                 ancientGreenDragon.AddFeat(Feat.AMPHIBIOUS);
                 ancientGreenDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientGreenDragon;
@@ -827,7 +830,7 @@ namespace srd5 {
                 ancientRedDragon.AddProficiency(Proficiency.CHARISMA);
                 ancientRedDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientRedDragon.AddProficiency(Proficiency.STEALTH);
-                ancientRedDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                ancientRedDragon.AddEffect(IMMUNITY_FIRE);
                 ancientRedDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientRedDragon;
             }
@@ -848,7 +851,7 @@ namespace srd5 {
                 ancientSilverDragon.AddProficiency(Proficiency.HISTORY);
                 ancientSilverDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientSilverDragon.AddProficiency(Proficiency.STEALTH);
-                ancientSilverDragon.AddEffect(Effect.IMMUNITY_COLD);
+                ancientSilverDragon.AddEffect(IMMUNITY_COLD);
                 ancientSilverDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientSilverDragon;
             }
@@ -867,7 +870,7 @@ namespace srd5 {
                 ancientWhiteDragon.AddProficiency(Proficiency.CHARISMA);
                 ancientWhiteDragon.AddProficiency(Proficiency.PERCEPTION);
                 ancientWhiteDragon.AddProficiency(Proficiency.STEALTH);
-                ancientWhiteDragon.AddEffect(Effect.IMMUNITY_COLD);
+                ancientWhiteDragon.AddEffect(IMMUNITY_COLD);
                 ancientWhiteDragon.AddFeat(Feat.ICE_WALK);
                 ancientWhiteDragon.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 return ancientWhiteDragon;
@@ -888,10 +891,10 @@ namespace srd5 {
                 androsphinx.AddProficiency(Proficiency.ARCANA);
                 androsphinx.AddProficiency(Proficiency.PERCEPTION);
                 androsphinx.AddProficiency(Proficiency.RELIGION);
-                androsphinx.AddEffect(Effect.IMMUNITY_PSYCHIC);
-                androsphinx.AddEffect(Effect.IMMUNITY_NONMAGIC);
-                androsphinx.AddEffect(Effect.IMMUNITY_CHARMED);
-                androsphinx.AddEffect(Effect.IMMUNITY_FRIGHTENED);
+                androsphinx.AddEffect(IMMUNITY_PSYCHIC);
+                androsphinx.AddEffect(IMMUNITY_NONMAGIC);
+                androsphinx.AddEffect(IMMUNITY_CHARMED);
+                androsphinx.AddEffect(IMMUNITY_FRIGHTENED);
                 androsphinx.AddFeat(Feat.INSCRUTABLE);
                 androsphinx.AddFeat(Feat.MAGIC_WEAPONS);
                 androsphinx.AddFeat(Feat.SPELLCASTING_ANDROSPHINX);
@@ -906,16 +909,16 @@ namespace srd5 {
                     Monsters.Type.CONSTRUCT, Monsters.ID.ANIMATED_ARMOR, Alignment.UNALIGNED, 14, 11, 13, 1, 3, 1, 18, "6d8+6", 40, 1,
                     new Attack[] { Attacks.AnimatedArmorSlam }, new Attack[] { }, Size.MEDIUM
                 );
-                animatedArmor.AddEffect(Effect.IMMUNITY_POISON);
-                animatedArmor.AddEffect(Effect.IMMUNITY_PSYCHIC);
-                animatedArmor.AddEffect(Effect.IMMUNITY_BLINDED);
-                animatedArmor.AddEffect(Effect.IMMUNITY_CHARMED);
-                animatedArmor.AddEffect(Effect.IMMUNITY_DEAFENED);
-                animatedArmor.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                animatedArmor.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                animatedArmor.AddEffect(Effect.IMMUNITY_PARALYZED);
-                animatedArmor.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                animatedArmor.AddEffect(Effect.IMMUNITY_POISONED);
+                animatedArmor.AddEffect(IMMUNITY_POISON);
+                animatedArmor.AddEffect(IMMUNITY_PSYCHIC);
+                animatedArmor.AddEffect(IMMUNITY_BLINDED);
+                animatedArmor.AddEffect(IMMUNITY_CHARMED);
+                animatedArmor.AddEffect(IMMUNITY_DEAFENED);
+                animatedArmor.AddEffect(IMMUNITY_EXHAUSTION);
+                animatedArmor.AddEffect(IMMUNITY_FRIGHTENED);
+                animatedArmor.AddEffect(IMMUNITY_PARALYZED);
+                animatedArmor.AddEffect(IMMUNITY_PETRIFIED);
+                animatedArmor.AddEffect(IMMUNITY_POISONED);
                 animatedArmor.AddFeat(Feat.ANTIMAGIC_SUSCEPTIBILITY);
                 animatedArmor.AddFeat(Feat.FALSE_APPEARANCE);
                 return animatedArmor;
@@ -957,8 +960,8 @@ namespace srd5 {
                 archmage.AddProficiency(Proficiency.WISDOM);
                 archmage.AddProficiency(Proficiency.ARCANA);
                 archmage.AddProficiency(Proficiency.HISTORY);
-                archmage.AddEffect(Effect.RESISTANCE_DAMAGE_FROM_SPELLS);
-                archmage.AddEffect(Effect.RESISTANCE_NONMAGIC);
+                archmage.AddEffect(RESISTANCE_DAMAGE_FROM_SPELLS);
+                archmage.AddEffect(RESISTANCE_NONMAGIC);
                 archmage.AddFeat(Feat.MAGIC_RESISTANCE);
                 archmage.AddFeat(Feat.SPELLCASTING_ARCHMAGE);
                 return archmage;
@@ -978,7 +981,7 @@ namespace srd5 {
                 assassin.AddProficiency(Proficiency.DECEPTION);
                 assassin.AddProficiency(Proficiency.PERCEPTION);
                 assassin.AddProficiency(Proficiency.STEALTH);
-                assassin.AddEffect(Effect.RESISTANCE_POISON);
+                assassin.AddEffect(RESISTANCE_POISON);
                 assassin.AddFeat(Feat.ASSASSINATE);
                 assassin.AddFeat(Feat.EVASION);
                 assassin.AddFeat(Feat.SNEAK_ATTACK_4D6);
@@ -993,8 +996,8 @@ namespace srd5 {
                     Monsters.Type.PLANT, Monsters.ID.AWAKENED_SHRUB, Alignment.UNALIGNED, 3, 8, 11, 10, 10, 6, 9, "3d6", 40, 0,
                     new Attack[] { Attacks.AwakenedShrubRake }, new Attack[] { }, Size.SMALL
                 );
-                awakenedShrub.AddEffect(Effect.VULNERABILITY_FIRE);
-                awakenedShrub.AddEffect(Effect.RESISTANCE_PIERCING);
+                awakenedShrub.AddEffect(VULNERABILITY_FIRE);
+                awakenedShrub.AddEffect(RESISTANCE_PIERCING);
                 awakenedShrub.AddFeat(Feat.FALSE_APPEARANCE);
                 return awakenedShrub;
             }
@@ -1007,9 +1010,9 @@ namespace srd5 {
                     Monsters.Type.PLANT, Monsters.ID.AWAKENED_TREE, Alignment.UNALIGNED, 19, 6, 15, 10, 10, 7, 13, "7d12+14", 40, 2,
                     new Attack[] { Attacks.AwakenedTreeSlam }, new Attack[] { }, Size.HUGE
                 );
-                awakenedTree.AddEffect(Effect.VULNERABILITY_FIRE);
-                awakenedTree.AddEffect(Effect.RESISTANCE_BLUDGEONING);
-                awakenedTree.AddEffect(Effect.RESISTANCE_PIERCING);
+                awakenedTree.AddEffect(VULNERABILITY_FIRE);
+                awakenedTree.AddEffect(RESISTANCE_BLUDGEONING);
+                awakenedTree.AddEffect(RESISTANCE_PIERCING);
                 awakenedTree.AddFeat(Feat.FALSE_APPEARANCE);
                 return awakenedTree;
             }
@@ -1034,9 +1037,9 @@ namespace srd5 {
                     new Attack[] { Attacks.AzerWarhammer }, new Attack[] { }, Size.MEDIUM
                 );
                 azer.AddProficiency(Proficiency.CONSTITUTION);
-                azer.AddEffect(Effect.IMMUNITY_FIRE);
-                azer.AddEffect(Effect.IMMUNITY_POISON);
-                azer.AddEffect(Effect.IMMUNITY_POISONED);
+                azer.AddEffect(IMMUNITY_FIRE);
+                azer.AddEffect(IMMUNITY_POISON);
+                azer.AddEffect(IMMUNITY_POISONED);
                 azer.AddFeat(Feat.HEATED_BODY_1D10);
                 azer.AddFeat(Feat.HEATED_WEAPONS);
                 azer.AddFeat(Feat.ILLUMINATION_10FT);

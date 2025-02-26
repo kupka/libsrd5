@@ -1,40 +1,43 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack GargoyleBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack GargoyleClaws {
             get {
-                return new Attack("Claws", 4, new Damage(DamageType.SLASHING, "1d6+2"), 5);
+                return new Attack("Claws", 4, new Damage(SLASHING, "1d6+2"), 5);
             }
         }
         public static Attack GelatinousCubePseudopod {
             get {
-                return new Attack("Pseudopod", 4, new Damage(DamageType.ACID, "3d6"), 5);
+                return new Attack("Pseudopod", 4, new Damage(ACID, "3d6"), 5);
             }
         }
         public static readonly AttackEffect GhastClawsEffect = delegate (Combattant attacker, Combattant target) {
             if (target is Monster monster && monster.Type == Monsters.Type.UNDEAD) return false;
             bool success = target.DC(GhastClaws, 10, AbilityType.CONSTITUTION);
             if (success) return false;
-            target.AddEffect(Effect.GHAST_CLAWS_PARALYZATION);
+            target.AddEffect(GHAST_CLAWS_PARALYZATION);
             return false;
         };
         public static Attack GhastClaws {
             get {
-                return new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5, null, GhastClawsEffect);
+                return new Attack("Claws", 5, new Damage(SLASHING, "2d6+3"), 5, null, GhastClawsEffect);
             }
         }
         public static Attack GhastBite {
             get {
-                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "2d8+3"), 5);
+                return new Attack("Bite", 3, new Damage(PIERCING, "2d8+3"), 5);
             }
         }
         public static Attack GhostWitheringTouch {
             get {
-                return new Attack("Withering Touch", 5, new Damage(DamageType.NECROTIC, "4d6+3"), 5);
+                return new Attack("Withering Touch", 5, new Damage(NECROTIC, "4d6+3"), 5);
             }
         }
         public static readonly AttackEffect GhoulClawsEffect = delegate (Combattant attacker, Combattant target) {
@@ -44,59 +47,59 @@ namespace srd5 {
             if (target is Monster monster && monster.Type == Monsters.Type.UNDEAD) return false;
             bool success = target.DC(GhoulClaws, 10, AbilityType.CONSTITUTION);
             if (success) return false;
-            target.AddEffect(Effect.GHOUL_CLAWS_PARALYZATION);
+            target.AddEffect(GHOUL_CLAWS_PARALYZATION);
             return false;
         };
         public static Attack GhoulClaws {
             get {
-                return new Attack("Claws", 4, new Damage(DamageType.SLASHING, "2d4+2"), 5, null, GhoulClawsEffect);
+                return new Attack("Claws", 4, new Damage(SLASHING, "2d4+2"), 5, null, GhoulClawsEffect);
             }
         }
         public static Attack GhoulBite {
             get {
-                return new Attack("Bite", 2, new Damage(DamageType.PIERCING, "2d6+2"), 5);
+                return new Attack("Bite", 2, new Damage(PIERCING, "2d6+2"), 5);
             }
         }
         public static Attack GiantApeFist {
             get {
-                return new Attack("Fist", 9, new Damage(DamageType.BLUDGEONING, "3d10+6"), 10);
+                return new Attack("Fist", 9, new Damage(BLUDGEONING, "3d10+6"), 10);
             }
         }
         public static Attack GiantApeRock {
             get {
-                return new Attack("Rock", 9, new Damage(DamageType.BLUDGEONING, "7d6+6"), 5, 50, 100);
+                return new Attack("Rock", 9, new Damage(BLUDGEONING, "7d6+6"), 5, 50, 100);
             }
         }
         public static Attack GiantBadgerBite {
             get {
-                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5);
+                return new Attack("Bite", 3, new Damage(PIERCING, "1d6+1"), 5);
             }
         }
         public static Attack GiantBadgerClaws {
             get {
-                return new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+1"), 5);
+                return new Attack("Claws", 3, new Damage(SLASHING, "2d4+1"), 5);
             }
         }
         public static Attack GiantBatBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack GiantBoarTusk {
             get {
-                return new Attack("Tusk", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
+                return new Attack("Tusk", 5, new Damage(SLASHING, "2d6+3"), 5);
             }
         }
         public static readonly AttackEffect GiantCentipedeBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.IsImmune(POISON)) return false;
             if (target.DC(GiantCentipedeBite, 11, AbilityType.CONSTITUTION)) return false;
-            target.TakeDamage(attacker, DamageType.POISON, "3d6");
+            target.TakeDamage(attacker, POISON, "3d6");
             // TODO: "If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way."
             return false;
         };
         public static Attack GiantCentipedeBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, GiantCentipedeBiteEffect);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d4+2"), 5, null, GiantCentipedeBiteEffect);
             }
         }
         public static readonly AttackEffect GiantConstrictorSnakeConstrictEffect = delegate (Combattant attacker, Combattant target) {
@@ -105,12 +108,12 @@ namespace srd5 {
         };
         public static Attack GiantConstrictorSnakeConstrict {
             get {
-                return new Attack("Constrict", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5, null, GiantConstrictorSnakeConstrictEffect);
+                return new Attack("Constrict", 6, new Damage(BLUDGEONING, "2d8+4"), 5, null, GiantConstrictorSnakeConstrictEffect);
             }
         }
         public static Attack GiantConstrictorSnakeBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d6+4"), 10);
+                return new Attack("Bite", 6, new Damage(PIERCING, "2d6+4"), 10);
             }
         }
         public static readonly AttackEffect GiantCrabClawEffect = delegate (Combattant attacker, Combattant target) {
@@ -119,7 +122,7 @@ namespace srd5 {
         };
         public static Attack GiantCrabClaw {
             get {
-                return new Attack("Claw", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5, null, GiantCrabClawEffect);
+                return new Attack("Claw", 3, new Damage(BLUDGEONING, "1d6+1"), 5, null, GiantCrabClawEffect);
             }
         }
         public static readonly AttackEffect GiantCrocodileBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -128,7 +131,7 @@ namespace srd5 {
         };
         public static Attack GiantCrocodileBite {
             get {
-                return new Attack("Bite", 8, new Damage(DamageType.PIERCING, "3d10+5"), 5, null, GiantCrocodileBiteEffect);
+                return new Attack("Bite", 8, new Damage(PIERCING, "3d10+5"), 5, null, GiantCrocodileBiteEffect);
             }
         }
         public static readonly AttackEffect GiantCrocodileTailEffect = delegate (Combattant attacker, Combattant target) {
@@ -138,38 +141,38 @@ namespace srd5 {
         };
         public static Attack GiantCrocodileTail {
             get {
-                return new Attack("Tail", 8, new Damage(DamageType.BLUDGEONING, "2d8+5"), 5, null, GiantCrocodileTailEffect);
+                return new Attack("Tail", 8, new Damage(BLUDGEONING, "2d8+5"), 5, null, GiantCrocodileTailEffect);
             }
         }
         public static Attack GiantEagleBeak {
             get {
-                return new Attack("Beak", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
+                return new Attack("Beak", 5, new Damage(PIERCING, "1d6+3"), 5);
             }
         }
         public static Attack GiantEagleTalons {
             get {
-                return new Attack("Talons", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
+                return new Attack("Talons", 5, new Damage(SLASHING, "2d6+3"), 5);
             }
         }
         public static readonly AttackEffect GiantElkHoovesEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
             int amount = new Dice("4d8+4").Roll(); // FIXME: Cannot crit because attack roll is not available here
-            target.TakeDamage(attacker, DamageType.BLUDGEONING, amount);
+            target.TakeDamage(attacker, BLUDGEONING, amount);
             return false;
         };
         public static Attack GiantElkHooves {
             get {
-                return new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, 0), 5, null, GiantElkHoovesEffect);
+                return new Attack("Hooves", 6, new Damage(BLUDGEONING, 0), 5, null, GiantElkHoovesEffect);
             }
         }
         public static Attack GiantElkRam {
             get {
-                return new Attack("Ram", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 10);
+                return new Attack("Ram", 6, new Damage(BLUDGEONING, "2d6+4"), 10);
             }
         }
         public static Attack GiantFireBeetleBite {
             get {
-                return new Attack("Bite", 1, new Damage(DamageType.SLASHING, "1d6-1"), 5);
+                return new Attack("Bite", 1, new Damage(SLASHING, "1d6-1"), 5);
             }
         }
         public static readonly AttackEffect GiantFrogBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -178,22 +181,22 @@ namespace srd5 {
         };
         public static Attack GiantFrogBite {
             get {
-                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, null, GiantFrogBiteEffect);
+                return new Attack("Bite", 3, new Damage(PIERCING, "1d6+1"), 5, null, GiantFrogBiteEffect);
             }
         }
         public static Attack GiantGoatRam {
             get {
-                return new Attack("Ram", 5, new Damage(DamageType.BLUDGEONING, "2d4+3"), 5);
+                return new Attack("Ram", 5, new Damage(BLUDGEONING, "2d4+3"), 5);
             }
         }
         public static Attack GiantHyenaBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "2d6+3"), 5);
+                return new Attack("Bite", 5, new Damage(PIERCING, "2d6+3"), 5);
             }
         }
         public static Attack GiantLizardBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d8+2"), 5);
             }
         }
         public static readonly AttackEffect GiantOctopusTentaclesEffect = delegate (Combattant attacker, Combattant target) {
@@ -202,12 +205,12 @@ namespace srd5 {
         };
         public static Attack GiantOctopusTentacles {
             get {
-                return new Attack("Tentacles", 15, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, null, GiantOctopusTentaclesEffect);
+                return new Attack("Tentacles", 15, new Damage(BLUDGEONING, "2d6+3"), 5, null, GiantOctopusTentaclesEffect);
             }
         }
         public static Attack GiantOwlTalons {
             get {
-                return new Attack("Talons", 3, new Damage(DamageType.SLASHING, "2d6+1"), 5);
+                return new Attack("Talons", 3, new Damage(SLASHING, "2d6+1"), 5);
             }
         }
         public static readonly AttackEffect GiantPoisonousSnakeBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -216,22 +219,22 @@ namespace srd5 {
         };
         public static Attack GiantPoisonousSnakeBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d4+4"), 5, null, GiantPoisonousSnakeBiteEffect);
+                return new Attack("Bite", 6, new Damage(PIERCING, "1d4+4"), 5, null, GiantPoisonousSnakeBiteEffect);
             }
         }
         public static Attack GiantRatBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d4+2"), 5);
             }
         }
         public static readonly AttackEffect GiantRatDiseasedBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(GiantRatDiseasedBite, 10, AbilityType.CONSTITUTION)) return false;
-            target.AddEffect(Effect.GIANT_RAT_DISEASED_BITE);
+            target.AddEffect(GIANT_RAT_DISEASED_BITE);
             return false;
         };
         public static Attack GiantRatDiseasedBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, GiantRatDiseasedBiteEffect);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d4+2"), 5, null, GiantRatDiseasedBiteEffect);
             }
         }
         public static readonly AttackEffect GiantScorpionClawEffect = delegate (Combattant attacker, Combattant target) {
@@ -240,7 +243,7 @@ namespace srd5 {
         };
         public static Attack GiantScorpionClaw {
             get {
-                return new Attack("Claw", 4, new Damage(DamageType.BLUDGEONING, "1d8+2"), 5, null, GiantScorpionClawEffect);
+                return new Attack("Claw", 4, new Damage(BLUDGEONING, "1d8+2"), 5, null, GiantScorpionClawEffect);
             }
         }
         public static readonly AttackEffect GiantScorpionStingEffect = delegate (Combattant attacker, Combattant target) {
@@ -249,17 +252,17 @@ namespace srd5 {
         };
         public static Attack GiantScorpionSting {
             get {
-                return new Attack("Sting", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, null, GiantScorpionStingEffect);
+                return new Attack("Sting", 4, new Damage(PIERCING, "1d10+2"), 5, null, GiantScorpionStingEffect);
             }
         }
         public static Attack GiantSeaHorseRam {
             get {
-                return new Attack("Ram", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5);
+                return new Attack("Ram", 3, new Damage(BLUDGEONING, "1d6+1"), 5);
             }
         }
         public static Attack GiantSharkBite {
             get {
-                return new Attack("Bite", 9, new Damage(DamageType.PIERCING, "3d10+6"), 5);
+                return new Attack("Bite", 9, new Damage(PIERCING, "3d10+6"), 5);
             }
         }
         public static readonly AttackEffect GiantSpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -269,19 +272,19 @@ namespace srd5 {
         };
         public static Attack GiantSpiderBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, null, GiantSpiderBiteEffect);
+                return new Attack("Bite", 5, new Damage(PIERCING, "1d8+3"), 5, null, GiantSpiderBiteEffect);
             }
         }
         public static readonly AttackEffect GiantSpiderWebEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_RESTRAINED)) return false;
-            target.AddEffect(Effect.GIANT_SPIDER_WEB);
+            if (target.HasEffect(IMMUNITY_RESTRAINED)) return false;
+            target.AddEffect(GIANT_SPIDER_WEB);
             // TODO: As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success.
             // The webbing can also be attacked and destroyed (AC 10; hp 5; vulnerability to fire damage; immunity to bludgeoning, poison, and psychic damage)
             return false;
         };
         public static Attack GiantSpiderWeb {
             get {
-                return new Attack("Web", 5, new Damage(DamageType.BLUDGEONING, 0), 5, null, GiantSpiderWebEffect);
+                return new Attack("Web", 5, new Damage(BLUDGEONING, 0), 5, null, GiantSpiderWebEffect);
             }
         }
         public static readonly AttackEffect GiantToadBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -290,17 +293,17 @@ namespace srd5 {
         };
         public static Attack GiantToadBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.POISON, "1d10"), GiantToadBiteEffect);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d10+2"), 5, new Damage(POISON, "1d10"), GiantToadBiteEffect);
             }
         }
         public static Attack GiantVultureBeak {
             get {
-                return new Attack("Beak", 4, new Damage(DamageType.PIERCING, "2d4+2"), 5);
+                return new Attack("Beak", 4, new Damage(PIERCING, "2d4+2"), 5);
             }
         }
         public static Attack GiantVultureTalons {
             get {
-                return new Attack("Talons", 4, new Damage(DamageType.SLASHING, "2d6+2"), 5);
+                return new Attack("Talons", 4, new Damage(SLASHING, "2d6+2"), 5);
             }
         }
         public static readonly AttackEffect GiantWaspStingEffect = delegate (Combattant attacker, Combattant target) {
@@ -310,12 +313,12 @@ namespace srd5 {
         };
         public static Attack GiantWaspSting {
             get {
-                return new Attack("Sting", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, null, GiantWaspStingEffect);
+                return new Attack("Sting", 4, new Damage(PIERCING, "1d6+2"), 5, null, GiantWaspStingEffect);
             }
         }
         public static Attack GiantWeaselBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5);
+                return new Attack("Bite", 5, new Damage(PIERCING, "1d4+3"), 5);
             }
         }
         public static readonly AttackEffect GiantWolfSpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -325,7 +328,7 @@ namespace srd5 {
         };
         public static Attack GiantWolfSpiderBite {
             get {
-                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, null, GiantWolfSpiderBiteEffect);
+                return new Attack("Bite", 3, new Damage(PIERCING, "1d6+1"), 5, null, GiantWolfSpiderBiteEffect);
             }
         }
         public static readonly AttackEffect GibberingMoutherBitesEffect = delegate (Combattant attacker, Combattant target) {
@@ -337,7 +340,7 @@ namespace srd5 {
         };
         public static Attack GibberingMoutherBites {
             get {
-                return new Attack("Bites", 2, new Damage(DamageType.PIERCING, "5d6"), 5, null, GibberingMoutherBitesEffect);
+                return new Attack("Bites", 2, new Damage(PIERCING, "5d6"), 5, null, GibberingMoutherBitesEffect);
             }
         }
         public static readonly AttackEffect GlabrezuPincerEffect = delegate (Combattant attacker, Combattant target) {
@@ -346,17 +349,17 @@ namespace srd5 {
         };
         public static Attack GlabrezuPincer {
             get {
-                return new Attack("Pincer", 9, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5, null, GlabrezuPincerEffect);
+                return new Attack("Pincer", 9, new Damage(BLUDGEONING, "2d10+5"), 5, null, GlabrezuPincerEffect);
             }
         }
         public static Attack GlabrezuFist {
             get {
-                return new Attack("Fist", 9, new Damage(DamageType.BLUDGEONING, "2d4+2"), 5);
+                return new Attack("Fist", 9, new Damage(BLUDGEONING, "2d4+2"), 5);
             }
         }
         public static Attack GladiatorSpear {
             get {
-                return new Attack("Spear", 7, new Damage(DamageType.PIERCING, "2d6+4"), 5);
+                return new Attack("Spear", 7, new Damage(PIERCING, "2d6+4"), 5);
             }
         }
         public static readonly AttackEffect GladiatorShieldBashEffect = delegate (Combattant attacker, Combattant target) {
@@ -367,57 +370,57 @@ namespace srd5 {
         };
         public static Attack GladiatorShieldBash {
             get {
-                return new Attack("Shield Bash", 7, new Damage(DamageType.BLUDGEONING, "2d4+4"), 5, null, GladiatorShieldBashEffect);
+                return new Attack("Shield Bash", 7, new Damage(BLUDGEONING, "2d4+4"), 5, null, GladiatorShieldBashEffect);
             }
         }
         public static Attack GnollSpearMelee {
             get {
-                return new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+                return new Attack("Spear", 4, new Damage(PIERCING, "1d8+2"), 5);
             }
         }
         public static Attack GnollSpearRanged {
             get {
-                return new Attack("Spear", 4, new Damage(DamageType.PIERCING, "1d6+2"), 20, 60);
+                return new Attack("Spear", 4, new Damage(PIERCING, "1d6+2"), 20, 60);
             }
         }
         public static Attack GnollBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d4+2"), 5);
             }
         }
         public static Attack GnollLongbow {
             get {
-                return new Attack("Longbow", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5, 150, 600);
+                return new Attack("Longbow", 3, new Damage(PIERCING, "1d8+1"), 5, 150, 600);
             }
         }
         public static Attack GoatRam {
             get {
-                return new Attack("Ram", 3, new Damage(DamageType.BLUDGEONING, "1d4+1"), 5);
+                return new Attack("Ram", 3, new Damage(BLUDGEONING, "1d4+1"), 5);
             }
         }
         public static Attack GoblinScimitar {
             get {
-                return new Attack("Scimitar", 4, new Damage(DamageType.SLASHING, "1d6+2"), 5);
+                return new Attack("Scimitar", 4, new Damage(SLASHING, "1d6+2"), 5);
             }
         }
         public static Attack GoblinShortbow {
             get {
-                return new Attack("Shortbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 80, 320);
+                return new Attack("Shortbow", 4, new Damage(PIERCING, "1d6+2"), 5, 80, 320);
             }
         }
         public static Attack GoldDragonWyrmlingBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d10+4"), 5);
+                return new Attack("Bite", 6, new Damage(PIERCING, "1d10+4"), 5);
             }
         }
         public static Attack GorgonGore {
             get {
-                return new Attack("Gore", 8, new Damage(DamageType.PIERCING, "2d12+5"), 5);
+                return new Attack("Gore", 8, new Damage(PIERCING, "2d12+5"), 5);
             }
         }
         public static Attack GorgonHooves {
             get {
-                return new Attack("Hooves", 8, new Damage(DamageType.BLUDGEONING, "2d10+5"), 5);
+                return new Attack("Hooves", 8, new Damage(BLUDGEONING, "2d10+5"), 5);
             }
         }
 
@@ -428,52 +431,52 @@ namespace srd5 {
         };
         public static Attack GrayOozePseudopod {
             get {
-                return new Attack("Pseudopod", 3, new Damage(DamageType.BLUDGEONING, "1d6+1"), 5, new Damage(DamageType.ACID, "2d6"), GrayOozePseudopodEffect);
+                return new Attack("Pseudopod", 3, new Damage(BLUDGEONING, "1d6+1"), 5, new Damage(ACID, "2d6"), GrayOozePseudopodEffect);
             }
         }
         public static Attack GreenDragonWyrmlingBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.POISON, "1d6"));
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d10+2"), 5, new Damage(POISON, "1d6"));
             }
         }
         public static Attack GreenHagClaws {
             get {
-                return new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+                return new Attack("Claws", 6, new Damage(SLASHING, "2d8+4"), 5);
             }
         }
         public static Attack GrickTentacles {
             get {
-                return new Attack("Tentacles", 4, new Damage(DamageType.SLASHING, "2d6+2"), 5);
+                return new Attack("Tentacles", 4, new Damage(SLASHING, "2d6+2"), 5);
             }
         }
         public static Attack GrickBeak {
             get {
-                return new Attack("Beak", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Beak", 4, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack GriffonBeak {
             get {
-                return new Attack("Beak", 6, new Damage(DamageType.PIERCING, "1d8+4"), 5);
+                return new Attack("Beak", 6, new Damage(PIERCING, "1d8+4"), 5);
             }
         }
         public static Attack GriffonClaws {
             get {
-                return new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+                return new Attack("Claws", 6, new Damage(SLASHING, "2d6+4"), 5);
             }
         }
         public static Attack GrimlockSpikedBoneClub {
             get {
-                return new Attack("Spiked Bone Club", 5, new Damage(DamageType.BLUDGEONING, "1d4+3"), 5, new Damage(DamageType.PIERCING, "1d4"));
+                return new Attack("Spiked Bone Club", 5, new Damage(BLUDGEONING, "1d4+3"), 5, new Damage(PIERCING, "1d4"));
             }
         }
         public static Attack GuardSpearMelee {
             get {
-                return new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5);
+                return new Attack("Spear", 3, new Damage(PIERCING, "1d8+1"), 5);
             }
         }
         public static Attack GuardSpearRanged {
             get {
-                return new Attack("Spear", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, 20, 60);
+                return new Attack("Spear", 3, new Damage(PIERCING, "1d6+1"), 5, 20, 60);
             }
         }
         public static readonly AttackEffect GuardianNagaBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -482,7 +485,7 @@ namespace srd5 {
         };
         public static Attack GuardianNagaBite {
             get {
-                return new Attack("Bite", 8, new Damage(DamageType.PIERCING, "1d8+4"), 5, null, GuardianNagaBiteEffect);
+                return new Attack("Bite", 8, new Damage(PIERCING, "1d8+4"), 5, null, GuardianNagaBiteEffect);
             }
         }
         public static readonly AttackEffect GuardianNagaSpitPoisonEffect = delegate (Combattant attacker, Combattant target) {
@@ -491,12 +494,12 @@ namespace srd5 {
         };
         public static Attack GuardianNagaSpitPoison {
             get {
-                return new Attack("Spit Poison", 8, new Damage(DamageType.POISON, 0), 5, null, GuardianNagaSpitPoisonEffect);
+                return new Attack("Spit Poison", 8, new Damage(POISON, 0), 5, null, GuardianNagaSpitPoisonEffect);
             }
         }
         public static Attack GynosphinxClaw {
             get {
-                return new Attack("Claw", 9, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+                return new Attack("Claw", 9, new Damage(SLASHING, "2d8+4"), 5);
             }
         }
 
@@ -509,11 +512,11 @@ namespace srd5 {
                     Monsters.Type.ELEMENTAL, Monsters.ID.GARGOYLE, Alignment.CHAOTIC_EVIL, 15, 11, 16, 6, 11, 7, 15, "7d8+21", 40, 2,
                     new Attack[] { Attacks.GargoyleBite, Attacks.GargoyleClaws }, new Attack[] { }, Size.MEDIUM
                 );
-                gargoyle.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                gargoyle.AddEffect(Effect.IMMUNITY_POISON);
-                gargoyle.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                gargoyle.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                gargoyle.AddEffect(Effect.IMMUNITY_POISONED);
+                gargoyle.AddEffect(RESISTANCE_NONMAGIC);
+                gargoyle.AddEffect(IMMUNITY_POISON);
+                gargoyle.AddEffect(IMMUNITY_EXHAUSTION);
+                gargoyle.AddEffect(IMMUNITY_PETRIFIED);
+                gargoyle.AddEffect(IMMUNITY_POISONED);
                 gargoyle.AddFeat(Feat.FALSE_APPEARANCE);
                 return gargoyle;
             }
@@ -526,12 +529,12 @@ namespace srd5 {
                     Monsters.Type.OOZE, Monsters.ID.GELATINOUS_CUBE, Alignment.UNALIGNED, 14, 3, 20, 1, 6, 1, 6, "8d10+40", 40, 2,
                     new Attack[] { Attacks.GelatinousCubePseudopod }, new Attack[] { }, Size.LARGE
                 );
-                gelatinousCube.AddEffect(Effect.IMMUNITY_BLINDED);
-                gelatinousCube.AddEffect(Effect.IMMUNITY_CHARMED);
-                gelatinousCube.AddEffect(Effect.IMMUNITY_DEAFENED);
-                gelatinousCube.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                gelatinousCube.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                gelatinousCube.AddEffect(Effect.IMMUNITY_PRONE);
+                gelatinousCube.AddEffect(IMMUNITY_BLINDED);
+                gelatinousCube.AddEffect(IMMUNITY_CHARMED);
+                gelatinousCube.AddEffect(IMMUNITY_DEAFENED);
+                gelatinousCube.AddEffect(IMMUNITY_EXHAUSTION);
+                gelatinousCube.AddEffect(IMMUNITY_FRIGHTENED);
+                gelatinousCube.AddEffect(IMMUNITY_PRONE);
                 gelatinousCube.AddFeat(Feat.OOZE_CUBE);
                 gelatinousCube.AddFeat(Feat.TRANSPARENT);
                 return gelatinousCube;
@@ -545,11 +548,11 @@ namespace srd5 {
                     Monsters.Type.UNDEAD, Monsters.ID.GHAST, Alignment.CHAOTIC_EVIL, 16, 17, 10, 11, 10, 8, 13, "8d8", 40, 2,
                     new Attack[] { Attacks.GhastBite, Attacks.GhastClaws }, new Attack[] { }, Size.MEDIUM
                 );
-                ghast.AddEffect(Effect.RESISTANCE_NECROTIC);
-                ghast.AddEffect(Effect.IMMUNITY_POISON);
-                ghast.AddEffect(Effect.IMMUNITY_POISONED);
-                ghast.AddEffect(Effect.IMMUNITY_CHARMED);
-                ghast.AddEffect(Effect.IMMUNITY_EXHAUSTION);
+                ghast.AddEffect(RESISTANCE_NECROTIC);
+                ghast.AddEffect(IMMUNITY_POISON);
+                ghast.AddEffect(IMMUNITY_POISONED);
+                ghast.AddEffect(IMMUNITY_CHARMED);
+                ghast.AddEffect(IMMUNITY_EXHAUSTION);
                 ghast.AddFeat(Feat.STENCH_GHAST);
                 ghast.AddFeat(Feat.TURN_DEFIANCE);
                 return ghast;
@@ -563,23 +566,23 @@ namespace srd5 {
                     Monsters.Type.UNDEAD, Monsters.ID.GHOST, Alignment.UNALIGNED, 7, 13, 10, 10, 12, 17, 11, "10d8", 40, 4,
                     new Attack[] { Attacks.GhostWitheringTouch }, new Attack[] { }, Size.MEDIUM
                 );
-                ghost.AddEffect(Effect.RESISTANCE_ACID);
-                ghost.AddEffect(Effect.RESISTANCE_FIRE);
-                ghost.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                ghost.AddEffect(Effect.RESISTANCE_THUNDER);
-                ghost.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                ghost.AddEffect(Effect.IMMUNITY_COLD);
-                ghost.AddEffect(Effect.IMMUNITY_NECROTIC);
-                ghost.AddEffect(Effect.IMMUNITY_POISON);
-                ghost.AddEffect(Effect.IMMUNITY_CHARMED);
-                ghost.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                ghost.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                ghost.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                ghost.AddEffect(Effect.IMMUNITY_PARALYZED);
-                ghost.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                ghost.AddEffect(Effect.IMMUNITY_POISONED);
-                ghost.AddEffect(Effect.IMMUNITY_PRONE);
-                ghost.AddEffect(Effect.IMMUNITY_RESTRAINED);
+                ghost.AddEffect(RESISTANCE_ACID);
+                ghost.AddEffect(RESISTANCE_FIRE);
+                ghost.AddEffect(RESISTANCE_LIGHTNING);
+                ghost.AddEffect(RESISTANCE_THUNDER);
+                ghost.AddEffect(RESISTANCE_NONMAGIC);
+                ghost.AddEffect(IMMUNITY_COLD);
+                ghost.AddEffect(IMMUNITY_NECROTIC);
+                ghost.AddEffect(IMMUNITY_POISON);
+                ghost.AddEffect(IMMUNITY_CHARMED);
+                ghost.AddEffect(IMMUNITY_EXHAUSTION);
+                ghost.AddEffect(IMMUNITY_FRIGHTENED);
+                ghost.AddEffect(IMMUNITY_GRAPPLED);
+                ghost.AddEffect(IMMUNITY_PARALYZED);
+                ghost.AddEffect(IMMUNITY_PETRIFIED);
+                ghost.AddEffect(IMMUNITY_POISONED);
+                ghost.AddEffect(IMMUNITY_PRONE);
+                ghost.AddEffect(IMMUNITY_RESTRAINED);
                 ghost.AddFeat(Feat.ETHEREAL_SIGHT);
                 ghost.AddFeat(Feat.INCORPOREAL_MOVEMENT);
                 return ghost;
@@ -593,10 +596,10 @@ namespace srd5 {
                     Monsters.Type.UNDEAD, Monsters.ID.GHOUL, Alignment.CHAOTIC_EVIL, 13, 15, 10, 7, 10, 6, 12, "5d8", 40, 1,
                     new Attack[] { Attacks.GhoulBite, Attacks.GhoulClaws }, new Attack[] { }, Size.MEDIUM
                 );
-                ghoul.AddEffect(Effect.IMMUNITY_POISON);
-                ghoul.AddEffect(Effect.IMMUNITY_POISONED);
-                ghoul.AddEffect(Effect.IMMUNITY_CHARMED);
-                ghoul.AddEffect(Effect.IMMUNITY_EXHAUSTION);
+                ghoul.AddEffect(IMMUNITY_POISON);
+                ghoul.AddEffect(IMMUNITY_POISONED);
+                ghoul.AddEffect(IMMUNITY_CHARMED);
+                ghoul.AddEffect(IMMUNITY_EXHAUSTION);
                 return ghoul;
             }
         }
@@ -988,7 +991,7 @@ namespace srd5 {
                     Monsters.Type.ABERRATION, Monsters.ID.GIBBERING_MOUTHER, Alignment.NEUTRAL, 10, 8, 16, 3, 10, 6, 9, "9d8+27", 40, 2,
                     new Attack[] { Attacks.GibberingMoutherBites }, new Attack[] { }, Size.MEDIUM
                 );
-                gibberingMouther.AddEffect(Effect.IMMUNITY_PRONE);
+                gibberingMouther.AddEffect(IMMUNITY_PRONE);
                 gibberingMouther.AddFeat(Feat.ABERRANT_GROUND);
                 gibberingMouther.AddFeat(Feat.GIBBERING);
                 return gibberingMouther;
@@ -1006,12 +1009,12 @@ namespace srd5 {
                 glabrezu.AddProficiency(Proficiency.CONSTITUTION);
                 glabrezu.AddProficiency(Proficiency.WISDOM);
                 glabrezu.AddProficiency(Proficiency.CHARISMA);
-                glabrezu.AddEffect(Effect.RESISTANCE_COLD);
-                glabrezu.AddEffect(Effect.RESISTANCE_FIRE);
-                glabrezu.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                glabrezu.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                glabrezu.AddEffect(Effect.IMMUNITY_POISON);
-                glabrezu.AddEffect(Effect.IMMUNITY_POISONED);
+                glabrezu.AddEffect(RESISTANCE_COLD);
+                glabrezu.AddEffect(RESISTANCE_FIRE);
+                glabrezu.AddEffect(RESISTANCE_LIGHTNING);
+                glabrezu.AddEffect(RESISTANCE_NONMAGIC);
+                glabrezu.AddEffect(IMMUNITY_POISON);
+                glabrezu.AddEffect(IMMUNITY_POISONED);
                 glabrezu.AddFeat(Feat.INNATE_SPELLCASTING_GLABREZU);
                 glabrezu.AddFeat(Feat.MAGIC_RESISTANCE);
                 return glabrezu;
@@ -1087,7 +1090,7 @@ namespace srd5 {
                 goldDragonWyrmling.AddProficiency(Proficiency.CHARISMA);
                 goldDragonWyrmling.AddProficiency(Proficiency.PERCEPTION);
                 goldDragonWyrmling.AddProficiency(Proficiency.STEALTH);
-                goldDragonWyrmling.AddEffect(Effect.IMMUNITY_FIRE);
+                goldDragonWyrmling.AddEffect(IMMUNITY_FIRE);
                 goldDragonWyrmling.AddFeat(Feat.AMPHIBIOUS);
                 return goldDragonWyrmling;
             }
@@ -1101,7 +1104,7 @@ namespace srd5 {
                     new Attack[] { Attacks.GorgonGore, Attacks.GorgonHooves }, new Attack[] { }, Size.LARGE
                 );
                 gorgon.AddProficiency(Proficiency.PERCEPTION);
-                gorgon.AddEffect(Effect.IMMUNITY_PETRIFIED);
+                gorgon.AddEffect(IMMUNITY_PETRIFIED);
                 gorgon.AddFeat(Feat.TRAMPLING_CHARGE_GORGON);
                 return gorgon;
             }
@@ -1115,15 +1118,15 @@ namespace srd5 {
                     new Attack[] { Attacks.GrayOozePseudopod }, new Attack[] { }, Size.MEDIUM
                 );
                 grayOoze.AddProficiency(Proficiency.STEALTH);
-                grayOoze.AddEffect(Effect.RESISTANCE_ACID);
-                grayOoze.AddEffect(Effect.RESISTANCE_COLD);
-                grayOoze.AddEffect(Effect.RESISTANCE_FIRE);
-                grayOoze.AddEffect(Effect.IMMUNITY_BLINDED);
-                grayOoze.AddEffect(Effect.IMMUNITY_CHARMED);
-                grayOoze.AddEffect(Effect.IMMUNITY_DEAFENED);
-                grayOoze.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                grayOoze.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                grayOoze.AddEffect(Effect.IMMUNITY_PRONE);
+                grayOoze.AddEffect(RESISTANCE_ACID);
+                grayOoze.AddEffect(RESISTANCE_COLD);
+                grayOoze.AddEffect(RESISTANCE_FIRE);
+                grayOoze.AddEffect(IMMUNITY_BLINDED);
+                grayOoze.AddEffect(IMMUNITY_CHARMED);
+                grayOoze.AddEffect(IMMUNITY_DEAFENED);
+                grayOoze.AddEffect(IMMUNITY_EXHAUSTION);
+                grayOoze.AddEffect(IMMUNITY_FRIGHTENED);
+                grayOoze.AddEffect(IMMUNITY_PRONE);
                 grayOoze.AddFeat(Feat.AMORPHOUS);
                 grayOoze.AddFeat(Feat.CORRODE_METAL);
                 grayOoze.AddFeat(Feat.FALSE_APPEARANCE);
@@ -1144,8 +1147,8 @@ namespace srd5 {
                 greenDragonWyrmling.AddProficiency(Proficiency.CHARISMA);
                 greenDragonWyrmling.AddProficiency(Proficiency.PERCEPTION);
                 greenDragonWyrmling.AddProficiency(Proficiency.STEALTH);
-                greenDragonWyrmling.AddEffect(Effect.IMMUNITY_POISON);
-                greenDragonWyrmling.AddEffect(Effect.IMMUNITY_POISONED);
+                greenDragonWyrmling.AddEffect(IMMUNITY_POISON);
+                greenDragonWyrmling.AddEffect(IMMUNITY_POISONED);
                 greenDragonWyrmling.AddFeat(Feat.AMPHIBIOUS);
                 return greenDragonWyrmling;
             }
@@ -1176,7 +1179,7 @@ namespace srd5 {
                     Monsters.Type.MONSTROSITY, Monsters.ID.GRICK, Alignment.NEUTRAL, 14, 14, 11, 3, 14, 5, 14, "6d8", 40, 2,
                     new Attack[] { Attacks.GrickTentacles, Attacks.GrickBeak }, new Attack[] { }, Size.MEDIUM
                 );
-                grick.AddEffect(Effect.RESISTANCE_NONMAGIC);
+                grick.AddEffect(RESISTANCE_NONMAGIC);
                 grick.AddFeat(Feat.STONE_CAMOUFLAGE);
                 return grick;
             }
@@ -1205,7 +1208,7 @@ namespace srd5 {
                 grimlock.AddProficiency(Proficiency.ATHLETICS);
                 grimlock.AddProficiency(Proficiency.PERCEPTION);
                 grimlock.AddProficiency(Proficiency.STEALTH);
-                grimlock.AddEffect(Effect.IMMUNITY_BLINDED);
+                grimlock.AddEffect(IMMUNITY_BLINDED);
                 grimlock.AddFeat(Feat.BLIND_SENSES);
                 grimlock.AddFeat(Feat.KEEN_HEARING_AND_SMELL);
                 grimlock.AddFeat(Feat.STONE_CAMOUFLAGE);
@@ -1237,9 +1240,9 @@ namespace srd5 {
                 guardianNaga.AddProficiency(Proficiency.INTELLIGENCE);
                 guardianNaga.AddProficiency(Proficiency.WISDOM);
                 guardianNaga.AddProficiency(Proficiency.CHARISMA);
-                guardianNaga.AddEffect(Effect.IMMUNITY_POISON);
-                guardianNaga.AddEffect(Effect.IMMUNITY_CHARMED);
-                guardianNaga.AddEffect(Effect.IMMUNITY_POISONED);
+                guardianNaga.AddEffect(IMMUNITY_POISON);
+                guardianNaga.AddEffect(IMMUNITY_CHARMED);
+                guardianNaga.AddEffect(IMMUNITY_POISONED);
                 guardianNaga.AddFeat(Feat.REJUVENATION_NAGA);
                 guardianNaga.AddFeat(Feat.SPELLCASTING_NAGA_10);
                 return guardianNaga;
@@ -1257,10 +1260,10 @@ namespace srd5 {
                 gynosphinx.AddProficiency(Proficiency.HISTORY);
                 gynosphinx.AddProficiency(Proficiency.PERCEPTION);
                 gynosphinx.AddProficiency(Proficiency.RELIGION);
-                gynosphinx.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                gynosphinx.AddEffect(Effect.IMMUNITY_PSYCHIC);
-                gynosphinx.AddEffect(Effect.IMMUNITY_CHARMED);
-                gynosphinx.AddEffect(Effect.IMMUNITY_FRIGHTENED);
+                gynosphinx.AddEffect(RESISTANCE_NONMAGIC);
+                gynosphinx.AddEffect(IMMUNITY_PSYCHIC);
+                gynosphinx.AddEffect(IMMUNITY_CHARMED);
+                gynosphinx.AddEffect(IMMUNITY_FRIGHTENED);
                 gynosphinx.AddFeat(Feat.INSCRUTABLE);
                 gynosphinx.AddFeat(Feat.MAGIC_WEAPONS);
                 gynosphinx.AddFeat(Feat.SPELLCASTING_GYNOSPHINX);

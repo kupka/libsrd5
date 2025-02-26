@@ -1,61 +1,64 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack MageDaggerMelee {
             get {
-                return new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+                return new Attack("Dagger", 5, new Damage(PIERCING, "1d4+2"), 5);
             }
         }
         public static Attack MageDaggerRanged {
             get {
-                return new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+2"), 20, 60);
+                return new Attack("Dagger", 5, new Damage(PIERCING, "1d4+2"), 20, 60);
             }
         }
         public static Attack MagmaMephitClaws {
             get {
-                return new Attack("Claws", 3, new Damage(DamageType.SLASHING, "1d4+1"), 5, new Damage(DamageType.FIRE, "1d4"));
+                return new Attack("Claws", 3, new Damage(SLASHING, "1d4+1"), 5, new Damage(FIRE, "1d4"));
             }
         }
         public static readonly AttackEffect MagminTouchEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.FIRE)) return false;
-            if (target.HasEffect(Effect.MAGMIN_IGNITE)) return false;
-            target.AddEffect(Effect.MAGMIN_IGNITE);
+            if (target.IsImmune(FIRE)) return false;
+            if (target.HasEffect(MAGMIN_IGNITE)) return false;
+            target.AddEffect(MAGMIN_IGNITE);
             // TODO: Add means to remove effect ("Until a creature takes an action to douse the fire...")
             return false;
         };
         public static Attack MagminTouch {
             get {
-                return new Attack("Touch", 4, new Damage(DamageType.FIRE, "2d6"), 5, null, MagminTouchEffect);
+                return new Attack("Touch", 4, new Damage(FIRE, "2d6"), 5, null, MagminTouchEffect);
             }
         }
         public static readonly AttackEffect MammothStompEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
             int amount = new Dice("4d10+7").Roll(); // FIXME: Cannot crit because attack roll is not available here
-            target.TakeDamage(attacker, DamageType.BLUDGEONING, amount);
+            target.TakeDamage(attacker, BLUDGEONING, amount);
             return false;
         };
         public static Attack MammothStomp {
             get {
-                return new Attack("Stomp", 10, new Damage(DamageType.BLUDGEONING, "1d1-1"), 5, null, MammothStompEffect);
+                return new Attack("Stomp", 10, new Damage(BLUDGEONING, "1d1-1"), 5, null, MammothStompEffect);
             }
         }
         public static Attack MammothGore {
             get {
-                return new Attack("Gore", 10, new Damage(DamageType.PIERCING, "4d8+7"), 10);
+                return new Attack("Gore", 10, new Damage(PIERCING, "4d8+7"), 10);
             }
         }
         public static Attack ManticoreBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5);
+                return new Attack("Bite", 5, new Damage(PIERCING, "1d8+3"), 5);
             }
         }
         public static Attack ManticoreClaw {
             get {
-                return new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+                return new Attack("Claw", 5, new Damage(SLASHING, "1d6+3"), 5);
             }
         }
         public static Attack ManticoreTailSpike {
             get {
-                return new Attack("Tail Spike", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, 100, 200);
+                return new Attack("Tail Spike", 5, new Damage(PIERCING, "1d8+3"), 5, 100, 200);
             }
         }
         public static readonly AttackEffect MarilithTailEffect = delegate (Combattant attacker, Combattant target) {
@@ -65,12 +68,12 @@ namespace srd5 {
         };
         public static Attack MarilithTail {
             get {
-                return new Attack("Tail", 9, new Damage(DamageType.BLUDGEONING, "2d10+4"), 5, null, MarilithTailEffect);
+                return new Attack("Tail", 9, new Damage(BLUDGEONING, "2d10+4"), 5, null, MarilithTailEffect);
             }
         }
         public static Attack MarilithLongsword {
             get {
-                return new Attack("Longsword", 9, new Damage(DamageType.SLASHING, "2d8+4"), 5);
+                return new Attack("Longsword", 9, new Damage(SLASHING, "2d8+4"), 5);
             }
         }
         public static readonly AttackEffect MastiffBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -81,32 +84,32 @@ namespace srd5 {
         };
         public static Attack MastiffBite {
             get {
-                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5, null, MastiffBiteEffect);
+                return new Attack("Bite", 3, new Damage(PIERCING, "1d6+1"), 5, null, MastiffBiteEffect);
             }
         }
         public static Attack MedusaLongbow {
             get {
-                return new Attack("Longbow", 5, new Damage(DamageType.PIERCING, "1d8+2"), 150, 600, new Damage(DamageType.POISON, "2d6"));
+                return new Attack("Longbow", 5, new Damage(PIERCING, "1d8+2"), 150, 600, new Damage(POISON, "2d6"));
             }
         }
         public static Attack MedusaSnakeHair {
             get {
-                return new Attack("Snake Hair", 5, new Damage(DamageType.PIERCING, "1d4+2"), 5, new Damage(DamageType.POISON, "4d6"));
+                return new Attack("Snake Hair", 5, new Damage(PIERCING, "1d4+2"), 5, new Damage(POISON, "4d6"));
             }
         }
         public static Attack MedusaShortsword {
             get {
-                return new Attack("Shortsword", 5, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Shortsword", 5, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack MerfolkSpearMelee {
             get {
-                return new Attack("Spear", 2, new Damage(DamageType.PIERCING, "1d8"), 5);
+                return new Attack("Spear", 2, new Damage(PIERCING, "1d8"), 5);
             }
         }
         public static Attack MerfolkSpearRanged {
             get {
-                return new Attack("Spear", 2, new Damage(DamageType.PIERCING, "1d6"), 20, 60);
+                return new Attack("Spear", 2, new Damage(PIERCING, "1d6"), 20, 60);
             }
         }
         public static readonly AttackEffect MerrowHarpoonEffect = delegate (Combattant attacker, Combattant target) {
@@ -116,22 +119,22 @@ namespace srd5 {
         };
         public static Attack MerrowHarpoonMelee {
             get {
-                return new Attack("Harpoon", 6, new Damage(DamageType.PIERCING, "2d6+4"), 5);
+                return new Attack("Harpoon", 6, new Damage(PIERCING, "2d6+4"), 5);
             }
         }
         public static Attack MerrowHarpoonRanged {
             get {
-                return new Attack("Harpoon", 6, new Damage(DamageType.PIERCING, "2d6+4"), 20, 60, null, MerrowHarpoonEffect);
+                return new Attack("Harpoon", 6, new Damage(PIERCING, "2d6+4"), 20, 60, null, MerrowHarpoonEffect);
             }
         }
         public static Attack MerrowBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d8+4"), 5);
+                return new Attack("Bite", 6, new Damage(PIERCING, "1d8+4"), 5);
             }
         }
         public static Attack MerrowClaws {
             get {
-                return new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d4+4"), 5);
+                return new Attack("Claws", 6, new Damage(SLASHING, "2d4+4"), 5);
             }
         }
         public static readonly AttackEffect MimicPseudopodEffect = delegate (Combattant attacker, Combattant target) {
@@ -140,59 +143,59 @@ namespace srd5 {
         };
         public static Attack MimicPseudopod {
             get {
-                return new Attack("Pseudopod", 5, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, null, MimicPseudopodEffect);
+                return new Attack("Pseudopod", 5, new Damage(BLUDGEONING, "1d8+3"), 5, null, MimicPseudopodEffect);
             }
         }
         public static Attack MimicBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5, new Damage(DamageType.ACID, "1d8"));
+                return new Attack("Bite", 5, new Damage(PIERCING, "1d8+3"), 5, new Damage(ACID, "1d8"));
             }
         }
         public static Attack MinotaurGreataxe {
             get {
-                return new Attack("Greataxe", 6, new Damage(DamageType.SLASHING, "2d12+4"), 5);
+                return new Attack("Greataxe", 6, new Damage(SLASHING, "2d12+4"), 5);
             }
         }
         public static Attack MinotaurGore {
             get {
-                return new Attack("Gore", 6, new Damage(DamageType.PIERCING, "2d8+4"), 5);
+                return new Attack("Gore", 6, new Damage(PIERCING, "2d8+4"), 5);
             }
         }
         public static Attack MinotaurSkeletonGreataxe {
             get {
-                return new Attack("Greataxe", 6, new Damage(DamageType.SLASHING, "2d12+4"), 5);
+                return new Attack("Greataxe", 6, new Damage(SLASHING, "2d12+4"), 5);
             }
         }
         public static Attack MinotaurSkeletonGore {
             get {
-                return new Attack("Gore", 6, new Damage(DamageType.PIERCING, "2d8+4"), 5);
+                return new Attack("Gore", 6, new Damage(PIERCING, "2d8+4"), 5);
             }
         }
         public static Attack MuleHooves {
             get {
-                return new Attack("Hooves", 2, new Damage(DamageType.BLUDGEONING, "1d4+2"), 5);
+                return new Attack("Hooves", 2, new Damage(BLUDGEONING, "1d4+2"), 5);
             }
         }
         public static readonly AttackEffect MummyRottingFistEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(MummyRottingFist, 12, AbilityType.CONSTITUTION)) return false;
-            if (target.HasEffect(Effect.CURSE_MUMMY_ROT)) return false;
-            target.AddEffect(Effect.CURSE_MUMMY_ROT);
+            if (target.HasEffect(CURSE_MUMMY_ROT)) return false;
+            target.AddEffect(CURSE_MUMMY_ROT);
             return false;
         };
         public static Attack MummyRottingFist {
             get {
-                return new Attack("Rotting Fist", 5, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5, new Damage(DamageType.NECROTIC, "3d6"), MummyRottingFistEffect);
+                return new Attack("Rotting Fist", 5, new Damage(BLUDGEONING, "2d6+3"), 5, new Damage(NECROTIC, "3d6"), MummyRottingFistEffect);
             }
         }
         public static readonly AttackEffect MummyLordRottingFistEffect = delegate (Combattant attacker, Combattant target) {
             if (target.DC(MummyRottingFist, 16, AbilityType.CONSTITUTION)) return false;
-            if (target.HasEffect(Effect.CURSE_MUMMY_ROT)) return false;
-            target.AddEffect(Effect.CURSE_MUMMY_ROT);
+            if (target.HasEffect(CURSE_MUMMY_ROT)) return false;
+            target.AddEffect(CURSE_MUMMY_ROT);
             return false;
         };
         public static Attack MummyLordRottingFist {
             get {
-                return new Attack("Rotting Fist", 9, new Damage(DamageType.BLUDGEONING, "3d6+4"), 5, new Damage(DamageType.NECROTIC, "6d6"), MummyLordRottingFistEffect);
+                return new Attack("Rotting Fist", 9, new Damage(BLUDGEONING, "3d6+4"), 5, new Damage(NECROTIC, "6d6"), MummyLordRottingFistEffect);
             }
         }
     }
@@ -222,10 +225,10 @@ namespace srd5 {
                     new Attack[] { Attacks.MagmaMephitClaws }, new Attack[] { }, Size.SMALL
                 );
                 magmaMephit.AddProficiency(Proficiency.STEALTH);
-                magmaMephit.AddEffect(Effect.VULNERABILITY_COLD);
-                magmaMephit.AddEffect(Effect.IMMUNITY_FIRE);
-                magmaMephit.AddEffect(Effect.IMMUNITY_POISON);
-                magmaMephit.AddEffect(Effect.IMMUNITY_POISONED);
+                magmaMephit.AddEffect(VULNERABILITY_COLD);
+                magmaMephit.AddEffect(IMMUNITY_FIRE);
+                magmaMephit.AddEffect(IMMUNITY_POISON);
+                magmaMephit.AddEffect(IMMUNITY_POISONED);
                 magmaMephit.AddFeat(Feat.DEATH_BURST_MAGMA_MEPHIT);
                 magmaMephit.AddFeat(Feat.FALSE_APPEARANCE);
                 magmaMephit.AddFeat(Feat.INNATE_SPELLCASTING_MAGMA_MEPHIT);
@@ -240,8 +243,8 @@ namespace srd5 {
                     Monsters.Type.ELEMENTAL, Monsters.ID.MAGMIN, Alignment.CHAOTIC_NEUTRAL, 7, 15, 12, 8, 11, 10, 14, "2d6+2", 40, ChallengeRating.HALF,
                     new Attack[] { Attacks.MagminTouch }, new Attack[] { }, Size.SMALL
                 );
-                magmin.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                magmin.AddEffect(Effect.IMMUNITY_FIRE);
+                magmin.AddEffect(RESISTANCE_NONMAGIC);
+                magmin.AddEffect(IMMUNITY_FIRE);
                 magmin.AddFeat(Feat.DEATH_BURST_MAGMIN);
                 magmin.AddFeat(Feat.IGNITED_ILLUMINATION);
                 return magmin;
@@ -283,12 +286,12 @@ namespace srd5 {
                 marilith.AddProficiency(Proficiency.CONSTITUTION);
                 marilith.AddProficiency(Proficiency.WISDOM);
                 marilith.AddProficiency(Proficiency.CHARISMA);
-                marilith.AddEffect(Effect.RESISTANCE_COLD);
-                marilith.AddEffect(Effect.RESISTANCE_FIRE);
-                marilith.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                marilith.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                marilith.AddEffect(Effect.IMMUNITY_POISON);
-                marilith.AddEffect(Effect.IMMUNITY_POISONED);
+                marilith.AddEffect(RESISTANCE_COLD);
+                marilith.AddEffect(RESISTANCE_FIRE);
+                marilith.AddEffect(RESISTANCE_LIGHTNING);
+                marilith.AddEffect(RESISTANCE_NONMAGIC);
+                marilith.AddEffect(IMMUNITY_POISON);
+                marilith.AddEffect(IMMUNITY_POISONED);
                 marilith.AddFeat(Feat.MAGIC_RESISTANCE);
                 marilith.AddFeat(Feat.MAGIC_WEAPONS);
                 marilith.AddFeat(Feat.REACTIVE);
@@ -358,8 +361,8 @@ namespace srd5 {
                     new Attack[] { Attacks.MimicPseudopod, Attacks.MimicBite }, new Attack[] { }, Size.MEDIUM
                 );
                 mimic.AddProficiency(Proficiency.STEALTH);
-                mimic.AddEffect(Effect.IMMUNITY_ACID);
-                mimic.AddEffect(Effect.IMMUNITY_PRONE);
+                mimic.AddEffect(IMMUNITY_ACID);
+                mimic.AddEffect(IMMUNITY_PRONE);
                 mimic.AddFeat(Feat.SHAPECHANGER_MIMIC);
                 mimic.AddFeat(Feat.ADHESIVE);
                 mimic.AddFeat(Feat.FALSE_APPEARANCE);
@@ -390,10 +393,10 @@ namespace srd5 {
                     Monsters.Type.UNDEAD, Monsters.ID.MINOTAUR_SKELETON, Alignment.LAWFUL_EVIL, 18, 11, 15, 6, 8, 5, 12, "9d10+18", 40, 2,
                     new Attack[] { Attacks.MinotaurSkeletonGreataxe, Attacks.MinotaurSkeletonGore }, new Attack[] { }, Size.LARGE
                 );
-                minotaurSkeleton.AddEffect(Effect.VULNERABILITY_BLUDGEONING);
-                minotaurSkeleton.AddEffect(Effect.IMMUNITY_POISON);
-                minotaurSkeleton.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                minotaurSkeleton.AddEffect(Effect.IMMUNITY_POISONED);
+                minotaurSkeleton.AddEffect(VULNERABILITY_BLUDGEONING);
+                minotaurSkeleton.AddEffect(IMMUNITY_POISON);
+                minotaurSkeleton.AddEffect(IMMUNITY_EXHAUSTION);
+                minotaurSkeleton.AddEffect(IMMUNITY_POISONED);
                 minotaurSkeleton.AddFeat(Feat.CHARGE_MINOTAUR_SKELETON);
                 return minotaurSkeleton;
             }
@@ -420,15 +423,15 @@ namespace srd5 {
                     new Attack[] { Attacks.MummyRottingFist }, new Attack[] { }, Size.MEDIUM
                 );
                 mummy.AddProficiency(Proficiency.WISDOM);
-                mummy.AddEffect(Effect.VULNERABILITY_FIRE);
-                mummy.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                mummy.AddEffect(Effect.IMMUNITY_NECROTIC);
-                mummy.AddEffect(Effect.IMMUNITY_POISON);
-                mummy.AddEffect(Effect.IMMUNITY_CHARMED);
-                mummy.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                mummy.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                mummy.AddEffect(Effect.IMMUNITY_PARALYZED);
-                mummy.AddEffect(Effect.IMMUNITY_POISONED);
+                mummy.AddEffect(VULNERABILITY_FIRE);
+                mummy.AddEffect(RESISTANCE_NONMAGIC);
+                mummy.AddEffect(IMMUNITY_NECROTIC);
+                mummy.AddEffect(IMMUNITY_POISON);
+                mummy.AddEffect(IMMUNITY_CHARMED);
+                mummy.AddEffect(IMMUNITY_EXHAUSTION);
+                mummy.AddEffect(IMMUNITY_FRIGHTENED);
+                mummy.AddEffect(IMMUNITY_PARALYZED);
+                mummy.AddEffect(IMMUNITY_POISONED);
                 return mummy;
             }
         }
@@ -446,15 +449,15 @@ namespace srd5 {
                 mummyLord.AddProficiency(Proficiency.CHARISMA);
                 mummyLord.AddProficiency(Proficiency.HISTORY);
                 mummyLord.AddProficiency(Proficiency.RELIGION);
-                mummyLord.AddEffect(Effect.VULNERABILITY_FIRE);
-                mummyLord.AddEffect(Effect.IMMUNITY_NECROTIC);
-                mummyLord.AddEffect(Effect.IMMUNITY_POISON);
-                mummyLord.AddEffect(Effect.IMMUNITY_NONMAGIC);
-                mummyLord.AddEffect(Effect.IMMUNITY_CHARMED);
-                mummyLord.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                mummyLord.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                mummyLord.AddEffect(Effect.IMMUNITY_PARALYZED);
-                mummyLord.AddEffect(Effect.IMMUNITY_POISONED);
+                mummyLord.AddEffect(VULNERABILITY_FIRE);
+                mummyLord.AddEffect(IMMUNITY_NECROTIC);
+                mummyLord.AddEffect(IMMUNITY_POISON);
+                mummyLord.AddEffect(IMMUNITY_NONMAGIC);
+                mummyLord.AddEffect(IMMUNITY_CHARMED);
+                mummyLord.AddEffect(IMMUNITY_EXHAUSTION);
+                mummyLord.AddEffect(IMMUNITY_FRIGHTENED);
+                mummyLord.AddEffect(IMMUNITY_PARALYZED);
+                mummyLord.AddEffect(IMMUNITY_POISONED);
                 mummyLord.AddFeat(Feat.MAGIC_RESISTANCE);
                 mummyLord.AddFeat(Feat.REJUVENATION_MUMMY_LORD);
                 mummyLord.AddFeat(Feat.SPELLCASTING_MUMMY_LORD);

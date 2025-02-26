@@ -1,37 +1,40 @@
 using static srd5.Die;
 
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static readonly AttackEffect DarkmantleCrushEffect = delegate (Combattant attacker, Combattant target) {
             if (target.Size > Size.MEDIUM) return false;
-            if (attacker.HasEffect(Effect.ATTACHED_TO_TARGET)) return false;
-            attacker.AddEffect(Effect.ATTACHED_TO_TARGET);
-            attacker.AddEffect(Effect.ADVANTAGE_ON_ATTACK);
+            if (attacker.HasEffect(ATTACHED_TO_TARGET)) return false;
+            attacker.AddEffect(ATTACHED_TO_TARGET);
+            attacker.AddEffect(ADVANTAGE_ON_ATTACK);
             foreach (Attack attack in attacker.MeleeAttacks) {
                 attack.LockedTarget = target;
             }
             target.AddCondition(ConditionType.BLINDED);
-            target.AddEffect(Effect.UNABLE_TO_BREATHE);
+            target.AddEffect(UNABLE_TO_BREATHE);
             return false;
         };
         public static Attack DarkmantleCrush {
             get {
-                return new Attack("Crush", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5, null, DarkmantleCrushEffect);
+                return new Attack("Crush", 5, new Damage(BLUDGEONING, "1d6+3"), 5, null, DarkmantleCrushEffect);
             }
         }
         public static readonly AttackEffect DeathDogBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.IsImmune(POISON)) return false;
             if (target.DC(DeathDogBite, 12, AbilityType.CONSTITUTION)) return false;
-            target.AddEffect(Effect.DEATH_DOG_DISEASE);
+            target.AddEffect(DEATH_DOG_DISEASE);
             return false;
         };
         public static Attack DeathDogBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, DeathDogBiteEffect);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d4+2"), 5, null, DeathDogBiteEffect);
             }
         }
         public static readonly AttackEffect DeepGnomeSvirfneblinPoisonedDartEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.IsImmune(POISON)) return false;
             if (target.DC(DeepGnomeSvirfneblinPoisonedDart, 12, AbilityType.CONSTITUTION)) return false;
             target.AddCondition(ConditionType.POISONED);
             int turn = 0;
@@ -49,22 +52,22 @@ namespace srd5 {
         };
         public static Attack DeepGnomeSvirfneblinPoisonedDart {
             get {
-                return new Attack("Poisoned Dart", 4, new Damage(DamageType.PIERCING, "1d6+0"), 5, null, DeepGnomeSvirfneblinPoisonedDartEffect);
+                return new Attack("Poisoned Dart", 4, new Damage(PIERCING, "1d6+0"), 5, null, DeepGnomeSvirfneblinPoisonedDartEffect);
             }
         }
         public static Attack DeepGnomeSvirfneblinWarPick {
             get {
-                return new Attack("War Pick", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+                return new Attack("War Pick", 4, new Damage(PIERCING, "1d8+2"), 5);
             }
         }
         public static Attack DeerBite {
             get {
-                return new Attack("Bite", 2, new Damage(DamageType.PIERCING, "1d4"), 5);
+                return new Attack("Bite", 2, new Damage(PIERCING, "1d4"), 5);
             }
         }
         public static Attack DevaMace {
             get {
-                return new Attack("Mace", 8, new Damage(DamageType.BLUDGEONING, "1d6+4"), 5, new Damage(DamageType.RADIANT, "4d8"));
+                return new Attack("Mace", 8, new Damage(BLUDGEONING, "1d6+4"), 5, new Damage(RADIANT, "4d8"));
             }
         }
         public static readonly AttackEffect DireWolfBiteEffect = delegate (Combattant attacker, Combattant target) {
@@ -74,30 +77,30 @@ namespace srd5 {
         };
         public static Attack DireWolfBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "2d6+3"), 5, null, DireWolfBiteEffect);
+                return new Attack("Bite", 5, new Damage(PIERCING, "2d6+3"), 5, null, DireWolfBiteEffect);
             }
         }
         public static readonly AttackEffect DjinniScimitarEffect = delegate (Combattant attacker, Combattant target) {
             if (D20.Value > 10) {
-                target.TakeDamage(attacker, DamageType.LIGHTNING, "1d6");
+                target.TakeDamage(attacker, LIGHTNING, "1d6");
             } else {
-                target.TakeDamage(attacker, DamageType.THUNDER, "1d6");
+                target.TakeDamage(attacker, THUNDER, "1d6");
             }
             return false;
         };
         public static Attack DjinniScimitar {
             get {
-                return new Attack("Scimitar", 9, new Damage(DamageType.SLASHING, "2d6+5"), 5, null, DjinniScimitarEffect);
+                return new Attack("Scimitar", 9, new Damage(SLASHING, "2d6+5"), 5, null, DjinniScimitarEffect);
             }
         }
         public static Attack DoppelgangerSlam {
             get {
-                return new Attack("Slam", 6, new Damage(DamageType.BLUDGEONING, "1d6+4"), 5);
+                return new Attack("Slam", 6, new Damage(BLUDGEONING, "1d6+4"), 5);
             }
         }
         public static Attack DraftHorseHooves {
             get {
-                return new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d4+4"), 5);
+                return new Attack("Hooves", 6, new Damage(BLUDGEONING, "2d4+4"), 5);
             }
         }
         public static readonly AttackEffect DragonTurtleTailEffect = delegate (Combattant attacker, Combattant target) {
@@ -108,54 +111,54 @@ namespace srd5 {
         };
         public static Attack DragonTurtleTail {
             get {
-                return new Attack("Tail", 13, new Damage(DamageType.BLUDGEONING, "3d12+7"), 5, null, DragonTurtleTailEffect);
+                return new Attack("Tail", 13, new Damage(BLUDGEONING, "3d12+7"), 5, null, DragonTurtleTailEffect);
             }
         }
         public static Attack DragonTurtleBite {
             get {
-                return new Attack("Bite", 13, new Damage(DamageType.PIERCING, "3d12+7"), 15);
+                return new Attack("Bite", 13, new Damage(PIERCING, "3d12+7"), 15);
             }
         }
         public static Attack DragonTurtleClaw {
             get {
-                return new Attack("Claw", 13, new Damage(DamageType.SLASHING, "2d8+7"), 10);
+                return new Attack("Claw", 13, new Damage(SLASHING, "2d8+7"), 10);
             }
         }
         public static Attack DretchBite {
             get {
-                return new Attack("Bite", 2, new Damage(DamageType.PIERCING, "1d6"), 5);
+                return new Attack("Bite", 2, new Damage(PIERCING, "1d6"), 5);
             }
         }
         public static Attack DretchClaws {
             get {
-                return new Attack("Claws", 2, new Damage(DamageType.SLASHING, "2d4"), 5);
+                return new Attack("Claws", 2, new Damage(SLASHING, "2d4"), 5);
             }
         }
         public static Attack DriderLongsword {
             get {
-                return new Attack("Longsword", 6, new Damage(DamageType.SLASHING, "1d8+3"), 5);
+                return new Attack("Longsword", 6, new Damage(SLASHING, "1d8+3"), 5);
             }
         }
         public static Attack DriderLongbow {
             get {
-                return new Attack("Longbow", 6, new Damage(DamageType.PIERCING, "1d8+3"), 150, 600, new Damage(DamageType.POISON, "1d8"));
+                return new Attack("Longbow", 6, new Damage(PIERCING, "1d8+3"), 150, 600, new Damage(POISON, "1d8"));
             }
         }
         public static Attack DriderBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d4"), 5, new Damage(DamageType.POISON, "2d8"));
+                return new Attack("Bite", 6, new Damage(PIERCING, "1d4"), 5, new Damage(POISON, "2d8"));
             }
         }
         public static readonly AttackEffect DrowHandCrossbowEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return false;
+            if (target.IsImmune(POISON)) return false;
             if (target.DC(DrowHandCrossbow, 13, AbilityType.CONSTITUTION, out int value)) return false;
-            target.AddEffect(Effect.DROW_POISON);
+            target.AddEffect(DROW_POISON);
             if (value < 9) {
                 target.AddCondition(ConditionType.UNCONSCIOUS);
             }
             target.AddDamageTakenEvent(delegate (object source, Damage damage) {
-                if (!target.HasEffect(Effect.DROW_POISON)) return true;
-                target.RemoveEffect(Effect.DROW_POISON);
+                if (!target.HasEffect(DROW_POISON)) return true;
+                target.RemoveEffect(DROW_POISON);
                 target.RemoveCondition(ConditionType.UNCONSCIOUS);
                 return true;
             });
@@ -163,42 +166,42 @@ namespace srd5 {
         };
         public static Attack DrowHandCrossbow {
             get {
-                return new Attack("Hand Crossbow", 4, new Damage(DamageType.PIERCING, "1d6+2"), 30, 120, null, DrowHandCrossbowEffect);
+                return new Attack("Hand Crossbow", 4, new Damage(PIERCING, "1d6+2"), 30, 120, null, DrowHandCrossbowEffect);
             }
         }
         public static Attack DrowShortsword {
             get {
-                return new Attack("Shortsword", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Shortsword", 4, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack DruidQuarterstaff {
             get {
-                return new Attack("Quarterstaff", 2, new Damage(DamageType.BLUDGEONING, "1d6"), 5);
+                return new Attack("Quarterstaff", 2, new Damage(BLUDGEONING, "1d6"), 5);
             }
         }
         public static Attack DryadClub {
             get {
-                return new Attack("Club", 2, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
+                return new Attack("Club", 2, new Damage(BLUDGEONING, "1d4"), 5);
             }
         }
         public static Attack DuergarWarPick {
             get {
-                return new Attack("War Pick", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+                return new Attack("War Pick", 4, new Damage(PIERCING, "1d8+2"), 5);
             }
         }
         public static Attack DuergarJavelin {
             get {
-                return new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Javelin", 4, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack DuergarJavelinRanged {
             get {
-                return new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 30, 120);
+                return new Attack("Javelin", 4, new Damage(PIERCING, "1d6+2"), 30, 120);
             }
         }
         public static Attack DustMephitClaws {
             get {
-                return new Attack("Claws", 4, new Damage(DamageType.SLASHING, "1d4+2"), 5);
+                return new Attack("Claws", 4, new Damage(SLASHING, "1d4+2"), 5);
             }
         }
     }
@@ -272,11 +275,11 @@ namespace srd5 {
                 deva.AddProficiency(Proficiency.CHARISMA);
                 deva.AddProficiency(Proficiency.INSIGHT);
                 deva.AddProficiency(Proficiency.PERCEPTION);
-                deva.AddEffect(Effect.RESISTANCE_RADIANT);
-                deva.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                deva.AddEffect(Effect.IMMUNITY_CHARMED);
-                deva.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                deva.AddEffect(Effect.IMMUNITY_FRIGHTENED);
+                deva.AddEffect(RESISTANCE_RADIANT);
+                deva.AddEffect(RESISTANCE_NONMAGIC);
+                deva.AddEffect(IMMUNITY_CHARMED);
+                deva.AddEffect(IMMUNITY_EXHAUSTION);
+                deva.AddEffect(IMMUNITY_FRIGHTENED);
                 deva.AddFeat(Feat.ANGELIC_WEAPONS_4D8);
                 deva.AddFeat(Feat.INNATE_SPELLCASTING_DEVA);
                 deva.AddFeat(Feat.MAGIC_RESISTANCE);
@@ -309,8 +312,8 @@ namespace srd5 {
                 djinni.AddProficiency(Proficiency.DEXTERITY);
                 djinni.AddProficiency(Proficiency.WISDOM);
                 djinni.AddProficiency(Proficiency.CHARISMA);
-                djinni.AddEffect(Effect.IMMUNITY_LIGHTNING);
-                djinni.AddEffect(Effect.IMMUNITY_THUNDER);
+                djinni.AddEffect(IMMUNITY_LIGHTNING);
+                djinni.AddEffect(IMMUNITY_THUNDER);
                 djinni.AddFeat(Feat.ELEMENTAL_DEMISE_DJINNI);
                 djinni.AddFeat(Feat.INNATE_SPELLCASTING_DJINNI);
                 return djinni;
@@ -326,7 +329,7 @@ namespace srd5 {
                 );
                 doppelganger.AddProficiency(Proficiency.DECEPTION);
                 doppelganger.AddProficiency(Proficiency.INSIGHT);
-                doppelganger.AddEffect(Effect.IMMUNITY_CHARMED);
+                doppelganger.AddEffect(IMMUNITY_CHARMED);
                 doppelganger.AddFeat(Feat.SHAPECHANGER_DOPPELGANGER);
                 doppelganger.AddFeat(Feat.AMBUSHER);
                 doppelganger.AddFeat(Feat.SURPRISE_ATTACK_DOPPELGANGER);
@@ -355,7 +358,7 @@ namespace srd5 {
                 dragonTurtle.AddProficiency(Proficiency.DEXTERITY);
                 dragonTurtle.AddProficiency(Proficiency.CONSTITUTION);
                 dragonTurtle.AddProficiency(Proficiency.WISDOM);
-                dragonTurtle.AddEffect(Effect.RESISTANCE_FIRE);
+                dragonTurtle.AddEffect(RESISTANCE_FIRE);
                 dragonTurtle.AddFeat(Feat.AMPHIBIOUS);
                 return dragonTurtle;
             }
@@ -368,11 +371,11 @@ namespace srd5 {
                     Monsters.Type.FIEND, Monsters.ID.DRETCH, Alignment.CHAOTIC_EVIL, 11, 11, 12, 5, 8, 3, 11, "4d6+4", 40, ChallengeRating.QUARTER,
                     new Attack[] { Attacks.DretchBite, Attacks.DretchClaws }, new Attack[] { }, Size.SMALL
                 );
-                dretch.AddEffect(Effect.RESISTANCE_COLD);
-                dretch.AddEffect(Effect.RESISTANCE_FIRE);
-                dretch.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                dretch.AddEffect(Effect.IMMUNITY_POISON);
-                dretch.AddEffect(Effect.IMMUNITY_POISONED);
+                dretch.AddEffect(RESISTANCE_COLD);
+                dretch.AddEffect(RESISTANCE_FIRE);
+                dretch.AddEffect(RESISTANCE_LIGHTNING);
+                dretch.AddEffect(IMMUNITY_POISON);
+                dretch.AddEffect(IMMUNITY_POISONED);
                 return dretch;
             }
         }
@@ -452,7 +455,7 @@ namespace srd5 {
                     Monsters.Type.HUMANOID, Monsters.ID.DUERGAR, Alignment.LAWFUL_EVIL, 14, 11, 14, 11, 10, 9, 16, "4d8+8", 40, 1,
                     new Attack[] { Attacks.DuergarWarPick, Attacks.DuergarJavelin }, new Attack[] { Attacks.DuergarJavelinRanged }, Size.MEDIUM
                 );
-                duergar.AddEffect(Effect.RESISTANCE_POISON);
+                duergar.AddEffect(RESISTANCE_POISON);
                 duergar.AddFeat(Feat.DUERGAR_RESILIENCE);
                 duergar.AddFeat(Feat.SUNLIGHT_SENSITIVITY);
                 return duergar;
@@ -468,9 +471,9 @@ namespace srd5 {
                 );
                 dustMephit.AddProficiency(Proficiency.PERCEPTION);
                 dustMephit.AddProficiency(Proficiency.STEALTH);
-                dustMephit.AddEffect(Effect.VULNERABILITY_FIRE);
-                dustMephit.AddEffect(Effect.IMMUNITY_POISON);
-                dustMephit.AddEffect(Effect.IMMUNITY_POISONED);
+                dustMephit.AddEffect(VULNERABILITY_FIRE);
+                dustMephit.AddEffect(IMMUNITY_POISON);
+                dustMephit.AddEffect(IMMUNITY_POISONED);
                 dustMephit.AddFeat(Feat.DEATH_BURST_DUST_MEPHIT);
                 dustMephit.AddFeat(Feat.INNATE_SPELLCASTING_DUST_MEPHIT);
                 return dustMephit;

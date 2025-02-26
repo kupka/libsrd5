@@ -1,8 +1,11 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack JackalBite {
             get {
-                return new Attack("Bite", 1, new Damage(DamageType.PIERCING, "1d4-1"), 5);
+                return new Attack("Bite", 1, new Damage(PIERCING, "1d4-1"), 5);
             }
         }
     }

@@ -136,5 +136,164 @@ namespace srd5 {
             }
             Assert.Empty(cleric.AvailableSpells[0].KnownSpells);
         }
+
+        [Fact]
+        public void WardingBondTest_CasterZeroHitpoints() {
+            Monster cleric = Monsters.Acolyte;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(cleric, 0, 0);
+            ground.AddCombattant(bandit, 5, 2);
+            Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
+            Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+            bandit.TakeDamage(this, DamageType.BLUDGEONING, 10);
+            Assert.True(cleric.HitPoints == cleric.HitPointsMax - 5);
+            Assert.True(bandit.HitPoints == bandit.HitPointsMax - 5);
+            cleric.TakeDamage(this, DamageType.POISON, 100);
+            Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.False(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+        }
+
+        [Fact]
+        public void WardingBondTest_DoubleCast1() {
+            Monster cleric = Monsters.Acolyte;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(cleric, 0, 0);
+            ground.AddCombattant(bandit, 5, 2);
+            Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
+            Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+            Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
+            Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.False(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+        }
+
+        [Fact]
+        public void WardingBondTest_DoubleCast2() {
+            Monster cleric = Monsters.Acolyte;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(cleric, 0, 0);
+            ground.AddCombattant(bandit, 5, 2);
+            Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, cleric);
+            Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND));
+            Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
+            Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+            Spells.WardingBond.Cast(ground, bandit, 12, SpellLevel.SECOND, 5, cleric);
+            Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.False(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+        }
+
+        [Fact]
+        public void WardingBondTest_RemovedCasterEffect1() {
+            Monster cleric = Monsters.Acolyte;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(cleric, 0, 0);
+            ground.AddCombattant(bandit, 5, 2);
+            Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
+            Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+            cleric.RemoveEffect(Effect.SPELL_WARDING_BOND_CASTER);
+            bandit.TakeDamage(this, DamageType.TRUE_DAMAGE, 2);
+            Assert.False(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+        }
+
+        [Fact]
+        public void WardingBondTest_RemovedCasterEffect2() {
+            Monster cleric = Monsters.Acolyte;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(cleric, 0, 0);
+            ground.AddCombattant(bandit, 5, 2);
+            Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
+            Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+            cleric.RemoveEffect(Effect.SPELL_WARDING_BOND_CASTER);
+            cleric.TakeDamage(this, DamageType.TRUE_DAMAGE, 2);
+            Assert.False(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+        }
+
+        [Fact]
+        public void WardingBondTest_RemovedCasterEffect3() {
+            Monster cleric = Monsters.Acolyte;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(cleric, 0, 0);
+            ground.AddCombattant(bandit, 5, 2);
+            Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
+            Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+            cleric.RemoveEffect(Effect.SPELL_WARDING_BOND_CASTER);
+            cleric.OnStartOfTurn();
+            Assert.False(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+        }
+
+        [Fact]
+        public void WardingBondTest_RemovedTargetEffect1() {
+            Monster cleric = Monsters.Acolyte;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(cleric, 0, 0);
+            ground.AddCombattant(bandit, 5, 2);
+            Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
+            Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+            bandit.RemoveEffect(Effect.SPELL_WARDING_BOND);
+            bandit.TakeDamage(this, DamageType.TRUE_DAMAGE, 2);
+            Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+        }
+
+        [Fact]
+        public void WardingBondTest_RemovedTargetEffect2() {
+            Monster cleric = Monsters.Acolyte;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(cleric, 0, 0);
+            ground.AddCombattant(bandit, 5, 2);
+            Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
+            Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+            bandit.RemoveEffect(Effect.SPELL_WARDING_BOND);
+            cleric.TakeDamage(this, DamageType.TRUE_DAMAGE, 2);
+            Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+        }
+
+        [Fact]
+        public void WardingBondTest_RemovedTargetEffect3() {
+            Monster cleric = Monsters.Acolyte;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(cleric, 0, 0);
+            ground.AddCombattant(bandit, 5, 2);
+            Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
+            Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+            bandit.RemoveEffect(Effect.SPELL_WARDING_BOND);
+            bandit.OnStartOfTurn();
+            Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+        }
+
+        [Fact]
+        public void WardingBondTest_MoveTooFarTest() {
+            Monster cleric = Monsters.Acolyte;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(20, 20);
+            ground.AddCombattant(cleric, 0, 0);
+            ground.AddCombattant(bandit, 5, 5);
+            Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
+            Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
+            Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+            cleric.OnStartOfTurn();
+            Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+            ground.Push(new Coord(0, 0), bandit, 50);
+            cleric.OnStartOfTurn();
+            Assert.False(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
+        }
+
     }
 }

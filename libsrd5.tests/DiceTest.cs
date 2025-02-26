@@ -74,6 +74,11 @@ namespace srd5 {
         }
 
         [Fact]
+        public void ConstantZeroTest() {
+            Assert.Equal(0, new Dice(100, 0, 0).Roll());
+        }
+
+        [Fact]
         public void DisAdvantageTest() {
             int advantageRolls = 0, disadvantageRolls = 0;
             for (int i = 0; i < 10; i++) {

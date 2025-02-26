@@ -798,7 +798,7 @@ namespace srd5 {
             get {
                 // In order to not make this spell too powerful (compare with Dominate line of spells)
                 // we make the target only unable to attack. Effect ends when the target takes damage.
-                return new Spell(ID.SUGGESTION, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 30, VM, EIGHT_HOURS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.SUGGESTION, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 30, VM, EIGHT_HOURS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     if (target.HasEffect(IMMUNITY_CHARMED) || target.DC(ID.SUGGESTION, dc, WISDOM)) {
                         GlobalEvents.AffectBySpell(caster, ID.SUGGESTION, target, false);
@@ -812,10 +812,76 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell WardingBond {
             get {
-                return new Spell(ID.WARDING_BOND, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.WARDING_BOND, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    if (target.Equals(caster)) {
+                        GlobalEvents.FailAction(caster, GlobalEvents.ActionFailed.Reasons.INVALID_TARGET);
+                        return;
+                    }
+                    // Spell ends if the spell is cast again on either of the connected creatures.
+                    bool anyEffectActive = false;
+                    if (caster.HasEffect(SPELL_WARDING_BOND_CASTER)) {
+                        caster.RemoveEffect(SPELL_WARDING_BOND_CASTER);
+                        anyEffectActive = true;
+                    }
+                    if (target.HasEffect(SPELL_WARDING_BOND_CASTER)) {
+                        target.RemoveEffect(SPELL_WARDING_BOND_CASTER);
+                        anyEffectActive = true;
+                    }
+                    if (caster.HasEffect(SPELL_WARDING_BOND)) {
+                        caster.RemoveEffect(SPELL_WARDING_BOND);
+                        anyEffectActive = true;
+                    }
+                    if (target.HasEffect(SPELL_WARDING_BOND)) {
+                        target.RemoveEffect(SPELL_WARDING_BOND);
+                        anyEffectActive = true;
+                    }
+                    if (anyEffectActive) return;
+                    AddEffectsForDuration(ID.WARDING_BOND, caster, target, ONE_HOUR, SPELL_WARDING_BOND);
+                    AddEffectsForDuration(ID.WARDING_BOND, caster, caster, ONE_HOUR, SPELL_WARDING_BOND_CASTER);
+                    target.AddDamageTakenEvent(delegate (object source, Damage damage) {
+                        if (!target.HasEffect(SPELL_WARDING_BOND) || !caster.HasEffect(SPELL_WARDING_BOND_CASTER)) {
+                            target.RemoveEffect(SPELL_WARDING_BOND);
+                            caster.RemoveEffect(SPELL_WARDING_BOND_CASTER);
+                            return true;
+                        }
+                        caster.TakeDamage(source, damage.Type, damage.Dice);
+                        return false;
+                    });
+                    caster.AddDamageTakenEvent(delegate (object source, Damage damage) {
+                        if (!target.HasEffect(SPELL_WARDING_BOND) || !caster.HasEffect(SPELL_WARDING_BOND_CASTER)) {
+                            target.RemoveEffect(SPELL_WARDING_BOND);
+                            caster.RemoveEffect(SPELL_WARDING_BOND_CASTER);
+                            return true;
+                        }
+                        if (caster.HitPoints == 0) {
+                            target.RemoveEffect(SPELL_WARDING_BOND);
+                            caster.RemoveEffect(SPELL_WARDING_BOND_CASTER);
+                            return true;
+                        }
+                        return false;
+                    });
+                    TurnEvent distanceCheck = delegate () {
+                        if (!target.HasEffect(SPELL_WARDING_BOND) || !caster.HasEffect(SPELL_WARDING_BOND_CASTER)) {
+                            target.RemoveEffect(SPELL_WARDING_BOND);
+                            caster.RemoveEffect(SPELL_WARDING_BOND_CASTER);
+                            return true;
+                        }
+                        int distance = ground.Distance(caster, target);
+                        if (distance > 60) {
+                            target.RemoveEffect(SPELL_WARDING_BOND);
+                            caster.RemoveEffect(SPELL_WARDING_BOND_CASTER);
+                            return true;
+                        }
+                        return false;
+                    };
+                    target.AddStartOfTurnEvent(distanceCheck);
+                    caster.AddStartOfTurnEvent(distanceCheck);
+                    // TODO: You can also dismiss the spell as an action.
+                });
             }
         }
         /* TODO */

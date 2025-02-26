@@ -36,6 +36,7 @@ namespace srd5 {
         RESISTANCE_NONMAGIC,
         RESISTANCE_DAMAGE_FROM_SPELLS,
         RESISTANCE_TRUE_DAMAGE, // should never be applied
+        RESISTANCE_ANY_DAMAGE,
         // Immunities against DamageType
         IMMUNITY_ACID,
         IMMUNITY_BLUDGEONING,
@@ -180,6 +181,8 @@ namespace srd5 {
         SPELL_SILENCE,
         SPELL_SPIDER_CLIMB,
         SPELL_SUGGESTION,
+        SPELL_WARDING_BOND,
+        SPELL_WARDING_BOND_CASTER,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,
@@ -513,6 +516,9 @@ namespace srd5 {
                 case SPELL_SUGGESTION:
                     combattant.AddEffect(CANNOT_TAKE_ACTIONS);
                     break;
+                case SPELL_WARDING_BOND:
+                    combattant.AddEffect(RESISTANCE_ANY_DAMAGE);
+                    break;
             }
         }
 
@@ -651,6 +657,9 @@ namespace srd5 {
                     break;
                 case SPELL_SUGGESTION:
                     combattant.RemoveEffect(CANNOT_TAKE_ACTIONS);
+                    break;
+                case SPELL_WARDING_BOND:
+                    combattant.RemoveEffect(RESISTANCE_ANY_DAMAGE);
                     break;
             }
         }

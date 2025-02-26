@@ -263,6 +263,12 @@ namespace srd5 {
         }
 
         public int Roll() {
+            // No randomness for constant 0 and 1 Dies
+            if (Die == 0) {
+                return Modifier;
+            } else if (Die == 1) {
+                return Amount + Modifier;
+            }
             int result = Modifier;
             for (int i = 0; i < Amount; i++) {
                 result += Random.Get(Math.Min(Die, 1), Die);

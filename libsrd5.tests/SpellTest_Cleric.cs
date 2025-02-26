@@ -25,12 +25,12 @@ namespace srd5 {
 
         [Fact]
         public void BaneTest() {
-            DefaultSpellTest(Spells.Bane, 12, SpellLevel.FIFTH, null, Effect.SPELL_BANE, 10);
+            DefaultSpellTest(Spells.Bane, 12, SpellLevel.FIFTH, null, Effect.SPELL_BANE, Spells.Bane.Duration);
         }
 
         [Fact]
         public void BlessTest() {
-            DefaultSpellTest(Spells.Bless, 12, SpellLevel.FIFTH, null, Effect.SPELL_BLESS, 10);
+            DefaultSpellTest(Spells.Bless, 12, SpellLevel.FIFTH, null, Effect.SPELL_BLESS, Spells.Bless.Duration);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace srd5 {
 
         [Fact]
         public void DivineFavorTest() {
-            DefaultSpellTest(Spells.DivineFavor, 12, SpellLevel.SECOND, null, Effect.SPELL_DIVINE_FAVOR, 10);
+            DefaultSpellTest(Spells.DivineFavor, 12, SpellLevel.SECOND, null, Effect.SPELL_DIVINE_FAVOR, Spells.DivineFavor.Duration);
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace srd5 {
             Assert.Equal(ac + 2, acolyte.ArmorClass);
             Spells.ShieldofFaith.Cast(acolyte, 10, SpellLevel.FIRST, 0);
             Assert.Equal(ac + 2, acolyte.ArmorClass);
-            DefaultSpellTest(Spells.ShieldofFaith, 10, SpellLevel.SECOND, null, Effect.SPELL_SHIELD_OF_FAITH, 100);
+            DefaultSpellTest(Spells.ShieldofFaith, 10, SpellLevel.SECOND, null, Effect.SPELL_SHIELD_OF_FAITH, Spells.ShieldofFaith.Duration);
         }
 
         [Fact]
@@ -113,6 +113,11 @@ namespace srd5 {
             Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
             Assert.Equal(1, shadow.HitPoints);
             Assert.Equal(1, golem.HitPoints);
+        }
+
+        [Fact]
+        public void SilenceTest() {
+            DefaultSpellTest(Spells.Silence, 20, SpellLevel.FIFTH, ConditionType.DEAFENED, Effect.IMMUNITY_THUNDER, Spells.Silence.Duration);
         }
     }
 }

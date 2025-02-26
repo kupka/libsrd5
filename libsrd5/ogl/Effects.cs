@@ -177,6 +177,7 @@ namespace srd5 {
         SPELL_SEE_INVISIBILITY,
         SPELL_SHIELD,
         SPELL_SHIELD_OF_FAITH,
+        SPELL_SILENCE,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,
@@ -503,6 +504,10 @@ namespace srd5 {
                 case SPELL_PROTECTION_FROM_POISON:
                     combattant.AddEffect(ADVANTAGE_POISON_SAVES, RESISTANCE_POISON);
                     break;
+                case SPELL_SILENCE:
+                    combattant.AddEffect(IMMUNITY_THUNDER);
+                    combattant.AddCondition(ConditionType.DEAFENED);
+                    break;
             }
         }
 
@@ -635,7 +640,10 @@ namespace srd5 {
                 case SPELL_PROTECTION_FROM_POISON:
                     combattant.RemoveEffect(ADVANTAGE_POISON_SAVES, RESISTANCE_POISON);
                     break;
-
+                case SPELL_SILENCE:
+                    combattant.RemoveEffect(IMMUNITY_THUNDER);
+                    combattant.RemoveCondition(ConditionType.DEAFENED);
+                    break;
             }
         }
 

@@ -722,7 +722,7 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell Shatter {
             get {
                 return new Spell(ID.SHATTER, EVOCATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, INSTANTANEOUS, 15, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
@@ -736,10 +736,16 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell Silence {
             get {
-                return new Spell(ID.SILENCE, ILLUSION, SECOND, CastingTime.ONE_ACTION, 120, VS, TEN_MINUTES, 20, 0, doNothing);
+                return new Spell(ID.SILENCE, ILLUSION, SECOND, CastingTime.ONE_ACTION, 120, VS, TEN_MINUTES, 20, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    // TODO: The effect should end when targets move out of the sphere of influence
+                    // TODO: Casting a spell that includes a verbal component is impossible there
+                    foreach (Combattant target in targets) {
+                        AddEffectsForDuration(ID.SILENCE, caster, target, TEN_MINUTES, SPELL_SILENCE);
+                    }
+                });
             }
         }
         /* TODO */

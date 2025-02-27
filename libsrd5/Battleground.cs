@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using static srd5.Die;
+using static srd5.Effect;
 
 namespace srd5 {
     public class Tile {
@@ -273,7 +274,7 @@ namespace srd5 {
         /// Move the current combattant to the target destination if able
         /// </summary>
         public bool MoveAction(Location destination) {
-            if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) return false;
+            if (CurrentCombattant.HasEffect(CANNOT_TAKE_ACTIONS)) return false;
             if (destination == null) throw new Srd5ArgumentException("destination cannot be null");
             int distance = destination.Distance(LocateCombattant(CurrentCombattant));
             if (distance > remainingSpeed) return false;
@@ -286,12 +287,12 @@ namespace srd5 {
         /// Current combattant melee attacks a target if able
         /// </summary>
         public bool MeleeAttackAction(Combattant target) {
-            if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) return false;
-            if (CurrentCombattant.HasEffect(Effect.CANNOT_MELEE_ATTACK)) return false;
+            if (CurrentCombattant.HasEffect(CANNOT_TAKE_ACTIONS)) return false;
+            if (CurrentCombattant.HasEffect(CANNOT_MELEE_ATTACK)) return false;
             if (currentPhase == TurnPhase.MOVE) return false;
             if (target == null) throw new Srd5ArgumentException("target cannot be null");
             if (target == CurrentCombattant) throw new Srd5ArgumentException("cannot attack self");
-            if (target.HasEffect(Effect.CANNOT_BE_MELEE_ATTACKED)) return false;
+            if (target.HasEffect(CANNOT_BE_MELEE_ATTACKED)) return false;
             bool success = false;
             if (currentPhase == TurnPhase.ACTION)
                 success = doFullMeleeAttack(target);
@@ -306,7 +307,7 @@ namespace srd5 {
         /// </summary>
         public bool RangedAttackAction(Combattant target) {
             if (target == null) throw new Srd5ArgumentException("target cannot be null");
-            if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) {
+            if (CurrentCombattant.HasEffect(CANNOT_TAKE_ACTIONS)) {
                 GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.CANNOT_TAKE_ACTIONS);
                 return false;
             }
@@ -331,7 +332,7 @@ namespace srd5 {
         /// Current combattant casts a spell if able. Checks all relevant constraints, such as range and if the spell is prepared
         /// <summary>
         public bool SpellCastAction(Spell spell, SpellLevel slot, AvailableSpells availableSpells, params Combattant[] targets) {
-            if (CurrentCombattant.HasEffect(Effect.CANNOT_TAKE_ACTIONS)) {
+            if (CurrentCombattant.HasEffect(CANNOT_TAKE_ACTIONS)) {
                 GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.CANNOT_TAKE_ACTIONS);
                 return false;
             }

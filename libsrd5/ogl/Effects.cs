@@ -1,6 +1,7 @@
 using System;
 using static srd5.Die;
 using static srd5.Effect;
+using static srd5.DamageType;
 
 namespace srd5 {
     public enum Effect {
@@ -311,7 +312,7 @@ namespace srd5 {
                 case FIRE_ELEMENTAL_IGNITE:
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (!combattant.HasEffect(effect)) return true;
-                        combattant.TakeDamage(effect, DamageType.FIRE, "1d10");
+                        combattant.TakeDamage(effect, FIRE, "1d10");
                         return false;
                     });
                     break;
@@ -349,7 +350,7 @@ namespace srd5 {
                 case MAGMIN_IGNITE:
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (!combattant.HasEffect(effect)) return true;
-                        combattant.TakeDamage(effect, DamageType.FIRE, "1d6");
+                        combattant.TakeDamage(effect, FIRE, "1d6");
                         return false;
                     });
                     break;
@@ -368,7 +369,7 @@ namespace srd5 {
                     combattant.AddEffect(CANNOT_REGAIN_HITPOINTS);
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (!combattant.HasEffect(effect)) return true;
-                        combattant.TakeDamage(effect, DamageType.POISON, "6d6");
+                        combattant.TakeDamage(effect, POISON, "6d6");
                         return false;
                     });
                     combattant.AddEndOfTurnEvent(delegate () {
@@ -406,7 +407,7 @@ namespace srd5 {
                     if (!combattant.HasEffect(IMMUNITY_BLINDED)) combattant.AddCondition(ConditionType.BLINDED);
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (combattant.HasCondition(ConditionType.GRAPPLED_DC13)) {
-                            combattant.TakeDamage(effect, DamageType.BLUDGEONING, "2d6+3");
+                            combattant.TakeDamage(effect, BLUDGEONING, "2d6+3");
                             return false;
                         } else {
                             return true;

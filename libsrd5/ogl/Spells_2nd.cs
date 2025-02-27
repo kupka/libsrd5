@@ -884,16 +884,17 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell Web {
             get {
-                return new Spell(ID.WEB, CONJURATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, ONE_HOUR, 20, 0, doNothing);
+                // TODO: Needs a means to place obstacles on Battlefields
+                return new Spell(ID.WEB, CONJURATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, ONE_HOUR, 20, 0, SpellWithoutEffect(ID.WEB));
             }
         }
-        /* TODO */
+
         public static Spell ZoneofTruth {
             get {
-                return new Spell(ID.ZONE_OF_TRUTH, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 60, VS, TEN_MINUTES, 15, 0, doNothing);
+                return new Spell(ID.ZONE_OF_TRUTH, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 60, VS, TEN_MINUTES, 15, 0, SpellWithoutEffect(ID.ZONE_OF_TRUTH));
             }
         }
     }

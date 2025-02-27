@@ -1,4 +1,6 @@
 using System;
+using static srd5.Effect;
+using static srd5.AbilityType;
 
 namespace srd5 {
     public delegate bool AttackEffect(Combattant attacker, Combattant target);
@@ -21,12 +23,12 @@ namespace srd5 {
             if (target.Size > maxSize) return false;
             int grappling = 0;
             foreach (Effect effect in attacker.Effects) {
-                if (effect == Effect.GRAPPLING) grappling++;
+                if (effect == GRAPPLING) grappling++;
             }
             if (grappling >= maxTargets) return false;
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return false;
-            attacker.AddEffect(Effect.GRAPPLING);
-            if (withRestrained && !target.HasEffect(Effect.IMMUNITY_RESTRAINED))
+            if (target.HasEffect(IMMUNITY_GRAPPLED)) return false;
+            attacker.AddEffect(GRAPPLING);
+            if (withRestrained && !target.HasEffect(IMMUNITY_RESTRAINED))
                 target.AddCondition(ConditionType.RESTRAINED);
             target.AddCondition(grapplingType);
             if (lockAttackToTarget != null) {
@@ -40,7 +42,7 @@ namespace srd5 {
                 if (!target.HasCondition(grapplingType)) {
                     if (withRestrained)
                         target.RemoveCondition(ConditionType.RESTRAINED);
-                    attacker.RemoveEffect(Effect.GRAPPLING);
+                    attacker.RemoveEffect(GRAPPLING);
                     return true;
                 }
                 return false;
@@ -58,9 +60,9 @@ namespace srd5 {
         /// <param name="ability">Which ability is used for the DC (default Constitution)</param>
         /// <param name="damageMitigation">Determines what happens on a successful save (defaults to halves damage)</param>
         /// <returns></returns>
-        public static int PoisonEffect(Combattant target, Attack source, string dice, int dc, AbilityType ability = AbilityType.CONSTITUTION, Spells.DamageMitigation damageMitigation = Spells.DamageMitigation.HALVES_DAMAGE) {
+        public static int PoisonEffect(Combattant target, Attack source, string dice, int dc, AbilityType ability = CONSTITUTION, Spells.DamageMitigation damageMitigation = Spells.DamageMitigation.HALVES_DAMAGE) {
             if (target.IsImmune(DamageType.POISON)) return 0;
-            bool advantage = target.HasEffect(Effect.ADVANTAGE_POISON_SAVES);
+            bool advantage = target.HasEffect(ADVANTAGE_POISON_SAVES);
             bool success = target.DC(source, dc, ability, out _, advantage);
             if (damageMitigation == Spells.DamageMitigation.NULLIFIES_DAMAGE && success) return 0;
             int amount = new Dice(dice).Roll();

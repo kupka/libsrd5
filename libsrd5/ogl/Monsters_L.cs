@@ -1,68 +1,72 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack LamiaClaws {
             get {
-                return new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d10+3"), 5);
+                return new Attack("Claws", 5, new Damage(SLASHING, "2d10+3"), 5);
             }
         }
         public static Attack LamiaDagger {
             get {
-                return new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5);
+                return new Attack("Dagger", 5, new Damage(PIERCING, "1d4+3"), 5);
             }
         }
         public static Attack LemureFist {
             get {
-                return new Attack("Fist", 3, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
+                return new Attack("Fist", 3, new Damage(BLUDGEONING, "1d4"), 5);
             }
         }
         public static readonly AttackEffect LichParalyzingTouchEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.HasEffect(Effect.IMMUNITY_PARALYZED)) return;
-            if (target.DC(LichParalyzingTouch, 18, AbilityType.CONSTITUTION)) return;
-            target.AddEffect(Effect.LICH_PARALYZATION);
+            if (target.HasEffect(IMMUNITY_PARALYZED)) return false;
+            if (target.DC(LichParalyzingTouch, 18, AbilityType.CONSTITUTION)) return false;
+            target.AddEffect(LICH_PARALYZATION);
+            return false;
         };
         public static Attack LichParalyzingTouch {
             get {
-                return new Attack("Paralyzing Touch", 12, new Damage(DamageType.COLD, "3d6"), 5, null, LichParalyzingTouchEffect);
+                return new Attack("Paralyzing Touch", 12, new Damage(COLD, "3d6"), 5, null, LichParalyzingTouchEffect);
             }
         }
         public static Attack LionBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+3"), 5);
+                return new Attack("Bite", 5, new Damage(PIERCING, "1d8+3"), 5);
             }
         }
         public static Attack LionClaw {
             get {
-                return new Attack("Claw", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+                return new Attack("Claw", 5, new Damage(SLASHING, "1d6+3"), 5);
             }
         }
         public static Attack LizardBite {
             get {
-                return new Attack("Bite", 0, new Damage(DamageType.PIERCING, 1), 5);
+                return new Attack("Bite", 0, new Damage(PIERCING, 1), 5);
             }
         }
         public static Attack LizardfolkBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack LizardfolkHeavyClub {
             get {
-                return new Attack("Heavy Club", 4, new Damage(DamageType.BLUDGEONING, "1d6+2"), 5);
+                return new Attack("Heavy Club", 4, new Damage(BLUDGEONING, "1d6+2"), 5);
             }
         }
         public static Attack LizardfolkJavelinMelee {
             get {
-                return new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Javelin", 4, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack LizardfolkSpikedShield {
             get {
-                return new Attack("Spiked Shield", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Spiked Shield", 4, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack LizardfolkJavelinRanged {
             get {
-                return new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5, 30, 120);
+                return new Attack("Javelin", 4, new Damage(PIERCING, "1d6+2"), 5, 30, 120);
             }
         }
     }
@@ -90,12 +94,12 @@ namespace srd5 {
                     Monsters.Type.FIEND, Monsters.ID.LEMURE, Alignment.LAWFUL_EVIL, 10, 5, 11, 1, 11, 3, 7, "3d8", 40, 0,
                     new Attack[] { Attacks.LemureFist }, new Attack[] { }, Size.MEDIUM
                 );
-                lemure.AddEffect(Effect.RESISTANCE_COLD);
-                lemure.AddEffect(Effect.IMMUNITY_FIRE);
-                lemure.AddEffect(Effect.IMMUNITY_POISON);
-                lemure.AddEffect(Effect.IMMUNITY_CHARMED);
-                lemure.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                lemure.AddEffect(Effect.IMMUNITY_POISONED);
+                lemure.AddEffect(RESISTANCE_COLD);
+                lemure.AddEffect(IMMUNITY_FIRE);
+                lemure.AddEffect(IMMUNITY_POISON);
+                lemure.AddEffect(IMMUNITY_CHARMED);
+                lemure.AddEffect(IMMUNITY_FRIGHTENED);
+                lemure.AddEffect(IMMUNITY_POISONED);
                 lemure.AddFeat(Feat.DEVILS_SIGHT);
                 lemure.AddFeat(Feat.HELLISH_REJUVENATION);
                 return lemure;
@@ -116,16 +120,16 @@ namespace srd5 {
                 lich.AddProficiency(Proficiency.HISTORY);
                 lich.AddProficiency(Proficiency.INSIGHT);
                 lich.AddProficiency(Proficiency.PERCEPTION);
-                lich.AddEffect(Effect.RESISTANCE_COLD);
-                lich.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                lich.AddEffect(Effect.RESISTANCE_NECROTIC);
-                lich.AddEffect(Effect.IMMUNITY_POISON);
-                lich.AddEffect(Effect.IMMUNITY_NONMAGIC);
-                lich.AddEffect(Effect.IMMUNITY_CHARMED);
-                lich.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                lich.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                lich.AddEffect(Effect.IMMUNITY_PARALYZED);
-                lich.AddEffect(Effect.IMMUNITY_POISONED);
+                lich.AddEffect(RESISTANCE_COLD);
+                lich.AddEffect(RESISTANCE_LIGHTNING);
+                lich.AddEffect(RESISTANCE_NECROTIC);
+                lich.AddEffect(IMMUNITY_POISON);
+                lich.AddEffect(IMMUNITY_NONMAGIC);
+                lich.AddEffect(IMMUNITY_CHARMED);
+                lich.AddEffect(IMMUNITY_EXHAUSTION);
+                lich.AddEffect(IMMUNITY_FRIGHTENED);
+                lich.AddEffect(IMMUNITY_PARALYZED);
+                lich.AddEffect(IMMUNITY_POISONED);
                 lich.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 lich.AddFeat(Feat.REJUVENATION_LICH);
                 lich.AddFeat(Feat.SPELLCASTING_LICH);

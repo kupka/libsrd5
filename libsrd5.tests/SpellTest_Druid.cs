@@ -1,10 +1,28 @@
 using System;
+using System.Reflection;
 using Xunit;
+using static srd5.Die;
 
 namespace srd5 {
     [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
     [Collection("SingleThreaded")]
     public partial class SpellTest {
+        [Fact]
+        public void AllSpellsTest() {
+            foreach (PropertyInfo property in typeof(Spells).GetProperties()) {
+                object o = property.GetMethod.Invoke(null, null);
+                Assert.True(o is Spell);
+                Spell spell = (Spell)o;
+                Monster hag = Monsters.NightHag;
+                Monster bandit = Monsters.Bandit;
+                Battleground ground = createBattleground(hag, bandit);
+                if (spell.MaximumTargets == 0) {
+                    spell.Cast(hag, 10, SpellLevel.NINETH, 5);
+                } else {
+                    spell.Cast(ground, hag, 10, SpellLevel.NINETH, 20, bandit);
+                }
+            }
+        }
         private BattleGroundClassic createBattleground(Combattant caster, params Combattant[] targets) {
             BattleGroundClassic ground = new BattleGroundClassic();
             ground.AddCombattant(caster, ClassicLocation.Row.FRONT_LEFT);
@@ -16,13 +34,27 @@ namespace srd5 {
 
         [Fact]
         public void DiceSlotScalingTest() {
-            Dice dice = Spells.DiceSlotScaling(SpellLevel.FIRST, SpellLevel.SECOND, 6, 1, 2, 2);
+            Dice dice = Spells.DiceSlotScaling(SpellLevel.FIRST, SpellLevel.SECOND, D6, 1, 2, 2);
             Assert.Equal("3d6+2", dice.ToString());
-            dice = Spells.DiceSlotScaling(SpellLevel.FIRST, SpellLevel.THIRD, 8, 1, -2, 2);
+            dice = Spells.DiceSlotScaling(SpellLevel.FIRST, SpellLevel.THIRD, D8, 1, -2, 2);
             Assert.Equal("5d8-2", dice.ToString());
             Assert.Throws<Srd5ArgumentException>(delegate {
-                dice = Spells.DiceSlotScaling(SpellLevel.THIRD, SpellLevel.SECOND, 6, 1, 2, 2);
+                dice = Spells.DiceSlotScaling(SpellLevel.THIRD, SpellLevel.SECOND, D6, 1, 2, 2);
             });
+        }
+
+        [Fact]
+        public void EffectAndConditionTest() {
+            Monster bandit = Monsters.Bandit;
+            Spells.AddEffectAndConditionsForDuration(Spells.ID.AID, bandit, bandit, SpellDuration.ONE_MINUTE, Effect.SPELL_AID, ConditionType.BLINDED);
+            for (int i = 0; i < 3; i++) {
+                bandit.OnStartOfTurn();
+                bandit.OnEndOfTurn();
+                bandit.RemoveEffect(Effect.SPELL_AID);
+                bandit.RemoveCondition(ConditionType.BLINDED);
+            }
+            Assert.True(bandit.StartOfTurnEvents.Length == 0);
+            Assert.True(bandit.EndOfTurnEvents.Length == 0);
         }
 
 
@@ -144,12 +176,27 @@ namespace srd5 {
             Spells.Shillelagh.Cast(Monsters.Goblin, 0, SpellLevel.CANTRIP, 3);
         }
 
+        [Fact]
+        public void SpellTargetTest() {
+            Monster druid = Monsters.Druid;
+            Monster bandit = Monsters.Bandit;
+            bandit.HitPoints = 6;
+            Battleground ground = createBattleground(druid, bandit);
+            Assert.Throws<Srd5ArgumentException>(delegate () {
+                Spells.Moonbeam.Cast(ground, druid, 10, SpellLevel.SIXTH, 0);
+            });
+        }
+
+        private void DefaultSpellTest(Spell spell, int dc, SpellLevel slot, ConditionType? checkForCondition, Effect? checkForEffect, SpellDuration simulateTurns, Monsters.Type monsterType = Monsters.Type.BEAST) {
+            DefaultSpellTest(spell, dc, slot, checkForCondition, checkForEffect, (int)simulateTurns, monsterType);
+        }
+
         private void DefaultSpellTest(Spell spell, int dc, SpellLevel slot, ConditionType? checkForCondition, Effect? checkForEffect, int? simulateTurns, Monsters.Type monsterType = Monsters.Type.BEAST) {
             if (checkForCondition == null && checkForEffect == null) throw new ArgumentException("Don't use is when not checking for Condition and/or Effect");
             CharacterSheet hero = new CharacterSheet(Race.DRAGONBORN, true);
             hero.AddLevels(CharacterClasses.Wizard, CharacterClasses.Druid, CharacterClasses.Bard, CharacterClasses.Barbarian);
-            Combattant nonMonster1 = new CharacterSheet(Race.HILL_DWARF);
-            Combattant nonMonster2 = new CharacterSheet(Race.HIGH_ELF);
+            Combattant nonMonster1 = new CharacterSheet(Race.HUMAN);
+            Combattant nonMonster2 = new CharacterSheet(Race.HALFLING);
             Monster orc1 = Monsters.Orc;
             Monster orc2 = Monsters.Orc;
             Monster orc3 = Monsters.Orc;
@@ -194,6 +241,12 @@ namespace srd5 {
             }
             if (simulateTurns != null) {
                 int turns = (int)simulateTurns;
+                if (checkForEffect != null) {
+                    orc3.RemoveEffect((Effect)checkForEffect);
+                }
+                if (checkForCondition != null) {
+                    orc3.RemoveCondition((ConditionType)checkForCondition);
+                }
                 for (int i = 0; i < turns; i++) {
                     hero.OnEndOfTurn();
 
@@ -310,16 +363,16 @@ namespace srd5 {
         public void ThunderwaveTest() {
             CharacterSheet hero = new CharacterSheet(Race.GNOME);
             hero.AddLevel(CharacterClasses.Druid);
-            Monster badger = Monsters.GiantBadger;
+            Monster badger = Monsters.Badger;
             int hps = badger.HitPoints;
             Random.State = 1;
             Battleground2D ground = new Battleground2D(10, 10);
             ground.AddCombattant(hero, 3, 3);
             ground.AddCombattant(badger, 5, 5);
             Assert.Equal(5, ground.LocateCombattant2D(badger).X);
-            Spells.Thunderwave.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
-            Spells.Thunderwave.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
-            Spells.Thunderwave.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(ground, hero, 25, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(ground, hero, 25, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(ground, hero, 25, SpellLevel.FIRST, 0, badger);
             Assert.True(badger.HitPoints < hps);
             Assert.True(ground.LocateCombattant2D(badger).X > 5);
 
@@ -327,9 +380,9 @@ namespace srd5 {
             badger.HealDamage(1000);
             classic.AddCombattant(hero, ClassicLocation.Row.FRONT_LEFT);
             classic.AddCombattant(badger, ClassicLocation.Row.FRONT_RIGHT);
-            Spells.Thunderwave.Cast(classic, hero, 10, SpellLevel.FIRST, 0, badger);
-            Spells.Thunderwave.Cast(classic, hero, 10, SpellLevel.FIRST, 0, badger);
-            Spells.Thunderwave.Cast(classic, hero, 10, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(classic, hero, 25, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(classic, hero, 25, SpellLevel.FIRST, 0, badger);
+            Spells.Thunderwave.Cast(classic, hero, 25, SpellLevel.FIRST, 0, badger);
             Assert.True(badger.HitPoints < hps);
             Assert.Equal(ClassicLocation.Row.BACK_RIGHT, classic.LocateClassicCombattant(badger).Location);
         }
@@ -360,5 +413,237 @@ namespace srd5 {
             hero.Consume(Potions.Goodberry);
             Assert.Equal(hero.HitPointsMax, hero.HitPoints);
         }
+
+        [Fact]
+        public void BarkskinTest() {
+            Monster rat = Monsters.Rat;
+            Monster dragon = Monsters.AncientBlackDragon;
+            Spells.Barkskin.Cast(rat, 10, SpellLevel.FOURTH, 5);
+            Assert.Equal(16, rat.ArmorClass);
+            Assert.True(dragon.ArmorClass > 16);
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
+            hero.AddLevels(CharacterClasses.Barbarian);
+            hero.Strength.BaseValue = 20;
+            hero.Dexterity.BaseValue = 14;
+            Spells.Barkskin.Cast(hero, 10, SpellLevel.SECOND, 0);
+            Assert.Equal(16, hero.ArmorClass);
+            hero.Equip(Armors.PlateArmor);
+            Assert.True(hero.ArmorClass > 16);
+        }
+
+        [Fact]
+        public void DarkvisionTest() {
+            DefaultSpellTest(Spells.Darkvision, 20, SpellLevel.SECOND, null, Effect.DARKVISION, SpellDuration.EIGHT_HOURS);
+        }
+
+        [Fact]
+        public void EnhanceAbilityTest() {
+            SpellVariant[] variants = new SpellVariant[] { SpellVariant.BEARS_ENDURANCE, SpellVariant.BULLS_STRENGTH, SpellVariant.CATS_GRACE, SpellVariant.EAGLES_SPLENDOR, SpellVariant.FOX_CUNNING, SpellVariant.OWLS_WISDOM };
+            Effect[] effects = new Effect[] { Effect.ADVANTAGE_CONSTITUTION_SAVES, Effect.ADVANTAGE_STRENGTH_SAVES, Effect.ADVANTAGE_DEXTERITY_SAVES, Effect.ADVANTAGE_CHARISMA_SAVES, Effect.ADVANTAGE_INTELLIGENCE_SAVES, Effect.ADVANTAGE_WISDOM_SAVES };
+            AbilityType[] abilities = new AbilityType[] { AbilityType.CONSTITUTION, AbilityType.STRENGTH, AbilityType.DEXTERITY, AbilityType.CHARISMA, AbilityType.INTELLIGENCE, AbilityType.WISDOM };
+            int successesWithoutAdvantage = 0;
+            int successesWithAdvantage = 0;
+            Random.State = 2;
+            for (int i = 0; i < variants.Length; i++) {
+                Monster bandit1 = Monsters.Bandit;
+                Monster bandit2 = Monsters.Bandit;
+                Monster bandit3 = Monsters.Bandit;
+                Monster acolyte = Monsters.Acolyte;
+                Battleground ground = createBattleground(acolyte, bandit1, bandit2, bandit3);
+                SpellVariant variant = variants[i];
+                AbilityType ability = abilities[i];
+                Effect effect = effects[i];
+                Spell spell = Spells.EnhanceAbility;
+                spell.Variant = variant;
+                spell.Cast(ground, acolyte, 12, SpellLevel.THIRD, 2, bandit1, bandit2, bandit3);
+                Assert.True(bandit1.HasEffect(effect));
+                Assert.True(bandit2.HasEffect(effect));
+                Assert.False(bandit3.HasEffect(effect));
+                if (i == 0) {
+                    spell.Variant = SpellVariant.BULLS_STRENGTH;
+                    spell.Cast(ground, acolyte, 12, SpellLevel.THIRD, 2, bandit1);
+                    Assert.False(bandit1.HasEffect(Effect.ADVANTAGE_STRENGTH_SAVES));
+                }
+                if (bandit1.DC(this, 10, ability)) successesWithAdvantage++;
+                if (bandit3.DC(this, 10, ability)) successesWithoutAdvantage++;
+            }
+            Assert.True(successesWithAdvantage > successesWithoutAdvantage);
+        }
+
+        [Fact]
+        public void EnlargeTest() {
+            Spell spell = Spells.EnlargeReduce;
+            spell.Variant = SpellVariant.ENLARGE;
+            Monster bandit = Monsters.Bandit;
+            Size size = bandit.Size;
+            bandit.AddEffect(Effect.SPELL_REDUCE);
+            Assert.True(bandit.Size < size);
+            spell.Cast(bandit, 12, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size == size);
+            spell.Cast(bandit, 12, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size > size);
+            size = bandit.Size;
+            spell.Cast(bandit, 12, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size == size);
+            bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
+        }
+
+        [Fact]
+        public void ReduceTest() {
+            Spell spell = Spells.EnlargeReduce;
+            spell.Variant = SpellVariant.REDUCE;
+            Monster bandit = Monsters.Bandit;
+            Size size = bandit.Size;
+            Random.State = 1;
+            spell.Cast(bandit, 1, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size == size);
+            bandit.AddEffect(Effect.SPELL_ENLARGE);
+            Assert.True(bandit.Size > size);
+            spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size == size);
+            spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size < size);
+            size = bandit.Size;
+            spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
+            Assert.True(bandit.Size == size);
+            bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
+            bandit.DC(this, 20, AbilityType.STRENGTH);
+        }
+
+        [Fact]
+        public void FlameBladeTest() {
+            Monster druid = Monsters.Druid;
+            Monster bandit = Monsters.Bandit;
+            bandit.ArmorClass = 0;
+            bandit.HitPoints = 6;
+            Battleground ground = createBattleground(druid, bandit);
+            Spells.FlameBlade.Cast(druid, 10, SpellLevel.NINETH, 0);
+            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAME_BLADE);
+            druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
+            Assert.True(bandit.Dead);
+            for (int i = 0; i < (int)SpellDuration.TEN_MINUTES; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.True(druid.AvailableSpells[0].PreparedSpells.Length == 0);
+        }
+
+        [Fact]
+        public void FlamingSphereTest() {
+            Monster druid = Monsters.Druid;
+            Monster bandit = Monsters.Bandit;
+            bandit.HitPoints = 6;
+            Battleground ground = createBattleground(druid, bandit);
+            Spells.FlamingSphere.Cast(druid, 10, SpellLevel.SIXTH, 0);
+            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAMING_SPHERE);
+            druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
+            Assert.True(bandit.Dead);
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.True(druid.AvailableSpells[0].PreparedSpells.Length == 0);
+        }
+
+        [Fact]
+        public void GustofWindTest() {
+            Monster druid = Monsters.Druid;
+            Monster bandit = Monsters.Bandit;
+            bandit.HitPoints = 6;
+            Battleground ground = createBattleground(druid, bandit);
+            Location location = ground.LocateCombattant(bandit);
+            int speed = bandit.Speed;
+            Spells.GustofWind.Cast(ground, druid, 30, SpellLevel.SECOND, 20, bandit);
+            Assert.True(bandit.HasEffect(Effect.SPELL_GUST_OF_WIND));
+            Assert.True(bandit.Speed < speed);
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
+                bandit.OnStartOfTurn();
+                bandit.OnEndOfTurn();
+            }
+            Assert.True(location.Distance(ground.LocateCombattant(bandit)) > 0);
+            Assert.True(bandit.Speed == speed);
+        }
+
+        [Fact]
+        public void LesserRestorationTest() {
+            Monster druid = Monsters.Druid;
+            druid.AddCondition(ConditionType.BLINDED, ConditionType.DEAFENED, ConditionType.POISONED, ConditionType.PARALYZED);
+            druid.AddEffect(Effect.ADVANTAGE_DEXTERITY_SAVES, Effect.DEATH_DOG_DISEASE, Effect.ABOLETH_DISEASE_TENTACLE);
+            Spell lesserRestoration = Spells.LesserRestoration;
+            lesserRestoration.Variant = SpellVariant.DISEASES;
+            lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
+            Assert.False(druid.HasEffect(Effect.DEATH_DOG_DISEASE));
+            Assert.True(druid.HasEffect(Effect.ADVANTAGE_DEXTERITY_SAVES));
+            Assert.True(druid.HasEffect(Effect.ABOLETH_DISEASE_TENTACLE));
+
+            lesserRestoration.Variant = SpellVariant.PARALYZATION;
+            lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
+            Assert.False(druid.HasCondition(ConditionType.PARALYZED));
+            Assert.True(druid.HasCondition(ConditionType.POISONED));
+
+            lesserRestoration.Variant = SpellVariant.POISONS;
+            lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
+            Assert.False(druid.HasCondition(ConditionType.POISONED));
+            Assert.True(druid.HasCondition(ConditionType.DEAFENED));
+
+            lesserRestoration.Variant = SpellVariant.DEAFNESS;
+            lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
+            Assert.False(druid.HasCondition(ConditionType.DEAFENED));
+            Assert.True(druid.HasCondition(ConditionType.BLINDED));
+
+            lesserRestoration.Variant = SpellVariant.BLINDNESS;
+            lesserRestoration.Cast(druid, 10, SpellLevel.FIFTH, 5);
+            Assert.False(druid.HasCondition(ConditionType.BLINDED));
+        }
+
+
+        [Fact]
+        public void MoonbeamTest() {
+            Monster druid = Monsters.Druid;
+            Monster bandit = Monsters.Bandit;
+            Monster werewolf = Monsters.Werewolf;
+            bandit.HitPoints = 6;
+            Battleground ground = createBattleground(druid, bandit);
+            Spells.Moonbeam.Cast(ground, druid, 10, SpellLevel.SIXTH, 0, bandit);
+            for (int i = 0; i < 10; i++) {
+                Spells.Moonbeam.Cast(ground, druid, 10, SpellLevel.SIXTH, 0, werewolf);
+            }
+            Assert.True(bandit.Dead);
+            bandit = Monsters.Bandit;
+            bandit.HitPoints = 6;
+            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.MOONBEAM);
+            druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
+            for (int i = 0; i < 10; i++) {
+                druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, werewolf);
+            }
+            Assert.True(bandit.Dead);
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.True(druid.AvailableSpells[0].PreparedSpells.Length == 0);
+        }
+
+        [Fact]
+        public void PassWithoutTraceTest() {
+            Monster druid = Monsters.Druid;
+            druid.Dexterity.BaseValue = 10;
+            druid.Strength.BaseValue = 10;
+            int dexDCSuccess = 0;
+            int strDCSuccess = 0;
+            Spells.PassWithoutTrace.Cast(druid, 10, SpellLevel.SECOND, 0);
+            for (int i = 0; i < 20; i++) {
+                if (druid.DC(this, 15, Skill.ATHLETICS, out _)) strDCSuccess++;
+                if (druid.DC(this, 15, Skill.STEALTH, out _)) dexDCSuccess++;
+            }
+            Assert.True(dexDCSuccess > strDCSuccess);
+        }
+
+        [Fact]
+        public void ProtectionfromPoisonTest() {
+            DefaultSpellTest(Spells.ProtectionfromPoison, 12, SpellLevel.THIRD, null, Effect.ADVANTAGE_POISON_SAVES, SpellDuration.ONE_HOUR);
+            Monster ogre = Monsters.Ogre;
+            ogre.AddEffect(Effect.ABOLETH_DISEASE_TENTACLE, Effect.COUATL_POISON, Effect.DROW_POISON);
+            Spells.ProtectionfromPoison.Cast(ogre, 12, SpellLevel.SECOND, 2);
+            Assert.False(ogre.HasEffect(Effect.COUATL_POISON));
+        }
+
     }
 }

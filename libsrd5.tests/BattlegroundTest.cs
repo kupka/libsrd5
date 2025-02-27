@@ -256,6 +256,13 @@ namespace srd5 {
             hero.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
             Assert.False(ground.MeleeAttackAction(ogre));
             Assert.False(ground.RangedAttackAction(ogre));
+
+            hero.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
+            hero.AddEffect(Effect.CANNOT_MELEE_ATTACK);
+            Assert.False(ground.MeleeAttackAction(ogre));
+            hero.RemoveEffect(Effect.CANNOT_MELEE_ATTACK);
+            ogre.AddEffect(Effect.CANNOT_BE_MELEE_ATTACKED);
+            Assert.False(ground.MeleeAttackAction(ogre));
         }
 
         [Fact]
@@ -356,6 +363,7 @@ namespace srd5 {
                 ground.NextPhase();
             }
             ground.NextPhase();
+            Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.THIRD, hag.AvailableSpells[0]));
             Assert.True(ground.SpellCastAction(Spells.Sleep, SpellLevel.FIRST, hag.AvailableSpells[0], ogre));
             ground.NextPhase();
             while (ground.CurrentCombattant != hag) {
@@ -403,7 +411,7 @@ namespace srd5 {
             Assert.False(ground.SpellCastAction(Spells.AcidSplash, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre, ogre2, ogre3));
             // Target outside area of effect
             Assert.False(ground.SpellCastAction(Spells.AcidSplash, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre, ogre4));
-            Random.State = 11; // Fix random so one ogre fails DC
+            Random.State = 15; // Fix random so one ogre fails DC
             Assert.True(ground.SpellCastAction(Spells.AcidSplash, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre, ogre2));
             Assert.True(ogre.HitPointsMax > ogre.HitPoints);
             Assert.True(ogre2.HitPointsMax == ogre2.HitPoints);
@@ -439,6 +447,8 @@ namespace srd5 {
         public void RangedTest() {
             Monster ogre = Monsters.Ogre;
             Monster bandit = Monsters.Bandit;
+            bandit.HitPointsMax = 500;
+            bandit.HitPoints = 500;
             BattleGroundClassic battle = new BattleGroundClassic();
             battle.AddCombattant(ogre, ClassicLocation.Row.BACK_LEFT);
             battle.AddCombattant(bandit, ClassicLocation.Row.BACK_RIGHT);

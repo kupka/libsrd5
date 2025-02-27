@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq.Expressions;
 
 namespace srd5 {
     public enum SpellSchool {
@@ -48,17 +49,37 @@ namespace srd5 {
     public enum SpellDuration {
         SPECIAL = -1,
         INSTANTANEOUS = 0,
-        ONE_ROUND = 6,
-        ONE_MINUTE = 60,
-        TEN_MINUTES = 60 * 10,
-        ONE_HOUR = 3600,
-        TWO_HOURS = 3600 * 2,
-        EIGHT_HOURS = 3600 * 8,
-        ONE_DAY = 86400,
-        SEVEN_DAYS = 86400 * 7,
-        TEN_DAYS = 86400 * 10,
-        THIRTY_DAYS = 86400 * 30,
+        ONE_ROUND = 1,
+        ONE_MINUTE = 10,
+        TEN_MINUTES = 10 * 10,
+        ONE_HOUR = 60 * 10,
+        TWO_HOURS = 2 * 60 * 10,
+        EIGHT_HOURS = 8 * 60 * 10,
+        ONE_DAY = 24 * 60 * 10,
+        SEVEN_DAYS = 7 * 24 * 60 * 10,
+        TEN_DAYS = 10 * 24 * 60 * 10,
+        THIRTY_DAYS = 30 * 24 * 60 * 10,
         UNTIL_DISPELLED = 99999999
+    }
+
+    public enum SpellVariant {
+        NONE,
+        // Enhance Ability
+        BEARS_ENDURANCE,
+        BULLS_STRENGTH,
+        CATS_GRACE,
+        EAGLES_SPLENDOR,
+        FOX_CUNNING,
+        OWLS_WISDOM,
+        // Enlarge/Reduce
+        ENLARGE,
+        REDUCE,
+        // Lesser Restoration
+        BLINDNESS,
+        DEAFNESS,
+        PARALYZATION,
+        POISONS,
+        DISEASES,
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);
@@ -68,7 +89,7 @@ namespace srd5 {
 
         private static SpellCastEffect SpellWithoutEffect(ID spell) {
             return delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                GlobalEvents.CastSpell(caster, spell);
+                // Intentionally empty
             };
         }
 
@@ -433,16 +454,9 @@ namespace srd5 {
         }
 
         /// <summary>
-        /// Scales damage by 4th, 10th and 17th level of the caster.
-        /// </summary>
-        public static Damage DamageLevelScaling(Combattant caster, Die die, DamageType damageType) {
-            return new Damage(damageType, DiceLevelScaling(caster) + die.ToString());
-        }
-
-        /// <summary>
         /// Scales dice by 4th, 10th and 17th level of the caster.
         /// </summary>
-        public static int DiceLevelScaling(Combattant caster) {
+        internal static Dice DiceLevelScaling(Combattant caster, Die die) {
             int dice = 1;
             if (caster.EffectiveLevel > 16)
                 dice = 4;
@@ -450,7 +464,7 @@ namespace srd5 {
                 dice = 3;
             else if (caster.EffectiveLevel > 4)
                 dice = 2;
-            return dice;
+            return new Dice(dice, die);
         }
 
         /// <summary>
@@ -460,44 +474,75 @@ namespace srd5 {
         /// DiceSlotScaling(SpellSlot.FIRST, SpellSlot.SECOND, 8, 3, 5, 2) results in a Dice that refers to "5d8+5",
         /// since it adds 1 slot of 2 dice d8 to the base 3 dice with a modifier of 5
         /// </example>
-        public static Dice DiceSlotScaling(SpellLevel minimumSlot, SpellLevel actualSlot, int die, int dice = 1, int modifier = 0, int additionalDiePerSlot = 1) {
+        internal static Dice DiceSlotScaling(SpellLevel minimumSlot, SpellLevel actualSlot, Die die, int minDice = 1, int modifier = 0, int additionalDiePerSlot = 1) {
             if (minimumSlot > actualSlot) throw new Srd5ArgumentException("This spell cannot be cast at slot " + actualSlot);
             int diff = (actualSlot - minimumSlot) * additionalDiePerSlot;
-            dice += diff;
-            string diceString = dice + "d" + die;
+            minDice += diff;
+            string diceString = minDice + die.ToString();
             if (modifier > 0) diceString += "+" + modifier;
             if (modifier < 0) diceString += modifier;
             return new Dice(diceString);
         }
 
         /// <summary>
-        /// Defines the result of the successful DC
+        /// Defines the effect on damage in case of a  successful DC roll or other conditions such as failed attack roll
         /// </summary>
-        public enum DCEffect {
-            NO_EFFECT,
-            HALVES_DAMAGE,
-            NULLIFIES_DAMAGE
+        public enum DamageMitigation {
+            NO_EFFECT, // do not modify damage
+            HALVES_DAMAGE, // divide damage by two
+            NULLIFIES_DAMAGE // set damage to zero
         }
 
         /// <summary>
         /// Does a Spell Attack roll against the target, applies the damage. Returns whether the attack roll succeeded or not.
         /// </summary>
-        public static bool SpellAttack(ID id, Battleground ground, Combattant caster, Damage damage, int modifier, Combattant target, int range, DCEffect dCEffect = DCEffect.NO_EFFECT, int dc = 0) {
+        public static bool SpellAttack(ID id, Battleground ground, Combattant caster, DamageType damageType, Dice? dice, int modifier, Combattant target, int range, DamageMitigation missEffect = DamageMitigation.NULLIFIES_DAMAGE, DamageMitigation dCEffect = DamageMitigation.NO_EFFECT, int dc = 0, AbilityType dcAbility = AbilityType.DEXTERITY) {
+            return SpellAttack(id, ground, caster, damageType, dice, modifier, target, range, missEffect, dCEffect, dc, out _);
+        }
+
+        internal static bool SpellAttack(ID id, Battleground ground, Combattant caster, DamageType damageType, Dice? dice, int modifier, Combattant target, int range, DamageMitigation missEffect, DamageMitigation dCEffect, int dc, out bool dcResult) {
             int bonus = modifier + caster.ProficiencyBonus;
-            Attack attack = new Attack(id.Name(), bonus, damage, 0, range, range);
+            Attack attack;
+            if (dice is Dice d)
+                attack = new Attack(id.Name(), bonus, new Damage(damageType, d), 0, range, range);
+            else
+                attack = new Attack(id.Name(), bonus, new Damage(damageType, 0), 0, range, range);
             int distance = ground.Distance(caster, target);
-            bool hit = caster.Attack(attack, target, distance, true, true);
-            GlobalEvents.AffectBySpell(caster, id, target, hit);
+            bool hit = caster.Attack(attack, target, distance, true, true, dCEffect, dc, AbilityType.NONE, out dcResult);
+            if (missEffect == DamageMitigation.NULLIFIES_DAMAGE) {
+                GlobalEvents.AffectBySpell(caster, id, target, hit);
+            } else if (missEffect == DamageMitigation.HALVES_DAMAGE) {
+                GlobalEvents.AffectBySpell(caster, id, target, true);
+                target.TakeDamage(id, damageType, attack.Damage.Dice.Roll() / 2);
+            }
             return hit;
         }
 
-        public static void AddEffectForDuration(ID id, Combattant caster, Combattant target, Effect effect, SpellDuration duration) {
+        internal static void AddEffectsForDuration(ID id, Combattant caster, Combattant target, SpellDuration duration, params Effect[] effects) {
+            if (target.HasEffect(effects[0])) {
+                GlobalEvents.AffectBySpell(caster, id, target, false);
+                return;
+            }
             GlobalEvents.AffectBySpell(caster, id, target, true);
-            target.AddEffect(effect);
-            int remainingRounds = (int)duration / 6;
+            target.AddEffect(effects);
+            int remainingRounds = (int)duration;
+            bool stillHasEffects = true;
+            target.AddStartOfTurnEvent(delegate () {
+                stillHasEffects = false;
+                foreach (Effect effect in (Effect[])effects.Clone()) {
+                    if (target.HasEffect(effect)) {
+                        stillHasEffects = true;
+                    } else {
+                        Utils.RemoveSingle<Effect>(ref effects, effect);
+                    }
+                }
+                return !stillHasEffects;
+            });
             target.AddEndOfTurnEvent(delegate () {
-                if (--remainingRounds < 1) {
-                    target.RemoveEffect(effect);
+                if (!stillHasEffects) {
+                    return true;
+                } else if (--remainingRounds < 1) {
+                    target.RemoveEffect(effects);
                     return true;
                 } else {
                     return false;
@@ -505,15 +550,32 @@ namespace srd5 {
             });
         }
 
-        public static void AddEffectAndConditionForDuration(ID id, Combattant caster, Combattant target, Effect effect, ConditionType condition, SpellDuration duration) {
+        internal static void AddEffectAndConditionsForDuration(ID id, Combattant caster, Combattant target, SpellDuration duration, Effect effect, params ConditionType[] conditions) {
             GlobalEvents.AffectBySpell(caster, id, target, true);
             target.AddEffect(effect);
-            target.AddCondition(condition);
-            int remainingRounds = (int)duration / 6;
+            target.AddCondition(conditions);
+            int remainingRounds = (int)duration;
+            bool stillHasEffect = true;
+            bool stillHasConditions = true;
+            target.AddStartOfTurnEvent(delegate () {
+                stillHasEffect = target.HasEffect(effect);
+                stillHasConditions = false;
+                foreach (ConditionType condition in (ConditionType[])conditions.Clone()) {
+                    if (target.HasCondition(condition)) {
+                        stillHasConditions = true;
+                    } else {
+                        Utils.RemoveSingle<ConditionType>(ref conditions, condition);
+                    }
+                }
+                return !stillHasEffect && !stillHasConditions;
+            });
             target.AddEndOfTurnEvent(delegate () {
-                if (--remainingRounds < 1) {
-                    target.RemoveEffect(effect);
-                    target.RemoveCondition(condition);
+                if (!stillHasEffect && !stillHasConditions) {
+                    return true;
+                } else if (--remainingRounds < 1) {
+                    if (stillHasEffect)
+                        target.RemoveEffect(effect);
+                    target.RemoveCondition(conditions);
                     return true;
                 } else {
                     return false;

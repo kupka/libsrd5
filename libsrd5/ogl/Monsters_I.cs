@@ -1,46 +1,50 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack IceDevilTail {
             get {
-                return new Attack("Tail", 10, new Damage(DamageType.BLUDGEONING, "2d6+5"), 5, new Damage(DamageType.COLD, "3d6"));
+                return new Attack("Tail", 10, new Damage(BLUDGEONING, "2d6+5"), 5, new Damage(COLD, "3d6"));
             }
         }
         public static Attack IceDevilBite {
             get {
-                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d6+5"), 5, new Damage(DamageType.COLD, "3d6"));
+                return new Attack("Bite", 10, new Damage(PIERCING, "2d6+5"), 5, new Damage(COLD, "3d6"));
             }
         }
         public static Attack IceDevilClaws {
             get {
-                return new Attack("Claws", 10, new Damage(DamageType.SLASHING, "2d4+5"), 5, new Damage(DamageType.COLD, "3d6"));
+                return new Attack("Claws", 10, new Damage(SLASHING, "2d4+5"), 5, new Damage(COLD, "3d6"));
             }
         }
         public static Attack IceMephitClaws {
             get {
-                return new Attack("Claws", 3, new Damage(DamageType.SLASHING, "1d4+1"), 5, new Damage(DamageType.COLD, "1d4"));
+                return new Attack("Claws", 3, new Damage(SLASHING, "1d4+1"), 5, new Damage(COLD, "1d4"));
             }
         }
         public static readonly AttackEffect ImpStingEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, ImpSting, "1d4+3", 11);
+            return false;
         };
         public static Attack ImpSting {
             get {
-                return new Attack("Sting", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5, null, ImpStingEffect);
+                return new Attack("Sting", 5, new Damage(PIERCING, "1d4+3"), 5, null, ImpStingEffect);
             }
         }
         public static Attack InvisibleStalkerSlam {
             get {
-                return new Attack("Slam", 6, new Damage(DamageType.BLUDGEONING, "2d6+3"), 5);
+                return new Attack("Slam", 6, new Damage(BLUDGEONING, "2d6+3"), 5);
             }
         }
         public static Attack IronGolemSlam {
             get {
-                return new Attack("Slam", 13, new Damage(DamageType.BLUDGEONING, "3d8+7"), 5);
+                return new Attack("Slam", 13, new Damage(BLUDGEONING, "3d8+7"), 5);
             }
         }
         public static Attack IronGolemSword {
             get {
-                return new Attack("Sword", 13, new Damage(DamageType.SLASHING, "3d10+7"), 10);
+                return new Attack("Sword", 13, new Damage(SLASHING, "3d10+7"), 10);
             }
         }
     }
@@ -57,10 +61,10 @@ namespace srd5 {
                 iceDevil.AddProficiency(Proficiency.CONSTITUTION);
                 iceDevil.AddProficiency(Proficiency.WISDOM);
                 iceDevil.AddProficiency(Proficiency.CHARISMA);
-                iceDevil.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                iceDevil.AddEffect(Effect.IMMUNITY_FIRE);
-                iceDevil.AddEffect(Effect.IMMUNITY_POISON);
-                iceDevil.AddEffect(Effect.IMMUNITY_POISONED);
+                iceDevil.AddEffect(RESISTANCE_NONMAGIC);
+                iceDevil.AddEffect(IMMUNITY_FIRE);
+                iceDevil.AddEffect(IMMUNITY_POISON);
+                iceDevil.AddEffect(IMMUNITY_POISONED);
                 iceDevil.AddFeat(Feat.DEVILS_SIGHT);
                 iceDevil.AddFeat(Feat.MAGIC_RESISTANCE);
                 return iceDevil;
@@ -76,11 +80,11 @@ namespace srd5 {
                 );
                 iceMephit.AddProficiency(Proficiency.PERCEPTION);
                 iceMephit.AddProficiency(Proficiency.STEALTH);
-                iceMephit.AddEffect(Effect.VULNERABILITY_BLUDGEONING);
-                iceMephit.AddEffect(Effect.VULNERABILITY_FIRE);
-                iceMephit.AddEffect(Effect.IMMUNITY_COLD);
-                iceMephit.AddEffect(Effect.IMMUNITY_POISON);
-                iceMephit.AddEffect(Effect.IMMUNITY_POISONED);
+                iceMephit.AddEffect(VULNERABILITY_BLUDGEONING);
+                iceMephit.AddEffect(VULNERABILITY_FIRE);
+                iceMephit.AddEffect(IMMUNITY_COLD);
+                iceMephit.AddEffect(IMMUNITY_POISON);
+                iceMephit.AddEffect(IMMUNITY_POISONED);
                 iceMephit.AddFeat(Feat.DEATH_BURST_ICE_MEPHIT);
                 iceMephit.AddFeat(Feat.FALSE_APPEARANCE);
                 iceMephit.AddFeat(Feat.INNATE_SPELLCASTING_ICE_MEPHIT);
@@ -99,11 +103,11 @@ namespace srd5 {
                 imp.AddProficiency(Proficiency.INSIGHT);
                 imp.AddProficiency(Proficiency.PERSUASION);
                 imp.AddProficiency(Proficiency.STEALTH);
-                imp.AddEffect(Effect.RESISTANCE_COLD);
-                imp.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                imp.AddEffect(Effect.IMMUNITY_FIRE);
-                imp.AddEffect(Effect.IMMUNITY_POISON);
-                imp.AddEffect(Effect.IMMUNITY_POISONED);
+                imp.AddEffect(RESISTANCE_COLD);
+                imp.AddEffect(RESISTANCE_NONMAGIC);
+                imp.AddEffect(IMMUNITY_FIRE);
+                imp.AddEffect(IMMUNITY_POISON);
+                imp.AddEffect(IMMUNITY_POISONED);
                 imp.AddFeat(Feat.SHAPECHANGER_IMP);
                 imp.AddFeat(Feat.DEVILS_SIGHT);
                 imp.AddFeat(Feat.MAGIC_RESISTANCE);
@@ -120,16 +124,16 @@ namespace srd5 {
                 );
                 invisibleStalker.AddProficiency(Proficiency.PERCEPTION);
                 invisibleStalker.AddProficiency(Proficiency.STEALTH);
-                invisibleStalker.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                invisibleStalker.AddEffect(Effect.IMMUNITY_POISON);
-                invisibleStalker.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                invisibleStalker.AddEffect(Effect.IMMUNITY_GRAPPLED);
-                invisibleStalker.AddEffect(Effect.IMMUNITY_PARALYZED);
-                invisibleStalker.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                invisibleStalker.AddEffect(Effect.IMMUNITY_POISONED);
-                invisibleStalker.AddEffect(Effect.IMMUNITY_PRONE);
-                invisibleStalker.AddEffect(Effect.IMMUNITY_RESTRAINED);
-                invisibleStalker.AddEffect(Effect.IMMUNITY_UNCONSCIOUS);
+                invisibleStalker.AddEffect(RESISTANCE_NONMAGIC);
+                invisibleStalker.AddEffect(IMMUNITY_POISON);
+                invisibleStalker.AddEffect(IMMUNITY_EXHAUSTION);
+                invisibleStalker.AddEffect(IMMUNITY_GRAPPLED);
+                invisibleStalker.AddEffect(IMMUNITY_PARALYZED);
+                invisibleStalker.AddEffect(IMMUNITY_PETRIFIED);
+                invisibleStalker.AddEffect(IMMUNITY_POISONED);
+                invisibleStalker.AddEffect(IMMUNITY_PRONE);
+                invisibleStalker.AddEffect(IMMUNITY_RESTRAINED);
+                invisibleStalker.AddEffect(IMMUNITY_UNCONSCIOUS);
                 invisibleStalker.AddFeat(Feat.INVISIBILITY);
                 invisibleStalker.AddFeat(Feat.FAULTLESS_TRACKER);
                 return invisibleStalker;
@@ -143,16 +147,16 @@ namespace srd5 {
                     Monsters.Type.CONSTRUCT, Monsters.ID.IRON_GOLEM, Alignment.UNALIGNED, 24, 9, 20, 3, 11, 1, 20, "20d10+100", 40, 16,
                     new Attack[] { Attacks.IronGolemSlam, Attacks.IronGolemSword }, new Attack[] { }, Size.LARGE
                 );
-                ironGolem.AddEffect(Effect.IMMUNITY_FIRE);
-                ironGolem.AddEffect(Effect.IMMUNITY_POISON);
-                ironGolem.AddEffect(Effect.IMMUNITY_PSYCHIC);
-                ironGolem.AddEffect(Effect.IMMUNITY_NONMAGIC);
-                ironGolem.AddEffect(Effect.IMMUNITY_CHARMED);
-                ironGolem.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                ironGolem.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                ironGolem.AddEffect(Effect.IMMUNITY_PARALYZED);
-                ironGolem.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                ironGolem.AddEffect(Effect.IMMUNITY_POISONED);
+                ironGolem.AddEffect(IMMUNITY_FIRE);
+                ironGolem.AddEffect(IMMUNITY_POISON);
+                ironGolem.AddEffect(IMMUNITY_PSYCHIC);
+                ironGolem.AddEffect(IMMUNITY_NONMAGIC);
+                ironGolem.AddEffect(IMMUNITY_CHARMED);
+                ironGolem.AddEffect(IMMUNITY_EXHAUSTION);
+                ironGolem.AddEffect(IMMUNITY_FRIGHTENED);
+                ironGolem.AddEffect(IMMUNITY_PARALYZED);
+                ironGolem.AddEffect(IMMUNITY_PETRIFIED);
+                ironGolem.AddEffect(IMMUNITY_POISONED);
                 ironGolem.AddFeat(Feat.FIRE_ABSORPTION);
                 ironGolem.AddFeat(Feat.IMMUTABLE_FORM);
                 ironGolem.AddFeat(Feat.MAGIC_RESISTANCE);

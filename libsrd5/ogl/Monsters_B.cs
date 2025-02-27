@@ -1,251 +1,260 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack BaboonBite {
             get {
-                return new Attack("Bite", 1, new Damage(DamageType.PIERCING, "1d4-1"), 5);
+                return new Attack("Bite", 1, new Damage(PIERCING, "1d4-1"), 5);
             }
         }
         public static Attack BadgerBite {
             get {
-                return new Attack("Bite", 2, new Damage(DamageType.PIERCING, 1), 5);
+                return new Attack("Bite", 2, new Damage(PIERCING, 1), 5);
             }
         }
         public static Attack BalorLongsword {
             get {
-                return new Attack("Longsword", 14, new Damage(DamageType.SLASHING, "3d8+8"), 10, new Damage(DamageType.LIGHTNING, "3d8")).WithProperties(Attack.Property.TRIPLE_DICE_ON_CRIT);
+                return new Attack("Longsword", 14, new Damage(SLASHING, "3d8+8"), 10, new Damage(LIGHTNING, "3d8")).WithProperties(Attack.Property.TRIPLE_DICE_ON_CRIT);
             }
         }
         public static AttackEffect BalorWhipEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: THE TARGET MUST SUCCEED ON A DC 20 STRENGTH SAVING THROW OR BE PULLED UP TO 25 FEET TOWARD THE BALOR
-            if (target.DC(BalorWhip, 20, AbilityType.STRENGTH)) return;
+            if (target.DC(BalorWhip, 20, AbilityType.STRENGTH)) return false;
+            return false;
         };
         public static Attack BalorWhip {
             get {
-                return new Attack("Whip", 14, new Damage(DamageType.SLASHING, "2d6+8"), 30, new Damage(DamageType.FIRE, "3d6"), BalorWhipEffect);
+                return new Attack("Whip", 14, new Damage(SLASHING, "2d6+8"), 30, new Damage(FIRE, "3d6"), BalorWhipEffect);
             }
         }
         public static Attack BanditScimitar {
             get {
-                return new Attack("Scimitar", 3, new Damage(DamageType.SLASHING, "1d6+1"), 5);
+                return new Attack("Scimitar", 3, new Damage(SLASHING, "1d6+1"), 5);
             }
         }
         public static Attack BanditLightCrossbow {
             get {
-                return new Attack("Light Crossbow", 3, new Damage(DamageType.PIERCING, "1d8+1"), 5, 80, 320);
+                return new Attack("Light Crossbow", 3, new Damage(PIERCING, "1d8+1"), 5, 80, 320);
             }
         }
         public static Attack BanditCaptainScimitar {
             get {
-                return new Attack("Scimitar", 5, new Damage(DamageType.SLASHING, "1d6+3"), 5);
+                return new Attack("Scimitar", 5, new Damage(SLASHING, "1d6+3"), 5);
             }
         }
         public static Attack BanditCaptainDaggerMelee {
             get {
-                return new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5);
+                return new Attack("Dagger", 5, new Damage(PIERCING, "1d4+3"), 5);
             }
         }
         public static Attack BanditCaptainDaggerRanged {
             get {
-                return new Attack("Dagger", 5, new Damage(DamageType.PIERCING, "1d4+3"), 5, 20, 60);
+                return new Attack("Dagger", 5, new Damage(PIERCING, "1d4+3"), 5, 20, 60);
             }
         }
         public static Attack BarbedDevilClaw {
             get {
-                return new Attack("Claw", 6, new Damage(DamageType.PIERCING, "1d6+3"), 5);
+                return new Attack("Claw", 6, new Damage(PIERCING, "1d6+3"), 5);
             }
         }
         public static Attack BarbedDevilHurlFlame {
             get {
-                return new Attack("Hurl Flame", 5, new Damage(DamageType.FIRE, "3d6"), 150, 150);
+                return new Attack("Hurl Flame", 5, new Damage(FIRE, "3d6"), 150, 150);
             }
         }
         public static Attack BarbedDevilTail {
             get {
-                return new Attack("Tail", 6, new Damage(DamageType.PIERCING, "2d6+3"), 5);
+                return new Attack("Tail", 6, new Damage(PIERCING, "2d6+3"), 5);
             }
         }
         public static Attack BasiliskBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "2d6+3"), 5, new Damage(DamageType.POISON, "2d6"));
+                return new Attack("Bite", 5, new Damage(PIERCING, "2d6+3"), 5, new Damage(POISON, "2d6"));
             }
         }
         public static Attack BatBite {
             get {
-                return new Attack("Bite", 2, new Damage(DamageType.PIERCING, 1), 5);
+                return new Attack("Bite", 2, new Damage(PIERCING, 1), 5);
             }
         }
         public static AttackEffect BeardedDevilBeardEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION)) return;
-            if (target.IsImmune(DamageType.POISON)) return;
-            target.AddEffect(Effect.BEARDED_DEVIL_POISON);
+            if (target.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION)) return false;
+            if (target.IsImmune(POISON)) return false;
+            target.AddEffect(BEARDED_DEVIL_POISON);
             int turn = 0;
             target.AddEndOfTurnEvent(delegate () {
                 bool success = target.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION);
                 if (turn++ > 9 || success) {
-                    target.RemoveEffect(Effect.BEARDED_DEVIL_POISON);
+                    target.RemoveEffect(BEARDED_DEVIL_POISON);
                 }
                 return success;
             });
+            return false;
         };
         public static Attack BeardedDevilBeard {
             get {
-                return new Attack("Beard", 5, new Damage(DamageType.PIERCING, "1d8+2"), 5);
+                return new Attack("Beard", 5, new Damage(PIERCING, "1d8+2"), 5);
             }
         }
         public static readonly AttackEffect BeardedDevilGlaiveEffect = delegate (Combattant attacker, Combattant target) {
             // do not affect undead and constructs
             if (target is Monster monster) {
-                if (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT) return;
+                if (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT) return false;
             }
-            if (target.DC(BeardedDevilGlaive, 12, AbilityType.CONSTITUTION)) return;
+            if (target.DC(BeardedDevilGlaive, 12, AbilityType.CONSTITUTION)) return false;
             // add infernal wound affect if newly applied
-            if (!target.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL)) {
+            if (!target.HasEffect(INFERNAL_WOUND_BEARDED_DEVIL)) {
                 target.AddStartOfTurnEvent(delegate () {
                     foreach (Effect effect in target.Effects) {
-                        if (effect != Effect.INFERNAL_WOUND_BEARDED_DEVIL) continue;
-                        target.TakeDamage(attacker, DamageType.TRUE_DAMAGE, "1d10");
+                        if (effect != INFERNAL_WOUND_BEARDED_DEVIL) continue;
+                        target.TakeDamage(attacker, TRUE_DAMAGE, "1d10");
                     }
-                    return target.HasEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL);
+                    return target.HasEffect(INFERNAL_WOUND_BEARDED_DEVIL);
                 });
             }
             // increase infernal wound stack by one
-            target.AddEffect(Effect.INFERNAL_WOUND_BEARDED_DEVIL);
+            target.AddEffect(INFERNAL_WOUND_BEARDED_DEVIL);
+            return false;
         };
         public static Attack BeardedDevilGlaive {
             get {
-                return new Attack("Glaive", 5, new Damage(DamageType.SLASHING, "1d10+3"), 10, null, BeardedDevilGlaiveEffect);
+                return new Attack("Glaive", 5, new Damage(SLASHING, "1d10+3"), 10, null, BeardedDevilGlaiveEffect);
             }
         }
         public static Attack BehirBite {
             get {
-                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "3d10+6"), 10);
+                return new Attack("Bite", 10, new Damage(PIERCING, "3d10+6"), 10);
             }
         }
         public static readonly AttackEffect BehirConstrictEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 16, Monsters.Behir.Size + 1);
+            return false;
         };
         public static Attack BehirConstrict {
             get {
-                return new Attack("Constrict", 10, new Damage(DamageType.BLUDGEONING, "2d10+6"), 5, new Damage(DamageType.SLASHING, "2d10+6"), BehirConstrictEffect);
+                return new Attack("Constrict", 10, new Damage(BLUDGEONING, "2d10+6"), 5, new Damage(SLASHING, "2d10+6"), BehirConstrictEffect);
             }
         }
         public static Attack BerserkerGreataxe {
             get {
-                return new Attack("Greataxe", 5, new Damage(DamageType.SLASHING, "1d12+3"), 5);
+                return new Attack("Greataxe", 5, new Damage(SLASHING, "1d12+3"), 5);
             }
         }
         public static Attack BlackBearBite {
             get {
-                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Bite", 3, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack BlackBearClaws {
             get {
-                return new Attack("Claws", 3, new Damage(DamageType.SLASHING, "2d4+2"), 5);
+                return new Attack("Claws", 3, new Damage(SLASHING, "2d4+2"), 5);
             }
         }
         public static Attack BlackDragonWyrmlingBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, new Damage(DamageType.ACID, "1d4"));
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d10+2"), 5, new Damage(ACID, "1d4"));
             }
         }
         public static readonly AttackEffect BlackPuddingPseudopodEffect = delegate (Combattant attacker, Combattant target) {
             if (target is CharacterSheet sheet) {
                 Armor armor = sheet.Inventory.Armor;
                 // permanently reduce armor ac by 1 if armor isn't magical. armor is destroyed if reduced to 10 or below by this.
-                if (armor == null || armor.HasProperty(ArmorProperty.MAGIC)) return;
+                if (armor == null || armor.HasProperty(ArmorProperty.MAGIC)) return false;
                 armor.AC--;
                 if (armor.AC < 11) {
                     sheet.Unequip(armor);
                     armor.Destroy();
                 }
             }
+            return false;
         };
         public static Attack BlackPuddingPseudopod {
             get {
-                return new Attack("Pseudopod", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5, new Damage(DamageType.ACID, "4d8"), BlackPuddingPseudopodEffect);
+                return new Attack("Pseudopod", 5, new Damage(BLUDGEONING, "1d6+3"), 5, new Damage(ACID, "4d8"), BlackPuddingPseudopodEffect);
             }
         }
         public static Attack BlinkDogBite {
             get {
-                return new Attack("Bite", 3, new Damage(DamageType.PIERCING, "1d6+1"), 5);
+                return new Attack("Bite", 3, new Damage(PIERCING, "1d6+1"), 5);
             }
         }
         public static Attack BloodHawkBeak {
             get {
-                return new Attack("Beak", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+                return new Attack("Beak", 4, new Damage(PIERCING, "1d4+2"), 5);
             }
         }
         public static Attack BlueDragonWyrmlingBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5, new Damage(DamageType.LIGHTNING, "1d6"));
+                return new Attack("Bite", 5, new Damage(PIERCING, "1d10+3"), 5, new Damage(LIGHTNING, "1d6"));
             }
         }
         public static Attack BoarTusk {
             get {
-                return new Attack("Tusk", 3, new Damage(DamageType.SLASHING, "1d6+1"), 5);
+                return new Attack("Tusk", 3, new Damage(SLASHING, "1d6+1"), 5);
             }
         }
         public static Attack BoneDevilClaw {
             get {
-                return new Attack("Claw", 8, new Damage(DamageType.SLASHING, "1d8+4"), 10);
+                return new Attack("Claw", 8, new Damage(SLASHING, "1d8+4"), 10);
             }
         }
         public static readonly AttackEffect BoneDevilStingEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.DC(BoneDevilSting, 14, AbilityType.CONSTITUTION)) return;
-            if (target.IsImmune(DamageType.POISON)) return;
-            target.AddEffect(Effect.BONE_DEVIL_POISON);
+            if (target.DC(BoneDevilSting, 14, AbilityType.CONSTITUTION)) return false;
+            if (target.IsImmune(POISON)) return false;
+            target.AddEffect(BONE_DEVIL_POISON);
             target.AddEndOfTurnEvent(delegate () {
                 bool success = target.DC(BoneDevilSting, 14, AbilityType.CONSTITUTION);
                 if (success) {
-                    target.RemoveEffect(Effect.BONE_DEVIL_POISON);
+                    target.RemoveEffect(BONE_DEVIL_POISON);
                 }
                 return success;
             });
+            return false;
         };
         public static Attack BoneDevilSting {
             get {
-                return new Attack("Sting", 8, new Damage(DamageType.PIERCING, "2d8+4"), 10, new Damage(DamageType.POISON, "5d6"), BoneDevilStingEffect);
+                return new Attack("Sting", 8, new Damage(PIERCING, "2d8+4"), 10, new Damage(POISON, "5d6"), BoneDevilStingEffect);
             }
         }
         public static Attack BrassDragonWyrmlingBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d10+2"), 5);
             }
         }
         public static Attack BronzeDragonWyrmlingBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d10+3"), 5);
+                return new Attack("Bite", 5, new Damage(PIERCING, "1d10+3"), 5);
             }
         }
         public static Attack BrownBearBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, "1d8+4"), 5);
+                return new Attack("Bite", 5, new Damage(PIERCING, "1d8+4"), 5);
             }
         }
         public static Attack BrownBearClaws {
             get {
-                return new Attack("Claws", 5, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+                return new Attack("Claws", 5, new Damage(SLASHING, "2d6+4"), 5);
             }
         }
         public static Attack BugbearMorningstar {
             get {
-                return new Attack("Morningstar", 4, new Damage(DamageType.PIERCING, "2d8+2"), 5);
+                return new Attack("Morningstar", 4, new Damage(PIERCING, "2d8+2"), 5);
             }
         }
         public static Attack BugbearJavelinMelee {
             get {
-                return new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "2d6+2"), 5);
+                return new Attack("Javelin", 4, new Damage(PIERCING, "2d6+2"), 5);
             }
         }
         public static Attack BugbearJavelinRanged {
             get {
-                return new Attack("Javelin", 4, new Damage(DamageType.PIERCING, "2d6+2"), 5, 30, 120);
+                return new Attack("Javelin", 4, new Damage(PIERCING, "2d6+2"), 5, 30, 120);
             }
         }
         public static Attack BuletteBite {
             get {
-                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "4d12+4"), 5);
+                return new Attack("Bite", 7, new Damage(PIERCING, "4d12+4"), 5);
             }
         }
     }
@@ -286,12 +295,12 @@ namespace srd5 {
                 balor.AddProficiency(Proficiency.CONSTITUTION);
                 balor.AddProficiency(Proficiency.WISDOM);
                 balor.AddProficiency(Proficiency.CHARISMA);
-                balor.AddEffect(Effect.RESISTANCE_COLD);
-                balor.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                balor.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                balor.AddEffect(Effect.IMMUNITY_FIRE);
-                balor.AddEffect(Effect.IMMUNITY_POISON);
-                balor.AddEffect(Effect.IMMUNITY_POISONED);
+                balor.AddEffect(RESISTANCE_COLD);
+                balor.AddEffect(RESISTANCE_LIGHTNING);
+                balor.AddEffect(RESISTANCE_NONMAGIC);
+                balor.AddEffect(IMMUNITY_FIRE);
+                balor.AddEffect(IMMUNITY_POISON);
+                balor.AddEffect(IMMUNITY_POISONED);
                 balor.AddFeat(Feat.DEATH_THROES);
                 balor.AddFeat(Feat.FIRE_AURA);
                 balor.AddFeat(Feat.MAGIC_RESISTANCE);
@@ -341,11 +350,11 @@ namespace srd5 {
                 barbedDevil.AddProficiency(Proficiency.DECEPTION);
                 barbedDevil.AddProficiency(Proficiency.INSIGHT);
                 barbedDevil.AddProficiency(Proficiency.PERCEPTION);
-                barbedDevil.AddEffect(Effect.RESISTANCE_COLD);
-                barbedDevil.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                barbedDevil.AddEffect(Effect.IMMUNITY_FIRE);
-                barbedDevil.AddEffect(Effect.IMMUNITY_POISON);
-                barbedDevil.AddEffect(Effect.IMMUNITY_POISONED);
+                barbedDevil.AddEffect(RESISTANCE_COLD);
+                barbedDevil.AddEffect(RESISTANCE_NONMAGIC);
+                barbedDevil.AddEffect(IMMUNITY_FIRE);
+                barbedDevil.AddEffect(IMMUNITY_POISON);
+                barbedDevil.AddEffect(IMMUNITY_POISONED);
                 barbedDevil.AddFeat(Feat.BARBED_HIDE);
                 barbedDevil.AddFeat(Feat.DEVILS_SIGHT);
                 barbedDevil.AddFeat(Feat.MAGIC_RESISTANCE);
@@ -388,11 +397,11 @@ namespace srd5 {
                 beardedDevil.AddProficiency(Proficiency.STRENGTH);
                 beardedDevil.AddProficiency(Proficiency.CONSTITUTION);
                 beardedDevil.AddProficiency(Proficiency.WISDOM);
-                beardedDevil.AddEffect(Effect.RESISTANCE_COLD);
-                beardedDevil.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                beardedDevil.AddEffect(Effect.IMMUNITY_FIRE);
-                beardedDevil.AddEffect(Effect.IMMUNITY_POISON);
-                beardedDevil.AddEffect(Effect.IMMUNITY_POISONED);
+                beardedDevil.AddEffect(RESISTANCE_COLD);
+                beardedDevil.AddEffect(RESISTANCE_NONMAGIC);
+                beardedDevil.AddEffect(IMMUNITY_FIRE);
+                beardedDevil.AddEffect(IMMUNITY_POISON);
+                beardedDevil.AddEffect(IMMUNITY_POISONED);
                 beardedDevil.AddFeat(Feat.DEVILS_SIGHT);
                 beardedDevil.AddFeat(Feat.MAGIC_RESISTANCE);
                 beardedDevil.AddFeat(Feat.STEADFAST);
@@ -409,7 +418,7 @@ namespace srd5 {
                 );
                 behir.AddProficiency(Proficiency.PERCEPTION);
                 behir.AddProficiency(Proficiency.STEALTH);
-                behir.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                behir.AddEffect(IMMUNITY_LIGHTNING);
                 return behir;
             }
         }
@@ -451,7 +460,7 @@ namespace srd5 {
                 blackDragonWyrmling.AddProficiency(Proficiency.CHARISMA);
                 blackDragonWyrmling.AddProficiency(Proficiency.PERCEPTION);
                 blackDragonWyrmling.AddProficiency(Proficiency.STEALTH);
-                blackDragonWyrmling.AddEffect(Effect.IMMUNITY_ACID);
+                blackDragonWyrmling.AddEffect(IMMUNITY_ACID);
                 blackDragonWyrmling.AddFeat(Feat.AMPHIBIOUS);
                 return blackDragonWyrmling;
             }
@@ -464,16 +473,16 @@ namespace srd5 {
                     Monsters.Type.OOZE, Monsters.ID.BLACK_PUDDING, Alignment.UNALIGNED, 16, 5, 16, 1, 6, 1, 7, "10d10+30", 40, 4,
                     new Attack[] { Attacks.BlackPuddingPseudopod }, new Attack[] { }, Size.LARGE
                 );
-                blackPudding.AddEffect(Effect.IMMUNITY_ACID);
-                blackPudding.AddEffect(Effect.IMMUNITY_COLD);
-                blackPudding.AddEffect(Effect.IMMUNITY_LIGHTNING);
-                blackPudding.AddEffect(Effect.IMMUNITY_SLASHING);
-                blackPudding.AddEffect(Effect.IMMUNITY_BLINDED);
-                blackPudding.AddEffect(Effect.IMMUNITY_CHARMED);
-                blackPudding.AddEffect(Effect.IMMUNITY_BLINDED);
-                blackPudding.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                blackPudding.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                blackPudding.AddEffect(Effect.IMMUNITY_PRONE);
+                blackPudding.AddEffect(IMMUNITY_ACID);
+                blackPudding.AddEffect(IMMUNITY_COLD);
+                blackPudding.AddEffect(IMMUNITY_LIGHTNING);
+                blackPudding.AddEffect(IMMUNITY_SLASHING);
+                blackPudding.AddEffect(IMMUNITY_BLINDED);
+                blackPudding.AddEffect(IMMUNITY_CHARMED);
+                blackPudding.AddEffect(IMMUNITY_BLINDED);
+                blackPudding.AddEffect(IMMUNITY_EXHAUSTION);
+                blackPudding.AddEffect(IMMUNITY_FRIGHTENED);
+                blackPudding.AddEffect(IMMUNITY_PRONE);
                 blackPudding.AddFeat(Feat.AMORPHOUS);
                 blackPudding.AddFeat(Feat.CORROSIVE_FORM);
                 blackPudding.AddFeat(Feat.SPIDER_CLIMB);
@@ -522,7 +531,7 @@ namespace srd5 {
                 blueDragonWyrmling.AddProficiency(Proficiency.CHARISMA);
                 blueDragonWyrmling.AddProficiency(Proficiency.PERCEPTION);
                 blueDragonWyrmling.AddProficiency(Proficiency.STEALTH);
-                blueDragonWyrmling.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                blueDragonWyrmling.AddEffect(IMMUNITY_LIGHTNING);
                 return blueDragonWyrmling;
             }
         }
@@ -552,11 +561,11 @@ namespace srd5 {
                 boneDevil.AddProficiency(Proficiency.CHARISMA);
                 boneDevil.AddProficiency(Proficiency.DECEPTION);
                 boneDevil.AddProficiency(Proficiency.INSIGHT);
-                boneDevil.AddEffect(Effect.RESISTANCE_COLD);
-                boneDevil.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                boneDevil.AddEffect(Effect.IMMUNITY_FIRE);
-                boneDevil.AddEffect(Effect.IMMUNITY_POISON);
-                boneDevil.AddEffect(Effect.IMMUNITY_POISONED);
+                boneDevil.AddEffect(RESISTANCE_COLD);
+                boneDevil.AddEffect(RESISTANCE_NONMAGIC);
+                boneDevil.AddEffect(IMMUNITY_FIRE);
+                boneDevil.AddEffect(IMMUNITY_POISON);
+                boneDevil.AddEffect(IMMUNITY_POISONED);
                 boneDevil.AddFeat(Feat.DEVILS_SIGHT);
                 boneDevil.AddFeat(Feat.MAGIC_RESISTANCE);
                 return boneDevil;
@@ -576,7 +585,7 @@ namespace srd5 {
                 brassDragonWyrmling.AddProficiency(Proficiency.CHARISMA);
                 brassDragonWyrmling.AddProficiency(Proficiency.PERCEPTION);
                 brassDragonWyrmling.AddProficiency(Proficiency.STEALTH);
-                brassDragonWyrmling.AddEffect(Effect.IMMUNITY_FIRE);
+                brassDragonWyrmling.AddEffect(IMMUNITY_FIRE);
                 return brassDragonWyrmling;
             }
         }
@@ -594,7 +603,7 @@ namespace srd5 {
                 bronzeDragonWyrmling.AddProficiency(Proficiency.CHARISMA);
                 bronzeDragonWyrmling.AddProficiency(Proficiency.PERCEPTION);
                 bronzeDragonWyrmling.AddProficiency(Proficiency.STEALTH);
-                bronzeDragonWyrmling.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                bronzeDragonWyrmling.AddEffect(IMMUNITY_LIGHTNING);
                 bronzeDragonWyrmling.AddFeat(Feat.AMPHIBIOUS);
                 return bronzeDragonWyrmling;
             }

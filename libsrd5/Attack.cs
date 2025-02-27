@@ -1,7 +1,9 @@
 using System;
+using static srd5.Effect;
+using static srd5.AbilityType;
 
 namespace srd5 {
-    public delegate void AttackEffect(Combattant attacker, Combattant target);
+    public delegate bool AttackEffect(Combattant attacker, Combattant target);
 
     public struct AttackEffects {
 
@@ -21,12 +23,12 @@ namespace srd5 {
             if (target.Size > maxSize) return false;
             int grappling = 0;
             foreach (Effect effect in attacker.Effects) {
-                if (effect == Effect.GRAPPLING) grappling++;
+                if (effect == GRAPPLING) grappling++;
             }
             if (grappling >= maxTargets) return false;
-            if (target.HasEffect(Effect.IMMUNITY_GRAPPLED)) return false;
-            attacker.AddEffect(Effect.GRAPPLING);
-            if (withRestrained && !target.HasEffect(Effect.IMMUNITY_RESTRAINED))
+            if (target.HasEffect(IMMUNITY_GRAPPLED)) return false;
+            attacker.AddEffect(GRAPPLING);
+            if (withRestrained && !target.HasEffect(IMMUNITY_RESTRAINED))
                 target.AddCondition(ConditionType.RESTRAINED);
             target.AddCondition(grapplingType);
             if (lockAttackToTarget != null) {
@@ -40,7 +42,7 @@ namespace srd5 {
                 if (!target.HasCondition(grapplingType)) {
                     if (withRestrained)
                         target.RemoveCondition(ConditionType.RESTRAINED);
-                    attacker.RemoveEffect(Effect.GRAPPLING);
+                    attacker.RemoveEffect(GRAPPLING);
                     return true;
                 }
                 return false;
@@ -56,12 +58,13 @@ namespace srd5 {
         /// <param name="dice">The dice string describing how much damage is taken (e.g. "3d6+3")</param>
         /// <param name="dc">How difficult the DC is to receive only half of the dice' damage</param>
         /// <param name="ability">Which ability is used for the DC (default Constitution)</param>
-        /// <param name="dcAvoidsDamage">If true, all damage is avoided instead of halved on successful DC. (default false)</param>
+        /// <param name="damageMitigation">Determines what happens on a successful save (defaults to halves damage)</param>
         /// <returns></returns>
-        public static int PoisonEffect(Combattant target, Attack source, string dice, int dc, AbilityType ability = AbilityType.CONSTITUTION, bool dcAvoidsDamage = false) {
+        public static int PoisonEffect(Combattant target, Attack source, string dice, int dc, AbilityType ability = CONSTITUTION, Spells.DamageMitigation damageMitigation = Spells.DamageMitigation.HALVES_DAMAGE) {
             if (target.IsImmune(DamageType.POISON)) return 0;
-            bool success = target.DC(source, dc, ability);
-            if (dcAvoidsDamage && success) return 0;
+            bool advantage = target.HasEffect(ADVANTAGE_POISON_SAVES);
+            bool success = target.DC(source, dc, ability, out _, advantage);
+            if (damageMitigation == Spells.DamageMitigation.NULLIFIES_DAMAGE && success) return 0;
             int amount = new Dice(dice).Roll();
             if (success) amount /= 2;
             amount = target.TakeDamage(source, DamageType.POISON, amount);
@@ -74,14 +77,29 @@ namespace srd5 {
             TRIPLE_DICE_ON_CRIT
         }
 
-        public string Name { get; set; }
         public int AttackBonus { get; internal set; }
         public Damage Damage { get; internal set; }
-        public Damage AdditionalDamage { get; internal set; }
+        private Damage[] additionalDamages;
+        public Damage[] AdditionalDamage {
+            get {
+                return additionalDamages;
+            }
+            private set {
+                additionalDamages = value;
+            }
+        }
         public int Reach { get; internal set; }
         public int RangeNormal { get; internal set; }
         public int RangeLong { get; internal set; }
-        public AttackEffect EffectOnHit { get; internal set; }
+        private AttackEffect[] effectsOnHit;
+        public AttackEffect[] EffectOnHit {
+            get {
+                return effectsOnHit;
+            }
+            private set {
+                effectsOnHit = value;
+            }
+        }
         private Attack.Property[] properties = new Attack.Property[0];
         public Attack.Property[] Properties {
             get {
@@ -94,34 +112,26 @@ namespace srd5 {
             Name = name;
             AttackBonus = attackBonus;
             Damage = damage;
-            AdditionalDamage = additionalDamage;
+            if (additionalDamage == null) {
+                AdditionalDamage = new Damage[0];
+            } else {
+                AdditionalDamage = new Damage[] { additionalDamage };
+            }
             Reach = reach;
             RangeNormal = rangeNormal;
             RangeLong = rangeLong;
-            EffectOnHit = effectOnHit;
+            if (effectOnHit == null) {
+                EffectOnHit = new AttackEffect[0];
+            } else {
+                EffectOnHit = new AttackEffect[] { effectOnHit };
+            }
         }
 
-        public Attack(string name, int attackBonus, Damage damage, int reach, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
-            Name = name;
-            AttackBonus = attackBonus;
-            Damage = damage;
-            AdditionalDamage = additionalDamage;
-            Reach = reach;
-            RangeNormal = 0;
-            RangeLong = 0;
-            EffectOnHit = effectOnHit;
-        }
+        public Attack(string name, int attackBonus, Damage damage, int reach, Damage additionalDamage = null, AttackEffect effectOnHit = null)
+            : this(name, attackBonus, damage, reach, 0, 0, additionalDamage, effectOnHit) { }
 
-        public Attack(string name, int attackBonus, Damage damage, int rangeNormal, int rangeLong, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
-            Name = name;
-            AttackBonus = attackBonus;
-            Damage = damage;
-            AdditionalDamage = additionalDamage;
-            Reach = 0;
-            RangeNormal = rangeNormal;
-            RangeLong = rangeLong;
-            EffectOnHit = effectOnHit;
-        }
+        public Attack(string name, int attackBonus, Damage damage, int rangeNormal, int rangeLong, Damage additionalDamage = null, AttackEffect effectOnHit = null)
+            : this(name, attackBonus, damage, 0, rangeNormal, rangeLong, additionalDamage, effectOnHit) { }
 
         public static Attack FromWeapon(int attackBonus, string damageString, Weapon weapon, Damage additionalDamage = null) {
             return new Attack(weapon.Name, attackBonus,
@@ -129,8 +139,13 @@ namespace srd5 {
         }
 
         public void ApplyEffectOnHit(Combattant attacker, Combattant target) {
-            if (EffectOnHit == null) return;
-            EffectOnHit(attacker, target);
+            AttackEffect[] toRemove = new AttackEffect[0];
+            foreach (AttackEffect effect in EffectOnHit) {
+                if (effect(attacker, target)) {
+                    Utils.Push<AttackEffect>(ref toRemove, effect);
+                }
+            }
+            RemoveAttackEffect(toRemove);
         }
 
         public bool HasProperty(Attack.Property property) {
@@ -142,6 +157,26 @@ namespace srd5 {
                 Utils.Push<Attack.Property>(ref this.properties, properties[i]);
             }
             return this;
+        }
+
+        internal void AddAdditionalDamage(params Damage[] additionalDamage) {
+            Utils.Push<Damage>(ref this.additionalDamages, additionalDamage);
+        }
+
+        internal void RemoveAdditionalDamage(params Damage[] additionalDamage) {
+            foreach (Damage damage in additionalDamage) {
+                Utils.RemoveSingle<Damage>(ref this.additionalDamages, damage);
+            }
+        }
+
+        internal void AddAttackEffect(params AttackEffect[] attackEffects) {
+            Utils.Push<AttackEffect>(ref this.effectsOnHit, attackEffects);
+        }
+
+        internal void RemoveAttackEffect(params AttackEffect[] attackEffects) {
+            foreach (AttackEffect effect in attackEffects) {
+                Utils.RemoveSingle<AttackEffect>(ref this.effectsOnHit, effect);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using static srd5.Effect;
 
 namespace srd5 {
     public class InnateSpellcasting {
@@ -57,7 +58,11 @@ namespace srd5 {
         private int baseArmorClass = 0;
         public override int ArmorClass {
             get {
-                return baseArmorClass + ArmorClassModifier;
+                int ac = baseArmorClass + ArmorClassModifier;
+                if (HasEffect(SPELL_BARKSKIN) && ac < 16)
+                    return 16;
+                else
+                    return ac;
             }
             internal set {
                 baseArmorClass = value;
@@ -103,7 +108,7 @@ namespace srd5 {
 
         public InnateSpellcasting InnateSpellcastingBySpell(Spell spell) {
             foreach (InnateSpellcasting isc in InnateSpellCasting) {
-                if (spell == isc.Spell) return isc;
+                if (spell.Is(isc.Spell)) return isc;
             }
             return null;
         }

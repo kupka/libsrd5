@@ -1,3 +1,6 @@
+using System;
+using static srd5.Effect;
+
 namespace srd5 {
     public enum Feat {
         NONE,
@@ -285,11 +288,11 @@ namespace srd5 {
                     break;
                 case Feat.DWARVEN_DARKVISION:
                 case Feat.ELVEN_DARKVISION:
-                    combattant.AddEffect(Effect.DARKVISION);
+                    combattant.AddEffect(DARKVISION);
                     break;
                 case Feat.DWARVEN_RESILIENCE:
-                    combattant.AddEffect(Effect.RESISTANCE_POISON);
-                    combattant.AddEffect(Effect.ADVANTAGE_SAVE_POISON);
+                    combattant.AddEffect(RESISTANCE_POISON);
+                    combattant.AddEffect(ADVANTAGE_POISON_SAVES);
                     break;
                 case Feat.DWARVEN_SMITH:
                     combattant.AddProficiency(Proficiency.SMITH);
@@ -305,17 +308,17 @@ namespace srd5 {
                     combattant.AddProficiency(Proficiency.HANDAXE);
                     combattant.AddProficiency(Proficiency.LIGHT_HAMMER);
                     combattant.AddProficiency(Proficiency.WARHAMMER);
-                    combattant.AddEffect(Effect.NO_SPEED_PENALITY_FOR_HEAVY_ARMOR);
+                    combattant.AddEffect(NO_SPEED_PENALITY_FOR_HEAVY_ARMOR);
                     break;
                 case Feat.STONECUNNING:
                     combattant.AddProficiency(Proficiency.HISTORY);
-                    combattant.AddEffect(Effect.DOUBLE_PROFICIENCY_BONUS_HISTORY);
+                    combattant.AddEffect(DOUBLE_PROFICIENCY_BONUS_HISTORY);
                     break;
                 case Feat.HILL_DWARVEN_ABILITY_INCREASE:
                     combattant.Wisdom.BaseValue += 1;
                     break;
                 case Feat.DWARVEN_TOUGHNESS:
-                    combattant.AddEffect(Effect.ADDITIONAL_HP_PER_LEVEL);
+                    combattant.AddEffect(ADDITIONAL_HP_PER_LEVEL);
                     break;
                 case Feat.ELVEN_ABILITY_INCREASE:
                     combattant.Dexterity.BaseValue += 2;
@@ -324,8 +327,8 @@ namespace srd5 {
                     combattant.AddProficiency(Proficiency.PERCEPTION);
                     break;
                 case Feat.FEY_ANCESTRY:
-                    combattant.AddEffect(Effect.IMMUNITY_SLEEP);
-                    combattant.AddEffect(Effect.ADVANTAGE_SAVE_CHARM);
+                    combattant.AddEffect(IMMUNITY_SLEEP);
+                    combattant.AddEffect(ADVANTAGE_CHARM_SAVES);
                     break;
                 case Feat.HIGH_ELVEN_ABILITY_INCREASE:
                     combattant.Intelligence.BaseValue += 1;
@@ -347,9 +350,13 @@ namespace srd5 {
                     combattant.Charisma.BaseValue++;
                     break;
                 case Feat.LEGENDARY_RESISTANCE:
-                    combattant.AddEffect(Effect.LEGENDARY_RESISTANCE, Effect.LEGENDARY_RESISTANCE, Effect.LEGENDARY_RESISTANCE);
+                    combattant.AddEffect(LEGENDARY_RESISTANCE, LEGENDARY_RESISTANCE, LEGENDARY_RESISTANCE);
                     break;
             }
+        }
+
+        public static bool IsShapeChanger(this Feat feat) {
+            return Enum.GetName(typeof(Feat), feat).IndexOf("SHAPECHANGER") == 0;
         }
     }
 }

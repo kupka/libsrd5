@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace srd5 {
@@ -257,6 +258,159 @@ namespace srd5 {
             Spells.MagicMissile.Cast(hag, 12, SpellLevel.THIRD, 0);
             Assert.Equal(hag.HitPointsMax, hag.HitPoints);
             DefaultSpellTest(Spells.Shield, 12, Spells.Shield.Level, null, Effect.SPELL_SHIELD, 1);
+        }
+
+        [Fact]
+        public void AcidArrowTest() {
+            for (int i = 0; i < 10; i++) {
+                Monster hag = Monsters.NightHag;
+                Monster ogre = Monsters.Ogre;
+                Battleground ground = createBattleground(hag, ogre);
+                Spells.AcidArrow.Cast(ground, hag, 12, SpellLevel.THIRD, 0, ogre);
+                ogre.OnEndOfTurn();
+                Assert.True(ogre.HitPointsMax > ogre.HitPoints);
+                int hp = ogre.HitPoints;
+                ogre.OnEndOfTurn();
+                Assert.True(hp == ogre.HitPoints);
+            }
+        }
+
+        [Fact]
+        public void AlterSelfTest() {
+            Monster hag = Monsters.NightHag;
+            Spells.AlterSelf.Cast(hag, 10, SpellLevel.SECOND, 0);
+            Assert.True(hag.HasEffect(Effect.SPELL_ALTER_SELF_CLAWS));
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
+            Item club = Weapons.Club;
+            hero.Equip(club);
+            Spells.AlterSelf.Cast(hero, 10, SpellLevel.FIFTH, 5);
+            Assert.True(hero.Inventory.MainHand.Is(Weapons.Claws));
+            Assert.True(Array.IndexOf(hero.Inventory.Bag, club) == 0);
+            hero.RemoveEffect(Effect.SPELL_ALTER_SELF_CLAWS);
+            Assert.True(hero.Inventory.MainHand == null);
+        }
+
+        [Fact]
+        public void BlindnessDeafnessTest() {
+            DefaultSpellTest(Spells.BlindnessDeafness, 12, SpellLevel.THIRD, ConditionType.BLINDED, Effect.SPELL_BLINDNESS_DEAFNESS, Spells.BlindnessDeafness.Duration);
+        }
+
+        [Fact]
+        public void BlurTest() {
+            DefaultSpellTest(Spells.Blur, 12, SpellLevel.THIRD, null, Effect.DISADVANTAGE_ON_BEING_ATTACKED, Spells.Blur.Duration);
+        }
+
+        [Fact]
+        public void InvisibilityTest() {
+            Monster hag1 = Monsters.NightHag;
+            Monster hag2 = Monsters.NightHag;
+            Monster badger = Monsters.Badger;
+            Battleground ground = createBattleground(hag2, badger);
+            Spells.Invisibility.Cast(hag1, 10, SpellLevel.SECOND, 5);
+            Spells.Invisibility.Cast(hag2, 10, SpellLevel.FOURTH, -1);
+            Assert.True(hag1.HasCondition(ConditionType.INVISIBLE));
+            Assert.True(hag2.HasCondition(ConditionType.INVISIBLE));
+            hag1.Attack(Attacks.NightHagClaws, badger, 5);
+            hag1.OnEndOfTurn();
+            hag2.OnEndOfTurn();
+            Assert.False(hag1.HasCondition(ConditionType.INVISIBLE));
+            Assert.True(hag2.HasCondition(ConditionType.INVISIBLE));
+            Spells.Invisibility.Cast(hag1, 10, SpellLevel.THIRD, 0);
+            Assert.True(hag1.HasCondition(ConditionType.INVISIBLE));
+            Assert.True(hag2.HasCondition(ConditionType.INVISIBLE));
+            Spells.AcidArrow.Cast(ground, hag2, 12, SpellLevel.SECOND, 5, badger);
+            Assert.True(hag1.HasCondition(ConditionType.INVISIBLE));
+            Assert.False(hag2.HasCondition(ConditionType.INVISIBLE));
+        }
+
+        [Fact]
+        public void LevitateTest() {
+            DefaultSpellTest(Spells.Levitate, 15, SpellLevel.SECOND, null, Effect.CANNOT_BE_MELEE_ATTACKED, Spells.Levitate.Duration);
+        }
+
+        [Fact]
+        public void MagicWeaponTest() {
+            int failures = 0;
+            EventHandler<GlobalEvents.SpellAffection> handler = delegate (object source, GlobalEvents.SpellAffection args) {
+                if (!args.Affected) failures++;
+            };
+            GlobalEvents.SpellAffectionHandlers += handler;
+            Spells.MagicWeapon.Cast(Monsters.Druid, 10, SpellLevel.SIXTH, 5); // fail #1
+            CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF);
+            Spells.MagicWeapon.Cast(hero, 10, SpellLevel.SIXTH, 5); // fail #2
+            hero.Equip(Weapons.CreatePlus1Weapon(Weapons.Handaxe));
+            Spells.MagicWeapon.Cast(hero, 10, SpellLevel.SIXTH, 5); // fail #3
+            hero.Inventory.MainHand = Weapons.Longsword;
+            Spells.MagicWeapon.Cast(hero, 10, SpellLevel.THIRD, 5);
+            Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.MAGIC));
+            Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.PLUS_1));
+            hero.Inventory.MainHand = Weapons.Longsword;
+            Spells.MagicWeapon.Cast(hero, 10, SpellLevel.FIFTH, 5);
+            Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.MAGIC));
+            Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.PLUS_2));
+            hero.Inventory.MainHand = Weapons.Longsword;
+            Spells.MagicWeapon.Cast(hero, 10, SpellLevel.NINETH, 5);
+            Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.MAGIC));
+            Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.PLUS_3));
+            GlobalEvents.SpellAffectionHandlers -= handler;
+            Assert.Equal(3, failures);
+            for (int i = 0; i < (int)Spells.MagicWeapon.Duration; i++) {
+                hero.OnEndOfTurn();
+            }
+            Assert.False(hero.Inventory.MainHand.HasProperty(WeaponProperty.MAGIC));
+            Assert.False(hero.Inventory.MainHand.HasProperty(WeaponProperty.PLUS_3));
+        }
+
+        [Fact]
+        public void MirrorImageTest() {
+            DefaultSpellTest(Spells.MirrorImage, 12, SpellLevel.SECOND, null, Effect.SPELL_MIRROR_IMAGE_3, Spells.MirrorImage.Duration);
+            Monster hag = Monsters.NightHag;
+            Monster ogre = Monsters.Ogre;
+            Spells.MirrorImage.Cast(hag, 10, SpellLevel.FOURTH, 5);
+            for (int i = 0; i < 20; i++) {
+                ogre.Attack(Attacks.BadgerBite, hag, 5);
+                hag.OnStartOfTurn();
+            }
+            hag.OnEndOfTurn();
+            Assert.True(hag.StartOfTurnEvents.Length == 0);
+            Assert.True(hag.EndOfTurnEvents.Length == 0);
+        }
+
+        [Fact]
+        public void RayofEnfeeblementTest() {
+            DefaultSpellTest(Spells.RayofEnfeeblement, 15, SpellLevel.SECOND, null, Effect.SPELL_RAY_OF_ENFEEBLEMENT, Spells.RayofEnfeeblement.Duration);
+            Monster ogre = Monsters.Ogre;
+            Monster bandit = Monsters.Bandit;
+            ogre.AddEffect(Effect.SPELL_RAY_OF_ENFEEBLEMENT);
+            for (int i = 0; i < 20; i++) {
+                ogre.Attack(Attacks.OgreGreatclub, bandit, 5); // could be fatal without effect
+                Assert.False(bandit.Dead);
+                bandit.HealDamage(100);
+            }
+        }
+
+        [Fact]
+        public void ScorchingRayTest() {
+            Monster hag = Monsters.NightHag;
+            Monster orc = Monsters.Orc;
+            Monster bandit = Monsters.Bandit;
+            Battleground ground = createBattleground(hag, orc, bandit);
+            Spells.ScorchingRay.Cast(ground, hag, 20, SpellLevel.NINETH, 5, orc, bandit);
+            Assert.True(orc.Dead);
+            Assert.True(bandit.Dead);
+        }
+
+        [Fact]
+        public void ShatterTest() {
+            Monster hag = Monsters.NightHag;
+            Monster orc = Monsters.Orc;
+            Monster stonegolem = Monsters.StoneGolem;
+            Monster fleshgolem = Monsters.FleshGolem;
+            Battleground ground = createBattleground(hag, orc, stonegolem, fleshgolem);
+            Spells.Shatter.Cast(ground, hag, 20, SpellLevel.FIFTH, 5, orc, stonegolem, fleshgolem);
+            Assert.True(orc.HitPointsMax > orc.HitPoints);
+            Assert.True(stonegolem.HitPointsMax > stonegolem.HitPoints);
+            Assert.True(fleshgolem.HitPointsMax > fleshgolem.HitPoints);
         }
     }
 }

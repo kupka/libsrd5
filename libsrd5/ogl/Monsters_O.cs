@@ -1,104 +1,111 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack OchreJellyPseudopod {
             get {
-                return new Attack("Pseudopod", 4, new Damage(DamageType.BLUDGEONING, "2d6+2"), 5, new Damage(DamageType.ACID, "1d6"));
+                return new Attack("Pseudopod", 4, new Damage(BLUDGEONING, "2d6+2"), 5, new Damage(ACID, "1d6"));
             }
         }
         public static readonly AttackEffect OctopusTentaclesEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 10, Monsters.Octopus.Size++, false, Attacks.OctopusTentacles, 1);
+            return false;
         };
         public static Attack OctopusTentacles {
             get {
-                return new Attack("Tentacles", 4, new Damage(DamageType.BLUDGEONING, 1), 5, null, OctopusTentaclesEffect);
+                return new Attack("Tentacles", 4, new Damage(BLUDGEONING, 1), 5, null, OctopusTentaclesEffect);
             }
         }
         public static readonly AttackEffect OctopusInkCloudEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: A 5-foot-radius cloud of ink extends all around the octopus if it is underwater. 
             // The area is heavily obscured for 1 minute, although a significant current can disperse the ink. 
             // After releasing the ink, the octopus can use the Dash action as a bonus action.
+            return false;
         };
         public static Attack OctopusInkCloud {
             get {
-                return new Attack("Ink Cloud", 0, new Damage(DamageType.TRUE_DAMAGE, 0), 5, null, OctopusInkCloudEffect);
+                return new Attack("Ink Cloud", 0, new Damage(TRUE_DAMAGE, 0), 5, null, OctopusInkCloudEffect);
             }
         }
         public static Attack OgreGreatclub {
             get {
-                return new Attack("Greatclub", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
+                return new Attack("Greatclub", 6, new Damage(BLUDGEONING, "2d8+4"), 5);
             }
         }
         public static Attack OgreJavelinMelee {
             get {
-                return new Attack("Javelin", 6, new Damage(DamageType.PIERCING, "2d6+4"), 5);
+                return new Attack("Javelin", 6, new Damage(PIERCING, "2d6+4"), 5);
             }
         }
         public static Attack OgreJavelinRanged {
             get {
-                return new Attack("Javelin", 6, new Damage(DamageType.PIERCING, "2d6+4"), 5, 30, 120);
+                return new Attack("Javelin", 6, new Damage(PIERCING, "2d6+4"), 5, 30, 120);
             }
         }
         public static Attack OgreZombieMorningstar {
             get {
-                return new Attack("Morningstar", 6, new Damage(DamageType.BLUDGEONING, "2d8+4"), 5);
+                return new Attack("Morningstar", 6, new Damage(BLUDGEONING, "2d8+4"), 5);
             }
         }
         public static Attack OniGlaive {
             get {
-                return new Attack("Glaive", 7, new Damage(DamageType.SLASHING, "2d10+4"), 5);
+                return new Attack("Glaive", 7, new Damage(SLASHING, "2d10+4"), 5);
             }
         }
         public static Attack OniClaw {
             get {
-                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "1d8+4"), 5);
+                return new Attack("Claw", 7, new Damage(SLASHING, "1d8+4"), 5);
             }
         }
         public static Attack OrcGreataxe {
             get {
-                return new Attack("Greataxe", 5, new Damage(DamageType.SLASHING, "1d12+3"), 5);
+                return new Attack("Greataxe", 5, new Damage(SLASHING, "1d12+3"), 5);
             }
         }
         public static Attack OrcJavelinMelee {
             get {
-                return new Attack("Javelin", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
+                return new Attack("Javelin", 5, new Damage(PIERCING, "1d6+3"), 5);
             }
         }
         public static Attack OrcJavelinRanged {
             get {
-                return new Attack("Javelin", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5, 30, 120);
+                return new Attack("Javelin", 5, new Damage(PIERCING, "1d6+3"), 5, 30, 120);
             }
         }
         public static readonly AttackEffect OtyughBiteEffect = delegate (Combattant attacker, Combattant target) {
             bool success = target.DC(OtyughBite, 15, AbilityType.CONSTITUTION);
-            if (success) return;
-            target.AddEffect(Effect.OTYUGH_DISEASE);
+            if (success) return false;
+            target.AddEffect(OTYUGH_DISEASE);
+            return false;
         };
         public static Attack OtyughBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "2d8+3"), 5, null, OtyughBiteEffect);
+                return new Attack("Bite", 6, new Damage(PIERCING, "2d8+3"), 5, null, OtyughBiteEffect);
             }
         }
         public static readonly AttackEffect OtyughTentacleEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 13, Size.MEDIUM, true, null, 2);
+            return false;
         };
         public static Attack OtyughTentacle {
             get {
-                return new Attack("Tentacle", 6, new Damage(DamageType.BLUDGEONING, "1d8+3"), 5, null, OtyughTentacleEffect);
+                return new Attack("Tentacle", 6, new Damage(BLUDGEONING, "1d8+3"), 5, null, OtyughTentacleEffect);
             }
         }
         public static Attack OwlTalons {
             get {
-                return new Attack("Talons", 3, new Damage(DamageType.SLASHING, 1), 5);
+                return new Attack("Talons", 3, new Damage(SLASHING, 1), 5);
             }
         }
         public static Attack OwlbearBeak {
             get {
-                return new Attack("Beak", 7, new Damage(DamageType.PIERCING, "1d10+5"), 5);
+                return new Attack("Beak", 7, new Damage(PIERCING, "1d10+5"), 5);
             }
         }
         public static Attack OwlbearClaws {
             get {
-                return new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d8+5"), 5);
+                return new Attack("Claws", 7, new Damage(SLASHING, "2d8+5"), 5);
             }
         }
     }
@@ -111,15 +118,15 @@ namespace srd5 {
                     Monsters.Type.OOZE, Monsters.ID.OCHRE_JELLY, Alignment.UNALIGNED, 15, 6, 14, 2, 6, 1, 8, "6d10+12", 40, 2,
                     new Attack[] { Attacks.OchreJellyPseudopod }, new Attack[] { }, Size.LARGE
                 );
-                ochreJelly.AddEffect(Effect.RESISTANCE_ACID);
-                ochreJelly.AddEffect(Effect.IMMUNITY_LIGHTNING);
-                ochreJelly.AddEffect(Effect.IMMUNITY_SLASHING);
-                ochreJelly.AddEffect(Effect.IMMUNITY_BLINDED);
-                ochreJelly.AddEffect(Effect.IMMUNITY_CHARMED);
-                ochreJelly.AddEffect(Effect.IMMUNITY_BLINDED);
-                ochreJelly.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                ochreJelly.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                ochreJelly.AddEffect(Effect.IMMUNITY_PRONE);
+                ochreJelly.AddEffect(RESISTANCE_ACID);
+                ochreJelly.AddEffect(IMMUNITY_LIGHTNING);
+                ochreJelly.AddEffect(IMMUNITY_SLASHING);
+                ochreJelly.AddEffect(IMMUNITY_BLINDED);
+                ochreJelly.AddEffect(IMMUNITY_CHARMED);
+                ochreJelly.AddEffect(IMMUNITY_BLINDED);
+                ochreJelly.AddEffect(IMMUNITY_EXHAUSTION);
+                ochreJelly.AddEffect(IMMUNITY_FRIGHTENED);
+                ochreJelly.AddEffect(IMMUNITY_PRONE);
                 ochreJelly.AddFeat(Feat.AMORPHOUS);
                 ochreJelly.AddFeat(Feat.SPIDER_CLIMB);
                 return ochreJelly;
@@ -161,8 +168,8 @@ namespace srd5 {
                     new Attack[] { Attacks.OgreZombieMorningstar }, new Attack[] { }, Size.LARGE
                 );
                 ogreZombie.AddProficiency(Proficiency.WISDOM);
-                ogreZombie.AddEffect(Effect.IMMUNITY_POISON);
-                ogreZombie.AddEffect(Effect.IMMUNITY_POISONED);
+                ogreZombie.AddEffect(IMMUNITY_POISON);
+                ogreZombie.AddEffect(IMMUNITY_POISONED);
                 ogreZombie.AddFeat(Feat.UNDEAD_FORTITUDE);
                 return ogreZombie;
             }

@@ -1,81 +1,88 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static readonly AttackEffect VampireUnarmedStrikeEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: Instead of dealing damage, the vampire can grapple the target (escape DC 18).
+            return false;
         };
         public static Attack VampireUnarmedStrike {
             get {
-                return new Attack("Unarmed Strike", 9, new Damage(DamageType.BLUDGEONING, "1d8+4"), 5, null, VampireUnarmedStrikeEffect);
+                return new Attack("Unarmed Strike", 9, new Damage(BLUDGEONING, "1d8+4"), 5, null, VampireUnarmedStrikeEffect);
             }
         }
         public static readonly AttackEffect VampireBiteEffect = delegate (Combattant attacker, Combattant target) {
-            int damage = target.TakeDamage(attacker, DamageType.NECROTIC, "3d6");
+            int damage = target.TakeDamage(attacker, NECROTIC, "3d6");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
             attacker.HealDamage(damage);
             // TODO:  The target dies if this effect reduces its hit point maximum to 0. 
             // A humanoid slain in this way and then buried in the ground rises the following night as a vampire spawn under the vampire's control.
+            return false;
         };
         public static Attack VampireBite {
             get {
-                return new Attack("Bite", 9, new Damage(DamageType.PIERCING, "1d6+4"), 5, null, VampireBiteEffect);
+                return new Attack("Bite", 9, new Damage(PIERCING, "1d6+4"), 5, null, VampireBiteEffect);
             }
         }
         public static Attack VampireBatFormBite {
             get {
-                return new Attack("Bite", 9, new Damage(DamageType.PIERCING, "1d6+4"), 5, null, VampireBiteEffect);
+                return new Attack("Bite", 9, new Damage(PIERCING, "1d6+4"), 5, null, VampireBiteEffect);
             }
         }
         public static readonly AttackEffect VampireSpawnBiteEffect = delegate (Combattant attacker, Combattant target) {
-            int damage = target.TakeDamage(attacker, DamageType.NECROTIC, "2d6");
+            int damage = target.TakeDamage(attacker, NECROTIC, "2d6");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
             attacker.HealDamage(damage);
+            return false;
         };
         public static Attack VampireSpawnBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "1d6+6"), 5, null, VampireSpawnBiteEffect);
+                return new Attack("Bite", 6, new Damage(PIERCING, "1d6+6"), 5, null, VampireSpawnBiteEffect);
             }
         }
         public static readonly AttackEffect VampireSpawnClawsEffect = delegate (Combattant attacker, Combattant target) {
             // TODO: Instead of dealing damage, the vampire can grapple the target (escape DC 13).
+            return false;
         };
         public static Attack VampireSpawnClaws {
             get {
-                return new Attack("Claws", 6, new Damage(DamageType.SLASHING, "2d4+3"), 5, null, VampireSpawnClawsEffect);
+                return new Attack("Claws", 6, new Damage(SLASHING, "2d4+3"), 5, null, VampireSpawnClawsEffect);
             }
         }
         public static Attack VeteranLongsword {
             get {
-                return new Attack("Longsword", 5, new Damage(DamageType.SLASHING, "1d10+3"), 5);
+                return new Attack("Longsword", 5, new Damage(SLASHING, "1d10+3"), 5);
             }
         }
         public static Attack VeteranShortsword {
             get {
-                return new Attack("Shortsword", 5, new Damage(DamageType.PIERCING, "1d6+3"), 5);
+                return new Attack("Shortsword", 5, new Damage(PIERCING, "1d6+3"), 5);
             }
         }
         public static Attack VeteranHeavyCrossbow {
             get {
-                return new Attack("Heavy Crossbow", 3, new Damage(DamageType.PIERCING, "1d10+1"), 5, 100, 400);
+                return new Attack("Heavy Crossbow", 3, new Damage(PIERCING, "1d10+1"), 5, 100, 400);
             }
         }
         public static Attack VioletFungusRottingTouch {
             get {
-                return new Attack("Rotting Touch", 2, new Damage(DamageType.NECROTIC, "1d8"), 10);
+                return new Attack("Rotting Touch", 2, new Damage(NECROTIC, "1d8"), 10);
             }
         }
         public static Attack VrockBeak {
             get {
-                return new Attack("Beak", 6, new Damage(DamageType.PIERCING, "2d6+3"), 5);
+                return new Attack("Beak", 6, new Damage(PIERCING, "2d6+3"), 5);
             }
         }
         public static Attack VrockTalons {
             get {
-                return new Attack("Talons", 6, new Damage(DamageType.SLASHING, "2d10+3"), 5);
+                return new Attack("Talons", 6, new Damage(SLASHING, "2d10+3"), 5);
             }
         }
         public static Attack VultureBeak {
             get {
-                return new Attack("Beak", 2, new Damage(DamageType.PIERCING, "1d4"), 5);
+                return new Attack("Beak", 2, new Damage(PIERCING, "1d4"), 5);
             }
         }
 
@@ -95,8 +102,8 @@ namespace srd5 {
                 vampire.AddProficiency(Proficiency.CHARISMA);
                 vampire.AddProficiency(Proficiency.PERCEPTION);
                 vampire.AddProficiency(Proficiency.STEALTH);
-                vampire.AddEffect(Effect.RESISTANCE_NECROTIC);
-                vampire.AddEffect(Effect.RESISTANCE_NONMAGIC);
+                vampire.AddEffect(RESISTANCE_NECROTIC);
+                vampire.AddEffect(RESISTANCE_NONMAGIC);
                 vampire.AddFeat(Feat.SHAPECHANGER_VAMPIRE);
                 vampire.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 vampire.AddFeat(Feat.MISTY_ESCAPE);
@@ -119,8 +126,8 @@ namespace srd5 {
                 vampireBatForm.AddProficiency(Proficiency.CHARISMA);
                 vampireBatForm.AddProficiency(Proficiency.PERCEPTION);
                 vampireBatForm.AddProficiency(Proficiency.STEALTH);
-                vampireBatForm.AddEffect(Effect.RESISTANCE_NECROTIC);
-                vampireBatForm.AddEffect(Effect.RESISTANCE_NONMAGIC);
+                vampireBatForm.AddEffect(RESISTANCE_NECROTIC);
+                vampireBatForm.AddEffect(RESISTANCE_NONMAGIC);
                 vampireBatForm.AddFeat(Feat.SHAPECHANGER_VAMPIRE);
                 vampireBatForm.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 vampireBatForm.AddFeat(Feat.MISTY_ESCAPE);
@@ -143,8 +150,8 @@ namespace srd5 {
                 vampireMistForm.AddProficiency(Proficiency.CHARISMA);
                 vampireMistForm.AddProficiency(Proficiency.PERCEPTION);
                 vampireMistForm.AddProficiency(Proficiency.STEALTH);
-                vampireMistForm.AddEffect(Effect.RESISTANCE_NECROTIC);
-                vampireMistForm.AddEffect(Effect.RESISTANCE_NONMAGIC);
+                vampireMistForm.AddEffect(RESISTANCE_NECROTIC);
+                vampireMistForm.AddEffect(RESISTANCE_NONMAGIC);
                 vampireMistForm.AddFeat(Feat.SHAPECHANGER_VAMPIRE);
                 vampireMistForm.AddFeat(Feat.LEGENDARY_RESISTANCE);
                 vampireMistForm.AddFeat(Feat.MISTY_ESCAPE);
@@ -166,8 +173,8 @@ namespace srd5 {
                 vampireSpawn.AddProficiency(Proficiency.WISDOM);
                 vampireSpawn.AddProficiency(Proficiency.PERCEPTION);
                 vampireSpawn.AddProficiency(Proficiency.STEALTH);
-                vampireSpawn.AddEffect(Effect.RESISTANCE_NECROTIC);
-                vampireSpawn.AddEffect(Effect.RESISTANCE_NONMAGIC);
+                vampireSpawn.AddEffect(RESISTANCE_NECROTIC);
+                vampireSpawn.AddEffect(RESISTANCE_NONMAGIC);
                 vampireSpawn.AddFeat(Feat.REGENERATION);
                 vampireSpawn.AddFeat(Feat.SPIDER_CLIMB);
                 vampireSpawn.AddFeat(Feat.VAMPIRE_WEAKNESSES);
@@ -195,9 +202,9 @@ namespace srd5 {
                     Monsters.Type.PLANT, Monsters.ID.VIOLET_FUNGUS, Alignment.UNALIGNED, 3, 1, 10, 1, 3, 1, 5, "4d8", 40, ChallengeRating.QUARTER,
                     new Attack[] { Attacks.VioletFungusRottingTouch }, new Attack[] { }, Size.MEDIUM
                 );
-                violetFungus.AddEffect(Effect.IMMUNITY_BLINDED);
-                violetFungus.AddEffect(Effect.IMMUNITY_BLINDED);
-                violetFungus.AddEffect(Effect.IMMUNITY_FRIGHTENED);
+                violetFungus.AddEffect(IMMUNITY_BLINDED);
+                violetFungus.AddEffect(IMMUNITY_BLINDED);
+                violetFungus.AddEffect(IMMUNITY_FRIGHTENED);
                 violetFungus.AddFeat(Feat.FALSE_APPEARANCE);
                 return violetFungus;
             }
@@ -213,12 +220,12 @@ namespace srd5 {
                 vrock.AddProficiency(Proficiency.DEXTERITY);
                 vrock.AddProficiency(Proficiency.WISDOM);
                 vrock.AddProficiency(Proficiency.CHARISMA);
-                vrock.AddEffect(Effect.RESISTANCE_COLD);
-                vrock.AddEffect(Effect.RESISTANCE_FIRE);
-                vrock.AddEffect(Effect.RESISTANCE_LIGHTNING);
-                vrock.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                vrock.AddEffect(Effect.IMMUNITY_POISON);
-                vrock.AddEffect(Effect.IMMUNITY_POISONED);
+                vrock.AddEffect(RESISTANCE_COLD);
+                vrock.AddEffect(RESISTANCE_FIRE);
+                vrock.AddEffect(RESISTANCE_LIGHTNING);
+                vrock.AddEffect(RESISTANCE_NONMAGIC);
+                vrock.AddEffect(IMMUNITY_POISON);
+                vrock.AddEffect(IMMUNITY_POISONED);
                 vrock.AddFeat(Feat.MAGIC_RESISTANCE);
                 return vrock;
             }

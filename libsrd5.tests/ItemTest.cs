@@ -97,5 +97,17 @@ namespace srd5 {
             Assert.True(wand.Destroyed);
             Assert.Empty(hero.Inventory.Bag);
         }
+
+        [Fact]
+        public void ItemsWithoutNamesAreNotTheSame() {
+            Item a = new Armor(null, 12, 12, 5, Proficiency.LIGHT_ARMOR, new ArmorProperty[0], 1, 2);
+            Item b = new Armor(null, 12, 12, 5, Proficiency.LIGHT_ARMOR, new ArmorProperty[0], 1, 2);
+            Item c = new Consumable("Foo", ItemType.POTION, delegate (Combattant consumer, Consumable item) { }, ItemRarity.COMMON, 1);
+            Assert.False(a.Is(b));
+            a.Name = "Foo";
+            b.Name = "Foo";
+            Assert.True(a.Is(b));
+            Assert.False(a.Is(c));
+        }
     }
 }

@@ -1,44 +1,47 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack KillerWhaleBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "5d6+4"), 5);
+                return new Attack("Bite", 6, new Damage(PIERCING, "5d6+4"), 5);
             }
         }
         public static Attack KnightGreatsword {
             get {
-                return new Attack("Greatsword", 5, new Damage(DamageType.SLASHING, "2d6+3"), 5);
+                return new Attack("Greatsword", 5, new Damage(SLASHING, "2d6+3"), 5);
             }
         }
         public static Attack KnightHeavyCrossbow {
             get {
-                return new Attack("Heavy Crossbow", 2, new Damage(DamageType.PIERCING, "1d10"), 5, 100, 400);
+                return new Attack("Heavy Crossbow", 2, new Damage(PIERCING, "1d10"), 5, 100, 400);
             }
         }
         public static Attack KoboldDagger {
             get {
-                return new Attack("Dagger", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+                return new Attack("Dagger", 4, new Damage(PIERCING, "1d4+2"), 5);
             }
         }
         public static Attack KoboldSling {
             get {
-                return new Attack("Sling", 4, new Damage(DamageType.BLUDGEONING, "1d4+2"), 5, 30, 120);
+                return new Attack("Sling", 4, new Damage(BLUDGEONING, "1d4+2"), 5, 30, 120);
             }
         }
         public static readonly AttackEffect KrakenBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (!target.HasCondition(ConditionType.GRAPPLED_DC18)) return;
-            if (target.Size > Size.LARGE) return;
+            if (!target.HasCondition(ConditionType.GRAPPLED_DC18)) return false;
+            if (target.Size > Size.LARGE) return false;
             // If the target is a Large or smaller creature grappled by the kraken, that creature is swallowed, and the grapple ends.
-            attacker.RemoveEffect(Effect.GRAPPLING);
+            attacker.RemoveEffect(GRAPPLING);
             target.RemoveCondition(ConditionType.GRAPPLED_DC18);
-            target.AddEffect(Effect.KRAKEN_SWALLOW);
+            target.AddEffect(KRAKEN_SWALLOW);
             // While swallowed, the creature is blinded and restrained
             target.AddCondition(ConditionType.BLINDED, ConditionType.RESTRAINED);
             // TODO: it has total cover against attacks and other effects outside the kraken
             // and it takes 42 (12d6) acid damage at the start of each of the kraken's turns
             attacker.AddStartOfTurnEvent(delegate () {
-                if (!(target.HasEffect(Effect.KRAKEN_SWALLOW))) return true;
-                target.TakeDamage(attacker, DamageType.ACID, "12d6");
+                if (!(target.HasEffect(KRAKEN_SWALLOW))) return true;
+                target.TakeDamage(attacker, ACID, "12d6");
                 return false;
             });
             // TODO: if the kraken takes 50 damage or more on a single turn from a creature inside it, 
@@ -46,19 +49,21 @@ namespace srd5 {
             // regurgitate all swallowed creatures, which fall prone in a space within 10 feet of the kraken. 
             // If the kraken dies, a swallowed creature is no longer restrained by it and can escape from 
             // the corpse using 15 feet of movement, exiting prone.
+            return false;
         };
         public static Attack KrakenBite {
             get {
-                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "3d8+10"), 5, null, KrakenBiteEffect);
+                return new Attack("Bite", 7, new Damage(PIERCING, "3d8+10"), 5, null, KrakenBiteEffect);
             }
         }
 
         public static readonly AttackEffect KrakenTentacleEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.GrapplingEffect(attacker, target, 18, Size.GARGANTUAN, true, null, 10);
+            return false;
         };
         public static Attack KrakenTentacle {
             get {
-                return new Attack("Tentacle", 7, new Damage(DamageType.BLUDGEONING, "3d6+10"), 30, null, KrakenTentacleEffect);
+                return new Attack("Tentacle", 7, new Damage(BLUDGEONING, "3d6+10"), 30, null, KrakenTentacleEffect);
             }
         }
     }
@@ -118,10 +123,10 @@ namespace srd5 {
                 kraken.AddProficiency(Proficiency.CONSTITUTION);
                 kraken.AddProficiency(Proficiency.INTELLIGENCE);
                 kraken.AddProficiency(Proficiency.WISDOM);
-                kraken.AddEffect(Effect.IMMUNITY_LIGHTNING);
-                kraken.AddEffect(Effect.IMMUNITY_NONMAGIC);
-                kraken.AddEffect(Effect.IMMUNITY_FRIGHTENED);
-                kraken.AddEffect(Effect.IMMUNITY_PARALYZED);
+                kraken.AddEffect(IMMUNITY_LIGHTNING);
+                kraken.AddEffect(IMMUNITY_NONMAGIC);
+                kraken.AddEffect(IMMUNITY_FRIGHTENED);
+                kraken.AddEffect(IMMUNITY_PARALYZED);
                 kraken.AddFeat(Feat.AMPHIBIOUS);
                 kraken.AddFeat(Feat.FREEDOM_OF_MOVEMENT);
                 kraken.AddFeat(Feat.SIEGE_MONSTER);

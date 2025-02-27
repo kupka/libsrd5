@@ -1,11 +1,13 @@
 namespace srd5 {
     public enum Size {
+        EXTRA_TINY, // DO NOT ASSIGN DIRECTLY. Only for shrink effects
         TINY,
         SMALL,
         MEDIUM,
         LARGE,
         HUGE,
-        GARGANTUAN
+        GARGANTUAN,
+        EXTRA_GARGANTUAN, // DO NOT ASSIGN DIRECTLY. Only for enlarge effects
     }
 
 

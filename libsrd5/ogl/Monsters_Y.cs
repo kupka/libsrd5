@@ -1,103 +1,106 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack YoungBlackDragonBite {
             get {
-                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10, new Damage(DamageType.ACID, "1d8"));
+                return new Attack("Bite", 7, new Damage(PIERCING, "2d10+4"), 10, new Damage(ACID, "1d8"));
             }
         }
         public static Attack YoungBlackDragonClaw {
             get {
-                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+                return new Attack("Claw", 7, new Damage(SLASHING, "2d6+4"), 5);
             }
         }
         public static Attack YoungBlueDragonBite {
             get {
-                return new Attack("Bite", 9, new Damage(DamageType.PIERCING, "2d10+5"), 10, new Damage(DamageType.LIGHTNING, "1d10"));
+                return new Attack("Bite", 9, new Damage(PIERCING, "2d10+5"), 10, new Damage(LIGHTNING, "1d10"));
             }
         }
         public static Attack YoungBlueDragonClaw {
             get {
-                return new Attack("Claw", 9, new Damage(DamageType.SLASHING, "2d6+5"), 5);
+                return new Attack("Claw", 9, new Damage(SLASHING, "2d6+5"), 5);
             }
         }
         public static Attack YoungBrassDragonBite {
             get {
-                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10);
+                return new Attack("Bite", 7, new Damage(PIERCING, "2d10+4"), 10);
             }
         }
         public static Attack YoungBrassDragonClaw {
             get {
-                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+                return new Attack("Claw", 7, new Damage(SLASHING, "2d6+4"), 5);
             }
         }
         public static Attack YoungBronzeDragonBite {
             get {
-                return new Attack("Bite", 8, new Damage(DamageType.PIERCING, "2d10+5"), 10);
+                return new Attack("Bite", 8, new Damage(PIERCING, "2d10+5"), 10);
             }
         }
         public static Attack YoungBronzeDragonClaw {
             get {
-                return new Attack("Claw", 8, new Damage(DamageType.SLASHING, "2d6+5"), 5);
+                return new Attack("Claw", 8, new Damage(SLASHING, "2d6+5"), 5);
             }
         }
         public static Attack YoungCopperDragonBite {
             get {
-                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10);
+                return new Attack("Bite", 7, new Damage(PIERCING, "2d10+4"), 10);
             }
         }
         public static Attack YoungCopperDragonClaw {
             get {
-                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+                return new Attack("Claw", 7, new Damage(SLASHING, "2d6+4"), 5);
             }
         }
         public static Attack YoungGoldDragonBite {
             get {
-                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d10+6"), 10);
+                return new Attack("Bite", 10, new Damage(PIERCING, "2d10+6"), 10);
             }
         }
         public static Attack YoungGoldDragonClaw {
             get {
-                return new Attack("Claw", 10, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+                return new Attack("Claw", 10, new Damage(SLASHING, "2d6+6"), 5);
             }
         }
         public static Attack YoungGreenDragonBite {
             get {
-                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10, new Damage(DamageType.POISON, "2d6"));
+                return new Attack("Bite", 7, new Damage(PIERCING, "2d10+4"), 10, new Damage(POISON, "2d6"));
             }
         }
         public static Attack YoungGreenDragonClaw {
             get {
-                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+                return new Attack("Claw", 7, new Damage(SLASHING, "2d6+4"), 5);
             }
         }
         public static Attack YoungRedDragonBite {
             get {
-                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d10+6"), 10, new Damage(DamageType.FIRE, "1d6"));
+                return new Attack("Bite", 10, new Damage(PIERCING, "2d10+6"), 10, new Damage(FIRE, "1d6"));
             }
         }
         public static Attack YoungRedDragonClaw {
             get {
-                return new Attack("Claw", 10, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+                return new Attack("Claw", 10, new Damage(SLASHING, "2d6+6"), 5);
             }
         }
         public static Attack YoungSilverDragonBite {
             get {
-                return new Attack("Bite", 10, new Damage(DamageType.PIERCING, "2d10+6"), 10);
+                return new Attack("Bite", 10, new Damage(PIERCING, "2d10+6"), 10);
             }
         }
         public static Attack YoungSilverDragonClaw {
             get {
-                return new Attack("Claw", 10, new Damage(DamageType.SLASHING, "2d6+6"), 5);
+                return new Attack("Claw", 10, new Damage(SLASHING, "2d6+6"), 5);
             }
         }
         public static Attack YoungWhiteDragonBite {
             get {
-                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "2d10+4"), 10, new Damage(DamageType.COLD, "1d8"));
+                return new Attack("Bite", 7, new Damage(PIERCING, "2d10+4"), 10, new Damage(COLD, "1d8"));
             }
         }
         public static Attack YoungWhiteDragonClaw {
             get {
-                return new Attack("Claw", 7, new Damage(DamageType.SLASHING, "2d6+4"), 5);
+                return new Attack("Claw", 7, new Damage(SLASHING, "2d6+4"), 5);
             }
         }
     }
@@ -116,7 +119,7 @@ namespace srd5 {
                 youngBlackDragon.AddProficiency(Proficiency.CHARISMA);
                 youngBlackDragon.AddProficiency(Proficiency.PERCEPTION);
                 youngBlackDragon.AddProficiency(Proficiency.STEALTH);
-                youngBlackDragon.AddEffect(Effect.IMMUNITY_ACID);
+                youngBlackDragon.AddEffect(IMMUNITY_ACID);
                 youngBlackDragon.AddFeat(Feat.AMPHIBIOUS);
                 return youngBlackDragon;
             }
@@ -135,7 +138,7 @@ namespace srd5 {
                 youngBlueDragon.AddProficiency(Proficiency.CHARISMA);
                 youngBlueDragon.AddProficiency(Proficiency.PERCEPTION);
                 youngBlueDragon.AddProficiency(Proficiency.STEALTH);
-                youngBlueDragon.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                youngBlueDragon.AddEffect(IMMUNITY_LIGHTNING);
                 return youngBlueDragon;
             }
         }
@@ -154,7 +157,7 @@ namespace srd5 {
                 youngBrassDragon.AddProficiency(Proficiency.PERCEPTION);
                 youngBrassDragon.AddProficiency(Proficiency.PERSUASION);
                 youngBrassDragon.AddProficiency(Proficiency.STEALTH);
-                youngBrassDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                youngBrassDragon.AddEffect(IMMUNITY_FIRE);
                 return youngBrassDragon;
             }
         }
@@ -173,7 +176,7 @@ namespace srd5 {
                 youngBronzeDragon.AddProficiency(Proficiency.INSIGHT);
                 youngBronzeDragon.AddProficiency(Proficiency.PERCEPTION);
                 youngBronzeDragon.AddProficiency(Proficiency.STEALTH);
-                youngBronzeDragon.AddEffect(Effect.IMMUNITY_LIGHTNING);
+                youngBronzeDragon.AddEffect(IMMUNITY_LIGHTNING);
                 youngBronzeDragon.AddFeat(Feat.AMPHIBIOUS);
                 return youngBronzeDragon;
             }
@@ -193,7 +196,7 @@ namespace srd5 {
                 youngCopperDragon.AddProficiency(Proficiency.DECEPTION);
                 youngCopperDragon.AddProficiency(Proficiency.PERCEPTION);
                 youngCopperDragon.AddProficiency(Proficiency.STEALTH);
-                youngCopperDragon.AddEffect(Effect.IMMUNITY_ACID);
+                youngCopperDragon.AddEffect(IMMUNITY_ACID);
                 return youngCopperDragon;
             }
         }
@@ -213,7 +216,7 @@ namespace srd5 {
                 youngGoldDragon.AddProficiency(Proficiency.PERCEPTION);
                 youngGoldDragon.AddProficiency(Proficiency.PERSUASION);
                 youngGoldDragon.AddProficiency(Proficiency.STEALTH);
-                youngGoldDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                youngGoldDragon.AddEffect(IMMUNITY_FIRE);
                 youngGoldDragon.AddFeat(Feat.AMPHIBIOUS);
                 return youngGoldDragon;
             }
@@ -233,8 +236,8 @@ namespace srd5 {
                 youngGreenDragon.AddProficiency(Proficiency.DECEPTION);
                 youngGreenDragon.AddProficiency(Proficiency.PERCEPTION);
                 youngGreenDragon.AddProficiency(Proficiency.STEALTH);
-                youngGreenDragon.AddEffect(Effect.IMMUNITY_POISON);
-                youngGreenDragon.AddEffect(Effect.IMMUNITY_POISONED);
+                youngGreenDragon.AddEffect(IMMUNITY_POISON);
+                youngGreenDragon.AddEffect(IMMUNITY_POISONED);
                 youngGreenDragon.AddFeat(Feat.AMPHIBIOUS);
                 return youngGreenDragon;
             }
@@ -253,7 +256,7 @@ namespace srd5 {
                 youngRedDragon.AddProficiency(Proficiency.CHARISMA);
                 youngRedDragon.AddProficiency(Proficiency.PERCEPTION);
                 youngRedDragon.AddProficiency(Proficiency.STEALTH);
-                youngRedDragon.AddEffect(Effect.IMMUNITY_FIRE);
+                youngRedDragon.AddEffect(IMMUNITY_FIRE);
                 return youngRedDragon;
             }
         }
@@ -273,7 +276,7 @@ namespace srd5 {
                 youngSilverDragon.AddProficiency(Proficiency.HISTORY);
                 youngSilverDragon.AddProficiency(Proficiency.PERCEPTION);
                 youngSilverDragon.AddProficiency(Proficiency.STEALTH);
-                youngSilverDragon.AddEffect(Effect.IMMUNITY_COLD);
+                youngSilverDragon.AddEffect(IMMUNITY_COLD);
                 return youngSilverDragon;
             }
         }
@@ -291,7 +294,7 @@ namespace srd5 {
                 youngWhiteDragon.AddProficiency(Proficiency.CHARISMA);
                 youngWhiteDragon.AddProficiency(Proficiency.PERCEPTION);
                 youngWhiteDragon.AddProficiency(Proficiency.STEALTH);
-                youngWhiteDragon.AddEffect(Effect.IMMUNITY_COLD);
+                youngWhiteDragon.AddEffect(IMMUNITY_COLD);
                 youngWhiteDragon.AddFeat(Feat.ICE_WALK);
                 return youngWhiteDragon;
             }

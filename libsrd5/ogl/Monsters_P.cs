@@ -1,128 +1,134 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack PantherBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d6+2"), 5);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d6+2"), 5);
             }
         }
         public static Attack PantherClaw {
             get {
-                return new Attack("Claw", 4, new Damage(DamageType.SLASHING, "1d4+2"), 5);
+                return new Attack("Claw", 4, new Damage(SLASHING, "1d4+2"), 5);
             }
         }
         public static Attack PegasusHooves {
             get {
-                return new Attack("Hooves", 6, new Damage(DamageType.BLUDGEONING, "2d6+4"), 5);
+                return new Attack("Hooves", 6, new Damage(BLUDGEONING, "2d6+4"), 5);
             }
         }
         public static readonly AttackEffect PhaseSpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
-            if (target.DC(PhaseSpiderBite, 12, AbilityType.CONSTITUTION)) return;
-            target.TakeDamage(attacker, DamageType.POISON, "4d8");
+            if (target.IsImmune(POISON)) return false;
+            if (target.DC(PhaseSpiderBite, 12, AbilityType.CONSTITUTION)) return false;
+            target.TakeDamage(attacker, POISON, "4d8");
             if (target.HitPoints == 0) {
-                target.AddEffect(Effect.PHASE_SPIDER_POISON);
+                target.AddEffect(PHASE_SPIDER_POISON);
                 // TODO: remove after one hour "the target is stable but poisoned for 1 hour"
             }
+            return false;
         };
         public static Attack PhaseSpiderBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d10+2"), 5, null, PhaseSpiderBiteEffect);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d10+2"), 5, null, PhaseSpiderBiteEffect);
             }
         }
         public static readonly AttackEffect PitFiendBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
-            if (target.DC(PitFiendBite, 21, AbilityType.CONSTITUTION)) return;
-            target.AddEffect(Effect.PIT_FIEND_POISON);
+            if (target.IsImmune(POISON)) return false;
+            if (target.DC(PitFiendBite, 21, AbilityType.CONSTITUTION)) return false;
+            target.AddEffect(PIT_FIEND_POISON);
+            return false;
         };
         public static Attack PitFiendBite {
             get {
-                return new Attack("Bite", 14, new Damage(DamageType.PIERCING, "4d6+8"), 5, null, PitFiendBiteEffect);
+                return new Attack("Bite", 14, new Damage(PIERCING, "4d6+8"), 5, null, PitFiendBiteEffect);
             }
         }
         public static Attack PitFiendClaw {
             get {
-                return new Attack("Claw", 14, new Damage(DamageType.SLASHING, "2d8+8"), 10);
+                return new Attack("Claw", 14, new Damage(SLASHING, "2d8+8"), 10);
             }
         }
         public static Attack PitFiendMace {
             get {
-                return new Attack("Mace", 14, new Damage(DamageType.BLUDGEONING, "2d6+8"), 10, new Damage(DamageType.FIRE, "6d6"));
+                return new Attack("Mace", 14, new Damage(BLUDGEONING, "2d6+8"), 10, new Damage(FIRE, "6d6"));
             }
         }
         public static Attack PitFiendTail {
             get {
-                return new Attack("Tail", 14, new Damage(DamageType.BLUDGEONING, "3d10+8"), 10);
+                return new Attack("Tail", 14, new Damage(BLUDGEONING, "3d10+8"), 10);
             }
         }
         public static Attack PlanetarGreatsword {
             get {
-                return new Attack("Greatsword", 12, new Damage(DamageType.SLASHING, "4d6+7"), 5, new Damage(DamageType.RADIANT, "5d8"));
+                return new Attack("Greatsword", 12, new Damage(SLASHING, "4d6+7"), 5, new Damage(RADIANT, "5d8"));
             }
         }
         public static Attack PlesiosaurusBite {
             get {
-                return new Attack("Bite", 6, new Damage(DamageType.PIERCING, "3d6+4"), 10);
+                return new Attack("Bite", 6, new Damage(PIERCING, "3d6+4"), 10);
             }
         }
         public static readonly AttackEffect PoisonousSnakeBiteEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, PoisonousSnakeBite, "2d4", 10);
+            return false;
         };
         public static Attack PoisonousSnakeBite {
             get {
-                return new Attack("Bite", 5, new Damage(DamageType.PIERCING, 1), 5, null, PoisonousSnakeBiteEffect);
+                return new Attack("Bite", 5, new Damage(PIERCING, 1), 5, null, PoisonousSnakeBiteEffect);
             }
         }
         public static Attack PolarBearBite {
             get {
-                return new Attack("Bite", 7, new Damage(DamageType.PIERCING, "1d8+5"), 5);
+                return new Attack("Bite", 7, new Damage(PIERCING, "1d8+5"), 5);
             }
         }
         public static Attack PolarBearClaws {
             get {
-                return new Attack("Claws", 7, new Damage(DamageType.SLASHING, "2d6+5"), 5);
+                return new Attack("Claws", 7, new Damage(SLASHING, "2d6+5"), 5);
             }
         }
         public static Attack PonyHooves {
             get {
-                return new Attack("Hooves", 4, new Damage(DamageType.BLUDGEONING, "2d4+2"), 5);
+                return new Attack("Hooves", 4, new Damage(BLUDGEONING, "2d4+2"), 5);
             }
         }
         public static Attack PriestMace {
             get {
-                return new Attack("Mace", 2, new Damage(DamageType.BLUDGEONING, "1d6"), 5);
+                return new Attack("Mace", 2, new Damage(BLUDGEONING, "1d6"), 5);
             }
         }
         public static readonly AttackEffect PseudodragonStingEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
-            if (target.DC(PseudodragonSting, 11, AbilityType.CONSTITUTION, out int roll)) return;
-            target.AddEffect(Effect.PSEUDO_DRAGON_POISON);
+            if (target.IsImmune(POISON)) return false;
+            if (target.DC(PseudodragonSting, 11, AbilityType.CONSTITUTION, out int roll)) return false;
+            target.AddEffect(PSEUDO_DRAGON_POISON);
             if (roll < 7) {
-                target.AddEffect(Effect.PSEUDO_DRAGON_POISON_UNCONSCIOUS);
+                target.AddEffect(PSEUDO_DRAGON_POISON_UNCONSCIOUS);
             }
+            return false;
         };
         public static Attack PseudodragonSting {
             get {
-                return new Attack("Sting", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5, null, PseudodragonStingEffect);
+                return new Attack("Sting", 4, new Damage(PIERCING, "1d4+2"), 5, null, PseudodragonStingEffect);
             }
         }
         public static Attack PseudodragonBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d4+2"), 5);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d4+2"), 5);
             }
         }
-        public static readonly AttackEffect PurpleWormBiteEffect = delegate (Combattant attacker, Combattant target) {
-        };
         public static Attack PurpleWormBite {
             get {
-                return new Attack("Bite", 9, new Damage(DamageType.PIERCING, "3d8+9"), 5, null, PurpleWormBiteEffect);
+                return new Attack("Bite", 9, new Damage(PIERCING, "3d8+9"), 5);
             }
         }
         public static readonly AttackEffect PurpleWormTailStingerEffect = delegate (Combattant attacker, Combattant target) {
             AttackEffects.PoisonEffect(target, PurpleWormTailStinger, "3d6+9", 19);
+            return false;
         };
         public static Attack PurpleWormTailStinger {
             get {
-                return new Attack("Tail Stinger", 9, new Damage(DamageType.PIERCING, "3d6+9"), 5, null, PurpleWormTailStingerEffect);
+                return new Attack("Tail Stinger", 9, new Damage(PIERCING, "3d6+9"), 5, null, PurpleWormTailStingerEffect);
             }
         }
     }
@@ -183,11 +189,11 @@ namespace srd5 {
                 pitFiend.AddProficiency(Proficiency.DEXTERITY);
                 pitFiend.AddProficiency(Proficiency.CONSTITUTION);
                 pitFiend.AddProficiency(Proficiency.WISDOM);
-                pitFiend.AddEffect(Effect.RESISTANCE_COLD);
-                pitFiend.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                pitFiend.AddEffect(Effect.IMMUNITY_FIRE);
-                pitFiend.AddEffect(Effect.IMMUNITY_POISON);
-                pitFiend.AddEffect(Effect.IMMUNITY_POISONED);
+                pitFiend.AddEffect(RESISTANCE_COLD);
+                pitFiend.AddEffect(RESISTANCE_NONMAGIC);
+                pitFiend.AddEffect(IMMUNITY_FIRE);
+                pitFiend.AddEffect(IMMUNITY_POISON);
+                pitFiend.AddEffect(IMMUNITY_POISONED);
                 pitFiend.AddFeat(Feat.FEAR_AURA);
                 pitFiend.AddFeat(Feat.MAGIC_RESISTANCE);
                 pitFiend.AddFeat(Feat.MAGIC_WEAPONS);
@@ -207,11 +213,11 @@ namespace srd5 {
                 planetar.AddProficiency(Proficiency.WISDOM);
                 planetar.AddProficiency(Proficiency.CHARISMA);
                 planetar.AddProficiency(Proficiency.PERCEPTION);
-                planetar.AddEffect(Effect.RESISTANCE_RADIANT);
-                planetar.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                planetar.AddEffect(Effect.IMMUNITY_CHARMED);
-                planetar.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                planetar.AddEffect(Effect.IMMUNITY_FRIGHTENED);
+                planetar.AddEffect(RESISTANCE_RADIANT);
+                planetar.AddEffect(RESISTANCE_NONMAGIC);
+                planetar.AddEffect(IMMUNITY_CHARMED);
+                planetar.AddEffect(IMMUNITY_EXHAUSTION);
+                planetar.AddEffect(IMMUNITY_FRIGHTENED);
                 planetar.AddFeat(Feat.ANGELIC_WEAPONS_5D8);
                 planetar.AddFeat(Feat.DIVINE_AWARENESS);
                 planetar.AddFeat(Feat.INNATE_SPELLCASTING_PLANETAR);

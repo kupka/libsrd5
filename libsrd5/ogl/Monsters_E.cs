@@ -1,114 +1,122 @@
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public partial struct Attacks {
         public static Attack EagleTalons {
             get {
-                return new Attack("Talons", 4, new Damage(DamageType.SLASHING, "1d4+2"), 5);
+                return new Attack("Talons", 4, new Damage(SLASHING, "1d4+2"), 5);
             }
         }
         public static Attack EarthElementalSlam {
             get {
-                return new Attack("Slam", 8, new Damage(DamageType.BLUDGEONING, "2d8+5"), 10);
+                return new Attack("Slam", 8, new Damage(BLUDGEONING, "2d8+5"), 10);
             }
         }
         public static Attack EfreetiHurlFlame {
             get {
-                return new Attack("Hurl Flame", 7, new Damage(DamageType.FIRE, "5d6+0"), 5);
+                return new Attack("Hurl Flame", 7, new Damage(FIRE, "5d6+0"), 5);
             }
         }
         public static Attack EfreetiScimitar {
             get {
-                return new Attack("Scimitar", 10, new Damage(DamageType.SLASHING, "2d6+6"), 5, new Damage(DamageType.FIRE, "2d6"));
+                return new Attack("Scimitar", 10, new Damage(SLASHING, "2d6+6"), 5, new Damage(FIRE, "2d6"));
             }
         }
         public static readonly AttackEffect ElephantStompEffect = delegate (Combattant attacker, Combattant target) {
-            if (!target.HasCondition(ConditionType.PRONE)) return;
+            if (!target.HasCondition(ConditionType.PRONE)) return false;
             int amount = new Dice("3d10+6").Roll(); // FIXME: Cannot crit because attack roll is not available here
-            target.TakeDamage(attacker, DamageType.BLUDGEONING, amount);
+            target.TakeDamage(attacker, BLUDGEONING, amount);
+            return false;
         };
         public static Attack ElephantStomp {
             get {
-                return new Attack("Stomp", 8, new Damage(DamageType.BLUDGEONING, 0), 5, null, ElephantStompEffect);
+                return new Attack("Stomp", 8, new Damage(BLUDGEONING, 0), 5, null, ElephantStompEffect);
             }
         }
         public static Attack ElephantGore {
             get {
-                return new Attack("Gore", 8, new Damage(DamageType.PIERCING, "3d8+6"), 5);
+                return new Attack("Gore", 8, new Damage(PIERCING, "3d8+6"), 5);
             }
         }
         public static readonly AttackEffect ElkHoovesEffect = delegate (Combattant attacker, Combattant target) {
-            if (!target.HasCondition(ConditionType.PRONE)) return;
+            if (!target.HasCondition(ConditionType.PRONE)) return false;
             int amount = new Dice("2d4+3").Roll(); // FIXME: Cannot crit because attack roll is not available here
-            target.TakeDamage(attacker, DamageType.BLUDGEONING, amount);
+            target.TakeDamage(attacker, BLUDGEONING, amount);
+            return false;
         };
         public static Attack ElkHooves {
             get {
-                return new Attack("Hooves", 5, new Damage(DamageType.BLUDGEONING, 0), 5, null, ElkHoovesEffect);
+                return new Attack("Hooves", 5, new Damage(BLUDGEONING, 0), 5, null, ElkHoovesEffect);
             }
         }
         public static Attack ElkRam {
             get {
-                return new Attack("Ram", 5, new Damage(DamageType.BLUDGEONING, "1d6+3"), 5);
+                return new Attack("Ram", 5, new Damage(BLUDGEONING, "1d6+3"), 5);
             }
         }
         public static Attack ErinyesLongsword {
             get {
-                return new Attack("Longsword", 8, new Damage(DamageType.SLASHING, "1d10+4"), 5, new Damage(DamageType.POISON, "3d8"));
+                return new Attack("Longsword", 8, new Damage(SLASHING, "1d10+4"), 5, new Damage(POISON, "3d8"));
             }
         }
         public static readonly AttackEffect ErinyesLongbowEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
+            if (target.IsImmune(POISON)) return false;
             bool success = target.DC(ErinyesLongbow, 14, AbilityType.CONSTITUTION);
-            if (success) return;
-            target.AddEffect(Effect.ERINYES_POISON);
+            if (success) return false;
+            target.AddEffect(ERINYES_POISON);
+            return false;
         };
         public static Attack ErinyesLongbow {
             get {
-                return new Attack("Longbow", 7, new Damage(DamageType.PIERCING, "1d8+3"), 5, new Damage(DamageType.POISON, "3d8"), ErinyesLongbowEffect);
+                return new Attack("Longbow", 7, new Damage(PIERCING, "1d8+3"), 5, new Damage(POISON, "3d8"), ErinyesLongbowEffect);
             }
         }
         public static readonly AttackEffect EttercapBiteEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.IsImmune(DamageType.POISON)) return;
+            if (target.IsImmune(POISON)) return false;
             bool success = target.DC(EttercapBite, 11, AbilityType.CONSTITUTION);
-            if (success) return;
-            target.AddEffect(Effect.ETTERCAP_POISON);
+            if (success) return false;
+            target.AddEffect(ETTERCAP_POISON);
             int turn = 0;
             target.AddEndOfTurnEvent(delegate () {
                 success = target.DC(EttercapBite, 11, AbilityType.CONSTITUTION);
                 if (turn++ > 10) success = true;
-                if (success) target.RemoveEffect(Effect.ETTERCAP_POISON);
+                if (success) target.RemoveEffect(ETTERCAP_POISON);
                 return success;
             });
+            return false;
         };
         public static Attack EttercapBite {
             get {
-                return new Attack("Bite", 4, new Damage(DamageType.PIERCING, "1d8+2"), 5, new Damage(DamageType.POISON, "1d8"), EttercapBiteEffect);
+                return new Attack("Bite", 4, new Damage(PIERCING, "1d8+2"), 5, new Damage(POISON, "1d8"), EttercapBiteEffect);
             }
         }
         public static readonly AttackEffect EttercapWebEffect = delegate (Combattant attacker, Combattant target) {
-            if (target.Size > Size.LARGE) return;
-            if (target.HasEffect(Effect.IMMUNITY_RESTRAINED)) return;
-            target.AddEffect(Effect.ETTERCAP_WEB);
+            if (target.Size > Size.LARGE) return false;
+            if (target.HasEffect(IMMUNITY_RESTRAINED)) return false;
+            target.AddEffect(ETTERCAP_WEB);
             // TODO: As an action, the restrained creature can make a DC 11 Strength check, escaping from the webbing on a success.
             // TODO: The effect ends if the webbing is destroyed. The webbing has AC 10, 5 hit points, is vulnerable to fire damage and immune to bludgeoning damage.
+            return false;
         };
         public static Attack EttercapWeb {
             get {
-                return new Attack("Web", 4, new Damage(DamageType.BLUDGEONING, "1d2-2"), 5, null, EttercapWebEffect);
+                return new Attack("Web", 4, new Damage(BLUDGEONING, "1d2-2"), 5, null, EttercapWebEffect);
             }
         }
         public static Attack EttercapClaws {
             get {
-                return new Attack("Claws", 4, new Damage(DamageType.SLASHING, "2d4+2"), 5);
+                return new Attack("Claws", 4, new Damage(SLASHING, "2d4+2"), 5);
             }
         }
         public static Attack EttinBattleaxe {
             get {
-                return new Attack("Battleaxe", 7, new Damage(DamageType.SLASHING, "2d8+5"), 5);
+                return new Attack("Battleaxe", 7, new Damage(SLASHING, "2d8+5"), 5);
             }
         }
         public static Attack EttinMorningstar {
             get {
-                return new Attack("Morningstar", 7, new Damage(DamageType.PIERCING, "2d8+5"), 5);
+                return new Attack("Morningstar", 7, new Damage(PIERCING, "2d8+5"), 5);
             }
         }
     }
@@ -134,14 +142,14 @@ namespace srd5 {
                     Monsters.Type.ELEMENTAL, Monsters.ID.EARTH_ELEMENTAL, Alignment.NEUTRAL, 20, 8, 20, 5, 10, 5, 17, "12d10+60", 40, 5,
                     new Attack[] { Attacks.EarthElementalSlam }, new Attack[] { }, Size.LARGE
                 );
-                earthElemental.AddEffect(Effect.VULNERABILITY_THUNDER);
-                earthElemental.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                earthElemental.AddEffect(Effect.IMMUNITY_POISON);
-                earthElemental.AddEffect(Effect.IMMUNITY_EXHAUSTION);
-                earthElemental.AddEffect(Effect.IMMUNITY_PARALYZED);
-                earthElemental.AddEffect(Effect.IMMUNITY_PETRIFIED);
-                earthElemental.AddEffect(Effect.IMMUNITY_POISONED);
-                earthElemental.AddEffect(Effect.IMMUNITY_UNCONSCIOUS);
+                earthElemental.AddEffect(VULNERABILITY_THUNDER);
+                earthElemental.AddEffect(RESISTANCE_NONMAGIC);
+                earthElemental.AddEffect(IMMUNITY_POISON);
+                earthElemental.AddEffect(IMMUNITY_EXHAUSTION);
+                earthElemental.AddEffect(IMMUNITY_PARALYZED);
+                earthElemental.AddEffect(IMMUNITY_PETRIFIED);
+                earthElemental.AddEffect(IMMUNITY_POISONED);
+                earthElemental.AddEffect(IMMUNITY_UNCONSCIOUS);
                 earthElemental.AddFeat(Feat.EARTH_GLIDE);
                 earthElemental.AddFeat(Feat.SIEGE_MONSTER);
                 return earthElemental;
@@ -158,7 +166,7 @@ namespace srd5 {
                 efreeti.AddProficiency(Proficiency.INTELLIGENCE);
                 efreeti.AddProficiency(Proficiency.WISDOM);
                 efreeti.AddProficiency(Proficiency.CHARISMA);
-                efreeti.AddEffect(Effect.IMMUNITY_FIRE);
+                efreeti.AddEffect(IMMUNITY_FIRE);
                 efreeti.AddFeat(Feat.ELEMENTAL_DEMISE_EFREETI);
                 efreeti.AddFeat(Feat.INNATE_SPELLCASTING_EFREETI);
                 return efreeti;
@@ -200,11 +208,11 @@ namespace srd5 {
                 erinyes.AddProficiency(Proficiency.CONSTITUTION);
                 erinyes.AddProficiency(Proficiency.WISDOM);
                 erinyes.AddProficiency(Proficiency.CHARISMA);
-                erinyes.AddEffect(Effect.RESISTANCE_COLD);
-                erinyes.AddEffect(Effect.RESISTANCE_NONMAGIC);
-                erinyes.AddEffect(Effect.IMMUNITY_FIRE);
-                erinyes.AddEffect(Effect.IMMUNITY_POISON);
-                erinyes.AddEffect(Effect.IMMUNITY_POISONED);
+                erinyes.AddEffect(RESISTANCE_COLD);
+                erinyes.AddEffect(RESISTANCE_NONMAGIC);
+                erinyes.AddEffect(IMMUNITY_FIRE);
+                erinyes.AddEffect(IMMUNITY_POISON);
+                erinyes.AddEffect(IMMUNITY_POISONED);
                 erinyes.AddFeat(Feat.HELLISH_WEAPONS);
                 erinyes.AddFeat(Feat.MAGIC_RESISTANCE);
                 return erinyes;

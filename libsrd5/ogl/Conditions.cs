@@ -1,4 +1,4 @@
-using System;
+using static srd5.Effect;
 
 namespace srd5 {
     public enum ConditionType {
@@ -76,46 +76,46 @@ namespace srd5 {
         }
 
         private static void applyBlinded(Combattant combattant) {
-            combattant.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
-            combattant.AddEffect(Effect.DISADVANTAGE_ON_ATTACK);
+            combattant.AddEffect(ADVANTAGE_ON_BEING_ATTACKED);
+            combattant.AddEffect(DISADVANTAGE_ON_ATTACK);
         }
 
         private static void unapplyBlinded(Combattant combattant) {
-            combattant.RemoveEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
-            combattant.RemoveEffect(Effect.DISADVANTAGE_ON_ATTACK);
+            combattant.RemoveEffect(ADVANTAGE_ON_BEING_ATTACKED);
+            combattant.RemoveEffect(DISADVANTAGE_ON_ATTACK);
         }
 
         private static void applyIncapacitated(Combattant combattant) {
-            combattant.AddEffect(Effect.CANNOT_TAKE_ACTIONS);
+            combattant.AddEffect(CANNOT_TAKE_ACTIONS);
         }
 
         private static void unapplyIncapacitated(Combattant combattant) {
-            combattant.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
+            combattant.RemoveEffect(CANNOT_TAKE_ACTIONS);
         }
 
 
         private static void applyParalyzed(Combattant combattant) {
             applyStunned(combattant);
-            combattant.AddEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
+            combattant.AddEffect(AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
         }
 
         private static void unapplyParalyzed(Combattant combattant) {
             unapplyStunned(combattant);
-            combattant.RemoveEffect(Effect.AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
+            combattant.RemoveEffect(AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
         }
 
         private static void applyStunned(Combattant combattant) {
             applyIncapacitated(combattant);
-            combattant.AddEffect(Effect.FAIL_STRENGTH_CHECK);
-            combattant.AddEffect(Effect.FAIL_DEXERITY_CHECK);
-            combattant.AddEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            combattant.AddEffect(FAIL_STRENGTH_CHECK);
+            combattant.AddEffect(FAIL_DEXERITY_CHECK);
+            combattant.AddEffect(ADVANTAGE_ON_BEING_ATTACKED);
         }
 
         private static void unapplyStunned(Combattant combattant) {
             unapplyIncapacitated(combattant);
-            combattant.RemoveEffect(Effect.FAIL_STRENGTH_CHECK);
-            combattant.RemoveEffect(Effect.FAIL_DEXERITY_CHECK);
-            combattant.RemoveEffect(Effect.ADVANTAGE_ON_BEING_ATTACKED);
+            combattant.RemoveEffect(FAIL_STRENGTH_CHECK);
+            combattant.RemoveEffect(FAIL_DEXERITY_CHECK);
+            combattant.RemoveEffect(ADVANTAGE_ON_BEING_ATTACKED);
 
         }
 

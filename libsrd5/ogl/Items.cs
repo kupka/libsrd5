@@ -1,3 +1,7 @@
+using static srd5.Die;
+using static srd5.DamageType;
+using static srd5.Effect;
+
 namespace srd5 {
     public enum WeaponProperty {
         AMMUNITION,
@@ -107,7 +111,7 @@ namespace srd5 {
                 return new Weapon(
                            "Club",
                            "1d4",
-                           DamageType.BLUDGEONING,
+                           BLUDGEONING,
                            new WeaponProperty[] { WeaponProperty.LIGHT },
                            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.CLUB },
                            10,
@@ -119,7 +123,7 @@ namespace srd5 {
         public static Weapon Dagger {
             get {
                 return new Weapon(
-                           "Dagger", "1d4", DamageType.PIERCING,
+                           "Dagger", "1d4", PIERCING,
                            new WeaponProperty[] { WeaponProperty.LIGHT, WeaponProperty.FINESSE, WeaponProperty.THROWN },
                            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.DAGGER },
                            200, 1, 20, 60
@@ -130,7 +134,7 @@ namespace srd5 {
         public static Weapon Greatclub {
             get {
                 return new Weapon(
-                           "Greatclub", "1d8", DamageType.BLUDGEONING,
+                           "Greatclub", "1d8", BLUDGEONING,
                            new WeaponProperty[] { WeaponProperty.TWO_HANDED },
                            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.GREATCLUB },
                            20, 10
@@ -141,7 +145,7 @@ namespace srd5 {
         public static Weapon Handaxe {
             get {
                 return new Weapon(
-                           "Handaxe", "1d6", DamageType.SLASHING,
+                           "Handaxe", "1d6", SLASHING,
                            new WeaponProperty[] { WeaponProperty.LIGHT, WeaponProperty.THROWN },
                            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.HANDAXE },
                            500, 2, 5, 20, 60
@@ -152,7 +156,7 @@ namespace srd5 {
         public static Weapon Javelin {
             get {
                 return new Weapon(
-                           "Javelin", "1d6", DamageType.PIERCING,
+                           "Javelin", "1d6", PIERCING,
                            new WeaponProperty[] { WeaponProperty.THROWN },
                            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.JAVELIN },
                            200, 2, 30, 120
@@ -163,7 +167,7 @@ namespace srd5 {
         public static Weapon Mace {
             get {
                 return new Weapon(
-                           "Mace", "1d6", DamageType.BLUDGEONING,
+                           "Mace", "1d6", BLUDGEONING,
                            new WeaponProperty[] { },
                            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.MACE },
                            500, 4
@@ -174,7 +178,7 @@ namespace srd5 {
         public static Weapon Quarterstaff {
             get {
                 return new Weapon(
-                           "Quarterstaff", "1d6", DamageType.BLUDGEONING,
+                           "Quarterstaff", "1d6", BLUDGEONING,
                            new WeaponProperty[] { WeaponProperty.VERSATILE },
                            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.QUARTERSTAFF },
                            20, 4
@@ -185,7 +189,7 @@ namespace srd5 {
         public static Weapon Sickle {
             get {
                 return new Weapon(
-                           "Sickle", "1d4", DamageType.SLASHING,
+                           "Sickle", "1d4", SLASHING,
                            new WeaponProperty[] { WeaponProperty.LIGHT },
                            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.SICKLE },
                            10, 2
@@ -196,7 +200,7 @@ namespace srd5 {
         public static Weapon Spear {
             get {
                 return new Weapon(
-                           "Spear", "1d6", DamageType.PIERCING,
+                           "Spear", "1d6", PIERCING,
                            new WeaponProperty[] { WeaponProperty.THROWN, WeaponProperty.VERSATILE },
                            new Proficiency[] { Proficiency.SIMPLE_MELEE_WEAPONS, Proficiency.SPEAR },
                            10, 3, 5, 20, 60
@@ -208,7 +212,7 @@ namespace srd5 {
         public static Weapon LightCrossbow {
             get {
                 return new Weapon(
-                           "Light Crossbow", "1d8", DamageType.PIERCING,
+                           "Light Crossbow", "1d8", PIERCING,
                            new WeaponProperty[] { WeaponProperty.AMMUNITION, WeaponProperty.LOADING, WeaponProperty.TWO_HANDED },
                            new Proficiency[] { Proficiency.SIMPLE_RANGED_WEAPONS, Proficiency.CROSSBOW_LIGHT },
                            2500, 5, 0, 80, 320
@@ -219,7 +223,7 @@ namespace srd5 {
         public static Weapon Dart {
             get {
                 return new Weapon(
-                           "Dart", "1d4", DamageType.PIERCING,
+                           "Dart", "1d4", PIERCING,
                            new WeaponProperty[] { WeaponProperty.THROWN, WeaponProperty.FINESSE },
                            new Proficiency[] { Proficiency.SIMPLE_RANGED_WEAPONS, Proficiency.DARTS },
                            5, 0.25f, 0, 20, 60
@@ -230,7 +234,7 @@ namespace srd5 {
         public static Weapon Shortbow {
             get {
                 return new Weapon(
-                           "Shortbow", "1d6", DamageType.PIERCING,
+                           "Shortbow", "1d6", PIERCING,
                            new WeaponProperty[] { WeaponProperty.AMMUNITION, WeaponProperty.TWO_HANDED },
                            new Proficiency[] { Proficiency.SIMPLE_RANGED_WEAPONS, Proficiency.SHORTBOW },
                            2500, 2, 0, 80, 320
@@ -241,7 +245,7 @@ namespace srd5 {
         public static Weapon Sling {
             get {
                 return new Weapon(
-                           "Sling", "1d4", DamageType.BLUDGEONING,
+                           "Sling", "1d4", BLUDGEONING,
                            new WeaponProperty[] { WeaponProperty.AMMUNITION },
                            new Proficiency[] { Proficiency.SIMPLE_RANGED_WEAPONS, Proficiency.SLING },
                            10, 0, 0, 30, 120
@@ -253,7 +257,7 @@ namespace srd5 {
         public static Weapon Battleaxe {
             get {
                 return new Weapon(
-                           "Battleaxe", "1d8", DamageType.SLASHING,
+                           "Battleaxe", "1d8", SLASHING,
                            new WeaponProperty[] { WeaponProperty.VERSATILE },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.BATTLEAXE },
                            1000, 4
@@ -264,7 +268,7 @@ namespace srd5 {
         public static Weapon Flail {
             get {
                 return new Weapon(
-                           "Greataxe", "1d8", DamageType.BLUDGEONING,
+                           "Greataxe", "1d8", BLUDGEONING,
                            new WeaponProperty[] { },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.FLAIL },
                            1000, 2
@@ -275,7 +279,7 @@ namespace srd5 {
         public static Weapon Glaive {
             get {
                 return new Weapon(
-                           "Glaive", "1d10", DamageType.SLASHING,
+                           "Glaive", "1d10", SLASHING,
                            new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY, WeaponProperty.REACH },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.GLAIVE },
                            2000, 6, 10
@@ -286,7 +290,7 @@ namespace srd5 {
         public static Weapon Greataxe {
             get {
                 return new Weapon(
-                           "Greataxe", "1d12", DamageType.SLASHING,
+                           "Greataxe", "1d12", SLASHING,
                            new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.GREATAXE },
                            3000, 7
@@ -297,7 +301,7 @@ namespace srd5 {
         public static Weapon Greatsword {
             get {
                 return new Weapon(
-                           "Greataxe", "2d6", DamageType.SLASHING,
+                           "Greataxe", "2d6", SLASHING,
                            new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.GREATSWORD },
                            5000, 6
@@ -308,7 +312,7 @@ namespace srd5 {
         public static Weapon Halberd {
             get {
                 return new Weapon(
-                           "Halberd", "1d10", DamageType.SLASHING,
+                           "Halberd", "1d10", SLASHING,
                            new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY, WeaponProperty.REACH },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.HALBERD },
                            2000, 6, 10
@@ -319,7 +323,7 @@ namespace srd5 {
         public static Weapon Lance {
             get {
                 return new Weapon(
-                           "Lance", "1d10", DamageType.PIERCING,
+                           "Lance", "1d10", PIERCING,
                            new WeaponProperty[] { WeaponProperty.REACH, WeaponProperty.SPECIAL_LANCE },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.LANCE },
                            1000, 6, 10
@@ -330,7 +334,7 @@ namespace srd5 {
         public static Weapon Longsword {
             get {
                 return new Weapon(
-                           "Longsword", "1d8", DamageType.SLASHING,
+                           "Longsword", "1d8", SLASHING,
                            new WeaponProperty[] { WeaponProperty.VERSATILE },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.LONGSWORD },
                            1500, 3
@@ -341,7 +345,7 @@ namespace srd5 {
         public static Weapon Maul {
             get {
                 return new Weapon(
-                           "Maul", "2d6", DamageType.BLUDGEONING,
+                           "Maul", "2d6", BLUDGEONING,
                            new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.MAUL },
                            1000, 10
@@ -352,7 +356,7 @@ namespace srd5 {
         public static Weapon Morningstar {
             get {
                 return new Weapon(
-                           "Morningstar", "1d8", DamageType.PIERCING,
+                           "Morningstar", "1d8", PIERCING,
                            new WeaponProperty[] { },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.MORNINGSTAR },
                            1500, 4
@@ -363,7 +367,7 @@ namespace srd5 {
         public static Weapon Pike {
             get {
                 return new Weapon(
-                           "Greataxe", "1d10", DamageType.PIERCING,
+                           "Greataxe", "1d10", PIERCING,
                            new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY, WeaponProperty.REACH },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.PIKE },
                            500, 18, 10
@@ -374,7 +378,7 @@ namespace srd5 {
         public static Weapon Rapier {
             get {
                 return new Weapon(
-                           "Rapier", "1d8", DamageType.PIERCING,
+                           "Rapier", "1d8", PIERCING,
                            new WeaponProperty[] { WeaponProperty.FINESSE },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.RAPIER },
                            2500, 2
@@ -385,7 +389,7 @@ namespace srd5 {
         public static Weapon Scimitar {
             get {
                 return new Weapon(
-                           "Scimitar", "1d6", DamageType.SLASHING,
+                           "Scimitar", "1d6", SLASHING,
                            new WeaponProperty[] { WeaponProperty.FINESSE, WeaponProperty.LIGHT },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.SCIMITAR },
                            2500, 3
@@ -396,7 +400,7 @@ namespace srd5 {
         public static Weapon Shortsword {
             get {
                 return new Weapon(
-                           "Shortsword", "1d6", DamageType.PIERCING,
+                           "Shortsword", "1d6", PIERCING,
                            new WeaponProperty[] { WeaponProperty.FINESSE, WeaponProperty.LIGHT },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.SHORTSWORD },
                            1000, 2
@@ -407,7 +411,7 @@ namespace srd5 {
         public static Weapon Trident {
             get {
                 return new Weapon(
-                           "Trident", "1d6", DamageType.PIERCING,
+                           "Trident", "1d6", PIERCING,
                            new WeaponProperty[] { WeaponProperty.VERSATILE, WeaponProperty.THROWN },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.TRIDENT },
                            500, 4, 5, 20, 60
@@ -418,7 +422,7 @@ namespace srd5 {
         public static Weapon WarPick {
             get {
                 return new Weapon(
-                           "War pick", "1d8", DamageType.PIERCING,
+                           "War pick", "1d8", PIERCING,
                            new WeaponProperty[] { },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.WAR_PICK },
                            500, 2
@@ -429,7 +433,7 @@ namespace srd5 {
         public static Weapon Warhammer {
             get {
                 return new Weapon(
-                           "Warhammer", "1d8", DamageType.BLUDGEONING,
+                           "Warhammer", "1d8", BLUDGEONING,
                            new WeaponProperty[] { WeaponProperty.VERSATILE },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.WARHAMMER },
                            1500, 2
@@ -440,7 +444,7 @@ namespace srd5 {
         public static Weapon Whip {
             get {
                 return new Weapon(
-                           "Whip", "1d4", DamageType.SLASHING,
+                           "Whip", "1d4", SLASHING,
                            new WeaponProperty[] { WeaponProperty.FINESSE, WeaponProperty.REACH },
                            new Proficiency[] { Proficiency.MARTIAL_MELEE_WEAPONS, Proficiency.WHIP },
                            200, 3, 10
@@ -453,7 +457,7 @@ namespace srd5 {
         public static Weapon Blowgun {
             get {
                 return new Weapon(
-                           "Blowgun", "1d1", DamageType.PIERCING,
+                           "Blowgun", "1d1", PIERCING,
                            new WeaponProperty[] { WeaponProperty.LOADING, WeaponProperty.AMMUNITION },
                            new Proficiency[] { Proficiency.MARTIAL_RANGED_WEAPONS, Proficiency.BLOWGUN },
                            1000, 1, 0, 25, 100
@@ -464,7 +468,7 @@ namespace srd5 {
         public static Weapon HandCrossbow {
             get {
                 return new Weapon(
-                           "Hand Crossbow", "1d6", DamageType.PIERCING,
+                           "Hand Crossbow", "1d6", PIERCING,
                            new WeaponProperty[] { WeaponProperty.LOADING, WeaponProperty.LIGHT, WeaponProperty.AMMUNITION },
                            new Proficiency[] { Proficiency.MARTIAL_RANGED_WEAPONS, Proficiency.CROSSBOW_HAND },
                            7500, 3, 0, 30, 120
@@ -475,7 +479,7 @@ namespace srd5 {
         public static Weapon HeavyCrossbow {
             get {
                 return new Weapon(
-                           "Heavy Crossbow", "1d10", DamageType.PIERCING,
+                           "Heavy Crossbow", "1d10", PIERCING,
                            new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY, WeaponProperty.AMMUNITION, WeaponProperty.LOADING },
                            new Proficiency[] { Proficiency.MARTIAL_RANGED_WEAPONS, Proficiency.CROSSBOW_HEAVY },
                            5000, 18, 0, 100, 400
@@ -486,7 +490,7 @@ namespace srd5 {
         public static Weapon Longbow {
             get {
                 return new Weapon(
-                           "Longbow", "1d8", DamageType.PIERCING,
+                           "Longbow", "1d8", PIERCING,
                            new WeaponProperty[] { WeaponProperty.TWO_HANDED, WeaponProperty.HEAVY, WeaponProperty.AMMUNITION },
                            new Proficiency[] { Proficiency.MARTIAL_RANGED_WEAPONS, Proficiency.LONGBOW },
                            5000, 2, 0, 150, 600
@@ -497,11 +501,23 @@ namespace srd5 {
         public static Weapon Net {
             get {
                 return new Weapon(
-                           "Net", "1d1-1", DamageType.BLUDGEONING,
+                           "Net", "1d1-1", BLUDGEONING,
                            new WeaponProperty[] { WeaponProperty.THROWN, WeaponProperty.SPECIAL_NET },
                            new Proficiency[] { Proficiency.MARTIAL_RANGED_WEAPONS, Proficiency.NET },
                            100, 3, 0, 5, 15
                );
+            }
+        }
+
+        // Natural Weapons from Alter Self
+        public static Weapon Claws {
+            get {
+                return new Weapon(
+                            "Claws", "1d6+1", BLUDGEONING,
+                            new WeaponProperty[] { WeaponProperty.MAGIC },
+                            new Proficiency[] { Proficiency.ANY },
+                            0, 0
+                );
             }
         }
     }
@@ -621,20 +637,20 @@ namespace srd5 {
     }
 
     public struct Rings {
-        public static Ring RingOfSwimming { get { return new Ring("Ring of Swimming", new Effect[] { Effect.SWIMMING_SPEED_40 }); } }
-        public static Ring RingOfProtection { get { return new Ring("Ring of Protection", new Effect[] { Effect.PROTECTION }); } }
+        public static Ring RingOfSwimming { get { return new Ring("Ring of Swimming", new Effect[] { SWIMMING_SPEED_40 }); } }
+        public static Ring RingOfProtection { get { return new Ring("Ring of Protection", new Effect[] { PROTECTION }); } }
     }
 
     public struct Helmets {
-        public static Helmet HeadbandOfIntellect { get { return new Helmet("Headband of Intellect", new Effect[] { Effect.INTELLIGENCE_19 }); } }
+        public static Helmet HeadbandOfIntellect { get { return new Helmet("Headband of Intellect", new Effect[] { INTELLIGENCE_19 }); } }
     }
 
     public struct Amulets {
-        public static Amulet AmuletOfHealth { get { return new Amulet("Amulet of Health", new Effect[] { Effect.CONSTITUTION_19 }); } }
+        public static Amulet AmuletOfHealth { get { return new Amulet("Amulet of Health", new Effect[] { CONSTITUTION_19 }); } }
     }
 
     public struct Bootss { // additional s because double plural ^_^
-        public static Boots BootsOfTheWinterland { get { return new Boots("Boots of the Winterland", new Effect[] { Effect.RESISTANCE_COLD, Effect.IGNORE_SNOW_PENALITY }); } }
+        public static Boots BootsOfTheWinterland { get { return new Boots("Boots of the Winterland", new Effect[] { RESISTANCE_COLD, IGNORE_SNOW_PENALITY }); } }
     }
 
     public struct Potions {
@@ -700,7 +716,7 @@ namespace srd5 {
                     Spells.MagicMissile.Cast(ground, user, 0, (SpellLevel)expendedCharges, 0, targets);
                     item.Charges -= expendedCharges;
                     if (item.Charges == 0) {
-                        int roll = Die.D20.Value;
+                        int roll = D20.Value;
                         if (roll == 1) {
                             item.Destroyed = true;
                         }

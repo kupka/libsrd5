@@ -1,34 +1,105 @@
+using System;
+using static srd5.Die;
+using static srd5.SpellVariant;
+using static srd5.SpellSchool;
+using static srd5.SpellLevel;
+using static srd5.SpellDuration;
+using static srd5.DamageType;
+using static srd5.Spells.DamageMitigation;
+using static srd5.Effect;
+using static srd5.AbilityType;
+
 namespace srd5 {
     public partial struct Spells {
         /* TODO */
-        public static readonly Spell AstralProjection = new Spell(Spells.ID.ASTRAL_PROJECTION, SpellSchool.NECROMANCY, SpellLevel.NINETH, CastingTime.ONE_HOUR, 10, VSM, SpellDuration.SPECIAL, 0, 0, doNothing);
+        public static Spell AstralProjection {
+            get {
+                return new Spell(ID.ASTRAL_PROJECTION, NECROMANCY, NINETH, CastingTime.ONE_HOUR, 10, VSM, SPECIAL, 0, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell Foresight = new Spell(Spells.ID.FORESIGHT, SpellSchool.DIVINATION, SpellLevel.NINETH, CastingTime.ONE_MINUTE, 0, VSM, SpellDuration.EIGHT_HOURS, 0, 0, doNothing);
+        public static Spell Foresight {
+            get {
+                return new Spell(ID.FORESIGHT, DIVINATION, NINETH, CastingTime.ONE_MINUTE, 0, VSM, EIGHT_HOURS, 0, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell Gate = new Spell(Spells.ID.GATE, SpellSchool.CONJURATION, SpellLevel.NINETH, CastingTime.ONE_ACTION, 60, VSM, SpellDuration.ONE_MINUTE, 0, 0, doNothing);
+        public static Spell Gate {
+            get {
+                return new Spell(ID.GATE, CONJURATION, NINETH, CastingTime.ONE_ACTION, 60, VSM, ONE_MINUTE, 0, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell Imprisonment = new Spell(Spells.ID.IMPRISONMENT, SpellSchool.ABJURATION, SpellLevel.NINETH, CastingTime.ONE_MINUTE, 30, VSM, SpellDuration.UNTIL_DISPELLED, 0, 0, doNothing);
+        public static Spell Imprisonment {
+            get {
+                return new Spell(ID.IMPRISONMENT, ABJURATION, NINETH, CastingTime.ONE_MINUTE, 30, VSM, UNTIL_DISPELLED, 0, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell MassHeal = new Spell(Spells.ID.MASS_HEAL, SpellSchool.CONJURATION, SpellLevel.NINETH, CastingTime.ONE_ACTION, 60, VS, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        public static Spell MassHeal {
+            get {
+                return new Spell(ID.MASS_HEAL, CONJURATION, NINETH, CastingTime.ONE_ACTION, 60, VS, INSTANTANEOUS, 0, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell MeteorSwarm = new Spell(Spells.ID.METEOR_SWARM, SpellSchool.EVOCATION, SpellLevel.NINETH, CastingTime.ONE_ACTION, 5280, VS, SpellDuration.INSTANTANEOUS, 40, 0, doNothing);
+        public static Spell MeteorSwarm {
+            get {
+                return new Spell(ID.METEOR_SWARM, EVOCATION, NINETH, CastingTime.ONE_ACTION, 5280, VS, INSTANTANEOUS, 40, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell PowerWordKill = new Spell(Spells.ID.POWER_WORD_KILL, SpellSchool.ENCHANTMENT, SpellLevel.NINETH, CastingTime.ONE_ACTION, 60, V, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        public static Spell PowerWordKill {
+            get {
+                return new Spell(ID.POWER_WORD_KILL, ENCHANTMENT, NINETH, CastingTime.ONE_ACTION, 60, V, INSTANTANEOUS, 0, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell PrismaticWall = new Spell(Spells.ID.PRISMATIC_WALL, SpellSchool.ABJURATION, SpellLevel.NINETH, CastingTime.ONE_ACTION, 60, VS, SpellDuration.TEN_MINUTES, 90, 0, doNothing);
+        public static Spell PrismaticWall {
+            get {
+                return new Spell(ID.PRISMATIC_WALL, ABJURATION, NINETH, CastingTime.ONE_ACTION, 60, VS, TEN_MINUTES, 90, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell Shapechange = new Spell(Spells.ID.SHAPECHANGE, SpellSchool.TRANSMUTATION, SpellLevel.NINETH, CastingTime.ONE_ACTION, 0, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+        public static Spell Shapechange {
+            get {
+                return new Spell(ID.SHAPECHANGE, TRANSMUTATION, NINETH, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell StormOfVengeance = new Spell(Spells.ID.STORM_OF_VENGEANCE, SpellSchool.CONJURATION, SpellLevel.NINETH, CastingTime.ONE_ACTION, 1000, VS, SpellDuration.ONE_MINUTE, 360, 0, doNothing);
+        public static Spell StormOfVengeance {
+            get {
+                return new Spell(ID.STORM_OF_VENGEANCE, CONJURATION, NINETH, CastingTime.ONE_ACTION, 1000, VS, ONE_MINUTE, 360, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell TimeStop = new Spell(Spells.ID.TIME_STOP, SpellSchool.TRANSMUTATION, SpellLevel.NINETH, CastingTime.ONE_ACTION, 0, V, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        public static Spell TimeStop {
+            get {
+                return new Spell(ID.TIME_STOP, TRANSMUTATION, NINETH, CastingTime.ONE_ACTION, 0, V, INSTANTANEOUS, 0, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell TruePolymorph = new Spell(Spells.ID.TRUE_POLYMORPH, SpellSchool.TRANSMUTATION, SpellLevel.NINETH, CastingTime.ONE_ACTION, 30, VSM, SpellDuration.ONE_HOUR, 0, 0, doNothing);
+        public static Spell TruePolymorph {
+            get {
+                return new Spell(ID.TRUE_POLYMORPH, TRANSMUTATION, NINETH, CastingTime.ONE_ACTION, 30, VSM, ONE_HOUR, 0, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell TrueResurrection = new Spell(Spells.ID.TRUE_RESURRECTION, SpellSchool.NECROMANCY, SpellLevel.NINETH, CastingTime.ONE_HOUR, 0, VSM, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        public static Spell TrueResurrection {
+            get {
+                return new Spell(ID.TRUE_RESURRECTION, NECROMANCY, NINETH, CastingTime.ONE_HOUR, 0, VSM, INSTANTANEOUS, 0, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell Weird = new Spell(Spells.ID.WEIRD, SpellSchool.ILLUSION, SpellLevel.NINETH, CastingTime.ONE_ACTION, 120, VS, SpellDuration.ONE_MINUTE, 30, 0, doNothing);
+        public static Spell Weird {
+            get {
+                return new Spell(ID.WEIRD, ILLUSION, NINETH, CastingTime.ONE_ACTION, 120, VS, ONE_MINUTE, 30, 0, doNothing);
+            }
+        }
         /* TODO */
-        public static readonly Spell Wish = new Spell(Spells.ID.WISH, SpellSchool.CONJURATION, SpellLevel.NINETH, CastingTime.ONE_ACTION, 0, V, SpellDuration.INSTANTANEOUS, 0, 0, doNothing);
+        public static Spell Wish {
+            get {
+                return new Spell(ID.WISH, CONJURATION, NINETH, CastingTime.ONE_ACTION, 0, V, INSTANTANEOUS, 0, 0, doNothing);
+            }
+        }
     }
 }

@@ -1,5 +1,8 @@
 namespace srd5 {
     public enum Proficiency {
+        // Special
+        ANY, // everyone is proficient
+        NONE, // no one is proficient
         // Armor
         LIGHT_ARMOR, MEDIUM_ARMOR, HEAVY_ARMOR,
         // Shields

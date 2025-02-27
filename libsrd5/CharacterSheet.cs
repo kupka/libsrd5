@@ -1,4 +1,6 @@
 using System;
+using static srd5.Effect;
+using static srd5.AbilityType;
 
 namespace srd5 {
     public class CharacterLevel {
@@ -63,11 +65,11 @@ namespace srd5 {
         public int AbilityPoints { get; internal set; }
         public int Attacks {
             get {
-                if (HasEffect(Effect.THREE_EXTRA_ATTACKS))
+                if (HasEffect(THREE_EXTRA_ATTACKS))
                     return 4;
-                else if (HasEffect(Effect.TWO_EXTRA_ATTACKS))
+                else if (HasEffect(TWO_EXTRA_ATTACKS))
                     return 3;
-                else if (HasEffect(Effect.ONE_EXTRA_ATTACK))
+                else if (HasEffect(ONE_EXTRA_ATTACK))
                     return 2;
                 else
                     return 1;
@@ -83,7 +85,11 @@ namespace srd5 {
                     Shield shield = shield1;
                     ac += shield.AC;
                 }
-                return ac + ArmorClassModifier;
+                ac += ArmorClassModifier;
+                if (HasEffect(SPELL_BARKSKIN) && ac < 16)
+                    return 16;
+                else
+                    return ac;
             }
             internal set {
                 throw new Srd5Exception("Cannot set Armorclass directly.");
@@ -93,7 +99,7 @@ namespace srd5 {
         public override int HitPointsMax {
             get {
                 int hp = 0;
-                int additionalHp = HasEffect(Effect.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
+                int additionalHp = HasEffect(ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
                 foreach (Die die in hitDice) {
                     hp += die.Value + Constitution.Modifier + additionalHp;
                 }
@@ -166,19 +172,19 @@ namespace srd5 {
         public int GetSkillModifier(Skill skill) {
             int modifier = 0;
             switch (skill.Ability()) {
-                case AbilityType.STRENGTH:
+                case STRENGTH:
                     modifier += Strength.Modifier;
                     break;
-                case AbilityType.CHARISMA:
+                case CHARISMA:
                     modifier += Charisma.Modifier;
                     break;
-                case AbilityType.DEXTERITY:
+                case DEXTERITY:
                     modifier += Dexterity.Modifier;
                     break;
-                case AbilityType.INTELLIGENCE:
+                case INTELLIGENCE:
                     modifier += Intelligence.Modifier;
                     break;
-                case AbilityType.WISDOM:
+                case WISDOM:
                     modifier += Wisdom.Modifier;
                     break;
             }
@@ -291,8 +297,8 @@ namespace srd5 {
             Inventory.RemoveFromBag(armor);
             Inventory.Armor = armor;
             // calculate speed penality if applicable
-            if (!HasEffect(Effect.NO_SPEED_PENALITY_FOR_HEAVY_ARMOR) && armor.Strength > Strength.Value) {
-                AddEffect(Effect.HEAVY_ARMOR_SPEED_PENALITY);
+            if (!HasEffect(NO_SPEED_PENALITY_FOR_HEAVY_ARMOR) && armor.Strength > Strength.Value) {
+                AddEffect(HEAVY_ARMOR_SPEED_PENALITY);
             }
         }
 
@@ -388,7 +394,7 @@ namespace srd5 {
                     break;
                 case ItemType.ARMOR:
                     Inventory.Armor = null;
-                    RemoveEffect(Effect.HEAVY_ARMOR_SPEED_PENALITY);
+                    RemoveEffect(HEAVY_ARMOR_SPEED_PENALITY);
                     break;
                 case ItemType.HELMET:
                     Inventory.Helmet = null;
@@ -418,8 +424,8 @@ namespace srd5 {
         }
 
         public void AddLevel(CharacterClass characterClass) {
-            Die die = srd5.Die.Get(characterClass.HitDie);
-            int additionalHp = HasEffect(Effect.ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
+            Die die = srd5.Die.D(characterClass.HitDie);
+            int additionalHp = HasEffect(ADDITIONAL_HP_PER_LEVEL) ? 1 : 0;
             EffectiveLevel++;
             foreach (CharacterLevel level in levels) {
                 if (level.Class.Class == characterClass.Class) {
@@ -463,7 +469,7 @@ namespace srd5 {
         }
 
         private void updateAvailableSpells(CharacterLevel level) {
-            if (level.Class.SpellCastingAbility == AbilityType.NONE) return;
+            if (level.Class.SpellCastingAbility == NONE) return;
             AvailableSpells spells = null;
             // find the applicable entry for this class
             foreach (AvailableSpells available in AvailableSpells) {
@@ -508,22 +514,22 @@ namespace srd5 {
             if (AbilityPoints == 0) return;
             AbilityPoints--;
             switch (type) {
-                case AbilityType.STRENGTH:
+                case STRENGTH:
                     Strength.BaseValue++;
                     break;
-                case AbilityType.DEXTERITY:
+                case DEXTERITY:
                     Dexterity.BaseValue++;
                     break;
-                case AbilityType.CONSTITUTION:
+                case CONSTITUTION:
                     Constitution.BaseValue++;
                     break;
-                case AbilityType.WISDOM:
+                case WISDOM:
                     Wisdom.BaseValue++;
                     break;
-                case AbilityType.INTELLIGENCE:
+                case INTELLIGENCE:
                     Intelligence.BaseValue++;
                     break;
-                case AbilityType.CHARISMA:
+                case CHARISMA:
                     Charisma.BaseValue++;
                     break;
             }

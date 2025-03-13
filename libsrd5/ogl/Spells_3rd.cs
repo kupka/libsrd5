@@ -11,34 +11,121 @@ using static srd5.AbilityType;
 
 namespace srd5 {
     public partial struct Spells {
-        /* TODO */
         public static Spell AnimateDead {
             get {
-                return new Spell(ID.ANIMATE_DEAD, NECROMANCY, THIRD, CastingTime.ONE_MINUTE, 10, VSM, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.ANIMATE_DEAD, NECROMANCY, THIRD, CastingTime.ONE_MINUTE, 10, VSM, INSTANTANEOUS, 0, 13, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    // TODO: Targetting bone piles to create skeletons requires objects on the battleground that aren't combattants
+                    int maxTargets = ((int)slot - 3) * 2 + 1;
+                    for (int i = 0; i < maxTargets && i < targets.Length; i++) {
+                        Combattant target = targets[i];
+                        // Only dead, small or medium humanoids can be targetted
+                        if (target.Dead && (target.Size == Size.MEDIUM || target.Size == Size.SMALL) && (target is CharacterSheet || (target is Monster monster && monster.Type == Monsters.Type.HUMANOID)) && !target.HasEffect(SPELL_ANIMATE_DEAD)) {
+                            GlobalEvents.AffectBySpell(caster, ID.ANIMATE_DEAD, target, true);
+                            target.AddEffect(SPELL_ANIMATE_DEAD);
+                            if (ground is Battleground2D battleground2D) {
+                                Coord location = battleground2D.LocateCombattant2D(target);
+                                battleground2D.AddCombattant(Monsters.Zombie, location.X, location.Y);
+                                // TODO: Add logic to put the Zombie under the caster's control
+                            } else if (ground is BattleGroundClassic battleGroundClassic) {
+                                ClassicLocation location = battleGroundClassic.LocateClassicCombattant(target);
+                                battleGroundClassic.AddCombattant(Monsters.Zombie, location.Location);
+                            }
+                        } else {
+                            GlobalEvents.AffectBySpell(caster, ID.ANIMATE_DEAD, target, false);
+                        }
+                    }
+                });
             }
         }
-        /* TODO */
+
         public static Spell BeaconOfHope {
             get {
-                return new Spell(ID.BEACON_OF_HOPE, ABJURATION, THIRD, CastingTime.ONE_ACTION, 30, VS, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.BEACON_OF_HOPE, ABJURATION, THIRD, CastingTime.ONE_ACTION, 30, VS, ONE_MINUTE, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    foreach (Combattant target in targets) {
+                        AddEffectsForDuration(ID.BEACON_OF_HOPE, caster, target, ONE_MINUTE, SPELL_BEACON_OF_HOPE);
+                    }
+                });
             }
         }
-        /* TODO */
+
         public static Spell BestowCurse {
             get {
-                return new Spell(ID.BESTOW_CURSE, NECROMANCY, THIRD, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 0, doNothing);
+                Spell curse = new Spell(ID.BESTOW_CURSE, NECROMANCY, THIRD, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 1);
+                SpellCastEffect castEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    if (target.DC(ID.BESTOW_CURSE, dc, WISDOM)) {
+                        GlobalEvents.AffectBySpell(caster, ID.BESTOW_CURSE, target, false);
+                        return;
+                    }
+                    SpellDuration duration = ONE_MINUTE;
+                    if (slot == NINETH) duration = UNTIL_DISPELLED;
+                    else if (slot > SIXTH) duration = ONE_DAY;
+                    else if (slot > FOURTH) duration = EIGHT_HOURS;
+                    else if (slot > THIRD) duration = TEN_MINUTES;
+                    switch (curse.Variant) {
+                        case SpellVariant.DISADVANTAGE_CHARISMA_SAVES:
+                        case SpellVariant.DISADVANTAGE_CONSTITUTION_SAVES:
+                        case SpellVariant.DISADVANTAGE_DEXTERITY_SAVES:
+                        case SpellVariant.DISADVANTAGE_INTELLIGENCE_SAVES:
+                        case SpellVariant.DISADVANTAGE_STRENGTH_SAVES:
+                        case SpellVariant.DISADVANTAGE_WISDOM_SAVES:
+                        case SpellVariant.DISADVANTAGE_ON_ATTACK:
+                            AddEffectsForDuration(ID.BESTOW_CURSE, caster, target, duration, SPELL_BESTOW_CURSE, (Effect)Enum.Parse(typeof(Effect), Enum.GetName(typeof(SpellVariant), curse.Variant)));
+                            break;
+                        case SpellVariant.LOSE_TURN_ON_FAILED_WISDOM_SAVE:
+                            AddEffectsForDuration(ID.BESTOW_CURSE, caster, target, duration, SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE);
+                            target.AddStartOfTurnEvent(delegate () {
+                                if (!target.HasEffect(SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE)) return true;
+                                if (!target.DC(SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE, dc, WISDOM)) {
+                                    target.AddEffect(SPELL_BESTOW_CURSE_LOST_TURN);
+                                }
+                                return true;
+                            });
+                            break;
+                        case SpellVariant.TAKE_ADDITIONAL_DAMAGE:
+                            AddEffectsForDuration(ID.BESTOW_CURSE, caster, target, duration, SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE);
+                            target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
+                                if (!target.HasEffect(SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE)) return true;
+                                if (source.Equals(caster)) {
+                                    target.TakeDamage(new DamageSource(ID.BESTOW_CURSE, caster), NECROTIC, D8);
+                                }
+                                return false;
+                            });
+                            break;
+                    }
+                };
+                curse.CastEffect = castEffect;
+                return curse;
             }
         }
-        /* TODO */
+
         public static Spell Blink {
             get {
-                return new Spell(ID.BLINK, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.BLINK, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    GlobalEvents.AffectBySpell(caster, ID.BLINK, caster, true);
+                    int remainingRounds = (int)ONE_MINUTE;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds < 1) return true;
+                        int roll = D20.Value;
+                        if (roll > 11) {
+                            caster.AddEffect(CANNOT_BE_ATTACKED);
+                            caster.AddStartOfTurnEvent(delegate () {
+                                caster.RemoveEffect(CANNOT_BE_ATTACKED);
+                                return true;
+                            });
+                        }
+                        return false;
+                    });
+                });
             }
         }
-        /* TODO */
+
         public static Spell CallLightning {
             get {
-                return new Spell(ID.CALL_LIGHTNING, CONJURATION, THIRD, CastingTime.ONE_ACTION, 120, VS, TEN_MINUTES, 5, 0, doNothing);
+                // TODO: If you are outdoors in stormy conditions when you cast this spell, the spell gives you control over the existing storm 
+                // instead of creating a new one. Under such conditions, the spell's damage increases by 1d10.
+                return new Spell(ID.CALL_LIGHTNING, CONJURATION, THIRD, CastingTime.ONE_ACTION, 120, VS, TEN_MINUTES, 5, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                });
             }
         }
         /* TODO */

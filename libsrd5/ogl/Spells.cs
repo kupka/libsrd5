@@ -80,6 +80,16 @@ namespace srd5 {
         PARALYZATION,
         POISONS,
         DISEASES,
+        // Bestow Curse
+        DISADVANTAGE_CHARISMA_SAVES,
+        DISADVANTAGE_CONSTITUTION_SAVES,
+        DISADVANTAGE_DEXTERITY_SAVES,
+        DISADVANTAGE_INTELLIGENCE_SAVES,
+        DISADVANTAGE_ON_ATTACK,
+        DISADVANTAGE_STRENGTH_SAVES,
+        DISADVANTAGE_WISDOM_SAVES,
+        LOSE_TURN_ON_FAILED_WISDOM_SAVE,
+        TAKE_ADDITIONAL_DAMAGE
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);
@@ -509,11 +519,12 @@ namespace srd5 {
                 attack = new Attack(id.Name(), bonus, new Damage(damageType, 0), 0, range, range);
             int distance = ground.Distance(caster, target);
             bool hit = caster.Attack(attack, target, distance, true, true, dCEffect, dc, AbilityType.NONE, out dcResult);
+            DamageSource source = new DamageSource(DamageSourceType.SPELL, id, caster);
             if (missEffect == DamageMitigation.NULLIFIES_DAMAGE) {
                 GlobalEvents.AffectBySpell(caster, id, target, hit);
             } else if (missEffect == DamageMitigation.HALVES_DAMAGE) {
                 GlobalEvents.AffectBySpell(caster, id, target, true);
-                target.TakeDamage(id, damageType, attack.Damage.Dice.Roll() / 2);
+                target.TakeDamage(source, damageType, attack.Damage.Dice.Roll() / 2);
             }
             return hit;
         }

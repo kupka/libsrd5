@@ -182,7 +182,7 @@ namespace srd5 {
                 badger2.OnEndOfTurn();
             }
             // wake up after damage taken
-            badger3.OnDamageTaken(hero, new Damage(DamageType.TRUE_DAMAGE, 1));
+            badger3.OnDamageTaken(new DamageSource(Attacks.NightHagClaws, hag), new Damage(DamageType.TRUE_DAMAGE, 1));
             badger3.OnEndOfTurn();
             Assert.False(badger2.HasCondition(ConditionType.UNCONSCIOUS));
             Assert.False(badger3.HasCondition(ConditionType.UNCONSCIOUS));
@@ -194,14 +194,14 @@ namespace srd5 {
         public void FalseLifeTest() {
             Monster hag = Monsters.NightHag;
             Spells.FalseLife.Cast(hag, 0, SpellLevel.FIRST, 0);
-            hag.TakeDamage(this, DamageType.FIRE, 1);
+            hag.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hag), DamageType.FIRE, 1);
             Assert.Equal(hag.HitPointsMax, hag.HitPoints);
-            hag.TakeDamage(this, DamageType.FIRE, 30);
+            hag.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hag), DamageType.FIRE, 30);
             Assert.True(hag.HitPointsMax > hag.HitPoints);
             hag.HealDamage(100);
             Spells.FalseLife.Cast(hag, 0, SpellLevel.NINETH, 0);
             Spells.FalseLife.Cast(hag, 0, SpellLevel.THIRD, 0);
-            hag.TakeDamage(this, DamageType.FIRE, 30);
+            hag.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hag), DamageType.FIRE, 30);
             Assert.Equal(hag.HitPointsMax, hag.HitPoints);
         }
 

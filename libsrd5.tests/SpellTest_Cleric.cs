@@ -6,7 +6,7 @@ namespace srd5 {
         public void SpareTheDyingTest() {
             CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             hero.AddLevel(CharacterClasses.Barbarian);
-            hero.TakeDamage(this, DamageType.TRUE_DAMAGE, hero.HitPointsMax);
+            hero.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hero), DamageType.TRUE_DAMAGE, hero.HitPointsMax);
             Assert.True(hero.HasEffect(Effect.FIGHTING_DEATH));
             Spells.SpareTheDying.Cast(hero, 16, SpellLevel.CANTRIP, 0);
             hero.OnStartOfTurn();
@@ -147,10 +147,10 @@ namespace srd5 {
             Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
-            bandit.TakeDamage(this, DamageType.BLUDGEONING, 10);
+            bandit.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, cleric), DamageType.BLUDGEONING, 10);
             Assert.True(cleric.HitPoints == cleric.HitPointsMax - 5);
             Assert.True(bandit.HitPoints == bandit.HitPointsMax - 5);
-            cleric.TakeDamage(this, DamageType.POISON, 100);
+            cleric.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, bandit), DamageType.POISON, 100);
             Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.False(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
         }
@@ -199,7 +199,7 @@ namespace srd5 {
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
             cleric.RemoveEffect(Effect.SPELL_WARDING_BOND_CASTER);
-            bandit.TakeDamage(this, DamageType.TRUE_DAMAGE, 2);
+            bandit.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, cleric), DamageType.TRUE_DAMAGE, 2);
             Assert.False(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
         }
 
@@ -214,7 +214,7 @@ namespace srd5 {
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
             cleric.RemoveEffect(Effect.SPELL_WARDING_BOND_CASTER);
-            cleric.TakeDamage(this, DamageType.TRUE_DAMAGE, 2);
+            cleric.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, bandit), DamageType.TRUE_DAMAGE, 2);
             Assert.False(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
         }
 
@@ -244,7 +244,7 @@ namespace srd5 {
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
             bandit.RemoveEffect(Effect.SPELL_WARDING_BOND);
-            bandit.TakeDamage(this, DamageType.TRUE_DAMAGE, 2);
+            bandit.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, cleric), DamageType.TRUE_DAMAGE, 2);
             Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
         }
 
@@ -259,7 +259,7 @@ namespace srd5 {
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
             bandit.RemoveEffect(Effect.SPELL_WARDING_BOND);
-            cleric.TakeDamage(this, DamageType.TRUE_DAMAGE, 2);
+            cleric.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, bandit), DamageType.TRUE_DAMAGE, 2);
             Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
         }
 

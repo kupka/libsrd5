@@ -67,7 +67,7 @@ namespace srd5 {
                 return new Spell(ID.BURNING_HANDS, EVOCATION, FIRST, CastingTime.ONE_ACTION, 0, VS, INSTANTANEOUS, 15, 4, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Dice dice = DiceSlotScaling(FIRST, slot, D6, 3);
                     foreach (Combattant target in targets) {
-                        target.TakeDamage(ID.BURNING_HANDS, FIRE, dice.Roll(), HALVES_DAMAGE, dc, DEXTERITY, out _);
+                        target.TakeDamage(new DamageSource(ID.BURNING_HANDS, caster), FIRE, dice.Roll(), HALVES_DAMAGE, dc, DEXTERITY, out _);
                         GlobalEvents.AffectBySpell(caster, ID.BURNING_HANDS, target, true);
                     }
                 });
@@ -181,7 +181,7 @@ namespace srd5 {
                         }
                         Dice dice = DiceSlotScaling(FIRST, slot, D8, 1, modifier);
                         GlobalEvents.AffectBySpell(caster, ID.CURE_WOUNDS, target, true);
-                        target.HealDamage(dice.Roll());
+                        target.HealDamage(dice);
                     }
                 );
             }
@@ -378,7 +378,7 @@ namespace srd5 {
                         }
                         Dice healed = DiceSlotScaling(FIRST, slot, D4, 1, modifier);
                         GlobalEvents.AffectBySpell(caster, ID.HEALING_WORD, target, true);
-                        target.HealDamage(healed.Roll());
+                        target.HealDamage(healed);
                     }
                 );
             }
@@ -390,7 +390,7 @@ namespace srd5 {
                     // TODO: Should only affect targets that damaged the caster but we can't determine this here
                     Dice dice = DiceSlotScaling(FIRST, slot, D10, 2);
                     Combattant target = targets[0];
-                    target.TakeDamage(ID.HELLISH_REBUKE, FIRE, dice.Roll(), HALVES_DAMAGE, dc, DEXTERITY, out _);
+                    target.TakeDamage(new DamageSource(ID.HELLISH_REBUKE, caster), FIRE, dice.Roll(), HALVES_DAMAGE, dc, DEXTERITY, out _);
                     GlobalEvents.AffectBySpell(caster, ID.HELLISH_REBUKE, target, true);
                 });
             }
@@ -431,7 +431,7 @@ namespace srd5 {
                         target.AddEffect(SPELL_HIDEOUS_LAUGHTER);
                         int remainingRounds = 10;
                         bool madeDC = false;
-                        target.AddDamageTakenEvent(delegate (object source, Damage damage) {
+                        target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
                             if (madeDC) {
                                 return true;
                             } else if (target.DC(ID.HIDEOUS_LAUGHTER, dc, WISDOM, out _, true)) {
@@ -465,9 +465,9 @@ namespace srd5 {
             get {
                 return new Spell(ID.HUNTERS_MARK, DIVINATION, FIRST, CastingTime.BONUS_ACTION, 90, V, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
-                    target.AddDamageTakenEvent(delegate (object source, Damage damage) {
-                        if (caster.Equals(source)) {
-                            target.TakeDamage(ID.HUNTERS_MARK, TRUE_DAMAGE, "1d6");
+                    target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
+                        if (caster.Equals(source.Source)) {
+                            target.TakeDamage(new DamageSource(DamageSourceType.SPELL, ID.HUNTERS_MARK, null), TRUE_DAMAGE, "1d6");
                         }
                         return false;
                     });
@@ -560,9 +560,9 @@ namespace srd5 {
                             missilesTotal -= bonusMissiles;
                             for (int m = 0; m < missilesTotal / targets.Length + bonusMissiles; m++) {
                                 if (target.HasEffect(SPELL_SHIELD)) {
-                                    target.TakeDamage(ID.MAGIC_MISSILE, damage.Type, 0);
+                                    target.TakeDamage(new DamageSource(ID.MAGIC_MISSILE, caster), damage.Type, 0);
                                 } else {
-                                    target.TakeDamage(ID.MAGIC_MISSILE, damage.Type, damage.Dice.Roll());
+                                    target.TakeDamage(new DamageSource(ID.MAGIC_MISSILE, caster), damage.Type, damage.Dice);
                                 }
                             }
                         }
@@ -666,7 +666,7 @@ namespace srd5 {
                             remainingHitpoints -= target.HitPoints;
                             target.AddCondition(ConditionType.UNCONSCIOUS);
                             bool targetTookDamage = false;
-                            target.AddDamageTakenEvent(delegate (object source, Damage damage) {
+                            target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
                                 targetTookDamage = true;
                                 return true;
                             });
@@ -701,7 +701,7 @@ namespace srd5 {
                         Dice dice = DiceSlotScaling(FIRST, slot, D8);
                         foreach (Combattant target in targets) {
                             GlobalEvents.AffectBySpell(caster, ID.THUNDERWAVE, target, true);
-                            target.TakeDamage(ID.THUNDERWAVE, THUNDER, dice, HALVES_DAMAGE, dc, CONSTITUTION, out bool dcResult);
+                            target.TakeDamage(new DamageSource(ID.THUNDERWAVE, caster), THUNDER, dice, HALVES_DAMAGE, dc, CONSTITUTION, out bool dcResult);
                             if (!dcResult) {
                                 ground.Push(ground.LocateCombattant(caster), target, 10);
                             }

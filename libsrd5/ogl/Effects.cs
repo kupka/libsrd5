@@ -76,6 +76,7 @@ namespace srd5 {
         // Advantage on Save Throws/Skill Checks
         ADVANTAGE_POISON_SAVES,
         ADVANTAGE_CHARM_SAVES,
+        ADVANTAGE_DEATH_SAVES,
         ADVANTAGE_CONSTITUTION_SAVES,
         ADVANTAGE_STRENGTH_SAVES,
         ADVANTAGE_DEXTERITY_SAVES,
@@ -101,6 +102,7 @@ namespace srd5 {
         THREE_EXTRA_ATTACKS,
         CANNOT_MELEE_ATTACK,
         CANNOT_BE_MELEE_ATTACKED,
+        CANNOT_BE_ATTACKED,
         // Movement
         NO_SPEED_PENALITY_FOR_HEAVY_ARMOR,
         HEAVY_ARMOR_SPEED_PENALITY,
@@ -137,8 +139,14 @@ namespace srd5 {
         SPELL_AID,
         SPELL_ALTER_SELF_CLAWS,
         SPELL_ANIMAL_FRIENDSHIP,
+        SPELL_ANIMATE_DEAD,
         SPELL_BANE,
         SPELL_BARKSKIN,
+        SPELL_BEACON_OF_HOPE,
+        SPELL_BESTOW_CURSE,
+        SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE,
+        SPELL_BESTOW_CURSE_LOST_TURN,
+        SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE,
         SPELL_BLESS,
         SPELL_BLINDNESS_DEAFNESS,
         SPELL_BLUR,
@@ -262,6 +270,7 @@ namespace srd5 {
             int turn = 0;
             int duration;
             int dc;
+            DamageSource source = new DamageSource(DamageSourceType.ATTACK, effect, combattant);
             switch (effect) {
                 case HEAVY_ARMOR_SPEED_PENALITY:
                     combattant.Speed -= 10;
@@ -312,7 +321,7 @@ namespace srd5 {
                 case FIRE_ELEMENTAL_IGNITE:
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (!combattant.HasEffect(effect)) return true;
-                        combattant.TakeDamage(effect, FIRE, "1d10");
+                        combattant.TakeDamage(source, FIRE, D10);
                         return false;
                     });
                     break;
@@ -350,7 +359,7 @@ namespace srd5 {
                 case MAGMIN_IGNITE:
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (!combattant.HasEffect(effect)) return true;
-                        combattant.TakeDamage(effect, FIRE, "1d6");
+                        combattant.TakeDamage(source, FIRE, D6);
                         return false;
                     });
                     break;
@@ -369,7 +378,7 @@ namespace srd5 {
                     combattant.AddEffect(CANNOT_REGAIN_HITPOINTS);
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (!combattant.HasEffect(effect)) return true;
-                        combattant.TakeDamage(effect, POISON, "6d6");
+                        combattant.TakeDamage(source, POISON, 6 * D6);
                         return false;
                     });
                     combattant.AddEndOfTurnEvent(delegate () {
@@ -407,7 +416,7 @@ namespace srd5 {
                     if (!combattant.HasEffect(IMMUNITY_BLINDED)) combattant.AddCondition(ConditionType.BLINDED);
                     combattant.AddStartOfTurnEvent(delegate () {
                         if (combattant.HasCondition(ConditionType.GRAPPLED_DC13)) {
-                            combattant.TakeDamage(effect, BLUDGEONING, "2d6+3");
+                            combattant.TakeDamage(source, BLUDGEONING, 2 * D6 + 3);
                             return false;
                         } else {
                             return true;
@@ -423,6 +432,9 @@ namespace srd5 {
                         }
                         // Death Save is DC10 with no Ability
                         int deathSaveRoll = D20.Value;
+                        if (combattant.HasEffect(ADVANTAGE_DEATH_SAVES)) {
+                            deathSaveRoll = Math.Max(deathSaveRoll, D20.Value);
+                        }
                         bool success = deathSaveRoll > 9;
                         GlobalEvents.RolledDC(combattant, FIGHTING_DEATH, new Ability(AbilityType.NONE, 9), 10, deathSaveRoll, success);
                         if (success) {
@@ -519,6 +531,16 @@ namespace srd5 {
                     break;
                 case SPELL_WARDING_BOND:
                     combattant.AddEffect(RESISTANCE_ANY_DAMAGE);
+                    break;
+                case SPELL_BEACON_OF_HOPE:
+                    combattant.AddEffect(ADVANTAGE_WISDOM_SAVES, ADVANTAGE_DEATH_SAVES);
+                    break;
+                case SPELL_BESTOW_CURSE_LOST_TURN:
+                    combattant.AddEffect(CANNOT_TAKE_ACTIONS);
+                    combattant.AddEndOfTurnEvent(delegate () {
+                        combattant.RemoveEffect(SPELL_BESTOW_CURSE_LOST_TURN);
+                        return true;
+                    });
                     break;
             }
         }
@@ -661,6 +683,12 @@ namespace srd5 {
                     break;
                 case SPELL_WARDING_BOND:
                     combattant.RemoveEffect(RESISTANCE_ANY_DAMAGE);
+                    break;
+                case SPELL_BEACON_OF_HOPE:
+                    combattant.RemoveEffect(ADVANTAGE_WISDOM_SAVES, ADVANTAGE_DEATH_SAVES);
+                    break;
+                case SPELL_BESTOW_CURSE_LOST_TURN:
+                    combattant.RemoveEffect(CANNOT_TAKE_ACTIONS);
                     break;
             }
         }

@@ -658,7 +658,7 @@ namespace srd5 {
             get {
                 return new Consumable("Potion of Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
                     Dice healing = new Dice("2d4+2");
-                    consumer.HealDamage(healing.Roll());
+                    consumer.HealDamage(healing);
                     potion.Charges = 0;
                     potion.Destroyed = true;
                 }, ItemRarity.COMMON);
@@ -669,7 +669,7 @@ namespace srd5 {
             get {
                 return new Consumable("Potion of Greater Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
                     Dice healing = new Dice("4d4+4");
-                    consumer.HealDamage(healing.Roll());
+                    consumer.HealDamage(healing);
                     potion.Charges = 0;
                     potion.Destroyed = true;
                 }, ItemRarity.UNCOMMON);
@@ -680,7 +680,7 @@ namespace srd5 {
             get {
                 return new Consumable("Potion of Superior Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
                     Dice healing = new Dice("8d4+8");
-                    consumer.HealDamage(healing.Roll());
+                    consumer.HealDamage(healing);
                     potion.Charges = 0;
                     potion.Destroyed = true;
                 }, ItemRarity.RARE);
@@ -691,7 +691,7 @@ namespace srd5 {
             get {
                 return new Consumable("Potion of Supreme Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
                     Dice healing = new Dice("10d4+20");
-                    consumer.HealDamage(healing.Roll());
+                    consumer.HealDamage(healing);
                     potion.Charges = 0;
                     potion.Destroyed = true;
                 }, ItemRarity.VERY_RARE);

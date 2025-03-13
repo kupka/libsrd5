@@ -45,6 +45,51 @@ namespace srd5 {
         }
     }
 
+    public enum DamageSourceType {
+        ATTACK,
+        SPELL,
+        EFFECT,
+        OTHER
+    }
+
+    public struct DamageSource {
+        public DamageSourceType Type {
+            get; internal set;
+        }
+
+        public object Origin {
+            get; internal set;
+        }
+
+        public Combattant Source {
+            get; internal set;
+        }
+
+        public DamageSource(Effect effect, Combattant source) {
+            Type = DamageSourceType.EFFECT;
+            Origin = effect;
+            Source = source;
+        }
+
+        public DamageSource(Spells.ID spellId, Combattant caster) {
+            Type = DamageSourceType.SPELL;
+            Origin = spellId;
+            Source = caster;
+        }
+
+        public DamageSource(Attack attack, Combattant attacker) {
+            Type = DamageSourceType.ATTACK;
+            Origin = attack;
+            Source = attacker;
+        }
+
+        public DamageSource(DamageSourceType type, object origin, Combattant source) {
+            Type = type;
+            Origin = origin;
+            Source = source;
+        }
+    }
+
     public abstract class Combattant : GuidClass {
         public int Speed { get; internal set; } = 30;
         public Alignment Alignment { get; set; }
@@ -260,26 +305,26 @@ namespace srd5 {
             return IsProficient(proficiency);
         }
 
-        public int TakeDamage(object source, DamageType type, Dice dice, Spells.DamageMitigation dCEffect, int dc, AbilityType dcAbility, out bool dcSuccess) {
+        public int TakeDamage(DamageSource source, DamageType type, Dice dice, Spells.DamageMitigation dCEffect, int dc, AbilityType dcAbility, out bool dcSuccess) {
             return TakeDamage(source, type, dice.Roll(), dCEffect, dc, dcAbility, out dcSuccess);
         }
 
-        public int TakeDamage(object source, DamageType type, Dice dice) {
+        public int TakeDamage(DamageSource source, DamageType type, Dice dice) {
             return TakeDamage(source, type, dice.Roll(), Spells.DamageMitigation.NO_EFFECT, 0, CONSTITUTION, out _);
         }
 
-        public int TakeDamage(object source, DamageType type, int amount) {
+        public int TakeDamage(DamageSource source, DamageType type, int amount) {
             return TakeDamage(source, type, amount, Spells.DamageMitigation.NO_EFFECT, 0, CONSTITUTION, out _);
         }
 
-        public int TakeDamage(object source, DamageType type, string diceString) {
+        public int TakeDamage(DamageSource source, DamageType type, string diceString) {
             return TakeDamage(source, type, new Dice(diceString).Roll(), Spells.DamageMitigation.NO_EFFECT, 0, CONSTITUTION, out _);
         }
 
         /// <summary>
         /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
-        public int TakeDamage(object source, DamageType type, int amount, Spells.DamageMitigation dCEffect, int dc, AbilityType dcAbility, out bool dcSuccess, bool advantage = false, bool disadvantage = false) {
+        public int TakeDamage(DamageSource source, DamageType type, int amount, Spells.DamageMitigation dCEffect, int dc, AbilityType dcAbility, out bool dcSuccess, bool advantage = false, bool disadvantage = false) {
             dcSuccess = false;
             if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
             if (IsImmune(type)) return 0;
@@ -314,6 +359,17 @@ namespace srd5 {
                 }
             }
             return amount;
+        }
+
+        /// <summary>
+        /// Heals the specified dice of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combattant.
+        /// </summary>
+        public void HealDamage(Dice dice) {
+            if (HasEffect(SPELL_BEACON_OF_HOPE)) {
+                HealDamage(dice.Max);
+            } else {
+                HealDamage(dice.Roll());
+            }
         }
 
         /// <summary>
@@ -506,7 +562,7 @@ namespace srd5 {
             Utils.Push<DamageTakenEvent>(ref DamageTakenEvents, damageTakenEvent);
         }
 
-        public void OnDamageTaken(object source, Damage damage) {
+        public void OnDamageTaken(DamageSource source, Damage damage) {
             foreach (DamageTakenEvent damageEvent in (DamageTakenEvent[])DamageTakenEvents.Clone()) {
                 if (damageEvent(source, damage)) {
                     Utils.RemoveSingle<DamageTakenEvent>(ref DamageTakenEvents, damageEvent);
@@ -534,7 +590,7 @@ namespace srd5 {
             if (spell && ranged && target.HasFeat(Feat.REFLECTIVE_CARAPACE)) {
                 GlobalEvents.ActivateFeat(target, Feat.REFLECTIVE_CARAPACE);
                 if (D6.Value == 6) { // reflect back on 6
-                    this.TakeDamage(this, attack.Damage.Type, attack.Damage.Dice.Roll());
+                    this.TakeDamage(new DamageSource(DamageSourceType.SPELL, attack, this), attack.Damage.Type, attack.Damage.Dice);
                 }
                 return false;
             }
@@ -606,17 +662,18 @@ namespace srd5 {
             if (HasEffect(SPELL_ENLARGE)) bonusDamage += D4.Value;
             if (HasEffect(SPELL_REDUCE)) bonusDamage -= D4.Value;
             if (HasEffect(SPELL_RAY_OF_ENFEEBLEMENT)) damageDivisor += 1;
+            DamageSource source = new DamageSource(spell ? DamageSourceType.SPELL : DamageSourceType.ATTACK, attack, this);
             if (criticalHit) {
                 int times = 2;
                 if (attack.HasProperty(srd5.Attack.Property.TRIPLE_DICE_ON_CRIT)) times = 3;
-                target.TakeDamage(this, attack.Damage.Type, Math.Max(1, (attack.Damage.Dice.RollCritical(times) + bonusDamage) / damageDivisor), dCEffect, dc, dcAbility, out dcSuccess);
+                target.TakeDamage(source, attack.Damage.Type, Math.Max(1, (attack.Damage.Dice.RollCritical(times) + bonusDamage) / damageDivisor), dCEffect, dc, dcAbility, out dcSuccess);
                 foreach (Damage additionalDamage in attack.AdditionalDamage) {
-                    target.TakeDamage(this, additionalDamage.Type, Math.Max(1, additionalDamage.Dice.RollCritical(times) / damageDivisor), dCEffect, dc, dcAbility, out dcSuccess);
+                    target.TakeDamage(source, additionalDamage.Type, Math.Max(1, additionalDamage.Dice.RollCritical(times) / damageDivisor), dCEffect, dc, dcAbility, out dcSuccess);
                 }
             } else {
-                target.TakeDamage(this, attack.Damage.Type, Math.Max(1, (attack.Damage.Dice.Roll() + bonusDamage) / damageDivisor), dCEffect, dc, dcAbility, out dcSuccess);
+                target.TakeDamage(source, attack.Damage.Type, Math.Max(1, (attack.Damage.Dice.Roll() + bonusDamage) / damageDivisor), dCEffect, dc, dcAbility, out dcSuccess);
                 foreach (Damage additionalDamage in attack.AdditionalDamage) {
-                    target.TakeDamage(this, additionalDamage.Type, Math.Max(1, additionalDamage.Dice.Roll() / damageDivisor), dCEffect, dc, dcAbility, out dcSuccess);
+                    target.TakeDamage(source, additionalDamage.Type, Math.Max(1, additionalDamage.Dice.Roll() / damageDivisor), dCEffect, dc, dcAbility, out dcSuccess);
                 }
             }
             // Hit effect
@@ -699,7 +756,7 @@ namespace srd5 {
     /// </summary>
     public delegate bool TurnEvent();
 
-    public delegate bool DamageTakenEvent(object source, Damage damage);
+    public delegate bool DamageTakenEvent(DamageSource source, Damage damage);
 
     /// <summary>
     /// Describes an effect that modifies this combattant's attack roll. 

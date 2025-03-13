@@ -65,7 +65,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect ScorpionStingEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, ScorpionSting, "1d8", 9);
+            AttackEffects.PoisonEffect(attacker, target, ScorpionSting, "1d8", 9);
             return false;
         };
         public static Attack ScorpionSting {
@@ -142,7 +142,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SpecterLifeDrainEffect = delegate (Combattant attacker, Combattant target) {
-            int damage = target.TakeDamage(attacker, NECROTIC, "3d6");
+            int damage = target.TakeDamage(new DamageSource(SpecterLifeDrain, attacker), NECROTIC, "3d6");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
             if (target.HitPointsMax == 0) {
                 target.Die();
@@ -155,7 +155,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, SpiderBite, "1d4", 9, AbilityType.CONSTITUTION, Spells.DamageMitigation.NULLIFIES_DAMAGE);
+            AttackEffects.PoisonEffect(attacker, target, SpiderBite, "1d4", 9, AbilityType.CONSTITUTION, Spells.DamageMitigation.NULLIFIES_DAMAGE);
             return false;
         };
         public static Attack SpiderBite {
@@ -164,7 +164,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect SpiritNagaBiteEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, SpiritNagaBite, "7d8", 13);
+            AttackEffects.PoisonEffect(attacker, target, SpiritNagaBite, "7d8", 13);
             return false;
         };
         public static Attack SpiritNagaBite {
@@ -216,7 +216,7 @@ namespace srd5 {
                 if (!target.HasEffect(STIRGE_BLOOD_DRAIN_EFFECT)) return true;
                 int delta = Roll("1d4+3");
                 damage += delta;
-                target.TakeDamage(attacker, TRUE_DAMAGE, "1d4+3");
+                target.TakeDamage(new DamageSource(StirgeBloodDrain, attacker), TRUE_DAMAGE, "1d4+3");
                 return damage >= 10;
             });
             // TODO: A creature, including the target, can use its action to detach the stirge.
@@ -262,7 +262,7 @@ namespace srd5 {
             bool success = target.DC(SuccubusDrainingKiss, 15, AbilityType.CONSTITUTION);
             int damage = Roll("5d10+5");
             if (success) damage /= 2;
-            target.TakeDamage(attacker, PSYCHIC, damage);
+            target.TakeDamage(new DamageSource(SuccubusDrainingKiss, attacker), PSYCHIC, damage);
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
             if (target.HitPointsMax <= 0) {
                 target.Die();
@@ -281,7 +281,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SwarmOfBatsBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, PIERCING, "1d4");
+            target.TakeDamage(new DamageSource(SwarmOfBatsBites, attacker), PIERCING, "1d4");
             return false;
         };
         public static Attack SwarmOfBatsBites {
@@ -291,7 +291,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SwarmOfBeetlesBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, PIERCING, "2d4");
+            target.TakeDamage(new DamageSource(SwarmOfBeetlesBites, attacker), PIERCING, "2d4");
             return false;
         };
         public static Attack SwarmOfBeetlesBites {
@@ -301,7 +301,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SwarmOfCentipedesBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, PIERCING, "2d4");
+            target.TakeDamage(new DamageSource(SwarmOfCentipedesBites, attacker), PIERCING, "2d4");
             // TODO: A creature reduced to 0 hit points by a swarm of centipedes is stable but poisoned for 1 hour, 
             // even after regaining hit points, and paralyzed while poisoned in this way.
             return false;
@@ -313,7 +313,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SwarmOfInsectsBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, PIERCING, "2d4");
+            target.TakeDamage(new DamageSource(SwarmOfInsectsBites, attacker), PIERCING, "2d4");
             return false;
         };
         public static Attack SwarmOfInsectsBites {
@@ -323,8 +323,8 @@ namespace srd5 {
         }
         public static readonly AttackEffect SwarmOfPoisonousSnakesBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, PIERCING, "1d6");
-            AttackEffects.PoisonEffect(target, SwarmOfPoisonousSnakesBites, "4d6", 10);
+            target.TakeDamage(new DamageSource(SwarmOfPoisonousSnakesBites, attacker), PIERCING, "1d6");
+            AttackEffects.PoisonEffect(attacker, target, SwarmOfPoisonousSnakesBites, "4d6", 10);
             return false;
         };
         public static Attack SwarmOfPoisonousSnakesBites {
@@ -334,7 +334,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SwarmOfQuippersBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, PIERCING, "2d6");
+            target.TakeDamage(new DamageSource(SwarmOfQuippersBites, attacker), PIERCING, "2d6");
             return false;
         };
         public static Attack SwarmOfQuippersBites {
@@ -344,7 +344,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SwarmOfRatsBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, PIERCING, "1d6");
+            target.TakeDamage(new DamageSource(SwarmOfBatsBites, attacker), PIERCING, "1d6");
             return false;
         };
         public static Attack SwarmOfRatsBites {
@@ -354,7 +354,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SwarmOfRavensBeaksEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, PIERCING, "1d6");
+            target.TakeDamage(new DamageSource(SwarmOfRavensBeaks, attacker), PIERCING, "1d6");
             return false;
         };
         public static Attack SwarmOfRavensBeaks {
@@ -364,7 +364,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SwarmOfSpidersBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, PIERCING, "2d4");
+            target.TakeDamage(new DamageSource(SwarmOfSpidersBites, attacker), PIERCING, "2d4");
             return false;
         };
         public static Attack SwarmOfSpidersBites {
@@ -374,7 +374,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect SwarmOfWaspsBitesEffect = delegate (Combattant attacker, Combattant target) {
             if (attacker.HitPoints <= attacker.HitPointsMax / 2) return false;
-            target.TakeDamage(attacker, PIERCING, "2d4");
+            target.TakeDamage(new DamageSource(SwarmOfWaspsBites, attacker), PIERCING, "2d4");
             return false;
         };
         public static Attack SwarmOfWaspsBites {

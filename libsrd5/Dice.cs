@@ -120,6 +120,10 @@ namespace srd5 {
         public override string ToString() {
             return "d" + MaxValue;
         }
+
+        public static implicit operator Dice(Die die) => new Dice(1, die, 0);
+
+        public static Dice operator *(int i, Die die) => new Dice(i, die, 0);
     }
 
     public abstract class DiceRolledEventSource {
@@ -306,5 +310,8 @@ namespace srd5 {
             DiceRolledEvent diceRolledEvent = new DiceRolledEvent(dice, die.Value);
             DiceRolled(dice, diceRolledEvent);
         }
+
+        public static Dice operator +(Dice dice, int modifier) => new Dice(dice.Amount, dice.Die, modifier);
+        public static Dice operator -(Dice dice, int modifier) => new Dice(dice.Amount, dice.Die, -modifier);
     }
 }

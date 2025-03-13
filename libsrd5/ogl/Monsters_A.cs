@@ -369,7 +369,7 @@ namespace srd5 {
             }
         }
         public static AttackEffect AssassinShortswordEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, AssassinShortsword, "7d6", 15);
+            AttackEffects.PoisonEffect(attacker, target, AssassinShortsword, "7d6", 15);
             return false;
         };
         public static Attack AssassinShortsword {

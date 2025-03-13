@@ -6,7 +6,7 @@ namespace srd5 {
         public static readonly AttackEffect QuasitClawEffect = delegate (Combattant attacker, Combattant target) {
             if (target.IsImmune(POISON)) return false;
             if (target.DC(QuasitClaw, 10, AbilityType.CONSTITUTION)) return false;
-            target.TakeDamage(attacker, POISON, "2d4");
+            target.TakeDamage(new DamageSource(QuasitClaw, attacker), POISON, "2d4");
             target.AddEffect(QUASIT_POISON);
             return false;
         };

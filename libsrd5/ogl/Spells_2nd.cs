@@ -20,7 +20,7 @@ namespace srd5 {
                     bool hit = SpellAttack(ID.ACID_ARROW, ground, caster, ACID, dice, 0, target, 90, HALVES_DAMAGE);
                     if (hit) {
                         target.AddEndOfTurnEvent(delegate () {
-                            target.TakeDamage(SPELL_ACID_ARRORW_BURN, ACID, additionalDice);
+                            target.TakeDamage(new DamageSource(SPELL_ACID_ARRORW_BURN, caster), ACID, additionalDice);
                             return true;
                         });
                     }
@@ -236,7 +236,7 @@ namespace srd5 {
                                 GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, false);
                             } else if (target.HasEffect(SPELL_REDUCE)) {
                                 GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, true);
-                                target.RemoveEffect(SPELL_REDUCE, DISADVANTAGE_STRENGTH_SAVES);
+                                target.RemoveEffect(SPELL_REDUCE, Effect.DISADVANTAGE_STRENGTH_SAVES);
                             } else {
                                 AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, SPELL_ENLARGE, ADVANTAGE_STRENGTH_SAVES);
                             }
@@ -248,7 +248,7 @@ namespace srd5 {
                                 GlobalEvents.AffectBySpell(caster, ID.ENLARGE_REDUCE, target, true);
                                 target.RemoveEffect(SPELL_ENLARGE, ADVANTAGE_STRENGTH_SAVES);
                             } else {
-                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, SPELL_REDUCE, DISADVANTAGE_STRENGTH_SAVES);
+                                AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, SPELL_REDUCE, Effect.DISADVANTAGE_STRENGTH_SAVES);
                             }
                             break;
                     }
@@ -320,7 +320,7 @@ namespace srd5 {
                     Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 30, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         Combattant target2 = targets2[0];
                         GlobalEvents.AffectBySpell(caster2, ID.FLAMING_SPHERE, target2, true);
-                        target2.TakeDamage(ID.FLAMING_SPHERE, FIRE, dice, HALVES_DAMAGE, dc2, DEXTERITY, out _);
+                        target2.TakeDamage(new DamageSource(ID.FLAMING_SPHERE, caster), FIRE, dice, HALVES_DAMAGE, dc2, DEXTERITY, out _);
                     });
                     caster.AvailableSpells[0].AddKnownSpell(flamingSphereCantrip);
                     caster.AvailableSpells[0].AddPreparedSpell(flamingSphereCantrip);
@@ -599,12 +599,12 @@ namespace srd5 {
                         bool success = target.DC(ID.MOONBEAM, dc, CONSTITUTION, out _, false, true);
                         int dmg = dice.Roll();
                         if (success) {
-                            target.TakeDamage(ID.MOONBEAM, RADIANT, dmg / 2);
+                            target.TakeDamage(new DamageSource(ID.MOONBEAM, caster), RADIANT, dmg / 2);
                         } else {
-                            target.TakeDamage(ID.MOONBEAM, RADIANT, dmg);
+                            target.TakeDamage(new DamageSource(ID.MOONBEAM, caster), RADIANT, dmg);
                         }
                     } else {
-                        target.TakeDamage(ID.MOONBEAM, RADIANT, dice, HALVES_DAMAGE, dc, CONSTITUTION, out _);
+                        target.TakeDamage(new DamageSource(ID.MOONBEAM, caster), RADIANT, dice, HALVES_DAMAGE, dc, CONSTITUTION, out _);
                     }
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
                     Spell moonbeamCantrip = new Spell(ID.MOONBEAM, EVOCATION, CANTRIP, CastingTime.BONUS_ACTION, 60, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
@@ -620,12 +620,12 @@ namespace srd5 {
                             bool success = target2.DC(ID.MOONBEAM, dc2, CONSTITUTION, out _, false, true);
                             int dmg = dice.Roll();
                             if (success) {
-                                target2.TakeDamage(ID.MOONBEAM, RADIANT, dmg / 2);
+                                target2.TakeDamage(new DamageSource(ID.MOONBEAM, caster), RADIANT, dmg / 2);
                             } else {
-                                target2.TakeDamage(ID.MOONBEAM, RADIANT, dmg);
+                                target2.TakeDamage(new DamageSource(ID.MOONBEAM, caster), RADIANT, dmg);
                             }
                         } else {
-                            target2.TakeDamage(ID.MOONBEAM, RADIANT, dice, HALVES_DAMAGE, dc2, CONSTITUTION, out _);
+                            target2.TakeDamage(new DamageSource(ID.MOONBEAM, caster), RADIANT, dice, HALVES_DAMAGE, dc2, CONSTITUTION, out _);
                         }
                     });
                     caster.AvailableSpells[0].AddKnownSpell(moonbeamCantrip);
@@ -663,7 +663,7 @@ namespace srd5 {
                             GlobalEvents.AffectBySpell(caster, ID.PRAYER_OF_HEALING, target, false);
                         } else {
                             GlobalEvents.AffectBySpell(caster, ID.PRAYER_OF_HEALING, target, true);
-                            target.HealDamage(dice.Roll());
+                            target.HealDamage(dice);
                         }
                     }
                 });
@@ -731,7 +731,7 @@ namespace srd5 {
                         // Constructs have disadvantage on DC, not Flesh Golem though, since it is made from organic material
                         bool disadvantage = target is Monster monster && monster.Type == Monsters.Type.CONSTRUCT && monster.ID != Monsters.ID.FLESH_GOLEM;
                         GlobalEvents.AffectBySpell(caster, ID.SHATTER, target, true);
-                        target.TakeDamage(ID.SHATTER, THUNDER, dice, HALVES_DAMAGE, dc, CONSTITUTION, out _);
+                        target.TakeDamage(new DamageSource(ID.SHATTER, caster), THUNDER, dice, HALVES_DAMAGE, dc, CONSTITUTION, out _);
                     }
                 });
             }
@@ -804,7 +804,7 @@ namespace srd5 {
                         GlobalEvents.AffectBySpell(caster, ID.SUGGESTION, target, false);
                     } else {
                         AddEffectsForDuration(ID.SUGGESTION, caster, target, EIGHT_HOURS, SPELL_SUGGESTION);
-                        target.AddDamageTakenEvent(delegate (object source, Damage damage) {
+                        target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
                             target.RemoveEffect(SPELL_SUGGESTION);
                             return true;
                         });
@@ -842,7 +842,7 @@ namespace srd5 {
                     if (anyEffectActive) return;
                     AddEffectsForDuration(ID.WARDING_BOND, caster, target, ONE_HOUR, SPELL_WARDING_BOND);
                     AddEffectsForDuration(ID.WARDING_BOND, caster, caster, ONE_HOUR, SPELL_WARDING_BOND_CASTER);
-                    target.AddDamageTakenEvent(delegate (object source, Damage damage) {
+                    target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
                         if (!target.HasEffect(SPELL_WARDING_BOND) || !caster.HasEffect(SPELL_WARDING_BOND_CASTER)) {
                             target.RemoveEffect(SPELL_WARDING_BOND);
                             caster.RemoveEffect(SPELL_WARDING_BOND_CASTER);
@@ -851,7 +851,7 @@ namespace srd5 {
                         caster.TakeDamage(source, damage.Type, damage.Dice);
                         return false;
                     });
-                    caster.AddDamageTakenEvent(delegate (object source, Damage damage) {
+                    caster.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
                         if (!target.HasEffect(SPELL_WARDING_BOND) || !caster.HasEffect(SPELL_WARDING_BOND_CASTER)) {
                             target.RemoveEffect(SPELL_WARDING_BOND);
                             caster.RemoveEffect(SPELL_WARDING_BOND_CASTER);

@@ -93,7 +93,7 @@ namespace srd5 {
         public static readonly AttackEffect GiantCentipedeBiteEffect = delegate (Combattant attacker, Combattant target) {
             if (target.IsImmune(POISON)) return false;
             if (target.DC(GiantCentipedeBite, 11, AbilityType.CONSTITUTION)) return false;
-            target.TakeDamage(attacker, POISON, "3d6");
+            target.TakeDamage(new DamageSource(GiantCentipedeBite, attacker), POISON, "3d6");
             // TODO: "If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way."
             return false;
         };
@@ -156,8 +156,8 @@ namespace srd5 {
         }
         public static readonly AttackEffect GiantElkHoovesEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
-            int amount = new Dice("4d8+4").Roll(); // FIXME: Cannot crit because attack roll is not available here
-            target.TakeDamage(attacker, BLUDGEONING, amount);
+            // FIXME: Cannot crit because attack roll is not available here
+            target.TakeDamage(new DamageSource(GiantElkHooves, attacker), BLUDGEONING, "4d8+4");
             return false;
         };
         public static Attack GiantElkHooves {
@@ -214,7 +214,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect GiantPoisonousSnakeBiteEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, GiantPoisonousSnakeBite, "3d6", 11);
+            AttackEffects.PoisonEffect(attacker, target, GiantPoisonousSnakeBite, "3d6", 11);
             return false;
         };
         public static Attack GiantPoisonousSnakeBite {
@@ -247,7 +247,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect GiantScorpionStingEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, GiantScorpionSting, "4d10", 12);
+            AttackEffects.PoisonEffect(attacker, target, GiantScorpionSting, "4d10", 12);
             return false;
         };
         public static Attack GiantScorpionSting {
@@ -266,7 +266,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect GiantSpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, GiantSpiderBite, "2d8", 11);
+            AttackEffects.PoisonEffect(attacker, target, GiantSpiderBite, "2d8", 11);
             // TODO: If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.
             return false;
         };
@@ -307,7 +307,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect GiantWaspStingEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, GiantWaspSting, "3d6", 11);
+            AttackEffects.PoisonEffect(attacker, target, GiantWaspSting, "3d6", 11);
             // TODO: If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.
             return false;
         };
@@ -322,7 +322,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect GiantWolfSpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, GiantWolfSpiderBite, "2d6", 11);
+            AttackEffects.PoisonEffect(attacker, target, GiantWolfSpiderBite, "2d6", 11);
             // TODO: If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.
             return false;
         };
@@ -480,7 +480,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect GuardianNagaBiteEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, GuardianNagaBite, "10d8", 15);
+            AttackEffects.PoisonEffect(attacker, target, GuardianNagaBite, "10d8", 15);
             return false;
         };
         public static Attack GuardianNagaBite {
@@ -489,7 +489,7 @@ namespace srd5 {
             }
         }
         public static readonly AttackEffect GuardianNagaSpitPoisonEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, GuardianNagaSpitPoison, "10d8", 15);
+            AttackEffects.PoisonEffect(attacker, target, GuardianNagaSpitPoison, "10d8", 15);
             return false;
         };
         public static Attack GuardianNagaSpitPoison {

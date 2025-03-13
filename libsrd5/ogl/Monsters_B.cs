@@ -108,7 +108,7 @@ namespace srd5 {
                 target.AddStartOfTurnEvent(delegate () {
                     foreach (Effect effect in target.Effects) {
                         if (effect != INFERNAL_WOUND_BEARDED_DEVIL) continue;
-                        target.TakeDamage(attacker, TRUE_DAMAGE, "1d10");
+                        target.TakeDamage(new DamageSource(BeardedDevilGlaive, attacker), TRUE_DAMAGE, "1d10");
                     }
                     return target.HasEffect(INFERNAL_WOUND_BEARDED_DEVIL);
                 });

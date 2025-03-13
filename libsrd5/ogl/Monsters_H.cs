@@ -123,7 +123,7 @@ namespace srd5 {
                 target.AddStartOfTurnEvent(delegate () {
                     foreach (Effect effect in target.Effects) {
                         if (effect != INFERNAL_WOUND_HORNED_DEVIL) continue;
-                        target.TakeDamage(attacker, TRUE_DAMAGE, "3d6");
+                        target.TakeDamage(new DamageSource(HornedDevilTail, attacker), TRUE_DAMAGE, "3d6");
                     }
                     return target.HasEffect(INFERNAL_WOUND_HORNED_DEVIL);
                 });

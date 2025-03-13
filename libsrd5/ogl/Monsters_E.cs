@@ -25,8 +25,8 @@ namespace srd5 {
         }
         public static readonly AttackEffect ElephantStompEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
-            int amount = new Dice("3d10+6").Roll(); // FIXME: Cannot crit because attack roll is not available here
-            target.TakeDamage(attacker, BLUDGEONING, amount);
+            // FIXME: Cannot crit because attack roll is not available here
+            target.TakeDamage(new DamageSource(ElephantStomp, attacker), BLUDGEONING, "3d10+6");
             return false;
         };
         public static Attack ElephantStomp {
@@ -41,8 +41,8 @@ namespace srd5 {
         }
         public static readonly AttackEffect ElkHoovesEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
-            int amount = new Dice("2d4+3").Roll(); // FIXME: Cannot crit because attack roll is not available here
-            target.TakeDamage(attacker, BLUDGEONING, amount);
+            // FIXME: Cannot crit because attack roll is not available here
+            target.TakeDamage(new DamageSource(ElkHooves, attacker), BLUDGEONING, "2d4+3");
             return false;
         };
         public static Attack ElkHooves {

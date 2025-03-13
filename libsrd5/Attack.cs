@@ -60,14 +60,14 @@ namespace srd5 {
         /// <param name="ability">Which ability is used for the DC (default Constitution)</param>
         /// <param name="damageMitigation">Determines what happens on a successful save (defaults to halves damage)</param>
         /// <returns></returns>
-        public static int PoisonEffect(Combattant target, Attack source, string dice, int dc, AbilityType ability = CONSTITUTION, Spells.DamageMitigation damageMitigation = Spells.DamageMitigation.HALVES_DAMAGE) {
+        public static int PoisonEffect(Combattant attacker, Combattant target, Attack source, string dice, int dc, AbilityType ability = CONSTITUTION, Spells.DamageMitigation damageMitigation = Spells.DamageMitigation.HALVES_DAMAGE) {
             if (target.IsImmune(DamageType.POISON)) return 0;
             bool advantage = target.HasEffect(ADVANTAGE_POISON_SAVES);
             bool success = target.DC(source, dc, ability, out _, advantage);
             if (damageMitigation == Spells.DamageMitigation.NULLIFIES_DAMAGE && success) return 0;
             int amount = new Dice(dice).Roll();
             if (success) amount /= 2;
-            amount = target.TakeDamage(source, DamageType.POISON, amount);
+            amount = target.TakeDamage(new DamageSource(source, attacker), DamageType.POISON, amount);
             return amount;
         }
     }

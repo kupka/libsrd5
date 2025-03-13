@@ -262,7 +262,7 @@ namespace srd5 {
                     }
 
                     foreach (Combattant target in targets) {
-                        target.OnDamageTaken(this, new Damage(DamageType.THUNDER, 1));
+                        target.OnDamageTaken(new DamageSource(spell.ID, hero), new Damage(DamageType.THUNDER, 1));
                     }
                 }
                 if (checkForCondition != null) {
@@ -408,7 +408,7 @@ namespace srd5 {
             Spells.Goodberry.Cast(hero, 12, SpellLevel.FIRST, 0);
             Assert.True(hero.Inventory.Bag.Length > 0);
             Assert.True(hero.Inventory.Bag[0].Name == Potions.Goodberry.Name);
-            hero.TakeDamage(this, DamageType.TRUE_DAMAGE, 1);
+            hero.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hero), DamageType.TRUE_DAMAGE, 1);
             Assert.Equal(hero.HitPointsMax - 1, hero.HitPoints);
             hero.Consume(Potions.Goodberry);
             Assert.Equal(hero.HitPointsMax, hero.HitPoints);

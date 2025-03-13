@@ -19,7 +19,7 @@ namespace srd5 {
                         foreach (Combattant target in targets) {
                             if (!target.DC(ID.ACID_SPLASH, dc, DEXTERITY)) {
                                 GlobalEvents.AffectBySpell(caster, ID.ACID_SPLASH, target, true);
-                                target.TakeDamage(ID.ACID_SPLASH, ACID, dice);
+                                target.TakeDamage(new DamageSource(ID.ACID_SPLASH, caster), ACID, dice);
                             } else {
                                 GlobalEvents.AffectBySpell(caster, ID.ACID_SPLASH, target, false);
                             }
@@ -178,7 +178,7 @@ namespace srd5 {
                         GlobalEvents.AffectBySpell(caster, ID.POISON_SPRAY, target, false);
                     } else {
                         GlobalEvents.AffectBySpell(caster, ID.POISON_SPRAY, target, true);
-                        target.TakeDamage(ID.POISON_SPRAY, POISON, dice);
+                        target.TakeDamage(new DamageSource(ID.POISON_SPRAY, caster), POISON, dice);
                     }
                 });
             }
@@ -355,7 +355,7 @@ namespace srd5 {
                     delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                         Dice dice = DiceLevelScaling(caster, D4);
                         Combattant target = targets[0];
-                        int damageTaken = target.TakeDamage(ID.VICIOUS_MOCKERY, PSYCHIC, dice, NULLIFIES_DAMAGE, dc, WISDOM, out _);
+                        int damageTaken = target.TakeDamage(new DamageSource(ID.VICIOUS_MOCKERY, caster), PSYCHIC, dice, NULLIFIES_DAMAGE, dc, WISDOM, out _);
                         if (damageTaken == 0) {
                             GlobalEvents.AffectBySpell(caster, ID.VICIOUS_MOCKERY, target, false);
                         } else {

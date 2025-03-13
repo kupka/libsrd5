@@ -32,8 +32,8 @@ namespace srd5 {
         }
         public static readonly AttackEffect MammothStompEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
-            int amount = new Dice("4d10+7").Roll(); // FIXME: Cannot crit because attack roll is not available here
-            target.TakeDamage(attacker, BLUDGEONING, amount);
+            // FIXME: Cannot crit because attack roll is not available here
+            target.TakeDamage(new DamageSource(MammothStomp, attacker), BLUDGEONING, "4d10+7");
             return false;
         };
         public static Attack MammothStomp {

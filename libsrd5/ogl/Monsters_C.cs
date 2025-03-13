@@ -40,7 +40,7 @@ namespace srd5 {
                     target.RemoveCondition(ConditionType.RESTRAINED);
                     return true;
                 }
-                target.TakeDamage(attacker, PIERCING, "2d6");
+                target.TakeDamage(new DamageSource(ChainDevilChain, attacker), PIERCING, "2d6");
                 return false;
             });
             return false;
@@ -163,7 +163,7 @@ namespace srd5 {
             if (target.IsImmune(POISON)) return false;
             if (target.DC(CouatlBite, 13, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(COUATL_POISON);
-            target.AddDamageTakenEvent(delegate (object source, Damage damage) {
+            target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
                 target.RemoveEffect(COUATL_POISON);
                 return true;
             });

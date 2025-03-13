@@ -75,7 +75,7 @@ namespace srd5 {
         }
         public static readonly AttackEffect TriceratopsStompEffect = delegate (Combattant attacker, Combattant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
-            target.TakeDamage(attacker, BLUDGEONING, "3d10+6");
+            target.TakeDamage(new DamageSource(TriceratopsStomp, attacker), BLUDGEONING, "3d10+6");
             return false;
         };
         public static Attack TriceratopsStomp {

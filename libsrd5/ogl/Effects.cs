@@ -133,65 +133,80 @@ namespace srd5 {
         FAIL_CONSTITUTION_CHECK,
         CANNOT_REGAIN_HITPOINTS,
         GRAPPLING,
-
         // Spell Effects
-        SPELL_ACID_ARRORW_BURN,
-        SPELL_AID,
-        SPELL_ALTER_SELF_CLAWS,
+        // Cantrips
+        SPELL_GUIDANCE,
+        SPELL_LIGHT,
+        SPELL_RAY_OF_FROST,
+        SPELL_RESISTANCE,
+        // 1st
         SPELL_ANIMAL_FRIENDSHIP,
-        SPELL_ANIMATE_DEAD,
         SPELL_BANE,
-        SPELL_BARKSKIN,
-        SPELL_BEACON_OF_HOPE,
-        SPELL_BESTOW_CURSE,
-        SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE,
-        SPELL_BESTOW_CURSE_LOST_TURN,
-        SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE,
         SPELL_BLESS,
-        SPELL_BLINDNESS_DEAFNESS,
-        SPELL_BLUR,
-        SPELL_CALM_EMOTIONS,
-        SPELL_CALM_EMOTIONS_CHARMED_SUPRESSED,
-        SPELL_CALM_EMOTIONS_FRIGHTENED_SUPRESSED,
         SPELL_COMMAND_GROVEL,
         SPELL_COMPREHEND_LANGUAGES,
-        SPELL_DARKVISION,
         SPELL_DETECT_EVIL_AND_GOOD,
         SPELL_DETECT_MAGIC,
         SPELL_DETECT_POISON_AND_DISEASE,
         SPELL_DISGUISE_SELF,
         SPELL_DIVINE_FAVOR,
-        SPELL_ENHANCE_ABILITY,
-        SPELL_ENLARGE,
         SPELL_ENTANGLE,
         SPELL_FAIRIE_FIRE,
         SPELL_FEATHER_FALL,
-        SPELL_GUIDANCE,
-        SPELL_GUST_OF_WIND,
         SPELL_HIDEOUS_LAUGHTER,
-        SPELL_INVISIBILITY,
         SPELL_JUMP,
-        SPELL_LEVITATE,
-        SPELL_LIGHT,
         SPELL_LONGSTRIDER,
+        SPELL_PROTECTION_FROM_EVIL_AND_GOOD,
+        SPELL_SHIELD,
+        SPELL_SHIELD_OF_FAITH,
+        // 2nd
+        SPELL_ACID_ARRORW_BURN,
+        SPELL_AID,
+        SPELL_ALTER_SELF_CLAWS,
+        SPELL_BARKSKIN,
+        SPELL_BLINDNESS_DEAFNESS,
+        SPELL_BLUR,
+        SPELL_CALM_EMOTIONS,
+        SPELL_CALM_EMOTIONS_CHARMED_SUPRESSED,
+        SPELL_CALM_EMOTIONS_FRIGHTENED_SUPRESSED,
+        SPELL_DARKVISION,
+        SPELL_ENHANCE_ABILITY,
+        SPELL_ENLARGE,
+        SPELL_GUST_OF_WIND,
+        SPELL_INVISIBILITY,
+        SPELL_LEVITATE,
         SPELL_MIRROR_IMAGE_1,
         SPELL_MIRROR_IMAGE_2,
         SPELL_MIRROR_IMAGE_3,
         SPELL_PASS_WITHOUT_TRACE,
-        SPELL_PROTECTION_FROM_EVIL_AND_GOOD,
         SPELL_PROTECTION_FROM_POISON,
         SPELL_RAY_OF_ENFEEBLEMENT,
-        SPELL_RAY_OF_FROST,
         SPELL_REDUCE,
-        SPELL_RESISTANCE,
         SPELL_SEE_INVISIBILITY,
-        SPELL_SHIELD,
-        SPELL_SHIELD_OF_FAITH,
         SPELL_SILENCE,
         SPELL_SPIDER_CLIMB,
         SPELL_SUGGESTION,
         SPELL_WARDING_BOND,
         SPELL_WARDING_BOND_CASTER,
+        // 3rd
+        SPELL_ANIMATE_DEAD,
+        SPELL_BEACON_OF_HOPE,
+        SPELL_BESTOW_CURSE,
+        SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE,
+        SPELL_BESTOW_CURSE_LOST_TURN,
+        SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE,
+        // 4th
+        SPELL_PLACEHOLDER_4TH,
+        // 5th
+        SPELL_PLACEHOLDER_5TH,
+        // 6th
+        SPELL_PLACEHOLDER_6TH,
+        // 7th
+        SPELL_PLACEHOLDER_7TH,
+        // 8th
+        SPELL_PLACEHOLDER_8TH,
+        // 9th
+        SPELL_PLACEHOLDER_9TH,
         // Curses
         CURSE_MUMMY_ROT,
         CURSE_RAKSHASA,
@@ -262,6 +277,72 @@ namespace srd5 {
             if (conditionName.IndexOf("GRAPPLED") == 0) conditionName = "GRAPPLED";
             string name = "IMMUNITY_" + conditionName;
             return (Effect)Enum.Parse(typeof(Effect), name);
+        }
+
+
+        public static readonly Effect FIRST_SPELL_CANTRIP = SPELL_GUIDANCE;
+        public static readonly Effect FIRST_SPELL_1ST = SPELL_ANIMAL_FRIENDSHIP;
+        public static readonly Effect FIRST_SPELL_2ND = SPELL_ACID_ARRORW_BURN;
+        public static readonly Effect FIRST_SPELL_3RD = SPELL_ANIMATE_DEAD;
+        public static readonly Effect FIRST_SPELL_4TH = SPELL_PLACEHOLDER_4TH;
+        public static readonly Effect FIRST_SPELL_5TH = SPELL_PLACEHOLDER_5TH;
+        public static readonly Effect FIRST_SPELL_6TH = SPELL_PLACEHOLDER_6TH;
+        public static readonly Effect FIRST_SPELL_7TH = SPELL_PLACEHOLDER_7TH;
+        public static readonly Effect FIRST_SPELL_8TH = SPELL_PLACEHOLDER_8TH;
+        public static readonly Effect FIRST_SPELL_9TH = SPELL_PLACEHOLDER_9TH;
+        public static readonly Effect LAST_SPELL_9TH = SPELL_PLACEHOLDER_9TH;
+
+        public static Effect[] GetSpellEffects(SpellLevel level) {
+            int lowerBoundary, upperBoundary;
+            switch (level) {
+                case SpellLevel.CANTRIP:
+                    lowerBoundary = (int)FIRST_SPELL_CANTRIP;
+                    upperBoundary = (int)FIRST_SPELL_1ST;
+                    break;
+                case SpellLevel.FIRST:
+                    lowerBoundary = (int)FIRST_SPELL_1ST;
+                    upperBoundary = (int)FIRST_SPELL_2ND;
+                    break;
+                case SpellLevel.SECOND:
+                    lowerBoundary = (int)FIRST_SPELL_2ND;
+                    upperBoundary = (int)FIRST_SPELL_3RD;
+                    break;
+                case SpellLevel.THIRD:
+                    lowerBoundary = (int)FIRST_SPELL_3RD;
+                    upperBoundary = (int)FIRST_SPELL_4TH;
+                    break;
+                case SpellLevel.FOURTH:
+                    lowerBoundary = (int)FIRST_SPELL_4TH;
+                    upperBoundary = (int)FIRST_SPELL_5TH;
+                    break;
+                case SpellLevel.FIFTH:
+                    lowerBoundary = (int)FIRST_SPELL_5TH;
+                    upperBoundary = (int)FIRST_SPELL_6TH;
+                    break;
+                case SpellLevel.SIXTH:
+                    lowerBoundary = (int)FIRST_SPELL_6TH;
+                    upperBoundary = (int)FIRST_SPELL_7TH;
+                    break;
+                case SpellLevel.SEVENTH:
+                    lowerBoundary = (int)FIRST_SPELL_7TH;
+                    upperBoundary = (int)FIRST_SPELL_8TH;
+                    break;
+                case SpellLevel.EIGHTH:
+                    lowerBoundary = (int)FIRST_SPELL_8TH;
+                    upperBoundary = (int)FIRST_SPELL_9TH;
+                    break;
+                case SpellLevel.NINTH:
+                    lowerBoundary = (int)FIRST_SPELL_9TH;
+                    upperBoundary = (int)LAST_SPELL_9TH;
+                    break;
+                default:
+                    throw new Srd5ArgumentException("Invalid spell level. " + level);
+            }
+            Effect[] effects = new Effect[upperBoundary - lowerBoundary + 1];
+            for (int i = 0; i < effects.Length; i++) {
+                effects[i] = (Effect)(lowerBoundary + i);
+            }
+            return effects;
         }
     }
 
@@ -542,6 +623,9 @@ namespace srd5 {
                         return true;
                     });
                     break;
+                case SPELL_INVISIBILITY:
+                    combattant.AddCondition(ConditionType.INVISIBLE);
+                    break;
             }
         }
 
@@ -690,6 +774,9 @@ namespace srd5 {
                 case SPELL_BESTOW_CURSE_LOST_TURN:
                     combattant.RemoveEffect(CANNOT_TAKE_ACTIONS);
                     break;
+                case SPELL_INVISIBILITY:
+                    combattant.RemoveCondition(ConditionType.INVISIBLE);
+                    break;
             }
         }
 
@@ -725,6 +812,35 @@ namespace srd5 {
 
         public static bool IsPoison(this Effect effect) {
             return Enum.GetName(typeof(Effect), effect).IndexOf("POISON") > -1;
+        }
+
+        public static bool IsSpell(this Effect effect) {
+            return Enum.GetName(typeof(Effect), effect).StartsWith("SPELL_");
+        }
+
+        public static SpellLevel SpellLevel(this Effect effect) {
+            if (!IsSpell(effect)) throw new Srd5ArgumentException("Effect is not a spell effect.");
+            if (effect >= Effects.FIRST_SPELL_9TH)
+                return srd5.SpellLevel.NINTH;
+            if (effect >= Effects.FIRST_SPELL_8TH)
+                return srd5.SpellLevel.EIGHTH;
+            if (effect >= Effects.FIRST_SPELL_7TH)
+                return srd5.SpellLevel.SEVENTH;
+            if (effect >= Effects.FIRST_SPELL_6TH)
+                return srd5.SpellLevel.SIXTH;
+            if (effect >= Effects.FIRST_SPELL_5TH)
+                return srd5.SpellLevel.FIFTH;
+            if (effect >= Effects.FIRST_SPELL_4TH)
+                return srd5.SpellLevel.FOURTH;
+            if (effect >= Effects.FIRST_SPELL_3RD)
+                return srd5.SpellLevel.THIRD;
+            if (effect >= Effects.FIRST_SPELL_2ND)
+                return srd5.SpellLevel.SECOND;
+            if (effect >= Effects.FIRST_SPELL_1ST)
+                return srd5.SpellLevel.FIRST;
+            if (effect >= Effects.FIRST_SPELL_CANTRIP)
+                return srd5.SpellLevel.CANTRIP;
+            throw new Srd5ArgumentException("Effect does not match any spell level.");
         }
     }
 }

@@ -22,6 +22,14 @@ namespace srd5 {
                         if (target.Dead && (target.Size == Size.MEDIUM || target.Size == Size.SMALL) && (target is CharacterSheet || (target is Monster monster && monster.Type == Monsters.Type.HUMANOID)) && !target.HasEffect(SPELL_ANIMATE_DEAD)) {
                             GlobalEvents.AffectBySpell(caster, ID.ANIMATE_DEAD, target, true);
                             target.AddEffect(SPELL_ANIMATE_DEAD);
+                            target.AddStartOfTurnEvent(delegate () {
+                                if (target.HasEffect(SPELL_ANIMATE_DEAD)) {
+                                    return false;
+                                } else {
+                                    target.Die();
+                                    return true;
+                                }
+                            });
                             if (ground is Battleground2D battleground2D) {
                                 Coord location = battleground2D.LocateCombattant2D(target);
                                 battleground2D.AddCombattant(Monsters.Zombie, location.X, location.Y);
@@ -51,6 +59,17 @@ namespace srd5 {
         public static Spell BestowCurse {
             get {
                 Spell curse = new Spell(ID.BESTOW_CURSE, NECROMANCY, THIRD, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 1);
+                curse.Variants = new SpellVariant[] {
+                    SpellVariant.DISADVANTAGE_CHARISMA_SAVES,
+                    SpellVariant.DISADVANTAGE_CONSTITUTION_SAVES,
+                    SpellVariant.DISADVANTAGE_DEXTERITY_SAVES,
+                    SpellVariant.DISADVANTAGE_INTELLIGENCE_SAVES,
+                    SpellVariant.DISADVANTAGE_STRENGTH_SAVES,
+                    SpellVariant.DISADVANTAGE_WISDOM_SAVES,
+                    SpellVariant.DISADVANTAGE_ON_ATTACK,
+                    SpellVariant.LOSE_TURN_ON_FAILED_WISDOM_SAVE,
+                    SpellVariant.TAKE_ADDITIONAL_DAMAGE
+                };
                 SpellCastEffect castEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
                     if (target.DC(ID.BESTOW_CURSE, dc, WISDOM)) {
@@ -58,7 +77,7 @@ namespace srd5 {
                         return;
                     }
                     SpellDuration duration = ONE_MINUTE;
-                    if (slot == NINETH) duration = UNTIL_DISPELLED;
+                    if (slot == NINTH) duration = UNTIL_DISPELLED;
                     else if (slot > SIXTH) duration = ONE_DAY;
                     else if (slot > FOURTH) duration = EIGHT_HOURS;
                     else if (slot > THIRD) duration = TEN_MINUTES;
@@ -124,44 +143,137 @@ namespace srd5 {
             get {
                 // TODO: If you are outdoors in stormy conditions when you cast this spell, the spell gives you control over the existing storm 
                 // instead of creating a new one. Under such conditions, the spell's damage increases by 1d10.
-                return new Spell(ID.CALL_LIGHTNING, CONJURATION, THIRD, CastingTime.ONE_ACTION, 120, VS, TEN_MINUTES, 5, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.CALL_LIGHTNING, CONJURATION, THIRD, CastingTime.ONE_ACTION, 120, VS, TEN_MINUTES, 5, 9, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    // This is modelled by creating a Cantrip that the caster can use. After the Duration, the cantrip is removed
+                    Dice dice = DiceSlotScaling(THIRD, slot, D10, 1);
+                    Damage damage = new Damage(LIGHTNING, dice);
+                    foreach (Combattant target in targets) {
+                        GlobalEvents.AffectBySpell(caster, ID.CALL_LIGHTNING, target, true);
+                        target.TakeDamage(new DamageSource(ID.CALL_LIGHTNING, caster), LIGHTNING, dice, HALVES_DAMAGE, dc, DEXTERITY, out _);
+                    }
+                    // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
+                    Spell lightningCantrip = new Spell(ID.CALL_LIGHTNING, CONJURATION, CANTRIP, CastingTime.ONE_ACTION, 120, V, INSTANTANEOUS, 5, 9, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                        foreach (Combattant target2 in targets2) {
+                            GlobalEvents.AffectBySpell(caster2, ID.CALL_LIGHTNING, target2, true);
+                            target2.TakeDamage(new DamageSource(ID.CALL_LIGHTNING, caster), LIGHTNING, dice, HALVES_DAMAGE, dc2, DEXTERITY, out _);
+                        }
+                    });
+                    caster.AvailableSpells[0].AddKnownSpell(lightningCantrip);
+                    caster.AvailableSpells[0].AddPreparedSpell(lightningCantrip);
+                    int remainingRounds = (int)TEN_MINUTES;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds < 1) {
+                            caster.AvailableSpells[0].RemoveKnownSpell(lightningCantrip);
+                            caster.AvailableSpells[0].RemovePreparedSpell(lightningCantrip);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
                 });
             }
         }
-        /* TODO */
+
         public static Spell Clairvoyance {
             get {
-                return new Spell(ID.CLAIRVOYANCE, DIVINATION, THIRD, CastingTime.TEN_MINUTES, 5280, VSM, TEN_MINUTES, 0, 0, doNothing);
+                return new Spell(ID.CLAIRVOYANCE, DIVINATION, THIRD, CastingTime.TEN_MINUTES, 5280, VSM, TEN_MINUTES, 0, 0, SpellWithoutEffect(ID.CLAIRVOYANCE));
             }
         }
         /* TODO */
         public static Spell ConjureAnimals {
             get {
-                return new Spell(ID.CONJURE_ANIMALS, CONJURATION, THIRD, CastingTime.ONE_ACTION, 60, VS, ONE_HOUR, 0, 0, doNothing);
+                Spell conjure = new Spell(ID.CONJURE_ANIMALS, CONJURATION, THIRD, CastingTime.ONE_ACTION, 60, VS, ONE_HOUR, 0, 0);
+                conjure.Variants = new SpellVariant[] { CR_QUARTER, CR_HALF, CR_ONE, CR_TWO };
+                SpellCastEffect effect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Monster[] randomBeasts;
+                    int beastAmount;
+                    switch (conjure.Variant) {
+                        case CR_QUARTER:
+                            randomBeasts = new Monster[] {
+                                Monsters.AxeBeak, Monsters.Boar, Monsters.ConstrictorSnake, Monsters.DraftHorse, Monsters.Elk, Monsters.GiantBadger, Monsters.GiantBat, Monsters.GiantCentipede, Monsters.GiantFrog, Monsters.GiantLizard, Monsters.GiantOwl, Monsters.GiantPoisonousSnake, Monsters.GiantWolfSpider, Monsters.Panther, Monsters.RidingHorse, Monsters.Wolf
+                            };
+                            beastAmount = 8;
+                            break;
+                        case CR_HALF:
+                            randomBeasts = new Monster[] {
+                                Monsters.Ape, Monsters.BlackBear, Monsters.Crocodile, Monsters.GiantGoat, Monsters.GiantWasp, Monsters.Warhorse
+                            };
+                            beastAmount = 4;
+                            break;
+                        case CR_ONE:
+                            randomBeasts = new Monster[] {
+                               Monsters.BrownBear, Monsters.DireWolf, Monsters.GiantEagle, Monsters.GiantHyena, Monsters.GiantSpider, Monsters.GiantToad, Monsters.GiantVulture, Monsters.Lion, Monsters.Tiger
+                            };
+                            beastAmount = 2;
+                            break;
+                        case CR_TWO:
+                            randomBeasts = new Monster[] {
+                                Monsters.GiantBoar, Monsters.GiantConstrictorSnake, Monsters.GiantElk, Monsters.PolarBear, Monsters.Rhinoceros, Monsters.SaberToothedTiger
+                            };
+                            beastAmount = 1;
+                            break;
+                        default:
+                            throw new Srd5ArgumentException("Invalid spell variant. " + conjure.Variant);
+                    }
+                    if (slot > SIXTH)
+                        beastAmount *= 3;
+                    else if (slot > FOURTH)
+                        beastAmount *= 2;
+                    for (int i = 0; i < beastAmount; i++) {
+                        if (ground is Battleground2D battleground2D) {
+                            Coord location = battleground2D.LocateCombattant2D(caster);
+                            battleground2D.AddCombattantNextTo(randomBeasts[D20.Value % randomBeasts.Length], location.X, location.Y);
+                        } else if (ground is BattleGroundClassic battleGroundClassic) {
+                            ClassicLocation location = battleGroundClassic.LocateClassicCombattant(caster);
+                            battleGroundClassic.AddCombattant(randomBeasts[D20.Value % randomBeasts.Length], location.Location);
+                        }
+                    }
+                    // TODO: Put the beasts under the caster's control
+                };
+                conjure.CastEffect = effect;
+                return conjure;
             }
         }
-        /* TODO */
+
+        // TODO: Requires reactions to casting a spell implemented
         public static Spell Counterspell {
             get {
-                return new Spell(ID.COUNTERSPELL, ABJURATION, THIRD, CastingTime.REACTION, 60, S, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.COUNTERSPELL, ABJURATION, THIRD, CastingTime.REACTION, 60, S, INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.COUNTERSPELL));
             }
         }
-        /* TODO */
+
         public static Spell CreateFoodandWater {
             get {
-                return new Spell(ID.CREATE_FOOD_AND_WATER, CONJURATION, THIRD, CastingTime.ONE_ACTION, 30, VS, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.CREATE_FOOD_AND_WATER, CONJURATION, THIRD, CastingTime.ONE_ACTION, 30, VS, INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.CREATE_FOOD_AND_WATER));
             }
         }
-        /* TODO */
+
         public static Spell Daylight {
             get {
-                return new Spell(ID.DAYLIGHT, EVOCATION, THIRD, CastingTime.ONE_ACTION, 60, VS, ONE_HOUR, 60, 0, doNothing);
+                return new Spell(ID.DAYLIGHT, EVOCATION, THIRD, CastingTime.ONE_ACTION, 60, VS, ONE_HOUR, 60, 0, SpellWithoutEffect(ID.DAYLIGHT));
             }
         }
-        /* TODO */
+
         public static Spell DispelMagic {
             get {
-                return new Spell(ID.DISPEL_MAGIC, ABJURATION, THIRD, CastingTime.ONE_ACTION, 120, VS, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.DISPEL_MAGIC, ABJURATION, THIRD, CastingTime.ONE_ACTION, 120, VS, INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    GlobalEvents.AffectBySpell(caster, ID.DISPEL_MAGIC, target, true);
+                    // Remove all spelleffects that are equal or lower the slot
+                    for (int i = (int)slot; i >= 0; i--) {
+                        foreach (Effect effect in Effects.GetSpellEffects((SpellLevel)i)) {
+                            target.RemoveEffect(effect);
+                        }
+                    }
+                    // Now, try to remove the remaining spell effects
+                    foreach (Effect effect in target.Effects) {
+                        if (effect.IsSpell()) {
+                            if (caster.DC(ID.DISPEL_MAGIC, 10 + (int)effect.SpellLevel(), caster.SpellCastingAbility(ID.DISPEL_MAGIC))) {
+                                target.RemoveEffect(effect);
+                            }
+                        }
+                    }
+                });
             }
         }
         /* TODO */

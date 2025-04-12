@@ -199,7 +199,7 @@ namespace srd5 {
             hag.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hag), DamageType.FIRE, 30);
             Assert.True(hag.HitPointsMax > hag.HitPoints);
             hag.HealDamage(100);
-            Spells.FalseLife.Cast(hag, 0, SpellLevel.NINETH, 0);
+            Spells.FalseLife.Cast(hag, 0, SpellLevel.NINTH, 0);
             Spells.FalseLife.Cast(hag, 0, SpellLevel.THIRD, 0);
             hag.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hag), DamageType.FIRE, 30);
             Assert.Equal(hag.HitPointsMax, hag.HitPoints);
@@ -349,7 +349,7 @@ namespace srd5 {
             Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.MAGIC));
             Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.PLUS_2));
             hero.Inventory.MainHand = Weapons.Longsword;
-            Spells.MagicWeapon.Cast(hero, 10, SpellLevel.NINETH, 5);
+            Spells.MagicWeapon.Cast(hero, 10, SpellLevel.NINTH, 5);
             Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.MAGIC));
             Assert.True(hero.Inventory.MainHand.HasProperty(WeaponProperty.PLUS_3));
             GlobalEvents.SpellAffectionHandlers -= handler;
@@ -395,7 +395,7 @@ namespace srd5 {
             Monster orc = Monsters.Orc;
             Monster bandit = Monsters.Bandit;
             Battleground ground = createBattleground(hag, orc, bandit);
-            Spells.ScorchingRay.Cast(ground, hag, 20, SpellLevel.NINETH, 5, orc, bandit);
+            Spells.ScorchingRay.Cast(ground, hag, 20, SpellLevel.NINTH, 5, orc, bandit);
             Assert.True(orc.Dead);
             Assert.True(bandit.Dead);
         }

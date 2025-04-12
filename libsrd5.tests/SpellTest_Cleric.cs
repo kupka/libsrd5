@@ -47,7 +47,7 @@ namespace srd5 {
         [Fact]
         public void GuidingBoltTest() {
             DamagingSpellTesting(Spells.GuidingBolt, 12, DamageType.RADIANT);
-            DefaultSpellTest(Spells.GuidingBolt, 12, SpellLevel.NINETH, null, Effect.ADVANTAGE_ON_BEING_ATTACKED, 1);
+            DefaultSpellTest(Spells.GuidingBolt, 12, SpellLevel.NINTH, null, Effect.ADVANTAGE_ON_BEING_ATTACKED, 1);
         }
 
         [Fact]
@@ -108,7 +108,7 @@ namespace srd5 {
             shadow.HitPoints = 1;
             golem.HitPoints = 1;
             Battleground ground = createBattleground(cleric, ogre, shadow, golem);
-            Spells.PrayerofHealing.Cast(ground, cleric, 12, SpellLevel.NINETH, 50, cleric, ogre, shadow, golem);
+            Spells.PrayerofHealing.Cast(ground, cleric, 12, SpellLevel.NINTH, 50, cleric, ogre, shadow, golem);
             Assert.Equal(cleric.HitPointsMax, cleric.HitPoints);
             Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
             Assert.Equal(1, shadow.HitPoints);
@@ -295,5 +295,9 @@ namespace srd5 {
             Assert.False(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
         }
 
+        [Fact]
+        public void AnimateDeadTest() {
+
+        }
     }
 }

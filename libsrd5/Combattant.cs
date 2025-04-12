@@ -747,6 +747,17 @@ namespace srd5 {
             GlobalEvents.Die(this);
             Dead = true;
         }
+
+        public AbilityType SpellCastingAbility(Spells.ID spellId) {
+            foreach (AvailableSpells spells in AvailableSpells) {
+                foreach (Spell spell in spells.KnownSpells) {
+                    if (spell.ID == spellId) {
+                        return spells.CharacterClass.SpellCastingAbility;
+                    }
+                }
+            }
+            throw new Srd5ArgumentException("Spell not found in available spells");
+        }
     }
 
     /// <summary>

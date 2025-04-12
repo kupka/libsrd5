@@ -24,7 +24,7 @@ namespace srd5 {
         SIXTH = 6,
         SEVENTH = 7,
         EIGHTH = 8,
-        NINETH = 9
+        NINTH = 9
     }
 
     public enum CastingTime {
@@ -89,7 +89,12 @@ namespace srd5 {
         DISADVANTAGE_STRENGTH_SAVES,
         DISADVANTAGE_WISDOM_SAVES,
         LOSE_TURN_ON_FAILED_WISDOM_SAVE,
-        TAKE_ADDITIONAL_DAMAGE
+        TAKE_ADDITIONAL_DAMAGE,
+        // Conjure Animals
+        CR_QUARTER,
+        CR_HALF,
+        CR_ONE,
+        CR_TWO
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);

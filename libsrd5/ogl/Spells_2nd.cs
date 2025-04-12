@@ -410,28 +410,26 @@ namespace srd5 {
             get {
                 return new Spell(ID.INVISIBILITY, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
                     Combattant target = targets[0];
-                    target.AddCondition(ConditionType.INVISIBLE);
-                    bool spellEnded = false;
+                    AddEffectsForDuration(ID.INVISIBILITY, caster, target, ONE_HOUR, SPELL_INVISIBILITY);
                     EventHandler<GlobalEvents.AttackRolled> attackHandler = delegate (object sender, GlobalEvents.AttackRolled attack) {
                         if (attack.Attacker.Equals(target)) {
-                            target.RemoveCondition(ConditionType.INVISIBLE);
-                            spellEnded = true;
+                            target.RemoveEffect(SPELL_INVISIBILITY);
                         }
                     };
                     EventHandler<GlobalEvents.SpellCast> castHandler = delegate (object sender, GlobalEvents.SpellCast cast) {
                         if (cast.Caster.Equals(target)) {
-                            target.RemoveCondition(ConditionType.INVISIBLE);
-                            spellEnded = true;
+                            target.RemoveEffect(SPELL_INVISIBILITY);
                         }
                     };
                     GlobalEvents.AttackRolledHandlers += attackHandler;
                     GlobalEvents.SpellCastHandlers += castHandler;
                     target.AddEndOfTurnEvent(delegate () {
-                        if (spellEnded) {
+                        if (!target.HasEffect(SPELL_INVISIBILITY)) {
                             GlobalEvents.AttackRolledHandlers -= attackHandler;
                             GlobalEvents.SpellCastHandlers -= castHandler;
+                            return true;
                         }
-                        return spellEnded;
+                        return false;
                     });
                 });
             }

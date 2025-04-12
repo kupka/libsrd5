@@ -109,6 +109,17 @@ namespace srd5 {
     }
 
     public class Battleground2D : Battleground {
+        public Coord[] Offsets = new Coord[]{
+            new Coord(0, 1), // TOP
+            new Coord(1,1), // TOP RIGHT
+            new Coord(1, 0), // RIGHT
+            new Coord(1, -1), // BOTTOM RIGHT
+            new Coord(0, -1), // BOTTOM
+            new Coord(-1, -1), // BOTTOM LEFT
+            new Coord(-1, 0), // LEFT
+            new Coord(-1, 1) // TOP LEFT
+        };
+
         public Tile[,] Tiles { get; internal set; }
         private Coord[] coords = new Coord[0];
 
@@ -137,6 +148,27 @@ namespace srd5 {
 
         public void AddCombattant(Combattant combattant, int x, int y) {
             AddCombattant(combattant);
+            Utils.Push<Coord>(ref coords, new Coord(x, y));
+        }
+
+        public void AddCombattantNextTo(Combattant combattant, int x, int y) {
+            AddCombattant(combattant);
+            bool occupied = true;
+            int i = 0;
+            while (occupied) {
+                int mult = i / 8 + 1;
+                Coord offset = Offsets[i % 8];
+                int x2 = x + offset.X * mult;
+                int y2 = y + offset.Y * mult;
+                foreach (Coord coord in coords) {
+                    if (coord.X == x2 && coord.Y == y2) {
+                        occupied = true;
+                        break;
+                    }
+                    occupied = false;
+                }
+                i++;
+            }
             Utils.Push<Coord>(ref coords, new Coord(x, y));
         }
 

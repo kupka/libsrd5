@@ -13,13 +13,15 @@ namespace srd5 {
                 object o = property.GetMethod.Invoke(null, null);
                 Assert.True(o is Spell);
                 Spell spell = (Spell)o;
+                if (spell.Variants.Length > 0)
+                    spell.Variant = spell.Variants[0];
                 Monster hag = Monsters.NightHag;
                 Monster bandit = Monsters.Bandit;
                 Battleground ground = createBattleground(hag, bandit);
                 if (spell.MaximumTargets == 0) {
-                    spell.Cast(hag, 10, SpellLevel.NINETH, 5);
+                    spell.Cast(hag, 10, SpellLevel.NINTH, 5);
                 } else {
-                    spell.Cast(ground, hag, 10, SpellLevel.NINETH, 20, bandit);
+                    spell.Cast(ground, hag, 10, SpellLevel.NINTH, 20, bandit);
                 }
             }
         }
@@ -102,22 +104,22 @@ namespace srd5 {
             Battleground ground = createBattleground(hero);
             hero.AddLevel(CharacterClasses.Druid);
             hero.HitPoints = 1;
-            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, hero);
+            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, hero);
             Assert.Equal(hero.HitPointsMax, hero.HitPoints);
             // doesn't affect undead
             Monster shadow = Monsters.Shadow;
             shadow.HitPoints = shadow.HitPointsMax - 1;
-            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, shadow);
+            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, shadow);
             Assert.Equal(shadow.HitPointsMax - 1, shadow.HitPoints);
             // doesn't affect constructs
             Monster golem = Monsters.ClayGolem;
             golem.HitPoints = golem.HitPointsMax - 1;
-            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, golem);
+            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, golem);
             Assert.Equal(golem.HitPointsMax - 1, golem.HitPoints);
             // affects giants
             Monster ogre = Monsters.Ogre;
             ogre.HitPoints = ogre.HitPointsMax - 10;
-            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, ogre);
+            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, ogre);
             Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
         }
 
@@ -131,17 +133,17 @@ namespace srd5 {
             // doesn't affect undead
             Monster shadow = Monsters.Shadow;
             shadow.HitPoints = shadow.HitPointsMax - 1;
-            Spells.HealingWord.Cast(createBattleground(hero, shadow), hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, shadow);
+            Spells.HealingWord.Cast(createBattleground(hero, shadow), hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, shadow);
             Assert.Equal(shadow.HitPointsMax - 1, shadow.HitPoints);
             // doesn't affect constructs
             Monster golem = Monsters.ClayGolem;
             golem.HitPoints = golem.HitPointsMax - 1;
-            Spells.HealingWord.Cast(createBattleground(hero, golem), hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, golem);
+            Spells.HealingWord.Cast(createBattleground(hero, golem), hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, golem);
             Assert.Equal(golem.HitPointsMax - 1, golem.HitPoints);
             // affects giants
             Monster ogre = Monsters.Ogre;
             ogre.HitPoints = ogre.HitPointsMax - 10;
-            Spells.HealingWord.Cast(createBattleground(hero, ogre), hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, ogre);
+            Spells.HealingWord.Cast(createBattleground(hero, ogre), hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, ogre);
             Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
         }
 
@@ -517,7 +519,7 @@ namespace srd5 {
             bandit.ArmorClass = 0;
             bandit.HitPoints = 6;
             Battleground ground = createBattleground(druid, bandit);
-            Spells.FlameBlade.Cast(druid, 10, SpellLevel.NINETH, 0);
+            Spells.FlameBlade.Cast(druid, 10, SpellLevel.NINTH, 0);
             Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAME_BLADE);
             druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
             Assert.True(bandit.Dead);

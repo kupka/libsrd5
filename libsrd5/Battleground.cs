@@ -160,16 +160,19 @@ namespace srd5 {
                 Coord offset = Offsets[i % 8];
                 int x2 = x + offset.X * mult;
                 int y2 = y + offset.Y * mult;
+                occupied = false;
                 foreach (Coord coord in coords) {
                     if (coord.X == x2 && coord.Y == y2) {
                         occupied = true;
                         break;
                     }
-                    occupied = false;
                 }
-                i++;
+                if (!occupied) {
+                    Utils.Push<Coord>(ref coords, new Coord(x2, y2));
+                } else {
+                    i++;
+                }
             }
-            Utils.Push<Coord>(ref coords, new Coord(x, y));
         }
 
         protected override void SetCurrentLocation(Location location) {

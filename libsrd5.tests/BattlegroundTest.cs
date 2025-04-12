@@ -550,5 +550,23 @@ namespace srd5 {
             Assert.Equal(ClassicLocation.Row.BACK_LEFT, classic.LocateClassicCombattant(ogre).Location);
             Assert.Equal(ClassicLocation.Row.BACK_RIGHT, classic.LocateClassicCombattant(goblin).Location);
         }
+
+        [Fact]
+        public void AddCombattantNextToTest() {
+            Battleground2D ground = new Battleground2D(10, 10);
+            int[] x = [4, 4, 4, 5, 5, 6, 6, 6];
+            int[] y = [4, 4, 4, 5, 5, 6, 6, 6];
+            Monster[] goblins = [];
+            for (int i = 0; i < 8; i++) {
+                Monster goblin = Monsters.Goblin;
+                Utils.Push<Monster>(ref goblins, goblin);
+                ground.AddCombattantNextTo(goblin, 5, 5);
+            }
+            foreach (Monster goblin in goblins) {
+                Coord coord = ground.LocateCombattant2D(goblin);
+                Assert.False(Utils.RemoveSingle(ref x, coord.X) == RemoveResult.NOT_FOUND);
+                Assert.False(Utils.RemoveSingle(ref y, coord.Y) == RemoveResult.NOT_FOUND);
+            }
+        }
     }
 }

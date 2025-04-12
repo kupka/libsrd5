@@ -134,6 +134,7 @@ namespace srd5 {
         CANNOT_REGAIN_HITPOINTS,
         GRAPPLING,
         // Spell Effects
+        SPELL_GENERIC,
         // Cantrips
         SPELL_GUIDANCE,
         SPELL_LIGHT,

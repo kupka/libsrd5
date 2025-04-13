@@ -132,5 +132,11 @@ namespace srd5 {
             Assert.Equal("1d12", new Dice(1, 12, 0).ToString());
             Assert.Equal("3d8-2", new Dice(3, 8, -2).ToString());
         }
+
+        [Fact]
+        public void OperatorTest() {
+            Assert.Equal("2d6+3", (2 * D6 + 3).ToString());
+            Assert.Equal("5d8-2", (5 * D8 - 2).ToString());
+        }
     }
 }

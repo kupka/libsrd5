@@ -568,5 +568,22 @@ namespace srd5 {
             }
             Assert.True(died + survived == 100);
         }
+
+        [Fact]
+        public void SpellCastingAbilityTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            hero.AddLevel(CharacterClasses.Druid);
+            hero.AddLevel(CharacterClasses.Wizard);
+            Assert.Equal(CharacterClasses.Druid, hero.AvailableSpells[0].CharacterClass);
+            Assert.Equal(CharacterClasses.Wizard, hero.AvailableSpells[1].CharacterClass);
+            hero.AvailableSpells[0].AddKnownSpell(Spells.Barkskin);
+            hero.AvailableSpells[1].AddKnownSpell(Spells.MagicMissile);
+            hero.AvailableSpells[1].AddKnownSpell(Spells.ArcaneHand);
+            Assert.Equal(AbilityType.WISDOM, hero.SpellCastingAbility(Spells.ID.BARKSKIN));
+            Assert.Equal(AbilityType.INTELLIGENCE, hero.SpellCastingAbility(Spells.ID.ARCANE_HAND));
+            Assert.Throws<Srd5ArgumentException>(delegate () {
+                hero.SpellCastingAbility(Spells.ID.ALTER_SELF);
+            });
+        }
     }
 }

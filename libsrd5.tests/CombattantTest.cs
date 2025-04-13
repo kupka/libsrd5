@@ -205,5 +205,15 @@ namespace srd5 {
             Assert.False(ogre.Attack(Attacks.OgreGreatclub, bat, 8));
 
         }
+
+        [Fact]
+        public void BeaconOfHopeHealTest() {
+            Combattant ogre = Monsters.Ogre;
+            ogre.HitPoints -= 20;
+            ogre.AddEffect(Effect.SPELL_BEACON_OF_HOPE);
+            ogre.HealDamage(Die.D20);
+            Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
+        }
+
     }
 }

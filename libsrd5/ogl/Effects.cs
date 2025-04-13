@@ -333,11 +333,10 @@ namespace srd5 {
                     upperBoundary = (int)FIRST_SPELL_9TH;
                     break;
                 case SpellLevel.NINTH:
+                default:
                     lowerBoundary = (int)FIRST_SPELL_9TH;
                     upperBoundary = (int)LAST_SPELL_9TH;
                     break;
-                default:
-                    throw new Srd5ArgumentException("Invalid spell level. " + level);
             }
             Effect[] effects = new Effect[upperBoundary - lowerBoundary + 1];
             for (int i = 0; i < effects.Length; i++) {

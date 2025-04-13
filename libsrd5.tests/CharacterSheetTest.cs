@@ -551,6 +551,7 @@ namespace srd5 {
             // try often for all possible outcomes
             for (int i = 0; i < 100; i++) {
                 CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
+                if (i % 5 == 0) hero.AddEffect(Effect.ADVANTAGE_DEATH_SAVES);
                 hero.AddLevel(CharacterClasses.Wizard);
                 hero.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hero), DamageType.TRUE_DAMAGE, hero.HitPointsMax);
                 Assert.True(hero.HasEffect(Effect.FIGHTING_DEATH));

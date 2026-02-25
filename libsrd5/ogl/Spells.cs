@@ -94,7 +94,12 @@ namespace srd5 {
         CR_QUARTER,
         CR_HALF,
         CR_ONE,
-        CR_TWO
+        CR_TWO,
+        DAMAGE_ACID,
+        DAMAGE_COLD,
+        DAMAGE_FIRE,
+        DAMAGE_LIGHTNING,
+        DAMAGE_THUNDER
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);

@@ -412,5 +412,64 @@ namespace srd5 {
             Assert.True(stonegolem.HitPointsMax > stonegolem.HitPoints);
             Assert.True(fleshgolem.HitPointsMax > fleshgolem.HitPoints);
         }
+
+        [Fact]
+        public void HasteTest() {
+            Monster wizard = Monsters.Mage;
+            int originalSpeed = wizard.Speed;
+            int originalAC = wizard.ArmorClass;
+            Spells.Haste.Cast(wizard, 12, SpellLevel.THIRD, 0);
+            Assert.True(wizard.HasEffect(Effect.SPELL_HASTE));
+            Assert.Equal(originalSpeed * 2, wizard.Speed);
+            Assert.Equal(originalAC + 2, wizard.ArmorClass);
+            Assert.True(wizard.HasEffect(Effect.ONE_EXTRA_ATTACK));
+            // Test duration cleanup
+            wizard.RemoveEffect(Effect.SPELL_HASTE);
+            Assert.Equal(originalSpeed, wizard.Speed);
+            Assert.Equal(originalAC, wizard.ArmorClass);
+            Assert.False(wizard.HasEffect(Effect.ONE_EXTRA_ATTACK));
+        }
+
+        [Fact]
+        public void SlowTest() {
+            Monster orc = Monsters.Orc;
+            int originalSpeed = orc.Speed;
+            Spells.Slow.Cast(orc, 12, SpellLevel.THIRD, 0);
+            Assert.True(orc.HasEffect(Effect.SPELL_SLOW));
+            Assert.True(orc.HasEffect(Effect.DISADVANTAGE_DEXTERITY_SAVES));
+            Assert.True(orc.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
+            Assert.True(orc.HasEffect(Effect.CANNOT_TAKE_REACTIONS));
+            Assert.Equal(originalSpeed / 2, orc.Speed);
+            // Test duration cleanup
+            orc.RemoveEffect(Effect.SPELL_SLOW);
+            Assert.Equal(originalSpeed, orc.Speed);
+            Assert.False(orc.HasEffect(Effect.DISADVANTAGE_DEXTERITY_SAVES));
+            Assert.False(orc.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
+            Assert.False(orc.HasEffect(Effect.CANNOT_TAKE_REACTIONS));
+        }
+
+        [Fact]
+        public void ProtectionFromEnergyTest() {
+            Monster orc = Monsters.Orc;
+            int originalHP = orc.HitPoints;
+            // Test Fire resistance variant
+            Spell spell = Spells.ProtectionFromEnergy;
+            spell.Variant = SpellVariant.DAMAGE_FIRE;
+            spell.Cast(orc, 12, SpellLevel.THIRD, 0);
+            Assert.True(orc.HasEffect(Effect.SPELL_PROTECTION_FROM_ENERGY));
+            Assert.True(orc.HasEffect(Effect.RESISTANCE_FIRE));
+            orc.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, orc), DamageType.FIRE, 20);
+            int damageTaken = originalHP - orc.HitPoints;
+            Assert.True(damageTaken <= 10); // half damage due to resistance
+            // Test Cold resistance variant
+            Monster bandit = Monsters.Bandit;
+            spell.Variant = SpellVariant.DAMAGE_COLD;
+            int banditOriginalHP = bandit.HitPoints;
+            spell.Cast(bandit, 12, SpellLevel.THIRD, 0);
+            Assert.True(bandit.HasEffect(Effect.RESISTANCE_COLD));
+            bandit.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, bandit), DamageType.COLD, 20);
+            int coldDamageTaken = banditOriginalHP - bandit.HitPoints;
+            Assert.True(coldDamageTaken <= 10);
+        }
     }
 }

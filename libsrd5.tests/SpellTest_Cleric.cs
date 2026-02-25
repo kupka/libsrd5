@@ -297,7 +297,50 @@ namespace srd5 {
 
         [Fact]
         public void AnimateDeadTest() {
+            Monster bandit1 = Monsters.Bandit;
+            bandit1.Die();
+            Monster bandit2 = Monsters.Bandit;
+            Monster rat = Monsters.GiantRat;
+            Monster hillGiant = Monsters.HillGiant;
+            CharacterSheet wizard = new CharacterSheet(Race.HALF_ELF);
+            wizard.Die();
+            CharacterSheet cleric = new CharacterSheet(Race.HILL_DWARF);
 
+            Battleground ground = createBattleground(cleric, bandit1, bandit2, hillGiant, rat, wizard);
+            Spells.AnimateDead.Cast(ground, cleric, 12, SpellLevel.NINTH, 0, bandit1, bandit2, rat, wizard);
+            Assert.True(bandit1.HasEffect(Effect.SPELL_ANIMATE_DEAD));
+            Assert.False(bandit2.HasEffect(Effect.SPELL_ANIMATE_DEAD));
+            Assert.False(rat.HasEffect(Effect.SPELL_ANIMATE_DEAD));
+            Assert.False(hillGiant.HasEffect(Effect.SPELL_ANIMATE_DEAD));
+            Assert.True(wizard.HasEffect(Effect.SPELL_ANIMATE_DEAD));
+        }
+
+        [Fact]
+        public void MassHealingWordTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            cleric.HitPoints = 1;
+            Monster ogre = Monsters.Ogre;
+            Monster shadow = Monsters.Shadow;
+            Monster golem = Monsters.ClayGolem;
+            ogre.HitPoints = 1;
+            shadow.HitPoints = 1;
+            golem.HitPoints = 1;
+            Battleground ground = createBattleground(cleric, ogre, shadow, golem);
+            Spells.MassHealingWord.Cast(ground, cleric, 12, SpellLevel.NINTH, 50, cleric, ogre, shadow, golem);
+            Assert.Equal(cleric.HitPointsMax, cleric.HitPoints);
+            Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
+            Assert.Equal(1, shadow.HitPoints); // undead not affected
+            Assert.Equal(1, golem.HitPoints); // construct not affected
+        }
+
+        [Fact]
+        public void RemoveCurseTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            Monster cursedMonster = Monsters.Mummy;
+            cursedMonster.AddEffect(Effect.CURSE_MUMMY_ROT);
+            Assert.True(cursedMonster.HasEffect(Effect.CURSE_MUMMY_ROT));
+            Spells.RemoveCurse.Cast(cursedMonster, 12, SpellLevel.THIRD, 0);
+            Assert.False(cursedMonster.HasEffect(Effect.CURSE_MUMMY_ROT));
         }
     }
 }

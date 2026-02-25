@@ -191,11 +191,15 @@ namespace srd5 {
         SPELL_WARDING_BOND_CASTER,
         // 3rd
         SPELL_ANIMATE_DEAD,
+        SPELL_FEAR,
         SPELL_BEACON_OF_HOPE,
         SPELL_BESTOW_CURSE,
         SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE,
         SPELL_BESTOW_CURSE_LOST_TURN,
         SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE,
+        SPELL_HASTE,
+        SPELL_PROTECTION_FROM_ENERGY,
+        SPELL_SLOW,
         // 4th
         SPELL_PLACEHOLDER_4TH,
         // 5th
@@ -626,6 +630,21 @@ namespace srd5 {
                 case SPELL_INVISIBILITY:
                     combattant.AddCondition(ConditionType.INVISIBLE);
                     break;
+                case SPELL_HASTE:
+                    combattant.ArmorClassModifier += 2;
+                    combattant.AddEffect(ONE_EXTRA_ATTACK);
+                    combattant.AddEffect(ADVANTAGE_DEXTERITY_SAVES);
+                    combattant.Speed *= 2;
+                    break;
+                case SPELL_SLOW:
+                    combattant.AddEffect(DISADVANTAGE_DEXTERITY_SAVES);
+                    combattant.AddEffect(DISADVANTAGE_ON_ATTACK);
+                    combattant.Speed /= 2;
+                    combattant.AddEffect(CANNOT_TAKE_REACTIONS);
+                    break;
+                case SPELL_PROTECTION_FROM_ENERGY:
+                    // Resistance is applied via variant in the spell itself
+                    break;
             }
         }
 
@@ -776,6 +795,21 @@ namespace srd5 {
                     break;
                 case SPELL_INVISIBILITY:
                     combattant.RemoveCondition(ConditionType.INVISIBLE);
+                    break;
+                case SPELL_HASTE:
+                    combattant.ArmorClassModifier -= 2;
+                    combattant.RemoveEffect(ONE_EXTRA_ATTACK);
+                    combattant.RemoveEffect(ADVANTAGE_DEXTERITY_SAVES);
+                    combattant.Speed /= 2;
+                    break;
+                case SPELL_SLOW:
+                    combattant.RemoveEffect(DISADVANTAGE_DEXTERITY_SAVES);
+                    combattant.RemoveEffect(DISADVANTAGE_ON_ATTACK);
+                    combattant.Speed *= 2;
+                    combattant.RemoveEffect(CANNOT_TAKE_REACTIONS);
+                    break;
+                case SPELL_PROTECTION_FROM_ENERGY:
+                    // Resistance applied via variants in spell itself
                     break;
             }
         }

@@ -279,13 +279,72 @@ namespace srd5 {
         /* TODO */
         public static Spell Fear {
             get {
-                return new Spell(ID.FEAR, ILLUSION, THIRD, CastingTime.ONE_ACTION, 0, VSM, ONE_MINUTE, 30, 0, doNothing);
+                return new Spell(ID.FEAR, ILLUSION, THIRD, CastingTime.ONE_ACTION, 0, VSM, ONE_MINUTE, 30, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    foreach (Combattant target in targets) {
+                        // Save vs fear
+                        if (target.DC(ID.FEAR, dc, WISDOM)) {
+                            GlobalEvents.AffectBySpell(caster, ID.FEAR, target, false);
+                            continue;
+                        }
+
+                        // Drop whatever the target is holding (if applicable)
+                        if (target is CharacterSheet sheet) {
+                            sheet.Unequip(sheet.Inventory.MainHand);
+                            sheet.Unequip(sheet.Inventory.OffHand);
+                        }
+
+                        // Apply frightened condition and a spell effect so it can be removed later
+                        target.AddCondition(ConditionType.FRIGHTENED);
+                        target.AddEffect(SPELL_FEAR);
+
+                        // Duration handling (converts ONE_MINUTE to rounds)
+                        int remainingRounds = (int)ONE_MINUTE;
+                        target.AddStartOfTurnEvent(delegate () {
+                            if (--remainingRounds < 1) {
+                                target.RemoveEffect(SPELL_FEAR);
+                                target.RemoveCondition(ConditionType.FRIGHTENED);
+                                return true;
+                            }
+                            // While frightened the creature is expected to take the Dash action and move away from the caster.
+                            // Movement AI is not implemented here; the presence of the FRIGHTENED condition should influence
+                            // higher-level turn logic to force dash/movement away when available.
+                            return false;
+                        });
+
+                        // At the end of the target's turn, if it doesn't have line of sight to the caster it may attempt
+                        // a Wisdom save to end the effect. As an approximation, treat being more than 300 ft away as lacking
+                        // line of sight for this check.
+                        target.AddEndOfTurnEvent(delegate () {
+                            if (!target.HasCondition(ConditionType.FRIGHTENED)) return true;
+                            Location tLoc = ground.LocateCombattant(target);
+                            Location cLoc = ground.LocateCombattant(caster);
+                            if (tLoc != null && cLoc != null && tLoc.Distance(cLoc) > 300) {
+                                if (target.DC(ID.FEAR, dc, WISDOM)) {
+                                    target.RemoveEffect(SPELL_FEAR);
+                                    target.RemoveCondition(ConditionType.FRIGHTENED);
+                                    return true;
+                                }
+                            }
+                            return false;
+                        });
+
+                        GlobalEvents.AffectBySpell(caster, ID.FEAR, target, true);
+                    }
+                });
             }
         }
-        /* TODO */
         public static Spell Fireball {
             get {
-                return new Spell(ID.FIREBALL, EVOCATION, THIRD, CastingTime.ONE_ACTION, 150, VSM, INSTANTANEOUS, 20, 0, doNothing);
+                return new Spell(ID.FIREBALL, EVOCATION, THIRD, CastingTime.ONE_ACTION, 150, VSM, INSTANTANEOUS, 20, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    // 8d6 base + 1d6 for each level above 3rd
+                    Dice damage = DiceSlotScaling(THIRD, slot, D6, 8);
+
+                    foreach (Combattant target in targets) {
+                        GlobalEvents.AffectBySpell(caster, ID.FIREBALL, target, true);
+                        target.TakeDamage(new DamageSource(ID.FIREBALL, caster), FIRE, damage, HALVES_DAMAGE, dc, DEXTERITY, out _);
+                        // TODO: The fire spreads around corners. It ignites flammable objects in the area that aren’t being worn or carried.
+                    }
+                });
             }
         }
         /* TODO */
@@ -306,10 +365,13 @@ namespace srd5 {
                 return new Spell(ID.GLYPH_OF_WARDING, ABJURATION, THIRD, CastingTime.ONE_HOUR, 0, VSM, UNTIL_DISPELLED, 0, 0, doNothing);
             }
         }
-        /* TODO */
         public static Spell Haste {
             get {
-                return new Spell(ID.HASTE, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 30, VSM, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.HASTE, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 30, VSM, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    GlobalEvents.AffectBySpell(caster, ID.HASTE, target, true);
+                    AddEffectsForDuration(ID.HASTE, caster, target, ONE_MINUTE, SPELL_HASTE);
+                });
             }
         }
         /* TODO */
@@ -318,10 +380,18 @@ namespace srd5 {
                 return new Spell(ID.HYPNOTIC_PATTERN, ILLUSION, THIRD, CastingTime.ONE_ACTION, 120, SM, ONE_MINUTE, 0, 0, doNothing);
             }
         }
-        /* TODO */
         public static Spell LightningBolt {
             get {
-                return new Spell(ID.LIGHTNING_BOLT, EVOCATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, INSTANTANEOUS, 100, 0, doNothing);
+                return new Spell(ID.LIGHTNING_BOLT, EVOCATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, INSTANTANEOUS, 100, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    // 8d6 base + 1d6 for each level above 3rd
+                    Dice damage = DiceSlotScaling(THIRD, slot, D6, 8);
+
+                    foreach (Combattant target in targets) {
+                        GlobalEvents.AffectBySpell(caster, ID.LIGHTNING_BOLT, target, true);
+                        target.TakeDamage(new DamageSource(ID.LIGHTNING_BOLT, caster), LIGHTNING, damage, HALVES_DAMAGE, dc, DEXTERITY, out _);
+                        // TODO: The lightning ignites flammable objects in the area that aren’t being worn or carried.
+                    }
+                });
             }
         }
         /* TODO */
@@ -336,10 +406,22 @@ namespace srd5 {
                 return new Spell(ID.MAJOR_IMAGE, ILLUSION, THIRD, CastingTime.ONE_ACTION, 120, VSM, TEN_MINUTES, 0, 0, doNothing);
             }
         }
-        /* TODO */
         public static Spell MassHealingWord {
             get {
-                return new Spell(ID.MASS_HEALING_WORD, EVOCATION, THIRD, CastingTime.BONUS_ACTION, 60, V, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.MASS_HEALING_WORD, EVOCATION, THIRD, CastingTime.BONUS_ACTION, 60, V, INSTANTANEOUS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    // 1d4 per level above 1st (3rd level = 3d4 base)
+                    foreach (Combattant target in targets) {
+                        if (target is Monster monster) {
+                            if (monster.Type == Monsters.Type.CONSTRUCT || monster.Type == Monsters.Type.UNDEAD) {
+                                GlobalEvents.AffectBySpell(caster, ID.MASS_HEALING_WORD, target, false);
+                                continue;
+                            }
+                        }
+                        Dice dice = DiceSlotScaling(FIRST, slot, D4, 1, modifier);
+                        GlobalEvents.AffectBySpell(caster, ID.MASS_HEALING_WORD, target, true);
+                        target.HealDamage(dice);
+                    }
+                });
             }
         }
         /* TODO */
@@ -366,16 +448,63 @@ namespace srd5 {
                 return new Spell(ID.PLANT_GROWTH, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 150, VS, INSTANTANEOUS, 0, 0, doNothing);
             }
         }
-        /* TODO */
         public static Spell ProtectionFromEnergy {
             get {
-                return new Spell(ID.PROTECTION_FROM_ENERGY, ABJURATION, THIRD, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 0, doNothing);
+                Spell protection = new Spell(ID.PROTECTION_FROM_ENERGY, ABJURATION, THIRD, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 0);
+                protection.Variants = new SpellVariant[] {
+                    DAMAGE_ACID,
+                    DAMAGE_COLD,
+                    DAMAGE_FIRE,
+                    DAMAGE_LIGHTNING,
+                    DAMAGE_THUNDER
+                };
+                SpellCastEffect castEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    GlobalEvents.AffectBySpell(caster, ID.PROTECTION_FROM_ENERGY, target, true);
+
+                    // Map variant to resistance effect
+                    Effect resistanceEffect = RESISTANCE_FIRE;
+                    switch (protection.Variant) {
+                        case DAMAGE_ACID:
+                            resistanceEffect = RESISTANCE_ACID;
+                            break;
+                        case DAMAGE_COLD:
+                            resistanceEffect = RESISTANCE_COLD;
+                            break;
+                        case DAMAGE_FIRE:
+                            resistanceEffect = RESISTANCE_FIRE;
+                            break;
+                        case DAMAGE_LIGHTNING:
+                            resistanceEffect = RESISTANCE_LIGHTNING;
+                            break;
+                        case DAMAGE_THUNDER:
+                            resistanceEffect = RESISTANCE_THUNDER;
+                            break;
+                    }
+                    AddEffectsForDuration(ID.PROTECTION_FROM_ENERGY, caster, target, ONE_HOUR, SPELL_PROTECTION_FROM_ENERGY, resistanceEffect);
+                };
+                protection.CastEffect = castEffect;
+                return protection;
             }
         }
-        /* TODO */
         public static Spell RemoveCurse {
             get {
-                return new Spell(ID.REMOVE_CURSE, ABJURATION, THIRD, CastingTime.ONE_ACTION, 0, VS, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.REMOVE_CURSE, ABJURATION, THIRD, CastingTime.ONE_ACTION, 0, VS, INSTANTANEOUS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    bool affected = false;
+
+                    // Try to remove any curse effect
+                    foreach (Effect effect in target.Effects) {
+                        if (effect.IsCurse()) {
+                            target.RemoveEffect(effect);
+                            affected = true;
+                        }
+                    }
+
+                    // TODO:  If the object is a cursed magic item, its curse remains, but the spell breaks its owner’s attunement to the object so it can be removed or discarded.
+
+                    GlobalEvents.AffectBySpell(caster, ID.REMOVE_CURSE, target, affected);
+                });
             }
         }
         /* TODO */
@@ -396,10 +525,18 @@ namespace srd5 {
                 return new Spell(ID.SLEET_STORM, CONJURATION, THIRD, CastingTime.ONE_ACTION, 150, VSM, ONE_MINUTE, 40, 0, doNothing);
             }
         }
-        /* TODO */
         public static Spell Slow {
             get {
-                return new Spell(ID.SLOW, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 40, 0, doNothing);
+                return new Spell(ID.SLOW, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 40, 6, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    foreach (Combattant target in targets) {
+                        if (target.DC(ID.SLOW, dc, WISDOM)) {
+                            GlobalEvents.AffectBySpell(caster, ID.SLOW, target, false);
+                            continue;
+                        }
+                        GlobalEvents.AffectBySpell(caster, ID.SLOW, target, true);
+                        AddEffectsForDuration(ID.SLOW, caster, target, ONE_MINUTE, SPELL_SLOW);
+                    }
+                });
             }
         }
         /* TODO */

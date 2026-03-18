@@ -285,8 +285,8 @@ namespace srd5 {
                     int dice = 3 + ((int)slot - 2) / 2;
                     Damage damage = new Damage(FIRE, new Dice(dice, D6));
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
-                    Spell flamingBladeCantrip = new Spell(ID.FLAME_BLADE, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 5, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
-                        SpellAttack(ID.FLAME_BLADE, ground2, caster2, damage.Type, damage.Dice, modifier2, targets2[0], 5);
+                    Spell flamingBladeCantrip = new Spell(ID.FLAME_BLADE_ATTACK, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 5, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                        SpellAttack(ID.FLAME_BLADE_ATTACK, ground2, caster2, damage.Type, damage.Dice, modifier2, targets2[0], 5);
                     });
                     caster.AvailableSpells[0].AddKnownSpell(flamingBladeCantrip);
                     caster.AvailableSpells[0].AddPreparedSpell(flamingBladeCantrip);
@@ -317,10 +317,10 @@ namespace srd5 {
                     Dice dice = DiceSlotScaling(SECOND, slot, D6, 2);
                     Damage damage = new Damage(FIRE, dice);
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
-                    Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 30, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                    Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE_ATTACK, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 30, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         Combattant target2 = targets2[0];
-                        GlobalEvents.AffectBySpell(caster2, ID.FLAMING_SPHERE, target2, true);
-                        target2.TakeDamage(new DamageSource(ID.FLAMING_SPHERE, caster), FIRE, dice, HALVES_DAMAGE, dc2, DEXTERITY, out _);
+                        GlobalEvents.AffectBySpell(caster2, ID.FLAMING_SPHERE_ATTACK, target2, true);
+                        target2.TakeDamage(new DamageSource(ID.FLAMING_SPHERE_ATTACK, caster), FIRE, dice, HALVES_DAMAGE, dc2, DEXTERITY, out _);
                     });
                     caster.AvailableSpells[0].AddKnownSpell(flamingSphereCantrip);
                     caster.AvailableSpells[0].AddPreparedSpell(flamingSphereCantrip);
@@ -605,9 +605,9 @@ namespace srd5 {
                         target.TakeDamage(new DamageSource(ID.MOONBEAM, caster), RADIANT, dice, HALVES_DAMAGE, dc, CONSTITUTION, out _);
                     }
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
-                    Spell moonbeamCantrip = new Spell(ID.MOONBEAM, EVOCATION, CANTRIP, CastingTime.BONUS_ACTION, 60, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                    Spell moonbeamCantrip = new Spell(ID.MOONBEAM_ATTACK, EVOCATION, CANTRIP, CastingTime.BONUS_ACTION, 60, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         Combattant target2 = targets2[0];
-                        GlobalEvents.AffectBySpell(caster, ID.MOONBEAM, target2, true);
+                        GlobalEvents.AffectBySpell(caster, ID.MOONBEAM_ATTACK, target2, true);
                         bool shapeChanger2 = false;
                         foreach (Feat feat in target2.Feats) {
                             if (feat.IsShapeChanger()) {
@@ -615,15 +615,15 @@ namespace srd5 {
                             }
                         }
                         if (shapeChanger2) {
-                            bool success = target2.DC(ID.MOONBEAM, dc2, CONSTITUTION, out _, false, true);
+                            bool success = target2.DC(ID.MOONBEAM_ATTACK, dc2, CONSTITUTION, out _, false, true);
                             int dmg = dice.Roll();
                             if (success) {
-                                target2.TakeDamage(new DamageSource(ID.MOONBEAM, caster), RADIANT, dmg / 2);
+                                target2.TakeDamage(new DamageSource(ID.MOONBEAM_ATTACK, caster), RADIANT, dmg / 2);
                             } else {
-                                target2.TakeDamage(new DamageSource(ID.MOONBEAM, caster), RADIANT, dmg);
+                                target2.TakeDamage(new DamageSource(ID.MOONBEAM_ATTACK, caster), RADIANT, dmg);
                             }
                         } else {
-                            target2.TakeDamage(new DamageSource(ID.MOONBEAM, caster), RADIANT, dice, HALVES_DAMAGE, dc2, CONSTITUTION, out _);
+                            target2.TakeDamage(new DamageSource(ID.MOONBEAM_ATTACK, caster), RADIANT, dice, HALVES_DAMAGE, dc2, CONSTITUTION, out _);
                         }
                     });
                     caster.AvailableSpells[0].AddKnownSpell(moonbeamCantrip);
@@ -772,9 +772,9 @@ namespace srd5 {
                     Dice dice = new Dice((int)slot / 2, D8, modifier);
                     SpellAttack(ID.SPIRITUAL_WEAPON, ground, caster, FORCE, dice, modifier, target, 65);
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
-                    Spell weaponCantrip = new Spell(ID.SPIRITUAL_WEAPON, EVOCATION, CANTRIP, CastingTime.BONUS_ACTION, 25, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                    Spell weaponCantrip = new Spell(ID.SPIRITUAL_WEAPON_ATTACK, EVOCATION, CANTRIP, CastingTime.BONUS_ACTION, 25, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         Combattant target2 = targets2[0];
-                        SpellAttack(ID.SPIRITUAL_WEAPON, ground2, caster2, FORCE, dice, modifier2, target2, 25);
+                        SpellAttack(ID.SPIRITUAL_WEAPON_ATTACK, ground2, caster2, FORCE, dice, modifier2, target2, 25);
                     });
                     caster.AvailableSpells[0].AddKnownSpell(weaponCantrip);
                     caster.AvailableSpells[0].AddPreparedSpell(weaponCantrip);

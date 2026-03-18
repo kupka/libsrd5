@@ -152,10 +152,10 @@ namespace srd5 {
                         target.TakeDamage(new DamageSource(ID.CALL_LIGHTNING, caster), LIGHTNING, dice, HALVES_DAMAGE, dc, DEXTERITY, out _);
                     }
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
-                    Spell lightningCantrip = new Spell(ID.CALL_LIGHTNING, CONJURATION, CANTRIP, CastingTime.ONE_ACTION, 120, V, INSTANTANEOUS, 5, 9, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                    Spell lightningCantrip = new Spell(ID.CALL_LIGHTNING_ATTACK, CONJURATION, CANTRIP, CastingTime.ONE_ACTION, 120, V, INSTANTANEOUS, 5, 9, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
                         foreach (Combattant target2 in targets2) {
-                            GlobalEvents.AffectBySpell(caster2, ID.CALL_LIGHTNING, target2, true);
-                            target2.TakeDamage(new DamageSource(ID.CALL_LIGHTNING, caster), LIGHTNING, dice, HALVES_DAMAGE, dc2, DEXTERITY, out _);
+                            GlobalEvents.AffectBySpell(caster2, ID.CALL_LIGHTNING_ATTACK, target2, true);
+                            target2.TakeDamage(new DamageSource(ID.CALL_LIGHTNING_ATTACK, caster), LIGHTNING, dice, HALVES_DAMAGE, dc2, DEXTERITY, out _);
                         }
                     });
                     caster.AvailableSpells[0].AddKnownSpell(lightningCantrip);
@@ -507,10 +507,21 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
         public static Spell Revivify {
             get {
-                return new Spell(ID.REVIVIFY, CONJURATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.REVIVIFY, NECROMANCY, THIRD, CastingTime.ONE_ACTION, 0, VSM, INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    // Only dead creatures can be targeted
+                    if (!target.Dead) {
+                        GlobalEvents.AffectBySpell(caster, ID.REVIVIFY, target, false);
+                        return;
+                    }
+                    // TODO: Spell does not affect creatures that have died of old age or have been dead for more than 1 minute
+                    // Revivify the target and restore 1 hit point
+                    GlobalEvents.AffectBySpell(caster, ID.REVIVIFY, target, true);
+                    target.Dead = false;
+                    target.HitPoints = 1;
+                });
             }
         }
         /* TODO */
@@ -522,7 +533,46 @@ namespace srd5 {
         /* TODO */
         public static Spell SleetStorm {
             get {
-                return new Spell(ID.SLEET_STORM, CONJURATION, THIRD, CastingTime.ONE_ACTION, 150, VSM, ONE_MINUTE, 40, 0, doNothing);
+                return new Spell(ID.SLEET_STORM, CONJURATION, THIRD, CastingTime.ONE_ACTION, 150, VSM, ONE_MINUTE, 40, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    GlobalEvents.AffectBySpell(caster, ID.SLEET_STORM, caster, true);
+
+                    // Create the sleet storm effect for each target in the area
+                    foreach (Combattant target in targets) {
+                        // Dexterity saving throw to avoid falling prone when entering or starting turn in area
+                        if (target.DC(ID.SLEET_STORM, dc, DEXTERITY)) {
+                            GlobalEvents.AffectBySpell(caster, ID.SLEET_STORM, target, false);
+                            continue;
+                        }
+
+                        GlobalEvents.AffectBySpell(caster, ID.SLEET_STORM, target, true);
+                        target.AddCondition(ConditionType.PRONE);
+                        target.AddEffect(SPELL_SLEET_STORM);
+
+                        // At the start of each turn, creature must make DEX save or fall prone again if affected
+                        target.AddStartOfTurnEvent(delegate () {
+                            if (!target.HasEffect(SPELL_SLEET_STORM)) return true;
+                            if (!target.DC(ID.SLEET_STORM, dc, DEXTERITY)) {
+                                if (!target.HasCondition(ConditionType.PRONE)) {
+                                    target.AddCondition(ConditionType.PRONE);
+                                }
+                            }
+                            return false;
+                        });
+                    }
+
+                    // Duration handling - spell lasts up to 1 minute with concentration
+                    int remainingRounds = (int)ONE_MINUTE;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds < 1) {
+                            // Remove spell effect from all affected creatures
+                            foreach (Combattant target in targets) {
+                                target.RemoveEffect(SPELL_SLEET_STORM);
+                            }
+                            return true;
+                        }
+                        return false;
+                    });
+                });
             }
         }
         public static Spell Slow {
@@ -575,10 +625,52 @@ namespace srd5 {
                 return new Spell(ID.TONGUES, DIVINATION, THIRD, CastingTime.ONE_ACTION, 0, VM, ONE_HOUR, 0, 0, doNothing);
             }
         }
-        /* TODO */
         public static Spell VampiricTouch {
             get {
-                return new Spell(ID.VAMPIRIC_TOUCH, NECROMANCY, THIRD, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.VAMPIRIC_TOUCH, NECROMANCY, THIRD, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    GlobalEvents.AffectBySpell(caster, ID.VAMPIRIC_TOUCH, caster, true);
+
+                    // Damage scaling: 3d6 base + 1d6 for each level above 3rd
+                    Dice damageDice = DiceSlotScaling(THIRD, slot, D6, 3);
+
+                    // Create a temporary cantrip-like spell for making melee spell attacks during the duration
+                    Spell vampiricTouchAttack = new Spell(ID.VAMPIRIC_TOUCH_ATTACK, NECROMANCY, CANTRIP, CastingTime.ONE_ACTION, 0, VS, INSTANTANEOUS, 0, 1,
+                        delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                            foreach (Combattant target in targets2) {
+                                // Make a melee spell attack against the target (attack roll must meet or exceed AC)
+                                int attackRoll = D20.Value + modifier2;
+                                if (attackRoll >= target.ArmorClass) {
+                                    GlobalEvents.AffectBySpell(caster2, ID.VAMPIRIC_TOUCH_ATTACK, target, true);
+                                    // Roll damage and apply it
+                                    int damageDealt = damageDice.Roll();
+                                    target.TakeDamage(new DamageSource(ID.VAMPIRIC_TOUCH_ATTACK, caster2), NECROTIC, damageDice);
+                                    // Heal caster for half the damage dealt
+                                    int healAmount = damageDealt / 2;
+                                    caster2.HitPoints = Math.Min(caster2.HitPoints + healAmount, caster2.HitPointsMax);
+                                } else {
+                                    GlobalEvents.AffectBySpell(caster2, ID.VAMPIRIC_TOUCH_ATTACK, target, false);
+                                }
+                            }
+                        });
+
+                    caster.AvailableSpells[0].AddKnownSpell(vampiricTouchAttack);
+                    caster.AvailableSpells[0].AddPreparedSpell(vampiricTouchAttack);
+
+                    // Handle duration removal
+                    int remainingRounds = (int)ONE_MINUTE;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds < 1) {
+                            caster.AvailableSpells[0].RemoveKnownSpell(vampiricTouchAttack);
+                            caster.AvailableSpells[0].RemovePreparedSpell(vampiricTouchAttack);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+
+                    // execute the initial attack as part of the casting
+                    vampiricTouchAttack.CastEffect(ground, caster, dc, slot, modifier, targets);
+                });
             }
         }
         /* TODO */
@@ -593,10 +685,14 @@ namespace srd5 {
                 return new Spell(ID.WATER_WALK, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 30, VSM, ONE_HOUR, 0, 0, doNothing);
             }
         }
-        /* TODO */
         public static Spell WindWall {
             get {
-                return new Spell(ID.WIND_WALL, EVOCATION, THIRD, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 50, 0, doNothing);
+                return new Spell(ID.WIND_WALL, EVOCATION, THIRD, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 50, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    foreach (Combattant target in targets) {
+                        GlobalEvents.AffectBySpell(caster, ID.WIND_WALL, target, true);
+                        target.TakeDamage(new DamageSource(ID.WIND_WALL, caster), BLUDGEONING, new Dice("3d8"), HALVES_DAMAGE, dc, STRENGTH, out _);
+                    }
+                });
             }
         }
     }

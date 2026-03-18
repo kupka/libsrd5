@@ -520,7 +520,7 @@ namespace srd5 {
             bandit.HitPoints = 6;
             Battleground ground = createBattleground(druid, bandit);
             Spells.FlameBlade.Cast(druid, 10, SpellLevel.NINTH, 0);
-            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAME_BLADE);
+            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAME_BLADE_ATTACK);
             druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
             Assert.True(bandit.Dead);
             for (int i = 0; i < (int)SpellDuration.TEN_MINUTES; i++) {
@@ -536,7 +536,7 @@ namespace srd5 {
             bandit.HitPoints = 6;
             Battleground ground = createBattleground(druid, bandit);
             Spells.FlamingSphere.Cast(druid, 10, SpellLevel.SIXTH, 0);
-            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAMING_SPHERE);
+            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAMING_SPHERE_ATTACK);
             druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
             Assert.True(bandit.Dead);
             for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
@@ -611,7 +611,7 @@ namespace srd5 {
             Assert.True(bandit.Dead);
             bandit = Monsters.Bandit;
             bandit.HitPoints = 6;
-            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.MOONBEAM);
+            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.MOONBEAM_ATTACK);
             druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
             for (int i = 0; i < 10; i++) {
                 druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, werewolf);

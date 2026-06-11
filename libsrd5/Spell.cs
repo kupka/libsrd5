@@ -56,9 +56,7 @@ namespace srd5 {
         /* Cast a Spell that doesn't require a battleground, because it does not target
            anyone other or only the caster */
         public void Cast(Combattant caster, int dc, SpellLevel slot, int modifier) {
-            BattleGroundClassic ground = new BattleGroundClassic();
-            ground.AddCombattant(caster, ClassicLocation.Row.FRONT_LEFT);
-            CastEffect(ground, caster, dc, slot, modifier, caster);
+            CastEffect(null, caster, dc, slot, modifier, caster);
         }
 
         /* Cast a spell on one or more targets */

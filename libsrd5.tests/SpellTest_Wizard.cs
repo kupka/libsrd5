@@ -434,7 +434,7 @@ namespace srd5 {
         public void SlowTest() {
             Monster orc = Monsters.Orc;
             int originalSpeed = orc.Speed;
-            Spells.Slow.Cast(orc, 12, SpellLevel.THIRD, 0);
+            Spells.Slow.Cast(orc, 100, SpellLevel.THIRD, 0);
             Assert.True(orc.HasEffect(Effect.SPELL_SLOW));
             Assert.True(orc.HasEffect(Effect.DISADVANTAGE_DEXTERITY_SAVES));
             Assert.True(orc.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));

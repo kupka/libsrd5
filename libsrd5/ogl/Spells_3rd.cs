@@ -176,10 +176,14 @@ namespace srd5 {
 
         public static Spell Clairvoyance {
             get {
-                return new Spell(ID.CLAIRVOYANCE, DIVINATION, THIRD, CastingTime.TEN_MINUTES, 5280, VSM, TEN_MINUTES, 0, 0, SpellWithoutEffect(ID.CLAIRVOYANCE));
+                return new Spell(ID.CLAIRVOYANCE, DIVINATION, THIRD, CastingTime.TEN_MINUTES, 5280, VSM, TEN_MINUTES, 0, 0, 
+                    delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                        AddEffectsForDuration(ID.CLAIRVOYANCE, caster, caster, TEN_MINUTES, SPELL_CLAIRVOYANCE);
+                    }
+                );
             }
         }
-        /* TODO */
+
         public static Spell ConjureAnimals {
             get {
                 Spell conjure = new Spell(ID.CONJURE_ANIMALS, CONJURATION, THIRD, CastingTime.ONE_ACTION, 60, VS, ONE_HOUR, 0, 0);
@@ -242,12 +246,14 @@ namespace srd5 {
             }
         }
 
+        // TODO: Requires hunger/thirst mechanics first
         public static Spell CreateFoodandWater {
             get {
                 return new Spell(ID.CREATE_FOOD_AND_WATER, CONJURATION, THIRD, CastingTime.ONE_ACTION, 30, VS, INSTANTANEOUS, 0, 0, SpellWithoutEffect(ID.CREATE_FOOD_AND_WATER));
             }
         }
 
+        // TODO: Requires light/darkness mechanics first
         public static Spell Daylight {
             get {
                 return new Spell(ID.DAYLIGHT, EVOCATION, THIRD, CastingTime.ONE_ACTION, 60, VS, ONE_HOUR, 60, 0, SpellWithoutEffect(ID.DAYLIGHT));
@@ -276,7 +282,7 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+        
         public static Spell Fear {
             get {
                 return new Spell(ID.FEAR, ILLUSION, THIRD, CastingTime.ONE_ACTION, 0, VSM, ONE_MINUTE, 30, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
@@ -347,10 +353,10 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+        // TODO: Requires some flying mechanic
         public static Spell Fly {
             get {
-                return new Spell(ID.FLY, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 0, 0, doNothing);
+                return new Spell(ID.FLY, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 0, 1, doNothing);
             }
         }
         /* TODO */
@@ -607,10 +613,61 @@ namespace srd5 {
                 return new Spell(ID.SPIRIT_GUARDIANS, CONJURATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 0, 0, doNothing);
             }
         }
-        /* TODO */
+        
         public static Spell StinkingCloud {
             get {
-                return new Spell(ID.STINKING_CLOUD, CONJURATION, THIRD, CastingTime.ONE_ACTION, 90, VSM, ONE_MINUTE, 20, 0, doNothing);
+                return new Spell(ID.STINKING_CLOUD, CONJURATION, THIRD, CastingTime.ONE_ACTION, 90, VSM, ONE_MINUTE, 20, 20,
+                    delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                        GlobalEvents.AffectBySpell(caster, ID.STINKING_CLOUD, caster, true);
+
+                        foreach (Combattant target in targets) {
+                            // Creatures that don't need to breathe (undead, constructs) or are immune to poison automatically succeed
+                            bool immuneToEffect = target.HasEffect(IMMUNITY_POISON) || target.HasEffect(IMMUNITY_POISONED);
+                            if (!immuneToEffect && target is Monster poisonMonster) {
+                                if (poisonMonster.Type == Monsters.Type.UNDEAD || poisonMonster.Type == Monsters.Type.CONSTRUCT) {
+                                    immuneToEffect = true;
+                                }
+                            }
+
+                            if (immuneToEffect) {
+                                GlobalEvents.AffectBySpell(caster, ID.STINKING_CLOUD, target, false);
+                                continue;
+                            }
+
+                            // Mark this creature as being in the cloud
+                            GlobalEvents.AffectBySpell(caster, ID.STINKING_CLOUD, target, true);
+                            target.AddEffect(SPELL_STINKING_CLOUD);
+
+                            // At the start of each turn inside the cloud, make a CON save vs poison
+                            target.AddStartOfTurnEvent(delegate () {
+                                if (!target.HasEffect(SPELL_STINKING_CLOUD)) return true;
+
+                                if (!target.DC(ID.STINKING_CLOUD, dc, CONSTITUTION)) {
+                                    // Failed save: spends action retching and reeling
+                                    target.AddEffect(CANNOT_TAKE_ACTIONS);
+                                    target.AddEndOfTurnEvent(delegate () {
+                                        target.RemoveEffect(CANNOT_TAKE_ACTIONS);
+                                        return true;
+                                    });
+                                }
+                                return false;
+                            });
+
+                            // TODO: Add logic to remove effect when target moves outside the cloud
+                        }
+
+                        // Duration: cloud lingers for 1 minute
+                        int remainingRounds = (int)ONE_MINUTE;
+                        caster.AddEndOfTurnEvent(delegate () {
+                            if (--remainingRounds < 1) {
+                                foreach (Combattant target in targets) {
+                                    target.RemoveEffect(SPELL_STINKING_CLOUD);
+                                }
+                                return true;
+                            }
+                            return false;
+                        });
+                    });
             }
         }
         /* TODO */

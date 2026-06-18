@@ -353,16 +353,23 @@ namespace srd5 {
                 });
             }
         }
-        // TODO: Requires some flying mechanic
+        // TODO: Requires flying movement mechanic for full effect
         public static Spell Fly {
             get {
-                return new Spell(ID.FLY, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 0, 1, doNothing);
+                return new Spell(ID.FLY, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    GlobalEvents.AffectBySpell(caster, ID.FLY, target, true);
+                    AddEffectsForDuration(ID.FLY, caster, target, TEN_MINUTES, SPELL_FLY);
+                });
             }
         }
-        /* TODO */
+        // TODO: Requires gaseous movement/resistance mechanics for full effect
         public static Spell GaseousForm {
             get {
-                return new Spell(ID.GASEOUS_FORM, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.GASEOUS_FORM, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    GlobalEvents.AffectBySpell(caster, ID.GASEOUS_FORM, caster, true);
+                    AddEffectsForDuration(ID.GASEOUS_FORM, caster, caster, ONE_HOUR, SPELL_GASEOUS_FORM);
+                });
             }
         }
         /* TODO */
@@ -430,16 +437,23 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+        // TODO: Requires stone-merging mechanics for full effect
         public static Spell MeldIntoStone {
             get {
-                return new Spell(ID.MELD_INTO_STONE, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 0, VS, EIGHT_HOURS, 0, 0, doNothing);
+                return new Spell(ID.MELD_INTO_STONE, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 0, VS, EIGHT_HOURS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    GlobalEvents.AffectBySpell(caster, ID.MELD_INTO_STONE, caster, true);
+                    AddEffectsForDuration(ID.MELD_INTO_STONE, caster, caster, EIGHT_HOURS, SPELL_MELD_INTO_STONE);
+                });
             }
         }
-        /* TODO */
+        // TODO: Requires divination-blocking mechanics for full effect
         public static Spell Nondetection {
             get {
-                return new Spell(ID.NONDETECTION, ABJURATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, EIGHT_HOURS, 0, 0, doNothing);
+                return new Spell(ID.NONDETECTION, ABJURATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, EIGHT_HOURS, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    GlobalEvents.AffectBySpell(caster, ID.NONDETECTION, target, true);
+                    AddEffectsForDuration(ID.NONDETECTION, caster, target, EIGHT_HOURS, SPELL_NONDETECTION);
+                });
             }
         }
         /* TODO */
@@ -701,10 +715,14 @@ namespace srd5 {
                 return new Spell(ID.TINY_HUT, EVOCATION, THIRD, CastingTime.ONE_MINUTE, 0, VSM, EIGHT_HOURS, 10, 0, doNothing);
             }
         }
-        /* TODO */
+        // TODO: Requires language comprehension mechanics for full effect
         public static Spell Tongues {
             get {
-                return new Spell(ID.TONGUES, DIVINATION, THIRD, CastingTime.ONE_ACTION, 0, VM, ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.TONGUES, DIVINATION, THIRD, CastingTime.ONE_ACTION, 0, VM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    Combattant target = targets[0];
+                    GlobalEvents.AffectBySpell(caster, ID.TONGUES, target, true);
+                    AddEffectsForDuration(ID.TONGUES, caster, target, ONE_HOUR, SPELL_TONGUES);
+                });
             }
         }
         public static Spell VampiricTouch {
@@ -755,16 +773,26 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+        // TODO: Requires underwater breathing mechanics for full effect
         public static Spell WaterBreathing {
             get {
-                return new Spell(ID.WATER_BREATHING, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 30, VSM, ONE_DAY, 0, 0, doNothing);
+                return new Spell(ID.WATER_BREATHING, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 30, VSM, ONE_DAY, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    foreach (Combattant target in targets) {
+                        GlobalEvents.AffectBySpell(caster, ID.WATER_BREATHING, target, true);
+                        AddEffectsForDuration(ID.WATER_BREATHING, caster, target, ONE_DAY, SPELL_WATER_BREATHING);
+                    }
+                });
             }
         }
-        /* TODO */
+        // TODO: Requires liquid-surface traversal mechanics for full effect
         public static Spell WaterWalk {
             get {
-                return new Spell(ID.WATER_WALK, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 30, VSM, ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.WATER_WALK, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 30, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    foreach (Combattant target in targets) {
+                        GlobalEvents.AffectBySpell(caster, ID.WATER_WALK, target, true);
+                        AddEffectsForDuration(ID.WATER_WALK, caster, target, ONE_HOUR, SPELL_WATER_WALK);
+                    }
+                });
             }
         }
         public static Spell WindWall {

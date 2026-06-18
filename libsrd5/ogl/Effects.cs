@@ -204,6 +204,13 @@ namespace srd5 {
         SPELL_SLOW,
         SPELL_SPIRIT_GUARDIANS,
         SPELL_STINKING_CLOUD,
+        SPELL_FLY,
+        SPELL_GASEOUS_FORM,
+        SPELL_MELD_INTO_STONE,
+        SPELL_NONDETECTION,
+        SPELL_TONGUES,
+        SPELL_WATER_BREATHING,
+        SPELL_WATER_WALK,
         // 4th
         SPELL_PLACEHOLDER_4TH,
         // 5th
@@ -652,6 +659,27 @@ namespace srd5 {
                 case SPELL_PROTECTION_FROM_ENERGY:
                     // Resistance is applied via variant in the spell itself
                     break;
+                case SPELL_FLY:
+                    // TODO: grant flying movement speed
+                    break;
+                case SPELL_GASEOUS_FORM:
+                    // TODO: apply gaseous resistances, flying speed, object passage
+                    break;
+                case SPELL_MELD_INTO_STONE:
+                    // TODO: merge caster into stone surface
+                    break;
+                case SPELL_NONDETECTION:
+                    // TODO: block divination effects
+                    break;
+                case SPELL_TONGUES:
+                    // TODO: grant comprehension of all spoken languages
+                    break;
+                case SPELL_WATER_BREATHING:
+                    // TODO: allow breathing underwater
+                    break;
+                case SPELL_WATER_WALK:
+                    // TODO: allow walking on liquid surfaces
+                    break;
             }
         }
 
@@ -820,6 +848,15 @@ namespace srd5 {
                     break;
                 case SPELL_PROTECTION_FROM_ENERGY:
                     // Resistance applied via variants in spell itself
+                    break;
+                case SPELL_FLY:
+                case SPELL_GASEOUS_FORM:
+                case SPELL_MELD_INTO_STONE:
+                case SPELL_NONDETECTION:
+                case SPELL_TONGUES:
+                case SPELL_WATER_BREATHING:
+                case SPELL_WATER_WALK:
+                    // TODO: reverse effect-specific mechanics when implemented
                     break;
             }
         }

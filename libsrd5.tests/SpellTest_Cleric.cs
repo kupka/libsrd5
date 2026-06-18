@@ -438,5 +438,40 @@ namespace srd5 {
             Assert.True(saveSucceeded);
             Assert.Equal(rawDamage / 2, damageDealt);
         }
+
+        [Fact]
+        public void FlyTest() {
+            DefaultSpellTest(Spells.Fly, 12, SpellLevel.THIRD, null, Effect.SPELL_FLY, Spells.Fly.Duration);
+        }
+
+        [Fact]
+        public void GaseousFormTest() {
+            DefaultSpellTest(Spells.GaseousForm, 12, SpellLevel.THIRD, null, Effect.SPELL_GASEOUS_FORM, Spells.GaseousForm.Duration);
+        }
+
+        [Fact]
+        public void MeldIntoStoneTest() {
+            DefaultSpellTest(Spells.MeldIntoStone, 12, SpellLevel.THIRD, null, Effect.SPELL_MELD_INTO_STONE, Spells.MeldIntoStone.Duration);
+        }
+
+        [Fact]
+        public void NondetectionTest() {
+            DefaultSpellTest(Spells.Nondetection, 12, SpellLevel.THIRD, null, Effect.SPELL_NONDETECTION, Spells.Nondetection.Duration);
+        }
+
+        [Fact]
+        public void TonguesTest() {
+            DefaultSpellTest(Spells.Tongues, 12, SpellLevel.THIRD, null, Effect.SPELL_TONGUES, Spells.Tongues.Duration);
+        }
+
+        [Fact]
+        public void WaterBreathingTest() {
+            DefaultSpellTest(Spells.WaterBreathing, 12, SpellLevel.THIRD, null, Effect.SPELL_WATER_BREATHING, Spells.WaterBreathing.Duration);
+        }
+
+        [Fact]
+        public void WaterWalkTest() {
+            DefaultSpellTest(Spells.WaterWalk, 12, SpellLevel.THIRD, null, Effect.SPELL_WATER_WALK, Spells.WaterWalk.Duration);
+        }
     }
 }

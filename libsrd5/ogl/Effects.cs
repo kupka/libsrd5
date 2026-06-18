@@ -202,6 +202,7 @@ namespace srd5 {
         SPELL_PROTECTION_FROM_ENERGY,
         SPELL_SLEET_STORM,
         SPELL_SLOW,
+        SPELL_SPIRIT_GUARDIANS,
         SPELL_STINKING_CLOUD,
         // 4th
         SPELL_PLACEHOLDER_4TH,
@@ -645,6 +646,9 @@ namespace srd5 {
                     combattant.Speed /= 2;
                     combattant.AddEffect(CANNOT_TAKE_REACTIONS);
                     break;
+                case SPELL_SPIRIT_GUARDIANS:
+                    combattant.Speed /= 2;
+                    break;
                 case SPELL_PROTECTION_FROM_ENERGY:
                     // Resistance is applied via variant in the spell itself
                     break;
@@ -810,6 +814,9 @@ namespace srd5 {
                     combattant.RemoveEffect(DISADVANTAGE_ON_ATTACK);
                     combattant.Speed *= 2;
                     combattant.RemoveEffect(CANNOT_TAKE_REACTIONS);
+                    break;
+                case SPELL_SPIRIT_GUARDIANS:
+                    combattant.Speed *= 2;
                     break;
                 case SPELL_PROTECTION_FROM_ENERGY:
                     // Resistance applied via variants in spell itself

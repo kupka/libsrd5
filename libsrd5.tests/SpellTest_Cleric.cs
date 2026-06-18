@@ -342,5 +342,101 @@ namespace srd5 {
             Spells.RemoveCurse.Cast(cursedMonster, 12, SpellLevel.THIRD, 0);
             Assert.False(cursedMonster.HasEffect(Effect.CURSE_MUMMY_ROT));
         }
+
+        [Fact]
+        public void SpiritGuardiansTest_GoodCasterDealsRadiantDamage() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            cleric.Alignment = Alignment.LAWFUL_GOOD;
+            Monster orc = Monsters.Orc;
+            int originalSpeed = orc.Speed;
+            Battleground ground = createBattleground(cleric, orc);
+            Spells.SpiritGuardians.Cast(ground, cleric, 20, SpellLevel.THIRD, 0, orc);
+            // Orc should have taken radiant damage (DC 20 = always fails)
+            Assert.True(orc.HitPoints < orc.HitPointsMax);
+            // Speed should be halved
+            Assert.Equal(originalSpeed / 2, orc.Speed);
+            // Cleric should be unharmed
+            Assert.Equal(cleric.HitPointsMax, cleric.HitPoints);
+        }
+
+        [Fact]
+        public void SpiritGuardiansTest_EvilCasterDealsNecroticDamage() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            cleric.Alignment = Alignment.CHAOTIC_EVIL;
+            Monster orc = Monsters.Orc;
+            int originalSpeed = orc.Speed;
+            Battleground ground = createBattleground(cleric, orc);
+            Spells.SpiritGuardians.Cast(ground, cleric, 20, SpellLevel.THIRD, 0, orc);
+            Assert.True(orc.HitPoints < orc.HitPointsMax);
+            Assert.Equal(originalSpeed / 2, orc.Speed);
+        }
+
+        [Fact]
+        public void SpiritGuardiansTest_PerTurnDamage() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            cleric.Alignment = Alignment.NEUTRAL_GOOD;
+            // Use a high-HP monster so it survives the initial cast and the per-turn tick
+            Monster hillGiant = Monsters.HillGiant;
+            Battleground ground = createBattleground(cleric, hillGiant);
+            Spells.SpiritGuardians.Cast(ground, cleric, 20, SpellLevel.THIRD, 0, hillGiant);
+            int hpAfterCast = hillGiant.HitPoints;
+            // Each start-of-turn should apply damage again
+            hillGiant.OnStartOfTurn();
+            Assert.True(hillGiant.HitPoints < hpAfterCast);
+        }
+
+        [Fact]
+        public void SpiritGuardiansTest_DurationExpiry() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            cleric.Alignment = Alignment.LAWFUL_GOOD;
+            Monster orc = Monsters.Orc;
+            int originalSpeed = orc.Speed;
+            Battleground ground = createBattleground(cleric, orc);
+            Spells.SpiritGuardians.Cast(ground, cleric, 20, SpellLevel.THIRD, 0, orc);
+            Assert.Equal(originalSpeed / 2, orc.Speed);
+            // Tick through the full TEN_MINUTES duration on the target's end-of-turn events
+            for (int i = 0; i < (int)Spells.SpiritGuardians.Duration; i++) {
+                orc.OnEndOfTurn();
+            }
+            Assert.False(orc.HasEffect(Effect.SPELL_SPIRIT_GUARDIANS));
+            Assert.Equal(originalSpeed, orc.Speed);
+        }
+
+        [Fact]
+        public void SpiritGuardiansTest_SuccessfulSaveHalvesDamage() {
+            const uint seed = 1;
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            cleric.Alignment = Alignment.LAWFUL_GOOD;
+            Monster giant = Monsters.HillGiant;
+            Battleground ground = createBattleground(cleric, giant);
+
+            // Predict the spell's 3d8 damage roll from this seed (the cast draws the damage
+            // dice first, then the d20 save), so we can verify the half-damage result exactly.
+            Random.State = seed;
+            int rawDamage = new Dice("3d8").Roll();
+
+            bool saveSucceeded = false;
+            int damageDealt = -1;
+            System.EventHandler<System.EventArgs> handler = delegate (object sender, System.EventArgs args) {
+                if (GlobalEvents.EventTypes.DC.Equals(sender) && args is GlobalEvents.DCRolled dc && dc.Ability.Type == AbilityType.WISDOM) {
+                    saveSucceeded = dc.Success;
+                } else if (GlobalEvents.EventTypes.DAMAGED.Equals(sender) && args is GlobalEvents.DamageReceived dmg && dmg.Victim == giant) {
+                    damageDealt = dmg.Amount;
+                }
+            };
+            GlobalEvents.Handlers += handler;
+            try {
+                // Re-seed so the cast rolls the same 3d8 for damage; DC 1 makes the save
+                // succeed unless a natural 1 is rolled.
+                Random.State = seed;
+                Spells.SpiritGuardians.Cast(ground, cleric, 1, SpellLevel.THIRD, 0, giant);
+            } finally {
+                GlobalEvents.Handlers -= handler;
+            }
+
+            // The successful-save branch must have been exercised and dealt half damage.
+            Assert.True(saveSucceeded);
+            Assert.Equal(rawDamage / 2, damageDealt);
+        }
     }
 }

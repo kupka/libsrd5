@@ -607,10 +607,35 @@ namespace srd5 {
                 return new Spell(ID.SPEAK_WITH_PLANTS, TRANSMUTATION, THIRD, CastingTime.ONE_ACTION, 0, VS, TEN_MINUTES, 30, 0, doNothing);
             }
         }
-        /* TODO */
         public static Spell SpiritGuardians {
             get {
-                return new Spell(ID.SPIRIT_GUARDIANS, CONJURATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 0, 0, doNothing);
+                return new Spell(ID.SPIRIT_GUARDIANS, CONJURATION, THIRD, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 15, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    // Damage type depends on caster alignment: evil → necrotic, good or neutral → radiant
+                    DamageType damageType = caster.Alignment.IsEvil() ? NECROTIC : RADIANT;
+
+                    foreach (Combattant target in targets) {
+                        // The caster is always unaffected
+                        if (target == caster) continue;
+
+                        GlobalEvents.AffectBySpell(caster, ID.SPIRIT_GUARDIANS, target, true);
+
+                        // Halve the target's speed for the duration via the effect Apply/Unapply system
+                        AddEffectsForDuration(ID.SPIRIT_GUARDIANS, caster, target, TEN_MINUTES, SPELL_SPIRIT_GUARDIANS);
+
+                        // Apply damage on the initial cast (creature enters the area)
+                        target.TakeDamage(new DamageSource(ID.SPIRIT_GUARDIANS, caster), damageType, new Dice("3d8"), HALVES_DAMAGE, dc, WISDOM, out _);
+
+                        // At the start of each of the target's turns while the effect persists, re-apply the damage
+                        target.AddStartOfTurnEvent(delegate () {
+                            // Effect removed (dispelled or duration expired) — stop
+                            if (!target.HasEffect(SPELL_SPIRIT_GUARDIANS)) return true;
+                            // Still in range: deal damage with WIS save for half
+                            // TODO: Remove effect when target moves outside the 15-foot radius
+                            target.TakeDamage(new DamageSource(ID.SPIRIT_GUARDIANS, caster), damageType, new Dice("3d8"), HALVES_DAMAGE, dc, WISDOM, out _);
+                            return false;
+                        });
+                    }
+                });
             }
         }
         

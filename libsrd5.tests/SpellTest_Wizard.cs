@@ -231,6 +231,32 @@ namespace srd5 {
         }
 
         [Fact]
+        public void HypnoticPatternTest() {
+            DefaultSpellTest(Spells.HypnoticPattern, 25, SpellLevel.THIRD, ConditionType.CHARMED, Effect.SPELL_HYPNOTIC_PATTERN, 10);
+        }
+
+        [Fact]
+        public void HypnoticPatternEndsOnDamageTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc;
+            int originalSpeed = orc.Speed;
+            Battleground ground = createBattleground(wizard, orc);
+            // High DC guarantees the orc fails its save and becomes charmed
+            Random.State = 42;
+            Spells.HypnoticPattern.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
+            Assert.True(orc.HasCondition(ConditionType.CHARMED));
+            Assert.True(orc.HasCondition(ConditionType.INCAPACITATED));
+            Assert.True(orc.HasEffect(Effect.SPELL_HYPNOTIC_PATTERN));
+            Assert.Equal(0, orc.Speed);
+            // Taking any damage ends the spell
+            orc.TakeDamage(new DamageSource(Spells.ID.HYPNOTIC_PATTERN, wizard), DamageType.FIRE, 1);
+            Assert.False(orc.HasCondition(ConditionType.CHARMED));
+            Assert.False(orc.HasCondition(ConditionType.INCAPACITATED));
+            Assert.False(orc.HasEffect(Effect.SPELL_HYPNOTIC_PATTERN));
+            Assert.Equal(originalSpeed, orc.Speed);
+        }
+
+        [Fact]
         public void MageArmorTest() {
             CharacterSheet hero = new CharacterSheet(Race.HALF_ORC);
             hero.AddLevel(CharacterClasses.Barbarian);

@@ -211,6 +211,7 @@ namespace srd5 {
         SPELL_TONGUES,
         SPELL_WATER_BREATHING,
         SPELL_WATER_WALK,
+        SPELL_HYPNOTIC_PATTERN,
         // 4th
         SPELL_PLACEHOLDER_4TH,
         // 5th
@@ -584,6 +585,9 @@ namespace srd5 {
                 case SPELL_HIDEOUS_LAUGHTER:
                     combattant.AddEffect(CANNOT_TAKE_ACTIONS);
                     break;
+                case SPELL_HYPNOTIC_PATTERN:
+                    // Charmed/incapacitated conditions and speed 0 are managed by the spell closure
+                    break;
                 case SPELL_ALTER_SELF_CLAWS:
                     if (combattant is CharacterSheet hero) {
                         hero.Unequip(hero.Inventory.MainHand);
@@ -775,6 +779,9 @@ namespace srd5 {
                 case SPELL_COMMAND_GROVEL:
                 case SPELL_HIDEOUS_LAUGHTER:
                     combattant.RemoveEffect(CANNOT_TAKE_ACTIONS);
+                    break;
+                case SPELL_HYPNOTIC_PATTERN:
+                    // Conditions and speed restoration are managed by the spell closure
                     break;
                 case SPELL_ALTER_SELF_CLAWS:
                     if (combattant is CharacterSheet hero) {

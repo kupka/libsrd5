@@ -387,10 +387,54 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+        // TODO: Only creatures that can see the pattern should be affected (sight/blindness not modelled).
+        // TODO: Another creature should be able to spend an action to shake an affected creature awake (no such action mechanic yet).
         public static Spell HypnoticPattern {
             get {
-                return new Spell(ID.HYPNOTIC_PATTERN, ILLUSION, THIRD, CastingTime.ONE_ACTION, 120, SM, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.HYPNOTIC_PATTERN, ILLUSION, THIRD, CastingTime.ONE_ACTION, 120, SM, ONE_MINUTE, 30, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                    foreach (Combattant target in targets) {
+                        // Wisdom saving throw to resist the pattern
+                        if (target.DC(ID.HYPNOTIC_PATTERN, dc, WISDOM)) {
+                            GlobalEvents.AffectBySpell(caster, ID.HYPNOTIC_PATTERN, target, false);
+                            continue;
+                        }
+                        GlobalEvents.AffectBySpell(caster, ID.HYPNOTIC_PATTERN, target, true);
+
+                        // While charmed by this spell, the creature is incapacitated and has a speed of 0
+                        Combattant affected = target;
+                        int originalSpeed = affected.Speed;
+                        affected.Speed = 0;
+                        affected.AddCondition(ConditionType.CHARMED, ConditionType.INCAPACITATED);
+                        affected.AddEffect(SPELL_HYPNOTIC_PATTERN);
+
+                        bool ended = false;
+                        // Local teardown: restore speed, remove conditions and effect exactly once
+                        Func<bool> end = delegate () {
+                            if (ended) return true;
+                            ended = true;
+                            affected.Speed = originalSpeed;
+                            affected.RemoveCondition(ConditionType.CHARMED, ConditionType.INCAPACITATED);
+                            affected.RemoveEffect(SPELL_HYPNOTIC_PATTERN);
+                            return true;
+                        };
+
+                        // The spell ends for an affected creature if it takes any damage
+                        affected.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
+                            if (ended) return true;
+                            return end();
+                        });
+
+                        // Duration handling (also ends if the effect was removed externally, e.g. by Dispel Magic)
+                        int remainingRounds = (int)ONE_MINUTE;
+                        affected.AddEndOfTurnEvent(delegate () {
+                            if (ended) return true;
+                            if (!affected.HasEffect(SPELL_HYPNOTIC_PATTERN) || --remainingRounds < 1) {
+                                return end();
+                            }
+                            return false;
+                        });
+                    }
+                });
             }
         }
         public static Spell LightningBolt {

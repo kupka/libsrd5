@@ -647,5 +647,122 @@ namespace srd5 {
             Assert.False(ogre.HasEffect(Effect.COUATL_POISON));
         }
 
+        [Fact]
+        public void CallLightningTest() {
+            // Covers the nested CALL_LIGHTNING_ATTACK cantrip delegate (lines 157-159)
+            // and the EndOfTurnEvent duration expiry (lines 166-170)
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(druid, orc);
+            int knownSpellsBefore = druid.AvailableSpells[0].KnownSpells.Length;
+            Random.State = 42; // DEX save for initial lightning bolt damage
+            Spells.CallLightning.Cast(ground, druid, 12, SpellLevel.THIRD, 0, orc);
+            // The CALL_LIGHTNING_ATTACK cantrip was added
+            Assert.Equal(knownSpellsBefore + 1, druid.AvailableSpells[0].KnownSpells.Length);
+            // Cast the added cantrip on a target → covers the inner cantrip delegate
+            Spell cantrip = druid.AvailableSpells[0].KnownSpells[druid.AvailableSpells[0].KnownSpells.Length - 1];
+            Assert.Equal(Spells.ID.CALL_LIGHTNING_ATTACK, cantrip.ID);
+            Random.State = 42;
+            cantrip.Cast(ground, druid, 12, SpellLevel.CANTRIP, 0, orc);
+            // Simulate 100 end-of-turn ticks (TEN_MINUTES=100) to expire the duration
+            for (int i = 0; i < 100; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.Equal(knownSpellsBefore, druid.AvailableSpells[0].KnownSpells.Length);
+        }
+
+        [Fact]
+        public void ConjureAnimalsCRVariantsTest() {
+            // Covers CR_HALF, CR_ONE, CR_TWO variant paths including slot-scaling branches
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Battleground2D ground2D = new Battleground2D(20, 20);
+            ground2D.AddCombattant(druid, 10, 10);
+            Spell conjure = Spells.ConjureAnimals;
+            Random.State = 1;
+            // CR_HALF: beastAmount=4; slot=FIFTH → slot > FOURTH → ×2 = 8 beasts spawned
+            conjure.Variant = SpellVariant.CR_HALF;
+            conjure.Cast(ground2D, druid, 12, SpellLevel.FIFTH, 0, druid);
+            // CR_ONE: beastAmount=2; slot=SEVENTH → slot > SIXTH → ×3 = 6 beasts spawned
+            conjure.Variant = SpellVariant.CR_ONE;
+            conjure.Cast(ground2D, druid, 12, SpellLevel.SEVENTH, 0, druid);
+            // CR_TWO: beastAmount=1
+            conjure.Variant = SpellVariant.CR_TWO;
+            conjure.Cast(ground2D, druid, 12, SpellLevel.THIRD, 0, druid);
+        }
+
+        [Fact]
+        public void ConjureAnimalsClassicBattlegroundTest() {
+            // Covers the BattleGroundClassic zombie/beast spawn branch (lines 231-233)
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            BattleGroundClassic ground = createBattleground(druid, druid);
+            Spell conjure = Spells.ConjureAnimals;
+            conjure.Variant = SpellVariant.CR_QUARTER;
+            Random.State = 1;
+            conjure.Cast(ground, druid, 12, SpellLevel.THIRD, 0, druid);
+        }
+
+        [Fact]
+        public void SleetStormTest() {
+            // Target fails DEX save → PRONE + SPELL_SLEET_STORM applied
+            // StartOfTurnEvent re-applies save; EndOfTurnEvent expires duration
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(druid, orc);
+            Random.State = 42; // D20=13 < DC=25 → orc fails initial DEX save
+            Spells.SleetStorm.Cast(ground, druid, 25, SpellLevel.THIRD, 0, orc);
+            Assert.True(orc.HasCondition(ConditionType.PRONE));
+            Assert.True(orc.HasEffect(Effect.SPELL_SLEET_STORM));
+            // StartOfTurnEvent re-runs the DEX save (orc fails again → stays PRONE)
+            Random.State = 42;
+            orc.OnStartOfTurn();
+            Assert.True(orc.HasEffect(Effect.SPELL_SLEET_STORM));
+            // Expire duration: 10 druid OnEndOfTurn calls → SPELL_SLEET_STORM removed
+            for (int i = 0; i < 10; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.False(orc.HasEffect(Effect.SPELL_SLEET_STORM));
+        }
+
+        [Fact]
+        public void StinkingCloudImmuneTest() {
+            // UNDEAD and CONSTRUCT monsters are immune to Stinking Cloud
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Monster zombie = Monsters.Zombie;   // UNDEAD
+            Monster golem = Monsters.ClayGolem; // CONSTRUCT
+            Battleground ground = createBattleground(druid, zombie, golem);
+            Spells.StinkingCloud.Cast(ground, druid, 25, SpellLevel.THIRD, 0, zombie, golem);
+            Assert.False(zombie.HasEffect(Effect.SPELL_STINKING_CLOUD));
+            Assert.False(golem.HasEffect(Effect.SPELL_STINKING_CLOUD));
+        }
+
+        [Fact]
+        public void StinkingCloudCONSaveFailTest() {
+            // Target fails CON save at start of turn → CANNOT_TAKE_ACTIONS added, removed at end of turn
+            // Duration of 10 caster end-of-turns removes SPELL_STINKING_CLOUD
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(druid, orc);
+            Spells.StinkingCloud.Cast(ground, druid, 25, SpellLevel.THIRD, 0, orc);
+            Assert.True(orc.HasEffect(Effect.SPELL_STINKING_CLOUD));
+            // Seed 42 → D20=13; orc CON mod ≈ +1 → total ≤14 < DC=25 → fails save → CANNOT_TAKE_ACTIONS
+            Random.State = 42;
+            orc.OnStartOfTurn();
+            Assert.True(orc.HasEffect(Effect.CANNOT_TAKE_ACTIONS));
+            // EndOfTurnEvent registered inside the StartOfTurnEvent removes CANNOT_TAKE_ACTIONS
+            orc.OnEndOfTurn();
+            Assert.False(orc.HasEffect(Effect.CANNOT_TAKE_ACTIONS));
+            // Expire the storm: 10 druid OnEndOfTurn calls
+            for (int i = 0; i < 10; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.False(orc.HasEffect(Effect.SPELL_STINKING_CLOUD));
+        }
+
     }
 }

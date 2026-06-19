@@ -497,5 +497,187 @@ namespace srd5 {
             int coldDamageTaken = banditOriginalHP - bandit.HitPoints;
             Assert.True(coldDamageTaken <= 10);
         }
+
+        [Fact]
+        public void ProtectionFromEnergyLightningTest() {
+            Monster orc = Monsters.Orc;
+            Spell spell = Spells.ProtectionFromEnergy;
+            spell.Variant = SpellVariant.DAMAGE_LIGHTNING;
+            spell.Cast(orc, 12, SpellLevel.THIRD, 0);
+            Assert.True(orc.HasEffect(Effect.RESISTANCE_LIGHTNING));
+        }
+
+        [Fact]
+        public void ProtectionFromEnergyThunderTest() {
+            Monster bandit = Monsters.Bandit;
+            Spell spell = Spells.ProtectionFromEnergy;
+            spell.Variant = SpellVariant.DAMAGE_THUNDER;
+            spell.Cast(bandit, 12, SpellLevel.THIRD, 0);
+            Assert.True(bandit.HasEffect(Effect.RESISTANCE_THUNDER));
+        }
+
+        [Fact]
+        public void BestowCurseSaveSuccessTest() {
+            // Target succeeds the WIS save (DC=1) → spell has no effect
+            Spell curse = Spells.BestowCurse;
+            curse.Variant = SpellVariant.DISADVANTAGE_CHARISMA_SAVES;
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(orc, orc);
+            Random.State = 42; // D20=13 which beats DC=1
+            curse.Cast(ground, orc, 1, SpellLevel.THIRD, 0, orc);
+            Assert.False(orc.HasEffect(Effect.SPELL_BESTOW_CURSE));
+        }
+
+        [Fact]
+        public void BestowCurseLoseTurnTest() {
+            // LOSE_TURN variant: target fails initial save then fails StartOfTurn save → LOST_TURN added
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(wizard, orc);
+            Spell curse = Spells.BestowCurse;
+            curse.Variant = SpellVariant.LOSE_TURN_ON_FAILED_WISDOM_SAVE;
+            Random.State = 42; // D20=13 < DC=25 → orc fails initial save
+            curse.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
+            Assert.True(orc.HasEffect(Effect.SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE));
+            // Reseed to ensure StartOfTurn save also fails (D20=13 < DC=25)
+            Random.State = 42;
+            orc.OnStartOfTurn();
+            Assert.True(orc.HasEffect(Effect.SPELL_BESTOW_CURSE_LOST_TURN));
+        }
+
+        [Fact]
+        public void BestowCurseTakeAdditionalDamageTest() {
+            // TAKE_ADDITIONAL_DAMAGE variant: fires DamageTakenEvent when target takes damage
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            int hpBefore = orc.HitPoints;
+            Battleground ground = createBattleground(wizard, orc);
+            Spell curse = Spells.BestowCurse;
+            curse.Variant = SpellVariant.TAKE_ADDITIONAL_DAMAGE;
+            Random.State = 42; // D20=13 < DC=25 → orc fails initial save
+            curse.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
+            Assert.True(orc.HasEffect(Effect.SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE));
+            // Trigger the DamageTakenEvent delegate body by dealing damage
+            orc.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, orc), DamageType.FIRE, 1);
+            Assert.True(orc.HitPoints < hpBefore);
+        }
+
+        [Fact]
+        public void BlinkTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Spells.Blink.Cast(wizard, 12, SpellLevel.THIRD, 0);
+            Assert.False(wizard.HasEffect(Effect.CANNOT_BE_ATTACKED));
+            // Seed 11 → first D20 = 20 > 11, so CANNOT_BE_ATTACKED is applied
+            Random.State = 11;
+            wizard.OnEndOfTurn();
+            Assert.True(wizard.HasEffect(Effect.CANNOT_BE_ATTACKED));
+            // Next start-of-turn removes the effect
+            wizard.OnStartOfTurn();
+            Assert.False(wizard.HasEffect(Effect.CANNOT_BE_ATTACKED));
+        }
+
+        [Fact]
+        public void DispelMagicHigherLevelSpellTest() {
+            // Caster dispels a higher-level (3rd) effect when casting at 2nd slot via DC check
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            wizard.AvailableSpells[0].AddKnownSpell(Spells.DispelMagic);
+            Monster orc = Monsters.Orc;
+            orc.AddEffect(Effect.SPELL_FEAR); // 3rd-level spell effect
+            Battleground ground = createBattleground(wizard, orc);
+            // Seed 2 → D20=19; wizard INT mod=0 + prof=2 → 21 >= DC 13 (10 + SpellLevel.THIRD) → dispelled
+            Random.State = 2;
+            Spells.DispelMagic.Cast(ground, wizard, 12, SpellLevel.SECOND, 0, orc);
+            Assert.False(orc.HasEffect(Effect.SPELL_FEAR));
+        }
+
+        [Fact]
+        public void FearDropsEquipmentTest() {
+            // Fear applied to a CharacterSheet unequips their held weapon
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            hero.AddLevel(CharacterClasses.Barbarian);
+            hero.Equip(Weapons.Dagger);
+            Assert.True(hero.Inventory.MainHand.Is(Weapons.Dagger));
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            Battleground ground = createBattleground(wizard, hero);
+            Random.State = 42; // D20=13 < DC=25 → hero fails WIS save
+            Spells.Fear.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, hero);
+            Assert.True(hero.HasCondition(ConditionType.FRIGHTENED));
+            // Weapon should have been unequipped (Fear drops held items on CharacterSheets)
+            Assert.Null(hero.Inventory.MainHand);
+        }
+
+        [Fact]
+        public void FearDurationExpiresTest() {
+            // After ONE_MINUTE (10) start-of-turn events, FRIGHTENED and SPELL_FEAR are removed
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(wizard, orc);
+            Random.State = 42; // ensures initial WIS save fails (D20=13 < DC=25)
+            Spells.Fear.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
+            Assert.True(orc.HasCondition(ConditionType.FRIGHTENED));
+            // Simulate 10 start-of-turn ticks; remainingRounds reaches 0 on the last one
+            for (int i = 0; i < 10; i++) {
+                orc.OnStartOfTurn();
+            }
+            Assert.False(orc.HasCondition(ConditionType.FRIGHTENED));
+            Assert.False(orc.HasEffect(Effect.SPELL_FEAR));
+        }
+
+        [Fact]
+        public void FearDistanceSaveTest() {
+            // When target is > 300ft from caster, EndOfTurnEvent allows a WIS save to end Fear
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc;
+            // 62 tiles × 5ft = 310ft > 300ft threshold
+            Battleground2D ground = new Battleground2D(70, 5);
+            ground.AddCombattant(wizard, 1, 1);
+            ground.AddCombattant(orc, 63, 1);
+            // Seed 42 → D20=13 (< DC=25) → orc fails initial WIS save, becomes FRIGHTENED
+            Random.State = 42;
+            Spells.Fear.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
+            Assert.True(orc.HasCondition(ConditionType.FRIGHTENED));
+            // Seed 11 → D20=20 (nat 20 auto-succeeds DC=25) → EndOfTurnEvent removes FRIGHTENED
+            Random.State = 11;
+            orc.OnEndOfTurn();
+            Assert.False(orc.HasCondition(ConditionType.FRIGHTENED));
+            Assert.False(orc.HasEffect(Effect.SPELL_FEAR));
+        }
+
+        [Fact]
+        public void VampiricTouchMissTest() {
+            // Initial attack roll misses → AffectBySpell(false) fires on the attack sub-spell
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc; // AC=13
+            int hpBefore = wizard.HitPoints;
+            Battleground ground = createBattleground(wizard, orc);
+            // Seed 1 → D20=10; 10 + modifier(0) = 10 < 13 (orc AC) → miss
+            Random.State = 1;
+            Spells.VampiricTouch.Cast(ground, wizard, 12, SpellLevel.THIRD, 0, orc);
+            // Caster should not have healed (miss means no damage dealt)
+            Assert.Equal(hpBefore, wizard.HitPoints);
+        }
+
+        [Fact]
+        public void VampiricTouchDurationExpiresTest() {
+            // After ONE_MINUTE (10) end-of-turn events the attack cantrip is removed
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            int knownSpellsBeforeCast = wizard.AvailableSpells[0].KnownSpells.Length;
+            Battleground ground = createBattleground(wizard, orc);
+            // High modifier guarantees the initial attack hits so we don't rely on RNG for the attack
+            Spells.VampiricTouch.Cast(ground, wizard, 12, SpellLevel.THIRD, 100, orc);
+            Assert.Equal(knownSpellsBeforeCast + 1, wizard.AvailableSpells[0].KnownSpells.Length);
+            // Simulate 10 end-of-turn events; the 10th expires the duration and removes the cantrip
+            for (int i = 0; i < 10; i++) {
+                wizard.OnEndOfTurn();
+            }
+            Assert.Equal(knownSpellsBeforeCast, wizard.AvailableSpells[0].KnownSpells.Length);
+        }
     }
 }

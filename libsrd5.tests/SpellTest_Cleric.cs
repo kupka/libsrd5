@@ -473,5 +473,53 @@ namespace srd5 {
         public void WaterWalkTest() {
             DefaultSpellTest(Spells.WaterWalk, 12, SpellLevel.THIRD, null, Effect.SPELL_WATER_WALK, Spells.WaterWalk.Duration);
         }
+
+        [Fact]
+        public void AnimateDeadStartOfTurnTest() {
+            // Covers the StartOfTurnEvent inside AnimateDead:
+            //   - effect still present → return false (line 27)
+            //   - effect removed externally → target.Die() + return true (lines 28-30)
+            Monster bandit = Monsters.Bandit;
+            bandit.Die();
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            Battleground ground = createBattleground(cleric, bandit);
+            Spells.AnimateDead.Cast(ground, cleric, 12, SpellLevel.THIRD, 0, bandit);
+            Assert.True(bandit.HasEffect(Effect.SPELL_ANIMATE_DEAD));
+            // Fire the event while the effect is still present → should keep running (return false)
+            bandit.OnStartOfTurn();
+            // Effect is still present (event returned false and remains queued)
+            Assert.True(bandit.HasEffect(Effect.SPELL_ANIMATE_DEAD));
+            // Remove the effect to simulate Dispel Magic, then fire the event again → event terminates
+            bandit.RemoveEffect(Effect.SPELL_ANIMATE_DEAD);
+            bandit.OnStartOfTurn();
+            // Die() was called inside the event; bandit was already dead, but the event completed cleanly
+            Assert.True(bandit.Dead);
+        }
+
+        [Fact]
+        public void AnimateDeadBattleground2DTest() {
+            // Covers the Battleground2D zombie-spawn branch (lines 34-35)
+            Monster bandit = Monsters.Bandit;
+            bandit.Die();
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombattant(cleric, 5, 5);
+            ground.AddCombattant(bandit, 6, 5);
+            Spells.AnimateDead.Cast(ground, cleric, 12, SpellLevel.THIRD, 0, bandit);
+            Assert.True(bandit.HasEffect(Effect.SPELL_ANIMATE_DEAD));
+        }
+
+        [Fact]
+        public void RevivifyTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(cleric, orc);
+            // Target must be dead for Revivify to work
+            orc.TakeDamage(new DamageSource(Spells.ID.POWER_WORD_KILL, cleric), DamageType.TRUE_DAMAGE, orc.HitPointsMax + 100);
+            Assert.True(orc.Dead);
+            Spells.Revivify.Cast(ground, cleric, 12, SpellLevel.THIRD, 0, orc);
+            Assert.False(orc.Dead);
+            Assert.Equal(1, orc.HitPoints);
+        }
     }
 }

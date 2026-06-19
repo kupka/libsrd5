@@ -517,6 +517,15 @@ namespace srd5 {
         }
 
         [Fact]
+        public void BestowCurseTest() {
+            Spell curse = Spells.BestowCurse;
+            curse.Variant = SpellVariant.DISADVANTAGE_CHARISMA_SAVES;
+            DefaultSpellTest(curse, 15, SpellLevel.THIRD, null, Effect.DISADVANTAGE_CHARISMA_SAVES, SpellDuration.TEN_MINUTES);
+            DefaultSpellTest(curse, 15, SpellLevel.FIFTH, null, Effect.DISADVANTAGE_CHARISMA_SAVES, SpellDuration.EIGHT_HOURS);
+            DefaultSpellTest(curse, 15, SpellLevel.EIGHTH, null, Effect.DISADVANTAGE_CHARISMA_SAVES, SpellDuration.ONE_DAY);
+        }
+
+        [Fact]
         public void BestowCurseSaveSuccessTest() {
             // Target succeeds the WIS save (DC=1) → spell has no effect
             Spell curse = Spells.BestowCurse;
@@ -560,8 +569,12 @@ namespace srd5 {
             curse.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
             Assert.True(orc.HasEffect(Effect.SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE));
             // Trigger the DamageTakenEvent delegate body by dealing damage
-            orc.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, orc), DamageType.FIRE, 1);
-            Assert.True(orc.HitPoints < hpBefore);
+            orc.TakeDamage(new DamageSource(DamageSourceType.SPELL, wizard, orc), DamageType.FIRE, 1);
+            Assert.True(orc.HitPoints < hpBefore - 1); // should take more than 1 damage
+            hpBefore = orc.HitPoints;
+            orc.RemoveEffect(Effect.SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE);
+            orc.TakeDamage(new DamageSource(DamageSourceType.OTHER, wizard, orc), DamageType.FIRE, 1);
+            Assert.Equal(hpBefore - 1, orc.HitPoints); // should take exactly one damage
         }
 
         [Fact]

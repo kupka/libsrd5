@@ -19,7 +19,7 @@ namespace srd5 {
                     for (int i = 0; i < maxTargets && i < targets.Length; i++) {
                         Combatant target = targets[i];
                         // Only dead, small or medium humanoids can be targetted
-                        if (target.Dead && (target.Size == Size.MEDIUM || target.Size == Size.SMALL) && (target is CharacterSheet || (target is Monster monster && monster.Type == Monsters.Type.HUMANOID)) && !target.HasEffect(SPELL_ANIMATE_DEAD)) {
+                        if (target.Dead && (target.Size == Size.MEDIUM || target.Size == Size.SMALL) && (target is CharacterSheet || (target is Monster monster && monster.Type == Monsters.Type.HUMANOID))) {
                             GlobalEvents.AffectBySpell(caster, ID.ANIMATE_DEAD, target, true);
                             target.AddEffect(SPELL_ANIMATE_DEAD);
                             target.AddStartOfTurnEvent(delegate () {
@@ -105,7 +105,8 @@ namespace srd5 {
                             AddEffectsForDuration(ID.BESTOW_CURSE, caster, target, duration, SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE);
                             target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
                                 if (!target.HasEffect(SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE)) return true;
-                                if (source.Equals(caster)) {
+                                if (source.Origin is ID && (ID)source.Origin == ID.BESTOW_CURSE) return false; // prevent recursion
+                                if (source.Origin.Equals(caster)) {
                                     target.TakeDamage(new DamageSource(ID.BESTOW_CURSE, caster), NECROTIC, D8);
                                 }
                                 return false;
@@ -176,7 +177,7 @@ namespace srd5 {
 
         public static Spell Clairvoyance {
             get {
-                return new Spell(ID.CLAIRVOYANCE, DIVINATION, THIRD, CastingTime.TEN_MINUTES, 5280, VSM, TEN_MINUTES, 0, 0, 
+                return new Spell(ID.CLAIRVOYANCE, DIVINATION, THIRD, CastingTime.TEN_MINUTES, 5280, VSM, TEN_MINUTES, 0, 0,
                     delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                         AddEffectsForDuration(ID.CLAIRVOYANCE, caster, caster, TEN_MINUTES, SPELL_CLAIRVOYANCE);
                     }
@@ -282,7 +283,7 @@ namespace srd5 {
                 });
             }
         }
-        
+
         public static Spell Fear {
             get {
                 return new Spell(ID.FEAR, ILLUSION, THIRD, CastingTime.ONE_ACTION, 0, VSM, ONE_MINUTE, 30, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
@@ -696,7 +697,7 @@ namespace srd5 {
                 });
             }
         }
-        
+
         public static Spell StinkingCloud {
             get {
                 return new Spell(ID.STINKING_CLOUD, CONJURATION, THIRD, CastingTime.ONE_ACTION, 90, VSM, ONE_MINUTE, 20, 20,

@@ -8,7 +8,7 @@ namespace srd5 {
                 return new Attack("Pseudopod", 4, new Damage(BLUDGEONING, "2d6+2"), 5, new Damage(ACID, "1d6"));
             }
         }
-        public static readonly AttackEffect OctopusTentaclesEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect OctopusTentaclesEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 10, Monsters.Octopus.Size++, false, Attacks.OctopusTentacles, 1);
             return false;
         };
@@ -17,7 +17,7 @@ namespace srd5 {
                 return new Attack("Tentacles", 4, new Damage(BLUDGEONING, 1), 5, null, OctopusTentaclesEffect);
             }
         }
-        public static readonly AttackEffect OctopusInkCloudEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect OctopusInkCloudEffect = delegate (Combatant attacker, Combatant target) {
             // TODO: A 5-foot-radius cloud of ink extends all around the octopus if it is underwater. 
             // The area is heavily obscured for 1 minute, although a significant current can disperse the ink. 
             // After releasing the ink, the octopus can use the Dash action as a bonus action.
@@ -73,7 +73,7 @@ namespace srd5 {
                 return new Attack("Javelin", 5, new Damage(PIERCING, "1d6+3"), 5, 30, 120);
             }
         }
-        public static readonly AttackEffect OtyughBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect OtyughBiteEffect = delegate (Combatant attacker, Combatant target) {
             bool success = target.DC(OtyughBite, 15, AbilityType.CONSTITUTION);
             if (success) return false;
             target.AddEffect(OTYUGH_DISEASE);
@@ -84,7 +84,7 @@ namespace srd5 {
                 return new Attack("Bite", 6, new Damage(PIERCING, "2d8+3"), 5, null, OtyughBiteEffect);
             }
         }
-        public static readonly AttackEffect OtyughTentacleEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect OtyughTentacleEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 13, Size.MEDIUM, true, null, 2);
             return false;
         };

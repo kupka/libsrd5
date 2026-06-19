@@ -281,7 +281,7 @@ namespace srd5 {
     }
 
     public static class FeatExtension {
-        public static void Apply(this Feat feat, Combattant combattant) {
+        public static void Apply(this Feat feat, Combatant combattant) {
             switch (feat) {
                 case Feat.DWARVEN_ABILITY_INCREASE:
                     combattant.Constitution.BaseValue += 2;

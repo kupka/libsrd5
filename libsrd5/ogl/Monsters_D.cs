@@ -5,7 +5,7 @@ using static srd5.Effect;
 
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly AttackEffect DarkmantleCrushEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect DarkmantleCrushEffect = delegate (Combatant attacker, Combatant target) {
             if (target.Size > Size.MEDIUM) return false;
             if (attacker.HasEffect(ATTACHED_TO_TARGET)) return false;
             attacker.AddEffect(ATTACHED_TO_TARGET);
@@ -22,7 +22,7 @@ namespace srd5 {
                 return new Attack("Crush", 5, new Damage(BLUDGEONING, "1d6+3"), 5, null, DarkmantleCrushEffect);
             }
         }
-        public static readonly AttackEffect DeathDogBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect DeathDogBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(POISON)) return false;
             if (target.DC(DeathDogBite, 12, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(DEATH_DOG_DISEASE);
@@ -33,7 +33,7 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, "1d4+2"), 5, null, DeathDogBiteEffect);
             }
         }
-        public static readonly AttackEffect DeepGnomeSvirfneblinPoisonedDartEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect DeepGnomeSvirfneblinPoisonedDartEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(POISON)) return false;
             if (target.DC(DeepGnomeSvirfneblinPoisonedDart, 12, AbilityType.CONSTITUTION)) return false;
             target.AddCondition(ConditionType.POISONED);
@@ -70,7 +70,7 @@ namespace srd5 {
                 return new Attack("Mace", 8, new Damage(BLUDGEONING, "1d6+4"), 5, new Damage(RADIANT, "4d8"));
             }
         }
-        public static readonly AttackEffect DireWolfBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect DireWolfBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.DC(DireWolfBite, 13, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
             return false;
@@ -80,7 +80,7 @@ namespace srd5 {
                 return new Attack("Bite", 5, new Damage(PIERCING, "2d6+3"), 5, null, DireWolfBiteEffect);
             }
         }
-        public static readonly AttackEffect DjinniScimitarEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect DjinniScimitarEffect = delegate (Combatant attacker, Combatant target) {
             if (D20.Value > 10) {
                 target.TakeDamage(new DamageSource(DjinniScimitar, attacker), LIGHTNING, "1d6");
             } else {
@@ -103,7 +103,7 @@ namespace srd5 {
                 return new Attack("Hooves", 6, new Damage(BLUDGEONING, "2d4+4"), 5);
             }
         }
-        public static readonly AttackEffect DragonTurtleTailEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect DragonTurtleTailEffect = delegate (Combatant attacker, Combatant target) {
             if (target.DC(DragonTurtleTail, 20, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
             // TODO: Push 10ft away
@@ -149,7 +149,7 @@ namespace srd5 {
                 return new Attack("Bite", 6, new Damage(PIERCING, "1d4"), 5, new Damage(POISON, "2d8"));
             }
         }
-        public static readonly AttackEffect DrowHandCrossbowEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect DrowHandCrossbowEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(POISON)) return false;
             if (target.DC(DrowHandCrossbow, 13, AbilityType.CONSTITUTION, out int value)) return false;
             target.AddEffect(DROW_POISON);

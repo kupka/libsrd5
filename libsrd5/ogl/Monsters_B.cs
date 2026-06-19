@@ -18,7 +18,7 @@ namespace srd5 {
                 return new Attack("Longsword", 14, new Damage(SLASHING, "3d8+8"), 10, new Damage(LIGHTNING, "3d8")).WithProperties(Attack.Property.TRIPLE_DICE_ON_CRIT);
             }
         }
-        public static AttackEffect BalorWhipEffect = delegate (Combattant attacker, Combattant target) {
+        public static AttackEffect BalorWhipEffect = delegate (Combatant attacker, Combatant target) {
             // TODO: THE TARGET MUST SUCCEED ON A DC 20 STRENGTH SAVING THROW OR BE PULLED UP TO 25 FEET TOWARD THE BALOR
             if (target.DC(BalorWhip, 20, AbilityType.STRENGTH)) return false;
             return false;
@@ -78,7 +78,7 @@ namespace srd5 {
                 return new Attack("Bite", 2, new Damage(PIERCING, 1), 5);
             }
         }
-        public static AttackEffect BeardedDevilBeardEffect = delegate (Combattant attacker, Combattant target) {
+        public static AttackEffect BeardedDevilBeardEffect = delegate (Combatant attacker, Combatant target) {
             if (target.DC(BeardedDevilBeard, 12, AbilityType.CONSTITUTION)) return false;
             if (target.IsImmune(POISON)) return false;
             target.AddEffect(BEARDED_DEVIL_POISON);
@@ -97,7 +97,7 @@ namespace srd5 {
                 return new Attack("Beard", 5, new Damage(PIERCING, "1d8+2"), 5);
             }
         }
-        public static readonly AttackEffect BeardedDevilGlaiveEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect BeardedDevilGlaiveEffect = delegate (Combatant attacker, Combatant target) {
             // do not affect undead and constructs
             if (target is Monster monster) {
                 if (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT) return false;
@@ -127,7 +127,7 @@ namespace srd5 {
                 return new Attack("Bite", 10, new Damage(PIERCING, "3d10+6"), 10);
             }
         }
-        public static readonly AttackEffect BehirConstrictEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect BehirConstrictEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 16, Monsters.Behir.Size + 1);
             return false;
         };
@@ -156,7 +156,7 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, "1d10+2"), 5, new Damage(ACID, "1d4"));
             }
         }
-        public static readonly AttackEffect BlackPuddingPseudopodEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect BlackPuddingPseudopodEffect = delegate (Combatant attacker, Combatant target) {
             if (target is CharacterSheet sheet) {
                 Armor armor = sheet.Inventory.Armor;
                 // permanently reduce armor ac by 1 if armor isn't magical. armor is destroyed if reduced to 10 or below by this.
@@ -199,7 +199,7 @@ namespace srd5 {
                 return new Attack("Claw", 8, new Damage(SLASHING, "1d8+4"), 10);
             }
         }
-        public static readonly AttackEffect BoneDevilStingEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect BoneDevilStingEffect = delegate (Combatant attacker, Combatant target) {
             if (target.DC(BoneDevilSting, 14, AbilityType.CONSTITUTION)) return false;
             if (target.IsImmune(POISON)) return false;
             target.AddEffect(BONE_DEVIL_POISON);

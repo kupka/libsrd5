@@ -23,7 +23,7 @@ namespace srd5 {
                 return new Attack("Claws", 3, new Damage(SLASHING, "1d4+1"), 5, new Damage(COLD, "1d4"));
             }
         }
-        public static readonly AttackEffect ImpStingEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect ImpStingEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.PoisonEffect(attacker, target, ImpSting, "1d4+3", 11);
             return false;
         };

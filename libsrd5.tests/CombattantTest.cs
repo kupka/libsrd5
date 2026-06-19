@@ -7,7 +7,7 @@ namespace srd5 {
     public class CombattantTest {
         [Fact]
         public void TakeDamageTest() {
-            Combattant ogre = Monsters.Ogre;
+            Combatant ogre = Monsters.Ogre;
             ogre.AddEffect(Effect.VULNERABILITY_COLD);
             ogre.AddEffect(Effect.IMMUNITY_ACID);
             ogre.AddEffect(Effect.RESISTANCE_LIGHTNING);
@@ -34,7 +34,7 @@ namespace srd5 {
 
         [Fact]
         public void TakeDamageTestWithDCHalves() {
-            Combattant ogre = Monsters.Ogre;
+            Combatant ogre = Monsters.Ogre;
             int tookFullDamage = 0, tookHalfDamage = 0;
             for (int i = 0; i < 10; i++) {
                 int damageTaken = ogre.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, ogre), DamageType.TRUE_DAMAGE, 2, Spells.DamageMitigation.HALVES_DAMAGE, 10, AbilityType.DEXTERITY, out _);
@@ -49,7 +49,7 @@ namespace srd5 {
 
         [Fact]
         public void TakeDamageTestWithDCNullify() {
-            Combattant ogre = Monsters.Ogre;
+            Combatant ogre = Monsters.Ogre;
             int tookFullDamage = 0, tookNoDamage = 0;
             for (int i = 0; i < 10; i++) {
                 int damageTaken = ogre.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, ogre), DamageType.TRUE_DAMAGE, new Dice("2d1"), Spells.DamageMitigation.NULLIFIES_DAMAGE, 10, AbilityType.DEXTERITY, out _);
@@ -64,7 +64,7 @@ namespace srd5 {
 
         [Fact]
         public void GetAbilityTest() {
-            Combattant ogre = Monsters.Ogre;
+            Combatant ogre = Monsters.Ogre;
             Assert.Equal(ogre.Strength.Value, ogre.GetAbility(AbilityType.STRENGTH).Value);
             Assert.Equal(ogre.Constitution.Value, ogre.GetAbility(AbilityType.CONSTITUTION).Value);
             Assert.Equal(ogre.Dexterity.Value, ogre.GetAbility(AbilityType.DEXTERITY).Value);
@@ -89,7 +89,7 @@ namespace srd5 {
 
         [Fact]
         public void CriticalDCTest() {
-            Combattant ogre = Monsters.Ogre;
+            Combatant ogre = Monsters.Ogre;
             bool criticalSuccess = false;
             bool criticalFail = false;
             for (int i = 0; i < 1000; i++) {
@@ -105,7 +105,7 @@ namespace srd5 {
 
         [Fact]
         public void DCEffectTest() {
-            Combattant ogre = Monsters.Ogre;
+            Combatant ogre = Monsters.Ogre;
             ogre.AddEffect(Effect.SPELL_BANE, Effect.SPELL_BLESS, Effect.SPELL_DIVINE_FAVOR);
             ogre.DC(this, 20, AbilityType.STRENGTH, out _);
             for (int i = 0; i < 10; i++) {
@@ -115,10 +115,10 @@ namespace srd5 {
 
         [Fact]
         public void DCTest() {
-            Combattant orc = Monsters.Orc;
+            Combatant orc = Monsters.Orc;
             Assert.True(orc.DC(null, 2, AbilityType.WISDOM, true, false));
             Assert.False(orc.DC(null, 19, AbilityType.STRENGTH, false, true));
-            Combattant assassin = Monsters.Assassin;
+            Combatant assassin = Monsters.Assassin;
             Assert.True(assassin.DC(null, 2, Skill.STEALTH, true, false));
             Assert.False(assassin.DC(null, 30, Skill.NATURE, false, true));
         }
@@ -137,7 +137,7 @@ namespace srd5 {
 
         [Fact]
         public void HitPointMaxiumModifierTest() {
-            Combattant combattant = Monsters.Orc;
+            Combatant combattant = Monsters.Orc;
             int hpMax = combattant.HitPointsMax;
             HitPointMaxiumModifier modifier1 = new HitPointMaxiumModifier(-10, HitPointMaxiumModifier.RemovedByEffect.GREATER_RESTORATION);
             Assert.False(modifier1.Equals(combattant));
@@ -152,7 +152,7 @@ namespace srd5 {
 
         [Fact]
         public void EscapeFromGrappleTest() {
-            Combattant combattant = Monsters.BanditCaptain; // Athelics Proficiency
+            Combatant combattant = Monsters.BanditCaptain; // Athelics Proficiency
             Assert.False(combattant.EscapeFromGrapple());
             bool success = false;
             combattant.AddCondition(ConditionType.DEAFENED);
@@ -187,8 +187,8 @@ namespace srd5 {
 
         [Fact]
         public void LockedTargetTest() {
-            Combattant combattant = Monsters.Ankheg;
-            Combattant bat = Monsters.Bat;
+            Combatant combattant = Monsters.Ankheg;
+            Combatant bat = Monsters.Bat;
             combattant.MeleeAttacks[0].LockedTarget = bat;
             Assert.False(combattant.Attack(combattant.MeleeAttacks[0], Monsters.Badger, 5));
             bool success = false;
@@ -200,15 +200,15 @@ namespace srd5 {
 
         [Fact]
         public void OutOfReachTest() {
-            Combattant ogre = Monsters.Ogre;
-            Combattant bat = Monsters.Bat;
+            Combatant ogre = Monsters.Ogre;
+            Combatant bat = Monsters.Bat;
             Assert.False(ogre.Attack(Attacks.OgreGreatclub, bat, 8));
 
         }
 
         [Fact]
         public void BeaconOfHopeHealTest() {
-            Combattant ogre = Monsters.Ogre;
+            Combatant ogre = Monsters.Ogre;
             ogre.HitPoints -= 20;
             ogre.AddEffect(Effect.SPELL_BEACON_OF_HOPE);
             ogre.HealDamage(Die.D20);

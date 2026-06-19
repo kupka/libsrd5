@@ -18,7 +18,7 @@ namespace srd5 {
                 return new Attack("Pseudopod", 4, new Damage(ACID, "3d6"), 5);
             }
         }
-        public static readonly AttackEffect GhastClawsEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GhastClawsEffect = delegate (Combatant attacker, Combatant target) {
             if (target is Monster monster && monster.Type == Monsters.Type.UNDEAD) return false;
             bool success = target.DC(GhastClaws, 10, AbilityType.CONSTITUTION);
             if (success) return false;
@@ -40,7 +40,7 @@ namespace srd5 {
                 return new Attack("Withering Touch", 5, new Damage(NECROTIC, "4d6+3"), 5);
             }
         }
-        public static readonly AttackEffect GhoulClawsEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GhoulClawsEffect = delegate (Combatant attacker, Combatant target) {
             if (target is CharacterSheet sheet) {
                 if (sheet.Race.Race == Race.HALF_ELF || sheet.Race.Race == Race.HIGH_ELF) return false;
             }
@@ -90,7 +90,7 @@ namespace srd5 {
                 return new Attack("Tusk", 5, new Damage(SLASHING, "2d6+3"), 5);
             }
         }
-        public static readonly AttackEffect GiantCentipedeBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantCentipedeBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(POISON)) return false;
             if (target.DC(GiantCentipedeBite, 11, AbilityType.CONSTITUTION)) return false;
             target.TakeDamage(new DamageSource(GiantCentipedeBite, attacker), POISON, "3d6");
@@ -102,7 +102,7 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, "1d4+2"), 5, null, GiantCentipedeBiteEffect);
             }
         }
-        public static readonly AttackEffect GiantConstrictorSnakeConstrictEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantConstrictorSnakeConstrictEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 16, Monsters.GiantConstrictorSnake.Size + 1, true);
             return false;
         };
@@ -116,7 +116,7 @@ namespace srd5 {
                 return new Attack("Bite", 6, new Damage(PIERCING, "2d6+4"), 10);
             }
         }
-        public static readonly AttackEffect GiantCrabClawEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantCrabClawEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 11, Monsters.GiantCrab.Size + 1, true, null, 2);
             return false;
         };
@@ -125,7 +125,7 @@ namespace srd5 {
                 return new Attack("Claw", 3, new Damage(BLUDGEONING, "1d6+1"), 5, null, GiantCrabClawEffect);
             }
         }
-        public static readonly AttackEffect GiantCrocodileBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantCrocodileBiteEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 16, Monsters.GiantCrocodile.Size + 1, true, GiantCrocodileBite);
             return false;
         };
@@ -134,7 +134,7 @@ namespace srd5 {
                 return new Attack("Bite", 8, new Damage(PIERCING, "3d10+5"), 5, null, GiantCrocodileBiteEffect);
             }
         }
-        public static readonly AttackEffect GiantCrocodileTailEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantCrocodileTailEffect = delegate (Combatant attacker, Combatant target) {
             if (target.DC(GiantCrocodileTail, 16, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
             return false;
@@ -154,7 +154,7 @@ namespace srd5 {
                 return new Attack("Talons", 5, new Damage(SLASHING, "2d6+3"), 5);
             }
         }
-        public static readonly AttackEffect GiantElkHoovesEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantElkHoovesEffect = delegate (Combatant attacker, Combatant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
             // FIXME: Cannot crit because attack roll is not available here
             target.TakeDamage(new DamageSource(GiantElkHooves, attacker), BLUDGEONING, "4d8+4");
@@ -175,7 +175,7 @@ namespace srd5 {
                 return new Attack("Bite", 1, new Damage(SLASHING, "1d6-1"), 5);
             }
         }
-        public static readonly AttackEffect GiantFrogBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantFrogBiteEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 11, Monsters.GiantFrog.Size + 1, true, GiantFrogBite);
             return false;
         };
@@ -199,7 +199,7 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, "1d8+2"), 5);
             }
         }
-        public static readonly AttackEffect GiantOctopusTentaclesEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantOctopusTentaclesEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 11, Monsters.GiantOctopus.Size + 1, true, GiantOctopusTentacles);
             return false;
         };
@@ -213,7 +213,7 @@ namespace srd5 {
                 return new Attack("Talons", 3, new Damage(SLASHING, "2d6+1"), 5);
             }
         }
-        public static readonly AttackEffect GiantPoisonousSnakeBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantPoisonousSnakeBiteEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.PoisonEffect(attacker, target, GiantPoisonousSnakeBite, "3d6", 11);
             return false;
         };
@@ -227,7 +227,7 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, "1d4+2"), 5);
             }
         }
-        public static readonly AttackEffect GiantRatDiseasedBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantRatDiseasedBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.DC(GiantRatDiseasedBite, 10, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(GIANT_RAT_DISEASED_BITE);
             return false;
@@ -237,7 +237,7 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, "1d4+2"), 5, null, GiantRatDiseasedBiteEffect);
             }
         }
-        public static readonly AttackEffect GiantScorpionClawEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantScorpionClawEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 12, Monsters.GiantScorpion.Size + 1, false, null, 2);
             return false;
         };
@@ -246,7 +246,7 @@ namespace srd5 {
                 return new Attack("Claw", 4, new Damage(BLUDGEONING, "1d8+2"), 5, null, GiantScorpionClawEffect);
             }
         }
-        public static readonly AttackEffect GiantScorpionStingEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantScorpionStingEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.PoisonEffect(attacker, target, GiantScorpionSting, "4d10", 12);
             return false;
         };
@@ -265,7 +265,7 @@ namespace srd5 {
                 return new Attack("Bite", 9, new Damage(PIERCING, "3d10+6"), 5);
             }
         }
-        public static readonly AttackEffect GiantSpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantSpiderBiteEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.PoisonEffect(attacker, target, GiantSpiderBite, "2d8", 11);
             // TODO: If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.
             return false;
@@ -275,7 +275,7 @@ namespace srd5 {
                 return new Attack("Bite", 5, new Damage(PIERCING, "1d8+3"), 5, null, GiantSpiderBiteEffect);
             }
         }
-        public static readonly AttackEffect GiantSpiderWebEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantSpiderWebEffect = delegate (Combatant attacker, Combatant target) {
             if (target.HasEffect(IMMUNITY_RESTRAINED)) return false;
             target.AddEffect(GIANT_SPIDER_WEB);
             // TODO: As an action, the restrained target can make a DC 12 Strength check, bursting the webbing on a success.
@@ -287,7 +287,7 @@ namespace srd5 {
                 return new Attack("Web", 5, new Damage(BLUDGEONING, 0), 5, null, GiantSpiderWebEffect);
             }
         }
-        public static readonly AttackEffect GiantToadBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantToadBiteEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 13, Monsters.GiantToad.Size + 1, true, GiantToadBite);
             return false;
         };
@@ -306,7 +306,7 @@ namespace srd5 {
                 return new Attack("Talons", 4, new Damage(SLASHING, "2d6+2"), 5);
             }
         }
-        public static readonly AttackEffect GiantWaspStingEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantWaspStingEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.PoisonEffect(attacker, target, GiantWaspSting, "3d6", 11);
             // TODO: If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.
             return false;
@@ -321,7 +321,7 @@ namespace srd5 {
                 return new Attack("Bite", 5, new Damage(PIERCING, "1d4+3"), 5);
             }
         }
-        public static readonly AttackEffect GiantWolfSpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GiantWolfSpiderBiteEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.PoisonEffect(attacker, target, GiantWolfSpiderBite, "2d6", 11);
             // TODO: If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way.
             return false;
@@ -331,7 +331,7 @@ namespace srd5 {
                 return new Attack("Bite", 3, new Damage(PIERCING, "1d6+1"), 5, null, GiantWolfSpiderBiteEffect);
             }
         }
-        public static readonly AttackEffect GibberingMoutherBitesEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GibberingMoutherBitesEffect = delegate (Combatant attacker, Combatant target) {
             if (target.Size > Size.MEDIUM) return false;
             if (target.DC(GibberingMoutherBites, 10, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
@@ -343,7 +343,7 @@ namespace srd5 {
                 return new Attack("Bites", 2, new Damage(PIERCING, "5d6"), 5, null, GibberingMoutherBitesEffect);
             }
         }
-        public static readonly AttackEffect GlabrezuPincerEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GlabrezuPincerEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 15, Size.MEDIUM, false, null, 2);
             return false;
         };
@@ -362,7 +362,7 @@ namespace srd5 {
                 return new Attack("Spear", 7, new Damage(PIERCING, "2d6+4"), 5);
             }
         }
-        public static readonly AttackEffect GladiatorShieldBashEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GladiatorShieldBashEffect = delegate (Combatant attacker, Combatant target) {
             if (target.Size > Size.MEDIUM) return false;
             if (target.DC(GladiatorShieldBash, 15, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
@@ -424,7 +424,7 @@ namespace srd5 {
             }
         }
 
-        public static readonly AttackEffect GrayOozePseudopodEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GrayOozePseudopodEffect = delegate (Combatant attacker, Combatant target) {
             // exactly same effect as Black Pudding
             BlackPuddingPseudopodEffect(attacker, target);
             return false;
@@ -479,7 +479,7 @@ namespace srd5 {
                 return new Attack("Spear", 3, new Damage(PIERCING, "1d6+1"), 5, 20, 60);
             }
         }
-        public static readonly AttackEffect GuardianNagaBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GuardianNagaBiteEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.PoisonEffect(attacker, target, GuardianNagaBite, "10d8", 15);
             return false;
         };
@@ -488,7 +488,7 @@ namespace srd5 {
                 return new Attack("Bite", 8, new Damage(PIERCING, "1d8+4"), 5, null, GuardianNagaBiteEffect);
             }
         }
-        public static readonly AttackEffect GuardianNagaSpitPoisonEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect GuardianNagaSpitPoisonEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.PoisonEffect(attacker, target, GuardianNagaSpitPoison, "10d8", 15);
             return false;
         };

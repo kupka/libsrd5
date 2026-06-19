@@ -77,11 +77,11 @@ namespace srd5 {
             Turn = 1;
         }
 
-        public override Location LocateCombattant(Combattant combattant) {
+        public override Location LocateCombattant(Combatant combattant) {
             return locations[Array.IndexOf(combattants, combattant)];
         }
 
-        public ClassicLocation LocateClassicCombattant(Combattant combattant) {
+        public ClassicLocation LocateClassicCombattant(Combatant combattant) {
             return locations[Array.IndexOf(combattants, combattant)];
         }
 
@@ -90,16 +90,16 @@ namespace srd5 {
             SetLocation(CurrentCombattant, location);
         }
 
-        protected override void SetLocation(Combattant combattant, Location location) {
+        protected override void SetLocation(Combatant combattant, Location location) {
             locations[Array.IndexOf(combattants, combattant)] = (ClassicLocation)location;
         }
 
-        public void AddCombattant(Combattant combattant, ClassicLocation.Row row) {
+        public void AddCombattant(Combatant combattant, ClassicLocation.Row row) {
             AddCombattant(combattant);
             Utils.Push<ClassicLocation>(ref locations, new ClassicLocation(row));
         }
 
-        public override void Push(Location source, Combattant target, int distance) {
+        public override void Push(Location source, Combatant target, int distance) {
             if (LocateClassicCombattant(target).Location == ClassicLocation.Row.FRONT_LEFT) {
                 SetLocation(target, ClassicLocation.BackLeft);
             } else if (LocateClassicCombattant(target).Location == ClassicLocation.Row.FRONT_RIGHT) {
@@ -138,20 +138,20 @@ namespace srd5 {
             Turn = 1;
         }
 
-        public override Location LocateCombattant(Combattant combattant) {
+        public override Location LocateCombattant(Combatant combattant) {
             return coords[Array.IndexOf(combattants, combattant)];
         }
 
-        public Coord LocateCombattant2D(Combattant combattant) {
+        public Coord LocateCombattant2D(Combatant combattant) {
             return coords[Array.IndexOf(combattants, combattant)];
         }
 
-        public void AddCombattant(Combattant combattant, int x, int y) {
+        public void AddCombattant(Combatant combattant, int x, int y) {
             AddCombattant(combattant);
             Utils.Push<Coord>(ref coords, new Coord(x, y));
         }
 
-        public void AddCombattantNextTo(Combattant combattant, int x, int y) {
+        public void AddCombattantNextTo(Combatant combattant, int x, int y) {
             AddCombattant(combattant);
             bool occupied = true;
             int i = 0;
@@ -179,11 +179,11 @@ namespace srd5 {
             SetLocation(CurrentCombattant, location);
         }
 
-        protected override void SetLocation(Combattant combattant, Location location) {
+        protected override void SetLocation(Combatant combattant, Location location) {
             coords[Array.IndexOf(combattants, combattant)] = (Coord)location;
         }
 
-        public override void Push(Location source, Combattant target, int distance) {
+        public override void Push(Location source, Combatant target, int distance) {
             // For simplicity, this assumes either a straight line or 45° angle. 
             Coord sourceCoord = (Coord)source;
             Coord targetCoord = LocateCombattant2D(target);
@@ -229,7 +229,7 @@ namespace srd5 {
     }
 
     public class CombattantChangedEvent : BattlegroundEvent {
-        public Combattant CurrentCombattant { get; internal set; }
+        public Combatant CurrentCombattant { get; internal set; }
     }
 
     public class BattlegroundEvent : EventArgs {
@@ -237,11 +237,11 @@ namespace srd5 {
 
     public abstract class Battleground {
 
-        protected Combattant[] combattants = new Combattant[0];
+        protected Combatant[] combattants = new Combatant[0];
 
         public int Turn { get; internal set; } = 0;
         protected int[] initiativeRolls = new int[0];
-        public Combattant CurrentCombattant {
+        public Combatant CurrentCombattant {
             get {
                 return combattants[currentCombattant];
             }
@@ -278,9 +278,9 @@ namespace srd5 {
         /// <summary>
         /// Add a combattant to the battlefield and roll initiative
         /// </summary>
-        public void AddCombattant(Combattant combattant) {
+        public void AddCombattant(Combatant combattant) {
             if (Array.IndexOf(combattants, combattant) > -1) return;
-            Utils.Push<Combattant>(ref combattants, combattant);
+            Utils.Push<Combatant>(ref combattants, combattant);
             int roll = D20.Value + combattant.Dexterity.Modifier;
             Utils.Push<int>(ref initiativeRolls, roll);
             GlobalEvents.RolledInitiative(combattant, roll);
@@ -321,7 +321,7 @@ namespace srd5 {
         /// <summary>
         /// Current combattant melee attacks a target if able
         /// </summary>
-        public bool MeleeAttackAction(Combattant target) {
+        public bool MeleeAttackAction(Combatant target) {
             if (CurrentCombattant.HasEffect(CANNOT_TAKE_ACTIONS)) return false;
             if (CurrentCombattant.HasEffect(CANNOT_MELEE_ATTACK)) return false;
             if (currentPhase == TurnPhase.MOVE) return false;
@@ -340,7 +340,7 @@ namespace srd5 {
         /// <summary>
         /// Current combattant uses their ranged attack against the target if able
         /// </summary>
-        public bool RangedAttackAction(Combattant target) {
+        public bool RangedAttackAction(Combatant target) {
             if (target == null) throw new Srd5ArgumentException("target cannot be null");
             if (CurrentCombattant.HasEffect(CANNOT_TAKE_ACTIONS)) {
                 GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.CANNOT_TAKE_ACTIONS);
@@ -366,7 +366,7 @@ namespace srd5 {
         /// <summary>
         /// Current combattant casts a spell if able. Checks all relevant constraints, such as range and if the spell is prepared
         /// <summary>
-        public bool SpellCastAction(Spell spell, SpellLevel slot, AvailableSpells availableSpells, params Combattant[] targets) {
+        public bool SpellCastAction(Spell spell, SpellLevel slot, AvailableSpells availableSpells, params Combatant[] targets) {
             if (CurrentCombattant.HasEffect(CANNOT_TAKE_ACTIONS)) {
                 GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.CANNOT_TAKE_ACTIONS);
                 return false;
@@ -402,7 +402,7 @@ namespace srd5 {
                 return false;
             }
             // check if targets are in range
-            foreach (Combattant target in targets) {
+            foreach (Combatant target in targets) {
                 int distance = Distance(target);
                 if (distance > spell.Range) {
                     GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.TARGET_OUT_OF_RANGE);
@@ -457,7 +457,7 @@ namespace srd5 {
             return true;
         }
 
-        private bool doBonusMeleeAttack(Combattant target) {
+        private bool doBonusMeleeAttack(Combatant target) {
             bool success = false;
             int distance = Distance(target);
             Attack attack = CurrentCombattant.BonusAttack;
@@ -467,7 +467,7 @@ namespace srd5 {
             return success;
         }
 
-        private bool doBonusRangedAttack(Combattant target) {
+        private bool doBonusRangedAttack(Combatant target) {
             bool success = false;
             int distance = Distance(target);
             Attack attack = CurrentCombattant.BonusAttack;
@@ -477,7 +477,7 @@ namespace srd5 {
             return success;
         }
 
-        private bool doFullMeleeAttack(Combattant target) {
+        private bool doFullMeleeAttack(Combatant target) {
             bool success = false;
             int distance = Distance(target);
             foreach (Attack attack in CurrentCombattant.MeleeAttacks) {
@@ -488,7 +488,7 @@ namespace srd5 {
             return success;
         }
 
-        private bool doFullRangedAttack(Combattant target) {
+        private bool doFullRangedAttack(Combatant target) {
             bool success = false;
             int distance = Distance(target);
             foreach (Attack attack in CurrentCombattant.RangedAttacks) {
@@ -502,7 +502,7 @@ namespace srd5 {
         /// <summary>
         /// Returns the Location of the given combattant
         /// </summary>
-        public abstract Location LocateCombattant(Combattant combattant);
+        public abstract Location LocateCombattant(Combatant combattant);
 
         /// <summary>
         /// Set the location of the current active combattant
@@ -512,7 +512,7 @@ namespace srd5 {
         /// <summary>
         /// Set the location of the combattant
         /// </summary>
-        protected abstract void SetLocation(Combattant combattant, Location location);
+        protected abstract void SetLocation(Combatant combattant, Location location);
 
 
         /// <summary>
@@ -525,14 +525,14 @@ namespace srd5 {
         /// <summary>
         /// Returns the distance between the current combattant and the target.
         /// </summary>
-        public int Distance(Combattant target) {
+        public int Distance(Combatant target) {
             return GetCurrentLocation().Distance(LocateCombattant(target));
         }
 
         /// <summary>
         /// Returns the distance between two combattants.
         /// </summary>
-        public int Distance(Combattant combattant1, Combattant combattant2) {
+        public int Distance(Combatant combattant1, Combatant combattant2) {
             return LocateCombattant(combattant1).Distance(LocateCombattant(combattant2));
         }
 
@@ -548,6 +548,6 @@ namespace srd5 {
         /// <summary>
         /// Pushes the target away from the source by the distance.
         /// </summar>)
-        public abstract void Push(Location source, Combattant target, int distance);
+        public abstract void Push(Location source, Combatant target, int distance);
     }
 }

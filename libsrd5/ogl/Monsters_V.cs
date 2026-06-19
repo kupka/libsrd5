@@ -3,7 +3,7 @@ using static srd5.Effect;
 
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly AttackEffect VampireUnarmedStrikeEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect VampireUnarmedStrikeEffect = delegate (Combatant attacker, Combatant target) {
             // TODO: Instead of dealing damage, the vampire can grapple the target (escape DC 18).
             return false;
         };
@@ -12,7 +12,7 @@ namespace srd5 {
                 return new Attack("Unarmed Strike", 9, new Damage(BLUDGEONING, "1d8+4"), 5, null, VampireUnarmedStrikeEffect);
             }
         }
-        public static readonly AttackEffect VampireBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect VampireBiteEffect = delegate (Combatant attacker, Combatant target) {
             int damage = target.TakeDamage(new DamageSource(VampireBite, attacker), NECROTIC, "3d6");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
             attacker.HealDamage(damage);
@@ -30,7 +30,7 @@ namespace srd5 {
                 return new Attack("Bite", 9, new Damage(PIERCING, "1d6+4"), 5, null, VampireBiteEffect);
             }
         }
-        public static readonly AttackEffect VampireSpawnBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect VampireSpawnBiteEffect = delegate (Combatant attacker, Combatant target) {
             int damage = target.TakeDamage(new DamageSource(VampireSpawnBite, attacker), NECROTIC, "2d6");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
             attacker.HealDamage(damage);
@@ -41,7 +41,7 @@ namespace srd5 {
                 return new Attack("Bite", 6, new Damage(PIERCING, "1d6+6"), 5, null, VampireSpawnBiteEffect);
             }
         }
-        public static readonly AttackEffect VampireSpawnClawsEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect VampireSpawnClawsEffect = delegate (Combatant attacker, Combatant target) {
             // TODO: Instead of dealing damage, the vampire can grapple the target (escape DC 13).
             return false;
         };

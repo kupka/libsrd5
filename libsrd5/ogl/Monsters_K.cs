@@ -28,7 +28,7 @@ namespace srd5 {
                 return new Attack("Sling", 4, new Damage(BLUDGEONING, "1d4+2"), 5, 30, 120);
             }
         }
-        public static readonly AttackEffect KrakenBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect KrakenBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (!target.HasCondition(ConditionType.GRAPPLED_DC18)) return false;
             if (target.Size > Size.LARGE) return false;
             // If the target is a Large or smaller creature grappled by the kraken, that creature is swallowed, and the grapple ends.
@@ -57,7 +57,7 @@ namespace srd5 {
             }
         }
 
-        public static readonly AttackEffect KrakenTentacleEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect KrakenTentacleEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 18, Size.GARGANTUAN, true, null, 10);
             return false;
         };

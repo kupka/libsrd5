@@ -64,7 +64,7 @@ namespace srd5 {
         /// <summary>
         /// Calculates the spell cast DC for the Monster. Assumes that this object belongs to this Monster.
         /// </summary>
-        public int GetSpellCastDC(Combattant combattant) {
+        public int GetSpellCastDC(Combatant combattant) {
             if (combattant is CharacterSheet characterSheet) return GetSpellCastDC(characterSheet);
             Monster monster = (Monster)combattant;
             return monster.SpellCastDC;
@@ -73,7 +73,7 @@ namespace srd5 {
         /// <summary>
         /// Get the spellcasting modifier for the Combattant. Assumes that this object belongs to this sheet.
         /// <summary>
-        public int GetSpellcastingModifier(Combattant combattant) {
+        public int GetSpellcastingModifier(Combatant combattant) {
             AbilityType spellAbility = CharacterClass.SpellCastingAbility;
             return combattant.GetAbility(spellAbility).Modifier;
         }

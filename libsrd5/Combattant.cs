@@ -61,36 +61,36 @@ namespace srd5 {
             get; internal set;
         }
 
-        public Combattant Source {
+        public Combatant Source {
             get; internal set;
         }
 
-        public DamageSource(Effect effect, Combattant source) {
+        public DamageSource(Effect effect, Combatant source) {
             Type = DamageSourceType.EFFECT;
             Origin = effect;
             Source = source;
         }
 
-        public DamageSource(Spells.ID spellId, Combattant caster) {
+        public DamageSource(Spells.ID spellId, Combatant caster) {
             Type = DamageSourceType.SPELL;
             Origin = spellId;
             Source = caster;
         }
 
-        public DamageSource(Attack attack, Combattant attacker) {
+        public DamageSource(Attack attack, Combatant attacker) {
             Type = DamageSourceType.ATTACK;
             Origin = attack;
             Source = attacker;
         }
 
-        public DamageSource(DamageSourceType type, object origin, Combattant source) {
+        public DamageSource(DamageSourceType type, object origin, Combatant source) {
             Type = type;
             Origin = origin;
             Source = source;
         }
     }
 
-    public abstract class Combattant : GuidClass {
+    public abstract class Combatant : GuidClass {
         public int Speed { get; internal set; } = 30;
         public Alignment Alignment { get; set; }
         public Ability Strength { get; internal set; } = new Ability(STRENGTH, 10);
@@ -575,11 +575,11 @@ namespace srd5 {
         /// <summary>
         /// Trys to attack the target Combattant with the specified attack. Returns true on hit, false on miss.
         /// </summary>
-        public bool Attack(Attack attack, Combattant target, int distance, bool ranged = false, bool spell = false, Spells.DamageMitigation dCEffect = Spells.DamageMitigation.NO_EFFECT, AbilityType dcAbility = DEXTERITY, int dc = 0) {
+        public bool Attack(Attack attack, Combatant target, int distance, bool ranged = false, bool spell = false, Spells.DamageMitigation dCEffect = Spells.DamageMitigation.NO_EFFECT, AbilityType dcAbility = DEXTERITY, int dc = 0) {
             return Attack(attack, target, distance, ranged, spell, dCEffect, dc, dcAbility, out _);
         }
 
-        public bool Attack(Attack attack, Combattant target, int distance, bool ranged, bool spell, Spells.DamageMitigation dCEffect, int dc, AbilityType dcAbility, out bool dcSuccess) {
+        public bool Attack(Attack attack, Combatant target, int distance, bool ranged, bool spell, Spells.DamageMitigation dCEffect, int dc, AbilityType dcAbility, out bool dcSuccess) {
             dcSuccess = false;
             // check locked target
             if (attack.LockedTarget != null && attack.LockedTarget != target) return false;
@@ -687,7 +687,7 @@ namespace srd5 {
             Utils.Push<AttackModifyingEffect>(ref attackModifyingEffects, effect);
         }
 
-        private void applyAttackModifyingEffects(ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combattant target) {
+        private void applyAttackModifyingEffects(ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combatant target) {
             foreach (AttackModifyingEffect effect in (AttackModifyingEffect[])attackModifyingEffects.Clone()) {
                 if (effect(ref advantage, ref disadvantage, ref attack, ref target)) {
                     Utils.RemoveSingle<AttackModifyingEffect>(ref attackModifyingEffects, effect);
@@ -699,7 +699,7 @@ namespace srd5 {
         /// Function to return true or false if some specfic effect is in place that grants this
         /// combattant advantage in their attack roll against the target.
         /// </summary>
-        private bool attackAdvantageEffect(Attack attack, Combattant target, int distance, bool ranged, bool spell) {
+        private bool attackAdvantageEffect(Attack attack, Combatant target, int distance, bool ranged, bool spell) {
             bool advantage = HasEffect(ADVANTAGE_ON_ATTACK);
             advantage = advantage || target.HasEffect(ADVANTAGE_ON_BEING_ATTACKED)
                                   || (target.HasCondition(ConditionType.PRONE) && !ranged)
@@ -716,7 +716,7 @@ namespace srd5 {
         /// Function to return true or false if some specfic effect is in place that grants this
         /// combattant disadvantage in their attack roll against the target.
         /// </summary>
-        private bool attackDisadvantageEffect(Attack attack, Combattant target, int distance, bool ranged, bool spell) {
+        private bool attackDisadvantageEffect(Attack attack, Combatant target, int distance, bool ranged, bool spell) {
             bool disadvantage = HasEffect(DISADVANTAGE_ON_ATTACK);
             disadvantage = disadvantage || target.HasEffect(DISADVANTAGE_ON_BEING_ATTACKED)
                                         || target.HasCondition(ConditionType.INVISIBLE)
@@ -773,5 +773,5 @@ namespace srd5 {
     /// Describes an effect that modifies this combattant's attack roll. 
     /// The effect is considered finished when the delegate returns true.
     /// </summary>
-    public delegate bool AttackModifyingEffect(ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combattant target);
+    public delegate bool AttackModifyingEffect(ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combatant target);
 }

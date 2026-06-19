@@ -27,7 +27,7 @@ namespace srd5 {
         public static readonly int HALF = -2;
     }
 
-    public class Monster : Combattant {
+    public class Monster : Combatant {
         public Monsters.Type Type { get; internal set; }
 
         public Monsters.ID ID { get; internal set; }

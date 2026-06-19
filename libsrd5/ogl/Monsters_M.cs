@@ -18,7 +18,7 @@ namespace srd5 {
                 return new Attack("Claws", 3, new Damage(SLASHING, "1d4+1"), 5, new Damage(FIRE, "1d4"));
             }
         }
-        public static readonly AttackEffect MagminTouchEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect MagminTouchEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(FIRE)) return false;
             if (target.HasEffect(MAGMIN_IGNITE)) return false;
             target.AddEffect(MAGMIN_IGNITE);
@@ -30,7 +30,7 @@ namespace srd5 {
                 return new Attack("Touch", 4, new Damage(FIRE, "2d6"), 5, null, MagminTouchEffect);
             }
         }
-        public static readonly AttackEffect MammothStompEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect MammothStompEffect = delegate (Combatant attacker, Combatant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
             // FIXME: Cannot crit because attack roll is not available here
             target.TakeDamage(new DamageSource(MammothStomp, attacker), BLUDGEONING, "4d10+7");
@@ -61,7 +61,7 @@ namespace srd5 {
                 return new Attack("Tail Spike", 5, new Damage(PIERCING, "1d8+3"), 5, 100, 200);
             }
         }
-        public static readonly AttackEffect MarilithTailEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect MarilithTailEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 19, Size.MEDIUM, true, MarilithTail);
             // TODO: the marilith can automatically hit the target with its tail
             return false;
@@ -76,7 +76,7 @@ namespace srd5 {
                 return new Attack("Longsword", 9, new Damage(SLASHING, "2d8+4"), 5);
             }
         }
-        public static readonly AttackEffect MastiffBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect MastiffBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.HasEffect(Effects.Immunity(ConditionType.PRONE))) return false;
             if (target.DC(MastiffBite, 11, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
@@ -112,7 +112,7 @@ namespace srd5 {
                 return new Attack("Spear", 2, new Damage(PIERCING, "1d6"), 20, 60);
             }
         }
-        public static readonly AttackEffect MerrowHarpoonEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect MerrowHarpoonEffect = delegate (Combatant attacker, Combatant target) {
             if (target.Size > Size.HUGE) return false;
             // TODO: it must succeed on a Strength contest against the merrow or be pulled up to 20 feet toward the merrow.
             return false;
@@ -137,7 +137,7 @@ namespace srd5 {
                 return new Attack("Claws", 6, new Damage(SLASHING, "2d4+4"), 5);
             }
         }
-        public static readonly AttackEffect MimicPseudopodEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect MimicPseudopodEffect = delegate (Combatant attacker, Combatant target) {
             // TODO: if the mimic is in object form, the target is subjected to its Adhesive trait
             return false;
         };
@@ -176,7 +176,7 @@ namespace srd5 {
                 return new Attack("Hooves", 2, new Damage(BLUDGEONING, "1d4+2"), 5);
             }
         }
-        public static readonly AttackEffect MummyRottingFistEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect MummyRottingFistEffect = delegate (Combatant attacker, Combatant target) {
             if (target.DC(MummyRottingFist, 12, AbilityType.CONSTITUTION)) return false;
             if (target.HasEffect(CURSE_MUMMY_ROT)) return false;
             target.AddEffect(CURSE_MUMMY_ROT);
@@ -187,7 +187,7 @@ namespace srd5 {
                 return new Attack("Rotting Fist", 5, new Damage(BLUDGEONING, "2d6+3"), 5, new Damage(NECROTIC, "3d6"), MummyRottingFistEffect);
             }
         }
-        public static readonly AttackEffect MummyLordRottingFistEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect MummyLordRottingFistEffect = delegate (Combatant attacker, Combatant target) {
             if (target.DC(MummyRottingFist, 16, AbilityType.CONSTITUTION)) return false;
             if (target.HasEffect(CURSE_MUMMY_ROT)) return false;
             target.AddEffect(CURSE_MUMMY_ROT);

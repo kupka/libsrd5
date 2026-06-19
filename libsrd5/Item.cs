@@ -1,7 +1,7 @@
 using System;
 
 namespace srd5 {
-    public delegate void ConsumableEffect(Combattant consumer, Consumable item);
+    public delegate void ConsumableEffect(Combatant consumer, Consumable item);
     public class Consumable : Item {
         internal ConsumableEffect ConsumableEffect;
         public int Charges { get; internal set; }
@@ -15,7 +15,7 @@ namespace srd5 {
         }
     }
 
-    public delegate void UsableEffect(Battleground ground, Combattant user, Usable item, int expendedCharges, params Combattant[] targets);
+    public delegate void UsableEffect(Battleground ground, Combatant user, Usable item, int expendedCharges, params Combatant[] targets);
 
     public class Usable : Item {
         internal UsableEffect UsableEffect;

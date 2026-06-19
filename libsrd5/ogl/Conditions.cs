@@ -35,7 +35,7 @@ namespace srd5 {
     }
 
     public static class ConditionsExtension {
-        public static void Apply(this ConditionType type, Combattant combattant) {
+        public static void Apply(this ConditionType type, Combatant combattant) {
             switch (type) {
                 case ConditionType.BLINDED:
                     applyBlinded(combattant);
@@ -55,7 +55,7 @@ namespace srd5 {
             }
         }
 
-        public static void Unapply(this ConditionType type, Combattant combattant) {
+        public static void Unapply(this ConditionType type, Combatant combattant) {
             switch (type) {
                 case ConditionType.BLINDED:
                     unapplyBlinded(combattant);
@@ -75,43 +75,43 @@ namespace srd5 {
             }
         }
 
-        private static void applyBlinded(Combattant combattant) {
+        private static void applyBlinded(Combatant combattant) {
             combattant.AddEffect(ADVANTAGE_ON_BEING_ATTACKED);
             combattant.AddEffect(DISADVANTAGE_ON_ATTACK);
         }
 
-        private static void unapplyBlinded(Combattant combattant) {
+        private static void unapplyBlinded(Combatant combattant) {
             combattant.RemoveEffect(ADVANTAGE_ON_BEING_ATTACKED);
             combattant.RemoveEffect(DISADVANTAGE_ON_ATTACK);
         }
 
-        private static void applyIncapacitated(Combattant combattant) {
+        private static void applyIncapacitated(Combatant combattant) {
             combattant.AddEffect(CANNOT_TAKE_ACTIONS);
         }
 
-        private static void unapplyIncapacitated(Combattant combattant) {
+        private static void unapplyIncapacitated(Combatant combattant) {
             combattant.RemoveEffect(CANNOT_TAKE_ACTIONS);
         }
 
 
-        private static void applyParalyzed(Combattant combattant) {
+        private static void applyParalyzed(Combatant combattant) {
             applyStunned(combattant);
             combattant.AddEffect(AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
         }
 
-        private static void unapplyParalyzed(Combattant combattant) {
+        private static void unapplyParalyzed(Combatant combattant) {
             unapplyStunned(combattant);
             combattant.RemoveEffect(AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
         }
 
-        private static void applyStunned(Combattant combattant) {
+        private static void applyStunned(Combatant combattant) {
             applyIncapacitated(combattant);
             combattant.AddEffect(FAIL_STRENGTH_CHECK);
             combattant.AddEffect(FAIL_DEXERITY_CHECK);
             combattant.AddEffect(ADVANTAGE_ON_BEING_ATTACKED);
         }
 
-        private static void unapplyStunned(Combattant combattant) {
+        private static void unapplyStunned(Combatant combattant) {
             unapplyIncapacitated(combattant);
             combattant.RemoveEffect(FAIL_STRENGTH_CHECK);
             combattant.RemoveEffect(FAIL_DEXERITY_CHECK);
@@ -119,7 +119,7 @@ namespace srd5 {
 
         }
 
-        private static void applyUnconcious(Combattant combattant) {
+        private static void applyUnconcious(Combatant combattant) {
             applyParalyzed(combattant);
             if (combattant is CharacterSheet sheet) {
                 sheet.Unequip(sheet.Inventory.MainHand);
@@ -127,7 +127,7 @@ namespace srd5 {
             }
         }
 
-        private static void unapplyUnconcious(Combattant combattant) {
+        private static void unapplyUnconcious(Combatant combattant) {
             unapplyParalyzed(combattant);
         }
 

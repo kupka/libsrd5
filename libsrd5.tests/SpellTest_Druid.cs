@@ -25,10 +25,10 @@ namespace srd5 {
                 }
             }
         }
-        private BattleGroundClassic createBattleground(Combattant caster, params Combattant[] targets) {
+        private BattleGroundClassic createBattleground(Combatant caster, params Combatant[] targets) {
             BattleGroundClassic ground = new BattleGroundClassic();
             ground.AddCombattant(caster, ClassicLocation.Row.FRONT_LEFT);
-            foreach (Combattant target in targets) {
+            foreach (Combatant target in targets) {
                 ground.AddCombattant(target, ClassicLocation.Row.FRONT_RIGHT);
             }
             return ground;
@@ -197,8 +197,8 @@ namespace srd5 {
             if (checkForCondition == null && checkForEffect == null) throw new ArgumentException("Don't use is when not checking for Condition and/or Effect");
             CharacterSheet hero = new CharacterSheet(Race.DRAGONBORN, true);
             hero.AddLevels(CharacterClasses.Wizard, CharacterClasses.Druid, CharacterClasses.Bard, CharacterClasses.Barbarian);
-            Combattant nonMonster1 = new CharacterSheet(Race.HUMAN);
-            Combattant nonMonster2 = new CharacterSheet(Race.HALFLING);
+            Combatant nonMonster1 = new CharacterSheet(Race.HUMAN);
+            Combatant nonMonster2 = new CharacterSheet(Race.HALFLING);
             Monster orc1 = Monsters.Orc;
             Monster orc2 = Monsters.Orc;
             Monster orc3 = Monsters.Orc;
@@ -213,7 +213,7 @@ namespace srd5 {
                 Effect.IMMUNITY_POISON, Effect.IMMUNITY_POISONED, Effect.IMMUNITY_PRONE, Effect.IMMUNITY_PSYCHIC, Effect.IMMUNITY_RADIANT, Effect.IMMUNITY_RESTRAINED, Effect.IMMUNITY_SLEEP,
                 Effect.IMMUNITY_SLEEP, Effect.IMMUNITY_STUNNED, Effect.IMMUNITY_THUNDER, Effect.IMMUNITY_UNCONSCIOUS);
 
-            Combattant[] targets = new Combattant[] {
+            Combatant[] targets = new Combatant[] {
                 nonMonster1, nonMonster2, orc1, orc2, orc3, badger, zombie, dragon, typed, typedImmune
             };
 
@@ -224,7 +224,7 @@ namespace srd5 {
                     spell.Cast(ground, hero, dc, slot, 5, targets[2 * i], targets[2 * i + 1]);
                 }
             } else {
-                foreach (Combattant target in targets) {
+                foreach (Combatant target in targets) {
                     spell.Cast(ground, hero, dc, slot, 5, target);
                 }
             }
@@ -252,18 +252,18 @@ namespace srd5 {
                 for (int i = 0; i < turns; i++) {
                     hero.OnEndOfTurn();
 
-                    foreach (Combattant target in targets) {
+                    foreach (Combatant target in targets) {
                         target.OnStartOfTurn();
                     }
 
                     hero.OnStartOfTurn();
                     hero.OnEndOfTurn();
 
-                    foreach (Combattant target in targets) {
+                    foreach (Combatant target in targets) {
                         target.OnEndOfTurn();
                     }
 
-                    foreach (Combattant target in targets) {
+                    foreach (Combatant target in targets) {
                         target.OnDamageTaken(new DamageSource(spell.ID, hero), new Damage(DamageType.THUNDER, 1));
                     }
                 }
@@ -298,8 +298,8 @@ namespace srd5 {
 
         [Fact]
         public void CharmPersonTest() {
-            Combattant hag = Monsters.NightHag;
-            Combattant badger = Monsters.GiantBadger;
+            Combatant hag = Monsters.NightHag;
+            Combatant badger = Monsters.GiantBadger;
             Spells.CharmPerson.Cast(Monsters.NightHag, 10, SpellLevel.CANTRIP, 10);
             Spells.CharmPerson.Cast(createBattleground(hag, badger), hag, 10, SpellLevel.SECOND, 10, badger); // not affected
             DefaultSpellTest(Spells.CharmPerson, 14, SpellLevel.SIXTH, ConditionType.CHARMED, null, null);
@@ -307,8 +307,8 @@ namespace srd5 {
 
         [Fact]
         public void HoldPersonTest() {
-            Combattant hag = Monsters.NightHag;
-            Combattant badger = Monsters.GiantBadger;
+            Combatant hag = Monsters.NightHag;
+            Combatant badger = Monsters.GiantBadger;
             CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             Spells.HoldPerson.Cast(createBattleground(hag, badger), hag, 10, SpellLevel.SECOND, 10, badger); // not affected
 

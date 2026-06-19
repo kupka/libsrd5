@@ -3,7 +3,7 @@ using static srd5.Effect;
 using static srd5.AbilityType;
 
 namespace srd5 {
-    public delegate bool AttackEffect(Combattant attacker, Combattant target);
+    public delegate bool AttackEffect(Combatant attacker, Combatant target);
 
     public struct AttackEffects {
 
@@ -17,7 +17,7 @@ namespace srd5 {
         /// <param name="withRestrained">With true, the target is restrained as well as grappled</param>
         /// <param name="lockAttackToTarget">If set, then this attack will have the target locked (e.g. can only Bite the grappled target)</param>
         /// <param name="maxTargets">Amount of targets the attacker can grapple (e.g. Crabs can grapple one target with each of their two claws)</param>
-        public static bool GrapplingEffect(Combattant attacker, Combattant target, int dc, Size maxSize, bool withRestrained = false, Attack lockAttackToTarget = null, int maxTargets = 1) {
+        public static bool GrapplingEffect(Combatant attacker, Combatant target, int dc, Size maxSize, bool withRestrained = false, Attack lockAttackToTarget = null, int maxTargets = 1) {
             ConditionType grapplingType = (ConditionType)Enum.Parse(typeof(ConditionType), "GRAPPLED_DC" + dc);
             if (target.HasCondition(grapplingType)) return false;
             if (target.Size > maxSize) return false;
@@ -60,7 +60,7 @@ namespace srd5 {
         /// <param name="ability">Which ability is used for the DC (default Constitution)</param>
         /// <param name="damageMitigation">Determines what happens on a successful save (defaults to halves damage)</param>
         /// <returns></returns>
-        public static int PoisonEffect(Combattant attacker, Combattant target, Attack source, string dice, int dc, AbilityType ability = CONSTITUTION, Spells.DamageMitigation damageMitigation = Spells.DamageMitigation.HALVES_DAMAGE) {
+        public static int PoisonEffect(Combatant attacker, Combatant target, Attack source, string dice, int dc, AbilityType ability = CONSTITUTION, Spells.DamageMitigation damageMitigation = Spells.DamageMitigation.HALVES_DAMAGE) {
             if (target.IsImmune(DamageType.POISON)) return 0;
             bool advantage = target.HasEffect(ADVANTAGE_POISON_SAVES);
             bool success = target.DC(source, dc, ability, out _, advantage);
@@ -106,7 +106,7 @@ namespace srd5 {
                 return properties;
             }
         }
-        public Combattant LockedTarget { get; set; }
+        public Combatant LockedTarget { get; set; }
 
         public Attack(string name, int attackBonus, Damage damage, int reach, int rangeNormal, int rangeLong, Damage additionalDamage = null, AttackEffect effectOnHit = null) {
             Name = name;
@@ -138,7 +138,7 @@ namespace srd5 {
                 new Damage(weapon.Damage.Type, damageString), weapon.Reach, weapon.RangeNormal, weapon.RangeLong, additionalDamage);
         }
 
-        public void ApplyEffectOnHit(Combattant attacker, Combattant target) {
+        public void ApplyEffectOnHit(Combatant attacker, Combatant target) {
             AttackEffect[] toRemove = new AttackEffect[0];
             foreach (AttackEffect effect in EffectOnHit) {
                 if (effect(attacker, target)) {

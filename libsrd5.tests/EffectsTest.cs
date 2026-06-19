@@ -39,7 +39,7 @@ namespace srd5 {
         public void EnumerateEffectsTest() {
             foreach (Effect effect in Enum.GetValues(typeof(Effect))) {
                 if (effect == Effect.IMMUNITY_TRUE_DAMAGE || effect == Effect.RESISTANCE_TRUE_DAMAGE || effect == Effect.VULNERABILITY_TRUE_DAMAGE) continue;
-                Combattant bandit = Monsters.Bandit;
+                Combatant bandit = Monsters.Bandit;
                 bandit.AddEffect(effect);
                 Assert.True(bandit.HasEffect(effect));
                 bandit.OnStartOfTurn();
@@ -55,7 +55,7 @@ namespace srd5 {
 
         [Fact]
         public void QuasitPoisonEffectTest() {
-            Combattant bandit = Monsters.Bandit;
+            Combatant bandit = Monsters.Bandit;
             while (!bandit.HasEffect(Effect.QUASIT_POISON)) {
                 bandit.AddEffect(Effect.QUASIT_POISON);
                 bandit.OnEndOfTurn();
@@ -68,7 +68,7 @@ namespace srd5 {
 
         [Fact]
         public void LichParalyzingTouchEffectTest() {
-            Combattant bandit = Monsters.Bandit;
+            Combatant bandit = Monsters.Bandit;
             while (!bandit.HasEffect(Effect.LICH_PARALYZATION)) {
                 bandit.AddEffect(Effect.LICH_PARALYZATION);
                 bandit.OnEndOfTurn();

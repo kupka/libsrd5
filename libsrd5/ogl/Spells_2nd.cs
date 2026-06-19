@@ -13,8 +13,8 @@ namespace srd5 {
     public partial struct Spells {
         public static Spell AcidArrow {
             get {
-                return new Spell(ID.ACID_ARROW, EVOCATION, SECOND, CastingTime.ONE_ACTION, 90, VSM, INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.ACID_ARROW, EVOCATION, SECOND, CastingTime.ONE_ACTION, 90, VSM, INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     Dice dice = DiceSlotScaling(SECOND, slot, D4, 4, 0, 1);
                     Dice additionalDice = DiceSlotScaling(SECOND, slot, D4, 2, 0, 1);
                     bool hit = SpellAttack(ID.ACID_ARROW, ground, caster, ACID, dice, 0, target, 90, HALVES_DAMAGE);
@@ -30,9 +30,9 @@ namespace srd5 {
 
         public static Spell Aid {
             get {
-                return new Spell(ID.AID, ABJURATION, SECOND, CastingTime.ONE_ACTION, 30, VSM, EIGHT_HOURS, 0, 3, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.AID, ABJURATION, SECOND, CastingTime.ONE_ACTION, 30, VSM, EIGHT_HOURS, 0, 3, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     int amount = 5 * ((int)slot - 1);
-                    foreach (Combattant target in targets) {
+                    foreach (Combatant target in targets) {
                         if (target.HasEffect(SPELL_AID)) {
                             GlobalEvents.AffectBySpell(caster, ID.AID, target, false);
                         } else {
@@ -48,7 +48,7 @@ namespace srd5 {
 
         public static Spell AlterSelf {
             get {
-                return new Spell(ID.ALTER_SELF, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.ALTER_SELF, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     // TODO: Aquatic Adaption and Change Appearance require work elsewhere
                     // We cannot chose the type of weapons so let's grow Claws
                     caster.AddEffect(SPELL_ALTER_SELF_CLAWS);
@@ -83,8 +83,8 @@ namespace srd5 {
 
         public static Spell Barkskin {
             get {
-                return new Spell(ID.BARKSKIN, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.BARKSKIN, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     target.AddEffect(SPELL_BARKSKIN);
                     GlobalEvents.AffectBySpell(caster, ID.BARKSKIN, target, true);
                 });
@@ -93,12 +93,12 @@ namespace srd5 {
 
         public static Spell BlindnessDeafness {
             get {
-                return new Spell(ID.BLINDNESS_DEAFNESS, NECROMANCY, SECOND, CastingTime.ONE_ACTION, 30, V, ONE_MINUTE, 0, 6, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.BLINDNESS_DEAFNESS, NECROMANCY, SECOND, CastingTime.ONE_ACTION, 30, V, ONE_MINUTE, 0, 6, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     // SRD5 says target is either blinded or deafened, but we do both
                     // otherwise we would need to split this into two spells
                     int maxTargets = (int)slot - 1;
                     for (int i = 0; i < maxTargets && i < targets.Length; i++) {
-                        Combattant target = targets[i];
+                        Combatant target = targets[i];
                         if (target.DC(ID.BLINDNESS_DEAFNESS, dc, CONSTITUTION)) {
                             GlobalEvents.AffectBySpell(caster, ID.BLINDNESS_DEAFNESS, target, false);
                         } else {
@@ -111,7 +111,7 @@ namespace srd5 {
 
         public static Spell Blur {
             get {
-                return new Spell(ID.BLUR, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, V, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.BLUR, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, V, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     AddEffectsForDuration(ID.BLUR, caster, caster, ONE_MINUTE, SPELL_BLUR);
                 });
             }
@@ -119,12 +119,12 @@ namespace srd5 {
 
         public static Spell BrandingSmite {
             get {
-                return new Spell(ID.BRANDING_SMITE, EVOCATION, SECOND, CastingTime.BONUS_ACTION, 0, V, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.BRANDING_SMITE, EVOCATION, SECOND, CastingTime.BONUS_ACTION, 0, V, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     Dice dice = DiceSlotScaling(SECOND, slot, D6, 2);
                     Damage additionalDamage = new Damage(RADIANT, dice);
                     foreach (Attack attack in caster.MeleeAttacks) {
                         attack.AddAdditionalDamage(additionalDamage);
-                        attack.AddAttackEffect(delegate (Combattant attacker, Combattant target) {
+                        attack.AddAttackEffect(delegate (Combatant attacker, Combatant target) {
                             foreach (Attack meleeAttack in caster.MeleeAttacks) {
                                 meleeAttack.RemoveAdditionalDamage(additionalDamage);
                             }
@@ -137,12 +137,12 @@ namespace srd5 {
 
         public static Spell CalmEmotions {
             get {
-                return new Spell(ID.CALM_EMOTIONS, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 60, VS, ONE_MINUTE, 20, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.CALM_EMOTIONS, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 60, VS, ONE_MINUTE, 20, 10, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     // TODO: Here, only the immunity to being charmed and frightned is implemented
                     // Alternatively, you can make a target indifferent about creatures of your choice that it is hostile toward. 
                     // This indifference ends if the target is attacked or harmed by a spell or if it witnesses any of its friends being harmed. 
                     // When the spell ends, the creature becomes hostile again, unless the GM rules otherwise.
-                    foreach (Combattant target in targets) {
+                    foreach (Combatant target in targets) {
                         if (target is Monster monster) {
                             if (monster.Type != Monsters.Type.HUMANOID) {
                                 GlobalEvents.AffectBySpell(caster, ID.CALM_EMOTIONS, target, false);
@@ -169,8 +169,8 @@ namespace srd5 {
 
         public static Spell Darkvision {
             get {
-                return new Spell(ID.DARKVISION, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, EIGHT_HOURS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.DARKVISION, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, EIGHT_HOURS, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     AddEffectsForDuration(ID.DARKVISION, caster, target, EIGHT_HOURS, SPELL_DARKVISION);
                 });
             }
@@ -187,10 +187,10 @@ namespace srd5 {
                 Spell spell = new Spell(ID.ENHANCE_ABILITY, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 7);
                 spell.Variants = new SpellVariant[] { BEARS_ENDURANCE, BULLS_STRENGTH, CATS_GRACE, EAGLES_SPLENDOR, FOX_CUNNING, OWLS_WISDOM };
                 spell.Variant = BEARS_ENDURANCE;
-                spell.CastEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                spell.CastEffect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     int maxTargets = (int)slot - 1;
                     for (int i = 0; i < maxTargets && i < targets.Length; i++) {
-                        Combattant target = targets[i];
+                        Combatant target = targets[i];
                         if (target.HasEffect(SPELL_ENHANCE_ABILITY)) {
                             GlobalEvents.AffectBySpell(caster, ID.ENHANCE_ABILITY, target, false);
                             return;
@@ -228,8 +228,8 @@ namespace srd5 {
                 Spell spell = new Spell(ID.ENLARGE_REDUCE, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 30, VSM, ONE_MINUTE, 0, 1);
                 spell.Variants = new SpellVariant[] { ENLARGE, REDUCE };
                 spell.Variant = ENLARGE;
-                spell.CastEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                spell.CastEffect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     switch (spell.Variant) {
                         case ENLARGE:
                             if (target.HasEffect(SPELL_ENLARGE)) {
@@ -280,12 +280,12 @@ namespace srd5 {
 
         public static Spell FlameBlade {
             get {
-                return new Spell(ID.FLAME_BLADE, EVOCATION, SECOND, CastingTime.BONUS_ACTION, 0, VSM, TEN_MINUTES, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.FLAME_BLADE, EVOCATION, SECOND, CastingTime.BONUS_ACTION, 0, VSM, TEN_MINUTES, 0, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     // This is modelled by creating a Cantrip that the druid can use. After the Duration, the cantrip is removed
                     int dice = 3 + ((int)slot - 2) / 2;
                     Damage damage = new Damage(FIRE, new Dice(dice, D6));
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
-                    Spell flamingBladeCantrip = new Spell(ID.FLAME_BLADE_ATTACK, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 5, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
+                    Spell flamingBladeCantrip = new Spell(ID.FLAME_BLADE_ATTACK, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 5, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combatant caster2, int dc2, SpellLevel slot2, int modifier2, Combatant[] targets2) {
                         SpellAttack(ID.FLAME_BLADE_ATTACK, ground2, caster2, damage.Type, damage.Dice, modifier2, targets2[0], 5);
                     });
                     caster.AvailableSpells[0].AddKnownSpell(flamingBladeCantrip);
@@ -312,13 +312,13 @@ namespace srd5 {
                 // Note: Since we cannot currently place objects on a Battlefield and move them around, 
                 // the current implementation sort of implies that the sphere is following the caster and can
                 // be sent on a target within 30 feet as a bonus action
-                return new Spell(ID.FLAMING_SPHERE, CONJURATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.FLAMING_SPHERE, CONJURATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     // This is modelled by creating a Cantrip that the caster can use. After the Duration, the cantrip is removed
                     Dice dice = DiceSlotScaling(SECOND, slot, D6, 2);
                     Damage damage = new Damage(FIRE, dice);
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
-                    Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE_ATTACK, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 30, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
-                        Combattant target2 = targets2[0];
+                    Spell flamingSphereCantrip = new Spell(ID.FLAMING_SPHERE_ATTACK, CONJURATION, CANTRIP, CastingTime.BONUS_ACTION, 30, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combatant caster2, int dc2, SpellLevel slot2, int modifier2, Combatant[] targets2) {
+                        Combatant target2 = targets2[0];
                         GlobalEvents.AffectBySpell(caster2, ID.FLAMING_SPHERE_ATTACK, target2, true);
                         target2.TakeDamage(new DamageSource(ID.FLAMING_SPHERE_ATTACK, caster), FIRE, dice, HALVES_DAMAGE, dc2, DEXTERITY, out _);
                     });
@@ -346,10 +346,10 @@ namespace srd5 {
         /* TODO */
         public static Spell GustofWind {
             get {
-                return new Spell(ID.GUST_OF_WIND, EVOCATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_MINUTE, 60, 5, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.GUST_OF_WIND, EVOCATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_MINUTE, 60, 5, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     // Fix the location where the spell was cast to create the push-vector
                     Location location = ground.LocateCombattant(caster);
-                    foreach (Combattant target in targets) {
+                    foreach (Combatant target in targets) {
                         AddEffectsForDuration(ID.GUST_OF_WIND, caster, target, ONE_MINUTE, SPELL_GUST_OF_WIND);
                         int remainingRounds = (int)ONE_MINUTE;
                         target.AddStartOfTurnEvent(delegate () {
@@ -376,10 +376,10 @@ namespace srd5 {
             get {
                 return new Spell(
                            ID.HOLD_PERSON, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 60, VSM,
-                           ONE_MINUTE, 0, 20, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                           ONE_MINUTE, 0, 20, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                                // one target per slot above 2nd
                                for (int i = 0; i < (int)slot - 1 && i < targets.Length; i++) {
-                                   Combattant target = targets[i];
+                                   Combatant target = targets[i];
                                    // only affect humanoid monsters
                                    if (target is Monster monster) {
                                        if (monster.Type != Monsters.Type.HUMANOID) {
@@ -408,8 +408,8 @@ namespace srd5 {
 
         public static Spell Invisibility {
             get {
-                return new Spell(ID.INVISIBILITY, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.INVISIBILITY, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     AddEffectsForDuration(ID.INVISIBILITY, caster, target, ONE_HOUR, SPELL_INVISIBILITY);
                     EventHandler<GlobalEvents.AttackRolled> attackHandler = delegate (object sender, GlobalEvents.AttackRolled attack) {
                         if (attack.Attacker.Equals(target)) {
@@ -446,8 +446,8 @@ namespace srd5 {
             get {
                 Spell spell = new Spell(ID.LESSER_RESTORATION, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, INSTANTANEOUS, 0, 1);
                 spell.Variants = new SpellVariant[] { BLINDNESS, DEAFNESS, PARALYZATION, POISONS, DISEASES };
-                spell.CastEffect = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                spell.CastEffect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     GlobalEvents.AffectBySpell(caster, ID.LESSER_RESTORATION, target, true);
                     switch (spell.Variant) {
                         case BLINDNESS:
@@ -480,8 +480,8 @@ namespace srd5 {
             get {
                 // We assume that this spell is used for Crowd Control to make a target incapable of melee attacks but also immune to melee attacks
                 // Ranged attacks should work normally. The Weight limit of 500 pounds is translated to a maximum size of Large
-                return new Spell(ID.LEVITATE, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, TEN_MINUTES, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.LEVITATE, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, TEN_MINUTES, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     if (target.Size > Size.LARGE || target.DC(ID.LEVITATE, dc, CONSTITUTION)) {
                         GlobalEvents.AffectBySpell(caster, ID.LEVITATE, target, false);
                         return;
@@ -511,8 +511,8 @@ namespace srd5 {
 
         public static Spell MagicWeapon {
             get {
-                return new Spell(ID.MAGIC_WEAPON, TRANSMUTATION, SECOND, CastingTime.BONUS_ACTION, 0, VS, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.MAGIC_WEAPON, TRANSMUTATION, SECOND, CastingTime.BONUS_ACTION, 0, VS, ONE_HOUR, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     // Since we cannot directly target a Weapon, we check the mainhand of the target if it is a nonmagic weapon
                     if (target is CharacterSheet hero && hero.Inventory.MainHand is Weapon) {
                         Weapon weapon = hero.Inventory.MainHand;
@@ -545,7 +545,7 @@ namespace srd5 {
         /* TODO */
         public static Spell MirrorImage {
             get {
-                return new Spell(ID.MIRROR_IMAGE, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.MIRROR_IMAGE, ILLUSION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     caster.RemoveEffect(SPELL_MIRROR_IMAGE_1, SPELL_MIRROR_IMAGE_2, SPELL_MIRROR_IMAGE_3);
                     caster.AddEffect(SPELL_MIRROR_IMAGE_3);
                     bool spellEnded = false;
@@ -582,8 +582,8 @@ namespace srd5 {
         public static Spell Moonbeam {
             get {
                 // Similar to Flaming Sphere, we model this as a temporary Cantrip that can be cast to damage enemies with a range of 60ft
-                return new Spell(ID.MOONBEAM, EVOCATION, SECOND, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 5, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.MOONBEAM, EVOCATION, SECOND, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 5, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     Dice dice = DiceSlotScaling(SECOND, slot, D10, 2);
                     Damage damage = new Damage(RADIANT, dice);
                     GlobalEvents.AffectBySpell(caster, ID.MOONBEAM, target, true);
@@ -605,8 +605,8 @@ namespace srd5 {
                         target.TakeDamage(new DamageSource(ID.MOONBEAM, caster), RADIANT, dice, HALVES_DAMAGE, dc, CONSTITUTION, out _);
                     }
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
-                    Spell moonbeamCantrip = new Spell(ID.MOONBEAM_ATTACK, EVOCATION, CANTRIP, CastingTime.BONUS_ACTION, 60, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
-                        Combattant target2 = targets2[0];
+                    Spell moonbeamCantrip = new Spell(ID.MOONBEAM_ATTACK, EVOCATION, CANTRIP, CastingTime.BONUS_ACTION, 60, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combatant caster2, int dc2, SpellLevel slot2, int modifier2, Combatant[] targets2) {
+                        Combatant target2 = targets2[0];
                         GlobalEvents.AffectBySpell(caster, ID.MOONBEAM_ATTACK, target2, true);
                         bool shapeChanger2 = false;
                         foreach (Feat feat in target2.Feats) {
@@ -644,8 +644,8 @@ namespace srd5 {
 
         public static Spell PassWithoutTrace {
             get {
-                return new Spell(ID.PASS_WITHOUT_TRACE, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    foreach (Combattant target in targets) {
+                return new Spell(ID.PASS_WITHOUT_TRACE, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 10, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    foreach (Combatant target in targets) {
                         AddEffectsForDuration(ID.PASS_WITHOUT_TRACE, caster, target, ONE_HOUR, SPELL_PASS_WITHOUT_TRACE);
                     }
                 });
@@ -654,9 +654,9 @@ namespace srd5 {
 
         public static Spell PrayerofHealing {
             get {
-                return new Spell(ID.PRAYER_OF_HEALING, EVOCATION, SECOND, CastingTime.TEN_MINUTES, 30, V, INSTANTANEOUS, 0, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.PRAYER_OF_HEALING, EVOCATION, SECOND, CastingTime.TEN_MINUTES, 30, V, INSTANTANEOUS, 0, 10, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     Dice dice = DiceSlotScaling(SECOND, slot, D8, 2, modifier);
-                    foreach (Combattant target in targets) {
+                    foreach (Combatant target in targets) {
                         if (target is Monster monster && (monster.Type == Monsters.Type.CONSTRUCT || monster.Type == Monsters.Type.UNDEAD)) {
                             GlobalEvents.AffectBySpell(caster, ID.PRAYER_OF_HEALING, target, false);
                         } else {
@@ -670,8 +670,8 @@ namespace srd5 {
 
         public static Spell ProtectionfromPoison {
             get {
-                return new Spell(ID.PROTECTION_FROM_POISON, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.PROTECTION_FROM_POISON, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     GlobalEvents.AffectBySpell(caster, ID.PROTECTION_FROM_POISON, target, true);
                     foreach (Effect effect in target.Effects) {
                         if (effect.IsPoison()) {
@@ -686,8 +686,8 @@ namespace srd5 {
 
         public static Spell RayofEnfeeblement {
             get {
-                return new Spell(ID.RAY_OF_ENFEEBLEMENT, NECROMANCY, SECOND, CastingTime.ONE_ACTION, 60, VS, ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.RAY_OF_ENFEEBLEMENT, NECROMANCY, SECOND, CastingTime.ONE_ACTION, 60, VS, ONE_MINUTE, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     if (SpellAttack(ID.RAY_OF_ENFEEBLEMENT, ground, caster, TRUE_DAMAGE, null, 0, target, 60)) {
                         AddEffectsForDuration(ID.RAY_OF_ENFEEBLEMENT, caster, target, ONE_MINUTE, SPELL_RAY_OF_ENFEEBLEMENT);
                     }
@@ -703,10 +703,10 @@ namespace srd5 {
 
         public static Spell ScorchingRay {
             get {
-                return new Spell(ID.SCORCHING_RAY, EVOCATION, SECOND, CastingTime.ONE_ACTION, 120, VS, INSTANTANEOUS, 0, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.SCORCHING_RAY, EVOCATION, SECOND, CastingTime.ONE_ACTION, 120, VS, INSTANTANEOUS, 0, 10, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     int rays = (int)slot - 2 + 3;
                     for (int i = 0; i < rays; i++) {
-                        Combattant target = targets[i % targets.Length];
+                        Combatant target = targets[i % targets.Length];
                         SpellAttack(ID.SCORCHING_RAY, ground, caster, FIRE, new Dice("2d6"), modifier, target, 120);
                     }
                 });
@@ -715,7 +715,7 @@ namespace srd5 {
 
         public static Spell SeeInvisibility {
             get {
-                return new Spell(ID.SEE_INVISIBILITY, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.SEE_INVISIBILITY, DIVINATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     AddEffectsForDuration(ID.SEE_INVISIBILITY, caster, caster, ONE_HOUR, SPELL_SEE_INVISIBILITY);
                 });
             }
@@ -723,9 +723,9 @@ namespace srd5 {
 
         public static Spell Shatter {
             get {
-                return new Spell(ID.SHATTER, EVOCATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, INSTANTANEOUS, 15, 0, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.SHATTER, EVOCATION, SECOND, CastingTime.ONE_ACTION, 60, VSM, INSTANTANEOUS, 15, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     Dice dice = DiceSlotScaling(SECOND, slot, D8, 3);
-                    foreach (Combattant target in targets) {
+                    foreach (Combatant target in targets) {
                         // Constructs have disadvantage on DC, not Flesh Golem though, since it is made from organic material
                         bool disadvantage = target is Monster monster && monster.Type == Monsters.Type.CONSTRUCT && monster.ID != Monsters.ID.FLESH_GOLEM;
                         GlobalEvents.AffectBySpell(caster, ID.SHATTER, target, true);
@@ -737,10 +737,10 @@ namespace srd5 {
 
         public static Spell Silence {
             get {
-                return new Spell(ID.SILENCE, ILLUSION, SECOND, CastingTime.ONE_ACTION, 120, VS, TEN_MINUTES, 20, 10, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+                return new Spell(ID.SILENCE, ILLUSION, SECOND, CastingTime.ONE_ACTION, 120, VS, TEN_MINUTES, 20, 10, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     // TODO: The effect should end when targets move out of the sphere of influence
                     // TODO: Casting a spell that includes a verbal component is impossible there
-                    foreach (Combattant target in targets) {
+                    foreach (Combatant target in targets) {
                         AddEffectsForDuration(ID.SILENCE, caster, target, TEN_MINUTES, SPELL_SILENCE);
                     }
                 });
@@ -749,8 +749,8 @@ namespace srd5 {
 
         public static Spell SpiderClimb {
             get {
-                return new Spell(ID.SPIDER_CLIMB, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.SPIDER_CLIMB, TRANSMUTATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     AddEffectsForDuration(ID.SPIDER_CLIMB, caster, target, ONE_HOUR, SPELL_SPIDER_CLIMB);
                 });
             }
@@ -767,13 +767,13 @@ namespace srd5 {
 
         public static Spell SpiritualWeapon {
             get {
-                return new Spell(ID.SPIRITUAL_WEAPON, EVOCATION, SECOND, CastingTime.BONUS_ACTION, 60, VS, ONE_MINUTE, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.SPIRITUAL_WEAPON, EVOCATION, SECOND, CastingTime.BONUS_ACTION, 60, VS, ONE_MINUTE, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     Dice dice = new Dice((int)slot / 2, D8, modifier);
                     SpellAttack(ID.SPIRITUAL_WEAPON, ground, caster, FORCE, dice, modifier, target, 65);
                     // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
-                    Spell weaponCantrip = new Spell(ID.SPIRITUAL_WEAPON_ATTACK, EVOCATION, CANTRIP, CastingTime.BONUS_ACTION, 25, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combattant caster2, int dc2, SpellLevel slot2, int modifier2, Combattant[] targets2) {
-                        Combattant target2 = targets2[0];
+                    Spell weaponCantrip = new Spell(ID.SPIRITUAL_WEAPON_ATTACK, EVOCATION, CANTRIP, CastingTime.BONUS_ACTION, 25, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground2, Combatant caster2, int dc2, SpellLevel slot2, int modifier2, Combatant[] targets2) {
+                        Combatant target2 = targets2[0];
                         SpellAttack(ID.SPIRITUAL_WEAPON_ATTACK, ground2, caster2, FORCE, dice, modifier2, target2, 25);
                     });
                     caster.AvailableSpells[0].AddKnownSpell(weaponCantrip);
@@ -796,8 +796,8 @@ namespace srd5 {
             get {
                 // In order to not make this spell too powerful (compare with Dominate line of spells)
                 // we make the target only unable to attack. Effect ends when the target takes damage.
-                return new Spell(ID.SUGGESTION, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 30, VM, EIGHT_HOURS, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.SUGGESTION, ENCHANTMENT, SECOND, CastingTime.ONE_ACTION, 30, VM, EIGHT_HOURS, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     if (target.HasEffect(IMMUNITY_CHARMED) || target.DC(ID.SUGGESTION, dc, WISDOM)) {
                         GlobalEvents.AffectBySpell(caster, ID.SUGGESTION, target, false);
                     } else {
@@ -813,8 +813,8 @@ namespace srd5 {
 
         public static Spell WardingBond {
             get {
-                return new Spell(ID.WARDING_BOND, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
-                    Combattant target = targets[0];
+                return new Spell(ID.WARDING_BOND, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
                     if (target.Equals(caster)) {
                         GlobalEvents.FailAction(caster, GlobalEvents.ActionFailed.Reasons.INVALID_TARGET);
                         return;

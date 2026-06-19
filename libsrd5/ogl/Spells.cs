@@ -102,13 +102,13 @@ namespace srd5 {
         DAMAGE_THUNDER
     }
 
-    public delegate void SpellCastEffect(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);
+    public delegate void SpellCastEffect(Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, params Combatant[] targets);
 
     public partial struct Spells {
-        private static readonly SpellCastEffect doNothing = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) { };
+        private static readonly SpellCastEffect doNothing = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) { };
 
         private static SpellCastEffect SpellWithoutEffect(ID spell) {
-            return delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            return delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                 // Intentionally empty
             };
         }
@@ -482,7 +482,7 @@ namespace srd5 {
         /// <summary>
         /// Scales dice by 4th, 10th and 17th level of the caster.
         /// </summary>
-        internal static Dice DiceLevelScaling(Combattant caster, Die die) {
+        internal static Dice DiceLevelScaling(Combatant caster, Die die) {
             int dice = 1;
             if (caster.EffectiveLevel > 16)
                 dice = 4;
@@ -522,11 +522,11 @@ namespace srd5 {
         /// <summary>
         /// Does a Spell Attack roll against the target, applies the damage. Returns whether the attack roll succeeded or not.
         /// </summary>
-        public static bool SpellAttack(ID id, Battleground ground, Combattant caster, DamageType damageType, Dice? dice, int modifier, Combattant target, int range, DamageMitigation missEffect = DamageMitigation.NULLIFIES_DAMAGE, DamageMitigation dCEffect = DamageMitigation.NO_EFFECT, int dc = 0, AbilityType dcAbility = AbilityType.DEXTERITY) {
+        public static bool SpellAttack(ID id, Battleground ground, Combatant caster, DamageType damageType, Dice? dice, int modifier, Combatant target, int range, DamageMitigation missEffect = DamageMitigation.NULLIFIES_DAMAGE, DamageMitigation dCEffect = DamageMitigation.NO_EFFECT, int dc = 0, AbilityType dcAbility = AbilityType.DEXTERITY) {
             return SpellAttack(id, ground, caster, damageType, dice, modifier, target, range, missEffect, dCEffect, dc, out _);
         }
 
-        internal static bool SpellAttack(ID id, Battleground ground, Combattant caster, DamageType damageType, Dice? dice, int modifier, Combattant target, int range, DamageMitigation missEffect, DamageMitigation dCEffect, int dc, out bool dcResult) {
+        internal static bool SpellAttack(ID id, Battleground ground, Combatant caster, DamageType damageType, Dice? dice, int modifier, Combatant target, int range, DamageMitigation missEffect, DamageMitigation dCEffect, int dc, out bool dcResult) {
             int bonus = modifier + caster.ProficiencyBonus;
             Attack attack;
             if (dice is Dice d)
@@ -545,7 +545,7 @@ namespace srd5 {
             return hit;
         }
 
-        internal static void AddEffectsForDuration(ID id, Combattant caster, Combattant target, SpellDuration duration, params Effect[] effects) {
+        internal static void AddEffectsForDuration(ID id, Combatant caster, Combatant target, SpellDuration duration, params Effect[] effects) {
             if (target.HasEffect(effects[0])) {
                 GlobalEvents.AffectBySpell(caster, id, target, false);
                 return;
@@ -577,7 +577,7 @@ namespace srd5 {
             });
         }
 
-        internal static void AddEffectAndConditionsForDuration(ID id, Combattant caster, Combattant target, SpellDuration duration, Effect effect, params ConditionType[] conditions) {
+        internal static void AddEffectAndConditionsForDuration(ID id, Combatant caster, Combatant target, SpellDuration duration, Effect effect, params ConditionType[] conditions) {
             GlobalEvents.AffectBySpell(caster, id, target, true);
             target.AddEffect(effect);
             target.AddCondition(conditions);

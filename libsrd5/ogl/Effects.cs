@@ -363,7 +363,7 @@ namespace srd5 {
     }
 
     public static class EffectExtension {
-        public static void Apply(this Effect effect, Combattant combattant) {
+        public static void Apply(this Effect effect, Combatant combattant) {
             int turn = 0;
             int duration;
             int dc;
@@ -687,7 +687,7 @@ namespace srd5 {
             }
         }
 
-        public static void Unapply(this Effect effect, Combattant combattant) {
+        public static void Unapply(this Effect effect, Combatant combattant) {
             switch (effect) {
                 case HEAVY_ARMOR_SPEED_PENALITY:
                     combattant.Speed += 10;
@@ -868,7 +868,7 @@ namespace srd5 {
             }
         }
 
-        private static void applyAbilityEffect(Effect effect, Combattant combattant) {
+        private static void applyAbilityEffect(Effect effect, Combatant combattant) {
             switch (effect) {
                 case INTELLIGENCE_19:
                     combattant.Intelligence.AddMinimumBaseValue(19);
@@ -879,7 +879,7 @@ namespace srd5 {
             }
         }
 
-        private static void unapplyAbilityEffect(Effect effect, Combattant combattant) {
+        private static void unapplyAbilityEffect(Effect effect, Combatant combattant) {
             switch (effect) {
                 case INTELLIGENCE_19:
                     combattant.Intelligence.RemoveMinimumBaseValue(19);

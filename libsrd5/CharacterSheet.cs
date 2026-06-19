@@ -53,7 +53,7 @@ namespace srd5 {
         }
     }
 
-    public class CharacterSheet : Combattant {
+    public class CharacterSheet : Combatant {
         public CharacterRace Race { get { return race; } }
         private CharacterRace race;
         public CharacterLevel[] Levels { get { return levels; } }
@@ -543,7 +543,7 @@ namespace srd5 {
                 Inventory.RemoveFromBag(item);
         }
 
-        public void Use(Usable item, int expendedCharges, Battleground ground = null, params Combattant[] targets) {
+        public void Use(Usable item, int expendedCharges, Battleground ground = null, params Combatant[] targets) {
             expendedCharges = Math.Max(1, expendedCharges); // cannot expend less than a single charge
             if (item == null || item.Charges < expendedCharges || item.Destroyed) return;
             GlobalEvents.ChangeEquipment(this, item, GlobalEvents.EquipmentChanged.Events.USED);

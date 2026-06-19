@@ -62,12 +62,12 @@ namespace srd5 {
             CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
             hero.AddLevel(CharacterClasses.Druid);
             Spells.ProtectionfromEvilandGood.Cast(hero, 12, SpellLevel.THIRD, 5);
-            Combattant[] allCombattantTypes = [
+            Combatant[] allCombattantTypes = [
                 Monsters.Badger, Monsters.Solar, Monsters.IronGolem, Monsters.AncientBlackDragon, Monsters.FireElemental,
                 Monsters.Dryad, Monsters.BarbedDevil, Monsters.HillGiant, Monsters.Bandit, Monsters.BlackPudding,
                 Monsters.Treant, Monsters.SwarmOfQuippers, Monsters.Zombie, hero
              ];
-            foreach (Combattant combattant in allCombattantTypes) {
+            foreach (Combatant combattant in allCombattantTypes) {
                 combattant.Attack(Attacks.AcolyteClub, hero, 5);
             }
         }

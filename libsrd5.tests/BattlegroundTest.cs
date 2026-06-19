@@ -384,7 +384,7 @@ namespace srd5 {
         public void CastAreaEffectTest() {
             Battleground2D ground = new Battleground2D(20, 20);
             CharacterSheet hero = new CharacterSheet(Race.TIEFLING, true);
-            Combattant currentCombattant = null;
+            Combatant currentCombattant = null;
             ground.EventSubscription += delegate (object sender, BattlegroundEvent bgEvent) {
                 if (bgEvent is CombattantChangedEvent @event) {
                     currentCombattant = @event.CurrentCombattant;
@@ -513,7 +513,7 @@ namespace srd5 {
         [Fact]
         public void PushTest2D() {
             Battleground2D ground = new Battleground2D(10, 10);
-            Combattant ogre = Monsters.Ogre;
+            Combatant ogre = Monsters.Ogre;
             ground.AddCombattant(ogre, 5, 5);
             ground.Initialize();
             ground.Push(new Coord(5, 4), ogre, 10); // push south
@@ -541,8 +541,8 @@ namespace srd5 {
         [Fact]
         public void PushTestClassic() {
             BattleGroundClassic classic = new BattleGroundClassic();
-            Combattant ogre = Monsters.Ogre;
-            Combattant goblin = Monsters.Goblin;
+            Combatant ogre = Monsters.Ogre;
+            Combatant goblin = Monsters.Goblin;
             classic.AddCombattant(ogre, ClassicLocation.Row.FRONT_LEFT);
             classic.AddCombattant(goblin, ClassicLocation.Row.FRONT_RIGHT);
             classic.Push(classic.LocateClassicCombattant(ogre), goblin, 10);

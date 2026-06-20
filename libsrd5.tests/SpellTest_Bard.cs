@@ -10,9 +10,9 @@ namespace srd5 {
             Monster goblin = Monsters.Goblin;
             Monster goblin2 = Monsters.Goblin;
             BattleGroundClassic ground = new BattleGroundClassic();
-            ground.AddCombattant(bard, ClassicLocation.Row.FRONT_LEFT);
-            ground.AddCombattant(goblin, ClassicLocation.Row.FRONT_RIGHT);
-            ground.AddCombattant(goblin2, ClassicLocation.Row.FRONT_RIGHT);
+            ground.AddCombatant(bard, ClassicLocation.Row.FRONT_LEFT);
+            ground.AddCombatant(goblin, ClassicLocation.Row.FRONT_RIGHT);
+            ground.AddCombatant(goblin2, ClassicLocation.Row.FRONT_RIGHT);
             Spells.ViciousMockery.Cast(ground, bard, 30, SpellLevel.CANTRIP, 2, goblin);
             Assert.True(goblin.HitPointsMax > goblin.HitPoints);
             Assert.True(goblin.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));

@@ -62,6 +62,7 @@ namespace srd5 {
         /* Cast a spell on one or more targets */
         public void Cast(Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, params Combatant[] targets) {
             if (targets.Length < 1) throw new Srd5ArgumentException("targets must contain at least one element");
+            if (Variants.Length > 0 && Array.IndexOf(Variants, Variant) == -1) throw new Srd5ArgumentException("Spell has variants, but no valid variant was selected");
             GlobalEvents.CastSpell(caster, ID);
             CastEffect(ground, caster, dc, slot, modifier, targets);
         }

@@ -45,12 +45,12 @@ namespace srd5 {
         }
 
         // Monsters of each type, also a hero
-        private Combatant[] allCombattantTypes;
+        private Combatant[] allCombatantTypes;
 
         private void restoreMonsters() {
             CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
             hero.AddLevel(CharacterClasses.Druid);
-            allCombattantTypes = [
+            allCombatantTypes = [
                 Monsters.Badger, Monsters.Solar, Monsters.IronGolem, Monsters.AncientBlackDragon, Monsters.FireElemental,
                 Monsters.Dryad, Monsters.BarbedDevil, Monsters.HillGiant, Monsters.Bandit, Monsters.BlackPudding,
                 Monsters.Treant, Monsters.SwarmOfQuippers, Monsters.Zombie, hero
@@ -75,8 +75,8 @@ namespace srd5 {
                     effect.Invoke(aboleth, uberMonster);
                     effect.Invoke(aboleth, averageMonster);
                     effect.Invoke(aboleth, pansyMonster);
-                    foreach (Combatant combattant in allCombattantTypes) {
-                        effect.Invoke(aboleth, combattant);
+                    foreach (Combatant combatant in allCombatantTypes) {
+                        effect.Invoke(aboleth, combatant);
                     }
                     if (guaranteedLethal) {
                         effect.Invoke(aboleth, pansyMonsterThatDies);
@@ -97,11 +97,11 @@ namespace srd5 {
                     pansyMonster.OnStartOfTurn();
                     pansyMonster.OnEndOfTurn();
                     pansyMonster.EscapeFromGrapple();
-                    foreach (Combatant combattant in allCombattantTypes) {
-                        combattant.TakeDamage(new DamageSource(DamageSourceType.ATTACK, effect, aboleth), randomDamageType(), D4);
-                        combattant.OnStartOfTurn();
-                        combattant.OnEndOfTurn();
-                        combattant.EscapeFromGrapple();
+                    foreach (Combatant combatant in allCombatantTypes) {
+                        combatant.TakeDamage(new DamageSource(DamageSourceType.ATTACK, effect, aboleth), randomDamageType(), D4);
+                        combatant.OnStartOfTurn();
+                        combatant.OnEndOfTurn();
+                        combatant.EscapeFromGrapple();
                     }
                 }
 

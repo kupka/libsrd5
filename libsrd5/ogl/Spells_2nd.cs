@@ -348,7 +348,7 @@ namespace srd5 {
             get {
                 return new Spell(ID.GUST_OF_WIND, EVOCATION, SECOND, CastingTime.ONE_ACTION, 0, VSM, ONE_MINUTE, 60, 5, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     // Fix the location where the spell was cast to create the push-vector
-                    Location location = ground.LocateCombattant(caster);
+                    Location location = ground.LocateCombatant(caster);
                     foreach (Combatant target in targets) {
                         AddEffectsForDuration(ID.GUST_OF_WIND, caster, target, ONE_MINUTE, SPELL_GUST_OF_WIND);
                         int remainingRounds = (int)ONE_MINUTE;

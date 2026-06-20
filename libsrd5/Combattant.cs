@@ -322,7 +322,7 @@ namespace srd5 {
         }
 
         /// <summary>
-        /// Apply the correct amount of damage of the given type to this Combattant, taking immunities, resistances and vulnerabilities into account.
+        /// Apply the correct amount of damage of the given type to this Combatant, taking immunities, resistances and vulnerabilities into account.
         /// </summary>
         public int TakeDamage(DamageSource source, DamageType type, int amount, Spells.DamageMitigation dCEffect, int dc, AbilityType dcAbility, out bool dcSuccess, bool advantage = false, bool disadvantage = false) {
             dcSuccess = false;
@@ -362,7 +362,7 @@ namespace srd5 {
         }
 
         /// <summary>
-        /// Heals the specified dice of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combattant.
+        /// Heals the specified dice of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combatant.
         /// </summary>
         public void HealDamage(Dice dice) {
             if (HasEffect(SPELL_BEACON_OF_HOPE)) {
@@ -373,7 +373,7 @@ namespace srd5 {
         }
 
         /// <summary>
-        /// Heals the specified amount of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combattant.
+        /// Heals the specified amount of damage. The healed hitpoints cannot exceed the maximum hitpoints of this combatant.
         /// </summary>
         public void HealDamage(int amount) {
             if (amount < 0) throw new Srd5ArgumentException("Amount must be a positive integer or zero");
@@ -573,7 +573,7 @@ namespace srd5 {
 
 
         /// <summary>
-        /// Trys to attack the target Combattant with the specified attack. Returns true on hit, false on miss.
+        /// Trys to attack the target Combatant with the specified attack. Returns true on hit, false on miss.
         /// </summary>
         public bool Attack(Attack attack, Combatant target, int distance, bool ranged = false, bool spell = false, Spells.DamageMitigation dCEffect = Spells.DamageMitigation.NO_EFFECT, AbilityType dcAbility = DEXTERITY, int dc = 0) {
             return Attack(attack, target, distance, ranged, spell, dCEffect, dc, dcAbility, out _);
@@ -697,7 +697,7 @@ namespace srd5 {
 
         /// <summary>
         /// Function to return true or false if some specfic effect is in place that grants this
-        /// combattant advantage in their attack roll against the target.
+        /// combatant advantage in their attack roll against the target.
         /// </summary>
         private bool attackAdvantageEffect(Attack attack, Combatant target, int distance, bool ranged, bool spell) {
             bool advantage = HasEffect(ADVANTAGE_ON_ATTACK);
@@ -714,7 +714,7 @@ namespace srd5 {
 
         /// <summary>
         /// Function to return true or false if some specfic effect is in place that grants this
-        /// combattant disadvantage in their attack roll against the target.
+        /// combatant disadvantage in their attack roll against the target.
         /// </summary>
         private bool attackDisadvantageEffect(Attack attack, Combatant target, int distance, bool ranged, bool spell) {
             bool disadvantage = HasEffect(DISADVANTAGE_ON_ATTACK);
@@ -743,7 +743,7 @@ namespace srd5 {
         }
 
         internal void Die() {
-            // TODO: Implement what happens when this Combattant dies
+            // TODO: Implement what happens when this Combatant dies
             GlobalEvents.Die(this);
             Dead = true;
         }
@@ -762,7 +762,7 @@ namespace srd5 {
 
     /// <summary>
     /// Describes an event that shall be executed at the end or beginning 
-    /// of this combattant's turn. 
+    /// of this combatant's turn. 
     /// The event is considered finished when the delegate returns true.
     /// </summary>
     public delegate bool TurnEvent();
@@ -770,7 +770,7 @@ namespace srd5 {
     public delegate bool DamageTakenEvent(DamageSource source, Damage damage);
 
     /// <summary>
-    /// Describes an effect that modifies this combattant's attack roll. 
+    /// Describes an effect that modifies this combatant's attack roll. 
     /// The effect is considered finished when the delegate returns true.
     /// </summary>
     public delegate bool AttackModifyingEffect(ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combatant target);

@@ -49,8 +49,8 @@ namespace srd5 {
             Battleground2D ground = new Battleground2D(10, 10);
             Monster tarrasque = Monsters.Tarrasque;
             Monster hag = Monsters.NightHag;
-            ground.AddCombattant(tarrasque, 5, 5);
-            ground.AddCombattant(hag, 8, 8);
+            ground.AddCombatant(tarrasque, 5, 5);
+            ground.AddCombatant(hag, 8, 8);
             Assert.True(tarrasque.DC(null, 100, AbilityType.DEXTERITY) && tarrasque.DC(null, 100, AbilityType.DEXTERITY) && tarrasque.DC(null, 100, AbilityType.DEXTERITY));
             Assert.False(tarrasque.DC(Spells.ID.HOLD_PERSON, 100, AbilityType.DEXTERITY) && tarrasque.DC(Spells.ID.CURE_WOUNDS, 100, AbilityType.DEXTERITY) && tarrasque.DC(Attacks.TarrasqueBite, 100, AbilityType.DEXTERITY));
             for (int i = 0; i < 100; i++) {

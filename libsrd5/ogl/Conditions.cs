@@ -35,100 +35,100 @@ namespace srd5 {
     }
 
     public static class ConditionsExtension {
-        public static void Apply(this ConditionType type, Combatant combattant) {
+        public static void Apply(this ConditionType type, Combatant combatant) {
             switch (type) {
                 case ConditionType.BLINDED:
-                    applyBlinded(combattant);
+                    applyBlinded(combatant);
                     break;
                 case ConditionType.INCAPACITATED:
-                    applyIncapacitated(combattant);
+                    applyIncapacitated(combatant);
                     break;
                 case ConditionType.PARALYZED:
-                    applyParalyzed(combattant);
+                    applyParalyzed(combatant);
                     break;
                 case ConditionType.STUNNED:
-                    applyStunned(combattant);
+                    applyStunned(combatant);
                     break;
                 case ConditionType.UNCONSCIOUS:
-                    applyUnconcious(combattant);
+                    applyUnconcious(combatant);
                     break;
             }
         }
 
-        public static void Unapply(this ConditionType type, Combatant combattant) {
+        public static void Unapply(this ConditionType type, Combatant combatant) {
             switch (type) {
                 case ConditionType.BLINDED:
-                    unapplyBlinded(combattant);
+                    unapplyBlinded(combatant);
                     break;
                 case ConditionType.INCAPACITATED:
-                    unapplyIncapacitated(combattant);
+                    unapplyIncapacitated(combatant);
                     break;
                 case ConditionType.PARALYZED:
-                    unapplyParalyzed(combattant);
+                    unapplyParalyzed(combatant);
                     break;
                 case ConditionType.STUNNED:
-                    unapplyStunned(combattant);
+                    unapplyStunned(combatant);
                     break;
                 case ConditionType.UNCONSCIOUS:
-                    unapplyUnconcious(combattant);
+                    unapplyUnconcious(combatant);
                     break;
             }
         }
 
-        private static void applyBlinded(Combatant combattant) {
-            combattant.AddEffect(ADVANTAGE_ON_BEING_ATTACKED);
-            combattant.AddEffect(DISADVANTAGE_ON_ATTACK);
+        private static void applyBlinded(Combatant combatant) {
+            combatant.AddEffect(ADVANTAGE_ON_BEING_ATTACKED);
+            combatant.AddEffect(DISADVANTAGE_ON_ATTACK);
         }
 
-        private static void unapplyBlinded(Combatant combattant) {
-            combattant.RemoveEffect(ADVANTAGE_ON_BEING_ATTACKED);
-            combattant.RemoveEffect(DISADVANTAGE_ON_ATTACK);
+        private static void unapplyBlinded(Combatant combatant) {
+            combatant.RemoveEffect(ADVANTAGE_ON_BEING_ATTACKED);
+            combatant.RemoveEffect(DISADVANTAGE_ON_ATTACK);
         }
 
-        private static void applyIncapacitated(Combatant combattant) {
-            combattant.AddEffect(CANNOT_TAKE_ACTIONS);
+        private static void applyIncapacitated(Combatant combatant) {
+            combatant.AddEffect(CANNOT_TAKE_ACTIONS);
         }
 
-        private static void unapplyIncapacitated(Combatant combattant) {
-            combattant.RemoveEffect(CANNOT_TAKE_ACTIONS);
+        private static void unapplyIncapacitated(Combatant combatant) {
+            combatant.RemoveEffect(CANNOT_TAKE_ACTIONS);
         }
 
 
-        private static void applyParalyzed(Combatant combattant) {
-            applyStunned(combattant);
-            combattant.AddEffect(AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
+        private static void applyParalyzed(Combatant combatant) {
+            applyStunned(combatant);
+            combatant.AddEffect(AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
         }
 
-        private static void unapplyParalyzed(Combatant combattant) {
-            unapplyStunned(combattant);
-            combattant.RemoveEffect(AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
+        private static void unapplyParalyzed(Combatant combatant) {
+            unapplyStunned(combatant);
+            combatant.RemoveEffect(AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT);
         }
 
-        private static void applyStunned(Combatant combattant) {
-            applyIncapacitated(combattant);
-            combattant.AddEffect(FAIL_STRENGTH_CHECK);
-            combattant.AddEffect(FAIL_DEXERITY_CHECK);
-            combattant.AddEffect(ADVANTAGE_ON_BEING_ATTACKED);
+        private static void applyStunned(Combatant combatant) {
+            applyIncapacitated(combatant);
+            combatant.AddEffect(FAIL_STRENGTH_CHECK);
+            combatant.AddEffect(FAIL_DEXERITY_CHECK);
+            combatant.AddEffect(ADVANTAGE_ON_BEING_ATTACKED);
         }
 
-        private static void unapplyStunned(Combatant combattant) {
-            unapplyIncapacitated(combattant);
-            combattant.RemoveEffect(FAIL_STRENGTH_CHECK);
-            combattant.RemoveEffect(FAIL_DEXERITY_CHECK);
-            combattant.RemoveEffect(ADVANTAGE_ON_BEING_ATTACKED);
+        private static void unapplyStunned(Combatant combatant) {
+            unapplyIncapacitated(combatant);
+            combatant.RemoveEffect(FAIL_STRENGTH_CHECK);
+            combatant.RemoveEffect(FAIL_DEXERITY_CHECK);
+            combatant.RemoveEffect(ADVANTAGE_ON_BEING_ATTACKED);
 
         }
 
-        private static void applyUnconcious(Combatant combattant) {
-            applyParalyzed(combattant);
-            if (combattant is CharacterSheet sheet) {
+        private static void applyUnconcious(Combatant combatant) {
+            applyParalyzed(combatant);
+            if (combatant is CharacterSheet sheet) {
                 sheet.Unequip(sheet.Inventory.MainHand);
                 sheet.Unequip(sheet.Inventory.OffHand);
             }
         }
 
-        private static void unapplyUnconcious(Combatant combattant) {
-            unapplyParalyzed(combattant);
+        private static void unapplyUnconcious(Combatant combatant) {
+            unapplyParalyzed(combatant);
         }
 
     }

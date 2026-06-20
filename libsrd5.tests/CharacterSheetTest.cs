@@ -501,7 +501,7 @@ namespace srd5 {
         public void CannotEquipOrUseDestroyedItems() {
             CharacterSheet sheet = new CharacterSheet(Race.HILL_DWARF);
             Battleground ground = new BattleGroundClassic();
-            ground.AddCombattant(sheet);
+            ground.AddCombatant(sheet);
             sheet.AddLevel(CharacterClasses.Barbarian);
             sheet.HitPoints = 1;
             Armor chain = Armors.ChainMailArmor;

@@ -703,7 +703,7 @@ namespace srd5 {
                             GlobalEvents.AffectBySpell(caster, ID.THUNDERWAVE, target, true);
                             target.TakeDamage(new DamageSource(ID.THUNDERWAVE, caster), THUNDER, dice, HALVES_DAMAGE, dc, CONSTITUTION, out bool dcResult);
                             if (!dcResult) {
-                                ground.Push(ground.LocateCombattant(caster), target, 10);
+                                ground.Push(ground.LocateCombatant(caster), target, 10);
                             }
                         }
                     }

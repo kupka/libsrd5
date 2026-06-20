@@ -77,32 +77,32 @@ namespace srd5 {
             Turn = 1;
         }
 
-        public override Location LocateCombattant(Combatant combattant) {
-            return locations[Array.IndexOf(combattants, combattant)];
+        public override Location LocateCombatant(Combatant combatant) {
+            return locations[Array.IndexOf(combatants, combatant)];
         }
 
-        public ClassicLocation LocateClassicCombattant(Combatant combattant) {
-            return locations[Array.IndexOf(combattants, combattant)];
+        public ClassicLocation LocateClassicCombatant(Combatant combatant) {
+            return locations[Array.IndexOf(combatants, combatant)];
         }
 
 
         protected override void SetCurrentLocation(Location location) {
-            SetLocation(CurrentCombattant, location);
+            SetLocation(CurrentCombatant, location);
         }
 
-        protected override void SetLocation(Combatant combattant, Location location) {
-            locations[Array.IndexOf(combattants, combattant)] = (ClassicLocation)location;
+        protected override void SetLocation(Combatant combatant, Location location) {
+            locations[Array.IndexOf(combatants, combatant)] = (ClassicLocation)location;
         }
 
-        public void AddCombattant(Combatant combattant, ClassicLocation.Row row) {
-            AddCombattant(combattant);
+        public void AddCombatant(Combatant combatant, ClassicLocation.Row row) {
+            AddCombatant(combatant);
             Utils.Push<ClassicLocation>(ref locations, new ClassicLocation(row));
         }
 
         public override void Push(Location source, Combatant target, int distance) {
-            if (LocateClassicCombattant(target).Location == ClassicLocation.Row.FRONT_LEFT) {
+            if (LocateClassicCombatant(target).Location == ClassicLocation.Row.FRONT_LEFT) {
                 SetLocation(target, ClassicLocation.BackLeft);
-            } else if (LocateClassicCombattant(target).Location == ClassicLocation.Row.FRONT_RIGHT) {
+            } else if (LocateClassicCombatant(target).Location == ClassicLocation.Row.FRONT_RIGHT) {
                 SetLocation(target, ClassicLocation.BackRight);
             }
         }
@@ -138,21 +138,21 @@ namespace srd5 {
             Turn = 1;
         }
 
-        public override Location LocateCombattant(Combatant combattant) {
-            return coords[Array.IndexOf(combattants, combattant)];
+        public override Location LocateCombatant(Combatant combatant) {
+            return coords[Array.IndexOf(combatants, combatant)];
         }
 
-        public Coord LocateCombattant2D(Combatant combattant) {
-            return coords[Array.IndexOf(combattants, combattant)];
+        public Coord LocateCombatant2D(Combatant combatant) {
+            return coords[Array.IndexOf(combatants, combatant)];
         }
 
-        public void AddCombattant(Combatant combattant, int x, int y) {
-            AddCombattant(combattant);
+        public void AddCombatant(Combatant combatant, int x, int y) {
+            AddCombatant(combatant);
             Utils.Push<Coord>(ref coords, new Coord(x, y));
         }
 
-        public void AddCombattantNextTo(Combatant combattant, int x, int y) {
-            AddCombattant(combattant);
+        public void AddCombatantNextTo(Combatant combatant, int x, int y) {
+            AddCombatant(combatant);
             bool occupied = true;
             int i = 0;
             while (occupied) {
@@ -176,17 +176,17 @@ namespace srd5 {
         }
 
         protected override void SetCurrentLocation(Location location) {
-            SetLocation(CurrentCombattant, location);
+            SetLocation(CurrentCombatant, location);
         }
 
-        protected override void SetLocation(Combatant combattant, Location location) {
-            coords[Array.IndexOf(combattants, combattant)] = (Coord)location;
+        protected override void SetLocation(Combatant combatant, Location location) {
+            coords[Array.IndexOf(combatants, combatant)] = (Coord)location;
         }
 
         public override void Push(Location source, Combatant target, int distance) {
             // For simplicity, this assumes either a straight line or 45° angle. 
             Coord sourceCoord = (Coord)source;
-            Coord targetCoord = LocateCombattant2D(target);
+            Coord targetCoord = LocateCombatant2D(target);
             Coord destination = targetCoord;
             distance /= 5;
             if (targetCoord.X == sourceCoord.X) {
@@ -228,8 +228,8 @@ namespace srd5 {
         BONUS_ACTION
     }
 
-    public class CombattantChangedEvent : BattlegroundEvent {
-        public Combatant CurrentCombattant { get; internal set; }
+    public class CombatantChangedEvent : BattlegroundEvent {
+        public Combatant CurrentCombatant { get; internal set; }
     }
 
     public class BattlegroundEvent : EventArgs {
@@ -237,16 +237,16 @@ namespace srd5 {
 
     public abstract class Battleground {
 
-        protected Combatant[] combattants = new Combatant[0];
+        internal Combatant[] combatants = new Combatant[0];
 
         public int Turn { get; internal set; } = 0;
         protected int[] initiativeRolls = new int[0];
-        public Combatant CurrentCombattant {
+        public Combatant CurrentCombatant {
             get {
-                return combattants[currentCombattant];
+                return combatants[currentCombatant];
             }
         }
-        protected int currentCombattant = 0;
+        protected int currentCombatant = 0;
         public int RemainingSpeed {
             get {
                 return remainingSpeed;
@@ -257,37 +257,37 @@ namespace srd5 {
 
         public virtual void Initialize() {
             if (Turn > 0) return;
-            // Sort Combattants and Coords according to Initiative Rolls
+            // Sort Combatants and Coords according to Initiative Rolls
             int[] backup = new int[initiativeRolls.Length];
             Array.Copy(initiativeRolls, backup, initiativeRolls.Length);
-            Array.Sort(backup, combattants, new ReverseComparer());
-            currentCombattant = 0;
+            Array.Sort(backup, combatants, new ReverseComparer());
+            currentCombatant = 0;
             currentPhase = TurnPhase.MOVE;
-            remainingSpeed = CurrentCombattant.Speed;
+            remainingSpeed = CurrentCombatant.Speed;
         }
 
-        private void nextCombattant() {
-            currentCombattant++;
-            currentCombattant %= combattants.Length;
-            if (currentCombattant == 0) Turn++;
+        private void nextCombatant() {
+            currentCombatant++;
+            currentCombatant %= combatants.Length;
+            if (currentCombatant == 0) Turn++;
             currentPhase = TurnPhase.MOVE;
-            remainingSpeed = CurrentCombattant.Speed;
-            onCurrentCombattantChanged();
+            remainingSpeed = CurrentCombatant.Speed;
+            onCurrentCombatantChanged();
         }
 
         /// <summary>
-        /// Add a combattant to the battlefield and roll initiative
+        /// Add a combatant to the battlefield and roll initiative
         /// </summary>
-        public void AddCombattant(Combatant combattant) {
-            if (Array.IndexOf(combattants, combattant) > -1) return;
-            Utils.Push<Combatant>(ref combattants, combattant);
-            int roll = D20.Value + combattant.Dexterity.Modifier;
+        public void AddCombatant(Combatant combatant) {
+            if (Array.IndexOf(combatants, combatant) > -1) return;
+            Utils.Push<Combatant>(ref combatants, combatant);
+            int roll = D20.Value + combatant.Dexterity.Modifier;
             Utils.Push<int>(ref initiativeRolls, roll);
-            GlobalEvents.RolledInitiative(combattant, roll);
+            GlobalEvents.RolledInitiative(combatant, roll);
         }
 
         /// <summary>
-        /// Move on to the next phase (MOVE -> ACTION -> BONUS ACTION -> Next Combattant)
+        /// Move on to the next phase (MOVE -> ACTION -> BONUS ACTION -> Next Combatant)
         /// </summary>
         public TurnPhase NextPhase() {
             switch (currentPhase) {
@@ -299,19 +299,19 @@ namespace srd5 {
                     currentPhase = TurnPhase.BONUS_ACTION;
                     break;
                 case TurnPhase.BONUS_ACTION:
-                    nextCombattant();
+                    nextCombatant();
                     break;
             }
             return currentPhase;
         }
 
         /// <summary>
-        /// Move the current combattant to the target destination if able
+        /// Move the current combatant to the target destination if able
         /// </summary>
         public bool MoveAction(Location destination) {
-            if (CurrentCombattant.HasEffect(CANNOT_TAKE_ACTIONS)) return false;
+            if (CurrentCombatant.HasEffect(CANNOT_TAKE_ACTIONS)) return false;
             if (destination == null) throw new Srd5ArgumentException("destination cannot be null");
-            int distance = destination.Distance(LocateCombattant(CurrentCombattant));
+            int distance = destination.Distance(LocateCombatant(CurrentCombatant));
             if (distance > remainingSpeed) return false;
             remainingSpeed -= distance;
             SetCurrentLocation(destination);
@@ -319,14 +319,14 @@ namespace srd5 {
         }
 
         /// <summary>
-        /// Current combattant melee attacks a target if able
+        /// Current combatant melee attacks a target if able
         /// </summary>
         public bool MeleeAttackAction(Combatant target) {
-            if (CurrentCombattant.HasEffect(CANNOT_TAKE_ACTIONS)) return false;
-            if (CurrentCombattant.HasEffect(CANNOT_MELEE_ATTACK)) return false;
+            if (CurrentCombatant.HasEffect(CANNOT_TAKE_ACTIONS)) return false;
+            if (CurrentCombatant.HasEffect(CANNOT_MELEE_ATTACK)) return false;
             if (currentPhase == TurnPhase.MOVE) return false;
             if (target == null) throw new Srd5ArgumentException("target cannot be null");
-            if (target == CurrentCombattant) throw new Srd5ArgumentException("cannot attack self");
+            if (target == CurrentCombatant) throw new Srd5ArgumentException("cannot attack self");
             if (target.HasEffect(CANNOT_BE_MELEE_ATTACKED)) return false;
             bool success = false;
             if (currentPhase == TurnPhase.ACTION)
@@ -338,74 +338,74 @@ namespace srd5 {
         }
 
         /// <summary>
-        /// Current combattant uses their ranged attack against the target if able
+        /// Current combatant uses their ranged attack against the target if able
         /// </summary>
         public bool RangedAttackAction(Combatant target) {
             if (target == null) throw new Srd5ArgumentException("target cannot be null");
-            if (CurrentCombattant.HasEffect(CANNOT_TAKE_ACTIONS)) {
-                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.CANNOT_TAKE_ACTIONS);
+            if (CurrentCombatant.HasEffect(CANNOT_TAKE_ACTIONS)) {
+                GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.CANNOT_TAKE_ACTIONS);
                 return false;
             }
             if (currentPhase == TurnPhase.MOVE) {
-                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_PHASE);
+                GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.WRONG_PHASE);
                 return false;
             }
-            if (target == CurrentCombattant) throw new Srd5ArgumentException("cannot attack self");
+            if (target == CurrentCombatant) throw new Srd5ArgumentException("cannot attack self");
             bool success = false;
             if (currentPhase == TurnPhase.ACTION)
                 success = doFullRangedAttack(target);
             else
                 success = doBonusRangedAttack(target);
             if (!success) {
-                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.TARGET_OUT_OF_RANGE);
+                GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.TARGET_OUT_OF_RANGE);
             }
             if (success) NextPhase();
             return success;
         }
 
         /// <summary>
-        /// Current combattant casts a spell if able. Checks all relevant constraints, such as range and if the spell is prepared
+        /// Current combatant casts a spell if able. Checks all relevant constraints, such as range and if the spell is prepared
         /// <summary>
         public bool SpellCastAction(Spell spell, SpellLevel slot, AvailableSpells availableSpells, params Combatant[] targets) {
-            if (CurrentCombattant.HasEffect(CANNOT_TAKE_ACTIONS)) {
-                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.CANNOT_TAKE_ACTIONS);
+            if (CurrentCombatant.HasEffect(CANNOT_TAKE_ACTIONS)) {
+                GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.CANNOT_TAKE_ACTIONS);
                 return false;
             }
             // check if phase is valid for spell
             if (currentPhase == TurnPhase.BONUS_ACTION && spell.CastingTime != CastingTime.BONUS_ACTION) {
-                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_PHASE);
+                GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.WRONG_PHASE);
                 return false;
             } else if (currentPhase == TurnPhase.MOVE) {
-                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_PHASE);
+                GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.WRONG_PHASE);
                 return false;
             }
             // check if spell is known
             if (Array.IndexOf(availableSpells.KnownSpells, spell) == -1) {
-                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.SPELL_NOT_KNOWN);
+                GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.SPELL_NOT_KNOWN);
                 return false;
             }
             // check if spell is prepared
             if (availableSpells.CharacterClass.MustPrepareSpells == true
                     && Array.IndexOf(availableSpells.PreparedSpells, spell) == -1
                     && Array.IndexOf(availableSpells.BonusPreparedSpells, spell) == -1) {
-                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.SPELL_NOT_PREPARED);
+                GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.SPELL_NOT_PREPARED);
                 return false;
             }
             // check if spell allows amount of targets
             if (spell.MaximumTargets < targets.Length) {
-                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_NUMBER_OF_TARGETS);
+                GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.WRONG_NUMBER_OF_TARGETS);
                 return false;
             }
             // check that a target is set when the spells requires so
             if (spell.MaximumTargets > 0 && targets.Length == 0) {
-                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.WRONG_NUMBER_OF_TARGETS);
+                GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.WRONG_NUMBER_OF_TARGETS);
                 return false;
             }
             // check if targets are in range
             foreach (Combatant target in targets) {
                 int distance = Distance(target);
                 if (distance > spell.Range) {
-                    GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.TARGET_OUT_OF_RANGE);
+                    GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.TARGET_OUT_OF_RANGE);
                     return false;
                 }
             }
@@ -414,18 +414,18 @@ namespace srd5 {
                 for (int i = 1; i < targets.Length; i++) {
                     int distance = Distance(targets[0], targets[i]);
                     if (distance > spell.AreaOfEffect) {
-                        GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.TARGET_OUT_OF_RANGE);
+                        GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.TARGET_OUT_OF_RANGE);
                         return false;
                     }
                 }
             }
             // Check if slot is sufficient for spell
             if (slot < spell.Level) {
-                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.SPELLSLOT_INVALID);
+                GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.SPELLSLOT_INVALID);
                 return false;
             }
             InnateSpellcasting innate = null;
-            if (CurrentCombattant is Monster monster) {
+            if (CurrentCombatant is Monster monster) {
                 innate = monster.InnateSpellcastingBySpell(spell);
             }
             // Check if innate Spell casting is available
@@ -433,25 +433,25 @@ namespace srd5 {
                 // can cast at will, nothing to do
             } else if (innate != null) {
                 // requires available use
-                int maxUses = (int)(((Monster)CurrentCombattant).InnateSpellcastingBySpell(spell).Frequency);
+                int maxUses = (int)(((Monster)CurrentCombatant).InnateSpellcastingBySpell(spell).Frequency);
                 if (maxUses == innate.Uses) {
-                    GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.INSUFFICIENT_USES);
+                    GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.INSUFFICIENT_USES);
                     return false;
                 }
                 innate.Uses++;
             } else if (availableSpells.SlotsCurrent[(int)slot] <= 0) { // otherwise, check if slot is available
-                GlobalEvents.FailAction(CurrentCombattant, GlobalEvents.ActionFailed.Reasons.SPELLSLOT_EMPTY);
+                GlobalEvents.FailAction(CurrentCombatant, GlobalEvents.ActionFailed.Reasons.SPELLSLOT_EMPTY);
                 return false;
             } else {
                 // Expend slot if not Cantrip
                 if (slot != SpellLevel.CANTRIP) availableSpells.SlotsCurrent[(int)slot]--;
             }
             // Cast Spell
-            int modifier = availableSpells.GetSpellcastingModifier(CurrentCombattant);
+            int modifier = availableSpells.GetSpellcastingModifier(CurrentCombatant);
             if (targets.Length > 0) {
-                spell.Cast(this, CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, modifier, targets);
+                spell.Cast(this, CurrentCombatant, availableSpells.GetSpellCastDC(CurrentCombatant), slot, modifier, targets);
             } else {
-                spell.Cast(CurrentCombattant, availableSpells.GetSpellCastDC(CurrentCombattant), slot, modifier);
+                spell.Cast(CurrentCombatant, availableSpells.GetSpellCastDC(CurrentCombatant), slot, modifier);
             }
             NextPhase();
             return true;
@@ -460,30 +460,30 @@ namespace srd5 {
         private bool doBonusMeleeAttack(Combatant target) {
             bool success = false;
             int distance = Distance(target);
-            Attack attack = CurrentCombattant.BonusAttack;
+            Attack attack = CurrentCombatant.BonusAttack;
             if (attack == null || distance > attack.Reach) return false;
             success = true;
-            CurrentCombattant.Attack(attack, target, distance);
+            CurrentCombatant.Attack(attack, target, distance);
             return success;
         }
 
         private bool doBonusRangedAttack(Combatant target) {
             bool success = false;
             int distance = Distance(target);
-            Attack attack = CurrentCombattant.BonusAttack;
+            Attack attack = CurrentCombatant.BonusAttack;
             if (attack == null || distance > attack.RangeLong) return false;
             success = true;
-            CurrentCombattant.Attack(attack, target, distance, true);
+            CurrentCombatant.Attack(attack, target, distance, true);
             return success;
         }
 
         private bool doFullMeleeAttack(Combatant target) {
             bool success = false;
             int distance = Distance(target);
-            foreach (Attack attack in CurrentCombattant.MeleeAttacks) {
+            foreach (Attack attack in CurrentCombatant.MeleeAttacks) {
                 if (distance > attack.Reach) continue; // skip attack when out of reach
                 success = true;
-                CurrentCombattant.Attack(attack, target, distance);
+                CurrentCombatant.Attack(attack, target, distance);
             }
             return success;
         }
@@ -491,57 +491,57 @@ namespace srd5 {
         private bool doFullRangedAttack(Combatant target) {
             bool success = false;
             int distance = Distance(target);
-            foreach (Attack attack in CurrentCombattant.RangedAttacks) {
+            foreach (Attack attack in CurrentCombatant.RangedAttacks) {
                 if (distance > attack.RangeLong) continue; // skip attack when out of range
                 success = true;
-                CurrentCombattant.Attack(attack, target, distance, true);
+                CurrentCombatant.Attack(attack, target, distance, true);
             }
             return success;
         }
 
         /// <summary>
-        /// Returns the Location of the given combattant
+        /// Returns the Location of the given combatant
         /// </summary>
-        public abstract Location LocateCombattant(Combatant combattant);
+        public abstract Location LocateCombatant(Combatant combatant);
 
         /// <summary>
-        /// Set the location of the current active combattant
+        /// Set the location of the current active combatant
         /// </summary>
         protected abstract void SetCurrentLocation(Location location);
 
         /// <summary>
-        /// Set the location of the combattant
+        /// Set the location of the combatant
         /// </summary>
-        protected abstract void SetLocation(Combatant combattant, Location location);
+        protected abstract void SetLocation(Combatant combatant, Location location);
 
 
         /// <summary>
-        /// Get the location of the current active combattant
+        /// Get the location of the current active combatant
         /// </summary>
         public virtual Location GetCurrentLocation() {
-            return LocateCombattant(CurrentCombattant);
+            return LocateCombatant(CurrentCombatant);
         }
 
         /// <summary>
-        /// Returns the distance between the current combattant and the target.
+        /// Returns the distance between the current combatant and the target.
         /// </summary>
         public int Distance(Combatant target) {
-            return GetCurrentLocation().Distance(LocateCombattant(target));
+            return GetCurrentLocation().Distance(LocateCombatant(target));
         }
 
         /// <summary>
-        /// Returns the distance between two combattants.
+        /// Returns the distance between two combatants.
         /// </summary>
-        public int Distance(Combatant combattant1, Combatant combattant2) {
-            return LocateCombattant(combattant1).Distance(LocateCombattant(combattant2));
+        public int Distance(Combatant combatant1, Combatant combatant2) {
+            return LocateCombatant(combatant1).Distance(LocateCombatant(combatant2));
         }
 
         // Events
         public event EventHandler<BattlegroundEvent> EventSubscription;
-        private void onCurrentCombattantChanged() {
+        private void onCurrentCombatantChanged() {
             if (EventSubscription == null) return;
-            CombattantChangedEvent bgEvent = new CombattantChangedEvent();
-            bgEvent.CurrentCombattant = this.CurrentCombattant;
+            CombatantChangedEvent bgEvent = new CombatantChangedEvent();
+            bgEvent.CurrentCombatant = this.CurrentCombatant;
             EventSubscription(this, bgEvent);
         }
 

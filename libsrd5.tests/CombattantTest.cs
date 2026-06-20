@@ -4,7 +4,7 @@ using Xunit;
 namespace srd5 {
     [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
     [Collection("SingleThreaded")]
-    public class CombattantTest {
+    public class CombatantTest {
         [Fact]
         public void TakeDamageTest() {
             Combatant ogre = Monsters.Ogre;
@@ -137,63 +137,63 @@ namespace srd5 {
 
         [Fact]
         public void HitPointMaxiumModifierTest() {
-            Combatant combattant = Monsters.Orc;
-            int hpMax = combattant.HitPointsMax;
+            Combatant combatant = Monsters.Orc;
+            int hpMax = combatant.HitPointsMax;
             HitPointMaxiumModifier modifier1 = new HitPointMaxiumModifier(-10, HitPointMaxiumModifier.RemovedByEffect.GREATER_RESTORATION);
-            Assert.False(modifier1.Equals(combattant));
+            Assert.False(modifier1.Equals(combatant));
             Assert.NotEqual(0, modifier1.GetHashCode());
             HitPointMaxiumModifier modifier2 = new HitPointMaxiumModifier(5, HitPointMaxiumModifier.RemovedByEffect.AFTER_24_HOURS);
-            combattant.AddHitPointMaximumModifiers(modifier1, modifier2);
-            Assert.Equal(2, combattant.HitPointMaxiumModifiers.Length);
-            Assert.Equal(hpMax - 5, combattant.HitPointsMax);
-            combattant.RemoveHitPointsMaximumModifiers(modifier1);
-            Assert.Equal(hpMax + 5, combattant.HitPointsMax);
+            combatant.AddHitPointMaximumModifiers(modifier1, modifier2);
+            Assert.Equal(2, combatant.HitPointMaxiumModifiers.Length);
+            Assert.Equal(hpMax - 5, combatant.HitPointsMax);
+            combatant.RemoveHitPointsMaximumModifiers(modifier1);
+            Assert.Equal(hpMax + 5, combatant.HitPointsMax);
         }
 
         [Fact]
         public void EscapeFromGrappleTest() {
-            Combatant combattant = Monsters.BanditCaptain; // Athelics Proficiency
-            Assert.False(combattant.EscapeFromGrapple());
+            Combatant combatant = Monsters.BanditCaptain; // Athelics Proficiency
+            Assert.False(combatant.EscapeFromGrapple());
             bool success = false;
-            combattant.AddCondition(ConditionType.DEAFENED);
-            combattant.AddCondition(ConditionType.GRAPPLED_DC14);
+            combatant.AddCondition(ConditionType.DEAFENED);
+            combatant.AddCondition(ConditionType.GRAPPLED_DC14);
             while (!success) {
-                success = combattant.EscapeFromGrapple();
+                success = combatant.EscapeFromGrapple();
             }
-            Assert.False(combattant.HasCondition(ConditionType.GRAPPLED_DC14));
-            Assert.True(combattant.HasCondition(ConditionType.DEAFENED));
-            combattant = Monsters.Assassin; // Acrobatics Proficiency
-            combattant.AddCondition(ConditionType.GRAPPLED_DC16);
+            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
+            Assert.True(combatant.HasCondition(ConditionType.DEAFENED));
+            combatant = Monsters.Assassin; // Acrobatics Proficiency
+            combatant.AddCondition(ConditionType.GRAPPLED_DC16);
             success = false;
             while (!success) {
-                success = combattant.EscapeFromGrapple();
+                success = combatant.EscapeFromGrapple();
             }
-            Assert.False(combattant.HasCondition(ConditionType.GRAPPLED_DC14));
-            combattant = Monsters.Ankheg; // Str > Dex
-            combattant.AddCondition(ConditionType.GRAPPLED_DC16);
+            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
+            combatant = Monsters.Ankheg; // Str > Dex
+            combatant.AddCondition(ConditionType.GRAPPLED_DC16);
             success = false;
             while (!success) {
-                success = combattant.EscapeFromGrapple();
+                success = combatant.EscapeFromGrapple();
             }
-            Assert.False(combattant.HasCondition(ConditionType.GRAPPLED_DC14));
-            combattant = Monsters.Bat; // Dex > Str
-            combattant.AddCondition(ConditionType.GRAPPLED_DC16);
+            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
+            combatant = Monsters.Bat; // Dex > Str
+            combatant.AddCondition(ConditionType.GRAPPLED_DC16);
             success = false;
             while (!success) {
-                success = combattant.EscapeFromGrapple();
+                success = combatant.EscapeFromGrapple();
             }
-            Assert.False(combattant.HasCondition(ConditionType.GRAPPLED_DC14));
+            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
         }
 
         [Fact]
         public void LockedTargetTest() {
-            Combatant combattant = Monsters.Ankheg;
+            Combatant combatant = Monsters.Ankheg;
             Combatant bat = Monsters.Bat;
-            combattant.MeleeAttacks[0].LockedTarget = bat;
-            Assert.False(combattant.Attack(combattant.MeleeAttacks[0], Monsters.Badger, 5));
+            combatant.MeleeAttacks[0].LockedTarget = bat;
+            Assert.False(combatant.Attack(combatant.MeleeAttacks[0], Monsters.Badger, 5));
             bool success = false;
             while (!success) {
-                success = combattant.Attack(combattant.MeleeAttacks[0], bat, 5);
+                success = combatant.Attack(combatant.MeleeAttacks[0], bat, 5);
             }
             Assert.True(success);
         }

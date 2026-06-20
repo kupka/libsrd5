@@ -13,10 +13,10 @@ namespace srd5 {
             Monster shadow = Monsters.Shadow;
             Battleground2D ground = new Battleground2D(10, 10);
             Random.State = 2;
-            ground.AddCombattant(wizard, 5, 5);
-            ground.AddCombattant(orc, 7, 7);
-            ground.AddCombattant(shadow, 8, 8);
-            ground.AddCombattant(barbarian, 9, 9);
+            ground.AddCombatant(wizard, 5, 5);
+            ground.AddCombatant(orc, 7, 7);
+            ground.AddCombatant(shadow, 8, 8);
+            ground.AddCombatant(barbarian, 9, 9);
             Spells.ChillTouch.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, barbarian);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
             Spells.ChillTouch.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
@@ -41,8 +41,8 @@ namespace srd5 {
             Monster orc = Monsters.Orc;
             Battleground2D ground = new Battleground2D(10, 10);
             Random.State = 1;
-            ground.AddCombattant(wizard, 5, 5);
-            ground.AddCombattant(orc, 7, 7);
+            ground.AddCombatant(wizard, 5, 5);
+            ground.AddCombatant(orc, 7, 7);
             Spells.FireBolt.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
             Spells.FireBolt.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
@@ -68,10 +68,10 @@ namespace srd5 {
             Monster shadow = Monsters.Shadow;
             Battleground2D ground = new Battleground2D(10, 50);
             Random.State = 1;
-            ground.AddCombattant(wizard, 5, 5);
-            ground.AddCombattant(orc, 7, 7);
-            ground.AddCombattant(shadow, 8, 8);
-            ground.AddCombattant(barbarian, 9, 49);
+            ground.AddCombatant(wizard, 5, 5);
+            ground.AddCombatant(orc, 7, 7);
+            ground.AddCombatant(shadow, 8, 8);
+            ground.AddCombatant(barbarian, 9, 49);
             Spells.RayOfFrost.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, barbarian);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
             Spells.RayOfFrost.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
@@ -94,10 +94,10 @@ namespace srd5 {
             Monster shadow = Monsters.Shadow;
             Battleground2D ground = new Battleground2D(10, 10);
             Random.State = 1;
-            ground.AddCombattant(wizard, 5, 5);
-            ground.AddCombattant(orc, 7, 7);
-            ground.AddCombattant(shadow, 5, 6);
-            ground.AddCombattant(barbarian, 9, 9);
+            ground.AddCombatant(wizard, 5, 5);
+            ground.AddCombatant(orc, 7, 7);
+            ground.AddCombatant(shadow, 5, 6);
+            ground.AddCombatant(barbarian, 9, 9);
             Spells.ShockingGrasp.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, barbarian);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
             Spells.ShockingGrasp.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
@@ -117,9 +117,9 @@ namespace srd5 {
             Monster orc1 = Monsters.Orc;
             Monster orc2 = Monsters.Orc;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(wizard, 5, 5);
-            ground.AddCombattant(orc1, 5, 6);
-            ground.AddCombattant(orc2, 6, 5);
+            ground.AddCombatant(wizard, 5, 5);
+            ground.AddCombatant(orc1, 5, 6);
+            ground.AddCombatant(orc2, 6, 5);
             ground.Initialize();
             Spells.TrueStrike.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc1);
             wizard.Attack(Attacks.GiantBadgerBite, orc1, 5); // not yet active
@@ -647,8 +647,8 @@ namespace srd5 {
             Monster orc = Monsters.Orc;
             // 62 tiles × 5ft = 310ft > 300ft threshold
             Battleground2D ground = new Battleground2D(70, 5);
-            ground.AddCombattant(wizard, 1, 1);
-            ground.AddCombattant(orc, 63, 1);
+            ground.AddCombatant(wizard, 1, 1);
+            ground.AddCombatant(orc, 63, 1);
             // Seed 42 → D20=13 (< DC=25) → orc fails initial WIS save, becomes FRIGHTENED
             Random.State = 42;
             Spells.Fear.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);

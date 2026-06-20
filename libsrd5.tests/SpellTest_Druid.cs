@@ -27,9 +27,9 @@ namespace srd5 {
         }
         private BattleGroundClassic createBattleground(Combatant caster, params Combatant[] targets) {
             BattleGroundClassic ground = new BattleGroundClassic();
-            ground.AddCombattant(caster, ClassicLocation.Row.FRONT_LEFT);
+            ground.AddCombatant(caster, ClassicLocation.Row.FRONT_LEFT);
             foreach (Combatant target in targets) {
-                ground.AddCombattant(target, ClassicLocation.Row.FRONT_RIGHT);
+                ground.AddCombatant(target, ClassicLocation.Row.FRONT_RIGHT);
             }
             return ground;
         }
@@ -349,8 +349,8 @@ namespace srd5 {
             Monster badger = Monsters.GiantBadger;
             int hps = badger.HitPoints;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(hero, 3, 3);
-            ground.AddCombattant(badger, 5, 5);
+            ground.AddCombatant(hero, 3, 3);
+            ground.AddCombatant(badger, 5, 5);
             Spells.ProduceFlame.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
             hero.AddLevels(CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid);
             Spells.ProduceFlame.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
@@ -369,24 +369,24 @@ namespace srd5 {
             int hps = badger.HitPoints;
             Random.State = 1;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(hero, 3, 3);
-            ground.AddCombattant(badger, 5, 5);
-            Assert.Equal(5, ground.LocateCombattant2D(badger).X);
+            ground.AddCombatant(hero, 3, 3);
+            ground.AddCombatant(badger, 5, 5);
+            Assert.Equal(5, ground.LocateCombatant2D(badger).X);
             Spells.Thunderwave.Cast(ground, hero, 25, SpellLevel.FIRST, 0, badger);
             Spells.Thunderwave.Cast(ground, hero, 25, SpellLevel.FIRST, 0, badger);
             Spells.Thunderwave.Cast(ground, hero, 25, SpellLevel.FIRST, 0, badger);
             Assert.True(badger.HitPoints < hps);
-            Assert.True(ground.LocateCombattant2D(badger).X > 5);
+            Assert.True(ground.LocateCombatant2D(badger).X > 5);
 
             BattleGroundClassic classic = new BattleGroundClassic();
             badger.HealDamage(1000);
-            classic.AddCombattant(hero, ClassicLocation.Row.FRONT_LEFT);
-            classic.AddCombattant(badger, ClassicLocation.Row.FRONT_RIGHT);
+            classic.AddCombatant(hero, ClassicLocation.Row.FRONT_LEFT);
+            classic.AddCombatant(badger, ClassicLocation.Row.FRONT_RIGHT);
             Spells.Thunderwave.Cast(classic, hero, 25, SpellLevel.FIRST, 0, badger);
             Spells.Thunderwave.Cast(classic, hero, 25, SpellLevel.FIRST, 0, badger);
             Spells.Thunderwave.Cast(classic, hero, 25, SpellLevel.FIRST, 0, badger);
             Assert.True(badger.HitPoints < hps);
-            Assert.Equal(ClassicLocation.Row.BACK_RIGHT, classic.LocateClassicCombattant(badger).Location);
+            Assert.Equal(ClassicLocation.Row.BACK_RIGHT, classic.LocateClassicCombatant(badger).Location);
         }
 
         [Fact]
@@ -551,7 +551,7 @@ namespace srd5 {
             Monster bandit = Monsters.Bandit;
             bandit.HitPoints = 6;
             Battleground ground = createBattleground(druid, bandit);
-            Location location = ground.LocateCombattant(bandit);
+            Location location = ground.LocateCombatant(bandit);
             int speed = bandit.Speed;
             Spells.GustofWind.Cast(ground, druid, 30, SpellLevel.SECOND, 20, bandit);
             Assert.True(bandit.HasEffect(Effect.SPELL_GUST_OF_WIND));
@@ -560,7 +560,7 @@ namespace srd5 {
                 bandit.OnStartOfTurn();
                 bandit.OnEndOfTurn();
             }
-            Assert.True(location.Distance(ground.LocateCombattant(bandit)) > 0);
+            Assert.True(location.Distance(ground.LocateCombatant(bandit)) > 0);
             Assert.True(bandit.Speed == speed);
         }
 
@@ -678,7 +678,7 @@ namespace srd5 {
             CharacterSheet druid = new CharacterSheet(Race.HUMAN);
             druid.AddLevel(CharacterClasses.Druid);
             Battleground2D ground2D = new Battleground2D(20, 20);
-            ground2D.AddCombattant(druid, 10, 10);
+            ground2D.AddCombatant(druid, 10, 10);
             Spell conjure = Spells.ConjureAnimals;
             Random.State = 1;
             // CR_HALF: beastAmount=4; slot=FIFTH → slot > FOURTH → ×2 = 8 beasts spawned
@@ -690,6 +690,7 @@ namespace srd5 {
             // CR_TWO: beastAmount=1
             conjure.Variant = SpellVariant.CR_TWO;
             conjure.Cast(ground2D, druid, 12, SpellLevel.THIRD, 0, druid);
+            Assert.Equal(16, ground2D.combatants.Length); // 8 + 6 + 1 + druid = 16
         }
 
         [Fact]
@@ -697,11 +698,12 @@ namespace srd5 {
             // Covers the BattleGroundClassic zombie/beast spawn branch (lines 231-233)
             CharacterSheet druid = new CharacterSheet(Race.HUMAN);
             druid.AddLevel(CharacterClasses.Druid);
-            BattleGroundClassic ground = createBattleground(druid, druid);
+            BattleGroundClassic ground = createBattleground(druid, []);
             Spell conjure = Spells.ConjureAnimals;
             conjure.Variant = SpellVariant.CR_QUARTER;
             Random.State = 1;
             conjure.Cast(ground, druid, 12, SpellLevel.THIRD, 0, druid);
+            Assert.Equal(9, ground.combatants.Length); // 8 beasts + druid = 9
         }
 
         [Fact]

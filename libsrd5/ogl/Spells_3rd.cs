@@ -14,7 +14,7 @@ namespace srd5 {
         public static Spell AnimateDead {
             get {
                 return new Spell(ID.ANIMATE_DEAD, NECROMANCY, THIRD, CastingTime.ONE_MINUTE, 10, VSM, INSTANTANEOUS, 0, 13, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
-                    // TODO: Targetting bone piles to create skeletons requires objects on the battleground that aren't combattants
+                    // TODO: Targetting bone piles to create skeletons requires objects on the battleground that aren't combatants
                     int maxTargets = ((int)slot - 3) * 2 + 1;
                     for (int i = 0; i < maxTargets && i < targets.Length; i++) {
                         Combatant target = targets[i];
@@ -31,12 +31,12 @@ namespace srd5 {
                                 }
                             });
                             if (ground is Battleground2D battleground2D) {
-                                Coord location = battleground2D.LocateCombattant2D(target);
-                                battleground2D.AddCombattant(Monsters.Zombie, location.X, location.Y);
+                                Coord location = battleground2D.LocateCombatant2D(target);
+                                battleground2D.AddCombatant(Monsters.Zombie, location.X, location.Y);
                                 // TODO: Add logic to put the Zombie under the caster's control
                             } else if (ground is BattleGroundClassic battleGroundClassic) {
-                                ClassicLocation location = battleGroundClassic.LocateClassicCombattant(target);
-                                battleGroundClassic.AddCombattant(Monsters.Zombie, location.Location);
+                                ClassicLocation location = battleGroundClassic.LocateClassicCombatant(target);
+                                battleGroundClassic.AddCombatant(Monsters.Zombie, location.Location);
                             }
                         } else {
                             GlobalEvents.AffectBySpell(caster, ID.ANIMATE_DEAD, target, false);
@@ -189,36 +189,36 @@ namespace srd5 {
             get {
                 Spell conjure = new Spell(ID.CONJURE_ANIMALS, CONJURATION, THIRD, CastingTime.ONE_ACTION, 60, VS, ONE_HOUR, 0, 0);
                 conjure.Variants = new SpellVariant[] { CR_QUARTER, CR_HALF, CR_ONE, CR_TWO };
+                conjure.Variant = CR_TWO;
                 SpellCastEffect effect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
-                    Monster[] randomBeasts;
+                    Monsters.ID[] randomBeasts;
                     int beastAmount;
                     switch (conjure.Variant) {
                         case CR_QUARTER:
-                            randomBeasts = new Monster[] {
-                                Monsters.AxeBeak, Monsters.Boar, Monsters.ConstrictorSnake, Monsters.DraftHorse, Monsters.Elk, Monsters.GiantBadger, Monsters.GiantBat, Monsters.GiantCentipede, Monsters.GiantFrog, Monsters.GiantLizard, Monsters.GiantOwl, Monsters.GiantPoisonousSnake, Monsters.GiantWolfSpider, Monsters.Panther, Monsters.RidingHorse, Monsters.Wolf
+                            randomBeasts = new Monsters.ID[] {
+                                Monsters.ID.AXE_BEAK, Monsters.ID.BOAR, Monsters.ID.CONSTRICTOR_SNAKE, Monsters.ID.DRAFT_HORSE, Monsters.ID.ELK, Monsters.ID.GIANT_BADGER, Monsters.ID.GIANT_BAT, Monsters.ID.GIANT_CENTIPEDE, Monsters.ID.GIANT_FROG, Monsters.ID.GIANT_LIZARD, Monsters.ID.GIANT_OWL, Monsters.ID.GIANT_POISONOUS_SNAKE, Monsters.ID.GIANT_WOLF_SPIDER, Monsters.ID.PANTHER, Monsters.ID.RIDING_HORSE, Monsters.ID.WOLF
                             };
                             beastAmount = 8;
                             break;
                         case CR_HALF:
-                            randomBeasts = new Monster[] {
-                                Monsters.Ape, Monsters.BlackBear, Monsters.Crocodile, Monsters.GiantGoat, Monsters.GiantWasp, Monsters.Warhorse
+                            randomBeasts = new Monsters.ID[] {
+                                Monsters.ID.APE, Monsters.ID.BLACK_BEAR, Monsters.ID.CROCODILE, Monsters.ID.GIANT_GOAT, Monsters.ID.GIANT_WASP, Monsters.ID.WARHORSE
                             };
                             beastAmount = 4;
                             break;
                         case CR_ONE:
-                            randomBeasts = new Monster[] {
-                               Monsters.BrownBear, Monsters.DireWolf, Monsters.GiantEagle, Monsters.GiantHyena, Monsters.GiantSpider, Monsters.GiantToad, Monsters.GiantVulture, Monsters.Lion, Monsters.Tiger
+                            randomBeasts = new Monsters.ID[] {
+                               Monsters.ID.BROWN_BEAR, Monsters.ID.DIRE_WOLF, Monsters.ID.GIANT_EAGLE, Monsters.ID.GIANT_HYENA, Monsters.ID.GIANT_SPIDER, Monsters.ID.GIANT_TOAD, Monsters.ID.GIANT_VULTURE, Monsters.ID.LION, Monsters.ID.TIGER
                             };
                             beastAmount = 2;
                             break;
                         case CR_TWO:
-                            randomBeasts = new Monster[] {
-                                Monsters.GiantBoar, Monsters.GiantConstrictorSnake, Monsters.GiantElk, Monsters.PolarBear, Monsters.Rhinoceros, Monsters.SaberToothedTiger
+                        default:
+                            randomBeasts = new Monsters.ID[] {
+                                Monsters.ID.GIANT_BOAR, Monsters.ID.GIANT_CONSTRICTOR_SNAKE, Monsters.ID.GIANT_ELK, Monsters.ID.POLAR_BEAR, Monsters.ID.RHINOCEROS, Monsters.ID.SABER_TOOTHED_TIGER
                             };
                             beastAmount = 1;
                             break;
-                        default:
-                            throw new Srd5ArgumentException("Invalid spell variant. " + conjure.Variant);
                     }
                     if (slot > SIXTH)
                         beastAmount *= 3;
@@ -226,11 +226,11 @@ namespace srd5 {
                         beastAmount *= 2;
                     for (int i = 0; i < beastAmount; i++) {
                         if (ground is Battleground2D battleground2D) {
-                            Coord location = battleground2D.LocateCombattant2D(caster);
-                            battleground2D.AddCombattantNextTo(randomBeasts[D20.Value % randomBeasts.Length], location.X, location.Y);
+                            Coord location = battleground2D.LocateCombatant2D(caster);
+                            battleground2D.AddCombatantNextTo(Monsters.Get(randomBeasts[D20.Value % randomBeasts.Length]), location.X, location.Y);
                         } else if (ground is BattleGroundClassic battleGroundClassic) {
-                            ClassicLocation location = battleGroundClassic.LocateClassicCombattant(caster);
-                            battleGroundClassic.AddCombattant(randomBeasts[D20.Value % randomBeasts.Length], location.Location);
+                            ClassicLocation location = battleGroundClassic.LocateClassicCombatant(caster);
+                            battleGroundClassic.AddCombatant(Monsters.Get(randomBeasts[D20.Value % randomBeasts.Length]), location.Location);
                         }
                     }
                     // TODO: Put the beasts under the caster's control
@@ -323,8 +323,8 @@ namespace srd5 {
                         // line of sight for this check.
                         target.AddEndOfTurnEvent(delegate () {
                             if (!target.HasCondition(ConditionType.FRIGHTENED)) return true;
-                            Location tLoc = ground.LocateCombattant(target);
-                            Location cLoc = ground.LocateCombattant(caster);
+                            Location tLoc = ground.LocateCombatant(target);
+                            Location cLoc = ground.LocateCombatant(caster);
                             if (tLoc != null && cLoc != null && tLoc.Distance(cLoc) > 300) {
                                 if (target.DC(ID.FEAR, dc, WISDOM)) {
                                     target.RemoveEffect(SPELL_FEAR);

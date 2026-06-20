@@ -31,9 +31,9 @@ namespace srd5 {
             }
         }
 
-        internal static void RolledInitiative(Combatant combattant, int result) {
+        internal static void RolledInitiative(Combatant combatant, int result) {
             if (Handlers == null) return;
-            Handlers(EventTypes.INITIATIVE, new InitiativeRolled(combattant, result));
+            Handlers(EventTypes.INITIATIVE, new InitiativeRolled(combatant, result));
         }
 
         public class AttackRolled : EventArgs {

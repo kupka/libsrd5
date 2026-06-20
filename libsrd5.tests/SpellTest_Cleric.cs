@@ -62,13 +62,13 @@ namespace srd5 {
             CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
             hero.AddLevel(CharacterClasses.Druid);
             Spells.ProtectionfromEvilandGood.Cast(hero, 12, SpellLevel.THIRD, 5);
-            Combatant[] allCombattantTypes = [
+            Combatant[] allCombatantTypes = [
                 Monsters.Badger, Monsters.Solar, Monsters.IronGolem, Monsters.AncientBlackDragon, Monsters.FireElemental,
                 Monsters.Dryad, Monsters.BarbedDevil, Monsters.HillGiant, Monsters.Bandit, Monsters.BlackPudding,
                 Monsters.Treant, Monsters.SwarmOfQuippers, Monsters.Zombie, hero
              ];
-            foreach (Combatant combattant in allCombattantTypes) {
-                combattant.Attack(Attacks.AcolyteClub, hero, 5);
+            foreach (Combatant combatant in allCombatantTypes) {
+                combatant.Attack(Attacks.AcolyteClub, hero, 5);
             }
         }
 
@@ -142,8 +142,8 @@ namespace srd5 {
             Monster cleric = Monsters.Acolyte;
             Monster bandit = Monsters.Bandit;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(cleric, 0, 0);
-            ground.AddCombattant(bandit, 5, 2);
+            ground.AddCombatant(cleric, 0, 0);
+            ground.AddCombatant(bandit, 5, 2);
             Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
@@ -160,8 +160,8 @@ namespace srd5 {
             Monster cleric = Monsters.Acolyte;
             Monster bandit = Monsters.Bandit;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(cleric, 0, 0);
-            ground.AddCombattant(bandit, 5, 2);
+            ground.AddCombatant(cleric, 0, 0);
+            ground.AddCombatant(bandit, 5, 2);
             Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
@@ -175,8 +175,8 @@ namespace srd5 {
             Monster cleric = Monsters.Acolyte;
             Monster bandit = Monsters.Bandit;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(cleric, 0, 0);
-            ground.AddCombattant(bandit, 5, 2);
+            ground.AddCombatant(cleric, 0, 0);
+            ground.AddCombatant(bandit, 5, 2);
             Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, cleric);
             Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND));
@@ -193,8 +193,8 @@ namespace srd5 {
             Monster cleric = Monsters.Acolyte;
             Monster bandit = Monsters.Bandit;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(cleric, 0, 0);
-            ground.AddCombattant(bandit, 5, 2);
+            ground.AddCombatant(cleric, 0, 0);
+            ground.AddCombatant(bandit, 5, 2);
             Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
@@ -208,8 +208,8 @@ namespace srd5 {
             Monster cleric = Monsters.Acolyte;
             Monster bandit = Monsters.Bandit;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(cleric, 0, 0);
-            ground.AddCombattant(bandit, 5, 2);
+            ground.AddCombatant(cleric, 0, 0);
+            ground.AddCombatant(bandit, 5, 2);
             Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
@@ -223,8 +223,8 @@ namespace srd5 {
             Monster cleric = Monsters.Acolyte;
             Monster bandit = Monsters.Bandit;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(cleric, 0, 0);
-            ground.AddCombattant(bandit, 5, 2);
+            ground.AddCombatant(cleric, 0, 0);
+            ground.AddCombatant(bandit, 5, 2);
             Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
@@ -238,8 +238,8 @@ namespace srd5 {
             Monster cleric = Monsters.Acolyte;
             Monster bandit = Monsters.Bandit;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(cleric, 0, 0);
-            ground.AddCombattant(bandit, 5, 2);
+            ground.AddCombatant(cleric, 0, 0);
+            ground.AddCombatant(bandit, 5, 2);
             Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
@@ -253,8 +253,8 @@ namespace srd5 {
             Monster cleric = Monsters.Acolyte;
             Monster bandit = Monsters.Bandit;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(cleric, 0, 0);
-            ground.AddCombattant(bandit, 5, 2);
+            ground.AddCombatant(cleric, 0, 0);
+            ground.AddCombatant(bandit, 5, 2);
             Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
@@ -268,8 +268,8 @@ namespace srd5 {
             Monster cleric = Monsters.Acolyte;
             Monster bandit = Monsters.Bandit;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(cleric, 0, 0);
-            ground.AddCombattant(bandit, 5, 2);
+            ground.AddCombatant(cleric, 0, 0);
+            ground.AddCombatant(bandit, 5, 2);
             Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
@@ -283,8 +283,8 @@ namespace srd5 {
             Monster cleric = Monsters.Acolyte;
             Monster bandit = Monsters.Bandit;
             Battleground2D ground = new Battleground2D(20, 20);
-            ground.AddCombattant(cleric, 0, 0);
-            ground.AddCombattant(bandit, 5, 5);
+            ground.AddCombatant(cleric, 0, 0);
+            ground.AddCombatant(bandit, 5, 5);
             Spells.WardingBond.Cast(ground, cleric, 12, SpellLevel.SECOND, 5, bandit);
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
@@ -503,8 +503,8 @@ namespace srd5 {
             bandit.Die();
             CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(cleric, 5, 5);
-            ground.AddCombattant(bandit, 6, 5);
+            ground.AddCombatant(cleric, 5, 5);
+            ground.AddCombatant(bandit, 6, 5);
             Spells.AnimateDead.Cast(ground, cleric, 12, SpellLevel.THIRD, 0, bandit);
             Assert.True(bandit.HasEffect(Effect.SPELL_ANIMATE_DEAD));
         }

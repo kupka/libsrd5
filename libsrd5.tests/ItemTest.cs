@@ -6,9 +6,9 @@ namespace srd5 {
     public class ItemTest {
         private BattleGroundClassic createBattleground(Combatant caster, params Combatant[] targets) {
             BattleGroundClassic ground = new BattleGroundClassic();
-            ground.AddCombattant(caster, ClassicLocation.Row.FRONT_LEFT);
+            ground.AddCombatant(caster, ClassicLocation.Row.FRONT_LEFT);
             foreach (Combatant target in targets) {
-                ground.AddCombattant(target, ClassicLocation.Row.FRONT_RIGHT);
+                ground.AddCombatant(target, ClassicLocation.Row.FRONT_RIGHT);
             }
             return ground;
         }

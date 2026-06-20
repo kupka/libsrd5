@@ -1,5 +1,6 @@
 using Xunit;
 using System.Reflection;
+using System;
 
 namespace srd5 {
     [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
@@ -85,6 +86,14 @@ namespace srd5 {
             Monster hag = Monsters.NightHag;
             Assert.True(Spells.MagicMissile.Equals(hag.InnateSpellcastingBySpell(Spells.MagicMissile).Spell));
             Assert.Null(hag.InnateSpellcastingBySpell(Spells.Wish));
+        }
+
+        [Fact]
+        public void MonsterEnumerationTest() {
+            foreach (Monsters.ID id in Enum.GetValues(typeof(Monsters.ID))) {
+                Monster monster = Monsters.Get(id);
+                Assert.Equal(id, monster.ID);
+            }
         }
     }
 }

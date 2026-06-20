@@ -681,6 +681,7 @@ namespace srd5 {
             ground2D.AddCombatant(druid, 10, 10);
             Spell conjure = Spells.ConjureAnimals;
             Random.State = 1;
+            Assert.Throws<Srd5ArgumentException>(() => conjure.Cast(ground2D, druid, 12, SpellLevel.FIRST, 0, druid));
             // CR_HALF: beastAmount=4; slot=FIFTH → slot > FOURTH → ×2 = 8 beasts spawned
             conjure.Variant = SpellVariant.CR_HALF;
             conjure.Cast(ground2D, druid, 12, SpellLevel.FIFTH, 0, druid);

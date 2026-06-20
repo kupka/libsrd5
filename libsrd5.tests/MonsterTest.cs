@@ -90,7 +90,7 @@ namespace srd5 {
 
         [Fact]
         public void MonsterEnumerationTest() {
-            foreach (Monsters.ID id in Enum.GetValues(typeof(Monsters.ID))) {
+            foreach (Monsters.ID id in Enum.GetValues<Monsters.ID>()) {
                 Monster monster = Monsters.Get(id);
                 Assert.Equal(id, monster.ID);
             }

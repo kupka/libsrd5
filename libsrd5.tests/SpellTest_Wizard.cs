@@ -458,6 +458,8 @@ namespace srd5 {
 
         [Fact]
         public void SlowTest() {
+            DefaultSpellTest(Spells.Slow, 15, SpellLevel.THIRD, null, Effect.SPELL_SLOW, Spells.Slow.Duration);
+
             Monster orc = Monsters.Orc;
             int originalSpeed = orc.Speed;
             Spells.Slow.Cast(orc, 100, SpellLevel.THIRD, 0);
@@ -520,7 +522,8 @@ namespace srd5 {
         public void BestowCurseTest() {
             Spell curse = Spells.BestowCurse;
             curse.Variant = SpellVariant.DISADVANTAGE_CHARISMA_SAVES;
-            DefaultSpellTest(curse, 15, SpellLevel.THIRD, null, Effect.DISADVANTAGE_CHARISMA_SAVES, SpellDuration.TEN_MINUTES);
+            DefaultSpellTest(curse, 15, SpellLevel.THIRD, null, Effect.DISADVANTAGE_CHARISMA_SAVES, SpellDuration.ONE_MINUTE);
+            DefaultSpellTest(curse, 15, SpellLevel.FOURTH, null, Effect.DISADVANTAGE_CHARISMA_SAVES, SpellDuration.TEN_MINUTES);
             DefaultSpellTest(curse, 15, SpellLevel.FIFTH, null, Effect.DISADVANTAGE_CHARISMA_SAVES, SpellDuration.EIGHT_HOURS);
             DefaultSpellTest(curse, 15, SpellLevel.EIGHTH, null, Effect.DISADVANTAGE_CHARISMA_SAVES, SpellDuration.ONE_DAY);
         }

@@ -70,6 +70,7 @@ namespace srd5 {
                     SpellVariant.LOSE_TURN_ON_FAILED_WISDOM_SAVE,
                     SpellVariant.TAKE_ADDITIONAL_DAMAGE
                 };
+                curse.Variant = TAKE_ADDITIONAL_DAMAGE;
                 SpellCastEffect castEffect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     Combatant target = targets[0];
                     if (target.DC(ID.BESTOW_CURSE, dc, WISDOM)) {
@@ -523,6 +524,7 @@ namespace srd5 {
                     DAMAGE_LIGHTNING,
                     DAMAGE_THUNDER
                 };
+                protection.Variant = DAMAGE_FIRE;
                 SpellCastEffect castEffect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     Combatant target = targets[0];
                     GlobalEvents.AffectBySpell(caster, ID.PROTECTION_FROM_ENERGY, target, true);
@@ -617,9 +619,8 @@ namespace srd5 {
                         target.AddStartOfTurnEvent(delegate () {
                             if (!target.HasEffect(SPELL_SLEET_STORM)) return true;
                             if (!target.DC(ID.SLEET_STORM, dc, DEXTERITY)) {
-                                if (!target.HasCondition(ConditionType.PRONE)) {
-                                    target.AddCondition(ConditionType.PRONE);
-                                }
+                                GlobalEvents.AffectBySpell(caster, ID.SLEET_STORM, target, true);
+                                target.AddCondition(ConditionType.PRONE);
                             }
                             return false;
                         });
@@ -707,8 +708,8 @@ namespace srd5 {
                         foreach (Combatant target in targets) {
                             // Creatures that don't need to breathe (undead, constructs) or are immune to poison automatically succeed
                             bool immuneToEffect = target.HasEffect(IMMUNITY_POISON) || target.HasEffect(IMMUNITY_POISONED);
-                            if (!immuneToEffect && target is Monster poisonMonster) {
-                                if (poisonMonster.Type == Monsters.Type.UNDEAD || poisonMonster.Type == Monsters.Type.CONSTRUCT) {
+                            if (!immuneToEffect && target is Monster monster) {
+                                if (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT) {
                                     immuneToEffect = true;
                                 }
                             }

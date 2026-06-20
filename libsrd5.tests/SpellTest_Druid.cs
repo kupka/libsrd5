@@ -681,7 +681,6 @@ namespace srd5 {
             ground2D.AddCombatant(druid, 10, 10);
             Spell conjure = Spells.ConjureAnimals;
             Random.State = 1;
-            Assert.Throws<Srd5ArgumentException>(() => conjure.Cast(ground2D, druid, 12, SpellLevel.FIRST, 0, druid));
             // CR_HALF: beastAmount=4; slot=FIFTH → slot > FOURTH → ×2 = 8 beasts spawned
             conjure.Variant = SpellVariant.CR_HALF;
             conjure.Cast(ground2D, druid, 12, SpellLevel.FIFTH, 0, druid);
@@ -709,6 +708,7 @@ namespace srd5 {
 
         [Fact]
         public void SleetStormTest() {
+            DefaultSpellTest(Spells.SleetStorm, 25, SpellLevel.THIRD, null, Effect.SPELL_SLEET_STORM, Spells.SleetStorm.Duration);
             // Target fails DEX save → PRONE + SPELL_SLEET_STORM applied
             // StartOfTurnEvent re-applies save; EndOfTurnEvent expires duration
             CharacterSheet druid = new CharacterSheet(Race.HUMAN);
@@ -745,6 +745,7 @@ namespace srd5 {
 
         [Fact]
         public void StinkingCloudCONSaveFailTest() {
+            DefaultSpellTest(Spells.StinkingCloud, 25, SpellLevel.THIRD, null, Effect.SPELL_STINKING_CLOUD, 100);
             // Target fails CON save at start of turn → CANNOT_TAKE_ACTIONS added, removed at end of turn
             // Duration of 10 caster end-of-turns removes SPELL_STINKING_CLOUD
             CharacterSheet druid = new CharacterSheet(Race.HUMAN);

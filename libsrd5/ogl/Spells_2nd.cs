@@ -446,6 +446,7 @@ namespace srd5 {
             get {
                 Spell spell = new Spell(ID.LESSER_RESTORATION, ABJURATION, SECOND, CastingTime.ONE_ACTION, 0, VS, INSTANTANEOUS, 0, 1);
                 spell.Variants = new SpellVariant[] { BLINDNESS, DEAFNESS, PARALYZATION, POISONS, DISEASES };
+                spell.Variant = BLINDNESS;
                 spell.CastEffect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     Combatant target = targets[0];
                     GlobalEvents.AffectBySpell(caster, ID.LESSER_RESTORATION, target, true);

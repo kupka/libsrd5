@@ -487,7 +487,10 @@ namespace srd5 {
             size = bandit.Size;
             spell.Cast(bandit, 12, SpellLevel.SECOND, 3);
             Assert.True(bandit.Size == size);
-            bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
+            for (int i = 0; i < 10; i++) {
+                bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
+                bandit.DC(this, 20, AbilityType.STRENGTH);
+            }
         }
 
         [Fact]
@@ -508,8 +511,10 @@ namespace srd5 {
             size = bandit.Size;
             spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
             Assert.True(bandit.Size == size);
-            bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
-            bandit.DC(this, 20, AbilityType.STRENGTH);
+            for (int i = 0; i < 10; i++) {
+                bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
+                bandit.DC(this, 20, AbilityType.STRENGTH);
+            }
         }
 
         [Fact]
@@ -521,7 +526,9 @@ namespace srd5 {
             Battleground ground = createBattleground(druid, bandit);
             Spells.FlameBlade.Cast(druid, 10, SpellLevel.NINTH, 0);
             Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAME_BLADE_ATTACK);
-            druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
+            for(int i = 0; i < 10; i++) {
+                druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
+            }
             Assert.True(bandit.Dead);
             for (int i = 0; i < (int)SpellDuration.TEN_MINUTES; i++) {
                 druid.OnEndOfTurn();

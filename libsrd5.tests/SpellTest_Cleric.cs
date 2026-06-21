@@ -402,8 +402,10 @@ namespace srd5 {
             Spells.SpiritGuardians.Cast(ground, cleric, 20, SpellLevel.THIRD, 0, orc);
             Assert.Equal(originalSpeed / 2, orc.Speed);
             // Tick through the full TEN_MINUTES duration on the target's end-of-turn events
-            for (int i = 0; i < (int)Spells.SpiritGuardians.Duration; i++) {
+            for (int i = 0; i < (int)Spells.SpiritGuardians.Duration + 1; i++) {
+                orc.OnStartOfTurn();
                 orc.OnEndOfTurn();
+                orc.OnStartOfTurn();
             }
             Assert.False(orc.HasEffect(Effect.SPELL_SPIRIT_GUARDIANS));
             Assert.Equal(originalSpeed, orc.Speed);

@@ -45,12 +45,12 @@ namespace srd5 {
         }
 
         // Monsters of each type, also a hero
-        private Combattant[] allCombattantTypes;
+        private Combatant[] allCombatantTypes;
 
         private void restoreMonsters() {
             CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
             hero.AddLevel(CharacterClasses.Druid);
-            allCombattantTypes = [
+            allCombatantTypes = [
                 Monsters.Badger, Monsters.Solar, Monsters.IronGolem, Monsters.AncientBlackDragon, Monsters.FireElemental,
                 Monsters.Dryad, Monsters.BarbedDevil, Monsters.HillGiant, Monsters.Bandit, Monsters.BlackPudding,
                 Monsters.Treant, Monsters.SwarmOfQuippers, Monsters.Zombie, hero
@@ -75,8 +75,8 @@ namespace srd5 {
                     effect.Invoke(aboleth, uberMonster);
                     effect.Invoke(aboleth, averageMonster);
                     effect.Invoke(aboleth, pansyMonster);
-                    foreach (Combattant combattant in allCombattantTypes) {
-                        effect.Invoke(aboleth, combattant);
+                    foreach (Combatant combatant in allCombatantTypes) {
+                        effect.Invoke(aboleth, combatant);
                     }
                     if (guaranteedLethal) {
                         effect.Invoke(aboleth, pansyMonsterThatDies);
@@ -85,23 +85,23 @@ namespace srd5 {
                     aboleth.HitPoints = (int)Math.Floor(aboleth.HitPoints / 1.5);
                 }
                 for (int j = 0; j < 20; j++) {
-                    uberMonster.TakeDamage(effect, randomDamageType(), D4.Value);
+                    uberMonster.TakeDamage(new DamageSource(DamageSourceType.ATTACK, effect, aboleth), randomDamageType(), D4);
                     uberMonster.OnStartOfTurn();
                     uberMonster.OnEndOfTurn();
                     uberMonster.EscapeFromGrapple();
-                    averageMonster.TakeDamage(effect, randomDamageType(), D4.Value);
+                    averageMonster.TakeDamage(new DamageSource(DamageSourceType.ATTACK, effect, aboleth), randomDamageType(), D4);
                     averageMonster.OnStartOfTurn();
                     averageMonster.OnEndOfTurn();
                     averageMonster.EscapeFromGrapple();
-                    pansyMonster.TakeDamage(effect, randomDamageType(), D4.Value);
+                    pansyMonster.TakeDamage(new DamageSource(DamageSourceType.ATTACK, effect, aboleth), randomDamageType(), D4);
                     pansyMonster.OnStartOfTurn();
                     pansyMonster.OnEndOfTurn();
                     pansyMonster.EscapeFromGrapple();
-                    foreach (Combattant combattant in allCombattantTypes) {
-                        combattant.TakeDamage(effect, randomDamageType(), D4.Value);
-                        combattant.OnStartOfTurn();
-                        combattant.OnEndOfTurn();
-                        combattant.EscapeFromGrapple();
+                    foreach (Combatant combatant in allCombatantTypes) {
+                        combatant.TakeDamage(new DamageSource(DamageSourceType.ATTACK, effect, aboleth), randomDamageType(), D4);
+                        combatant.OnStartOfTurn();
+                        combatant.OnEndOfTurn();
+                        combatant.EscapeFromGrapple();
                     }
                 }
 
@@ -449,7 +449,7 @@ namespace srd5 {
 
         [Fact]
         public void ClayGolemSlamTest() {
-            Combattant golem = Monsters.ClayGolem;
+            Combatant golem = Monsters.ClayGolem;
             Monster bandit = Monsters.Bandit;
             for (int i = 0; i < 10; i++) {
                 golem.Attack(golem.MeleeAttacks[0], bandit, 5);
@@ -459,18 +459,18 @@ namespace srd5 {
 
         [Fact]
         public void CouatlBiteEffectTest() {
-            Combattant target1 = createPansyMonster();
-            Combattant target2 = createPansyMonster();
-            Combattant target3 = createPansyMonster();
+            Combatant target1 = createPansyMonster();
+            Combatant target2 = createPansyMonster();
+            Combatant target3 = createPansyMonster();
             Attacks.CouatlBiteEffect.Invoke(Monsters.Aboleth, target1);
             target1.RemoveEffect(Effect.COUATL_POISON);
-            target1.TakeDamage(this, DamageType.TRUE_DAMAGE, 1);
+            target1.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, Monsters.Couatl), DamageType.TRUE_DAMAGE, 1);
             Attacks.CouatlBiteEffect.Invoke(Monsters.Aboleth, target2);
             target2.RemoveEffect(Effect.COUATL_POISON);
-            target2.TakeDamage(this, DamageType.TRUE_DAMAGE, 1);
+            target2.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, Monsters.Couatl), DamageType.TRUE_DAMAGE, 1);
             Attacks.CouatlBiteEffect.Invoke(Monsters.Aboleth, target3);
             target3.RemoveEffect(Effect.COUATL_POISON);
-            target3.TakeDamage(this, DamageType.TRUE_DAMAGE, 1);
+            target3.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, Monsters.Couatl), DamageType.TRUE_DAMAGE, 1);
             Assert.False(target1.HasCondition(ConditionType.UNCONSCIOUS) && target2.HasCondition(ConditionType.UNCONSCIOUS) && target3.HasCondition(ConditionType.UNCONSCIOUS));
         }
 
@@ -526,7 +526,7 @@ namespace srd5 {
 
         [Fact]
         public void DeepGnomeSvirfneblinPoisonedDartEffectTest() {
-            Combattant target = createPansyMonster();
+            Combatant target = createPansyMonster();
             target.AddEffect(Effect.FAIL_CONSTITUTION_CHECK);
             Attacks.DeepGnomeSvirfneblinPoisonedDartEffect.Invoke(Monsters.Aboleth, target);
             for (int i = 0; i < 10; i++) {
@@ -539,9 +539,9 @@ namespace srd5 {
 
         [Fact]
         public void DrowPoisonTest() {
-            Combattant target1 = createPansyMonster();
-            Combattant target2 = createPansyMonster();
-            Combattant target3 = createPansyMonster();
+            Combatant target1 = createPansyMonster();
+            Combatant target2 = createPansyMonster();
+            Combatant target3 = createPansyMonster();
             Attacks.DrowHandCrossbowEffect.Invoke(Monsters.Orc, target1);
             Attacks.DrowHandCrossbowEffect.Invoke(Monsters.Orc, target2);
             Attacks.DrowHandCrossbowEffect.Invoke(Monsters.Orc, target3);
@@ -549,14 +549,14 @@ namespace srd5 {
             target1.RemoveEffect(Effect.DROW_POISON);
             target2.RemoveEffect(Effect.DROW_POISON);
             target3.RemoveEffect(Effect.DROW_POISON);
-            target1.TakeDamage(this, DamageType.TRUE_DAMAGE, 1);
-            target2.TakeDamage(this, DamageType.TRUE_DAMAGE, 1);
-            target3.TakeDamage(this, DamageType.TRUE_DAMAGE, 1);
+            target1.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, Monsters.Drow), DamageType.TRUE_DAMAGE, 1);
+            target2.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, Monsters.Drow), DamageType.TRUE_DAMAGE, 1);
+            target3.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, Monsters.Drow), DamageType.TRUE_DAMAGE, 1);
         }
 
         [Fact]
         public void ProneEffectTest() {
-            Combattant target1 = createPansyMonster();
+            Combatant target1 = createPansyMonster();
             target1.AddCondition(ConditionType.PRONE);
             int hp = target1.HitPoints;
             Attacks.ElephantStompEffect.Invoke(Monsters.Elephant, target1);

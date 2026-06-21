@@ -24,7 +24,7 @@ namespace srd5 {
         SIXTH = 6,
         SEVENTH = 7,
         EIGHTH = 8,
-        NINETH = 9
+        NINTH = 9
     }
 
     public enum CastingTime {
@@ -80,15 +80,35 @@ namespace srd5 {
         PARALYZATION,
         POISONS,
         DISEASES,
+        // Bestow Curse
+        DISADVANTAGE_CHARISMA_SAVES,
+        DISADVANTAGE_CONSTITUTION_SAVES,
+        DISADVANTAGE_DEXTERITY_SAVES,
+        DISADVANTAGE_INTELLIGENCE_SAVES,
+        DISADVANTAGE_ON_ATTACK,
+        DISADVANTAGE_STRENGTH_SAVES,
+        DISADVANTAGE_WISDOM_SAVES,
+        LOSE_TURN_ON_FAILED_WISDOM_SAVE,
+        TAKE_ADDITIONAL_DAMAGE,
+        // Conjure Animals
+        CR_QUARTER,
+        CR_HALF,
+        CR_ONE,
+        CR_TWO,
+        DAMAGE_ACID,
+        DAMAGE_COLD,
+        DAMAGE_FIRE,
+        DAMAGE_LIGHTNING,
+        DAMAGE_THUNDER
     }
 
-    public delegate void SpellCastEffect(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets);
+    public delegate void SpellCastEffect(Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, params Combatant[] targets);
 
     public partial struct Spells {
-        private static readonly SpellCastEffect doNothing = delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) { };
+        private static readonly SpellCastEffect doNothing = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) { };
 
         private static SpellCastEffect SpellWithoutEffect(ID spell) {
-            return delegate (Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, Combattant[] targets) {
+            return delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                 // Intentionally empty
             };
         }
@@ -168,6 +188,7 @@ namespace srd5 {
             BRANDING_SMITE,
             BURNING_HANDS,
             CALL_LIGHTNING,
+            CALL_LIGHTNING_ATTACK,
             CALM_EMOTIONS,
             CHAIN_LIGHTNING,
             CHARM_PERSON,
@@ -252,8 +273,10 @@ namespace srd5 {
             FIRE_STORM,
             FIREBALL,
             FLAME_BLADE,
+            FLAME_BLADE_ATTACK,
             FLAME_STRIKE,
             FLAMING_SPHERE,
+            FLAMING_SPHERE_ATTACK,
             FLESH_TO_STONE,
             FLOATING_DISK,
             FLY,
@@ -343,6 +366,7 @@ namespace srd5 {
             MISTY_STEP,
             MODIFY_MEMORY,
             MOONBEAM,
+            MOONBEAM_ATTACK,
             MOVE_EARTH,
             NONDETECTION,
             PASS_WITHOUT_TRACE,
@@ -410,6 +434,7 @@ namespace srd5 {
             SPIKE_GROWTH,
             SPIRIT_GUARDIANS,
             SPIRITUAL_WEAPON,
+            SPIRITUAL_WEAPON_ATTACK,
             STINKING_CLOUD,
             STONE_SHAPE,
             STONESKIN,
@@ -435,6 +460,7 @@ namespace srd5 {
             TRUE_STRIKE,
             UNSEEN_SERVANT,
             VAMPIRIC_TOUCH,
+            VAMPIRIC_TOUCH_ATTACK,
             VICIOUS_MOCKERY,
             WALL_OF_FIRE,
             WALL_OF_FORCE,
@@ -456,7 +482,7 @@ namespace srd5 {
         /// <summary>
         /// Scales dice by 4th, 10th and 17th level of the caster.
         /// </summary>
-        internal static Dice DiceLevelScaling(Combattant caster, Die die) {
+        internal static Dice DiceLevelScaling(Combatant caster, Die die) {
             int dice = 1;
             if (caster.EffectiveLevel > 16)
                 dice = 4;
@@ -496,11 +522,11 @@ namespace srd5 {
         /// <summary>
         /// Does a Spell Attack roll against the target, applies the damage. Returns whether the attack roll succeeded or not.
         /// </summary>
-        public static bool SpellAttack(ID id, Battleground ground, Combattant caster, DamageType damageType, Dice? dice, int modifier, Combattant target, int range, DamageMitigation missEffect = DamageMitigation.NULLIFIES_DAMAGE, DamageMitigation dCEffect = DamageMitigation.NO_EFFECT, int dc = 0, AbilityType dcAbility = AbilityType.DEXTERITY) {
+        public static bool SpellAttack(ID id, Battleground ground, Combatant caster, DamageType damageType, Dice? dice, int modifier, Combatant target, int range, DamageMitigation missEffect = DamageMitigation.NULLIFIES_DAMAGE, DamageMitigation dCEffect = DamageMitigation.NO_EFFECT, int dc = 0, AbilityType dcAbility = AbilityType.DEXTERITY) {
             return SpellAttack(id, ground, caster, damageType, dice, modifier, target, range, missEffect, dCEffect, dc, out _);
         }
 
-        internal static bool SpellAttack(ID id, Battleground ground, Combattant caster, DamageType damageType, Dice? dice, int modifier, Combattant target, int range, DamageMitigation missEffect, DamageMitigation dCEffect, int dc, out bool dcResult) {
+        internal static bool SpellAttack(ID id, Battleground ground, Combatant caster, DamageType damageType, Dice? dice, int modifier, Combatant target, int range, DamageMitigation missEffect, DamageMitigation dCEffect, int dc, out bool dcResult) {
             int bonus = modifier + caster.ProficiencyBonus;
             Attack attack;
             if (dice is Dice d)
@@ -509,16 +535,17 @@ namespace srd5 {
                 attack = new Attack(id.Name(), bonus, new Damage(damageType, 0), 0, range, range);
             int distance = ground.Distance(caster, target);
             bool hit = caster.Attack(attack, target, distance, true, true, dCEffect, dc, AbilityType.NONE, out dcResult);
+            DamageSource source = new DamageSource(DamageSourceType.SPELL, id, caster);
             if (missEffect == DamageMitigation.NULLIFIES_DAMAGE) {
                 GlobalEvents.AffectBySpell(caster, id, target, hit);
             } else if (missEffect == DamageMitigation.HALVES_DAMAGE) {
                 GlobalEvents.AffectBySpell(caster, id, target, true);
-                target.TakeDamage(id, damageType, attack.Damage.Dice.Roll() / 2);
+                target.TakeDamage(source, damageType, attack.Damage.Dice.Roll() / 2);
             }
             return hit;
         }
 
-        internal static void AddEffectsForDuration(ID id, Combattant caster, Combattant target, SpellDuration duration, params Effect[] effects) {
+        internal static void AddEffectsForDuration(ID id, Combatant caster, Combatant target, SpellDuration duration, params Effect[] effects) {
             if (target.HasEffect(effects[0])) {
                 GlobalEvents.AffectBySpell(caster, id, target, false);
                 return;
@@ -550,7 +577,7 @@ namespace srd5 {
             });
         }
 
-        internal static void AddEffectAndConditionsForDuration(ID id, Combattant caster, Combattant target, SpellDuration duration, Effect effect, params ConditionType[] conditions) {
+        internal static void AddEffectAndConditionsForDuration(ID id, Combatant caster, Combatant target, SpellDuration duration, Effect effect, params ConditionType[] conditions) {
             GlobalEvents.AffectBySpell(caster, id, target, true);
             target.AddEffect(effect);
             target.AddCondition(conditions);

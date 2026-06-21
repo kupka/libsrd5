@@ -55,14 +55,12 @@ namespace srd5 {
 
         /* Cast a Spell that doesn't require a battleground, because it does not target
            anyone other or only the caster */
-        public void Cast(Combattant caster, int dc, SpellLevel slot, int modifier) {
-            BattleGroundClassic ground = new BattleGroundClassic();
-            ground.AddCombattant(caster, ClassicLocation.Row.FRONT_LEFT);
-            CastEffect(ground, caster, dc, slot, modifier, caster);
+        public void Cast(Combatant caster, int dc, SpellLevel slot, int modifier) {
+            CastEffect(null, caster, dc, slot, modifier, caster);
         }
 
         /* Cast a spell on one or more targets */
-        public void Cast(Battleground ground, Combattant caster, int dc, SpellLevel slot, int modifier, params Combattant[] targets) {
+        public void Cast(Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, params Combatant[] targets) {
             if (targets.Length < 1) throw new Srd5ArgumentException("targets must contain at least one element");
             GlobalEvents.CastSpell(caster, ID);
             CastEffect(ground, caster, dc, slot, modifier, targets);

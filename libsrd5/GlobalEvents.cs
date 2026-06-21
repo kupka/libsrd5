@@ -22,29 +22,29 @@ namespace srd5 {
         public static event EventHandler<SpellAffection> SpellAffectionHandlers;
 
         public class InitiativeRolled : EventArgs {
-            public Combattant Roller { get; private set; }
+            public Combatant Roller { get; private set; }
             public int Result { get; private set; }
 
-            public InitiativeRolled(Combattant roller, int result) {
+            public InitiativeRolled(Combatant roller, int result) {
                 Roller = roller;
                 Result = result;
             }
         }
 
-        internal static void RolledInitiative(Combattant combattant, int result) {
+        internal static void RolledInitiative(Combatant combatant, int result) {
             if (Handlers == null) return;
-            Handlers(EventTypes.INITIATIVE, new InitiativeRolled(combattant, result));
+            Handlers(EventTypes.INITIATIVE, new InitiativeRolled(combatant, result));
         }
 
         public class AttackRolled : EventArgs {
-            public Combattant Attacker { get; private set; }
+            public Combatant Attacker { get; private set; }
             public Attack Attack { get; private set; }
-            public Combattant Target { get; private set; }
+            public Combatant Target { get; private set; }
             public int Roll { get; private set; }
             public bool Hit { get; private set; }
             public bool CriticalHit { get; private set; }
 
-            public AttackRolled(Combattant attacker, Attack attack, Combattant target, int roll, bool hit, bool criticalHit) {
+            public AttackRolled(Combatant attacker, Attack attack, Combatant target, int roll, bool hit, bool criticalHit) {
                 Attacker = attacker;
                 Attack = attack;
                 Target = target;
@@ -54,7 +54,7 @@ namespace srd5 {
             }
         }
 
-        internal static void RolledAttack(Combattant attacker, Attack attack, Combattant target, int roll, bool hit, bool criticalHit = false) {
+        internal static void RolledAttack(Combatant attacker, Attack attack, Combatant target, int roll, bool hit, bool criticalHit = false) {
             if (Handlers != null)
                 Handlers(EventTypes.ATTACKED, new AttackRolled(attacker, attack, target, roll, hit, criticalHit));
             if (AttackRolledHandlers != null)
@@ -62,45 +62,45 @@ namespace srd5 {
         }
 
         public class DamageReceived : EventArgs {
-            public Combattant Victim { get; private set; }
+            public Combatant Victim { get; private set; }
             public int Amount { get; private set; }
             public DamageType DamageType { get; private set; }
 
-            public DamageReceived(Combattant victim, int amount, DamageType damageType) {
+            public DamageReceived(Combatant victim, int amount, DamageType damageType) {
                 Victim = victim;
                 Amount = amount;
                 DamageType = damageType;
             }
         }
 
-        internal static void ReceivedDamage(Combattant victim, int amount, DamageType damageType) {
+        internal static void ReceivedDamage(Combatant victim, int amount, DamageType damageType) {
             if (Handlers == null) return;
             Handlers(EventTypes.DAMAGED, new DamageReceived(victim, amount, damageType));
         }
 
         public class HealingReceived : EventArgs {
-            public Combattant Beneficiary { get; private set; }
+            public Combatant Beneficiary { get; private set; }
             public int Amount { get; private set; }
-            public HealingReceived(Combattant beneficiary, int amount) {
+            public HealingReceived(Combatant beneficiary, int amount) {
                 Beneficiary = beneficiary;
                 Amount = amount;
             }
         }
 
-        internal static void ReceivedHealing(Combattant beneficiary, int amount) {
+        internal static void ReceivedHealing(Combatant beneficiary, int amount) {
             if (Handlers == null) return;
             Handlers(EventTypes.HEALED, new HealingReceived(beneficiary, amount));
         }
 
         public class DCRolled : EventArgs {
-            public Combattant Roller { get; private set; }
+            public Combatant Roller { get; private set; }
             public object Source { get; private set; }
             public Ability Ability { get; private set; }
             public int DC { get; private set; }
             public int Roll { get; private set; }
             public bool Success { get; private set; }
 
-            public DCRolled(Combattant roller, object source, Ability ability, int dc, int roll, bool success) {
+            public DCRolled(Combatant roller, object source, Ability ability, int dc, int roll, bool success) {
                 Roller = roller;
                 Source = source;
                 Ability = ability;
@@ -110,35 +110,35 @@ namespace srd5 {
             }
         }
 
-        internal static void RolledDC(Combattant roller, object source, Ability ability, int dc, int roll, bool success) {
+        internal static void RolledDC(Combatant roller, object source, Ability ability, int dc, int roll, bool success) {
             if (Handlers == null) return;
             Handlers(EventTypes.DC, new DCRolled(roller, source, ability, dc, roll, success));
         }
 
         public class ConditionChanged : EventArgs {
-            public Combattant Bearer { get; private set; }
+            public Combatant Bearer { get; private set; }
             public ConditionType Condition { get; private set; }
             public bool Removed { get; private set; }
 
-            public ConditionChanged(Combattant bearer, ConditionType condition, bool removed = false) {
+            public ConditionChanged(Combatant bearer, ConditionType condition, bool removed = false) {
                 Bearer = bearer;
                 Condition = condition;
                 Removed = removed;
             }
         }
 
-        internal static void ChangedCondition(Combattant bearer, ConditionType condition, bool removed = false) {
+        internal static void ChangedCondition(Combatant bearer, ConditionType condition, bool removed = false) {
             if (Handlers == null) return;
             Handlers(EventTypes.CONDITION, new ConditionChanged(bearer, condition, removed));
         }
 
         public class SpellAffection : EventArgs {
-            public Combattant Caster { get; private set; }
+            public Combatant Caster { get; private set; }
             public Spells.ID Spell { get; private set; }
-            public Combattant Target { get; private set; }
+            public Combatant Target { get; private set; }
             public bool Affected { get; private set; }
 
-            public SpellAffection(Combattant caster, Spells.ID spell, Combattant target, bool affected) {
+            public SpellAffection(Combatant caster, Spells.ID spell, Combatant target, bool affected) {
                 Caster = caster;
                 Spell = spell;
                 Target = target;
@@ -146,7 +146,7 @@ namespace srd5 {
             }
         }
 
-        internal static void AffectBySpell(Combattant caster, Spells.ID spell, Combattant target, bool affected) {
+        internal static void AffectBySpell(Combatant caster, Spells.ID spell, Combatant target, bool affected) {
             if (Handlers != null)
                 Handlers(EventTypes.AFFECT_BY_SPELL, new SpellAffection(caster, spell, target, affected));
             if (SpellAffectionHandlers != null)
@@ -167,16 +167,16 @@ namespace srd5 {
                 INVALID_TARGET
 
             }
-            public Combattant Initiator { get; private set; }
+            public Combatant Initiator { get; private set; }
             public Reasons Reason { get; private set; }
 
-            public ActionFailed(Combattant initiator, Reasons reason) {
+            public ActionFailed(Combatant initiator, Reasons reason) {
                 Initiator = initiator;
                 Reason = reason;
             }
         }
 
-        internal static void FailAction(Combattant initiator, ActionFailed.Reasons reason) {
+        internal static void FailAction(Combatant initiator, ActionFailed.Reasons reason) {
             if (Handlers == null) return;
             Handlers(EventTypes.ACTION_FAILED, new ActionFailed(initiator, reason));
         }
@@ -208,46 +208,46 @@ namespace srd5 {
         }
 
         public class EffectActivated : EventArgs {
-            public Combattant Source { get; private set; }
+            public Combatant Source { get; private set; }
             public Effect Effect { get; private set; }
 
-            public EffectActivated(Combattant source, Effect effect) {
+            public EffectActivated(Combatant source, Effect effect) {
                 Source = source;
                 Effect = effect;
             }
         }
 
-        public static void ActivateEffect(Combattant source, Effect effect) {
+        public static void ActivateEffect(Combatant source, Effect effect) {
             if (Handlers == null) return;
             Handlers(EventTypes.EFFECT_ACTIVATED, new EffectActivated(source, effect));
         }
 
         public class FeatActivated : EventArgs {
-            public Combattant Source { get; private set; }
+            public Combatant Source { get; private set; }
             public Feat Feat { get; private set; }
 
-            public FeatActivated(Combattant source, Feat feat) {
+            public FeatActivated(Combatant source, Feat feat) {
                 Source = source;
                 Feat = feat;
             }
         }
 
-        public static void ActivateFeat(Combattant source, Feat feat) {
+        public static void ActivateFeat(Combatant source, Feat feat) {
             if (Handlers == null) return;
             Handlers(EventTypes.EFFECT_ACTIVATED, new FeatActivated(source, feat));
         }
 
         public class SpellCast : EventArgs {
-            public Combattant Caster { get; private set; }
+            public Combatant Caster { get; private set; }
             public Spells.ID Spell { get; private set; }
 
-            public SpellCast(Combattant caster, Spells.ID spell) {
+            public SpellCast(Combatant caster, Spells.ID spell) {
                 Caster = caster;
                 Spell = spell;
             }
         }
 
-        public static void CastSpell(Combattant caster, Spells.ID spell) {
+        public static void CastSpell(Combatant caster, Spells.ID spell) {
             if (Handlers != null)
                 Handlers(EventTypes.CAST_SPELL, new SpellCast(caster, spell));
             if (SpellCastHandlers != null)
@@ -255,14 +255,14 @@ namespace srd5 {
         }
 
         public class Death : EventArgs {
-            public Combattant Victim { get; private set; }
+            public Combatant Victim { get; private set; }
 
-            public Death(Combattant victim) {
+            public Death(Combatant victim) {
                 Victim = victim;
             }
         }
 
-        public static void Die(Combattant victim) {
+        public static void Die(Combatant victim) {
             if (Handlers == null) return;
             Handlers(EventTypes.DEATH, new Death(victim));
         }

@@ -656,9 +656,9 @@ namespace srd5 {
     public struct Potions {
         public static Consumable PotionOfHealing {
             get {
-                return new Consumable("Potion of Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
+                return new Consumable("Potion of Healing", ItemType.POTION, delegate (Combatant consumer, Consumable potion) {
                     Dice healing = new Dice("2d4+2");
-                    consumer.HealDamage(healing.Roll());
+                    consumer.HealDamage(healing);
                     potion.Charges = 0;
                     potion.Destroyed = true;
                 }, ItemRarity.COMMON);
@@ -667,9 +667,9 @@ namespace srd5 {
 
         public static Consumable PotionOfGreaterHealing {
             get {
-                return new Consumable("Potion of Greater Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
+                return new Consumable("Potion of Greater Healing", ItemType.POTION, delegate (Combatant consumer, Consumable potion) {
                     Dice healing = new Dice("4d4+4");
-                    consumer.HealDamage(healing.Roll());
+                    consumer.HealDamage(healing);
                     potion.Charges = 0;
                     potion.Destroyed = true;
                 }, ItemRarity.UNCOMMON);
@@ -678,9 +678,9 @@ namespace srd5 {
 
         public static Consumable PotionOfSuperiorHealing {
             get {
-                return new Consumable("Potion of Superior Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
+                return new Consumable("Potion of Superior Healing", ItemType.POTION, delegate (Combatant consumer, Consumable potion) {
                     Dice healing = new Dice("8d4+8");
-                    consumer.HealDamage(healing.Roll());
+                    consumer.HealDamage(healing);
                     potion.Charges = 0;
                     potion.Destroyed = true;
                 }, ItemRarity.RARE);
@@ -689,9 +689,9 @@ namespace srd5 {
 
         public static Consumable PotionOfSupremeHealing {
             get {
-                return new Consumable("Potion of Supreme Healing", ItemType.POTION, delegate (Combattant consumer, Consumable potion) {
+                return new Consumable("Potion of Supreme Healing", ItemType.POTION, delegate (Combatant consumer, Consumable potion) {
                     Dice healing = new Dice("10d4+20");
-                    consumer.HealDamage(healing.Roll());
+                    consumer.HealDamage(healing);
                     potion.Charges = 0;
                     potion.Destroyed = true;
                 }, ItemRarity.VERY_RARE);
@@ -700,7 +700,7 @@ namespace srd5 {
 
         public static Consumable Goodberry {
             get {
-                return new Consumable("Goodberry", ItemType.POTION, delegate (Combattant consumer, Consumable berry) {
+                return new Consumable("Goodberry", ItemType.POTION, delegate (Combatant consumer, Consumable berry) {
                     consumer.HealDamage(1);
                     berry.Charges = 0;
                     berry.Destroyed = true;
@@ -712,7 +712,7 @@ namespace srd5 {
     public struct Wands {
         public static Usable WandOfMagicMissiles {
             get {
-                return new Usable("Wand of Magic Missiles", ItemType.WAND, delegate (Battleground ground, Combattant user, Usable item, int expendedCharges, Combattant[] targets) {
+                return new Usable("Wand of Magic Missiles", ItemType.WAND, delegate (Battleground ground, Combatant user, Usable item, int expendedCharges, Combatant[] targets) {
                     Spells.MagicMissile.Cast(ground, user, 0, (SpellLevel)expendedCharges, 0, targets);
                     item.Charges -= expendedCharges;
                     if (item.Charges == 0) {

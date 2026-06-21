@@ -12,37 +12,37 @@ namespace srd5 {
             hero.Name = "Bob";
             Monster badguy = Monsters.Ogre;
             Random.State = 7; // Fix deterministic random so that ogre wins initiative
-            ground.AddCombattant(hero, 10, 10);
-            ground.AddCombattant(badguy, 30, 30);
-            Assert.Equal(hero.Name, ground.CurrentCombattant.Name);
-            Assert.Equal(ground.LocateCombattant(hero), ground.LocateCombattant2D(hero));
-            Assert.Equal(10, ground.LocateCombattant2D(hero).X);
-            Assert.Equal(30, ground.LocateCombattant2D(badguy).Y);
-            Assert.Equal(140, ground.LocateCombattant(hero).Distance(ground.LocateCombattant(badguy)));
+            ground.AddCombatant(hero, 10, 10);
+            ground.AddCombatant(badguy, 30, 30);
+            Assert.Equal(hero.Name, ground.CurrentCombatant.Name);
+            Assert.Equal(ground.LocateCombatant(hero), ground.LocateCombatant2D(hero));
+            Assert.Equal(10, ground.LocateCombatant2D(hero).X);
+            Assert.Equal(30, ground.LocateCombatant2D(badguy).Y);
+            Assert.Equal(140, ground.LocateCombatant(hero).Distance(ground.LocateCombatant(badguy)));
             Assert.Equal(140, ground.Distance(hero, badguy));
             Assert.Throws<Srd5ArgumentException>(delegate {
-                ground.LocateCombattant(hero).Distance(new ClassicLocation(ClassicLocation.Row.FRONT_LEFT));
+                ground.LocateCombatant(hero).Distance(new ClassicLocation(ClassicLocation.Row.FRONT_LEFT));
             });
             ground.Initialize();
-            Assert.Equal(badguy.Name, ground.CurrentCombattant.Name);
-            Assert.Equal(30, ground.LocateCombattant2D(badguy).X);
+            Assert.Equal(badguy.Name, ground.CurrentCombatant.Name);
+            Assert.Equal(30, ground.LocateCombatant2D(badguy).X);
             Assert.Equal(30, ((Coord)ground.GetCurrentLocation()).X);
             Assert.Equal(140, ground.Distance(hero));
             Assert.Equal(140, ground.Distance(badguy, hero));
             ground.Initialize(); // nothing should happen
-            Assert.Equal(badguy.Name, ground.CurrentCombattant.Name);
-            Assert.Equal(10, ground.LocateCombattant2D(hero).X);
+            Assert.Equal(badguy.Name, ground.CurrentCombatant.Name);
+            Assert.Equal(10, ground.LocateCombatant2D(hero).X);
         }
 
         [Fact]
         public void SetupClassicTest() {
             BattleGroundClassic classic = new BattleGroundClassic();
             Monster boar = Monsters.Boar;
-            classic.AddCombattant(boar, ClassicLocation.Row.BACK_RIGHT);
+            classic.AddCombatant(boar, ClassicLocation.Row.BACK_RIGHT);
             classic.Initialize();
             while (TurnPhase.MOVE != classic.NextPhase()) ;
             classic.MoveAction(ClassicLocation.FrontRight);
-            Assert.Equal(ClassicLocation.FrontRight, classic.LocateCombattant(boar));
+            Assert.Equal(ClassicLocation.FrontRight, classic.LocateCombatant(boar));
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace srd5 {
         public void MoveTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HILL_DWARF);
             Battleground2D ground = new Battleground2D(50, 50);
-            ground.AddCombattant(sheet, 10, 10);
+            ground.AddCombatant(sheet, 10, 10);
             ground.Initialize();
             Assert.Throws<Srd5ArgumentException>(delegate {
                 ground.MoveAction(null);
@@ -74,9 +74,9 @@ namespace srd5 {
             sheet.RemoveEffect(Effect.CANNOT_TAKE_ACTIONS);
             Assert.True(ground.MoveAction(new Coord(13, 13))); // distance 20 => remaining speed = 5
             Assert.Equal(5, ground.RemainingSpeed);
-            Assert.Equal(13, ground.LocateCombattant2D(sheet).X);
+            Assert.Equal(13, ground.LocateCombatant2D(sheet).X);
             Assert.False(ground.MoveAction(new Coord(15, 13))); // distance 5 => can't move
-            Assert.Equal(13, ground.LocateCombattant2D(sheet).X);
+            Assert.Equal(13, ground.LocateCombatant2D(sheet).X);
             ground.NextPhase();
             Assert.Equal(1, ground.Turn);
             ground.NextPhase();
@@ -97,15 +97,15 @@ namespace srd5 {
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.HitPoints = hero.HitPointsMax;
             hero.Equip(Weapons.Greataxe);
-            ground.AddCombattant(hero, 1, 1);
+            ground.AddCombatant(hero, 1, 1);
             Monster badger = Monsters.GiantBadger;
-            ground.AddCombattant(badger, 1, 2);
+            ground.AddCombatant(badger, 1, 2);
             ground.Initialize();
-            while (ground.CurrentCombattant == hero) ground.NextPhase();
+            while (ground.CurrentCombatant == hero) ground.NextPhase();
             ground.NextPhase(); // skip move
             Assert.True(ground.MeleeAttackAction(hero));
             ground.NextPhase(); // skip bonus action
-            Assert.Equal(hero, ground.CurrentCombattant);
+            Assert.Equal(hero, ground.CurrentCombatant);
             ground.NextPhase(); // skip move
             hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"), 5);
             Random.State = 11; // Fix deterministic random to guarantee critical hit
@@ -132,9 +132,9 @@ namespace srd5 {
             hero.Equip(Weapons.Greataxe);
             hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"), 5);
             Monster badger = Monsters.GiantBadger;
-            ground.AddCombattant(hero, 1, 1);
-            ground.AddCombattant(badger, 5, 5);
-            while (ground.CurrentCombattant != hero) {
+            ground.AddCombatant(hero, 1, 1);
+            ground.AddCombatant(badger, 5, 5);
+            while (ground.CurrentCombatant != hero) {
                 ground.NextPhase();
             }
             Assert.Equal(TurnPhase.ACTION, ground.NextPhase()); // skip move            
@@ -157,14 +157,14 @@ namespace srd5 {
             hero.HitPoints = hero.HitPointsMax;
             hero.Equip(Weapons.Greataxe);
             Random.State = 3; // Fix deterministic random so that ogre goes first
-            ground.AddCombattant(hero, 1, 1);
+            ground.AddCombatant(hero, 1, 1);
             Monster ogre = Monsters.Ogre;
-            ground.AddCombattant(ogre, 1, 2);
+            ground.AddCombatant(ogre, 1, 2);
             ground.Initialize();
             ground.NextPhase(); // skip move
             Assert.True(ground.MeleeAttackAction(hero));
             ground.NextPhase();
-            Assert.Equal(hero, ground.CurrentCombattant);
+            Assert.Equal(hero, ground.CurrentCombatant);
             ground.NextPhase(); // skip move
             hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"), 5, 0, 0, new Damage(DamageType.COLD, "1d4+1"));
             Random.State = 10; // Fix deterministic random to guarantee normal hit
@@ -191,12 +191,12 @@ namespace srd5 {
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.Equip(Weapons.Battleaxe);
             Random.State = 1; // Fix deterministic random so that hero goes first
-            ground.AddCombattant(hero, 1, 1);
+            ground.AddCombatant(hero, 1, 1);
             Monster ogre = Monsters.Ogre;
-            ground.AddCombattant(ogre, 4, 4);
+            ground.AddCombatant(ogre, 4, 4);
             ground.Initialize();
             ground.NextPhase(); // skip move  
-            Assert.Equal(hero, ground.CurrentCombattant);
+            Assert.Equal(hero, ground.CurrentCombatant);
             Assert.False(ground.MeleeAttackAction(ogre));
         }
 
@@ -208,9 +208,9 @@ namespace srd5 {
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.Equip(Weapons.Battleaxe);
             Random.State = 1; // Fix deterministic random so that hero goes first
-            ground.AddCombattant(hero, 1, 1);
+            ground.AddCombatant(hero, 1, 1);
             ogre = Monsters.Ogre;
-            ground.AddCombattant(ogre, 1, 2);
+            ground.AddCombatant(ogre, 1, 2);
             ground.Initialize();
 
         }
@@ -280,10 +280,10 @@ namespace srd5 {
                 Monster ogre = Monsters.Ogre;
                 Monster goblin = Monsters.Goblin;
                 Battleground2D ground = new Battleground2D(5, 5);
-                ground.AddCombattant(ogre, 1, 1);
-                ground.AddCombattant(goblin, 1, 2);
+                ground.AddCombatant(ogre, 1, 1);
+                ground.AddCombatant(goblin, 1, 2);
                 goblin.AddCondition(condition);
-                while (ground.CurrentCombattant != ogre) {
+                while (ground.CurrentCombatant != ogre) {
                     ground.NextPhase();
                 }
                 ground.NextPhase();
@@ -295,13 +295,13 @@ namespace srd5 {
         public void CastMagicMissileTest() {
             Battleground2D ground = new Battleground2D(30, 30);
             CharacterSheet hero = new CharacterSheet(Race.TIEFLING, true);
-            ground.AddCombattant(hero, 0, 0);
+            ground.AddCombatant(hero, 0, 0);
             hero.AddLevel(CharacterClasses.Druid);
             Monster ogre = Monsters.Ogre;
             Monster ogre2 = Monsters.Ogre;
-            ground.AddCombattant(ogre, 10, 10);
-            ground.AddCombattant(ogre2, 30, 30);
-            while (ground.CurrentCombattant != hero) {
+            ground.AddCombatant(ogre, 10, 10);
+            ground.AddCombatant(ogre2, 30, 30);
+            while (ground.CurrentCombatant != hero) {
                 ground.NextPhase();
             }
             // incapacitated
@@ -322,12 +322,12 @@ namespace srd5 {
             // no slot available
             Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
             hero.LongRest();
-            int slots = ground.CurrentCombattant.AvailableSpells[0].SlotsCurrent[(int)SpellLevel.FIRST];
+            int slots = ground.CurrentCombatant.AvailableSpells[0].SlotsCurrent[(int)SpellLevel.FIRST];
             // slot invalid
             Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre));
             // All good
             Assert.True(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
-            Assert.Equal(slots - 1, ground.CurrentCombattant.AvailableSpells[0].SlotsCurrent[(int)SpellLevel.FIRST]);
+            Assert.Equal(slots - 1, ground.CurrentCombatant.AvailableSpells[0].SlotsCurrent[(int)SpellLevel.FIRST]);
             Assert.True(ogre.HitPointsMax > ogre.HitPoints);
             // wrong phase (Bonus)
             Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.FIRST, hero.AvailableSpells[0], ogre));
@@ -342,9 +342,9 @@ namespace srd5 {
             Battleground2D ground = new Battleground2D(10, 10);
             Monster hag = Monsters.NightHag;
             Monster ogre = Monsters.Ogre;
-            ground.AddCombattant(hag, 5, 5);
-            ground.AddCombattant(ogre, 8, 8);
-            while (ground.CurrentCombattant != hag) {
+            ground.AddCombatant(hag, 5, 5);
+            ground.AddCombatant(ogre, 8, 8);
+            while (ground.CurrentCombatant != hag) {
                 ground.NextPhase();
             }
             ground.NextPhase();
@@ -357,22 +357,22 @@ namespace srd5 {
             Battleground2D ground = new Battleground2D(10, 10);
             Monster hag = Monsters.NightHag;
             Monster ogre = Monsters.Ogre;
-            ground.AddCombattant(hag, 5, 5);
-            ground.AddCombattant(ogre, 8, 8);
-            while (ground.CurrentCombattant != hag) {
+            ground.AddCombatant(hag, 5, 5);
+            ground.AddCombatant(ogre, 8, 8);
+            while (ground.CurrentCombatant != hag) {
                 ground.NextPhase();
             }
             ground.NextPhase();
             Assert.False(ground.SpellCastAction(Spells.MagicMissile, SpellLevel.THIRD, hag.AvailableSpells[0]));
             Assert.True(ground.SpellCastAction(Spells.Sleep, SpellLevel.FIRST, hag.AvailableSpells[0], ogre));
             ground.NextPhase();
-            while (ground.CurrentCombattant != hag) {
+            while (ground.CurrentCombatant != hag) {
                 ground.NextPhase();
             }
             ground.NextPhase();
             Assert.True(ground.SpellCastAction(Spells.Sleep, SpellLevel.FIRST, hag.AvailableSpells[0], ogre));
             ground.NextPhase();
-            while (ground.CurrentCombattant != hag) {
+            while (ground.CurrentCombatant != hag) {
                 ground.NextPhase();
             }
             ground.NextPhase();
@@ -384,13 +384,13 @@ namespace srd5 {
         public void CastAreaEffectTest() {
             Battleground2D ground = new Battleground2D(20, 20);
             CharacterSheet hero = new CharacterSheet(Race.TIEFLING, true);
-            Combattant currentCombattant = null;
+            Combatant currentCombatant = null;
             ground.EventSubscription += delegate (object sender, BattlegroundEvent bgEvent) {
-                if (bgEvent is CombattantChangedEvent @event) {
-                    currentCombattant = @event.CurrentCombattant;
+                if (bgEvent is CombatantChangedEvent @event) {
+                    currentCombatant = @event.CurrentCombatant;
                 }
             };
-            ground.AddCombattant(hero, 0, 0);
+            ground.AddCombatant(hero, 0, 0);
             hero.AddLevel(CharacterClasses.Druid);
             hero.LongRest();
             hero.AvailableSpells[0].AddKnownSpell(Spells.AcidSplash);
@@ -399,11 +399,11 @@ namespace srd5 {
             Monster ogre2 = Monsters.Ogre;
             Monster ogre3 = Monsters.Ogre;
             Monster ogre4 = Monsters.Ogre;
-            ground.AddCombattant(ogre, 6, 6);
-            ground.AddCombattant(ogre2, 6, 7);
-            ground.AddCombattant(ogre3, 7, 6);
-            ground.AddCombattant(ogre4, 8, 8);
-            while (currentCombattant != hero) {
+            ground.AddCombatant(ogre, 6, 6);
+            ground.AddCombatant(ogre2, 6, 7);
+            ground.AddCombatant(ogre3, 7, 6);
+            ground.AddCombatant(ogre4, 8, 8);
+            while (currentCombatant != hero) {
                 ground.NextPhase();
             }
             ground.NextPhase();
@@ -427,12 +427,12 @@ namespace srd5 {
             hero.Equip(Armors.StuddedLeatherArmor);
             Monster boar = Monsters.Orc;
             BattleGroundClassic battle = new BattleGroundClassic();
-            battle.AddCombattant(hero, ClassicLocation.Row.FRONT_LEFT);
-            battle.AddCombattant(boar, ClassicLocation.Row.FRONT_LEFT);
+            battle.AddCombatant(hero, ClassicLocation.Row.FRONT_LEFT);
+            battle.AddCombatant(boar, ClassicLocation.Row.FRONT_LEFT);
             battle.Initialize();
-            while (battle.CurrentCombattant.HitPoints > 0) {
+            while (battle.CurrentCombatant.HitPoints > 0) {
                 if (battle.NextPhase() == TurnPhase.ACTION) {
-                    if (battle.CurrentCombattant == hero) {
+                    if (battle.CurrentCombatant == hero) {
                         Assert.True(battle.MeleeAttackAction(boar));
                         Assert.False(battle.MeleeAttackAction(boar)); // no bonus attack
                     } else {
@@ -450,25 +450,25 @@ namespace srd5 {
             bandit.HitPointsMax = 500;
             bandit.HitPoints = 500;
             BattleGroundClassic battle = new BattleGroundClassic();
-            battle.AddCombattant(ogre, ClassicLocation.Row.BACK_LEFT);
-            battle.AddCombattant(bandit, ClassicLocation.Row.BACK_RIGHT);
+            battle.AddCombatant(ogre, ClassicLocation.Row.BACK_LEFT);
+            battle.AddCombatant(bandit, ClassicLocation.Row.BACK_RIGHT);
             bandit.BonusAttack = Attacks.GoblinShortbow;
             battle.Initialize();
             Random.State = 1;
-            if (battle.CurrentCombattant == ogre)
+            if (battle.CurrentCombatant == ogre)
                 Assert.False(battle.RangedAttackAction(bandit));
             else
                 Assert.False(battle.RangedAttackAction(ogre));
             Assert.Throws<Srd5ArgumentException>(
                 delegate () {
                     battle.NextPhase();
-                    battle.RangedAttackAction(battle.CurrentCombattant);
+                    battle.RangedAttackAction(battle.CurrentCombatant);
                 }
             );
             while (bandit.HitPoints > 0) {
                 while (battle.NextPhase() != TurnPhase.ACTION) ;
                 Assert.Throws<Srd5ArgumentException>(delegate { battle.RangedAttackAction(null); });
-                if (battle.CurrentCombattant == ogre)
+                if (battle.CurrentCombatant == ogre)
                     Assert.True(battle.RangedAttackAction(bandit));
                 else {
                     Assert.Throws<Srd5ArgumentException>(delegate { battle.RangedAttackAction(bandit); });
@@ -488,14 +488,14 @@ namespace srd5 {
             orcs[2] = Monsters.Orc;
             orcs[3] = Monsters.Orc;
             Battleground2D battle = new Battleground2D(30, 1);
-            battle.AddCombattant(ogre, 0, 0);
-            battle.AddCombattant(orcs[0], 1, 0); // next to ogre => Disadvantage
-            battle.AddCombattant(orcs[1], 3, 0); // normal range
-            battle.AddCombattant(orcs[2], 15, 0); // long range
-            battle.AddCombattant(orcs[3], 28, 0); // out of range
+            battle.AddCombatant(ogre, 0, 0);
+            battle.AddCombatant(orcs[0], 1, 0); // next to ogre => Disadvantage
+            battle.AddCombatant(orcs[1], 3, 0); // normal range
+            battle.AddCombatant(orcs[2], 15, 0); // long range
+            battle.AddCombatant(orcs[3], 28, 0); // out of range
             battle.Initialize();
             for (int i = 0; i < orcs.Length; i++) {
-                while (battle.CurrentCombattant != ogre) {
+                while (battle.CurrentCombatant != ogre) {
                     battle.NextPhase();
                 }
                 battle.NextPhase(); // skip move
@@ -513,42 +513,60 @@ namespace srd5 {
         [Fact]
         public void PushTest2D() {
             Battleground2D ground = new Battleground2D(10, 10);
-            Combattant ogre = Monsters.Ogre;
-            ground.AddCombattant(ogre, 5, 5);
+            Combatant ogre = Monsters.Ogre;
+            ground.AddCombatant(ogre, 5, 5);
             ground.Initialize();
             ground.Push(new Coord(5, 4), ogre, 10); // push south
-            Assert.Equal(7, ground.LocateCombattant2D(ogre).Y);
+            Assert.Equal(7, ground.LocateCombatant2D(ogre).Y);
             ground.Push(new Coord(5, 8), ogre, 5); // push north
-            Assert.Equal(6, ground.LocateCombattant2D(ogre).Y);
+            Assert.Equal(6, ground.LocateCombatant2D(ogre).Y);
             ground.Push(new Coord(4, 6), ogre, 15); // push east
-            Assert.Equal(8, ground.LocateCombattant2D(ogre).X);
+            Assert.Equal(8, ground.LocateCombatant2D(ogre).X);
             ground.Push(new Coord(9, 6), ogre, 15); // push west
-            Assert.Equal(5, ground.LocateCombattant2D(ogre).X);
+            Assert.Equal(5, ground.LocateCombatant2D(ogre).X);
             ground.Push(new Coord(4, 3), ogre, 10); // push northeast
-            Assert.Equal(6, ground.LocateCombattant2D(ogre).X);
-            Assert.Equal(7, ground.LocateCombattant2D(ogre).Y);
+            Assert.Equal(6, ground.LocateCombatant2D(ogre).X);
+            Assert.Equal(7, ground.LocateCombatant2D(ogre).Y);
             ground.Push(new Coord(4, 9), ogre, 5); // push southeast
-            Assert.Equal(7, ground.LocateCombattant2D(ogre).X);
-            Assert.Equal(6, ground.LocateCombattant2D(ogre).Y);
+            Assert.Equal(7, ground.LocateCombatant2D(ogre).X);
+            Assert.Equal(6, ground.LocateCombatant2D(ogre).Y);
             ground.Push(new Coord(9, 2), ogre, 5); // push northwest
-            Assert.Equal(6, ground.LocateCombattant2D(ogre).X);
-            Assert.Equal(7, ground.LocateCombattant2D(ogre).Y);
+            Assert.Equal(6, ground.LocateCombatant2D(ogre).X);
+            Assert.Equal(7, ground.LocateCombatant2D(ogre).Y);
             ground.Push(new Coord(9, 9), ogre, 5); // push southwest
-            Assert.Equal(5, ground.LocateCombattant2D(ogre).X);
-            Assert.Equal(6, ground.LocateCombattant2D(ogre).Y);
+            Assert.Equal(5, ground.LocateCombatant2D(ogre).X);
+            Assert.Equal(6, ground.LocateCombatant2D(ogre).Y);
         }
 
         [Fact]
         public void PushTestClassic() {
             BattleGroundClassic classic = new BattleGroundClassic();
-            Combattant ogre = Monsters.Ogre;
-            Combattant goblin = Monsters.Goblin;
-            classic.AddCombattant(ogre, ClassicLocation.Row.FRONT_LEFT);
-            classic.AddCombattant(goblin, ClassicLocation.Row.FRONT_RIGHT);
-            classic.Push(classic.LocateClassicCombattant(ogre), goblin, 10);
-            classic.Push(classic.LocateClassicCombattant(goblin), ogre, 10);
-            Assert.Equal(ClassicLocation.Row.BACK_LEFT, classic.LocateClassicCombattant(ogre).Location);
-            Assert.Equal(ClassicLocation.Row.BACK_RIGHT, classic.LocateClassicCombattant(goblin).Location);
+            Combatant ogre = Monsters.Ogre;
+            Combatant goblin = Monsters.Goblin;
+            classic.AddCombatant(ogre, ClassicLocation.Row.FRONT_LEFT);
+            classic.AddCombatant(goblin, ClassicLocation.Row.FRONT_RIGHT);
+            classic.Push(classic.LocateClassicCombatant(ogre), goblin, 10);
+            classic.Push(classic.LocateClassicCombatant(goblin), ogre, 10);
+            Assert.Equal(ClassicLocation.Row.BACK_LEFT, classic.LocateClassicCombatant(ogre).Location);
+            Assert.Equal(ClassicLocation.Row.BACK_RIGHT, classic.LocateClassicCombatant(goblin).Location);
+        }
+
+        [Fact]
+        public void AddCombatantNextToTest() {
+            Battleground2D ground = new Battleground2D(10, 10);
+            int[] x = [4, 4, 4, 5, 5, 6, 6, 6];
+            int[] y = [4, 4, 4, 5, 5, 6, 6, 6];
+            Monster[] goblins = [];
+            for (int i = 0; i < 8; i++) {
+                Monster goblin = Monsters.Goblin;
+                Utils.Push<Monster>(ref goblins, goblin);
+                ground.AddCombatantNextTo(goblin, 5, 5);
+            }
+            foreach (Monster goblin in goblins) {
+                Coord coord = ground.LocateCombatant2D(goblin);
+                Assert.False(Utils.RemoveSingle(ref x, coord.X) == RemoveResult.NOT_FOUND);
+                Assert.False(Utils.RemoveSingle(ref y, coord.Y) == RemoveResult.NOT_FOUND);
+            }
         }
     }
 }

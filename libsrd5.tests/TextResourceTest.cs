@@ -5,7 +5,7 @@ namespace srd5 {
     public class TextResourceTest {
         [Fact]
         public void RacialTextTest() {
-            foreach (Race race in Enum.GetValues(typeof(Race))) {
+            foreach (Race race in Enum.GetValues<Race>()) {
                 Assert.NotNull(race.Name());
                 Assert.NotNull(race.Description());
             }
@@ -13,14 +13,14 @@ namespace srd5 {
 
         [Fact]
         public void EffectTextTest() {
-            foreach (Effect effect in Enum.GetValues(typeof(Effect))) {
+            foreach (Effect effect in Enum.GetValues<Effect>()) {
                 Assert.NotNull(effect.Name());
             }
         }
 
         [Fact]
         public void FeatTextTest() {
-            foreach (Feat feat in Enum.GetValues(typeof(Feat))) {
+            foreach (Feat feat in Enum.GetValues<Feat>()) {
                 Assert.NotNull(feat.Name());
                 Assert.NotNull(feat.Description());
             }
@@ -28,7 +28,7 @@ namespace srd5 {
 
         [Fact]
         public void SkillTextTest() {
-            foreach (Skill skill in Enum.GetValues(typeof(Skill))) {
+            foreach (Skill skill in Enum.GetValues<Skill>()) {
                 Assert.NotNull(skill.Name());
                 Assert.NotNull(skill.Description());
             }

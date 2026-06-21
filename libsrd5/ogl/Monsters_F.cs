@@ -3,7 +3,7 @@ using static srd5.Effect;
 
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly AttackEffect FireElementalTouchEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect FireElementalTouchEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(FIRE)) return false;
             if (target.HasEffect(FIRE_ELEMENTAL_IGNITE)) return false;
             target.AddEffect(FIRE_ELEMENTAL_IGNITE);

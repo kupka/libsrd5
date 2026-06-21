@@ -18,10 +18,10 @@ namespace srd5 {
                 return new Attack("Hooves", 6, new Damage(BLUDGEONING, "2d6+4"), 5);
             }
         }
-        public static readonly AttackEffect PhaseSpiderBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect PhaseSpiderBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(POISON)) return false;
             if (target.DC(PhaseSpiderBite, 12, AbilityType.CONSTITUTION)) return false;
-            target.TakeDamage(attacker, POISON, "4d8");
+            target.TakeDamage(new DamageSource(PhaseSpiderBite, attacker), POISON, "4d8");
             if (target.HitPoints == 0) {
                 target.AddEffect(PHASE_SPIDER_POISON);
                 // TODO: remove after one hour "the target is stable but poisoned for 1 hour"
@@ -33,7 +33,7 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, "1d10+2"), 5, null, PhaseSpiderBiteEffect);
             }
         }
-        public static readonly AttackEffect PitFiendBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect PitFiendBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(POISON)) return false;
             if (target.DC(PitFiendBite, 21, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(PIT_FIEND_POISON);
@@ -69,8 +69,8 @@ namespace srd5 {
                 return new Attack("Bite", 6, new Damage(PIERCING, "3d6+4"), 10);
             }
         }
-        public static readonly AttackEffect PoisonousSnakeBiteEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, PoisonousSnakeBite, "2d4", 10);
+        public static readonly AttackEffect PoisonousSnakeBiteEffect = delegate (Combatant attacker, Combatant target) {
+            AttackEffects.PoisonEffect(attacker, target, PoisonousSnakeBite, "2d4", 10);
             return false;
         };
         public static Attack PoisonousSnakeBite {
@@ -98,7 +98,7 @@ namespace srd5 {
                 return new Attack("Mace", 2, new Damage(BLUDGEONING, "1d6"), 5);
             }
         }
-        public static readonly AttackEffect PseudodragonStingEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect PseudodragonStingEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(POISON)) return false;
             if (target.DC(PseudodragonSting, 11, AbilityType.CONSTITUTION, out int roll)) return false;
             target.AddEffect(PSEUDO_DRAGON_POISON);
@@ -122,8 +122,8 @@ namespace srd5 {
                 return new Attack("Bite", 9, new Damage(PIERCING, "3d8+9"), 5);
             }
         }
-        public static readonly AttackEffect PurpleWormTailStingerEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, PurpleWormTailStinger, "3d6+9", 19);
+        public static readonly AttackEffect PurpleWormTailStingerEffect = delegate (Combatant attacker, Combatant target) {
+            AttackEffects.PoisonEffect(attacker, target, PurpleWormTailStinger, "3d6+9", 19);
             return false;
         };
         public static Attack PurpleWormTailStinger {

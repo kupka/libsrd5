@@ -3,7 +3,7 @@ using static srd5.Effect;
 
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly AttackEffect RakshasaClawEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect RakshasaClawEffect = delegate (Combatant attacker, Combatant target) {
             target.AddEffect(CURSE_RAKSHASA);
             return false;
         };
@@ -32,7 +32,7 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, "1d8+2"), 5);
             }
         }
-        public static readonly AttackEffect RemorhazBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect RemorhazBiteEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 17, Size.GARGANTUAN, true, RemorhazBite);
             return false;
         };
@@ -51,7 +51,7 @@ namespace srd5 {
                 return new Attack("Hooves", 5, new Damage(BLUDGEONING, "2d4+3"), 5);
             }
         }
-        public static readonly AttackEffect RocTalonsEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect RocTalonsEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 19, Size.GARGANTUAN, true, RocTalons);
             return false;
         };
@@ -66,7 +66,7 @@ namespace srd5 {
             }
         }
 
-        public static readonly AttackEffect RoperTendrilEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect RoperTendrilEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 15, Size.HUGE, true, RoperTendril, 6);
             return false;
         };
@@ -83,7 +83,7 @@ namespace srd5 {
         // !!!!!!!!!!!!!!!!!!!!!!UNPARSABLE ATTACK!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // RugOfSmotheringSmother
         // {"name":"Smother","desc":"Melee Weapon Attack: +5 to hit, reach 5 ft., one Medium or smaller creature. Hit: The creature is grappled (escape DC 13). Until this grapple ends, the target is restrained, blinded, and at risk of suffocating, and the rug can't smother another target. In addition, at the start of each of the target's turns, the target takes 10 (2d6 + 3) bludgeoning damage.","attack_bonus":5}
-        public static readonly AttackEffect RugOfSmotheringSmotherEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect RugOfSmotheringSmotherEffect = delegate (Combatant attacker, Combatant target) {
             if (AttackEffects.GrapplingEffect(attacker, target, 13, Size.MEDIUM, true, RugOfSmotheringSmother, 1)) {
                 target.AddEffect(RUG_SMOTHER);
             }

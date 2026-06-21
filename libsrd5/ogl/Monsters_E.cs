@@ -23,10 +23,10 @@ namespace srd5 {
                 return new Attack("Scimitar", 10, new Damage(SLASHING, "2d6+6"), 5, new Damage(FIRE, "2d6"));
             }
         }
-        public static readonly AttackEffect ElephantStompEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect ElephantStompEffect = delegate (Combatant attacker, Combatant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
-            int amount = new Dice("3d10+6").Roll(); // FIXME: Cannot crit because attack roll is not available here
-            target.TakeDamage(attacker, BLUDGEONING, amount);
+            // FIXME: Cannot crit because attack roll is not available here
+            target.TakeDamage(new DamageSource(ElephantStomp, attacker), BLUDGEONING, "3d10+6");
             return false;
         };
         public static Attack ElephantStomp {
@@ -39,10 +39,10 @@ namespace srd5 {
                 return new Attack("Gore", 8, new Damage(PIERCING, "3d8+6"), 5);
             }
         }
-        public static readonly AttackEffect ElkHoovesEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect ElkHoovesEffect = delegate (Combatant attacker, Combatant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
-            int amount = new Dice("2d4+3").Roll(); // FIXME: Cannot crit because attack roll is not available here
-            target.TakeDamage(attacker, BLUDGEONING, amount);
+            // FIXME: Cannot crit because attack roll is not available here
+            target.TakeDamage(new DamageSource(ElkHooves, attacker), BLUDGEONING, "2d4+3");
             return false;
         };
         public static Attack ElkHooves {
@@ -60,7 +60,7 @@ namespace srd5 {
                 return new Attack("Longsword", 8, new Damage(SLASHING, "1d10+4"), 5, new Damage(POISON, "3d8"));
             }
         }
-        public static readonly AttackEffect ErinyesLongbowEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect ErinyesLongbowEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(POISON)) return false;
             bool success = target.DC(ErinyesLongbow, 14, AbilityType.CONSTITUTION);
             if (success) return false;
@@ -72,7 +72,7 @@ namespace srd5 {
                 return new Attack("Longbow", 7, new Damage(PIERCING, "1d8+3"), 5, new Damage(POISON, "3d8"), ErinyesLongbowEffect);
             }
         }
-        public static readonly AttackEffect EttercapBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect EttercapBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(POISON)) return false;
             bool success = target.DC(EttercapBite, 11, AbilityType.CONSTITUTION);
             if (success) return false;
@@ -91,7 +91,7 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, "1d8+2"), 5, new Damage(POISON, "1d8"), EttercapBiteEffect);
             }
         }
-        public static readonly AttackEffect EttercapWebEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect EttercapWebEffect = delegate (Combatant attacker, Combatant target) {
             if (target.Size > Size.LARGE) return false;
             if (target.HasEffect(IMMUNITY_RESTRAINED)) return false;
             target.AddEffect(ETTERCAP_WEB);

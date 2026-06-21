@@ -18,7 +18,7 @@ namespace srd5 {
                 return new Attack("Fist", 3, new Damage(BLUDGEONING, "1d4"), 5);
             }
         }
-        public static readonly AttackEffect LichParalyzingTouchEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect LichParalyzingTouchEffect = delegate (Combatant attacker, Combatant target) {
             if (target.HasEffect(IMMUNITY_PARALYZED)) return false;
             if (target.DC(LichParalyzingTouch, 18, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(LICH_PARALYZATION);

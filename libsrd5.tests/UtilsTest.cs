@@ -32,5 +32,53 @@ namespace srd5 {
             Assert.False(aboleth.Equals(Monsters.Aboleth));
             Assert.False(aboleth.Equals("Aboleth"));
         }
+
+        [Fact]
+        public void PushTest() {
+            string[] a = { "a", "b" };
+            Utils.Push<string>(ref a, "c", "d");
+            Assert.Equal(4, a.Length);
+            Assert.Equal(new string[] { "a", "b", "c", "d" }, a);
+        }
+
+        [Fact]
+        public void PushUniqueTest() {
+            string[] a = { "a", "b" };
+            Assert.True(Utils.PushUnique<string>(ref a, "c"));
+            Assert.Equal(3, a.Length);
+            Assert.Equal(new string[] { "a", "b", "c" }, a);
+
+            Assert.False(Utils.PushUnique<string>(ref a, "b"));
+            Assert.Equal(4, a.Length);
+            Assert.Equal(new string[] { "a", "b", "c", "b" }, a);
+        }
+
+        [Fact]
+        public void ExpandTest() {
+            string[] a = Utils.Expand<string>("x", 3);
+            Assert.Equal(3, a.Length);
+            Assert.Equal(new string[] { "x", "x", "x" }, a);
+        }
+
+        [Fact]
+        public void GuidClassExtendedTest() {
+            Monster m1 = Monsters.Aboleth;
+            Monster m2 = Monsters.Aboleth;
+            Monster m3 = Monsters.Ogre;
+            Monster m4 = Monsters.Aboleth;
+            Item i1 = Armors.Breastplate;
+
+            // GetHashCode
+            Assert.Equal(m1.Guid.GetHashCode(), m1.GetHashCode());
+
+            // Is
+            Assert.True(m1.Is(m2));
+            Assert.False(m3.Is(m4));
+            Assert.False(m1.Is(i1));
+            Assert.False(m1.Is("Aboleth"));
+
+            // ToString
+            Assert.Equal(m1.Name + "#" + m1.Guid, m1.ToString());
+        }
     }
 }

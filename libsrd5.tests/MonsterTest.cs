@@ -1,5 +1,6 @@
 using Xunit;
 using System.Reflection;
+using System;
 
 namespace srd5 {
     [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
@@ -49,8 +50,8 @@ namespace srd5 {
             Battleground2D ground = new Battleground2D(10, 10);
             Monster tarrasque = Monsters.Tarrasque;
             Monster hag = Monsters.NightHag;
-            ground.AddCombattant(tarrasque, 5, 5);
-            ground.AddCombattant(hag, 8, 8);
+            ground.AddCombatant(tarrasque, 5, 5);
+            ground.AddCombatant(hag, 8, 8);
             Assert.True(tarrasque.DC(null, 100, AbilityType.DEXTERITY) && tarrasque.DC(null, 100, AbilityType.DEXTERITY) && tarrasque.DC(null, 100, AbilityType.DEXTERITY));
             Assert.False(tarrasque.DC(Spells.ID.HOLD_PERSON, 100, AbilityType.DEXTERITY) && tarrasque.DC(Spells.ID.CURE_WOUNDS, 100, AbilityType.DEXTERITY) && tarrasque.DC(Attacks.TarrasqueBite, 100, AbilityType.DEXTERITY));
             for (int i = 0; i < 100; i++) {
@@ -85,6 +86,15 @@ namespace srd5 {
             Monster hag = Monsters.NightHag;
             Assert.True(Spells.MagicMissile.Equals(hag.InnateSpellcastingBySpell(Spells.MagicMissile).Spell));
             Assert.Null(hag.InnateSpellcastingBySpell(Spells.Wish));
+        }
+
+        [Fact]
+        public void MonsterEnumerationTest() {
+            foreach (Monsters.ID id in Enum.GetValues<Monsters.ID>()) {
+                Monster monster = Monsters.Get(id);
+                Assert.Equal(id, monster.ID);
+            }
+            Assert.Throws<Srd5ArgumentException>(() => Monsters.Get((Monsters.ID)(-1)));
         }
     }
 }

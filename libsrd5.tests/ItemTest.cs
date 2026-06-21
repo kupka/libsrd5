@@ -4,11 +4,11 @@ using Xunit;
 
 namespace srd5 {
     public class ItemTest {
-        private BattleGroundClassic createBattleground(Combattant caster, params Combattant[] targets) {
+        private BattleGroundClassic createBattleground(Combatant caster, params Combatant[] targets) {
             BattleGroundClassic ground = new BattleGroundClassic();
-            ground.AddCombattant(caster, ClassicLocation.Row.FRONT_LEFT);
-            foreach (Combattant target in targets) {
-                ground.AddCombattant(target, ClassicLocation.Row.FRONT_RIGHT);
+            ground.AddCombatant(caster, ClassicLocation.Row.FRONT_LEFT);
+            foreach (Combatant target in targets) {
+                ground.AddCombatant(target, ClassicLocation.Row.FRONT_RIGHT);
             }
             return ground;
         }
@@ -76,7 +76,7 @@ namespace srd5 {
             Consumable[] potions = new Consumable[] { Potions.PotionOfHealing, Potions.PotionOfGreaterHealing,
                                     Potions.PotionOfSuperiorHealing, Potions.PotionOfSupremeHealing };
             foreach (Consumable potion in potions) {
-                hero.TakeDamage(this, DamageType.SLASHING, hero.HitPointsMax);
+                hero.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hero), DamageType.SLASHING, hero.HitPointsMax);
                 Assert.True(hero.HasEffect(Effect.FIGHTING_DEATH));
                 hero.Consume(potion);
                 Assert.False(hero.HasEffect(Effect.FIGHTING_DEATH));
@@ -102,7 +102,7 @@ namespace srd5 {
         public void ItemsWithoutNamesAreNotTheSame() {
             Item a = new Armor(null, 12, 12, 5, Proficiency.LIGHT_ARMOR, new ArmorProperty[0], 1, 2);
             Item b = new Armor(null, 12, 12, 5, Proficiency.LIGHT_ARMOR, new ArmorProperty[0], 1, 2);
-            Item c = new Consumable("Foo", ItemType.POTION, delegate (Combattant consumer, Consumable item) { }, ItemRarity.COMMON, 1);
+            Item c = new Consumable("Foo", ItemType.POTION, delegate (Combatant consumer, Consumable item) { }, ItemRarity.COMMON, 1);
             Assert.False(a.Is(b));
             a.Name = "Foo";
             b.Name = "Foo";

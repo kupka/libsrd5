@@ -4,7 +4,7 @@ using static srd5.Effect;
 namespace srd5 {
     public partial struct Attacks {
         public static readonly Attack[] None = new Attack[0];
-        public static AttackEffect AbolethTentacleEffect = delegate (Combattant attacker, Combattant target) {
+        public static AttackEffect AbolethTentacleEffect = delegate (Combatant attacker, Combatant target) {
             if (target.DC(AbolethTentacle, 14, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(ABOLETH_DISEASE_TENTACLE);
             return false;
@@ -339,7 +339,7 @@ namespace srd5 {
                 return new Attack("Slam", 4, new Damage(BLUDGEONING, "1d6+2"), 5);
             }
         }
-        public static AttackEffect AnkhegBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static AttackEffect AnkhegBiteEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 13, Monsters.Ankheg.Size + 1);
             return false;
         };
@@ -368,8 +368,8 @@ namespace srd5 {
                 return new Attack("Dagger", 6, new Damage(PIERCING, "1d4+2"), 5, 20, 60);
             }
         }
-        public static AttackEffect AssassinShortswordEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, AssassinShortsword, "7d6", 15);
+        public static AttackEffect AssassinShortswordEffect = delegate (Combatant attacker, Combatant target) {
+            AttackEffects.PoisonEffect(attacker, target, AssassinShortsword, "7d6", 15);
             return false;
         };
         public static Attack AssassinShortsword {

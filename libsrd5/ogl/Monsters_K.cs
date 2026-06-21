@@ -28,7 +28,7 @@ namespace srd5 {
                 return new Attack("Sling", 4, new Damage(BLUDGEONING, "1d4+2"), 5, 30, 120);
             }
         }
-        public static readonly AttackEffect KrakenBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect KrakenBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (!target.HasCondition(ConditionType.GRAPPLED_DC18)) return false;
             if (target.Size > Size.LARGE) return false;
             // If the target is a Large or smaller creature grappled by the kraken, that creature is swallowed, and the grapple ends.
@@ -41,7 +41,7 @@ namespace srd5 {
             // and it takes 42 (12d6) acid damage at the start of each of the kraken's turns
             attacker.AddStartOfTurnEvent(delegate () {
                 if (!(target.HasEffect(KRAKEN_SWALLOW))) return true;
-                target.TakeDamage(attacker, ACID, "12d6");
+                target.TakeDamage(new DamageSource(KrakenBite, attacker), ACID, "12d6");
                 return false;
             });
             // TODO: if the kraken takes 50 damage or more on a single turn from a creature inside it, 
@@ -57,7 +57,7 @@ namespace srd5 {
             }
         }
 
-        public static readonly AttackEffect KrakenTentacleEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect KrakenTentacleEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 18, Size.GARGANTUAN, true, null, 10);
             return false;
         };

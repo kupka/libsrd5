@@ -3,7 +3,7 @@ using static srd5.Effect;
 
 namespace srd5 {
     public partial struct Attacks {
-        public static readonly AttackEffect TarrasqueBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect TarrasqueBiteEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 20, Size.GARGANTUAN, true, TarrasqueBite, 1);
             return false;
         };
@@ -12,7 +12,7 @@ namespace srd5 {
                 return new Attack("Bite", 19, new Damage(PIERCING, "4d12+10"), 10, null, TarrasqueBiteEffect);
             }
         }
-        public static readonly AttackEffect TarrasqueTailEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect TarrasqueTailEffect = delegate (Combatant attacker, Combatant target) {
             if (target.HasEffect(IMMUNITY_PRONE)) return false;
             if (target.DC(TarrasqueTail, 20, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
@@ -73,9 +73,9 @@ namespace srd5 {
                 return new Attack("Spear", 3, new Damage(PIERCING, "1d6+1"), 20, 60);
             }
         }
-        public static readonly AttackEffect TriceratopsStompEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect TriceratopsStompEffect = delegate (Combatant attacker, Combatant target) {
             if (!target.HasCondition(ConditionType.PRONE)) return false;
-            target.TakeDamage(attacker, BLUDGEONING, "3d10+6");
+            target.TakeDamage(new DamageSource(TriceratopsStomp, attacker), BLUDGEONING, "3d10+6");
             return false;
         };
         public static Attack TriceratopsStomp {
@@ -98,7 +98,7 @@ namespace srd5 {
                 return new Attack("Claw", 7, new Damage(SLASHING, "2d6+4"), 5);
             }
         }
-        public static readonly AttackEffect TyrannosaurusRexBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect TyrannosaurusRexBiteEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 17, Size.MEDIUM, true, TyrannosaurusRexBite);
             return false;
         };

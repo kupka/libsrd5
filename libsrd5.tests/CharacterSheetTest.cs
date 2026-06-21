@@ -476,7 +476,7 @@ namespace srd5 {
         public void LongRestTest() {
             CharacterSheet sheet = new CharacterSheet(Race.HALFLING);
             sheet.AddLevel(CharacterClasses.Barbarian);
-            sheet.TakeDamage(this, DamageType.SLASHING, 2);
+            sheet.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, sheet), DamageType.SLASHING, 2);
             Assert.True(sheet.HitPointsMax > sheet.HitPoints);
             sheet.LongRest();
             Assert.Equal(sheet.HitPointsMax, sheet.HitPoints);
@@ -501,7 +501,7 @@ namespace srd5 {
         public void CannotEquipOrUseDestroyedItems() {
             CharacterSheet sheet = new CharacterSheet(Race.HILL_DWARF);
             Battleground ground = new BattleGroundClassic();
-            ground.AddCombattant(sheet);
+            ground.AddCombatant(sheet);
             sheet.AddLevel(CharacterClasses.Barbarian);
             sheet.HitPoints = 1;
             Armor chain = Armors.ChainMailArmor;
@@ -541,7 +541,7 @@ namespace srd5 {
         public void InstantDeathTest() {
             CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
             hero.AddLevel(CharacterClasses.Wizard);
-            hero.TakeDamage(this, DamageType.TRUE_DAMAGE, 100);
+            hero.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hero), DamageType.TRUE_DAMAGE, 100);
             Assert.True(hero.Dead);
         }
 
@@ -551,8 +551,9 @@ namespace srd5 {
             // try often for all possible outcomes
             for (int i = 0; i < 100; i++) {
                 CharacterSheet hero = new CharacterSheet(Race.HALF_ELF);
+                if (i % 5 == 0) hero.AddEffect(Effect.ADVANTAGE_DEATH_SAVES);
                 hero.AddLevel(CharacterClasses.Wizard);
-                hero.TakeDamage(this, DamageType.TRUE_DAMAGE, hero.HitPointsMax);
+                hero.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hero), DamageType.TRUE_DAMAGE, hero.HitPointsMax);
                 Assert.True(hero.HasEffect(Effect.FIGHTING_DEATH));
                 for (int j = 0; j < 6; j++) {
                     hero.OnStartOfTurn();
@@ -566,6 +567,23 @@ namespace srd5 {
                 }
             }
             Assert.True(died + survived == 100);
+        }
+
+        [Fact]
+        public void SpellCastingAbilityTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            hero.AddLevel(CharacterClasses.Druid);
+            hero.AddLevel(CharacterClasses.Wizard);
+            Assert.Equal(CharacterClasses.Druid, hero.AvailableSpells[0].CharacterClass);
+            Assert.Equal(CharacterClasses.Wizard, hero.AvailableSpells[1].CharacterClass);
+            hero.AvailableSpells[0].AddKnownSpell(Spells.Barkskin);
+            hero.AvailableSpells[1].AddKnownSpell(Spells.MagicMissile);
+            hero.AvailableSpells[1].AddKnownSpell(Spells.ArcaneHand);
+            Assert.Equal(AbilityType.WISDOM, hero.SpellCastingAbility(Spells.ID.BARKSKIN));
+            Assert.Equal(AbilityType.INTELLIGENCE, hero.SpellCastingAbility(Spells.ID.ARCANE_HAND));
+            Assert.Throws<Srd5ArgumentException>(delegate () {
+                hero.SpellCastingAbility(Spells.ID.ALTER_SELF);
+            });
         }
     }
 }

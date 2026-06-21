@@ -281,76 +281,76 @@ namespace srd5 {
     }
 
     public static class FeatExtension {
-        public static void Apply(this Feat feat, Combattant combattant) {
+        public static void Apply(this Feat feat, Combatant combatant) {
             switch (feat) {
                 case Feat.DWARVEN_ABILITY_INCREASE:
-                    combattant.Constitution.BaseValue += 2;
+                    combatant.Constitution.BaseValue += 2;
                     break;
                 case Feat.DWARVEN_DARKVISION:
                 case Feat.ELVEN_DARKVISION:
-                    combattant.AddEffect(DARKVISION);
+                    combatant.AddEffect(DARKVISION);
                     break;
                 case Feat.DWARVEN_RESILIENCE:
-                    combattant.AddEffect(RESISTANCE_POISON);
-                    combattant.AddEffect(ADVANTAGE_POISON_SAVES);
+                    combatant.AddEffect(RESISTANCE_POISON);
+                    combatant.AddEffect(ADVANTAGE_POISON_SAVES);
                     break;
                 case Feat.DWARVEN_SMITH:
-                    combattant.AddProficiency(Proficiency.SMITH);
+                    combatant.AddProficiency(Proficiency.SMITH);
                     break;
                 case Feat.DWARVEN_BREWER:
-                    combattant.AddProficiency(Proficiency.BREWER);
+                    combatant.AddProficiency(Proficiency.BREWER);
                     break;
                 case Feat.DWARVEN_MASON:
-                    combattant.AddProficiency(Proficiency.MASON);
+                    combatant.AddProficiency(Proficiency.MASON);
                     break;
                 case Feat.DWARVEN_COMBAT_TRAINING:
-                    combattant.AddProficiency(Proficiency.BATTLEAXE);
-                    combattant.AddProficiency(Proficiency.HANDAXE);
-                    combattant.AddProficiency(Proficiency.LIGHT_HAMMER);
-                    combattant.AddProficiency(Proficiency.WARHAMMER);
-                    combattant.AddEffect(NO_SPEED_PENALITY_FOR_HEAVY_ARMOR);
+                    combatant.AddProficiency(Proficiency.BATTLEAXE);
+                    combatant.AddProficiency(Proficiency.HANDAXE);
+                    combatant.AddProficiency(Proficiency.LIGHT_HAMMER);
+                    combatant.AddProficiency(Proficiency.WARHAMMER);
+                    combatant.AddEffect(NO_SPEED_PENALITY_FOR_HEAVY_ARMOR);
                     break;
                 case Feat.STONECUNNING:
-                    combattant.AddProficiency(Proficiency.HISTORY);
-                    combattant.AddEffect(DOUBLE_PROFICIENCY_BONUS_HISTORY);
+                    combatant.AddProficiency(Proficiency.HISTORY);
+                    combatant.AddEffect(DOUBLE_PROFICIENCY_BONUS_HISTORY);
                     break;
                 case Feat.HILL_DWARVEN_ABILITY_INCREASE:
-                    combattant.Wisdom.BaseValue += 1;
+                    combatant.Wisdom.BaseValue += 1;
                     break;
                 case Feat.DWARVEN_TOUGHNESS:
-                    combattant.AddEffect(ADDITIONAL_HP_PER_LEVEL);
+                    combatant.AddEffect(ADDITIONAL_HP_PER_LEVEL);
                     break;
                 case Feat.ELVEN_ABILITY_INCREASE:
-                    combattant.Dexterity.BaseValue += 2;
+                    combatant.Dexterity.BaseValue += 2;
                     break;
                 case Feat.KEEN_SENSES:
-                    combattant.AddProficiency(Proficiency.PERCEPTION);
+                    combatant.AddProficiency(Proficiency.PERCEPTION);
                     break;
                 case Feat.FEY_ANCESTRY:
-                    combattant.AddEffect(IMMUNITY_SLEEP);
-                    combattant.AddEffect(ADVANTAGE_CHARM_SAVES);
+                    combatant.AddEffect(IMMUNITY_SLEEP);
+                    combatant.AddEffect(ADVANTAGE_CHARM_SAVES);
                     break;
                 case Feat.HIGH_ELVEN_ABILITY_INCREASE:
-                    combattant.Intelligence.BaseValue += 1;
+                    combatant.Intelligence.BaseValue += 1;
                     break;
                 case Feat.HIGH_ELVEN_WEAPON_TRAINING:
-                    combattant.AddProficiency(Proficiency.SHORTBOW);
-                    combattant.AddProficiency(Proficiency.SHORTSWORD);
-                    combattant.AddProficiency(Proficiency.LONGBOW);
-                    combattant.AddProficiency(Proficiency.LONGSWORD);
+                    combatant.AddProficiency(Proficiency.SHORTBOW);
+                    combatant.AddProficiency(Proficiency.SHORTSWORD);
+                    combatant.AddProficiency(Proficiency.LONGBOW);
+                    combatant.AddProficiency(Proficiency.LONGSWORD);
                     break;
                 case Feat.HIGH_ELVEN_CANTRIP:
                     break;
                 case Feat.HUMAN_ABILITY_INCREASE:
-                    combattant.Strength.BaseValue++;
-                    combattant.Constitution.BaseValue++;
-                    combattant.Dexterity.BaseValue++;
-                    combattant.Wisdom.BaseValue++;
-                    combattant.Intelligence.BaseValue++;
-                    combattant.Charisma.BaseValue++;
+                    combatant.Strength.BaseValue++;
+                    combatant.Constitution.BaseValue++;
+                    combatant.Dexterity.BaseValue++;
+                    combatant.Wisdom.BaseValue++;
+                    combatant.Intelligence.BaseValue++;
+                    combatant.Charisma.BaseValue++;
                     break;
                 case Feat.LEGENDARY_RESISTANCE:
-                    combattant.AddEffect(LEGENDARY_RESISTANCE, LEGENDARY_RESISTANCE, LEGENDARY_RESISTANCE);
+                    combatant.AddEffect(LEGENDARY_RESISTANCE, LEGENDARY_RESISTANCE, LEGENDARY_RESISTANCE);
                     break;
             }
         }

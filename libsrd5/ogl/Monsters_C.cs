@@ -28,7 +28,7 @@ namespace srd5 {
                 return new Attack("Longbow", 4, new Damage(PIERCING, "1d8+2"), 5, 150, 600);
             }
         }
-        public static readonly AttackEffect ChainDevilChainEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect ChainDevilChainEffect = delegate (Combatant attacker, Combatant target) {
             if (target.HasEffect(IMMUNITY_GRAPPLED)) return false;
             if (attacker.HasEffect(GRAPPLING)) return false;
             attacker.AddEffect(GRAPPLING);
@@ -40,7 +40,7 @@ namespace srd5 {
                     target.RemoveCondition(ConditionType.RESTRAINED);
                     return true;
                 }
-                target.TakeDamage(attacker, PIERCING, "2d6");
+                target.TakeDamage(new DamageSource(ChainDevilChain, attacker), PIERCING, "2d6");
                 return false;
             });
             return false;
@@ -65,7 +65,7 @@ namespace srd5 {
                 return new Attack("Claws", 7, new Damage(SLASHING, "2d6+4"), 5);
             }
         }
-        public static readonly AttackEffect ChuulPincerEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect ChuulPincerEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 14, Size.LARGE, false, null, 2);
             return false;
         };
@@ -74,7 +74,7 @@ namespace srd5 {
                 return new Attack("Pincer", 6, new Damage(BLUDGEONING, "2d6+4"), 5, null, ChuulPincerEffect);
             }
         }
-        public static readonly AttackEffect ClayGolemSlamEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect ClayGolemSlamEffect = delegate (Combatant attacker, Combatant target) {
             if (target.DC(ClayGolemSlam, 15, AbilityType.CONSTITUTION)) return false; ;
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-16, HitPointMaxiumModifier.RemovedByEffect.GREATER_RESTORATION)); // FIXME: Amount should be equal to actual damage, not average
             if (target.HitPointsMax <= 0) {
@@ -87,7 +87,7 @@ namespace srd5 {
                 return new Attack("Slam", 8, new Damage(BLUDGEONING, "2d10+5"), 5, null, ClayGolemSlamEffect);
             }
         }
-        public static readonly AttackEffect CloakerBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect CloakerBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.Size > Size.LARGE) return false;
             if (attacker.HasEffect(ATTACHED_TO_TARGET)) return false;
             attacker.AddEffect(ATTACHED_TO_TARGET);
@@ -120,7 +120,7 @@ namespace srd5 {
                 return new Attack("Rock", 12, new Damage(BLUDGEONING, "4d10+8"), 5, 60, 240);
             }
         }
-        public static readonly AttackEffect CockatriceBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect CockatriceBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.DC(CockatriceBite, 12, AbilityType.CONSTITUTION)) return false;
             target.AddCondition(ConditionType.RESTRAINED);
             target.AddEndOfTurnEvent(delegate () {
@@ -140,7 +140,7 @@ namespace srd5 {
                 return new Attack("Club", 2, new Damage(BLUDGEONING, "1d4"), 5);
             }
         }
-        public static readonly AttackEffect ConstrictorSnakeConstrictEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect ConstrictorSnakeConstrictEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 14, Monsters.ConstrictorSnake.Size + 1, true);
             return false;
         };
@@ -159,11 +159,11 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, "1d10+2"), 5);
             }
         }
-        public static readonly AttackEffect CouatlBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect CouatlBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(POISON)) return false;
             if (target.DC(CouatlBite, 13, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(COUATL_POISON);
-            target.AddDamageTakenEvent(delegate (object source, Damage damage) {
+            target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
                 target.RemoveEffect(COUATL_POISON);
                 return true;
             });
@@ -174,7 +174,7 @@ namespace srd5 {
                 return new Attack("Bite", 8, new Damage(PIERCING, "1d6+5"), 5, null, CouatlBiteEffect);
             }
         }
-        public static readonly AttackEffect CouatlConstrictEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect CouatlConstrictEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 15, Monsters.Couatl.Size + 1, true);
             return false;
         };
@@ -188,7 +188,7 @@ namespace srd5 {
                 return new Attack("Claw", 0, new Damage(BLUDGEONING, 1), 5);
             }
         }
-        public static readonly AttackEffect CrocodileBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect CrocodileBiteEffect = delegate (Combatant attacker, Combatant target) {
             AttackEffects.GrapplingEffect(attacker, target, 12, Monsters.Crocodile.Size + 1, true, CrocodileBite);
             return false;
         };

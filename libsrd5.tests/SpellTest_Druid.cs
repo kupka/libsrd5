@@ -13,21 +13,23 @@ namespace srd5 {
                 object o = property.GetMethod.Invoke(null, null);
                 Assert.True(o is Spell);
                 Spell spell = (Spell)o;
+                if (spell.Variants.Length > 0)
+                    spell.Variant = spell.Variants[0];
                 Monster hag = Monsters.NightHag;
                 Monster bandit = Monsters.Bandit;
                 Battleground ground = createBattleground(hag, bandit);
                 if (spell.MaximumTargets == 0) {
-                    spell.Cast(hag, 10, SpellLevel.NINETH, 5);
+                    spell.Cast(hag, 10, SpellLevel.NINTH, 5);
                 } else {
-                    spell.Cast(ground, hag, 10, SpellLevel.NINETH, 20, bandit);
+                    spell.Cast(ground, hag, 10, SpellLevel.NINTH, 20, bandit);
                 }
             }
         }
-        private BattleGroundClassic createBattleground(Combattant caster, params Combattant[] targets) {
+        private BattleGroundClassic createBattleground(Combatant caster, params Combatant[] targets) {
             BattleGroundClassic ground = new BattleGroundClassic();
-            ground.AddCombattant(caster, ClassicLocation.Row.FRONT_LEFT);
-            foreach (Combattant target in targets) {
-                ground.AddCombattant(target, ClassicLocation.Row.FRONT_RIGHT);
+            ground.AddCombatant(caster, ClassicLocation.Row.FRONT_LEFT);
+            foreach (Combatant target in targets) {
+                ground.AddCombatant(target, ClassicLocation.Row.FRONT_RIGHT);
             }
             return ground;
         }
@@ -102,22 +104,22 @@ namespace srd5 {
             Battleground ground = createBattleground(hero);
             hero.AddLevel(CharacterClasses.Druid);
             hero.HitPoints = 1;
-            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, hero);
+            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, hero);
             Assert.Equal(hero.HitPointsMax, hero.HitPoints);
             // doesn't affect undead
             Monster shadow = Monsters.Shadow;
             shadow.HitPoints = shadow.HitPointsMax - 1;
-            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, shadow);
+            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, shadow);
             Assert.Equal(shadow.HitPointsMax - 1, shadow.HitPoints);
             // doesn't affect constructs
             Monster golem = Monsters.ClayGolem;
             golem.HitPoints = golem.HitPointsMax - 1;
-            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, golem);
+            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, golem);
             Assert.Equal(golem.HitPointsMax - 1, golem.HitPoints);
             // affects giants
             Monster ogre = Monsters.Ogre;
             ogre.HitPoints = ogre.HitPointsMax - 10;
-            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, ogre);
+            Spells.CureWounds.Cast(ground, hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, ogre);
             Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
         }
 
@@ -131,17 +133,17 @@ namespace srd5 {
             // doesn't affect undead
             Monster shadow = Monsters.Shadow;
             shadow.HitPoints = shadow.HitPointsMax - 1;
-            Spells.HealingWord.Cast(createBattleground(hero, shadow), hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, shadow);
+            Spells.HealingWord.Cast(createBattleground(hero, shadow), hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, shadow);
             Assert.Equal(shadow.HitPointsMax - 1, shadow.HitPoints);
             // doesn't affect constructs
             Monster golem = Monsters.ClayGolem;
             golem.HitPoints = golem.HitPointsMax - 1;
-            Spells.HealingWord.Cast(createBattleground(hero, golem), hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, golem);
+            Spells.HealingWord.Cast(createBattleground(hero, golem), hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, golem);
             Assert.Equal(golem.HitPointsMax - 1, golem.HitPoints);
             // affects giants
             Monster ogre = Monsters.Ogre;
             ogre.HitPoints = ogre.HitPointsMax - 10;
-            Spells.HealingWord.Cast(createBattleground(hero, ogre), hero, 0, SpellLevel.NINETH, hero.Wisdom.Modifier, ogre);
+            Spells.HealingWord.Cast(createBattleground(hero, ogre), hero, 0, SpellLevel.NINTH, hero.Wisdom.Modifier, ogre);
             Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
         }
 
@@ -195,8 +197,8 @@ namespace srd5 {
             if (checkForCondition == null && checkForEffect == null) throw new ArgumentException("Don't use is when not checking for Condition and/or Effect");
             CharacterSheet hero = new CharacterSheet(Race.DRAGONBORN, true);
             hero.AddLevels(CharacterClasses.Wizard, CharacterClasses.Druid, CharacterClasses.Bard, CharacterClasses.Barbarian);
-            Combattant nonMonster1 = new CharacterSheet(Race.HUMAN);
-            Combattant nonMonster2 = new CharacterSheet(Race.HALFLING);
+            Combatant nonMonster1 = new CharacterSheet(Race.HUMAN);
+            Combatant nonMonster2 = new CharacterSheet(Race.HALFLING);
             Monster orc1 = Monsters.Orc;
             Monster orc2 = Monsters.Orc;
             Monster orc3 = Monsters.Orc;
@@ -211,7 +213,7 @@ namespace srd5 {
                 Effect.IMMUNITY_POISON, Effect.IMMUNITY_POISONED, Effect.IMMUNITY_PRONE, Effect.IMMUNITY_PSYCHIC, Effect.IMMUNITY_RADIANT, Effect.IMMUNITY_RESTRAINED, Effect.IMMUNITY_SLEEP,
                 Effect.IMMUNITY_SLEEP, Effect.IMMUNITY_STUNNED, Effect.IMMUNITY_THUNDER, Effect.IMMUNITY_UNCONSCIOUS);
 
-            Combattant[] targets = new Combattant[] {
+            Combatant[] targets = new Combatant[] {
                 nonMonster1, nonMonster2, orc1, orc2, orc3, badger, zombie, dragon, typed, typedImmune
             };
 
@@ -222,7 +224,7 @@ namespace srd5 {
                     spell.Cast(ground, hero, dc, slot, 5, targets[2 * i], targets[2 * i + 1]);
                 }
             } else {
-                foreach (Combattant target in targets) {
+                foreach (Combatant target in targets) {
                     spell.Cast(ground, hero, dc, slot, 5, target);
                 }
             }
@@ -250,19 +252,19 @@ namespace srd5 {
                 for (int i = 0; i < turns; i++) {
                     hero.OnEndOfTurn();
 
-                    foreach (Combattant target in targets) {
+                    foreach (Combatant target in targets) {
                         target.OnStartOfTurn();
                     }
 
                     hero.OnStartOfTurn();
                     hero.OnEndOfTurn();
 
-                    foreach (Combattant target in targets) {
+                    foreach (Combatant target in targets) {
                         target.OnEndOfTurn();
                     }
 
-                    foreach (Combattant target in targets) {
-                        target.OnDamageTaken(this, new Damage(DamageType.THUNDER, 1));
+                    foreach (Combatant target in targets) {
+                        target.OnDamageTaken(new DamageSource(spell.ID, hero), new Damage(DamageType.THUNDER, 1));
                     }
                 }
                 if (checkForCondition != null) {
@@ -296,8 +298,8 @@ namespace srd5 {
 
         [Fact]
         public void CharmPersonTest() {
-            Combattant hag = Monsters.NightHag;
-            Combattant badger = Monsters.GiantBadger;
+            Combatant hag = Monsters.NightHag;
+            Combatant badger = Monsters.GiantBadger;
             Spells.CharmPerson.Cast(Monsters.NightHag, 10, SpellLevel.CANTRIP, 10);
             Spells.CharmPerson.Cast(createBattleground(hag, badger), hag, 10, SpellLevel.SECOND, 10, badger); // not affected
             DefaultSpellTest(Spells.CharmPerson, 14, SpellLevel.SIXTH, ConditionType.CHARMED, null, null);
@@ -305,8 +307,8 @@ namespace srd5 {
 
         [Fact]
         public void HoldPersonTest() {
-            Combattant hag = Monsters.NightHag;
-            Combattant badger = Monsters.GiantBadger;
+            Combatant hag = Monsters.NightHag;
+            Combatant badger = Monsters.GiantBadger;
             CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             Spells.HoldPerson.Cast(createBattleground(hag, badger), hag, 10, SpellLevel.SECOND, 10, badger); // not affected
 
@@ -347,8 +349,8 @@ namespace srd5 {
             Monster badger = Monsters.GiantBadger;
             int hps = badger.HitPoints;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(hero, 3, 3);
-            ground.AddCombattant(badger, 5, 5);
+            ground.AddCombatant(hero, 3, 3);
+            ground.AddCombatant(badger, 5, 5);
             Spells.ProduceFlame.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
             hero.AddLevels(CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid, CharacterClasses.Druid);
             Spells.ProduceFlame.Cast(ground, hero, 10, SpellLevel.FIRST, 0, badger);
@@ -367,24 +369,24 @@ namespace srd5 {
             int hps = badger.HitPoints;
             Random.State = 1;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombattant(hero, 3, 3);
-            ground.AddCombattant(badger, 5, 5);
-            Assert.Equal(5, ground.LocateCombattant2D(badger).X);
+            ground.AddCombatant(hero, 3, 3);
+            ground.AddCombatant(badger, 5, 5);
+            Assert.Equal(5, ground.LocateCombatant2D(badger).X);
             Spells.Thunderwave.Cast(ground, hero, 25, SpellLevel.FIRST, 0, badger);
             Spells.Thunderwave.Cast(ground, hero, 25, SpellLevel.FIRST, 0, badger);
             Spells.Thunderwave.Cast(ground, hero, 25, SpellLevel.FIRST, 0, badger);
             Assert.True(badger.HitPoints < hps);
-            Assert.True(ground.LocateCombattant2D(badger).X > 5);
+            Assert.True(ground.LocateCombatant2D(badger).X > 5);
 
             BattleGroundClassic classic = new BattleGroundClassic();
             badger.HealDamage(1000);
-            classic.AddCombattant(hero, ClassicLocation.Row.FRONT_LEFT);
-            classic.AddCombattant(badger, ClassicLocation.Row.FRONT_RIGHT);
+            classic.AddCombatant(hero, ClassicLocation.Row.FRONT_LEFT);
+            classic.AddCombatant(badger, ClassicLocation.Row.FRONT_RIGHT);
             Spells.Thunderwave.Cast(classic, hero, 25, SpellLevel.FIRST, 0, badger);
             Spells.Thunderwave.Cast(classic, hero, 25, SpellLevel.FIRST, 0, badger);
             Spells.Thunderwave.Cast(classic, hero, 25, SpellLevel.FIRST, 0, badger);
             Assert.True(badger.HitPoints < hps);
-            Assert.Equal(ClassicLocation.Row.BACK_RIGHT, classic.LocateClassicCombattant(badger).Location);
+            Assert.Equal(ClassicLocation.Row.BACK_RIGHT, classic.LocateClassicCombatant(badger).Location);
         }
 
         [Fact]
@@ -408,7 +410,7 @@ namespace srd5 {
             Spells.Goodberry.Cast(hero, 12, SpellLevel.FIRST, 0);
             Assert.True(hero.Inventory.Bag.Length > 0);
             Assert.True(hero.Inventory.Bag[0].Name == Potions.Goodberry.Name);
-            hero.TakeDamage(this, DamageType.TRUE_DAMAGE, 1);
+            hero.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hero), DamageType.TRUE_DAMAGE, 1);
             Assert.Equal(hero.HitPointsMax - 1, hero.HitPoints);
             hero.Consume(Potions.Goodberry);
             Assert.Equal(hero.HitPointsMax, hero.HitPoints);
@@ -485,7 +487,10 @@ namespace srd5 {
             size = bandit.Size;
             spell.Cast(bandit, 12, SpellLevel.SECOND, 3);
             Assert.True(bandit.Size == size);
-            bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
+            for (int i = 0; i < 10; i++) {
+                bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
+                bandit.DC(this, 20, AbilityType.STRENGTH);
+            }
         }
 
         [Fact]
@@ -506,8 +511,10 @@ namespace srd5 {
             size = bandit.Size;
             spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
             Assert.True(bandit.Size == size);
-            bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
-            bandit.DC(this, 20, AbilityType.STRENGTH);
+            for (int i = 0; i < 10; i++) {
+                bandit.Attack(Attacks.BanditScimitar, Monsters.Baboon, 5);
+                bandit.DC(this, 20, AbilityType.STRENGTH);
+            }
         }
 
         [Fact]
@@ -517,9 +524,11 @@ namespace srd5 {
             bandit.ArmorClass = 0;
             bandit.HitPoints = 6;
             Battleground ground = createBattleground(druid, bandit);
-            Spells.FlameBlade.Cast(druid, 10, SpellLevel.NINETH, 0);
-            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAME_BLADE);
-            druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
+            Spells.FlameBlade.Cast(druid, 10, SpellLevel.NINTH, 0);
+            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAME_BLADE_ATTACK);
+            for(int i = 0; i < 10; i++) {
+                druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
+            }
             Assert.True(bandit.Dead);
             for (int i = 0; i < (int)SpellDuration.TEN_MINUTES; i++) {
                 druid.OnEndOfTurn();
@@ -534,7 +543,7 @@ namespace srd5 {
             bandit.HitPoints = 6;
             Battleground ground = createBattleground(druid, bandit);
             Spells.FlamingSphere.Cast(druid, 10, SpellLevel.SIXTH, 0);
-            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAMING_SPHERE);
+            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAMING_SPHERE_ATTACK);
             druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
             Assert.True(bandit.Dead);
             for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
@@ -549,7 +558,7 @@ namespace srd5 {
             Monster bandit = Monsters.Bandit;
             bandit.HitPoints = 6;
             Battleground ground = createBattleground(druid, bandit);
-            Location location = ground.LocateCombattant(bandit);
+            Location location = ground.LocateCombatant(bandit);
             int speed = bandit.Speed;
             Spells.GustofWind.Cast(ground, druid, 30, SpellLevel.SECOND, 20, bandit);
             Assert.True(bandit.HasEffect(Effect.SPELL_GUST_OF_WIND));
@@ -558,7 +567,7 @@ namespace srd5 {
                 bandit.OnStartOfTurn();
                 bandit.OnEndOfTurn();
             }
-            Assert.True(location.Distance(ground.LocateCombattant(bandit)) > 0);
+            Assert.True(location.Distance(ground.LocateCombatant(bandit)) > 0);
             Assert.True(bandit.Speed == speed);
         }
 
@@ -609,7 +618,7 @@ namespace srd5 {
             Assert.True(bandit.Dead);
             bandit = Monsters.Bandit;
             bandit.HitPoints = 6;
-            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.MOONBEAM);
+            Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.MOONBEAM_ATTACK);
             druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
             for (int i = 0; i < 10; i++) {
                 druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, werewolf);
@@ -643,6 +652,129 @@ namespace srd5 {
             ogre.AddEffect(Effect.ABOLETH_DISEASE_TENTACLE, Effect.COUATL_POISON, Effect.DROW_POISON);
             Spells.ProtectionfromPoison.Cast(ogre, 12, SpellLevel.SECOND, 2);
             Assert.False(ogre.HasEffect(Effect.COUATL_POISON));
+        }
+
+        [Fact]
+        public void CallLightningTest() {
+            // Covers the nested CALL_LIGHTNING_ATTACK cantrip delegate (lines 157-159)
+            // and the EndOfTurnEvent duration expiry (lines 166-170)
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(druid, orc);
+            int knownSpellsBefore = druid.AvailableSpells[0].KnownSpells.Length;
+            Random.State = 42; // DEX save for initial lightning bolt damage
+            Spells.CallLightning.Cast(ground, druid, 12, SpellLevel.THIRD, 0, orc);
+            // The CALL_LIGHTNING_ATTACK cantrip was added
+            Assert.Equal(knownSpellsBefore + 1, druid.AvailableSpells[0].KnownSpells.Length);
+            // Cast the added cantrip on a target → covers the inner cantrip delegate
+            Spell cantrip = druid.AvailableSpells[0].KnownSpells[druid.AvailableSpells[0].KnownSpells.Length - 1];
+            Assert.Equal(Spells.ID.CALL_LIGHTNING_ATTACK, cantrip.ID);
+            Random.State = 42;
+            cantrip.Cast(ground, druid, 12, SpellLevel.CANTRIP, 0, orc);
+            // Simulate 100 end-of-turn ticks (TEN_MINUTES=100) to expire the duration
+            for (int i = 0; i < 100; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.Equal(knownSpellsBefore, druid.AvailableSpells[0].KnownSpells.Length);
+        }
+
+        [Fact]
+        public void ConjureAnimalsCRVariantsTest() {
+            // Covers CR_HALF, CR_ONE, CR_TWO variant paths including slot-scaling branches
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Battleground2D ground2D = new Battleground2D(20, 20);
+            ground2D.AddCombatant(druid, 10, 10);
+            Spell conjure = Spells.ConjureAnimals;
+            Random.State = 1;
+            // CR_HALF: beastAmount=4; slot=FIFTH → slot > FOURTH → ×2 = 8 beasts spawned
+            conjure.Variant = SpellVariant.CR_HALF;
+            conjure.Cast(ground2D, druid, 12, SpellLevel.FIFTH, 0, druid);
+            // CR_ONE: beastAmount=2; slot=SEVENTH → slot > SIXTH → ×3 = 6 beasts spawned
+            conjure.Variant = SpellVariant.CR_ONE;
+            conjure.Cast(ground2D, druid, 12, SpellLevel.SEVENTH, 0, druid);
+            // CR_TWO: beastAmount=1
+            conjure.Variant = SpellVariant.CR_TWO;
+            conjure.Cast(ground2D, druid, 12, SpellLevel.THIRD, 0, druid);
+            Assert.Equal(16, ground2D.combatants.Length); // 8 + 6 + 1 + druid = 16
+        }
+
+        [Fact]
+        public void ConjureAnimalsClassicBattlegroundTest() {
+            // Covers the BattleGroundClassic zombie/beast spawn branch (lines 231-233)
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            BattleGroundClassic ground = createBattleground(druid, []);
+            Spell conjure = Spells.ConjureAnimals;
+            conjure.Variant = SpellVariant.CR_QUARTER;
+            Random.State = 1;
+            conjure.Cast(ground, druid, 12, SpellLevel.THIRD, 0, druid);
+            Assert.Equal(9, ground.combatants.Length); // 8 beasts + druid = 9
+        }
+
+        [Fact]
+        public void SleetStormTest() {
+            DefaultSpellTest(Spells.SleetStorm, 25, SpellLevel.THIRD, null, Effect.SPELL_SLEET_STORM, Spells.SleetStorm.Duration);
+            // Target fails DEX save → PRONE + SPELL_SLEET_STORM applied
+            // StartOfTurnEvent re-applies save; EndOfTurnEvent expires duration
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(druid, orc);
+            Random.State = 42; // D20=13 < DC=25 → orc fails initial DEX save
+            Spells.SleetStorm.Cast(ground, druid, 25, SpellLevel.THIRD, 0, orc);
+            Assert.True(orc.HasCondition(ConditionType.PRONE));
+            Assert.True(orc.HasEffect(Effect.SPELL_SLEET_STORM));
+            // StartOfTurnEvent re-runs the DEX save (orc fails again → stays PRONE)
+            Random.State = 42;
+            orc.OnStartOfTurn();
+            Assert.True(orc.HasEffect(Effect.SPELL_SLEET_STORM));
+            // Expire duration: 10 druid OnEndOfTurn calls → SPELL_SLEET_STORM removed
+            for (int i = 0; i < 10; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.False(orc.HasEffect(Effect.SPELL_SLEET_STORM));
+        }
+
+        [Fact]
+        public void StinkingCloudImmuneTest() {
+            DefaultSpellTest(Spells.StinkingCloud, 25, SpellLevel.THIRD, null, Effect.SPELL_STINKING_CLOUD, 100, Monsters.Type.CONSTRUCT);
+            DefaultSpellTest(Spells.StinkingCloud, 25, SpellLevel.THIRD, null, Effect.SPELL_STINKING_CLOUD, 100, Monsters.Type.UNDEAD);
+            // UNDEAD and CONSTRUCT monsters are immune to Stinking Cloud
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Monster zombie = Monsters.Zombie;   // UNDEAD
+            Monster golem = Monsters.ClayGolem; // CONSTRUCT
+            Battleground ground = createBattleground(druid, zombie, golem);
+            Spells.StinkingCloud.Cast(ground, druid, 25, SpellLevel.THIRD, 0, zombie, golem);
+            Assert.False(zombie.HasEffect(Effect.SPELL_STINKING_CLOUD));
+            Assert.False(golem.HasEffect(Effect.SPELL_STINKING_CLOUD));
+        }
+
+        [Fact]
+        public void StinkingCloudCONSaveFailTest() {
+            DefaultSpellTest(Spells.StinkingCloud, 25, SpellLevel.THIRD, null, Effect.SPELL_STINKING_CLOUD, 100);
+            // Target fails CON save at start of turn → CANNOT_TAKE_ACTIONS added, removed at end of turn
+            // Duration of 10 caster end-of-turns removes SPELL_STINKING_CLOUD
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(druid, orc);
+            Spells.StinkingCloud.Cast(ground, druid, 25, SpellLevel.THIRD, 0, orc);
+            Assert.True(orc.HasEffect(Effect.SPELL_STINKING_CLOUD));
+            // Seed 42 → D20=13; orc CON mod ≈ +1 → total ≤14 < DC=25 → fails save → CANNOT_TAKE_ACTIONS
+            Random.State = 42;
+            orc.OnStartOfTurn();
+            Assert.True(orc.HasEffect(Effect.CANNOT_TAKE_ACTIONS));
+            // EndOfTurnEvent registered inside the StartOfTurnEvent removes CANNOT_TAKE_ACTIONS
+            orc.OnEndOfTurn();
+            Assert.False(orc.HasEffect(Effect.CANNOT_TAKE_ACTIONS));
+            // Expire the storm: 10 druid OnEndOfTurn calls
+            for (int i = 0; i < 10; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.False(orc.HasEffect(Effect.SPELL_STINKING_CLOUD));
         }
 
     }

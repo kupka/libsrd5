@@ -80,7 +80,7 @@ namespace srd5 {
                 return new Attack("Longbow", 3, new Damage(PIERCING, "1d8+1"), 5, 150, 600);
             }
         }
-        public static readonly AttackEffect HomunculusBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect HomunculusBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.IsImmune(POISON)) return false;
             if (target.DC(HomunculusBite, 10, AbilityType.CONSTITUTION, out int dc)) return false;
             if (dc < 6) {
@@ -112,7 +112,7 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, 1), 5, null, HomunculusBiteEffect);
             }
         }
-        public static readonly AttackEffect HornedDevilTailEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect HornedDevilTailEffect = delegate (Combatant attacker, Combatant target) {
             // do not affect undead and constructs
             if (target is Monster monster && (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT)) return false;
             if (target.DC(BeardedDevilGlaive, 17, AbilityType.CONSTITUTION)) return false;
@@ -123,7 +123,7 @@ namespace srd5 {
                 target.AddStartOfTurnEvent(delegate () {
                     foreach (Effect effect in target.Effects) {
                         if (effect != INFERNAL_WOUND_HORNED_DEVIL) continue;
-                        target.TakeDamage(attacker, TRUE_DAMAGE, "3d6");
+                        target.TakeDamage(new DamageSource(HornedDevilTail, attacker), TRUE_DAMAGE, "3d6");
                     }
                     return target.HasEffect(INFERNAL_WOUND_HORNED_DEVIL);
                 });
@@ -137,7 +137,7 @@ namespace srd5 {
                 return new Attack("Tail", 10, new Damage(PIERCING, "1d8+6"), 5, null, HornedDevilTailEffect);
             }
         }
-        public static readonly AttackEffect HornedDevilHurlFlameEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect HornedDevilHurlFlameEffect = delegate (Combatant attacker, Combatant target) {
             // TODO: If the target is a flammable object that isn't being worn or carried, it also catches fire.
             return false;
         };

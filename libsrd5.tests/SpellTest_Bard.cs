@@ -10,9 +10,9 @@ namespace srd5 {
             Monster goblin = Monsters.Goblin;
             Monster goblin2 = Monsters.Goblin;
             BattleGroundClassic ground = new BattleGroundClassic();
-            ground.AddCombattant(bard, ClassicLocation.Row.FRONT_LEFT);
-            ground.AddCombattant(goblin, ClassicLocation.Row.FRONT_RIGHT);
-            ground.AddCombattant(goblin2, ClassicLocation.Row.FRONT_RIGHT);
+            ground.AddCombatant(bard, ClassicLocation.Row.FRONT_LEFT);
+            ground.AddCombatant(goblin, ClassicLocation.Row.FRONT_RIGHT);
+            ground.AddCombatant(goblin2, ClassicLocation.Row.FRONT_RIGHT);
             Spells.ViciousMockery.Cast(ground, bard, 30, SpellLevel.CANTRIP, 2, goblin);
             Assert.True(goblin.HitPointsMax > goblin.HitPoints);
             Assert.True(goblin.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
@@ -29,7 +29,7 @@ namespace srd5 {
             Monster goblin = Monsters.Goblin;
             Spells.Heroism.Cast(goblin, 12, SpellLevel.FIRST, 5);
             goblin.OnStartOfTurn();
-            goblin.TakeDamage(this, DamageType.ACID, 1);
+            goblin.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, goblin), DamageType.ACID, 1);
             Assert.Equal(goblin.HitPointsMax, goblin.HitPoints);
             goblin.OnEndOfTurn();
             DefaultSpellTest(Spells.Heroism, 12, SpellLevel.THIRD, null, Effect.IMMUNITY_FRIGHTENED, 10);

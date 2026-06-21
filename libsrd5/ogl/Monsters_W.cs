@@ -23,7 +23,7 @@ namespace srd5 {
                 return new Attack("Bite", 5, new Damage(PIERCING, "1d1"), 5);
             }
         }
-        public static readonly AttackEffect WerebearBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect WerebearBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return false;
             if (target.DC(WerebearBite, 14, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(CURSE_WEREBEAR);
@@ -59,7 +59,7 @@ namespace srd5 {
                 return new Attack("Greataxe", 7, new Damage(SLASHING, "1d12+4"), 5);
             }
         }
-        public static readonly AttackEffect WereboarTusksEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect WereboarTusksEffect = delegate (Combatant attacker, Combatant target) {
             if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return false;
             if (target.DC(WereboarTusks, 12, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(CURSE_WEREBOAR);
@@ -95,7 +95,7 @@ namespace srd5 {
                 return new Attack("Hand Crossbow", 4, new Damage(PIERCING, "1d6+2"), 5, 30, 120);
             }
         }
-        public static readonly AttackEffect WereratBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect WereratBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return false;
             if (target.DC(WereratBite, 11, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(CURSE_WERERAT);
@@ -131,7 +131,7 @@ namespace srd5 {
                 return new Attack("Longbow", 4, new Damage(PIERCING, "1d8+2"), 5, 150, 600);
             }
         }
-        public static readonly AttackEffect WeretigerBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect WeretigerBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return false;
             if (target.DC(WeretigerBite, 13, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(CURSE_WERETIGER);
@@ -177,7 +177,7 @@ namespace srd5 {
                 return new Attack("Spear", 4, new Damage(PIERCING, "1d8+2"), 20, 60);
             }
         }
-        public static readonly AttackEffect WerewolfBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect WerewolfBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target is Monster monster && monster.Type != Monsters.Type.HUMANOID) return false;
             if (target.DC(WerewolfBite, 12, AbilityType.CONSTITUTION)) return false;
             target.AddEffect(CURSE_WEREWOLF);
@@ -204,8 +204,8 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, "1d10+2"), 5, new Damage(COLD, "1d4"));
             }
         }
-        public static readonly AttackEffect WightLifeDrainEffect = delegate (Combattant attacker, Combattant target) {
-            int damage = target.TakeDamage(attacker, NECROTIC, "1d6+2");
+        public static readonly AttackEffect WightLifeDrainEffect = delegate (Combatant attacker, Combatant target) {
+            int damage = target.TakeDamage(new DamageSource(WightLifeDrain, attacker), NECROTIC, "1d6+2");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
             if (target.HitPointsMax == 0) {
                 target.Die();
@@ -235,7 +235,7 @@ namespace srd5 {
                 return new Attack("Shock", 4, new Damage(LIGHTNING, "2d8"), 5);
             }
         }
-        public static readonly AttackEffect WinterWolfBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect WinterWolfBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.HasEffect(IMMUNITY_PRONE)) return false;
             if (target.DC(WinterWolfBite, 14, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
@@ -246,7 +246,7 @@ namespace srd5 {
                 return new Attack("Bite", 6, new Damage(PIERCING, "2d6+4"), 5, null, WinterWolfBiteEffect);
             }
         }
-        public static readonly AttackEffect WolfBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect WolfBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.HasEffect(IMMUNITY_PRONE)) return false;
             if (target.DC(WolfBite, 11, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
@@ -257,7 +257,7 @@ namespace srd5 {
                 return new Attack("Bite", 4, new Damage(PIERCING, "1d6+0"), 5, null, WolfBiteEffect);
             }
         }
-        public static readonly AttackEffect WorgBiteEffect = delegate (Combattant attacker, Combattant target) {
+        public static readonly AttackEffect WorgBiteEffect = delegate (Combatant attacker, Combatant target) {
             if (target.HasEffect(IMMUNITY_PRONE)) return false;
             if (target.DC(WorgBite, 13, AbilityType.STRENGTH)) return false;
             target.AddCondition(ConditionType.PRONE);
@@ -268,8 +268,8 @@ namespace srd5 {
                 return new Attack("Bite", 5, new Damage(PIERCING, "2d6+3"), 5, null, WorgBiteEffect);
             }
         }
-        public static readonly AttackEffect WraithLifeDrainEffect = delegate (Combattant attacker, Combattant target) {
-            int damage = target.TakeDamage(attacker, NECROTIC, "4d8+3");
+        public static readonly AttackEffect WraithLifeDrainEffect = delegate (Combatant attacker, Combatant target) {
+            int damage = target.TakeDamage(new DamageSource(WraithLifeDrain, attacker), NECROTIC, "4d8+3");
             target.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(-damage, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
             if (target.HitPointsMax == 0) {
                 target.Die();
@@ -281,8 +281,8 @@ namespace srd5 {
                 return new Attack("Life Drain", 6, new Damage(NECROTIC, 0), 5, null, WraithLifeDrainEffect);
             }
         }
-        public static readonly AttackEffect WyvernStingerEffect = delegate (Combattant attacker, Combattant target) {
-            AttackEffects.PoisonEffect(target, WyvernStinger, "7d6", 15);
+        public static readonly AttackEffect WyvernStingerEffect = delegate (Combatant attacker, Combatant target) {
+            AttackEffects.PoisonEffect(attacker, target, WyvernStinger, "7d6", 15);
             return false;
         };
         public static Attack WyvernStinger {

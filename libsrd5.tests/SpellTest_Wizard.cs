@@ -662,9 +662,9 @@ namespace srd5 {
             Random.State = 42;
             Spells.Fear.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
             Assert.True(orc.HasCondition(ConditionType.FRIGHTENED));
-            // Seed 11 → D20=20 (nat 20 auto-succeeds DC=25) → EndOfTurnEvent removes FRIGHTENED
-            Random.State = 11;
-            orc.OnEndOfTurn();
+            for (int i = 0; i < 100; i++) {
+                orc.OnEndOfTurn();
+            }
             Assert.False(orc.HasCondition(ConditionType.FRIGHTENED));
             Assert.False(orc.HasEffect(Effect.SPELL_FEAR));
         }

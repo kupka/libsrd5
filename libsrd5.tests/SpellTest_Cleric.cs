@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace srd5 {
@@ -304,15 +305,21 @@ namespace srd5 {
             Monster hillGiant = Monsters.HillGiant;
             CharacterSheet wizard = new CharacterSheet(Race.HALF_ELF);
             wizard.Die();
+            CharacterSheet dwarf = new CharacterSheet(Race.HILL_DWARF);
+            dwarf.Die();
+            Monster gnome = Monsters.DeepGnomeSvirfneblin;
+            gnome.Die();
             CharacterSheet cleric = new CharacterSheet(Race.HILL_DWARF);
 
-            Battleground ground = createBattleground(cleric, bandit1, bandit2, hillGiant, rat, wizard);
-            Spells.AnimateDead.Cast(ground, cleric, 12, SpellLevel.NINTH, 0, bandit1, bandit2, rat, wizard);
+            Battleground ground = createBattleground(cleric, bandit1, bandit2, hillGiant, rat, wizard, gnome, dwarf);
+            Spells.AnimateDead.Cast(ground, cleric, 12, SpellLevel.NINTH, 0, bandit1, bandit2, rat, wizard, gnome, dwarf);
             Assert.True(bandit1.HasEffect(Effect.SPELL_ANIMATE_DEAD));
             Assert.False(bandit2.HasEffect(Effect.SPELL_ANIMATE_DEAD));
             Assert.False(rat.HasEffect(Effect.SPELL_ANIMATE_DEAD));
             Assert.False(hillGiant.HasEffect(Effect.SPELL_ANIMATE_DEAD));
             Assert.True(wizard.HasEffect(Effect.SPELL_ANIMATE_DEAD));
+            Assert.True(gnome.HasEffect(Effect.SPELL_ANIMATE_DEAD));
+            Assert.True(dwarf.HasEffect(Effect.SPELL_ANIMATE_DEAD));
         }
 
         [Fact]

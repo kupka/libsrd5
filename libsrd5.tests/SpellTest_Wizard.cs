@@ -549,6 +549,7 @@ namespace srd5 {
             Battleground ground = createBattleground(wizard, orc);
             Spell curse = Spells.BestowCurse;
             curse.Variant = SpellVariant.LOSE_TURN_ON_FAILED_WISDOM_SAVE;
+            DefaultSpellTest(curse, 25, SpellLevel.THIRD, null, Effect.SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE, SpellDuration.ONE_MINUTE);
             Random.State = 42; // D20=13 < DC=25 → orc fails initial save
             curse.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
             Assert.True(orc.HasEffect(Effect.SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE));
@@ -593,6 +594,13 @@ namespace srd5 {
             // Next start-of-turn removes the effect
             wizard.OnStartOfTurn();
             Assert.False(wizard.HasEffect(Effect.CANNOT_BE_ATTACKED));
+            Spells.Blink.Cast(wizard, 12, SpellLevel.THIRD, 0);
+            // Expire effect
+            for (int i = 0; i < (int)Spells.Blink.Duration; i++) {
+                wizard.OnEndOfTurn();
+                wizard.OnStartOfTurn();
+            }
+            Assert.False(wizard.HasEffect(Effect.CANNOT_BE_ATTACKED));
         }
 
         [Fact]
@@ -628,6 +636,7 @@ namespace srd5 {
 
         [Fact]
         public void FearDurationExpiresTest() {
+            DefaultSpellTest(Spells.Fear, 25, SpellLevel.THIRD, ConditionType.FRIGHTENED, Effect.SPELL_FEAR, SpellDuration.ONE_MINUTE);
             // After ONE_MINUTE (10) start-of-turn events, FRIGHTENED and SPELL_FEAR are removed
             CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
             Monster orc = Monsters.Orc;

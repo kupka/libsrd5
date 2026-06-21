@@ -732,6 +732,7 @@ namespace srd5 {
 
         [Fact]
         public void StinkingCloudImmuneTest() {
+            DefaultSpellTest(Spells.StinkingCloud, 25, SpellLevel.THIRD, null, Effect.SPELL_STINKING_CLOUD, 100);
             // UNDEAD and CONSTRUCT monsters are immune to Stinking Cloud
             CharacterSheet druid = new CharacterSheet(Race.HUMAN);
             druid.AddLevel(CharacterClasses.Druid);

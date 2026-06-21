@@ -94,6 +94,7 @@ namespace srd5 {
                 Monster monster = Monsters.Get(id);
                 Assert.Equal(id, monster.ID);
             }
+            Assert.Throws<Srd5ArgumentException>(() => Monsters.Get((Monsters.ID)(-1)));
         }
     }
 }

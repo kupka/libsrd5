@@ -19,7 +19,7 @@ namespace srd5 {
                     for (int i = 0; i < maxTargets && i < targets.Length; i++) {
                         Combatant target = targets[i];
                         // Only dead, small or medium humanoids can be targetted
-                        if (target.Dead && (target.Size == Size.MEDIUM || target.Size == Size.SMALL) && (target is CharacterSheet || (target is Monster monster && monster.Type == Monsters.Type.HUMANOID))) {
+                        if (target.Dead && (target.Size == Size.MEDIUM || target.Size == Size.SMALL) && (target is CharacterSheet || ((Monster)target).Type == Monsters.Type.HUMANOID)) {
                             GlobalEvents.AffectBySpell(caster, ID.ANIMATE_DEAD, target, true);
                             target.AddEffect(SPELL_ANIMATE_DEAD);
                             target.AddStartOfTurnEvent(delegate () {
@@ -324,9 +324,7 @@ namespace srd5 {
                         // line of sight for this check.
                         target.AddEndOfTurnEvent(delegate () {
                             if (!target.HasCondition(ConditionType.FRIGHTENED)) return true;
-                            Location tLoc = ground.LocateCombatant(target);
-                            Location cLoc = ground.LocateCombatant(caster);
-                            if (tLoc != null && cLoc != null && tLoc.Distance(cLoc) > 300) {
+                            if (ground.LocateCombatant(target).Distance(ground.LocateCombatant(caster)) > 300) {
                                 if (target.DC(ID.FEAR, dc, WISDOM)) {
                                     target.RemoveEffect(SPELL_FEAR);
                                     target.RemoveCondition(ConditionType.FRIGHTENED);
@@ -402,28 +400,19 @@ namespace srd5 {
                         }
                         GlobalEvents.AffectBySpell(caster, ID.HYPNOTIC_PATTERN, target, true);
 
-                        // While charmed by this spell, the creature is incapacitated and has a speed of 0
+                        // While charmed by this spell, the creature is incapacitated
                         Combatant affected = target;
-                        int originalSpeed = affected.Speed;
-                        affected.Speed = 0;
                         affected.AddCondition(ConditionType.CHARMED, ConditionType.INCAPACITATED);
                         affected.AddEffect(SPELL_HYPNOTIC_PATTERN);
 
                         bool ended = false;
-                        // Local teardown: restore speed, remove conditions and effect exactly once
-                        Func<bool> end = delegate () {
-                            if (ended) return true;
-                            ended = true;
-                            affected.Speed = originalSpeed;
-                            affected.RemoveCondition(ConditionType.CHARMED, ConditionType.INCAPACITATED);
-                            affected.RemoveEffect(SPELL_HYPNOTIC_PATTERN);
-                            return true;
-                        };
-
                         // The spell ends for an affected creature if it takes any damage
                         affected.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
                             if (ended) return true;
-                            return end();
+                            ended = true;
+                            affected.RemoveCondition(ConditionType.CHARMED, ConditionType.INCAPACITATED);
+                            affected.RemoveEffect(SPELL_HYPNOTIC_PATTERN);
+                            return true;
                         });
 
                         // Duration handling (also ends if the effect was removed externally, e.g. by Dispel Magic)
@@ -431,7 +420,10 @@ namespace srd5 {
                         affected.AddEndOfTurnEvent(delegate () {
                             if (ended) return true;
                             if (!affected.HasEffect(SPELL_HYPNOTIC_PATTERN) || --remainingRounds < 1) {
-                                return end();
+                                ended = true;
+                                affected.RemoveCondition(ConditionType.CHARMED, ConditionType.INCAPACITATED);
+                                affected.RemoveEffect(SPELL_HYPNOTIC_PATTERN);
+                                return true;
                             }
                             return false;
                         });

@@ -481,50 +481,41 @@ namespace srd5 {
             return success;
         }
 
-        /// <summary>
-        /// Try to escape from a grapple. This method determines the most favorable skill check (Athletics or Acrobatics)
-        /// by checking proficiencies and comparing Strength and Dexterity abilities.
-        /// </summary>
-        public bool EscapeFromGrapple() {
-            // check proficiency or skills
-            bool success = false;
-            int dc = 0;
-            int athelicsFavor = Strength.Modifier;
-            int acrobaticsFavor = Dexterity.Modifier;
-            // determine grappled condition
-            ConditionType grappled = ConditionType.GRAPPLED_DC12;
-            foreach (ConditionType condition in Conditions) {
-                if (Enum.GetName(typeof(ConditionType), condition).IndexOf("GRAPPLED_") == 0) {
-                    grappled = condition;
-                    dc = (int)condition - (int)ConditionType.GRAPPLED_DC12 + 12;
-                    break;
+        internal Action[] ConditionalActions = new Action[0];
+
+        public Actions.ID[] ConditionalActionIDs {
+            get {
+                Actions.ID[] ids = new Actions.ID[ConditionalActions.Length];
+                for (int i = 0; i < ConditionalActions.Length; i++) {
+                    ids[i] = ConditionalActions[i].ID;
                 }
+                return ids;
             }
-            if (dc == 0) return false; // not grappled
-            if (IsProficient(Skill.ATHLETICS)) {
-                athelicsFavor += ProficiencyBonus;
-            }
-            if (IsProficient(Skill.ACROBATICS)) {
-                acrobaticsFavor += ProficiencyBonus;
-            }
-            if (athelicsFavor > acrobaticsFavor) {
-                success = DC(null, dc, Skill.ATHLETICS);
-            } else {
-                success = DC(null, dc, Skill.ACROBATICS);
-            }
-            if (success) {
-                RemoveCondition(grappled);
-            }
-            return success;
         }
 
+        public void AddConditionalAction(Action action) {
+            Utils.Push<Action>(ref ConditionalActions, action);
+        }
+
+        public void DoConditionalAction(Actions.ID id) {
+            for (int i = 0; i < ConditionalActions.Length; i++) {
+                if (ConditionalActions[i].ID == id) {
+                    bool remove = ConditionalActions[i].Effect();
+                    if (remove) {
+                        Utils.RemoveSingle<Action>(ref ConditionalActions, ConditionalActions[i]);
+                    }
+                    return;
+                }
+            }
+            throw new Srd5ArgumentException("Conditional Action with ID " + id.ToString() + " not found");
+        }
 
         internal TurnEvent[] EndOfTurnEvents = new TurnEvent[0];
 
         /// <summary>
         /// Adds a piece of code to be evaluated at the end of this combattatant's turn
         /// </summary>
-        public void AddEndOfTurnEvent(TurnEvent turnEvent) {
+        internal void AddEndOfTurnEvent(TurnEvent turnEvent) {
             Utils.Push<TurnEvent>(ref EndOfTurnEvents, turnEvent);
         }
 
@@ -541,7 +532,7 @@ namespace srd5 {
         /// <summary>
         /// Adds a piece of code to be evaluated at the start of this combattatant's turn
         /// </summary>
-        public void AddStartOfTurnEvent(TurnEvent turnEvent) {
+        internal void AddStartOfTurnEvent(TurnEvent turnEvent) {
             Utils.Push<TurnEvent>(ref StartOfTurnEvents, turnEvent);
         }
 
@@ -558,7 +549,7 @@ namespace srd5 {
         /// <summary>
         /// Adds a piece of code to be evaluated when this combattatant takes damage
         /// </summary>
-        public void AddDamageTakenEvent(DamageTakenEvent damageTakenEvent) {
+        internal void AddDamageTakenEvent(DamageTakenEvent damageTakenEvent) {
             Utils.Push<DamageTakenEvent>(ref DamageTakenEvents, damageTakenEvent);
         }
 

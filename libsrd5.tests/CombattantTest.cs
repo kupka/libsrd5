@@ -153,36 +153,34 @@ namespace srd5 {
         [Fact]
         public void EscapeFromGrappleTest() {
             Combatant combatant = Monsters.BanditCaptain; // Athelics Proficiency
-            Assert.False(combatant.EscapeFromGrapple());
-            bool success = false;
+            Assert.Throws<Srd5ArgumentException>(delegate {
+                combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
+            });
             combatant.AddCondition(ConditionType.DEAFENED);
             combatant.AddCondition(ConditionType.GRAPPLED_DC14);
-            while (!success) {
-                success = combatant.EscapeFromGrapple();
+            while (Array.IndexOf(combatant.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
+                combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
             }
             Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
             Assert.True(combatant.HasCondition(ConditionType.DEAFENED));
             combatant = Monsters.Assassin; // Acrobatics Proficiency
             combatant.AddCondition(ConditionType.GRAPPLED_DC16);
-            success = false;
-            while (!success) {
-                success = combatant.EscapeFromGrapple();
+            while (Array.IndexOf(combatant.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
+                combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
             }
-            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
+            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC16));
             combatant = Monsters.Ankheg; // Str > Dex
-            combatant.AddCondition(ConditionType.GRAPPLED_DC16);
-            success = false;
-            while (!success) {
-                success = combatant.EscapeFromGrapple();
+            combatant.AddCondition(ConditionType.GRAPPLED_DC18);
+            while (Array.IndexOf(combatant.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
+                combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
             }
-            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
+            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC18));
             combatant = Monsters.Bat; // Dex > Str
-            combatant.AddCondition(ConditionType.GRAPPLED_DC16);
-            success = false;
-            while (!success) {
-                success = combatant.EscapeFromGrapple();
+            combatant.AddCondition(ConditionType.GRAPPLED_DC20);
+            while (Array.IndexOf(combatant.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
+                combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
             }
-            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
+            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC20));
         }
 
         [Fact]

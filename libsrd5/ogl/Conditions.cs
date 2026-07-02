@@ -64,33 +64,7 @@ namespace srd5 {
                 case ConditionType.GRAPPLED_DC18:
                 case ConditionType.GRAPPLED_DC19:
                 case ConditionType.GRAPPLED_DC20:
-                    ActionEffect escapeFromGrapple = () => {
-                        // check proficiency or skills
-                        bool success = false;
-                        int dc = 0;
-                        int athelicsFavor = combatant.Strength.Modifier;
-                        int acrobaticsFavor = combatant.Dexterity.Modifier;
-                        // determine grappled condition
-                        if (Enum.GetName(typeof(ConditionType), type).IndexOf("GRAPPLED_") == 0) {
-                            dc = (int)type - (int)ConditionType.GRAPPLED_DC12 + 12;
-                        }
-                        if (combatant.IsProficient(Skill.ATHLETICS)) {
-                            athelicsFavor += combatant.ProficiencyBonus;
-                        }
-                        if (combatant.IsProficient(Skill.ACROBATICS)) {
-                            acrobaticsFavor += combatant.ProficiencyBonus;
-                        }
-                        if (athelicsFavor > acrobaticsFavor) {
-                            success = combatant.DC(null, dc, Skill.ATHLETICS);
-                        } else {
-                            success = combatant.DC(null, dc, Skill.ACROBATICS);
-                        }
-                        if (success) {
-                            combatant.RemoveCondition(type);
-                        }
-                        return success;
-                    };
-                    combatant.AddConditionalAction(new Action(Actions.ID.ESCAPE_FROM_GRAPPLE, escapeFromGrapple));
+                    applyGrappled(combatant, type);
                     break;
             }
         }
@@ -171,5 +145,34 @@ namespace srd5 {
             unapplyParalyzed(combatant);
         }
 
+        private static void applyGrappled(Combatant combatant, ConditionType type) {
+            ActionEffect escapeFromGrapple = () => {
+                // check proficiency or skills
+                bool success = false;
+                int dc = 0;
+                int athelicsFavor = combatant.Strength.Modifier;
+                int acrobaticsFavor = combatant.Dexterity.Modifier;
+                // determine grappled condition
+                if (Enum.GetName(typeof(ConditionType), type).IndexOf("GRAPPLED_") == 0) {
+                    dc = (int)type - (int)ConditionType.GRAPPLED_DC12 + 12;
+                }
+                if (combatant.IsProficient(Skill.ATHLETICS)) {
+                    athelicsFavor += combatant.ProficiencyBonus;
+                }
+                if (combatant.IsProficient(Skill.ACROBATICS)) {
+                    acrobaticsFavor += combatant.ProficiencyBonus;
+                }
+                if (athelicsFavor > acrobaticsFavor) {
+                    success = combatant.DC(null, dc, Skill.ATHLETICS);
+                } else {
+                    success = combatant.DC(null, dc, Skill.ACROBATICS);
+                }
+                if (success) {
+                    combatant.RemoveCondition(type);
+                }
+                return success;
+            };
+            combatant.AddConditionalAction(new Action(Actions.ID.ESCAPE_FROM_GRAPPLE, escapeFromGrapple));
+        }
     }
 }

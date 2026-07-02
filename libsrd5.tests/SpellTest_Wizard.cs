@@ -701,5 +701,46 @@ namespace srd5 {
             }
             Assert.Equal(knownSpellsBeforeCast, wizard.AvailableSpells[0].KnownSpells.Length);
         }
+
+        [Fact]
+        public void BlackTentaclesTest() {
+            DefaultSpellTest(Spells.BlackTentacles, 25, SpellLevel.FOURTH, ConditionType.RESTRAINED, Effect.SPELL_BLACK_TENTACLES, Spells.BlackTentacles.Duration);
+            // Target fails DEX save → 3d6 damage + RESTRAINED + SPELL_BLACK_TENTACLES applied
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster troll = Monsters.Troll; // high HP so it survives multiple rounds of 3d6
+            Battleground ground = createBattleground(wizard, troll);
+            Random.State = 42; // D20=13 < DC=25 → troll fails initial DEX save
+            Spells.BlackTentacles.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, troll);
+            Assert.True(troll.HasCondition(ConditionType.RESTRAINED));
+            Assert.True(troll.HasEffect(Effect.SPELL_BLACK_TENTACLES));
+            Assert.True(Array.IndexOf(troll.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_SPELL_BLACK_TENTACLES) > -1);
+            // StartOfTurnEvent: already restrained → automatic 3d6 damage, effect persists
+            troll.OnStartOfTurn();
+            Assert.True(troll.HasEffect(Effect.SPELL_BLACK_TENTACLES));
+            Assert.True(troll.HasCondition(ConditionType.RESTRAINED));
+            // Escape action: fails (D20=13 < DC=25) → still restrained, action still available
+            Random.State = 42;
+            troll.DoConditionalAction(Actions.ID.ESCAPE_FROM_SPELL_BLACK_TENTACLES);
+            Assert.True(troll.HasCondition(ConditionType.RESTRAINED));
+            Assert.True(Array.IndexOf(troll.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_SPELL_BLACK_TENTACLES) > -1);
+            // Escape action: keep trying until D20=20 succeeds → RESTRAINED removed, action gone
+            troll.HitPoints = 500; // ensure troll survives multiple failed escape attempts
+            while (Array.IndexOf(troll.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_SPELL_BLACK_TENTACLES) > -1) {
+                troll.DoConditionalAction(Actions.ID.ESCAPE_FROM_SPELL_BLACK_TENTACLES);
+            }
+            Assert.False(troll.HasCondition(ConditionType.RESTRAINED));
+            Assert.True(troll.HasEffect(Effect.SPELL_BLACK_TENTACLES)); // still in area
+            // StartOfTurnEvent: not restrained → DEX save required; troll fails → re-restrained
+            Random.State = 42; // D20=13 < DC=25 → troll fails DEX save
+            troll.OnStartOfTurn();
+            Assert.True(troll.HasCondition(ConditionType.RESTRAINED));
+            // Expire duration: 10 wizard OnEndOfTurn calls → SPELL_BLACK_TENTACLES and RESTRAINED removed
+            for (int i = 0; i < 10; i++) {
+                wizard.OnEndOfTurn();
+            }
+            Assert.False(troll.HasEffect(Effect.SPELL_BLACK_TENTACLES));
+            Assert.False(troll.HasCondition(ConditionType.RESTRAINED));
+        }
     }
 }

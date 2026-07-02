@@ -693,7 +693,7 @@ namespace srd5 {
         private bool attackAdvantageEffect(Attack attack, Combatant target, int distance, bool ranged, bool spell) {
             bool advantage = HasEffect(ADVANTAGE_ON_ATTACK);
             advantage = advantage || target.HasEffect(ADVANTAGE_ON_BEING_ATTACKED)
-                                  || (target.HasCondition(ConditionType.PRONE) && !ranged)
+                                  || (target.HasCondition(ConditionType.PRONE) && distance <= 5)
                                   || target.HasCondition(ConditionType.RESTRAINED)
                                   || target.HasCondition(ConditionType.STUNNED)
                                   || target.HasCondition(ConditionType.PARALYZED)
@@ -711,7 +711,7 @@ namespace srd5 {
             bool disadvantage = HasEffect(DISADVANTAGE_ON_ATTACK);
             disadvantage = disadvantage || target.HasEffect(DISADVANTAGE_ON_BEING_ATTACKED)
                                         || target.HasCondition(ConditionType.INVISIBLE)
-                                        || (target.HasCondition(ConditionType.PRONE) && ranged);
+                                        || (target.HasCondition(ConditionType.PRONE) && distance > 5);
             disadvantage = disadvantage || HasCondition(ConditionType.RESTRAINED)
                                         || HasCondition(ConditionType.BLINDED)
                                         || HasCondition(ConditionType.EXHAUSTED_3)

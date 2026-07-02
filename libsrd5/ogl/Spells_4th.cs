@@ -11,22 +11,86 @@ using static srd5.AbilityType;
 
 namespace srd5 {
     public partial struct Spells {
-        /* TODO */
+        /* TODO:
+        "You create an invisible, magical eye within range that hovers in the air for the duration.",
+        "You mentally receive visual information from the eye, which has normal vision and darkvision out to 30 feet. The eye can look in every direction.",
+        "As an action, you can move the eye up to 30 feet in any direction. There is no limit to how far away from you the eye can move, but it can't enter another plane of existence. A solid barrier blocks the eye's movement, but the eye can pass through an opening as small as 1 inch in diameter."
+         */
         public static Spell ArcaneEye {
             get {
                 return new Spell(ID.ARCANE_EYE, DIVINATION, FOURTH, CastingTime.ONE_ACTION, 30, VSM, ONE_HOUR, 30, 0, doNothing);
             }
         }
-        /* TODO */
+        /* TODO:
+        "You attempt to send one creature that you can see within range to another plane of existence. The target must succeed on a charisma saving throw or be banished.",
+        "If the target is native to the plane of existence you're on, you banish the target to a harmless demiplane. While there, the target is incapacitated. The target remains there until the spell ends, at which point the target reappears in the space it left or in the nearest unoccupied space if that space is occupied.",
+        "If the target is native to a different plane of existence than the one you're on, the target is banished with a faint popping noise, returning to its home plane. If the spell ends before 1 minute has passed, the target reappears in the space it left or in the nearest unoccupied space if that space is occupied. Otherwise, the target doesn't return."
+        */
         public static Spell Banishment {
             get {
                 return new Spell(ID.BANISHMENT, ABJURATION, FOURTH, CastingTime.ONE_ACTION, 60, VSM, ONE_MINUTE, 0, 0, doNothing);
             }
         }
-        /* TODO */
         public static Spell BlackTentacles {
             get {
-                return new Spell(ID.BLACK_TENTACLES, CONJURATION, FOURTH, CastingTime.ONE_ACTION, 90, VSM, ONE_MINUTE, 20, 0, doNothing);
+                return new Spell(ID.BLACK_TENTACLES, CONJURATION, FOURTH, CastingTime.ONE_ACTION, 90, VSM, ONE_MINUTE, 20, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    GlobalEvents.AffectBySpell(caster, ID.BLACK_TENTACLES, caster, true);
+
+                    foreach (Combatant target in targets) {
+                        // On entering the area, target must make a DEX save or take 3d6 bludgeoning damage and be restrained
+                        if (target.DC(ID.BLACK_TENTACLES, dc, DEXTERITY)) {
+                            GlobalEvents.AffectBySpell(caster, ID.BLACK_TENTACLES, target, false);
+                            continue;
+                        }
+
+                        GlobalEvents.AffectBySpell(caster, ID.BLACK_TENTACLES, target, true);
+                        target.TakeDamage(new DamageSource(ID.BLACK_TENTACLES, caster), BLUDGEONING, new Dice("3d6"));
+                        target.AddEffect(SPELL_BLACK_TENTACLES);
+
+                        // At the start of each turn: restrained creatures take automatic 3d6 damage;
+                        // unrestrained creatures in the area (e.g. escaped) must save again
+                        target.AddStartOfTurnEvent(delegate () {
+                            if (!target.HasEffect(SPELL_BLACK_TENTACLES)) return true;
+                            if (target.HasCondition(ConditionType.RESTRAINED)) {
+                                // Already restrained: automatic 3d6 bludgeoning damage
+                                target.TakeDamage(new DamageSource(ID.BLACK_TENTACLES, caster), BLUDGEONING, new Dice("3d6"));
+                            } else {
+                                // Escaped restraint: DEX save or take damage and become restrained again
+                                if (!target.DC(ID.BLACK_TENTACLES, dc, DEXTERITY)) {
+                                    GlobalEvents.AffectBySpell(caster, ID.BLACK_TENTACLES, target, true);
+                                    target.TakeDamage(new DamageSource(ID.BLACK_TENTACLES, caster), BLUDGEONING, new Dice("3d6"));
+                                    target.AddCondition(ConditionType.RESTRAINED);
+                                }
+                            }
+                            return false;
+                        });
+
+                        // Add action to escape restraint: DEX save or take damage and remain restrained
+                        ActionEffect escape = delegate () {
+                            if (!target.DC(ID.BLACK_TENTACLES, dc, DEXTERITY)) {
+                                GlobalEvents.AffectBySpell(caster, ID.BLACK_TENTACLES, target, true);
+                                target.TakeDamage(new DamageSource(ID.BLACK_TENTACLES, caster), BLUDGEONING, new Dice("3d6"));
+                                return false;
+                            }
+                            target.RemoveCondition(ConditionType.RESTRAINED);
+                            return true;
+                        };
+                        Action escapeAction = new Action(Actions.ID.ESCAPE_FROM_SPELL_BLACK_TENTACLES, escape);
+                        target.AddConditionalAction(escapeAction);
+                    }
+
+                    // Duration: 1 minute; remove effec t (and with it RESTRAINED) from all targets when expired
+                    int remainingRounds = (int)ONE_MINUTE;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds < 1) {
+                            foreach (Combatant target in targets) {
+                                target.RemoveEffect(SPELL_BLACK_TENTACLES);
+                            }
+                            return true;
+                        }
+                        return false;
+                    });
+                });
             }
         }
         /* TODO */

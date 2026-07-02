@@ -88,20 +88,28 @@ namespace srd5 {
                     uberMonster.TakeDamage(new DamageSource(DamageSourceType.ATTACK, effect, aboleth), randomDamageType(), D4);
                     uberMonster.OnStartOfTurn();
                     uberMonster.OnEndOfTurn();
-                    uberMonster.EscapeFromGrapple();
+                    if (Array.IndexOf(uberMonster.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
+                        uberMonster.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
+                    }
                     averageMonster.TakeDamage(new DamageSource(DamageSourceType.ATTACK, effect, aboleth), randomDamageType(), D4);
                     averageMonster.OnStartOfTurn();
                     averageMonster.OnEndOfTurn();
-                    averageMonster.EscapeFromGrapple();
+                    if (Array.IndexOf(averageMonster.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
+                        averageMonster.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
+                    }
                     pansyMonster.TakeDamage(new DamageSource(DamageSourceType.ATTACK, effect, aboleth), randomDamageType(), D4);
                     pansyMonster.OnStartOfTurn();
                     pansyMonster.OnEndOfTurn();
-                    pansyMonster.EscapeFromGrapple();
+                    if (Array.IndexOf(pansyMonster.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
+                        pansyMonster.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
+                    }
                     foreach (Combatant combatant in allCombatantTypes) {
                         combatant.TakeDamage(new DamageSource(DamageSourceType.ATTACK, effect, aboleth), randomDamageType(), D4);
                         combatant.OnStartOfTurn();
                         combatant.OnEndOfTurn();
-                        combatant.EscapeFromGrapple();
+                        if (Array.IndexOf(combatant.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
+                            combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
+                        }
                     }
                 }
 

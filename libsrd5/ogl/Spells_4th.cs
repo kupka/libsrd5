@@ -93,10 +93,28 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
         public static Spell Blight {
             get {
-                return new Spell(ID.BLIGHT, NECROMANCY, FOURTH, CastingTime.ONE_ACTION, 30, VS, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.BLIGHT, NECROMANCY, FOURTH, CastingTime.ONE_ACTION, 30, VS, INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
+
+                    // No effect on undead or constructs
+                    if (target is Monster monster && (monster.Type == Monsters.Type.UNDEAD || monster.Type == Monsters.Type.CONSTRUCT)) {
+                        GlobalEvents.AffectBySpell(caster, ID.BLIGHT, target, false);
+                        return;
+                    }
+
+                    GlobalEvents.AffectBySpell(caster, ID.BLIGHT, target, true);
+                    Dice damage = DiceSlotScaling(FOURTH, slot, D8, 8);
+
+                    // Plant creature: save with disadvantage, spell deals maximum damage
+                    if (target is Monster plant && plant.Type == Monsters.Type.PLANT) {
+                        target.TakeDamage(new DamageSource(ID.BLIGHT, caster), NECROTIC, damage.Max, HALVES_DAMAGE, dc, CONSTITUTION, out _, false, true);
+                    } else {
+                        target.TakeDamage(new DamageSource(ID.BLIGHT, caster), NECROTIC, damage, HALVES_DAMAGE, dc, CONSTITUTION, out _);
+                    }
+                });
             }
         }
         /* TODO */

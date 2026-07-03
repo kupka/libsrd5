@@ -282,15 +282,16 @@ namespace srd5 {
             }
         }
 
-        private void DamagingSpellTesting(Spell spell, int dc, DamageType damageType) {
+        private void DamagingSpellTesting(Spell spell, int dc, DamageType damageType, Monsters.Type monsterType = Monsters.Type.BEAST) {
             Monster hag = Monsters.NightHag;
             Monster monster1 = Monsters.Bandit;
             Monster monster2 = Monsters.Baboon;
             monster2.AddEffect(Enum.Parse<Effect>("IMMUNITY_" + Enum.GetName<DamageType>(damageType)));
-            Battleground ground = createBattleground(hag, monster1, monster2);
+            Monster typed = new Monster(monsterType, Monsters.ID.MANTICORE, Alignment.UNALIGNED, 10, 10, 10, 10, 10, 10, 10, "5d8", 30, 2, new Attack[0], new Attack[0], Size.MEDIUM, 5);
+            Battleground ground = createBattleground(hag, monster1, monster2, typed);
             for (int i = 0; i < 10; i++) {
-                spell.Cast(ground, hag, dc, spell.Level, 0, monster1, monster2);
-                spell.Cast(ground, hag, dc, spell.Level, 0, monster2, monster1);
+                spell.Cast(ground, hag, dc, spell.Level, 0, monster1, monster2, typed);
+                spell.Cast(ground, hag, dc, spell.Level, 0, typed, monster2, monster1);
             }
             Assert.True(monster1.HitPoints < monster1.HitPointsMax);
             Assert.True(monster2.HitPoints == monster2.HitPointsMax);
@@ -526,7 +527,7 @@ namespace srd5 {
             Battleground ground = createBattleground(druid, bandit);
             Spells.FlameBlade.Cast(druid, 10, SpellLevel.NINTH, 0);
             Assert.True(druid.AvailableSpells[0].PreparedSpells[0].ID == Spells.ID.FLAME_BLADE_ATTACK);
-            for(int i = 0; i < 10; i++) {
+            for (int i = 0; i < 10; i++) {
                 druid.AvailableSpells[0].PreparedSpells[0].Cast(ground, druid, 15, SpellLevel.CANTRIP, 1, bandit);
             }
             Assert.True(bandit.Dead);
@@ -775,6 +776,13 @@ namespace srd5 {
                 druid.OnEndOfTurn();
             }
             Assert.False(orc.HasEffect(Effect.SPELL_STINKING_CLOUD));
+        }
+
+        [Fact]
+        public void BlightTest() {
+            DamagingSpellTesting(Spells.Blight, 25, DamageType.NECROTIC, Monsters.Type.PLANT);
+            DamagingSpellTesting(Spells.Blight, 25, DamageType.NECROTIC, Monsters.Type.UNDEAD);
+            DamagingSpellTesting(Spells.Blight, 25, DamageType.NECROTIC, Monsters.Type.CONSTRUCT);
         }
 
     }

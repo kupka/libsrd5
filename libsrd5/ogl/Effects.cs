@@ -214,6 +214,7 @@ namespace srd5 {
         SPELL_WATER_WALK,
         // 4th
         SPELL_BLACK_TENTACLES,
+        SPELL_CONFUSION,
         SPELL_PLACEHOLDER_4TH,
         // 5th
         SPELL_PLACEHOLDER_5TH,
@@ -395,6 +396,9 @@ namespace srd5 {
                     break;
                 case SPELL_BLACK_TENTACLES:
                     combatant.AddCondition(ConditionType.RESTRAINED);
+                    break;
+                case SPELL_CONFUSION:
+                    combatant.AddEffect(CANNOT_TAKE_REACTIONS);
                     break;
                 case SPELL_FAIRIE_FIRE:
                     combatant.AddEffect(ADVANTAGE_ON_BEING_ATTACKED);
@@ -719,6 +723,9 @@ namespace srd5 {
                     break;
                 case SPELL_BLACK_TENTACLES:
                     combatant.RemoveCondition(ConditionType.RESTRAINED);
+                    break;
+                case SPELL_CONFUSION:
+                    combatant.RemoveEffect(CANNOT_TAKE_REACTIONS);
                     break;
                 case SPELL_FAIRIE_FIRE:
                     combatant.RemoveEffect(ADVANTAGE_ON_BEING_ATTACKED);

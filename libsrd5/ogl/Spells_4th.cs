@@ -12,9 +12,12 @@ using static srd5.AbilityType;
 namespace srd5 {
     public partial struct Spells {
         /* TODO:
-        "You create an invisible, magical eye within range that hovers in the air for the duration.",
-        "You mentally receive visual information from the eye, which has normal vision and darkvision out to 30 feet. The eye can look in every direction.",
-        "As an action, you can move the eye up to 30 feet in any direction. There is no limit to how far away from you the eye can move, but it can't enter another plane of existence. A solid barrier blocks the eye's movement, but the eye can pass through an opening as small as 1 inch in diameter."
+        You create an invisible, magical eye within range that hovers in the air for the duration.
+        You mentally receive visual information from the eye, which has normal vision and darkvision out to 30 feet. 
+        The eye can look in every direction.
+        As an action, you can move the eye up to 30 feet in any direction. 
+        There is no limit to how far away from you the eye can move, but it can't enter another plane of existence. 
+        A solid barrier blocks the eye's movement, but the eye can pass through an opening as small as 1 inch in diameter.
          */
         public static Spell ArcaneEye {
             get {
@@ -22,9 +25,15 @@ namespace srd5 {
             }
         }
         /* TODO:
-        "You attempt to send one creature that you can see within range to another plane of existence. The target must succeed on a charisma saving throw or be banished.",
-        "If the target is native to the plane of existence you're on, you banish the target to a harmless demiplane. While there, the target is incapacitated. The target remains there until the spell ends, at which point the target reappears in the space it left or in the nearest unoccupied space if that space is occupied.",
-        "If the target is native to a different plane of existence than the one you're on, the target is banished with a faint popping noise, returning to its home plane. If the spell ends before 1 minute has passed, the target reappears in the space it left or in the nearest unoccupied space if that space is occupied. Otherwise, the target doesn't return."
+        You attempt to send one creature that you can see within range to another plane of existence. 
+        The target must succeed on a charisma saving throw or be banished.
+        If the target is native to the plane of existence you're on, you banish the target to a harmless demiplane. 
+        While there, the target is incapacitated. The target remains there until the spell ends, 
+        at which point the target reappears in the space it left or in the nearest unoccupied space if that space is occupied.
+        If the target is native to a different plane of existence than the one you're on, the target is banished with a faint popping noise, 
+        returning to its home plane. If the spell ends before 1 minute has passed, 
+        the target reappears in the space it left or in the nearest unoccupied space if that space is occupied. 
+        Otherwise, the target doesn't return.
         */
         public static Spell Banishment {
             get {
@@ -117,16 +126,101 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+        /* TODO:
+        Creatures of your choice that you can see within range and that can hear you must make a wisdom saving throw. 
+        A target automatically succeeds on this saving throw if it can't be charmed. On a failed save, a target is affected by this spell. 
+        Until the spell ends, you can use a bonus action on each of your turns to designate a direction that is horizontal to you. 
+        Each affected target must use as much of its movement as possible to move in that direction on its next turn. 
+        It can take any action before it moves. After moving in this way, it can make another Wisdom save to try to end the effect.
+        A target isn't compelled to move into an obviously deadly hazard, such as a fire or a pit, 
+        but it will provoke opportunity attacks to move in the designated direction.
+         */
         public static Spell Compulsion {
             get {
                 return new Spell(ID.COMPULSION, ENCHANTMENT, FOURTH, CastingTime.ONE_ACTION, 30, VS, ONE_MINUTE, 0, 0, doNothing);
             }
         }
-        /* TODO */
         public static Spell Confusion {
             get {
-                return new Spell(ID.CONFUSION, ENCHANTMENT, FOURTH, CastingTime.ONE_ACTION, 90, VSM, ONE_MINUTE, 10, 0, doNothing);
+                return new Spell(ID.CONFUSION, ENCHANTMENT, FOURTH, CastingTime.ONE_ACTION, 90, VSM, ONE_MINUTE, 10, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    foreach (Combatant target in targets) {
+                        if (target.DC(ID.CONFUSION, dc, WISDOM)) {
+                            GlobalEvents.AffectBySpell(caster, ID.CONFUSION, target, false);
+                            continue;
+                        }
+
+                        GlobalEvents.AffectBySpell(caster, ID.CONFUSION, target, true);
+                        target.AddEffect(SPELL_CONFUSION); // adds CANNOT_TAKE_REACTIONS
+
+                        // At the start of each turn, roll d10 to determine behavior
+                        target.AddStartOfTurnEvent(delegate () {
+                            if (!target.HasEffect(SPELL_CONFUSION)) return true;
+
+                            int roll = D10.Value;
+                            if (roll <= 6) {
+                                // 1: random movement, no action; 2-6: no movement or action
+                                // Block actions for this turn; remove at end of turn
+                                target.AddEffect(CANNOT_TAKE_ACTIONS);
+                                target.AddEndOfTurnEvent(delegate () {
+                                    target.RemoveEffect(CANNOT_TAKE_ACTIONS);
+                                    return true;
+                                });
+                            } else if (roll <= 8) {
+                                // Determine Melee Attack with longest reach
+                                Attack longestReachAttack = null;
+                                foreach (Attack meleeAttack in target.MeleeAttacks) {
+                                    if (longestReachAttack == null || meleeAttack.Reach > longestReachAttack.Reach) {
+                                        longestReachAttack = meleeAttack;
+                                    }
+                                }
+                                // 7-8: melee attack against a randomly determined creature within reach
+                                if (longestReachAttack != null) {
+                                    int reach = longestReachAttack.Reach;
+                                    Combatant[] inReach = new Combatant[0];
+                                    foreach (Combatant other in ground.combatants) {
+                                        if (other == target || other.HitPoints <= 0) continue;
+                                        if (ground.Distance(target, other) <= reach) {
+                                            Utils.Push<Combatant>(ref inReach, other);
+                                        }
+                                    }
+                                    if (inReach.Length > 0) {
+                                        Combatant attackTarget = inReach[Random.Get(0, inReach.Length - 1)];
+                                        target.Attack(longestReachAttack, attackTarget, ground.Distance(target, attackTarget));
+                                    }
+                                }
+                                target.AddEffect(CANNOT_TAKE_ACTIONS);
+                                target.AddEndOfTurnEvent(delegate () {
+                                    target.RemoveEffect(CANNOT_TAKE_ACTIONS);
+                                    return true;
+                                });
+                            }
+                            // 9-10: act and move normally — no restriction
+                            return false;
+                        });
+
+                        // At the end of each turn, Wisdom save to end the effect
+                        target.AddEndOfTurnEvent(delegate () {
+                            if (!target.HasEffect(SPELL_CONFUSION)) return true;
+                            if (target.DC(ID.CONFUSION, dc, WISDOM)) {
+                                target.RemoveEffect(SPELL_CONFUSION);
+                                return true;
+                            }
+                            return false;
+                        });
+                    }
+
+                    // Remove effect from all targets after 1 minute
+                    int remainingRounds = (int)ONE_MINUTE;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds < 1) {
+                            foreach (Combatant t in targets) {
+                                t.RemoveEffect(SPELL_CONFUSION);
+                            }
+                            return true;
+                        }
+                        return false;
+                    });
+                });
             }
         }
         /* TODO */

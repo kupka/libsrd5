@@ -742,5 +742,10 @@ namespace srd5 {
             Assert.False(troll.HasEffect(Effect.SPELL_BLACK_TENTACLES));
             Assert.False(troll.HasCondition(ConditionType.RESTRAINED));
         }
+
+        [Fact]
+        public void ConfusionTest() {
+            DefaultSpellTest(Spells.Confusion, 25, SpellLevel.FOURTH, null, Effect.SPELL_CONFUSION, Spells.Confusion.Duration);
+        }
     }
 }

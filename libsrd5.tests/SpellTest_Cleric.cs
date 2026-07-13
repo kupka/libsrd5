@@ -15,6 +15,20 @@ namespace srd5 {
         }
 
         [Fact]
+        public void DeathWardTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            hero.AddLevel(CharacterClasses.Druid);
+            Battleground ground = createBattleground(hero);
+            Spells.DeathWard.Cast(ground, hero, 10, SpellLevel.FOURTH, 0, hero);
+            Assert.True(hero.HasEffect(Effect.SPELL_DEATH_WARD));
+            hero.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hero), DamageType.SLASHING, hero.HitPointsMax);
+            Assert.Equal(1, hero.HitPoints);
+            Assert.False(hero.HasEffect(Effect.SPELL_DEATH_WARD));
+            Assert.False(hero.HasCondition(ConditionType.UNCONSCIOUS));
+            Assert.False(hero.HasEffect(Effect.FIGHTING_DEATH));
+        }
+
+        [Fact]
         public void GuidanceTest() {
             CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             hero.AddLevel(CharacterClasses.Barbarian);

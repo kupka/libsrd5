@@ -340,6 +340,13 @@ namespace srd5 {
             GlobalEvents.ReceivedDamage(this, amount, type);
             // Remove from temporary hitpoints first
             amount = temporaryHitpoints.Absorb(amount);
+            // Death Ward Death Prevention
+            if (amount > 0 && HasEffect(Effect.SPELL_DEATH_WARD) && amount >= HitPoints) {
+                RemoveEffect(Effect.SPELL_DEATH_WARD);
+                HitPoints = 1;
+                GlobalEvents.ActivateEffect(this, Effect.SPELL_DEATH_WARD);
+                return amount;
+            }
             // Instant death when leftover damage exceeds max hitpoints
             if (Math.Abs(HitPoints - amount) > HitPointsMax) {
                 HitPoints = 0;
@@ -734,7 +741,10 @@ namespace srd5 {
         }
 
         internal void Die() {
-            // TODO: Implement what happens when this Combatant dies
+            if (HasEffect(Effect.SPELL_DEATH_WARD)) {
+                RemoveEffect(Effect.SPELL_DEATH_WARD);
+                return;
+            }
             GlobalEvents.Die(this);
             Dead = true;
         }

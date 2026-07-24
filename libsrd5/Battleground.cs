@@ -33,6 +33,14 @@ namespace srd5 {
         public abstract int Distance(Location another);
     }
 
+    public class Target : Combatant {
+        public override int ArmorClass { get => throw new NotImplementedException(); internal set => throw new NotImplementedException(); }
+
+        public override int ProficiencyBonus => throw new NotImplementedException();
+
+        public Location Location { get; internal set; }
+    }
+
     /// <summary>
     /// Has front and back lines for left (usually heroes) and right (enemies) side of the screen. Classic JRPG-style.
     /// </summary>
@@ -86,11 +94,11 @@ namespace srd5 {
         }
 
 
-        protected override void SetCurrentLocation(Location location) {
+        internal override void SetCurrentLocation(Location location) {
             SetLocation(CurrentCombatant, location);
         }
 
-        protected override void SetLocation(Combatant combatant, Location location) {
+        internal override void SetLocation(Combatant combatant, Location location) {
             locations[Array.IndexOf(combatants, combatant)] = (ClassicLocation)location;
         }
 
@@ -105,6 +113,12 @@ namespace srd5 {
             } else if (LocateClassicCombatant(target).Location == ClassicLocation.Row.FRONT_RIGHT) {
                 SetLocation(target, ClassicLocation.BackRight);
             }
+        }
+
+        public override bool IsOccupied(Location loc) {
+            // Since any number of combatants can occupy the same location
+            // this always returns false.
+            return false;
         }
     }
 
@@ -175,11 +189,11 @@ namespace srd5 {
             }
         }
 
-        protected override void SetCurrentLocation(Location location) {
+        internal override void SetCurrentLocation(Location location) {
             SetLocation(CurrentCombatant, location);
         }
 
-        protected override void SetLocation(Combatant combatant, Location location) {
+        internal override void SetLocation(Combatant combatant, Location location) {
             coords[Array.IndexOf(combatants, combatant)] = (Coord)location;
         }
 
@@ -220,6 +234,18 @@ namespace srd5 {
             }
             SetLocation(target, destination);
         }
+
+        /// <summary>
+        /// Returns whether the given tile coordinates are occupied by a combatant.
+        /// </summary>
+        public override bool IsOccupied(Location loc) {
+            int x = ((Coord)loc).X;
+            int y = ((Coord)loc).Y;
+            foreach (Coord coord in coords) {
+                if (coord.X == x && coord.Y == y) return true;
+            }
+            return false;
+        }
     }
 
     public enum TurnPhase {
@@ -254,6 +280,8 @@ namespace srd5 {
         }
         protected int remainingSpeed = 0;
         protected TurnPhase currentPhase = TurnPhase.MOVE;
+
+        abstract public bool IsOccupied(Location loc);
 
         public virtual void Initialize() {
             if (Turn > 0) return;
@@ -507,12 +535,12 @@ namespace srd5 {
         /// <summary>
         /// Set the location of the current active combatant
         /// </summary>
-        protected abstract void SetCurrentLocation(Location location);
+        internal abstract void SetCurrentLocation(Location location);
 
         /// <summary>
         /// Set the location of the combatant
         /// </summary>
-        protected abstract void SetLocation(Combatant combatant, Location location);
+        internal abstract void SetLocation(Combatant combatant, Location location);
 
 
         /// <summary>

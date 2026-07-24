@@ -22,13 +22,13 @@ Add the nuget package to your .NET project and start coding!
 ```dotnet add <yourproject>.csproj package libsrd5```
 
 You can find examples how to integrate libsrd5 in a Blazor and Unity3D project [here](https://github.com/kupka/libsrd5-examples). 
-This example uses a very outdated version of libsrd5, an update will probably arrive in spring 2025.
+**Note**: This example uses a very outdated version of libsrd5.
 
 ## Copyright
 
-libsrd5 Copyright 2021-2025, Thomas Kupka
+libsrd5 Copyright 2021-2026, Thomas Kupka
 
-## Current Status (Version 0.3.3)
+## Current Status (Version 0.3.4)
 
 | Topic                 | Status            | Remark                   |
 ------------------------|-------------------|--------------------------|
@@ -36,7 +36,7 @@ libsrd5 Copyright 2021-2025, Thomas Kupka
 | Character <br> Classes     | 🟩🟩🟩🟩⬛⬛⬛⬛⬛⬛ | Work to some degree, <br> but needs a lot of detailling. |
 | Character <br> Races       | 🟩🟩🟩🟩🟩⬛⬛⬛⬛⬛ | All races available, <br> but pretty bare functionality. |
 | Monsters              | 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬛ | All Monsters are available, <br> most are fully functional! |
-| Spells                | 🟩🟩🟩🟩⬛⬛⬛⬛⬛⬛ | All Spells are available, <br> Up to 3rd Level <br> fully implemented.<br> **Current focus of work**. |
+| Spells                | 🟩🟩🟩🟩🟩⬛⬛⬛⬛⬛ | All Spells are available, <br> Up to 4th Level <br> fully implemented.<br> **Current focus of work**. |
 | Feats                 | 🟩⬛⬛⬛⬛⬛⬛⬛⬛⬛ | Only very basic <br> functionality available. |
 | Items                 | 🟩🟩🟩🟩🟩🟩⬛⬛⬛⬛ | Weapons, Armors (incl. magic) <br> are available. <br> Unique artifacts missing. |
 | Descriptions          | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 | Done! Everything mentioned<br> in the SRD5 is available<br> in the library. |

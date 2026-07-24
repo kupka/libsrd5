@@ -309,10 +309,50 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+        /* TODO:
+        You teleport yourself from your current location to any other spot within range. 
+        You arrive at exactly the spot desired. It can be a place you can see, one you can visualize, 
+        or one you can describe by stating distance and direction, such as "200 feet straight downward" 
+        or "upward to the northwest at a 45- degree angle, 300 feet."
+        You can bring along objects as long as their weight doesn't exceed what you can carry. 
+        You can also bring one willing creature of your size or smaller who is carrying gear up to its carrying capacity. The creature must be within 5 feet of you when you cast this spell.
+        If you would arrive in a place already occupied by an object or a creature, you and any creature traveling with you each take 4d6 force damage, and the spell fails to teleport you. 
+        */
         public static Spell DimensionDoor {
             get {
-                return new Spell(ID.DIMENSION_DOOR, CONJURATION, FOURTH, CastingTime.ONE_ACTION, 500, V, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.DIMENSION_DOOR, CONJURATION, FOURTH, CastingTime.ONE_ACTION, 500, V, INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    // Optional companion: targets[0] may be the companion when cast via Battleground.SpellCastAction.
+                    Combatant companion = null;
+                    Target target = null;
+                    foreach (Combatant combatant in targets) {
+                        if (combatant is Target t) {
+                            target = t;
+                        } else {
+                            companion = combatant;
+                        }
+                    }
+
+                    if (target == null) {
+                        throw new ArgumentException("Dimension Door requires a target to teleport to.");
+                    }
+
+                    // If destination is occupied by someone else, caster (and companion) take 4d6 force and spell fails
+                    if (ground.IsOccupied(target.Location)) {
+                        Dice damage = new Dice("4d6");
+                        caster.TakeDamage(new DamageSource(ID.DIMENSION_DOOR, caster), FORCE, damage);
+                        if (companion != null) companion.TakeDamage(new DamageSource(ID.DIMENSION_DOOR, caster), FORCE, damage);
+                        GlobalEvents.AffectBySpell(caster, ID.DIMENSION_DOOR, caster, false);
+                        return;
+                    }
+
+                    // Teleport caster and companion
+                    ground.SetLocation(caster, target.Location);
+                    GlobalEvents.AffectBySpell(caster, ID.DIMENSION_DOOR, caster, true);
+                    if (companion != null) {
+                        ground.SetLocation(companion, target.Location);
+                        GlobalEvents.AffectBySpell(caster, ID.DIMENSION_DOOR, companion, true);
+                    }
+                });
             }
         }
         /* TODO */

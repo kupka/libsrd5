@@ -26,6 +26,10 @@ namespace srd5 {
             Assert.False(hero.HasEffect(Effect.SPELL_DEATH_WARD));
             Assert.False(hero.HasCondition(ConditionType.UNCONSCIOUS));
             Assert.False(hero.HasEffect(Effect.FIGHTING_DEATH));
+
+            Spells.DeathWard.Cast(ground, hero, 10, SpellLevel.FOURTH, 0, hero);
+            hero.Die();
+            Assert.False(hero.Dead);
         }
 
         [Fact]

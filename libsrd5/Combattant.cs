@@ -742,6 +742,7 @@ namespace srd5 {
 
         internal void Die() {
             if (HasEffect(Effect.SPELL_DEATH_WARD)) {
+                GlobalEvents.ActivateEffect(this, Effect.SPELL_DEATH_WARD);
                 RemoveEffect(Effect.SPELL_DEATH_WARD);
                 return;
             }

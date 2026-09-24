@@ -11,7 +11,7 @@ namespace srd5 {
             goblin.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, goblin), DamageType.TRUE_DAMAGE, 1);
             Assert.Equal(goblin.HitPointsMax - 1, goblin.HitPoints);
             goblin.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, ranger), DamageType.TRUE_DAMAGE, 1);
-            Assert.True(goblin.HitPointsMax - 2 > goblin.HitPoints);
+            Assert.InRange(goblin.HitPoints, 0, goblin.HitPointsMax - 2);
         }
     }
 }

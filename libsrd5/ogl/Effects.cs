@@ -216,6 +216,7 @@ namespace srd5 {
         SPELL_BLACK_TENTACLES,
         SPELL_CONFUSION,
         SPELL_DEATH_WARD,
+        SPELL_DOMINATE_BEAST,
         SPELL_PLACEHOLDER_4TH,
         // 5th
         SPELL_PLACEHOLDER_5TH,

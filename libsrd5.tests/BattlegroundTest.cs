@@ -11,8 +11,11 @@ namespace srd5 {
             CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             hero.Name = "Bob";
             Monster badguy = Monsters.Ogre;
-            Random.State = 7; // Fix deterministic random so that ogre wins initiative
+            // lower hero's Dexterity below the ogre's (-1) modifier so the ogre wins the initiative tie under an equal roll
+            hero.Dexterity.BaseValue = 1;
+            Random.FixedRandom = Random.DebugState.Avg;
             ground.AddCombatant(hero, 10, 10);
+            Random.FixedRandom = Random.DebugState.Avg;
             ground.AddCombatant(badguy, 30, 30);
             Assert.Equal(hero.Name, ground.CurrentCombatant.Name);
             Assert.Equal(ground.LocateCombatant(hero), ground.LocateCombatant2D(hero));
@@ -108,9 +111,9 @@ namespace srd5 {
             Assert.Equal(hero, ground.CurrentCombatant);
             ground.NextPhase(); // skip move
             hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"), 5);
-            Random.State = 11; // Fix deterministic random to guarantee critical hit
+            Random.FixedRandom = Random.DebugState.Max; // guarantee critical hit
             Assert.True(ground.MeleeAttackAction(badger));
-            Random.State = 10; // Fix deterministic random to guarantee normal hit     
+            Random.FixedRandom = Random.DebugState.Avg; // guarantee normal hit
             Assert.Throws<Srd5ArgumentException>(delegate {
                 ground.MeleeAttackAction(null);
             });
@@ -119,6 +122,7 @@ namespace srd5 {
             });
             Assert.True(ground.MeleeAttackAction(badger));
             Assert.False(ground.MeleeAttackAction(hero));
+
         }
 
         [Fact]
@@ -156,9 +160,10 @@ namespace srd5 {
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.HitPoints = hero.HitPointsMax;
             hero.Equip(Weapons.Greataxe);
-            Random.State = 3; // Fix deterministic random so that ogre goes first
+            Random.FixedRandom = Random.DebugState.Min;
             ground.AddCombatant(hero, 1, 1);
             Monster ogre = Monsters.Ogre;
+            Random.FixedRandom = Random.DebugState.Max;
             ground.AddCombatant(ogre, 1, 2);
             ground.Initialize();
             ground.NextPhase(); // skip move
@@ -167,9 +172,9 @@ namespace srd5 {
             Assert.Equal(hero, ground.CurrentCombatant);
             ground.NextPhase(); // skip move
             hero.BonusAttack = new Attack("Test Attack", 0, new Damage(DamageType.BLUDGEONING, "1d6+4"), 5, 0, 0, new Damage(DamageType.COLD, "1d4+1"));
-            Random.State = 10; // Fix deterministic random to guarantee normal hit
+            Random.FixedRandom = Random.DebugState.Avg; // guarantee normal hit
             Assert.True(ground.MeleeAttackAction(ogre));
-            Random.State = 11; // Fix deterministic random to guarantee critical hit
+            Random.FixedRandom = Random.DebugState.Max; // guarantee critical hit
             Assert.True(ground.MeleeAttackAction(ogre));
             Assert.False(ground.MeleeAttackAction(hero));
             ground.NextPhase(); // End hero turn
@@ -177,7 +182,7 @@ namespace srd5 {
             ground.NextPhase(); // Skip ogre attack
             ground.NextPhase(); // Skip ogre bonus attack
             Assert.True(ground.MeleeAttackAction(ogre));
-            Random.State = 10; // Fix deterministic random to guarantee normal hit
+            Random.FixedRandom = Random.DebugState.Avg; // guarantee normal hit
             Assert.True(ground.MeleeAttackAction(ogre));
         }
 
@@ -190,14 +195,16 @@ namespace srd5 {
             hero.Dexterity.BaseValue = 10;
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.Equip(Weapons.Battleaxe);
-            Random.State = 1; // Fix deterministic random so that hero goes first
+            Random.FixedRandom = Random.DebugState.Avg; // hero's Dexterity modifier (0) beats the ogre's (-1), so hero goes first
             ground.AddCombatant(hero, 1, 1);
             Monster ogre = Monsters.Ogre;
+            Random.FixedRandom = Random.DebugState.Avg;
             ground.AddCombatant(ogre, 4, 4);
             ground.Initialize();
             ground.NextPhase(); // skip move  
             Assert.Equal(hero, ground.CurrentCombatant);
             Assert.False(ground.MeleeAttackAction(ogre));
+
         }
 
         private void setupBattleField2D(ref Battleground2D ground, ref CharacterSheet hero, ref Monster ogre) {
@@ -207,9 +214,10 @@ namespace srd5 {
             hero.Dexterity.BaseValue = 10;
             hero.AddLevel(CharacterClasses.Barbarian);
             hero.Equip(Weapons.Battleaxe);
-            Random.State = 1; // Fix deterministic random so that hero goes first
+            Random.FixedRandom = Random.DebugState.Avg;
             ground.AddCombatant(hero, 1, 1);
             ogre = Monsters.Ogre;
+            Random.FixedRandom = Random.DebugState.Avg;
             ground.AddCombatant(ogre, 1, 2);
             ground.Initialize();
 
@@ -411,10 +419,13 @@ namespace srd5 {
             Assert.False(ground.SpellCastAction(Spells.AcidSplash, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre, ogre2, ogre3));
             // Target outside area of effect
             Assert.False(ground.SpellCastAction(Spells.AcidSplash, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre, ogre4));
-            Random.State = 15; // Fix random so one ogre fails DC
+            ogre2.Dexterity.BaseValue = 100;
+            Random.FixedRandom = Random.DebugState.Avg;
+            Random.State = 1;
             Assert.True(ground.SpellCastAction(Spells.AcidSplash, SpellLevel.CANTRIP, hero.AvailableSpells[0], ogre, ogre2));
             Assert.True(ogre.HitPointsMax > ogre.HitPoints);
             Assert.True(ogre2.HitPointsMax == ogre2.HitPoints);
+
         }
 
         [Fact]
@@ -454,7 +465,6 @@ namespace srd5 {
             battle.AddCombatant(bandit, ClassicLocation.Row.BACK_RIGHT);
             bandit.BonusAttack = Attacks.GoblinShortbow;
             battle.Initialize();
-            Random.State = 1;
             if (battle.CurrentCombatant == ogre)
                 Assert.False(battle.RangedAttackAction(bandit));
             else

@@ -116,10 +116,14 @@ namespace srd5 {
         [Fact]
         public void DCTest() {
             Combatant orc = Monsters.Orc;
+            Random.FixedRandom = Random.DebugState.Avg;
             Assert.True(orc.DC(null, 2, AbilityType.WISDOM, true, false));
+            Random.FixedRandom = Random.DebugState.Avg;
             Assert.False(orc.DC(null, 19, AbilityType.STRENGTH, false, true));
             Combatant assassin = Monsters.Assassin;
+            Random.FixedRandom = Random.DebugState.Avg;
             Assert.True(assassin.DC(null, 2, Skill.STEALTH, true, false));
+            Random.FixedRandom = Random.DebugState.Avg;
             Assert.False(assassin.DC(null, 30, Skill.NATURE, false, true));
         }
 

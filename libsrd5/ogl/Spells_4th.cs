@@ -355,16 +355,99 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+        /* TODO:
+        Your magic and an offering put you in contact with a god or a god's servants. You ask a single 
+        question concerning a specific goal, event, or activity to occur within 7 days. The GM offers a 
+        truthful reply. The reply might be a short phrase, a cryptic rhyme, or an omen.
+        The spell doesn't take into account any possible circumstances that might change the outcome, 
+        such as the casting of additional spells or the loss or gain of a companion.
+        If you cast the spell two or more times before finishing your next long rest, there is a 
+        cumulative 25 percent chance for each casting after the first that you get a random reading. 
+        The GM makes this roll in secret. */
         public static Spell Divination {
             get {
                 return new Spell(ID.DIVINATION, DIVINATION, FOURTH, CastingTime.ONE_ACTION, 0, VSM, INSTANTANEOUS, 0, 0, doNothing);
             }
         }
-        /* TODO */
+
+        /* TODO:
+        You attempt to beguile a beast that you can see within range. It must succeed on a Wisdom 
+        saving throw or be charmed by you for the duration. If you or creatures that are friendly to 
+        you are fighting it, it has advantage on the saving throw.
+        While the beast is charmed, you have a telepathic link with it as long as the two of you are on 
+        the same plane of existence. You can use this telepathic link to issue commands to the creature 
+        while you are conscious (no action required), which it does its best to obey. You can specify a 
+        simple and general course of action, such as "Attack that creature," "Run over there," or 
+        "Fetch that object." If the creature completes the order and doesn't receive further direction 
+        from you, it defends and preserves itself to the best of its ability.
+        You can use your action to take total and precise control of the target. Until the end of your 
+        next turn, the creature takes only the actions you choose, and doesn't do anything that you 
+        don't allow it to do. During this time, you can also cause the creature to use a reaction, but 
+        this requires you to use your own reaction as well.
+        Each time the target takes damage, it makes a new Wisdom saving throw against the spell. If the 
+        saving throw succeeds, the spell ends.
+
+        At Higher Levels. When you cast this spell with a 5th-level spell slot, the duration is 
+        concentration, up to 10 minutes. When you use a 6th-level spell slot, the duration is c
+        oncentration, up to 1 hour. When you use a spell slot of 7th level or higher, the duration is 
+        concentration, up to 8 hours.
+ */
         public static Spell DominateBeast {
             get {
-                return new Spell(ID.DOMINATE_BEAST, ENCHANTMENT, FOURTH, CastingTime.ONE_ACTION, 60, VS, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.DOMINATE_BEAST, ENCHANTMENT, FOURTH, CastingTime.ONE_ACTION, 60, VS, ONE_MINUTE, 0, 2, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
+                    // the second target designates who the charmed beast is commanded to attack; without one it attacks no one
+                    Combatant attackTarget = targets.Length > 1 ? targets[1] : null;
+
+                    // only beasts can be dominated by this spell
+                    if (!(target is Monster monster) || monster.Type != Monsters.Type.BEAST) {
+                        GlobalEvents.AffectBySpell(caster, ID.DOMINATE_BEAST, target, false);
+                        return;
+                    }
+
+                    // Wisdom save with advantage since we assume a fight
+                    if (target.HasEffect(IMMUNITY_CHARMED) || target.DC(ID.DOMINATE_BEAST, dc, WISDOM, true)) {
+                        GlobalEvents.AffectBySpell(caster, ID.DOMINATE_BEAST, target, false);
+                        return;
+                    }
+
+                    GlobalEvents.AffectBySpell(caster, ID.DOMINATE_BEAST, target, true);
+                    target.AddCondition(ConditionType.CHARMED);
+                    target.AddEffect(SPELL_DOMINATE_BEAST);
+
+                    bool spellEnded = false;
+                    // Each time the target takes damage, it makes a new Wisdom saving throw against the spell
+                    target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
+                        if (spellEnded) return true;
+                        if (!target.DC(ID.DOMINATE_BEAST, dc, WISDOM)) return false;
+                        spellEnded = true;
+                        target.RemoveCondition(ConditionType.CHARMED);
+                        target.RemoveEffect(SPELL_DOMINATE_BEAST);
+                        return true;
+                    });
+
+                    // commanded to attack the designated target on its turn; without one it does not attack anyone
+                    target.AddStartOfTurnEvent(delegate () {
+                        if (spellEnded || !target.HasEffect(SPELL_DOMINATE_BEAST)) return true;
+                        if (attackTarget == null || attackTarget.HitPoints <= 0) return false;
+                        // Move towards the attack target if not in reach
+
+                        // Attack the target if in reach
+                        return false;
+                    });
+
+                    int remainingRounds = (int)ONE_MINUTE;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (spellEnded) return true;
+                        if (--remainingRounds < 1) {
+                            spellEnded = true;
+                            target.RemoveCondition(ConditionType.CHARMED);
+                            target.RemoveEffect(SPELL_DOMINATE_BEAST);
+                            return true;
+                        }
+                        return false;
+                    });
+                });
             }
         }
         /* TODO */

@@ -3,6 +3,8 @@ using Xunit;
 using static srd5.Die;
 
 namespace srd5 {
+    [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
+    [Collection("SingleThreaded")]
     public class AttackEffectTest {
         private Monster uberMonster = createUberMonster();
 

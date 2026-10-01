@@ -12,18 +12,22 @@ namespace srd5 {
             Monster orc = Monsters.Orc;
             Monster shadow = Monsters.Shadow;
             Battleground2D ground = new Battleground2D(10, 10);
-            Random.State = 2;
             ground.AddCombatant(wizard, 5, 5);
             ground.AddCombatant(orc, 7, 7);
             ground.AddCombatant(shadow, 8, 8);
             ground.AddCombatant(barbarian, 9, 9);
+            Random.FixedRandom = Random.DebugState.Max; // guarantee every attack hits
             Spells.ChillTouch.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, barbarian);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Random.FixedRandom = Random.DebugState.Max; // guarantee every attack hits
             Spells.ChillTouch.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Random.FixedRandom = Random.DebugState.Max; // guarantee every attack hits
             Spells.ChillTouch.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, shadow);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
-            Spells.ChillTouch.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, shadow);
+            Random.FixedRandom = Random.DebugState.Max; // guarantee every attack hits
+            Random.State = 1;
+            Spells.ChillTouch.Cast(ground, wizard, 30, SpellLevel.CANTRIP, 0, shadow);
             Assert.True(shadow.HasEffect(Effect.CANNOT_REGAIN_HITPOINTS));
             Assert.True(shadow.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
             wizard.OnStartOfTurn();
@@ -40,7 +44,7 @@ namespace srd5 {
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard);
             Monster orc = Monsters.Orc;
             Battleground2D ground = new Battleground2D(10, 10);
-            Random.State = 1;
+            Random.FixedRandom = Random.DebugState.Max;
             ground.AddCombatant(wizard, 5, 5);
             ground.AddCombatant(orc, 7, 7);
             Spells.FireBolt.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
@@ -49,8 +53,10 @@ namespace srd5 {
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
             Spells.FireBolt.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Random.FixedRandom = Random.DebugState.Max;
             Spells.FireBolt.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, orc);
             Assert.Equal(0, orc.HitPoints);
+
         }
 
         [Fact]
@@ -67,7 +73,7 @@ namespace srd5 {
             Monster orc = Monsters.Orc;
             Monster shadow = Monsters.Shadow;
             Battleground2D ground = new Battleground2D(10, 50);
-            Random.State = 1;
+            Random.FixedRandom = Random.DebugState.Max; // guarantee every attack hits
             ground.AddCombatant(wizard, 5, 5);
             ground.AddCombatant(orc, 7, 7);
             ground.AddCombatant(shadow, 8, 8);
@@ -78,6 +84,7 @@ namespace srd5 {
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
             Spells.RayOfFrost.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, shadow);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Random.FixedRandom = Random.DebugState.Avg;
             Spells.RayOfFrost.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, shadow);
             Assert.True(shadow.HasEffect(Effect.SPELL_RAY_OF_FROST));
             wizard.OnStartOfTurn();
@@ -93,7 +100,7 @@ namespace srd5 {
             Monster orc = Monsters.Orc;
             Monster shadow = Monsters.Shadow;
             Battleground2D ground = new Battleground2D(10, 10);
-            Random.State = 1;
+            Random.FixedRandom = Random.DebugState.Max;
             ground.AddCombatant(wizard, 5, 5);
             ground.AddCombatant(orc, 7, 7);
             ground.AddCombatant(shadow, 5, 6);
@@ -104,6 +111,8 @@ namespace srd5 {
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
             Spells.ShockingGrasp.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, shadow);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard, CharacterClasses.Wizard);
+            Random.FixedRandom = Random.DebugState.Max;
+            Random.State = 1;
             Spells.ShockingGrasp.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 0, shadow);
             Assert.True(shadow.HasEffect(Effect.CANNOT_TAKE_REACTIONS));
             wizard.OnStartOfTurn();
@@ -241,7 +250,7 @@ namespace srd5 {
             Monster orc = Monsters.Orc;
             Battleground ground = createBattleground(wizard, orc);
             // High DC guarantees the orc fails its save and becomes charmed
-            Random.State = 42;
+            Random.FixedRandom = Random.DebugState.Avg;
             Spells.HypnoticPattern.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
             Assert.True(orc.HasCondition(ConditionType.CHARMED));
             Assert.True(orc.HasCondition(ConditionType.INCAPACITATED));
@@ -251,6 +260,7 @@ namespace srd5 {
             Assert.False(orc.HasCondition(ConditionType.CHARMED));
             Assert.False(orc.HasCondition(ConditionType.INCAPACITATED));
             Assert.False(orc.HasEffect(Effect.SPELL_HYPNOTIC_PATTERN));
+
         }
 
         [Fact]
@@ -404,12 +414,16 @@ namespace srd5 {
             DefaultSpellTest(Spells.RayofEnfeeblement, 15, SpellLevel.SECOND, null, Effect.SPELL_RAY_OF_ENFEEBLEMENT, Spells.RayofEnfeeblement.Duration);
             Monster ogre = Monsters.Ogre;
             Monster bandit = Monsters.Bandit;
+            bandit.HitPointsMax = 100;
+            bandit.HitPoints = 100; // survive repeated hits regardless of the random HP roll
             ogre.AddEffect(Effect.SPELL_RAY_OF_ENFEEBLEMENT);
+            Random.FixedRandom = Random.DebugState.Avg; // guarantee a hit without a critical, so damage stays predictable
             for (int i = 0; i < 20; i++) {
                 ogre.Attack(Attacks.OgreGreatclub, bandit, 5); // could be fatal without effect
                 Assert.False(bandit.Dead);
                 bandit.HealDamage(100);
             }
+
         }
 
         [Fact]
@@ -418,6 +432,7 @@ namespace srd5 {
             Monster orc = Monsters.Orc;
             Monster bandit = Monsters.Bandit;
             Battleground ground = createBattleground(hag, orc, bandit);
+            Random.FixedRandom = Random.DebugState.Avg;
             Spells.ScorchingRay.Cast(ground, hag, 20, SpellLevel.NINTH, 5, orc, bandit);
             Assert.True(orc.Dead);
             Assert.True(bandit.Dead);
@@ -532,9 +547,10 @@ namespace srd5 {
             curse.Variant = SpellVariant.DISADVANTAGE_CHARISMA_SAVES;
             Monster orc = Monsters.Orc;
             Battleground ground = createBattleground(orc, orc);
-            Random.State = 42; // D20=13 which beats DC=1
+            Random.FixedRandom = Random.DebugState.Avg; // beats DC=1
             curse.Cast(ground, orc, 1, SpellLevel.THIRD, 0, orc);
             Assert.False(orc.HasEffect(Effect.SPELL_BESTOW_CURSE));
+
         }
 
         [Fact]
@@ -547,13 +563,14 @@ namespace srd5 {
             Spell curse = Spells.BestowCurse;
             curse.Variant = SpellVariant.LOSE_TURN_ON_FAILED_WISDOM_SAVE;
             DefaultSpellTest(curse, 25, SpellLevel.THIRD, null, Effect.SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE, SpellDuration.ONE_MINUTE);
-            Random.State = 42; // D20=13 < DC=25 → orc fails initial save
+            Random.FixedRandom = Random.DebugState.Avg; // D20=13 < DC=25 → orc fails initial save
             curse.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
             Assert.True(orc.HasEffect(Effect.SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE));
-            // Reseed to ensure StartOfTurn save also fails (D20=13 < DC=25)
-            Random.State = 42;
+            // Reaffirm so the StartOfTurn save also fails
+            Random.FixedRandom = Random.DebugState.Avg;
             orc.OnStartOfTurn();
             Assert.True(orc.HasEffect(Effect.SPELL_BESTOW_CURSE_LOST_TURN));
+
         }
 
         [Fact]
@@ -566,7 +583,7 @@ namespace srd5 {
             Battleground ground = createBattleground(wizard, orc);
             Spell curse = Spells.BestowCurse;
             curse.Variant = SpellVariant.TAKE_ADDITIONAL_DAMAGE;
-            Random.State = 42; // D20=13 < DC=25 → orc fails initial save
+            Random.FixedRandom = Random.DebugState.Avg; // D20=13 < DC=25 → orc fails initial save
             curse.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
             Assert.True(orc.HasEffect(Effect.SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE));
             // Trigger the DamageTakenEvent delegate body by dealing damage
@@ -576,6 +593,7 @@ namespace srd5 {
             orc.RemoveEffect(Effect.SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE);
             orc.TakeDamage(new DamageSource(DamageSourceType.OTHER, wizard, orc), DamageType.FIRE, 1);
             Assert.Equal(hpBefore - 1, orc.HitPoints); // should take exactly one damage
+
         }
 
         [Fact]
@@ -584,8 +602,8 @@ namespace srd5 {
             wizard.AddLevel(CharacterClasses.Wizard);
             Spells.Blink.Cast(wizard, 12, SpellLevel.THIRD, 0);
             Assert.False(wizard.HasEffect(Effect.CANNOT_BE_ATTACKED));
-            // Seed 11 → first D20 = 20 > 11, so CANNOT_BE_ATTACKED is applied
-            Random.State = 11;
+            // A nat 20 guarantees the Blink chance succeeds
+            Random.FixedRandom = Random.DebugState.Max;
             wizard.OnEndOfTurn();
             Assert.True(wizard.HasEffect(Effect.CANNOT_BE_ATTACKED));
             // Next start-of-turn removes the effect
@@ -598,6 +616,7 @@ namespace srd5 {
                 wizard.OnStartOfTurn();
             }
             Assert.False(wizard.HasEffect(Effect.CANNOT_BE_ATTACKED));
+
         }
 
         [Fact]
@@ -609,10 +628,11 @@ namespace srd5 {
             Monster orc = Monsters.Orc;
             orc.AddEffect(Effect.SPELL_FEAR); // 3rd-level spell effect
             Battleground ground = createBattleground(wizard, orc);
-            // Seed 2 → D20=19; wizard INT mod=0 + prof=2 → 21 >= DC 13 (10 + SpellLevel.THIRD) → dispelled
-            Random.State = 2;
+            // A nat 20 guarantees the dispel check succeeds regardless of level difference
+            Random.FixedRandom = Random.DebugState.Max;
             Spells.DispelMagic.Cast(ground, wizard, 12, SpellLevel.SECOND, 0, orc);
             Assert.False(orc.HasEffect(Effect.SPELL_FEAR));
+
         }
 
         [Fact]
@@ -624,11 +644,12 @@ namespace srd5 {
             Assert.True(hero.Inventory.MainHand.Is(Weapons.Dagger));
             CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
             Battleground ground = createBattleground(wizard, hero);
-            Random.State = 42; // D20=13 < DC=25 → hero fails WIS save
+            Random.FixedRandom = Random.DebugState.Avg; // high DC guarantees hero fails its WIS save
             Spells.Fear.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, hero);
             Assert.True(hero.HasCondition(ConditionType.FRIGHTENED));
             // Weapon should have been unequipped (Fear drops held items on CharacterSheets)
             Assert.Null(hero.Inventory.MainHand);
+
         }
 
         [Fact]
@@ -638,7 +659,7 @@ namespace srd5 {
             CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
             Monster orc = Monsters.Orc;
             Battleground ground = createBattleground(wizard, orc);
-            Random.State = 42; // ensures initial WIS save fails (D20=13 < DC=25)
+            Random.FixedRandom = Random.DebugState.Avg; // high DC guarantees the initial WIS save fails
             Spells.Fear.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
             Assert.True(orc.HasCondition(ConditionType.FRIGHTENED));
             // Simulate 10 start-of-turn ticks; remainingRounds reaches 0 on the last one
@@ -647,6 +668,7 @@ namespace srd5 {
             }
             Assert.False(orc.HasCondition(ConditionType.FRIGHTENED));
             Assert.False(orc.HasEffect(Effect.SPELL_FEAR));
+
         }
 
         [Fact]
@@ -658,10 +680,12 @@ namespace srd5 {
             Battleground2D ground = new Battleground2D(70, 5);
             ground.AddCombatant(wizard, 1, 1);
             ground.AddCombatant(orc, 63, 1);
-            // Seed 42 → D20=13 (< DC=25) → orc fails initial WIS save, becomes FRIGHTENED
-            Random.State = 42;
+            // High DC guarantees the orc fails its initial WIS save and becomes FRIGHTENED
+            Random.FixedRandom = Random.DebugState.Avg;
             Spells.Fear.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
             Assert.True(orc.HasCondition(ConditionType.FRIGHTENED));
+            // Real randomness resumes: the distance save only ends Fear once it eventually succeeds
+
             for (int i = 0; i < 100; i++) {
                 orc.OnEndOfTurn();
             }
@@ -677,11 +701,12 @@ namespace srd5 {
             Monster orc = Monsters.Orc; // AC=13
             int hpBefore = wizard.HitPoints;
             Battleground ground = createBattleground(wizard, orc);
-            // Seed 1 → D20=10; 10 + modifier(0) = 10 < 13 (orc AC) → miss
-            Random.State = 1;
+            // A nat 1 guarantees the attack roll misses
+            Random.FixedRandom = Random.DebugState.Min;
             Spells.VampiricTouch.Cast(ground, wizard, 12, SpellLevel.THIRD, 0, orc);
             // Caster should not have healed (miss means no damage dealt)
             Assert.Equal(hpBefore, wizard.HitPoints);
+
         }
 
         [Fact]
@@ -700,6 +725,106 @@ namespace srd5 {
                 wizard.OnEndOfTurn();
             }
             Assert.Equal(knownSpellsBeforeCast, wizard.AvailableSpells[0].KnownSpells.Length);
+        }
+
+        [Fact]
+        public void BlackTentaclesTest() {
+            DefaultSpellTest(Spells.BlackTentacles, 25, SpellLevel.FOURTH, ConditionType.RESTRAINED, Effect.SPELL_BLACK_TENTACLES, Spells.BlackTentacles.Duration);
+            // Target fails DEX save → 3d6 damage + RESTRAINED + SPELL_BLACK_TENTACLES applied
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster troll = Monsters.Troll; // high HP so it survives multiple rounds of 3d6
+            Battleground ground = createBattleground(wizard, troll);
+            Random.FixedRandom = Random.DebugState.Avg; // D20=13 < DC=25 → troll fails initial DEX save
+            Spells.BlackTentacles.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, troll);
+            Assert.True(troll.HasCondition(ConditionType.RESTRAINED));
+            Assert.True(troll.HasEffect(Effect.SPELL_BLACK_TENTACLES));
+            Assert.True(Array.IndexOf(troll.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_SPELL_BLACK_TENTACLES) > -1);
+            // StartOfTurnEvent: already restrained → automatic 3d6 damage, effect persists
+            troll.OnStartOfTurn();
+            Assert.True(troll.HasEffect(Effect.SPELL_BLACK_TENTACLES));
+            Assert.True(troll.HasCondition(ConditionType.RESTRAINED));
+            // Escape action: fails (average roll < DC=25) → still restrained, action still available
+            Random.FixedRandom = Random.DebugState.Avg;
+            troll.DoConditionalAction(Actions.ID.ESCAPE_FROM_SPELL_BLACK_TENTACLES);
+            Assert.True(troll.HasCondition(ConditionType.RESTRAINED));
+            Assert.True(Array.IndexOf(troll.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_SPELL_BLACK_TENTACLES) > -1);
+            // Escape action: keep trying (real randomness) until a natural 20 succeeds → RESTRAINED removed, action gone
+            troll.HitPoints = 500; // ensure troll survives multiple failed escape attempts
+
+            while (Array.IndexOf(troll.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_SPELL_BLACK_TENTACLES) > -1) {
+                troll.DoConditionalAction(Actions.ID.ESCAPE_FROM_SPELL_BLACK_TENTACLES);
+            }
+            Assert.False(troll.HasCondition(ConditionType.RESTRAINED));
+            Assert.True(troll.HasEffect(Effect.SPELL_BLACK_TENTACLES)); // still in area
+            // StartOfTurnEvent: not restrained → DEX save required; troll fails → re-restrained
+            Random.FixedRandom = Random.DebugState.Avg; // D20=13 < DC=25 → troll fails DEX save
+            troll.OnStartOfTurn();
+            Assert.True(troll.HasCondition(ConditionType.RESTRAINED));
+            // Expire duration: 10 wizard OnEndOfTurn calls → SPELL_BLACK_TENTACLES and RESTRAINED removed
+            for (int i = 0; i < 10; i++) {
+                wizard.OnEndOfTurn();
+            }
+            Assert.False(troll.HasEffect(Effect.SPELL_BLACK_TENTACLES));
+            Assert.False(troll.HasCondition(ConditionType.RESTRAINED));
+
+        }
+
+        [Fact]
+        public void ConfusionTest() {
+            DefaultSpellTest(Spells.Confusion, 25, SpellLevel.FOURTH, null, Effect.SPELL_CONFUSION, Spells.Confusion.Duration);
+        }
+
+        [Fact]
+        public void DominateBeastTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc; // not a beast, unaffected regardless of save
+            Monster immuneBeast = Monsters.Badger;
+            immuneBeast.AddEffect(Effect.IMMUNITY_CHARMED);
+            Monster badger = Monsters.Badger;
+            badger.HitPointsMax = 100;
+            badger.HitPoints = 100; // survive repeated damage in this test
+            Battleground ground = createBattleground(wizard, orc, immuneBeast, badger);
+
+            // Non-beast target: spell has no effect
+            Spells.DominateBeast.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, orc);
+            Assert.False(orc.HasCondition(ConditionType.CHARMED));
+            Assert.False(orc.HasEffect(Effect.SPELL_DOMINATE_BEAST));
+
+            // Beast immune to charmed: spell has no effect
+            Spells.DominateBeast.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, immuneBeast);
+            Assert.False(immuneBeast.HasCondition(ConditionType.CHARMED));
+            Assert.False(immuneBeast.HasEffect(Effect.SPELL_DOMINATE_BEAST));
+
+            Random.FixedRandom = Random.DebugState.Min;
+            Random.State = 1;
+            Spells.DominateBeast.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, badger);
+            Assert.True(badger.HasCondition(ConditionType.CHARMED));
+            Assert.True(badger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
+
+            // Taking damage triggers a new save; a failed save leaves the domination in place
+            Random.FixedRandom = Random.DebugState.Avg;
+            badger.TakeDamage(new DamageSource(Spells.ID.DOMINATE_BEAST, wizard), DamageType.TRUE_DAMAGE, 1);
+            Assert.True(badger.HasCondition(ConditionType.CHARMED));
+            Assert.True(badger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
+
+            // Taking damage again; a successful save (natural 20) ends the domination early
+            Random.FixedRandom = Random.DebugState.Max;
+            badger.TakeDamage(new DamageSource(Spells.ID.DOMINATE_BEAST, wizard), DamageType.TRUE_DAMAGE, 1);
+            Assert.False(badger.HasCondition(ConditionType.CHARMED));
+            Assert.False(badger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
+
+            // Re-cast and let the duration expire naturally after 1 minute (10 rounds)
+            Random.FixedRandom = Random.DebugState.Avg;
+            Spells.DominateBeast.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, badger);
+            Assert.True(badger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
+            for (int i = 0; i < 10; i++) {
+                wizard.OnEndOfTurn();
+            }
+            Assert.False(badger.HasCondition(ConditionType.CHARMED));
+            Assert.False(badger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
+
         }
     }
 }

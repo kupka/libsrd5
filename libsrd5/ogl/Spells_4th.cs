@@ -450,16 +450,72 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+        /* TODO:
+        You convert raw materials into products of the same material. For example,
+        you can fabricate a wooden bridge from a clump of trees, a rope from a 
+        patch of hemp, and clothes from flax or wool.
+
+        Choose raw materials that you can see within range. You can fabricate a
+        Large or smaller object (contained within a 10-foot cube, or eight 
+        connected 5-foot cubes), given a sufficient quantity of raw material.
+        If you are working with metal, stone, or another mineral substance, 
+        however, the fabricated object can be no larger than Medium (contained
+        within a single 5-foot cube). The quality of objects made by the spell
+        is commensurate with the quality of the raw materials.
+
+        Creatures or magic items can't be created or transmuted by this spell. You 
+        also can't use it to create items that ordinarily require a high degree of 
+        craftsmanship, such as jewelry, weapons, glass, or armor, unless you have 
+        proficiency with the type of artisan's tools used to craft such objects.
+        */
         public static Spell Fabricate {
             get {
                 return new Spell(ID.FABRICATE, TRANSMUTATION, FOURTH, CastingTime.TEN_MINUTES, 120, VS, INSTANTANEOUS, 0, 0, doNothing);
             }
         }
-        /* TODO */
+        /*
+        You conjure a phantom watchdog in an unoccupied space that you can see 
+        within range, where it remains for the duration, until you dismiss it as an 
+        action, or until you move more than 100 feet away from it.
+
+        The hound is invisible to all creatures except you and can't be harmed. When 
+        a Small or larger creature comes within 30 feet of it without first speaking 
+        the password that you specify when you cast this spell, the hound starts 
+        barking loudly. The hound sees invisible creatures and can see into the 
+        Ethereal Plane. It ignores illusions.
+
+        At the start of each of your turns, the hound attempts to bite one creature 
+        within 5 feet of it that is hostile to you. The hound's attack bonus is 
+        equal to your spellcasting ability modifier + your proficiency bonus. On a 
+        hit, it deals 4d8 piercing damage.
+         */
         public static Spell FaithfulHound {
             get {
-                return new Spell(ID.FAITHFUL_HOUND, CONJURATION, FOURTH, CastingTime.ONE_ACTION, 30, VSM, EIGHT_HOURS, 0, 0, doNothing);
+                return new Spell(ID.FAITHFUL_HOUND, CONJURATION, FOURTH, CastingTime.ONE_ACTION, 30, VSM, EIGHT_HOURS, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    if (!(targets[0] is Target spot) || ground.IsOccupied(spot.Location)) {
+                        GlobalEvents.AffectBySpell(caster, ID.FAITHFUL_HOUND, caster, false);
+                        return;
+                    }
+
+                    GlobalEvents.AffectBySpell(caster, ID.FAITHFUL_HOUND, caster, true);
+                    Attack bite = new Attack(ID.FAITHFUL_HOUND.Name(), modifier + caster.ProficiencyBonus, new Damage(PIERCING, new Dice("4d8")), 5);
+
+                    int remainingRounds = (int)EIGHT_HOURS;
+                    caster.AddStartOfTurnEvent(delegate () {
+                        // TODO: Better logic would be some team flags to determine hostiles
+                        bool isHero = caster is CharacterSheet;
+                        bool isVillain = caster is Monster;
+                        foreach (Combatant other in ground.combatants) {
+                            if (other.Dead) continue;
+                            if (isHero && other is CharacterSheet) continue;
+                            if (isVillain && other is Monster) continue;
+                            if (spot.Location.Distance(ground.LocateCombatant(other)) > 5) continue;
+                            caster.Attack(bite, other, 5, false, true);
+                            break;
+                        }
+                        return --remainingRounds < 1;
+                    });
+                });
             }
         }
         /* TODO */

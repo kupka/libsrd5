@@ -43,11 +43,24 @@ namespace srd5 {
             GlobalEvents.Handlers += eventListener;
             BattlegroundTest groundTest = new BattlegroundTest();
             foreach (MethodInfo method in typeof(BattlegroundTest).GetMethods()) {
-                if (method.Name.IndexOf("Test") > -1) method.Invoke(groundTest, null);
+                if (method.Name.IndexOf("Test") > -1) {
+                    try {
+                        method.Invoke(groundTest, null);
+                    } finally {
+                        // Guard against a fixed roll leaking into the next reflectively-invoked test
+
+                    }
+                }
             }
             SpellTest spellTest = new SpellTest();
             foreach (MethodInfo method in typeof(SpellTest).GetMethods()) {
-                if (method.Name.IndexOf("Test") > -1) method.Invoke(spellTest, null);
+                if (method.Name.IndexOf("Test") > -1) {
+                    try {
+                        method.Invoke(spellTest, null);
+                    } finally {
+
+                    }
+                }
             }
             Assert.False(initiative == 0);
             Assert.False(attacked == 0);

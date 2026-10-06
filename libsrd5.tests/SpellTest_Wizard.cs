@@ -432,6 +432,7 @@ namespace srd5 {
             Monster orc = Monsters.Orc;
             Monster bandit = Monsters.Bandit;
             Battleground ground = createBattleground(hag, orc, bandit);
+            Random.State = 1;
             Random.FixedRandom = Random.DebugState.Avg;
             Spells.ScorchingRay.Cast(ground, hag, 20, SpellLevel.NINTH, 5, orc, bandit);
             Assert.True(orc.Dead);
@@ -474,6 +475,7 @@ namespace srd5 {
 
             Monster orc = Monsters.Orc;
             int originalSpeed = orc.Speed;
+            Random.FixedRandom = Random.DebugState.Avg;
             Spells.Slow.Cast(orc, 100, SpellLevel.THIRD, 0);
             Assert.True(orc.HasEffect(Effect.SPELL_SLOW));
             Assert.True(orc.HasEffect(Effect.DISADVANTAGE_DEXTERITY_SAVES));
@@ -825,6 +827,62 @@ namespace srd5 {
             Assert.False(badger.HasCondition(ConditionType.CHARMED));
             Assert.False(badger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
 
+        }
+
+        [Fact]
+        public void FaithfulHoundTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombatant(wizard, 5, 5);
+            ground.AddCombatant(orc, 6, 5); // adjacent to the wizard, 5 feet away
+
+            // Can't conjure the hound into an already occupied space
+            Target occupiedSpot = new Target();
+            occupiedSpot.Location = new Coord(6, 5);
+            Spells.FaithfulHound.Cast(ground, wizard, 10, SpellLevel.FOURTH, 5, occupiedSpot);
+            Assert.Empty(wizard.StartOfTurnEvents);
+
+            // Conjuring into an unoccupied space succeeds and places the hound to guard it
+            Target spot = new Target();
+            spot.Location = new Coord(5, 6); // empty, adjacent to both the wizard and the orc
+            Spells.FaithfulHound.Cast(ground, wizard, 10, SpellLevel.FOURTH, 5, spot);
+            Assert.Single(wizard.StartOfTurnEvents);
+
+            // At the start of the caster's turn, the hound bites a hostile creature within 5 feet
+            int hpBefore = orc.HitPoints;
+            Random.FixedRandom = Random.DebugState.Max; // guarantee the bite hits
+            wizard.OnStartOfTurn();
+            Assert.True(orc.HitPoints < hpBefore);
+
+            // It never bites a creature on the caster's own side
+            CharacterSheet wizard2 = new CharacterSheet(Race.HUMAN);
+            wizard2.AddLevel(CharacterClasses.Wizard);
+            CharacterSheet ally = new CharacterSheet(Race.HUMAN);
+            Battleground2D allyGround = new Battleground2D(10, 10);
+            allyGround.AddCombatant(wizard2, 5, 5);
+            allyGround.AddCombatant(ally, 6, 5);
+            Target allySpot = new Target();
+            allySpot.Location = new Coord(5, 6);
+            Spells.FaithfulHound.Cast(allyGround, wizard2, 10, SpellLevel.FOURTH, 5, allySpot);
+            int allyHpBefore = ally.HitPoints;
+            wizard2.OnStartOfTurn();
+            Assert.Equal(allyHpBefore, ally.HitPoints);
+
+            // It doesn't bite creatures beyond 5 feet
+            CharacterSheet wizard3 = new CharacterSheet(Race.HUMAN);
+            wizard3.AddLevel(CharacterClasses.Wizard);
+            Monster farOrc = Monsters.Orc;
+            Battleground2D farGround = new Battleground2D(10, 10);
+            farGround.AddCombatant(wizard3, 5, 5);
+            farGround.AddCombatant(farOrc, 9, 5); // 20 feet away
+            Target farSpot = new Target();
+            farSpot.Location = new Coord(5, 6);
+            Spells.FaithfulHound.Cast(farGround, wizard3, 10, SpellLevel.FOURTH, 5, farSpot);
+            int farOrcHpBefore = farOrc.HitPoints;
+            wizard3.OnStartOfTurn();
+            Assert.Equal(farOrcHpBefore, farOrc.HitPoints);
         }
     }
 }

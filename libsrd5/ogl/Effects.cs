@@ -217,6 +217,8 @@ namespace srd5 {
         SPELL_CONFUSION,
         SPELL_DEATH_WARD,
         SPELL_DOMINATE_BEAST,
+        SPELL_FIRE_SHIELD_WARM,
+        SPELL_FIRE_SHIELD_CHILL,
         SPELL_PLACEHOLDER_4TH,
         // 5th
         SPELL_PLACEHOLDER_5TH,
@@ -694,6 +696,10 @@ namespace srd5 {
                 case SPELL_WATER_WALK:
                     // TODO: allow walking on liquid surfaces
                     break;
+                case SPELL_FIRE_SHIELD_WARM:
+                case SPELL_FIRE_SHIELD_CHILL:
+                    // Resistance is applied via variant in the spell itself
+                    break;
             }
         }
 
@@ -880,6 +886,10 @@ namespace srd5 {
                 case SPELL_WATER_BREATHING:
                 case SPELL_WATER_WALK:
                     // TODO: reverse effect-specific mechanics when implemented
+                    break;
+                case SPELL_FIRE_SHIELD_WARM:
+                case SPELL_FIRE_SHIELD_CHILL:
+                    // Resistance applied via variant in spell itself
                     break;
             }
         }

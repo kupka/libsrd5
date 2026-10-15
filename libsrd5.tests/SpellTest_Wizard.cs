@@ -730,6 +730,45 @@ namespace srd5 {
         }
 
         [Fact]
+        public void FireShieldTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            BattleGroundClassic ground = createBattleground(wizard, orc);
+            // Warm shield variant: resistance to cold, retaliates with fire damage
+            Spell spell = Spells.FireShield;
+            spell.Variant = SpellVariant.WARM_SHIELD;
+            spell.Cast(ground, wizard, 15, SpellLevel.FOURTH, 0, wizard);
+            Assert.True(wizard.HasEffect(Effect.SPELL_FIRE_SHIELD_WARM));
+            Assert.True(wizard.HasEffect(Effect.RESISTANCE_COLD));
+            Random.FixedRandom = Random.DebugState.Max; // guarantee the orc's attack hits
+            orc.Attack(orc.MeleeAttacks[0], wizard, 5);
+            Assert.True(orc.HitPoints < orc.HitPointsMax); // shield erupted, damaging the attacker
+            wizard.RemoveEffect(Effect.SPELL_FIRE_SHIELD_WARM, Effect.RESISTANCE_COLD);
+            Assert.False(wizard.HasEffect(Effect.RESISTANCE_COLD));
+            wizard.OnEndOfTurn(); // unsubscribes the warm shield's eruption listener
+
+            // Chill shield variant: resistance to fire, retaliates with cold damage
+            Monster orc2 = Monsters.Orc;
+            ground.AddCombatant(orc2, ClassicLocation.Row.FRONT_RIGHT);
+            spell.Variant = SpellVariant.CHILL_SHIELD;
+            spell.Cast(ground, wizard, 15, SpellLevel.FOURTH, 0, wizard);
+            Assert.True(wizard.HasEffect(Effect.SPELL_FIRE_SHIELD_CHILL));
+            Assert.True(wizard.HasEffect(Effect.RESISTANCE_FIRE));
+            Random.FixedRandom = Random.DebugState.Max; // guarantee the orc's attack hits
+            orc2.Attack(orc2.MeleeAttacks[0], wizard, 5);
+            Assert.True(orc2.HitPoints < orc2.HitPointsMax); // shield erupted, damaging the attacker
+
+            // Once the effect is gone and the turn event fires, the listener is removed
+            wizard.RemoveEffect(Effect.SPELL_FIRE_SHIELD_CHILL, Effect.RESISTANCE_FIRE);
+            wizard.OnEndOfTurn();
+            Monster orc3 = Monsters.Orc;
+            ground.AddCombatant(orc3, ClassicLocation.Row.FRONT_RIGHT);
+            orc3.Attack(orc3.MeleeAttacks[0], wizard, 5);
+            Assert.Equal(orc3.HitPointsMax, orc3.HitPoints); // no shield left to erupt
+        }
+
+        [Fact]
         public void BlackTentaclesTest() {
             DefaultSpellTest(Spells.BlackTentacles, 25, SpellLevel.FOURTH, ConditionType.RESTRAINED, Effect.SPELL_BLACK_TENTACLES, Spells.BlackTentacles.Duration);
             // Target fails DEX save → 3d6 damage + RESTRAINED + SPELL_BLACK_TENTACLES applied

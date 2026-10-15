@@ -518,28 +518,49 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
+        /*
+        Thin and wispy flames wreathe your body for the duration, 
+        shedding bright light in a 10-foot radius and dim light for an additional 10 feet. 
+        You can end the spell early by using an action to dismiss it.
+
+        The flames provide you with a warm shield or a chill shield, as you choose. 
+        The warm shield grants you resistance to cold damage, 
+        and the chill shield grants you resistance to fire damage.
+
+        In addition, whenever a creature within 5 feet of you hits you with a melee attack, 
+        the shield erupts with flame. The attacker takes 2d8 fire damage from a warm shield, 
+        or 2d8 cold damage from a cold shield.
+        */
         public static Spell FireShield {
             get {
-                return new Spell(ID.FIRE_SHIELD, EVOCATION, FOURTH, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 5, 0, doNothing);
-            }
-        }
-        /* TODO */
-        public static Spell FreedomOfMovement {
-            get {
-                return new Spell(ID.FREEDOM_OF_MOVEMENT, ABJURATION, FOURTH, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
-            }
-        }
-        /* TODO */
-        public static Spell GiantInsect {
-            get {
-                return new Spell(ID.GIANT_INSECT, TRANSMUTATION, FOURTH, CastingTime.ONE_ACTION, 30, VS, TEN_MINUTES, 0, 0, doNothing);
-            }
-        }
-        /* TODO */
-        public static Spell GreaterInvisibility {
-            get {
-                return new Spell(ID.GREATER_INVISIBILITY, ILLUSION, FOURTH, CastingTime.ONE_ACTION, 0, VS, ONE_MINUTE, 0, 0, doNothing);
+                Spell spell = new Spell(ID.FIRE_SHIELD, EVOCATION, FOURTH, CastingTime.ONE_ACTION, 0, VSM, TEN_MINUTES, 5, 0);
+                spell.Variants = new SpellVariant[] { WARM_SHIELD, CHILL_SHIELD };
+                spell.Variant = WARM_SHIELD;
+                spell.CastEffect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    // Warm shield resists cold and retaliates with fire; chill shield resists fire and retaliates with cold
+                    bool warm = spell.Variant == WARM_SHIELD;
+                    Effect shieldEffect = warm ? SPELL_FIRE_SHIELD_WARM : SPELL_FIRE_SHIELD_CHILL;
+                    DamageType eruptionDamage = warm ? FIRE : COLD;
+                    AddEffectsForDuration(ID.FIRE_SHIELD, caster, caster, TEN_MINUTES, shieldEffect, warm ? RESISTANCE_COLD : RESISTANCE_FIRE);
+
+                    // Shield erupts whenever a melee attack within 5 feet hits the caster, burning the attacker
+                    EventHandler<EventArgs> eruptionHandler = delegate (object sender, EventArgs args) {
+                        if (GlobalEvents.EventTypes.ATTACKED.Equals(sender) && args is GlobalEvents.AttackRolled attack
+                            && attack.Hit && attack.Target.Equals(caster) && ground != null && ground.Distance(attack.Attacker, caster) <= 5) {
+                            attack.Attacker.TakeDamage(new DamageSource(ID.FIRE_SHIELD, caster), eruptionDamage, "2d8");
+                        }
+                    };
+                    GlobalEvents.Handlers += eruptionHandler;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (!caster.HasEffect(shieldEffect)) {
+                            GlobalEvents.Handlers -= eruptionHandler;
+                            return true;
+                        }
+                        return false;
+                    });
+                };
+                return spell;
             }
         }
         /* TODO */

@@ -563,10 +563,45 @@ namespace srd5 {
                 return spell;
             }
         }
-        /* TODO */
+        /* 
+        A Large spectral guardian appears and hovers for the duration in an 
+        unoccupied space of your choice that you can see within range. 
+        The guardian occupies that space and is indistinct except for 
+        a gleaming sword and shield emblazoned with the symbol of your deity.
+
+        Any creature hostile to you that moves to a space within 10 feet 
+        of the guardian for the first time on a turn must succeed on a Dexterity 
+        saving throw. The creature takes 20 radiant damage on a failed save, 
+        or half as much damage on a successful one. The guardian vanishes when 
+        it has dealt a total of 60 damage. 
+        */
         public static Spell GuardianOfFaith {
             get {
-                return new Spell(ID.GUARDIAN_OF_FAITH, CONJURATION, FOURTH, CastingTime.ONE_ACTION, 30, V, EIGHT_HOURS, 10, 0, doNothing);
+                return new Spell(ID.GUARDIAN_OF_FAITH, CONJURATION, FOURTH, CastingTime.ONE_ACTION, 30, V, EIGHT_HOURS, 10, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    if (!(targets[0] is Target spot) || ground.IsOccupied(spot.Location)) {
+                        GlobalEvents.AffectBySpell(caster, ID.GUARDIAN_OF_FAITH, caster, false);
+                        return;
+                    }
+
+                    GlobalEvents.AffectBySpell(caster, ID.GUARDIAN_OF_FAITH, caster, true);
+                    int totalDamageDealt = 0;
+                    int remainingRounds = (int)EIGHT_HOURS;
+                    caster.AddStartOfTurnEvent(delegate () {
+                        // TODO: Better logic would be some team flags to determine hostiles
+                        bool isHero = caster is CharacterSheet;
+                        bool isVillain = caster is Monster;
+                        foreach (Combatant other in ground.combatants) {
+                            if (totalDamageDealt >= 60) break;
+                            if (other.Dead) continue;
+                            if (isHero && other is CharacterSheet) continue;
+                            if (isVillain && other is Monster) continue;
+                            if (spot.Location.Distance(ground.LocateCombatant(other)) > 10) continue;
+                            other.TakeDamage(new DamageSource(ID.GUARDIAN_OF_FAITH, caster), RADIANT, 20, HALVES_DAMAGE, dc, DEXTERITY, out _);
+                            totalDamageDealt += 20;
+                        }
+                        return totalDamageDealt >= 60 || --remainingRounds < 1;
+                    });
+                });
             }
         }
         /* TODO */

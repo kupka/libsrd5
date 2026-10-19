@@ -923,5 +923,82 @@ namespace srd5 {
             wizard3.OnStartOfTurn();
             Assert.Equal(farOrcHpBefore, farOrc.HitPoints);
         }
+
+        [Fact]
+        public void GuardianOfFaithTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombatant(wizard, 5, 5);
+            ground.AddCombatant(orc, 6, 5); // adjacent to the wizard, 5 feet away
+
+            // Can't conjure the guardian into an already occupied space
+            Target occupiedSpot = new Target();
+            occupiedSpot.Location = new Coord(6, 5);
+            Spells.GuardianOfFaith.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, occupiedSpot);
+            Assert.Empty(wizard.StartOfTurnEvents);
+
+            // Conjuring into an unoccupied space succeeds and places the guardian to guard it
+            Target spot = new Target();
+            spot.Location = new Coord(5, 6); // empty, within 10 feet of both the wizard and the orc
+            Spells.GuardianOfFaith.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, spot);
+            Assert.Single(wizard.StartOfTurnEvents);
+
+            // At the start of the caster's turn, a hostile creature within 10 feet that fails its DEX save takes 20 radiant damage
+            int hpBefore = orc.HitPoints;
+            Random.FixedRandom = Random.DebugState.Min; // guarantee the DEX save fails
+            wizard.OnStartOfTurn();
+            Assert.Equal(Math.Max(0, hpBefore - 20), orc.HitPoints);
+
+            // It never damages a creature on the caster's own side
+            CharacterSheet wizard2 = new CharacterSheet(Race.HUMAN);
+            wizard2.AddLevel(CharacterClasses.Wizard);
+            CharacterSheet ally = new CharacterSheet(Race.HUMAN);
+            Battleground2D allyGround = new Battleground2D(10, 10);
+            allyGround.AddCombatant(wizard2, 5, 5);
+            allyGround.AddCombatant(ally, 6, 5);
+            Target allySpot = new Target();
+            allySpot.Location = new Coord(5, 6);
+            Spells.GuardianOfFaith.Cast(allyGround, wizard2, 10, SpellLevel.FOURTH, 0, allySpot);
+            int allyHpBefore = ally.HitPoints;
+            wizard2.OnStartOfTurn();
+            Assert.Equal(allyHpBefore, ally.HitPoints);
+
+            // It doesn't damage creatures beyond 10 feet
+            CharacterSheet wizard3 = new CharacterSheet(Race.HUMAN);
+            wizard3.AddLevel(CharacterClasses.Wizard);
+            Monster farOrc = Monsters.Orc;
+            Battleground2D farGround = new Battleground2D(10, 10);
+            farGround.AddCombatant(wizard3, 5, 5);
+            farGround.AddCombatant(farOrc, 9, 5); // 20 feet away
+            Target farSpot = new Target();
+            farSpot.Location = new Coord(5, 6);
+            Spells.GuardianOfFaith.Cast(farGround, wizard3, 10, SpellLevel.FOURTH, 0, farSpot);
+            int farOrcHpBefore = farOrc.HitPoints;
+            wizard3.OnStartOfTurn();
+            Assert.Equal(farOrcHpBefore, farOrc.HitPoints);
+
+            // The guardian vanishes once it has dealt a total of 60 damage
+            CharacterSheet wizard4 = new CharacterSheet(Race.HUMAN);
+            wizard4.AddLevel(CharacterClasses.Wizard);
+            Monster troll = Monsters.Troll; // high HP so it survives repeated hits
+            Battleground2D durableGround = new Battleground2D(10, 10);
+            durableGround.AddCombatant(wizard4, 5, 5);
+            durableGround.AddCombatant(troll, 6, 5);
+            Target durableSpot = new Target();
+            durableSpot.Location = new Coord(5, 6);
+            Spells.GuardianOfFaith.Cast(durableGround, wizard4, 10, SpellLevel.FOURTH, 0, durableSpot);
+            // FixedRandom resets after a single roll, so it must be set before each turn
+            Random.FixedRandom = Random.DebugState.Min; // guarantee the DEX save fails
+            wizard4.OnStartOfTurn(); // 20 damage dealt, 40 remaining
+            Assert.Single(wizard4.StartOfTurnEvents);
+            Random.FixedRandom = Random.DebugState.Min;
+            wizard4.OnStartOfTurn(); // 40 damage dealt, 20 remaining
+            Assert.Single(wizard4.StartOfTurnEvents);
+            Random.FixedRandom = Random.DebugState.Min;
+            wizard4.OnStartOfTurn(); // 60 damage dealt -> guardian vanishes
+            Assert.Empty(wizard4.StartOfTurnEvents);
+        }
     }
 }

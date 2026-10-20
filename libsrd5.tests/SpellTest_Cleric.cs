@@ -551,8 +551,8 @@ namespace srd5 {
             cleric.AddLevel(CharacterClasses.Wizard);
             Monster orc = Monsters.Orc;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombatant(cleric, 5, 5);
-            ground.AddCombatant(orc, 6, 5); // adjacent to the wizard, 5 feet away
+            ground.AddCombatant(cleric, 5, 5, Team.HEROES);
+            ground.AddCombatant(orc, 6, 5, Team.VILLAINS); // adjacent to the wizard, 5 feet away
 
             // Can't conjure the guardian into an already occupied space
             Target occupiedSpot = new Target();
@@ -605,8 +605,8 @@ namespace srd5 {
             cleric4.AddLevel(CharacterClasses.Wizard);
             Monster troll = Monsters.Troll; // high HP so it survives repeated hits
             Battleground2D durableGround = new Battleground2D(10, 10);
-            durableGround.AddCombatant(cleric4, 5, 5);
-            durableGround.AddCombatant(troll, 6, 5);
+            durableGround.AddCombatant(cleric4, 5, 5, Team.HEROES);
+            durableGround.AddCombatant(troll, 6, 5, Team.VILLAINS);
             Target durableSpot = new Target();
             durableSpot.Location = new Coord(5, 6);
             Spells.GuardianOfFaith.Cast(durableGround, cleric4, 10, SpellLevel.FOURTH, 0, durableSpot);

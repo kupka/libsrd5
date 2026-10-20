@@ -414,6 +414,8 @@ namespace srd5 {
                     GlobalEvents.AffectBySpell(caster, ID.DOMINATE_BEAST, target, true);
                     target.AddCondition(ConditionType.CHARMED);
                     target.AddEffect(SPELL_DOMINATE_BEAST);
+                    Team originalTeam = ground.GetTeam(target);
+                    ground.SetTeam(target, ground.GetTeam(caster));
 
                     bool spellEnded = false;
                     // Each time the target takes damage, it makes a new Wisdom saving throw against the spell
@@ -423,6 +425,7 @@ namespace srd5 {
                         spellEnded = true;
                         target.RemoveCondition(ConditionType.CHARMED);
                         target.RemoveEffect(SPELL_DOMINATE_BEAST);
+                        ground.SetTeam(target, originalTeam);
                         return true;
                     });
 
@@ -443,6 +446,7 @@ namespace srd5 {
                             spellEnded = true;
                             target.RemoveCondition(ConditionType.CHARMED);
                             target.RemoveEffect(SPELL_DOMINATE_BEAST);
+                            ground.SetTeam(target, originalTeam);
                             return true;
                         }
                         return false;
@@ -502,13 +506,9 @@ namespace srd5 {
 
                     int remainingRounds = (int)EIGHT_HOURS;
                     caster.AddStartOfTurnEvent(delegate () {
-                        // TODO: Better logic would be some team flags to determine hostiles
-                        bool isHero = caster is CharacterSheet;
-                        bool isVillain = caster is Monster;
                         foreach (Combatant other in ground.combatants) {
                             if (other.Dead) continue;
-                            if (isHero && other is CharacterSheet) continue;
-                            if (isVillain && other is Monster) continue;
+                            if (!ground.IsHostile(caster, other)) continue;
                             if (spot.Location.Distance(ground.LocateCombatant(other)) > 5) continue;
                             caster.Attack(bite, other, 5, false, true);
                             break;
@@ -587,14 +587,10 @@ namespace srd5 {
                     int totalDamageDealt = 0;
                     int remainingRounds = (int)EIGHT_HOURS;
                     caster.AddStartOfTurnEvent(delegate () {
-                        // TODO: Better logic would be some team flags to determine hostiles
-                        bool isHero = caster is CharacterSheet;
-                        bool isVillain = caster is Monster;
                         foreach (Combatant other in ground.combatants) {
                             if (totalDamageDealt >= 60) break;
                             if (other.Dead) continue;
-                            if (isHero && other is CharacterSheet) continue;
-                            if (isVillain && other is Monster) continue;
+                            if (!ground.IsHostile(caster, other)) continue;
                             if (spot.Location.Distance(ground.LocateCombatant(other)) > 10) continue;
                             other.TakeDamage(new DamageSource(ID.GUARDIAN_OF_FAITH, caster), RADIANT, 20, HALVES_DAMAGE, dc, DEXTERITY, out _);
                             totalDamageDealt += 20;

@@ -874,8 +874,8 @@ namespace srd5 {
             wizard.AddLevel(CharacterClasses.Wizard);
             Monster orc = Monsters.Orc;
             Battleground2D ground = new Battleground2D(10, 10);
-            ground.AddCombatant(wizard, 5, 5);
-            ground.AddCombatant(orc, 6, 5); // adjacent to the wizard, 5 feet away
+            ground.AddCombatant(wizard, 5, 5, Team.HEROES);
+            ground.AddCombatant(orc, 6, 5, Team.VILLAINS); // adjacent to the wizard, 5 feet away
 
             // Can't conjure the hound into an already occupied space
             Target occupiedSpot = new Target();

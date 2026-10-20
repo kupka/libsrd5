@@ -102,8 +102,8 @@ namespace srd5 {
             locations[Array.IndexOf(combatants, combatant)] = (ClassicLocation)location;
         }
 
-        public void AddCombatant(Combatant combatant, ClassicLocation.Row row) {
-            AddCombatant(combatant);
+        public void AddCombatant(Combatant combatant, ClassicLocation.Row row, Team team = Team.NEUTRAL) {
+            AddCombatant(combatant, team);
             Utils.Push<ClassicLocation>(ref locations, new ClassicLocation(row));
         }
 
@@ -160,13 +160,13 @@ namespace srd5 {
             return coords[Array.IndexOf(combatants, combatant)];
         }
 
-        public void AddCombatant(Combatant combatant, int x, int y) {
-            AddCombatant(combatant);
+        public void AddCombatant(Combatant combatant, int x, int y, Team team = Team.NEUTRAL) {
+            AddCombatant(combatant, team);
             Utils.Push<Coord>(ref coords, new Coord(x, y));
         }
 
-        public void AddCombatantNextTo(Combatant combatant, int x, int y) {
-            AddCombatant(combatant);
+        public void AddCombatantNextTo(Combatant combatant, int x, int y, Team team = Team.NEUTRAL) {
+            AddCombatant(combatant, team);
             bool occupied = true;
             int i = 0;
             while (occupied) {
@@ -254,6 +254,12 @@ namespace srd5 {
         BONUS_ACTION
     }
 
+    public enum Team {
+        NEUTRAL,
+        HEROES,
+        VILLAINS
+    }
+
     public class CombatantChangedEvent : BattlegroundEvent {
         public Combatant CurrentCombatant { get; internal set; }
     }
@@ -264,6 +270,7 @@ namespace srd5 {
     public abstract class Battleground {
 
         internal Combatant[] combatants = new Combatant[0];
+        private Team[] teams = new Team[0];
 
         public int Turn { get; internal set; } = 0;
         protected int[] initiativeRolls = new int[0];
@@ -285,10 +292,13 @@ namespace srd5 {
 
         public virtual void Initialize() {
             if (Turn > 0) return;
-            // Sort Combatants and Coords according to Initiative Rolls
+            // Sort Combatants and Teams according to Initiative Rolls
             int[] backup = new int[initiativeRolls.Length];
             Array.Copy(initiativeRolls, backup, initiativeRolls.Length);
             Array.Sort(backup, combatants, new ReverseComparer());
+            int[] teamsBackup = new int[initiativeRolls.Length];
+            Array.Copy(initiativeRolls, teamsBackup, initiativeRolls.Length);
+            Array.Sort(teamsBackup, teams, new ReverseComparer());
             currentCombatant = 0;
             currentPhase = TurnPhase.MOVE;
             remainingSpeed = CurrentCombatant.Speed;
@@ -307,11 +317,54 @@ namespace srd5 {
         /// Add a combatant to the battlefield and roll initiative
         /// </summary>
         public void AddCombatant(Combatant combatant) {
+            AddCombatant(combatant, Team.NEUTRAL);
+        }
+
+        /// <summary>
+        /// Add a combatant to the battlefield on the given team and roll initiative
+        /// </summary>
+        public void AddCombatant(Combatant combatant, Team team) {
             if (Array.IndexOf(combatants, combatant) > -1) return;
             Utils.Push<Combatant>(ref combatants, combatant);
+            Utils.Push<Team>(ref teams, team);
             int roll = D20.Value + combatant.Dexterity.Modifier;
             Utils.Push<int>(ref initiativeRolls, roll);
             GlobalEvents.RolledInitiative(combatant, roll);
+        }
+
+        public Team GetTeam(Combatant combatant) {
+            int index = Array.IndexOf(combatants, combatant);
+            return index > -1 ? teams[index] : Team.NEUTRAL;
+        }
+
+        /// <summary>
+        /// Reassigns a combatant already on the battlefield to another team (e.g. a charm effect).
+        /// </summary>
+        public void SetTeam(Combatant combatant, Team team) {
+            int index = Array.IndexOf(combatants, combatant);
+            if (index > -1) teams[index] = team;
+        }
+
+        /// <summary>
+        /// Two combatants are hostile only if they belong to the two opposing, explicitly
+        /// assigned teams. A NEUTRAL combatant is hostile to no one.
+        /// </summary>
+        public bool IsHostile(Combatant a, Combatant b) {
+            if (a.Equals(b)) return false;
+            Team teamA = GetTeam(a), teamB = GetTeam(b);
+            if (teamA == Team.NEUTRAL || teamB == Team.NEUTRAL) return false;
+            return teamA != teamB;
+        }
+
+        /// <summary>
+        /// Two combatants are allies only if they share the same non-NEUTRAL team.
+        /// NEUTRAL combatants are allies to no one, not even to each other.
+        /// </summary>
+        public bool IsAlly(Combatant a, Combatant b) {
+            if (a.Equals(b)) return false;
+            Team teamA = GetTeam(a), teamB = GetTeam(b);
+            if (teamA == Team.NEUTRAL || teamB == Team.NEUTRAL) return false;
+            return teamA == teamB;
         }
 
         /// <summary>

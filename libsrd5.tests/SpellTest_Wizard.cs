@@ -696,6 +696,29 @@ namespace srd5 {
         }
 
         [Fact]
+        public void PhantasmalKillerTest() {
+            DefaultSpellTest(Spells.PhantasmalKiller, 15, SpellLevel.FOURTH, ConditionType.FRIGHTENED, Effect.SPELL_PHANTASMAL_KILLER, SpellDuration.ONE_MINUTE);
+        }
+
+        [Fact]
+        public void PhantasmalKillerDurationExpiresTest() {
+            // If the target keeps failing its save, the spell still ends after its ONE_MINUTE (10 round) duration
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            Monster troll = Monsters.Troll; // high HP so it survives repeated 4d10 psychic hits
+            Battleground ground = createBattleground(wizard, troll);
+            Random.FixedRandom = Random.DebugState.Min;
+            Spells.PhantasmalKiller.Cast(ground, wizard, 15, SpellLevel.FOURTH, 0, troll);
+            Assert.True(troll.HasCondition(ConditionType.FRIGHTENED));
+
+            for (int i = 0; i < 10; i++) {
+                Random.FixedRandom = Random.DebugState.Min; // keep failing the end-of-turn save
+                troll.OnEndOfTurn();
+            }
+            Assert.False(troll.HasCondition(ConditionType.FRIGHTENED));
+            Assert.False(troll.HasEffect(Effect.SPELL_PHANTASMAL_KILLER));
+        }
+
+        [Fact]
         public void VampiricTouchMissTest() {
             // Initial attack roll misses → AffectBySpell(false) fires on the attack sub-spell
             CharacterSheet wizard = new CharacterSheet(Race.HUMAN);

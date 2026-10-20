@@ -16,6 +16,7 @@ namespace srd5 {
 
         [Fact]
         public void PoisonSprayTest() {
+            Random.State = 1; // isolate from whatever random state preceding tests left behind
             Monster hag = Monsters.NightHag;
             Monster badger = Monsters.Badger;
             Battleground ground = createBattleground(hag, badger);

@@ -56,6 +56,7 @@ namespace srd5 {
             Monster hag = Monsters.NightHag;
             ground.AddCombatant(tarrasque, 5, 5);
             ground.AddCombatant(hag, 8, 8);
+            Random.State = 1;
             Assert.True(tarrasque.DC(null, 100, AbilityType.DEXTERITY) && tarrasque.DC(null, 100, AbilityType.DEXTERITY) && tarrasque.DC(null, 100, AbilityType.DEXTERITY));
             Assert.False(tarrasque.DC(Spells.ID.HOLD_PERSON, 100, AbilityType.DEXTERITY) && tarrasque.DC(Spells.ID.CURE_WOUNDS, 100, AbilityType.DEXTERITY) && tarrasque.DC(Attacks.TarrasqueBite, 100, AbilityType.DEXTERITY));
             for (int i = 0; i < 100; i++) {

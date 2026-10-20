@@ -660,16 +660,76 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+        /* TODO:
+        Describe or name a creature that is familiar to you. You sense the 
+        direction to the creature's location, as long as that creature is within 
+        1,000 feet of you.
+        If the creature is moving, you know the direction of its movement.
+
+        The spell can locate a specific creature known to you, or the nearest 
+        creature of a specific kind (such as a human or a unicorn), so long as 
+        you have seen such a creature up close–within 30 feet–at least once. If 
+        the creature you described or named is in a different form, such as being 
+        under the effects of a polymorph spell, this spell doesn't locate the 
+        creature.
+
+        This spell can't locate a creature if running water at least 
+        10 feet wide blocks a direct path between you and the creature. 
+         */
         public static Spell LocateCreature {
             get {
                 return new Spell(ID.LOCATE_CREATURE, DIVINATION, FOURTH, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
             }
         }
-        /* TODO */
+
+        /*  
+        You tap into the nightmares of a creature you can see within range and 
+        create an illusory manifestation of its deepest fears, visible only to 
+        that creature. The target must make a Wisdom saving throw. On a failed 
+        save, the target becomes frightened for the duration. At the end of each 
+        of the target's turns before the spell ends, the target must succeed on a 
+        Wisdom saving throw or take 4d10 psychic damage. On a successful save, 
+        the spell ends.
+
+        At Higher Levels. When you cast this spell using a spell slot of 5th 
+        level or higher, the damage increases by 1d10 for each slot level 
+        above 4th.
+        */
         public static Spell PhantasmalKiller {
             get {
-                return new Spell(ID.PHANTASMAL_KILLER, ILLUSION, FOURTH, CastingTime.ONE_ACTION, 120, VS, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.PHANTASMAL_KILLER, ILLUSION, FOURTH, CastingTime.ONE_ACTION, 120, VS, ONE_MINUTE, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
+                    // Cannot affect immune targets or when DC succeeds
+                    if (target.HasEffect(IMMUNITY_FRIGHTENED) || target.DC(ID.PHANTASMAL_KILLER, dc, WISDOM)) {
+                        GlobalEvents.AffectBySpell(caster, ID.PHANTASMAL_KILLER, target, false);
+                        return;
+                    }
+
+                    GlobalEvents.AffectBySpell(caster, ID.PHANTASMAL_KILLER, target, true);
+                    target.AddCondition(ConditionType.FRIGHTENED);
+                    target.AddEffect(SPELL_PHANTASMAL_KILLER);
+
+                    // 4d10 base + 1d10 for each slot level above 4th
+                    Dice damage = DiceSlotScaling(FOURTH, slot, D10, 4);
+
+                    int remainingRounds = (int)ONE_MINUTE;
+                    target.AddEndOfTurnEvent(delegate () {
+                        if (!target.HasEffect(SPELL_PHANTASMAL_KILLER)) return true;
+                        // Succeeding the save ends the spell; failing deals psychic damage and the illusion persists
+                        if (target.DC(ID.PHANTASMAL_KILLER, dc, WISDOM)) {
+                            target.RemoveCondition(ConditionType.FRIGHTENED);
+                            target.RemoveEffect(SPELL_PHANTASMAL_KILLER);
+                            return true;
+                        }
+                        target.TakeDamage(new DamageSource(ID.PHANTASMAL_KILLER, caster), PSYCHIC, damage);
+                        if (--remainingRounds < 1) {
+                            target.RemoveCondition(ConditionType.FRIGHTENED);
+                            target.RemoveEffect(SPELL_PHANTASMAL_KILLER);
+                            return true;
+                        }
+                        return false;
+                    });
+                });
             }
         }
         /* TODO */

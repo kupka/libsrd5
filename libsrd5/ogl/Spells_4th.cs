@@ -600,16 +600,64 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+        /* TODO:
+        You make natural terrain in a 150-foot cube in range look, sound, and 
+        smell like some other sort of natural terrain. Thus, open fields or a 
+        road can be made to resemble a swamp, hill, crevasse, or some other 
+        difficult or impassable terrain. A pond can be made to seem like a grassy 
+        meadow, a precipice like a gentle slope, or a rock-strewn gully like a 
+        wide and smooth road. Manufactured structures, equipment, and creatures 
+        within the area aren't changed in appearance.
+
+        The tactile characteristics of the terrain are unchanged, so creatures 
+        entering the area are likely to see through the illusion. If the 
+        difference isn't obvious by touch, a creature carefully examining the 
+        illusion can attempt an Intelligence (Investigation) check against your 
+        spell save DC to disbelieve it. A creature who discerns the illusion for 
+        what it is, sees it as a vague image superimposed on the terrain. 
+         */
         public static Spell HallucinatoryTerrain {
             get {
                 return new Spell(ID.HALLUCINATORY_TERRAIN, ILLUSION, FOURTH, CastingTime.TEN_MINUTES, 300, VSM, ONE_DAY, 150, 0, doNothing);
             }
         }
-        /* TODO */
+
+        /* 
+        A hail of rock-hard ice pounds to the ground in a 20-foot-radius, 
+        40-foot-high cylinder centered on a point within range. 
+        Each creature in the cylinder must make a Dexterity saving throw. 
+        A creature takes 2d8 bludgeoning damage and 4d6 cold damage on a 
+        failed save, or half as much damage on a successful one.
+
+        Hailstones turn the storm's area of effect into difficult terrain
+        until the end of your next turn.
+
+        At Higher Levels. When you cast this spell using a spell slot of 5th 
+        level or higher, the bludgeoning damage increases by 1d8 for 
+        each slot level above 4th. 
+        */
         public static Spell IceStorm {
             get {
-                return new Spell(ID.ICE_STORM, EVOCATION, FOURTH, CastingTime.ONE_ACTION, 300, VSM, INSTANTANEOUS, 20, 0, doNothing);
+                return new Spell(ID.ICE_STORM, EVOCATION, FOURTH, CastingTime.ONE_ACTION, 300, VSM, INSTANTANEOUS, 20, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    // 2d8 bludgeoning base + 1d8 for each slot level above 4th, plus a flat 4d6 cold damage
+                    Dice bludgeoningDamage = DiceSlotScaling(FOURTH, slot, D8, 2);
+                    Dice coldDamage = new Dice("4d6");
+
+                    foreach (Combatant target in targets) {
+                        GlobalEvents.AffectBySpell(caster, ID.ICE_STORM, target, true);
+                        // Single DEX save halves both damage components together
+                        bool saved = target.DC(ID.ICE_STORM, dc, DEXTERITY);
+                        int bludgeoning = bludgeoningDamage.Roll();
+                        int cold = coldDamage.Roll();
+                        if (saved) {
+                            bludgeoning /= 2;
+                            cold /= 2;
+                        }
+                        target.TakeDamage(new DamageSource(ID.ICE_STORM, caster), BLUDGEONING, bludgeoning);
+                        target.TakeDamage(new DamageSource(ID.ICE_STORM, caster), COLD, cold);
+                        // TODO: Hailstones turn the area into difficult terrain until the end of the caster's next turn
+                    }
+                });
             }
         }
         /* TODO */

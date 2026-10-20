@@ -1,8 +1,9 @@
-using System;
 using System.Reflection;
 using Xunit;
 
 namespace srd5 {
+    [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
+    [Collection("SingleThreaded")]
     public class ItemTest {
         private BattleGroundClassic createBattleground(Combatant caster, params Combatant[] targets) {
             BattleGroundClassic ground = new BattleGroundClassic();

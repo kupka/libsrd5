@@ -732,22 +732,102 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+
+        /* 
+        This spell transforms a creature that you can see within range into a new form. 
+        An unwilling creature must make a Wisdom saving throw to avoid the effect. 
+        The spell has no effect on a shapechanger or a creature with 0 hit points.
+
+        The transformation lasts for the duration, or until the target drops to 0 hit points or dies. 
+        The new form can be any beast whose challenge rating is equal to or less than the target's 
+        (or the target's level, if it doesn't have a challenge rating). The target's game statistics, 
+        including mental ability scores, are replaced by the statistics of the chosen beast. 
+        It retains its alignment and personality.
+
+        The target assumes the hit points of its new form. When it reverts to its normal form, 
+        the creature returns to the number of hit points it had before it transformed. 
+        If it reverts as a result of dropping to 0 hit points, any excess damage carries over
+        to its normal form. As long as the excess damage doesn't reduce the creature's normal
+        form to 0 hit points, it isn't knocked unconscious.
+
+        The creature is limited in the actions it can perform by the nature of its new form, 
+        and it can't speak, cast spells, or take any other action that requires hands or speech.
+
+        The target's gear melds into the new form. The creature can't activate, use, wield, or 
+        otherwise benefit from any of its equipment.
+
+        TODO: Right now, the library doesn't handle the mechanics well. There needs to be some
+        sort of shapeshifting support available before we can implement this spell in a sensible
+        way.
+        */
         public static Spell Polymorph {
             get {
                 return new Spell(ID.POLYMORPH, TRANSMUTATION, FOURTH, CastingTime.ONE_ACTION, 60, VSM, ONE_HOUR, 0, 0, doNothing);
             }
         }
-        /* TODO */
+        /* 
+        You make an area within range magically secure. 
+        The area is a cube that can be as small as 5 feet to as large as 100 feet on each side. 
+        The spell lasts for the duration or until you use an action to dismiss it.
+
+        When you cast the spell, you decide what sort of security the spell provides, 
+        choosing any or all of the following properties:
+
+        * Sound can't pass through the barrier at the edge of the warded area.
+        * The barrier of the warded area appears dark and foggy, preventing vision 
+            (including darkvision) through it.
+        * Sensors created by divination spells can't appear inside the protected 
+            area or pass through the barrier at its perimeter.
+        * Creatures in the area can't be targeted by divination spells.
+        * Nothing can teleport into or out of the warded area.
+        * Planar travel is blocked within the warded area.
+
+        Casting this spell on the same spot every day for a year makes this effect permanent.
+
+        At Higher Levels. When you cast this spell using a spell slot of 5th level or higher, 
+        you can increase the size of the cube by 100 feet for each slot level beyond 4th. 
+        Thus you could protect a cube that can be up to 200 feet on one side by using 
+        a spell slot of 5th level. 
+
+        TODO: BattleGround needs to be modifyable to implement this. Not feasible right now.
+        */
         public static Spell PrivateSanctum {
             get {
                 return new Spell(ID.PRIVATE_SANCTUM, ABJURATION, FOURTH, CastingTime.TEN_MINUTES, 120, VSM, ONE_DAY, 100, 0, doNothing);
             }
         }
-        /* TODO */
+        /*
+        A sphere of shimmering force encloses a creature or object of Large size or 
+        smaller within range. An unwilling creature must make a Dexterity saving throw. 
+        On a failed save, the creature is enclosed for the duration.
+        
+        Nothing--not physical objects, energy, or other spell effects--can pass 
+        through the barrier, in or out, though a creature in the sphere can breathe there.
+        The sphere is immune to all damage, and a creature or object inside can't be 
+        damaged by attacks or effects originating from outside, nor can a creature 
+        inside the sphere damage anything outside it.
+
+        The sphere is weightless and just large enough to contain the creature or 
+        object inside. An enclosed creature can use its action to push against the 
+        sphere's walls and thus roll the sphere at up to half the creature's speed. 
+        Similarly, the globe can be picked up and moved by other creatures.
+
+        A disintegrate spell targeting the globe destroys it without harming anything 
+        inside it. 
+         */
         public static Spell ResilientSphere {
             get {
-                return new Spell(ID.RESILIENT_SPHERE, EVOCATION, FOURTH, CastingTime.ONE_ACTION, 30, VSM, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.RESILIENT_SPHERE, EVOCATION, FOURTH, CastingTime.ONE_ACTION, 30, VSM, ONE_MINUTE, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
+                    if (target.DC(ID.RESILIENT_SPHERE, dc, DEXTERITY)) {
+                        GlobalEvents.AffectBySpell(caster, ID.RESILIENT_SPHERE, target, false);
+                        return;
+                    }
+
+                    GlobalEvents.AffectBySpell(caster, ID.RESILIENT_SPHERE, target, true);
+                    // Untargetability (except Disintegrate) is enforced centrally by Spell.Cast and Combatant.Attack
+                    AddEffectsForDuration(ID.RESILIENT_SPHERE, caster, target, ONE_MINUTE, SPELL_RESILIENT_SPHERE);
+                });
             }
         }
         /* TODO */

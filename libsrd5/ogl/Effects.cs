@@ -220,7 +220,7 @@ namespace srd5 {
         SPELL_FIRE_SHIELD_WARM,
         SPELL_FIRE_SHIELD_CHILL,
         SPELL_PHANTASMAL_KILLER,
-        SPELL_PLACEHOLDER_4TH,
+        SPELL_RESILIENT_SPHERE,
         // 5th
         SPELL_PLACEHOLDER_5TH,
         // 6th
@@ -308,7 +308,7 @@ namespace srd5 {
         public static readonly Effect FIRST_SPELL_1ST = SPELL_ANIMAL_FRIENDSHIP;
         public static readonly Effect FIRST_SPELL_2ND = SPELL_ACID_ARRORW_BURN;
         public static readonly Effect FIRST_SPELL_3RD = SPELL_ANIMATE_DEAD;
-        public static readonly Effect FIRST_SPELL_4TH = SPELL_PLACEHOLDER_4TH;
+        public static readonly Effect FIRST_SPELL_4TH = SPELL_BLACK_TENTACLES;
         public static readonly Effect FIRST_SPELL_5TH = SPELL_PLACEHOLDER_5TH;
         public static readonly Effect FIRST_SPELL_6TH = SPELL_PLACEHOLDER_6TH;
         public static readonly Effect FIRST_SPELL_7TH = SPELL_PLACEHOLDER_7TH;

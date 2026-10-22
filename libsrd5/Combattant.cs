@@ -579,6 +579,10 @@ namespace srd5 {
 
         public bool Attack(Attack attack, Combatant target, int distance, bool ranged, bool spell, Spells.DamageMitigation dCEffect, int dc, AbilityType dcAbility, out bool dcSuccess) {
             dcSuccess = false;
+            if (this.HasEffect(SPELL_RESILIENT_SPHERE)) return false;
+            if (target.HasEffect(SPELL_RESILIENT_SPHERE)) return false;
+            if (target.HasEffect(CANNOT_BE_ATTACKED)) return false;
+            if (!ranged && target.HasEffect(CANNOT_BE_MELEE_ATTACKED)) return false;
             // check locked target
             if (attack.LockedTarget != null && attack.LockedTarget != target) return false;
             // check range / reach

@@ -946,5 +946,48 @@ namespace srd5 {
             wizard3.OnStartOfTurn();
             Assert.Equal(farOrcHpBefore, farOrc.HitPoints);
         }
+
+        [Fact]
+        public void ResilientSphereTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(wizard, orc);
+
+            // A successful DEX save avoids the sphere entirely
+            Random.FixedRandom = Random.DebugState.Max;
+            Spells.ResilientSphere.Cast(ground, wizard, 15, SpellLevel.FOURTH, 0, orc);
+            Assert.False(orc.HasEffect(Effect.SPELL_RESILIENT_SPHERE));
+
+            // A failed save encloses the target for the duration
+            Random.FixedRandom = Random.DebugState.Min;
+            Spells.ResilientSphere.Cast(ground, wizard, 15, SpellLevel.FOURTH, 0, orc);
+            Assert.True(orc.HasEffect(Effect.SPELL_RESILIENT_SPHERE));
+
+            // Nothing can pass through the barrier: weapon attacks against it always miss
+            int hpBefore = orc.HitPoints;
+            Random.FixedRandom = Random.DebugState.Max; // guarantee the attack would otherwise hit
+            wizard.Attack(wizard.MeleeAttacks[0], orc, 5);
+            Assert.Equal(hpBefore, orc.HitPoints);
+
+            // Spells are blocked too (the cast never proceeds), except Disintegrate
+            bool fireballProceeded = false;
+            EventHandler<GlobalEvents.SpellAffection> fireballHandler = delegate (object sender, GlobalEvents.SpellAffection cast) {
+                if (cast.Spell == Spells.ID.FIREBALL && cast.Affected) fireballProceeded = true;
+            };
+            GlobalEvents.SpellAffectionHandlers += fireballHandler;
+            Spells.Fireball.Cast(ground, wizard, 15, SpellLevel.THIRD, 0, orc);
+            GlobalEvents.SpellAffectionHandlers -= fireballHandler;
+            Assert.False(fireballProceeded);
+
+            bool disintegrateProceeded = false;
+            EventHandler<GlobalEvents.SpellCast> disintegrateHandler = delegate (object sender, GlobalEvents.SpellCast cast) {
+                if (cast.Spell == Spells.ID.DISINTEGRATE) disintegrateProceeded = true;
+            };
+            GlobalEvents.SpellCastHandlers += disintegrateHandler;
+            Spells.Disintegrate.Cast(ground, wizard, 15, SpellLevel.SIXTH, 0, orc);
+            GlobalEvents.SpellCastHandlers -= disintegrateHandler;
+            Assert.True(disintegrateProceeded);
+        }
     }
 }

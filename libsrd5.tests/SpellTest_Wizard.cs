@@ -989,5 +989,37 @@ namespace srd5 {
             GlobalEvents.SpellCastHandlers -= disintegrateHandler;
             Assert.True(disintegrateProceeded);
         }
+
+        [Fact]
+        public void StoneskinTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(wizard, orc);
+
+            Spells.Stoneskin.Cast(ground, wizard, 15, SpellLevel.FOURTH, 0, wizard);
+            Assert.True(wizard.HasEffect(Effect.SPELL_STONESKIN));
+            Assert.True(wizard.HasEffect(Effect.RESISTANCE_BLUDGEONING));
+            Assert.True(wizard.HasEffect(Effect.RESISTANCE_PIERCING));
+            Assert.True(wizard.HasEffect(Effect.RESISTANCE_SLASHING));
+
+            // Resistance halves nonmagical bludgeoning/piercing/slashing damage ...
+            Assert.Equal(5, wizard.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, wizard), DamageType.SLASHING, 10));
+            // ... but not other damage types
+            Assert.Equal(10, wizard.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, wizard), DamageType.FIRE, 10));
+
+            // Casting it again while already active has no further effect
+            bool affected = true;
+            EventHandler<GlobalEvents.SpellAffection> handler = delegate (object sender, GlobalEvents.SpellAffection cast) {
+                if (cast.Spell == Spells.ID.STONESKIN) affected = cast.Affected;
+            };
+            GlobalEvents.SpellAffectionHandlers += handler;
+            Spells.Stoneskin.Cast(ground, wizard, 15, SpellLevel.FOURTH, 0, wizard);
+            GlobalEvents.SpellAffectionHandlers -= handler;
+            Assert.False(affected);
+
+            wizard.RemoveEffect(Effect.SPELL_STONESKIN, Effect.RESISTANCE_BLUDGEONING, Effect.RESISTANCE_PIERCING, Effect.RESISTANCE_SLASHING);
+            Assert.Equal(10, wizard.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, wizard), DamageType.SLASHING, 10));
+        }
     }
 }

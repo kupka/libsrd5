@@ -221,6 +221,7 @@ namespace srd5 {
         SPELL_FIRE_SHIELD_CHILL,
         SPELL_PHANTASMAL_KILLER,
         SPELL_RESILIENT_SPHERE,
+        SPELL_STONESKIN,
         // 5th
         SPELL_PLACEHOLDER_5TH,
         // 6th

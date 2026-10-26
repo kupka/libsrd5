@@ -830,25 +830,79 @@ namespace srd5 {
                 });
             }
         }
-        /* TODO */
+        /* 
+        You hide a chest, and all its contents, on the Ethereal Plane. You must 
+        touch the chest and the miniature replica that serves as a material 
+        component for the spell. The chest can contain up to 12 cubic feet of 
+        nonliving material (3 feet by 2 feet by 2 feet).
+
+        While the chest remains on the Ethereal Plane, you can use an action and
+         touch the replica to recall the chest. It appears in an unoccupied space 
+         on the ground within 5 feet of you. You can send the chest back to the 
+         Ethereal Plane by using an action and touching both the chest and the 
+         replica.
+
+        After 60 days, there is a cumulative 5 percent chance per day that the 
+        spell's effect ends. This effect ends if you cast this spell again, if the 
+        smaller replica chest is destroyed, or if you choose to end the spell as an
+         action. If the spell ends and the larger chest is on the Ethereal Plane, 
+         it is irretrievably lost. 
+
+         TODO: This is probably something that will never be implemented.
+        */
         public static Spell SecretChest {
             get {
                 return new Spell(ID.SECRET_CHEST, CONJURATION, FOURTH, CastingTime.ONE_ACTION, 0, VSM, INSTANTANEOUS, 0, 0, doNothing);
             }
         }
-        /* TODO */
+        /* 
+        You touch a stone object of Medium size or smaller or a section of stone no
+         more than 5 feet in any dimension and form it into any shape that suits 
+         your purpose. So, for example, you could shape a large rock into a weapon,
+        idol, or coffer, or make a small passage through a wall, as long as the 
+        wall is less than 5 feet thick. You could also shape a stone door or its
+        frame to seal the door shut. The object you create can have up to two 
+        hinges and a latch, but finer mechanical detail isn't possible. 
+
+        TODO: This might be implemented later to create a doorway for example
+        */
         public static Spell StoneShape {
             get {
                 return new Spell(ID.STONE_SHAPE, TRANSMUTATION, FOURTH, CastingTime.ONE_ACTION, 0, VSM, INSTANTANEOUS, 0, 0, doNothing);
             }
         }
-        /* TODO */
+        /* 
+        This spell turns the flesh of a willing creature you touch as hard as 
+        stone. Until the spell ends, the target has resistance to nonmagical 
+        bludgeoning, piercing, and slashing damage. 
+        */
         public static Spell Stoneskin {
             get {
-                return new Spell(ID.STONESKIN, ABJURATION, FOURTH, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.STONESKIN, ABJURATION, FOURTH, CastingTime.ONE_ACTION, 0, VSM, ONE_HOUR, 0, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
+                    AddEffectsForDuration(ID.STONESKIN, caster, target, ONE_HOUR, SPELL_STONESKIN, RESISTANCE_BLUDGEONING, RESISTANCE_PIERCING, RESISTANCE_SLASHING);
+                });
             }
         }
-        /* TODO */
+        /*
+        You create a wall of fire on a solid surface within range. You can make the 
+        wall up to 60 feet long, 20 feet high, and 1 foot thick, or a ringed wall 
+        up to 20 feet in diameter, 20 feet high, and 1 foot thick. The wall is 
+        opaque and lasts for the duration.
+
+        When the wall appears, each creature within its area must make a Dexterity 
+        saving throw. On a failed save, a creature takes 5d8 fire damage, or half 
+        as much damage on a successful save.
+
+        One side of the wall, selected by you when you cast this spell, deals 5d8 
+        fire damage to each creature that ends its turn within 10 feet of that side
+         or inside the wall. A creature takes the same damage when it enters the 
+         wall for the first time on a turn or ends its turn there. The other side
+         of the wall deals no damage.
+
+        At Higher Levels: When you cast this spell using a spell slot of 5th level 
+        or higher, the damage increases by 1d8 for each slot level above 4th. 
+        */
         public static Spell WallOfFire {
             get {
                 return new Spell(ID.WALL_OF_FIRE, EVOCATION, FOURTH, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 60, 0, doNothing);

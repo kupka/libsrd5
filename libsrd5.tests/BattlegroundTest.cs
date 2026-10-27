@@ -578,5 +578,19 @@ namespace srd5 {
                 Assert.False(Utils.RemoveSingle(ref y, coord.Y) == RemoveResult.NOT_FOUND);
             }
         }
+
+        [Fact]
+        public void TargetTest() {
+            Target target = new Target();
+            Assert.Throws<NotImplementedException>(delegate {
+                target.ArmorClass = 1;
+            });
+            Assert.Throws<NotImplementedException>(delegate {
+                int x = target.ArmorClass;
+            });
+            Assert.Throws<NotImplementedException>(delegate {
+                int x = target.ProficiencyBonus;
+            });
+        }
     }
 }

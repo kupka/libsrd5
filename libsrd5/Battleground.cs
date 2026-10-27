@@ -333,8 +333,7 @@ namespace srd5 {
         }
 
         public Team GetTeam(Combatant combatant) {
-            int index = Array.IndexOf(combatants, combatant);
-            return index > -1 ? teams[index] : Team.NEUTRAL;
+            return teams[Array.IndexOf(combatants, combatant)];
         }
 
         /// <summary>
@@ -354,17 +353,6 @@ namespace srd5 {
             Team teamA = GetTeam(a), teamB = GetTeam(b);
             if (teamA == Team.NEUTRAL || teamB == Team.NEUTRAL) return false;
             return teamA != teamB;
-        }
-
-        /// <summary>
-        /// Two combatants are allies only if they share the same non-NEUTRAL team.
-        /// NEUTRAL combatants are allies to no one, not even to each other.
-        /// </summary>
-        public bool IsAlly(Combatant a, Combatant b) {
-            if (a.Equals(b)) return false;
-            Team teamA = GetTeam(a), teamB = GetTeam(b);
-            if (teamA == Team.NEUTRAL || teamB == Team.NEUTRAL) return false;
-            return teamA == teamB;
         }
 
         /// <summary>

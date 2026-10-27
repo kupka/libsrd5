@@ -94,7 +94,7 @@ namespace srd5 {
             Assert.Equal(SpellLevel.FIRST, Effect.SPELL_DISGUISE_SELF.SpellLevel());
             Assert.Equal(SpellLevel.SECOND, Effect.SPELL_BLINDNESS_DEAFNESS.SpellLevel());
             Assert.Equal(SpellLevel.THIRD, Effect.SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE.SpellLevel());
-            Assert.Equal(SpellLevel.FOURTH, Effect.SPELL_PLACEHOLDER_4TH.SpellLevel());
+            Assert.Equal(SpellLevel.FOURTH, Effect.SPELL_RESILIENT_SPHERE.SpellLevel());
             Assert.Equal(SpellLevel.FIFTH, Effect.SPELL_PLACEHOLDER_5TH.SpellLevel());
             Assert.Equal(SpellLevel.SIXTH, Effect.SPELL_PLACEHOLDER_6TH.SpellLevel());
             Assert.Equal(SpellLevel.SEVENTH, Effect.SPELL_PLACEHOLDER_7TH.SpellLevel());

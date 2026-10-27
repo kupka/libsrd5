@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using static srd5.Effect;
 
 namespace srd5 {
     [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
@@ -8,9 +9,9 @@ namespace srd5 {
         [Fact]
         public void TakeDamageTest() {
             Combatant ogre = Monsters.Ogre;
-            ogre.AddEffect(Effect.VULNERABILITY_COLD);
-            ogre.AddEffect(Effect.IMMUNITY_ACID);
-            ogre.AddEffect(Effect.RESISTANCE_LIGHTNING);
+            ogre.AddEffect(VULNERABILITY_COLD);
+            ogre.AddEffect(IMMUNITY_ACID);
+            ogre.AddEffect(RESISTANCE_LIGHTNING);
             int hp = ogre.HitPoints;
             Damage cold = new Damage(DamageType.COLD, "1d6+5");
             ogre.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, ogre), cold.Type, cold.Dice.RollCritical());
@@ -106,7 +107,7 @@ namespace srd5 {
         [Fact]
         public void DCEffectTest() {
             Combatant ogre = Monsters.Ogre;
-            ogre.AddEffect(Effect.SPELL_BANE, Effect.SPELL_BLESS, Effect.SPELL_DIVINE_FAVOR);
+            ogre.AddEffect(SPELL_BANE, SPELL_BLESS, SPELL_DIVINE_FAVOR);
             ogre.DC(this, 20, AbilityType.STRENGTH, out _);
             for (int i = 0; i < 10; i++) {
                 ogre.Attack(Attacks.OgreGreatclub, Monsters.Rat, 5);
@@ -116,10 +117,14 @@ namespace srd5 {
         [Fact]
         public void DCTest() {
             Combatant orc = Monsters.Orc;
+            Random.FixedRandom = Random.DebugState.Avg;
             Assert.True(orc.DC(null, 2, AbilityType.WISDOM, true, false));
+            Random.FixedRandom = Random.DebugState.Avg;
             Assert.False(orc.DC(null, 19, AbilityType.STRENGTH, false, true));
             Combatant assassin = Monsters.Assassin;
+            Random.FixedRandom = Random.DebugState.Avg;
             Assert.True(assassin.DC(null, 2, Skill.STEALTH, true, false));
+            Random.FixedRandom = Random.DebugState.Avg;
             Assert.False(assassin.DC(null, 30, Skill.NATURE, false, true));
         }
 
@@ -153,36 +158,34 @@ namespace srd5 {
         [Fact]
         public void EscapeFromGrappleTest() {
             Combatant combatant = Monsters.BanditCaptain; // Athelics Proficiency
-            Assert.False(combatant.EscapeFromGrapple());
-            bool success = false;
+            Assert.Throws<Srd5ArgumentException>(delegate {
+                combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
+            });
             combatant.AddCondition(ConditionType.DEAFENED);
             combatant.AddCondition(ConditionType.GRAPPLED_DC14);
-            while (!success) {
-                success = combatant.EscapeFromGrapple();
+            while (Array.IndexOf(combatant.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
+                combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
             }
             Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
             Assert.True(combatant.HasCondition(ConditionType.DEAFENED));
             combatant = Monsters.Assassin; // Acrobatics Proficiency
             combatant.AddCondition(ConditionType.GRAPPLED_DC16);
-            success = false;
-            while (!success) {
-                success = combatant.EscapeFromGrapple();
+            while (Array.IndexOf(combatant.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
+                combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
             }
-            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
+            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC16));
             combatant = Monsters.Ankheg; // Str > Dex
-            combatant.AddCondition(ConditionType.GRAPPLED_DC16);
-            success = false;
-            while (!success) {
-                success = combatant.EscapeFromGrapple();
+            combatant.AddCondition(ConditionType.GRAPPLED_DC18);
+            while (Array.IndexOf(combatant.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
+                combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
             }
-            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
+            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC18));
             combatant = Monsters.Bat; // Dex > Str
-            combatant.AddCondition(ConditionType.GRAPPLED_DC16);
-            success = false;
-            while (!success) {
-                success = combatant.EscapeFromGrapple();
+            combatant.AddCondition(ConditionType.GRAPPLED_DC20);
+            while (Array.IndexOf(combatant.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
+                combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
             }
-            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
+            Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC20));
         }
 
         [Fact]
@@ -210,9 +213,26 @@ namespace srd5 {
         public void BeaconOfHopeHealTest() {
             Combatant ogre = Monsters.Ogre;
             ogre.HitPoints -= 20;
-            ogre.AddEffect(Effect.SPELL_BEACON_OF_HOPE);
+            ogre.AddEffect(SPELL_BEACON_OF_HOPE);
             ogre.HealDamage(Die.D20);
             Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
+        }
+
+        [Fact]
+        public void AttackConditionTest() {
+            Combatant orc = Monsters.Orc;
+            Combatant ogre = Monsters.Ogre;
+            orc.AddEffect(SPELL_RESILIENT_SPHERE);
+            Assert.False(orc.Attack(orc.MeleeAttacks[0], ogre, 5));
+            orc.RemoveEffect(SPELL_RESILIENT_SPHERE);
+            ogre.AddEffect(SPELL_RESILIENT_SPHERE);
+            Assert.False(orc.Attack(orc.MeleeAttacks[0], ogre, 5));
+            ogre.RemoveEffect(SPELL_RESILIENT_SPHERE);
+            ogre.AddEffect(CANNOT_BE_ATTACKED);
+            Assert.False(orc.Attack(orc.MeleeAttacks[0], ogre, 5));
+            ogre.RemoveEffect(CANNOT_BE_ATTACKED);
+            ogre.AddEffect(CANNOT_BE_MELEE_ATTACKED);
+            Assert.False(orc.Attack(orc.MeleeAttacks[0], ogre, 5));
         }
 
     }

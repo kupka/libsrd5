@@ -1021,5 +1021,50 @@ namespace srd5 {
             wizard.RemoveEffect(Effect.SPELL_STONESKIN, Effect.RESISTANCE_BLUDGEONING, Effect.RESISTANCE_PIERCING, Effect.RESISTANCE_SLASHING);
             Assert.Equal(10, wizard.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, wizard), DamageType.SLASHING, 10));
         }
+
+        [Fact]
+        public void WallOfFireTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster trollInWall = Monsters.Troll; // high HP so it survives repeated hits
+            Monster trollOutside = Monsters.Troll;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombatant(wizard, 0, 0);
+            ground.AddCombatant(trollInWall, 1, 0);
+            ground.AddCombatant(trollOutside, 5, 5);
+
+            Target spot = new Target();
+            spot.Location = new Coord(1, 0); // same tile as trollInWall
+
+            // Creatures already standing on a wall tile take damage when it appears, DC success halving it
+            int hpBefore = trollInWall.HitPoints;
+            Spells.WallOfFire.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, spot);
+            Assert.True(trollInWall.HitPoints < hpBefore);
+            Assert.Equal(trollOutside.HitPointsMax, trollOutside.HitPoints);
+
+            // Ending a turn on a wall tile deals damage again, with no save
+            int hpBeforeEndOfTurn = trollInWall.HitPoints;
+            trollInWall.OnEndOfTurn();
+            Assert.True(trollInWall.HitPoints < hpBeforeEndOfTurn);
+
+            // Ending a turn off the wall deals no damage
+            trollOutside.OnEndOfTurn();
+            Assert.Equal(trollOutside.HitPointsMax, trollOutside.HitPoints);
+
+            // Moving into the wall and ending the turn there deals damage too
+            ground.SetLocation(trollOutside, new Coord(1, 0));
+            int hpBeforeMovedIn = trollOutside.HitPoints;
+            trollOutside.OnEndOfTurn();
+            Assert.True(trollOutside.HitPoints < hpBeforeMovedIn);
+
+            // Expire spell
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
+                wizard.OnEndOfTurn();
+            }
+            Assert.Empty(wizard.EndOfTurnEvents);
+            int hpAfterExpiry = trollInWall.HitPoints;
+            trollInWall.OnEndOfTurn();
+            Assert.Equal(hpAfterExpiry, trollInWall.HitPoints);
+        }
     }
 }

@@ -896,16 +896,55 @@ namespace srd5 {
 
         One side of the wall, selected by you when you cast this spell, deals 5d8 
         fire damage to each creature that ends its turn within 10 feet of that side
-         or inside the wall. A creature takes the same damage when it enters the 
-         wall for the first time on a turn or ends its turn there. The other side
-         of the wall deals no damage.
+        or inside the wall. A creature takes the same damage when it enters the 
+        wall for the first time on a turn or ends its turn there. The other side
+        of the wall deals no damage.
 
         At Higher Levels: When you cast this spell using a spell slot of 5th level 
         or higher, the damage increases by 1d8 for each slot level above 4th. 
         */
         public static Spell WallOfFire {
             get {
-                return new Spell(ID.WALL_OF_FIRE, EVOCATION, FOURTH, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 60, 0, doNothing);
+                return new Spell(ID.WALL_OF_FIRE, EVOCATION, FOURTH, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 60, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Target[] wall = new Target[0];
+                    foreach (Combatant combatant in targets) {
+                        if (combatant is Target spot) {
+                            Utils.Push<Target>(ref wall, spot);
+                        }
+                    }
+                    GlobalEvents.AffectBySpell(caster, ID.WALL_OF_FIRE, caster, true);
+                    Dice damage = DiceSlotScaling(FOURTH, slot, D8, 5);
+                    // Combatants already standing in the area
+                    foreach (Combatant combatant in ground.combatants) {
+                        Location location = ground.LocateCombatant(combatant);
+                        foreach (Target spot in wall) {
+                            if (spot.Location.Distance(location) == 0) {
+                                combatant.TakeDamage(new DamageSource(ID.WALL_OF_FIRE, caster), FIRE, damage, HALVES_DAMAGE, dc, DEXTERITY, out _);
+                            }
+                        }
+                    }
+                    // TODO:  "enters for the first time" logic
+                    bool expired = false;
+                    int remainingRounds = (int)ONE_MINUTE;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds < 1) expired = true;
+                        return expired;
+                    });
+                    // Deal damage to combatants ending their turn in the wall
+                    foreach (Combatant combatant in ground.combatants) {
+                        combatant.AddEndOfTurnEvent(delegate () {
+                            if (expired) return true;
+                            Location location = ground.LocateCombatant(combatant);
+                            foreach (Target spot in wall) {
+                                if (spot.Location.Distance(location) == 0) {
+                                    combatant.TakeDamage(new DamageSource(ID.WALL_OF_FIRE, caster), FIRE, damage);
+                                    break;
+                                }
+                            }
+                            return false;
+                        });
+                    }
+                });
             }
         }
     }

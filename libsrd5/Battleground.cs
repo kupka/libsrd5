@@ -18,7 +18,7 @@ namespace srd5 {
             Y = y;
         }
 
-        public override int Distance(Location another) {
+        public int Distance(Location another) {
             if (!(another is Coord)) throw new Srd5ArgumentException("another must be a Coord.");
             Coord anotherCoord = (Coord)another;
             double dX = this.X - anotherCoord.X;
@@ -29,8 +29,8 @@ namespace srd5 {
         }
     }
 
-    public abstract class Location {
-        public abstract int Distance(Location another);
+    public interface Location {
+        int Distance(Location another);
     }
 
     public class Target : Combatant {
@@ -63,7 +63,7 @@ namespace srd5 {
             Location = row;
         }
 
-        public override int Distance(Location another) {
+        public int Distance(Location another) {
             if (!(another is ClassicLocation)) throw new Srd5ArgumentException("another must be a ClassicLocation.");
             ClassicLocation classicAnother = (ClassicLocation)another;
             return Math.Max(Math.Abs((int)classicAnother.Location - (int)this.Location), 5);

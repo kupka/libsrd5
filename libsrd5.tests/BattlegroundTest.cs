@@ -592,5 +592,12 @@ namespace srd5 {
                 int x = target.ProficiencyBonus;
             });
         }
+
+        [Fact]
+        public void BattlegroundClassicOccupancyTest() {
+            BattleGroundClassic classic = new BattleGroundClassic();
+            classic.AddCombatant(Monsters.Ogre, ClassicLocation.Row.FRONT_LEFT);
+            Assert.False(classic.IsOccupied(ClassicLocation.FrontLeft));
+        }
     }
 }

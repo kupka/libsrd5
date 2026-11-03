@@ -308,7 +308,7 @@ namespace srd5 {
             Combatant badger = Monsters.GiantBadger;
             Spells.CharmPerson.Cast(Monsters.NightHag, 10, SpellLevel.CANTRIP, 10);
             Spells.CharmPerson.Cast(createBattleground(hag, badger), hag, 10, SpellLevel.SECOND, 10, badger); // not affected
-            DefaultSpellTest(Spells.CharmPerson, 14, SpellLevel.SIXTH, ConditionType.CHARMED, null, null);
+            DefaultSpellTest(Spells.CharmPerson, 14, SpellLevel.SIXTH, ConditionType.CHARMED, null, (int)SpellDuration.ONE_HOUR);
         }
 
         [Fact]
@@ -407,7 +407,7 @@ namespace srd5 {
 
         [Fact]
         public void AnimalFriendshipTest() {
-            DefaultSpellTest(Spells.AnimalFriendship, 14, SpellLevel.FIRST, ConditionType.CHARMED, null, (int)SpellDuration.ONE_DAY, Monsters.Type.BEAST);
+            DefaultSpellTest(Spells.AnimalFriendship, 14, SpellLevel.FIRST, ConditionType.CHARMED, Effect.SPELL_ANIMAL_FRIENDSHIP, (int)SpellDuration.ONE_DAY, Monsters.Type.BEAST);
         }
 
         [Fact]

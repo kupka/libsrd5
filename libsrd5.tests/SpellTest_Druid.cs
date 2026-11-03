@@ -407,7 +407,7 @@ namespace srd5 {
 
         [Fact]
         public void AnimalFriendshipTest() {
-            DefaultSpellTest(Spells.AnimalFriendship, 14, SpellLevel.FIRST, ConditionType.CHARMED, null, null, Monsters.Type.BEAST);
+            DefaultSpellTest(Spells.AnimalFriendship, 14, SpellLevel.FIRST, ConditionType.CHARMED, null, (int)SpellDuration.ONE_DAY, Monsters.Type.BEAST);
         }
 
         [Fact]

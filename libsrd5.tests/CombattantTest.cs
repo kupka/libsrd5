@@ -158,6 +158,10 @@ namespace srd5 {
         [Fact]
         public void EscapeFromGrappleTest() {
             Combatant combatant = Monsters.BanditCaptain; // Athelics Proficiency
+            Action dummyAction = new Action(Actions.ID.ESCAPE_FROM_SPELL_BLACK_TENTACLES, delegate {
+                return true;
+            });
+            combatant.AddConditionalAction(dummyAction);
             Assert.Throws<Srd5ArgumentException>(delegate {
                 combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
             });
@@ -166,6 +170,7 @@ namespace srd5 {
             while (Array.IndexOf(combatant.ConditionalActionIDs, Actions.ID.ESCAPE_FROM_GRAPPLE) > -1) {
                 combatant.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
             }
+            Assert.Single(combatant.ConditionalActionIDs);
             Assert.False(combatant.HasCondition(ConditionType.GRAPPLED_DC14));
             Assert.True(combatant.HasCondition(ConditionType.DEAFENED));
             combatant = Monsters.Assassin; // Acrobatics Proficiency

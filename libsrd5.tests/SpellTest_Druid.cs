@@ -291,11 +291,14 @@ namespace srd5 {
             Monster hag = Monsters.NightHag;
             Monster monster1 = Monsters.Bandit;
             Monster monster2 = Monsters.Baboon;
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             monster2.AddEffect(Enum.Parse<Effect>("IMMUNITY_" + Enum.GetName<DamageType>(damageType)));
             Monster typed = new Monster(monsterType, Monsters.ID.MANTICORE, Alignment.UNALIGNED, 10, 10, 10, 10, 10, 10, 10, "5d8", 30, 2, new Attack[0], new Attack[0], Size.MEDIUM, 5);
-            Battleground ground = createBattleground(hag, monster1, monster2, typed);
+            Battleground ground = createBattleground(hag, monster1, monster2, typed, hero);
             for (int i = 0; i < 10; i++) {
                 spell.Cast(ground, hag, dc, spell.Level, 0, monster1, monster2, typed);
+                spell.Cast(ground, hag, dc, spell.Level, 0, monster2);
+                spell.Cast(ground, hag, dc, spell.Level, 0, hero);
                 spell.Cast(ground, hag, dc, spell.Level, 0, typed, monster2, monster1);
             }
             Assert.True(monster1.HitPoints < monster1.HitPointsMax);
@@ -796,6 +799,7 @@ namespace srd5 {
             DamagingSpellTesting(Spells.Blight, 25, DamageType.NECROTIC, Monsters.Type.PLANT);
             DamagingSpellTesting(Spells.Blight, 25, DamageType.NECROTIC, Monsters.Type.UNDEAD);
             DamagingSpellTesting(Spells.Blight, 25, DamageType.NECROTIC, Monsters.Type.CONSTRUCT);
+
         }
 
     }

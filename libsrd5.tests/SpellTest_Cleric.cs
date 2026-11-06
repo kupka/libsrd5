@@ -621,5 +621,91 @@ namespace srd5 {
             cleric4.OnStartOfTurn(); // 60 damage dealt -> guardian vanishes
             Assert.Empty(cleric4.StartOfTurnEvents);
         }
+        [Fact]
+        public void FlameStrikeTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            Monster giant = Monsters.HillGiant;
+            Battleground ground = createBattleground(cleric, giant);
+            int fire = 0, radiant = 0;
+            EventHandler<EventArgs> handler = delegate (object sender, EventArgs args) {
+                if (GlobalEvents.EventTypes.DAMAGED.Equals(sender) && args is GlobalEvents.DamageReceived dmg && dmg.Victim == giant) {
+                    if (dmg.DamageType == DamageType.FIRE) fire += dmg.Amount;
+                    if (dmg.DamageType == DamageType.RADIANT) radiant += dmg.Amount;
+                }
+            };
+            GlobalEvents.Handlers += handler;
+            try {
+                // failed save: full 4d6 fire and 4d6 radiant
+                giant.AddEffect(Effect.FAIL_DEXERITY_CHECK);
+                Spells.FlameStrike.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, giant);
+                Assert.InRange(fire, 4, 24);
+                Assert.InRange(radiant, 4, 24);
+                // higher slot: only fire damage scales (7th level = 6d6)
+                giant.HitPoints = giant.HitPointsMax;
+                fire = 0;
+                radiant = 0;
+                Spells.FlameStrike.Cast(ground, cleric, 15, SpellLevel.SEVENTH, 0, giant);
+                Assert.InRange(fire, 6, 36);
+                Assert.InRange(radiant, 4, 24);
+                // successful save: both halved
+                giant.RemoveEffect(Effect.FAIL_DEXERITY_CHECK);
+                giant.HitPoints = giant.HitPointsMax;
+                fire = 0;
+                radiant = 0;
+                Random.FixedRandom = Random.DebugState.Max;
+                Spells.FlameStrike.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, giant);
+                Assert.InRange(fire, 2, 12);
+                Assert.InRange(radiant, 2, 12);
+            } finally {
+                GlobalEvents.Handlers -= handler;
+            }
+        }
+
+        [Fact]
+        public void MassCureWoundsTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            cleric.HitPoints = 1;
+            Monster ogre = Monsters.Ogre;
+            Monster shadow = Monsters.Shadow;
+            Monster golem = Monsters.ClayGolem;
+            Monster[] orcs = { Monsters.Orc, Monsters.Orc, Monsters.Orc, Monsters.Orc };
+            ogre.HitPoints = 1;
+            shadow.HitPoints = 1;
+            golem.HitPoints = 1;
+            foreach (Monster orc in orcs) orc.HitPoints = 1;
+            Battleground ground = createBattleground(cleric, ogre, shadow, golem, orcs[0], orcs[1], orcs[2], orcs[3]);
+            Spells.MassCureWounds.Cast(ground, cleric, 12, SpellLevel.NINTH, 50, cleric, ogre, shadow, golem, orcs[0], orcs[1], orcs[2]);
+            Assert.Equal(cleric.HitPointsMax, cleric.HitPoints);
+            Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
+            Assert.Equal(1, shadow.HitPoints); // undead not affected
+            Assert.Equal(1, golem.HitPoints); // construct not affected
+            Assert.Equal(orcs[0].HitPointsMax, orcs[0].HitPoints);
+            Assert.Equal(orcs[1].HitPointsMax, orcs[1].HitPoints);
+            Assert.Equal(1, orcs[2].HitPoints); // only up to six creatures
+        }
+
+        [Fact]
+        public void RaiseDeadTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc;
+            Monster livingOrc = Monsters.Orc;
+            Battleground ground = createBattleground(cleric, orc, livingOrc);
+
+            // Target must be dead for Raise Dead to work
+            livingOrc.HitPoints = 5;
+            Spells.RaiseDead.Cast(ground, cleric, 12, SpellLevel.FIFTH, 0, livingOrc);
+            Assert.Equal(5, livingOrc.HitPoints);
+
+            orc.TakeDamage(new DamageSource(Spells.ID.POWER_WORD_KILL, cleric), DamageType.TRUE_DAMAGE, orc.HitPointsMax + 100);
+            Assert.True(orc.Dead);
+            orc.AddCondition(ConditionType.POISONED);
+            orc.AddEffect(Effect.DEATH_DOG_DISEASE);
+            Spells.RaiseDead.Cast(ground, cleric, 12, SpellLevel.FIFTH, 0, orc);
+            Assert.False(orc.Dead);
+            Assert.Equal(1, orc.HitPoints);
+            // poisons are neutralized and diseases cured
+            Assert.False(orc.HasCondition(ConditionType.POISONED));
+            Assert.False(orc.HasEffect(Effect.DEATH_DOG_DISEASE));
+        }
     }
 }

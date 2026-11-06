@@ -102,7 +102,12 @@ namespace srd5 {
         DAMAGE_THUNDER,
         // Fire Shield
         WARM_SHIELD,
-        CHILL_SHIELD
+        CHILL_SHIELD,
+        // Conjure Elemental
+        AIR_ELEMENTAL,
+        EARTH_ELEMENTAL,
+        FIRE_ELEMENTAL,
+        WATER_ELEMENTAL
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, params Combatant[] targets);

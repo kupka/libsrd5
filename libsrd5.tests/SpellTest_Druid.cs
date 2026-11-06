@@ -820,5 +820,57 @@ namespace srd5 {
             Assert.Equal(Team.VILLAINS, ground.GetTeam(badger));
             Assert.Empty(druid.EndOfTurnEvents);
         }
+        [Fact]
+        public void InsectPlagueTest() {
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Monster giant = Monsters.HillGiant;
+            Battleground ground = createBattleground(druid, giant);
+
+            Spells.InsectPlague.Cast(ground, druid, 15, SpellLevel.FIFTH, 0, giant);
+            Assert.True(giant.HasEffect(Effect.SPELL_INSECT_PLAGUE));
+            int hpAfterCast = giant.HitPoints;
+            Assert.True(hpAfterCast < giant.HitPointsMax);
+
+            // Starting its turn inside the swarm deals damage again
+            giant.OnStartOfTurn();
+            Assert.True(giant.HitPoints < hpAfterCast);
+
+            // The swarm disperses after 10 minutes
+            for (int i = 0; i < (int)SpellDuration.TEN_MINUTES; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.False(giant.HasEffect(Effect.SPELL_INSECT_PLAGUE));
+            int hpAfterExpiry = giant.HitPoints;
+            giant.OnStartOfTurn();
+            Assert.Equal(hpAfterExpiry, giant.HitPoints);
+            Assert.Empty(giant.StartOfTurnEvents);
+        }
+
+        [Fact]
+        public void ConjureElementalTest() {
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Battleground2D ground2D = new Battleground2D(20, 20);
+            ground2D.AddCombatant(druid, 10, 10, Team.HEROES);
+            Spell conjure = Spells.ConjureElemental;
+            SpellVariant[] variants = { SpellVariant.AIR_ELEMENTAL, SpellVariant.EARTH_ELEMENTAL, SpellVariant.FIRE_ELEMENTAL, SpellVariant.WATER_ELEMENTAL };
+            Monsters.ID[] expected = { Monsters.ID.AIR_ELEMENTAL, Monsters.ID.EARTH_ELEMENTAL, Monsters.ID.FIRE_ELEMENTAL, Monsters.ID.WATER_ELEMENTAL };
+            for (int i = 0; i < variants.Length; i++) {
+                conjure.Variant = variants[i];
+                conjure.Cast(ground2D, druid, 12, SpellLevel.FIFTH, 0, druid);
+                Monster elemental = (Monster)ground2D.combatants[ground2D.combatants.Length - 1];
+                Assert.Equal(expected[i], elemental.ID);
+                Assert.Equal(Team.HEROES, ground2D.GetTeam(elemental));
+            }
+            Assert.Equal(5, ground2D.combatants.Length); // 4 elementals + druid
+
+            // Classic battleground
+            BattleGroundClassic ground = createBattleground(druid, []);
+            Spell earth = Spells.ConjureElemental;
+            earth.Cast(ground, druid, 12, SpellLevel.FIFTH, 0, druid);
+            Assert.Equal(2, ground.combatants.Length);
+            Assert.Equal(Monsters.ID.EARTH_ELEMENTAL, ((Monster)ground.combatants[1]).ID);
+        }
     }
 }

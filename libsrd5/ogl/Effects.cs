@@ -223,7 +223,9 @@ namespace srd5 {
         SPELL_RESILIENT_SPHERE,
         SPELL_STONESKIN,
         // 5th
-        SPELL_PLACEHOLDER_5TH,
+        SPELL_CLOUDKILL,
+        SPELL_DOMINATE_PERSON,
+        SPELL_INSECT_PLAGUE,
         // 6th
         SPELL_PLACEHOLDER_6TH,
         // 7th
@@ -310,7 +312,7 @@ namespace srd5 {
         public static readonly Effect FIRST_SPELL_2ND = SPELL_ACID_ARRORW_BURN;
         public static readonly Effect FIRST_SPELL_3RD = SPELL_ANIMATE_DEAD;
         public static readonly Effect FIRST_SPELL_4TH = SPELL_BLACK_TENTACLES;
-        public static readonly Effect FIRST_SPELL_5TH = SPELL_PLACEHOLDER_5TH;
+        public static readonly Effect FIRST_SPELL_5TH = SPELL_CLOUDKILL;
         public static readonly Effect FIRST_SPELL_6TH = SPELL_PLACEHOLDER_6TH;
         public static readonly Effect FIRST_SPELL_7TH = SPELL_PLACEHOLDER_7TH;
         public static readonly Effect FIRST_SPELL_8TH = SPELL_PLACEHOLDER_8TH;

@@ -28,7 +28,7 @@ You can find examples how to integrate libsrd5 in a Unity3D project [here](https
 
 libsrd5 Copyright 2021-2026, Thomas Kupka
 
-## Current Status (Version 0.3.4)
+## Current Status (Version 0.3.5)
 
 | Topic                 | Status            | Remark                   |
 ------------------------|-------------------|--------------------------|
@@ -36,7 +36,7 @@ libsrd5 Copyright 2021-2026, Thomas Kupka
 | Character <br> Classes     | 🟩🟩🟩🟩⬛⬛⬛⬛⬛⬛ | Work to some degree, <br> but needs a lot of detailling. |
 | Character <br> Races       | 🟩🟩🟩🟩🟩⬛⬛⬛⬛⬛ | All races available, <br> but pretty bare functionality. |
 | Monsters              | 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬛ | All Monsters are available, <br> most are fully functional! |
-| Spells                | 🟩🟩🟩🟩🟩⬛⬛⬛⬛⬛ | All Spells are available, <br> Up to 4th Level <br> fully implemented.<br> **Current focus of work**. |
+| Spells                | 🟩🟩🟩🟩🟩🟩⬛⬛⬛⬛ | All Spells are available, <br> Up to 5th Level <br> fully implemented.<br> **Current focus of work** |
 | Feats                 | 🟩⬛⬛⬛⬛⬛⬛⬛⬛⬛ | Only very basic <br> functionality available. |
 | Items                 | 🟩🟩🟩🟩🟩🟩⬛⬛⬛⬛ | Weapons, Armors (incl. magic) <br> are available. <br> Unique artifacts missing. |
 | Descriptions          | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 | Done! Everything mentioned<br> in the SRD5 is available<br> in the library. |

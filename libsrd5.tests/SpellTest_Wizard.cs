@@ -1173,5 +1173,219 @@ namespace srd5 {
             trollInWall.OnEndOfTurn();
             Assert.Equal(hpAfterExpiry, trollInWall.HitPoints);
         }
+        [Fact]
+        public void ConeOfColdTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster giant = Monsters.HillGiant;
+            Battleground ground = createBattleground(wizard, giant);
+            int damage = 0;
+            EventHandler<EventArgs> handler = delegate (object sender, EventArgs args) {
+                if (GlobalEvents.EventTypes.DAMAGED.Equals(sender) && args is GlobalEvents.DamageReceived dmg && dmg.Victim == giant && dmg.DamageType == DamageType.COLD) {
+                    damage += dmg.Amount;
+                }
+            };
+            GlobalEvents.Handlers += handler;
+            try {
+                // failed save: full 8d8 damage
+                giant.AddEffect(Effect.FAIL_CONSTITUTION_CHECK);
+                Spells.ConeOfCold.Cast(ground, wizard, 15, SpellLevel.FIFTH, 0, giant);
+                Assert.InRange(damage, 8, 64);
+                // higher slot: 9th level = 12d8
+                giant.HitPoints = giant.HitPointsMax;
+                damage = 0;
+                Spells.ConeOfCold.Cast(ground, wizard, 15, SpellLevel.NINTH, 0, giant);
+                Assert.InRange(damage, 12, 96);
+                // successful save: half damage
+                giant.RemoveEffect(Effect.FAIL_CONSTITUTION_CHECK);
+                giant.HitPoints = giant.HitPointsMax;
+                damage = 0;
+                giant.AddEffect(Effect.ADVANTAGE_CONSTITUTION_SAVES);
+                Spells.ConeOfCold.Cast(ground, wizard, 1, SpellLevel.FIFTH, 0, giant);
+                Assert.InRange(damage, 4, 32);
+            } finally {
+                GlobalEvents.Handlers -= handler;
+            }
+            Assert.Equal(wizard.HitPointsMax, wizard.HitPoints);
+        }
+
+        [Fact]
+        public void HoldMonsterTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster zombie = Monsters.Zombie;
+            Monster orc1 = Monsters.Orc;
+            Monster orc2 = Monsters.Orc;
+            Monster orc3 = Monsters.Orc;
+            Monster badger = Monsters.Badger;
+            Battleground ground = createBattleground(wizard, zombie, orc1, orc2, orc3, badger);
+
+            // Undead are not affected
+            Spells.HoldMonster.Cast(ground, wizard, 15, SpellLevel.FIFTH, 0, zombie);
+            Assert.False(zombie.HasCondition(ConditionType.PARALYZED));
+
+            // Successful save: not affected
+            Random.FixedRandom = Random.DebugState.Max;
+            Spells.HoldMonster.Cast(ground, wizard, 15, SpellLevel.FIFTH, 0, badger);
+            Assert.False(badger.HasCondition(ConditionType.PARALYZED));
+
+            // 6th level slot: two targets, the third one is ignored
+            int affectedTargets = 0;
+            EventHandler<GlobalEvents.SpellAffection> handler = delegate (object sender, GlobalEvents.SpellAffection affection) {
+                if (affection.Spell == Spells.ID.HOLD_MONSTER) {
+                    Assert.NotEqual(orc3, affection.Target);
+                    affectedTargets++;
+                }
+            };
+            GlobalEvents.SpellAffectionHandlers += handler;
+            Spells.HoldMonster.Cast(ground, wizard, 15, SpellLevel.SIXTH, 0, orc2, orc1, orc3);
+            GlobalEvents.SpellAffectionHandlers -= handler;
+            Assert.Equal(2, affectedTargets);
+
+            // Failed save: paralyzed
+            Random.FixedRandom = Random.DebugState.Min;
+            Spells.HoldMonster.Cast(ground, wizard, 15, SpellLevel.FIFTH, 0, orc3);
+            Assert.True(orc3.HasCondition(ConditionType.PARALYZED));
+            // Failed save at the end of its turn: stays paralyzed
+            Random.FixedRandom = Random.DebugState.Min;
+            orc3.OnEndOfTurn();
+            Assert.True(orc3.HasCondition(ConditionType.PARALYZED));
+            // Successful save at the end of its turn: the spell ends
+            Random.FixedRandom = Random.DebugState.Max;
+            orc3.OnEndOfTurn();
+            Assert.False(orc3.HasCondition(ConditionType.PARALYZED));
+            Assert.Empty(orc3.EndOfTurnEvents);
+
+            // Failing every save, the spell still ends after 1 minute
+            Monster orc4 = Monsters.Orc;
+            Random.FixedRandom = Random.DebugState.Min;
+            Spells.HoldMonster.Cast(createBattleground(wizard, orc4), wizard, 15, SpellLevel.FIFTH, 0, orc4);
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE - 1; i++) {
+                Random.FixedRandom = Random.DebugState.Min;
+                orc4.OnEndOfTurn();
+            }
+            Assert.True(orc4.HasCondition(ConditionType.PARALYZED));
+            orc4.OnEndOfTurn();
+            Assert.False(orc4.HasCondition(ConditionType.PARALYZED));
+            Assert.Empty(orc4.EndOfTurnEvents);
+        }
+
+        [Fact]
+        public void DominatePersonTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster badger = Monsters.Badger; // not a humanoid, unaffected regardless of save
+            Monster immuneOrc = Monsters.Orc;
+            immuneOrc.AddEffect(Effect.IMMUNITY_CHARMED);
+            Monster orc = Monsters.Orc;
+            orc.HitPointsMax = 100;
+            orc.HitPoints = 100; // survive repeated damage in this test
+            CharacterSheet fighter = new CharacterSheet(Race.HUMAN);
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombatant(wizard, 1, 1, Team.HEROES);
+            ground.AddCombatant(badger, 5, 1, Team.VILLAINS);
+            ground.AddCombatant(immuneOrc, 5, 2, Team.VILLAINS);
+            ground.AddCombatant(orc, 5, 3, Team.VILLAINS);
+            ground.AddCombatant(fighter, 5, 4, Team.VILLAINS);
+
+            // Non-humanoid target: spell has no effect
+            Spells.DominatePerson.Cast(ground, wizard, 25, SpellLevel.FIFTH, 0, badger);
+            Assert.False(badger.HasCondition(ConditionType.CHARMED));
+            Assert.False(badger.HasEffect(Effect.SPELL_DOMINATE_PERSON));
+
+            // Humanoid immune to charmed: spell has no effect
+            Spells.DominatePerson.Cast(ground, wizard, 25, SpellLevel.FIFTH, 0, immuneOrc);
+            Assert.False(immuneOrc.HasCondition(ConditionType.CHARMED));
+
+            // Failed save: charmed and switches sides
+            Random.FixedRandom = Random.DebugState.Min;
+            Random.State = 1;
+            Spells.DominatePerson.Cast(ground, wizard, 25, SpellLevel.FIFTH, 0, orc, badger);
+            Assert.True(orc.HasCondition(ConditionType.CHARMED));
+            Assert.True(orc.HasEffect(Effect.SPELL_DOMINATE_PERSON));
+            Assert.Equal(ground.GetTeam(wizard), ground.GetTeam(orc));
+
+            // Commanded to attack the designated target, also when that target is down
+            orc.OnStartOfTurn();
+            Assert.Single(orc.StartOfTurnEvents);
+            badger.HitPoints = 0;
+            orc.OnStartOfTurn();
+            Assert.Single(orc.StartOfTurnEvents);
+
+            // Taking damage triggers a new save; a failed save leaves the domination in place
+            Random.FixedRandom = Random.DebugState.Avg;
+            orc.TakeDamage(new DamageSource(Spells.ID.DOMINATE_PERSON, wizard), DamageType.TRUE_DAMAGE, 1);
+            Assert.True(orc.HasEffect(Effect.SPELL_DOMINATE_PERSON));
+
+            // The domination ends after 1 minute at a 5th level slot
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
+                wizard.OnEndOfTurn();
+            }
+            Assert.False(orc.HasCondition(ConditionType.CHARMED));
+            Assert.False(orc.HasEffect(Effect.SPELL_DOMINATE_PERSON));
+            Assert.Equal(Team.VILLAINS, ground.GetTeam(orc));
+            orc.OnStartOfTurn();
+            Assert.Empty(orc.StartOfTurnEvents);
+            orc.TakeDamage(new DamageSource(Spells.ID.DOMINATE_PERSON, wizard), DamageType.TRUE_DAMAGE, 1);
+            Assert.Empty(orc.DamageTakenEvents);
+
+            // Player characters are humanoids; a successful save after damage ends the domination early
+            Random.FixedRandom = Random.DebugState.Min;
+            Random.State = 1;
+            Spells.DominatePerson.Cast(ground, wizard, 25, SpellLevel.FIFTH, 0, fighter);
+            Assert.True(fighter.HasEffect(Effect.SPELL_DOMINATE_PERSON));
+            Random.FixedRandom = Random.DebugState.Max;
+            fighter.TakeDamage(new DamageSource(Spells.ID.DOMINATE_PERSON, wizard), DamageType.TRUE_DAMAGE, 1);
+            Assert.False(fighter.HasCondition(ConditionType.CHARMED));
+            Assert.False(fighter.HasEffect(Effect.SPELL_DOMINATE_PERSON));
+            wizard.OnEndOfTurn(); // spell already ended, the duration event is removed
+        }
+
+        [Fact]
+        public void DominatePersonDurationTest() {
+            SpellLevel[] slots = { SpellLevel.SIXTH, SpellLevel.SEVENTH, SpellLevel.EIGHTH, SpellLevel.NINTH };
+            SpellDuration[] durations = { SpellDuration.TEN_MINUTES, SpellDuration.ONE_HOUR, SpellDuration.EIGHT_HOURS, SpellDuration.EIGHT_HOURS };
+            for (int s = 0; s < slots.Length; s++) {
+                CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+                Monster orc = Monsters.Orc;
+                Battleground ground = createBattleground(wizard, orc);
+                Random.FixedRandom = Random.DebugState.Min;
+                Random.State = 1;
+                Spells.DominatePerson.Cast(ground, wizard, 25, slots[s], 0, orc);
+                for (int i = 0; i < (int)durations[s] - 1; i++) {
+                    wizard.OnEndOfTurn();
+                }
+                Assert.True(orc.HasEffect(Effect.SPELL_DOMINATE_PERSON));
+                wizard.OnEndOfTurn();
+                Assert.False(orc.HasEffect(Effect.SPELL_DOMINATE_PERSON));
+            }
+        }
+
+        [Fact]
+        public void CloudkillTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster giant = Monsters.HillGiant;
+            Battleground ground = createBattleground(wizard, giant);
+
+            Spells.Cloudkill.Cast(ground, wizard, 15, SpellLevel.FIFTH, 0, giant);
+            Assert.True(giant.HasEffect(Effect.SPELL_CLOUDKILL));
+            int hpAfterCast = giant.HitPoints;
+            Assert.True(hpAfterCast < giant.HitPointsMax);
+
+            // Starting its turn inside the cloud deals damage again (at least half on a successful save)
+            giant.OnStartOfTurn();
+            Assert.True(giant.HitPoints < hpAfterCast);
+
+            // The cloud disperses after 10 minutes
+            for (int i = 0; i < (int)SpellDuration.TEN_MINUTES; i++) {
+                wizard.OnEndOfTurn();
+            }
+            Assert.False(giant.HasEffect(Effect.SPELL_CLOUDKILL));
+            int hpAfterExpiry = giant.HitPoints;
+            giant.OnStartOfTurn();
+            Assert.Equal(hpAfterExpiry, giant.HitPoints);
+            Assert.Empty(giant.StartOfTurnEvents);
+        }
     }
 }

@@ -415,22 +415,29 @@ namespace srd5 {
 
         [Fact]
         public void AnimalFriendshipEndedEarlyTest() {
-            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
-            druid.AddLevel(CharacterClasses.Druid);
-            Monster badger = Monsters.Badger;
-            BattleGroundClassic ground = new BattleGroundClassic();
-            ground.AddCombatant(druid, ClassicLocation.Row.FRONT_LEFT, Team.HEROES);
-            ground.AddCombatant(badger, ClassicLocation.Row.FRONT_RIGHT, Team.VILLAINS);
-            Random.FixedRandom = Random.DebugState.Min;
-            Random.State = 1; // deterministic rolls well below DC 25, so the badger fails its save
-            Spells.AnimalFriendship.Cast(ground, druid, 25, SpellLevel.FIRST, 0, badger);
-            Assert.True(badger.HasEffect(Effect.SPELL_ANIMAL_FRIENDSHIP));
-            Assert.Equal(Team.HEROES, ground.GetTeam(badger));
-            // The effect ends early (e.g. dispelled): the badger returns to its original team at the end of the caster's turn
-            badger.RemoveEffect(Effect.SPELL_ANIMAL_FRIENDSHIP);
-            druid.OnEndOfTurn();
-            Assert.Equal(Team.VILLAINS, ground.GetTeam(badger));
-            Assert.Empty(druid.EndOfTurnEvents);
+            // Other tests (run reflectively in one process by GlobalEventsTest) depend on the global random state
+            uint originalState = Random.State;
+            try {
+                CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+                druid.AddLevel(CharacterClasses.Druid);
+                Monster badger = Monsters.Badger;
+                BattleGroundClassic ground = new BattleGroundClassic();
+                ground.AddCombatant(druid, ClassicLocation.Row.FRONT_LEFT, Team.HEROES);
+                ground.AddCombatant(badger, ClassicLocation.Row.FRONT_RIGHT, Team.VILLAINS);
+                Random.FixedRandom = Random.DebugState.Min;
+                Random.State = 1; // deterministic rolls well below DC 25, so the badger fails its save
+                Spells.AnimalFriendship.Cast(ground, druid, 25, SpellLevel.FIRST, 0, badger);
+                Assert.True(badger.HasEffect(Effect.SPELL_ANIMAL_FRIENDSHIP));
+                Assert.Equal(Team.HEROES, ground.GetTeam(badger));
+                // The effect ends early (e.g. dispelled): the badger returns to its original team at the end of the caster's turn
+                badger.RemoveEffect(Effect.SPELL_ANIMAL_FRIENDSHIP);
+                druid.OnEndOfTurn();
+                Assert.Equal(Team.VILLAINS, ground.GetTeam(badger));
+                Assert.Empty(druid.EndOfTurnEvents);
+            } finally {
+                Random.State = originalState;
+                Random.FixedRandom = Random.DebugState.Off;
+            }
         }
 
         [Fact]

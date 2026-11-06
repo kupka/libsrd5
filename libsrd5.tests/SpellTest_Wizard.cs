@@ -903,99 +903,113 @@ namespace srd5 {
 
         [Fact]
         public void DominateBeastCommandTest() {
-            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
-            wizard.AddLevel(CharacterClasses.Wizard);
-            Monster orc = Monsters.Orc;
-            Monster badger = Monsters.Badger;
-            Monster idleBadger = Monsters.Badger;
-            Monster releasedBadger = Monsters.Badger;
-            Battleground ground = createBattleground(wizard, orc, badger, idleBadger, releasedBadger);
-
-            // Commanded to attack a designated target
-            Random.FixedRandom = Random.DebugState.Min;
-            Random.State = 1;
-            Spells.DominateBeast.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, badger, orc);
-            Assert.True(badger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
-            Assert.Single(badger.StartOfTurnEvents);
-            // attack target alive: the command stays active
-            badger.OnStartOfTurn();
-            Assert.Single(badger.StartOfTurnEvents);
-            // attack target down: no one to attack, but the command stays active
-            orc.HitPoints = 0;
-            badger.OnStartOfTurn();
-            Assert.Single(badger.StartOfTurnEvents);
-            // once the spell has ended, the command is removed
-            for (int i = 0; i < 10; i++) {
-                wizard.OnEndOfTurn();
+            // Other tests (run reflectively in one process by GlobalEventsTest) depend on the global random state
+            uint originalState = Random.State;
+            try {
+                CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+                wizard.AddLevel(CharacterClasses.Wizard);
+                Monster orc = Monsters.Orc;
+                Monster badger = Monsters.Badger;
+                Monster idleBadger = Monsters.Badger;
+                Monster releasedBadger = Monsters.Badger;
+                Battleground ground = createBattleground(wizard, orc, badger, idleBadger, releasedBadger);
+    
+                // Commanded to attack a designated target
+                Random.FixedRandom = Random.DebugState.Min;
+                Random.State = 1;
+                Spells.DominateBeast.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, badger, orc);
+                Assert.True(badger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
+                Assert.Single(badger.StartOfTurnEvents);
+                // attack target alive: the command stays active
+                badger.OnStartOfTurn();
+                Assert.Single(badger.StartOfTurnEvents);
+                // attack target down: no one to attack, but the command stays active
+                orc.HitPoints = 0;
+                badger.OnStartOfTurn();
+                Assert.Single(badger.StartOfTurnEvents);
+                // once the spell has ended, the command is removed
+                for (int i = 0; i < 10; i++) {
+                    wizard.OnEndOfTurn();
+                }
+                badger.OnStartOfTurn();
+                Assert.Empty(badger.StartOfTurnEvents);
+    
+                // Without an attack target, the beast attacks no one
+                Random.FixedRandom = Random.DebugState.Min;
+                Random.State = 1;
+                Spells.DominateBeast.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, idleBadger);
+                Assert.True(idleBadger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
+                idleBadger.OnStartOfTurn();
+                Assert.Single(idleBadger.StartOfTurnEvents);
+    
+                // Domination effect removed by other means: the command is removed
+                Random.FixedRandom = Random.DebugState.Min;
+                Random.State = 1;
+                Spells.DominateBeast.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, releasedBadger);
+                Assert.True(releasedBadger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
+                releasedBadger.RemoveEffect(Effect.SPELL_DOMINATE_BEAST);
+                releasedBadger.OnStartOfTurn();
+                Assert.Empty(releasedBadger.StartOfTurnEvents);
+            } finally {
+                Random.State = originalState;
+                Random.FixedRandom = Random.DebugState.Off;
             }
-            badger.OnStartOfTurn();
-            Assert.Empty(badger.StartOfTurnEvents);
-
-            // Without an attack target, the beast attacks no one
-            Random.FixedRandom = Random.DebugState.Min;
-            Random.State = 1;
-            Spells.DominateBeast.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, idleBadger);
-            Assert.True(idleBadger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
-            idleBadger.OnStartOfTurn();
-            Assert.Single(idleBadger.StartOfTurnEvents);
-
-            // Domination effect removed by other means: the command is removed
-            Random.FixedRandom = Random.DebugState.Min;
-            Random.State = 1;
-            Spells.DominateBeast.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, releasedBadger);
-            Assert.True(releasedBadger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
-            releasedBadger.RemoveEffect(Effect.SPELL_DOMINATE_BEAST);
-            releasedBadger.OnStartOfTurn();
-            Assert.Empty(releasedBadger.StartOfTurnEvents);
         }
 
         [Fact]
         public void DimensionDoorTest() {
-            // Ogres have enough hit points to survive two rounds of 4d6 force damage
-            Monster wizard = Monsters.Ogre;
-            Monster companion = Monsters.Ogre;
-            Monster orc = Monsters.Orc;
-            Battleground2D ground = new Battleground2D(20, 20);
-            ground.AddCombatant(wizard, 1, 1, Team.HEROES);
-            ground.AddCombatant(companion, 1, 2, Team.HEROES);
-            ground.AddCombatant(orc, 10, 10, Team.VILLAINS);
-
-            // A destination is required
-            Assert.Throws<ArgumentException>(delegate {
-                Spells.DimensionDoor.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, companion);
-            });
-
-            // Occupied destination, alone: caster takes 4d6 force damage and stays put
-            Target occupied = new Target();
-            occupied.Location = new Coord(10, 10);
-            Spells.DimensionDoor.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, occupied);
-            Assert.True(wizard.HitPoints < wizard.HitPointsMax);
-            Assert.Equal(companion.HitPointsMax, companion.HitPoints);
-            Assert.Equal(1, ground.LocateCombatant2D(wizard).X);
-
-            // Occupied destination, with companion: both take damage and stay put
-            int wizardHp = wizard.HitPoints;
-            Spells.DimensionDoor.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, companion, occupied);
-            Assert.True(wizard.HitPoints < wizardHp);
-            Assert.True(companion.HitPoints < companion.HitPointsMax);
-            Assert.Equal(1, ground.LocateCombatant2D(wizard).X);
-            Assert.Equal(1, ground.LocateCombatant2D(companion).X);
-
-            // Free destination, alone: only the caster teleports
-            Target free = new Target();
-            free.Location = new Coord(15, 15);
-            Spells.DimensionDoor.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, free);
-            Assert.Equal(15, ground.LocateCombatant2D(wizard).X);
-            Assert.Equal(15, ground.LocateCombatant2D(wizard).Y);
-            Assert.Equal(1, ground.LocateCombatant2D(companion).X);
-
-            // Free destination, with companion: both teleport
-            Target otherFree = new Target();
-            otherFree.Location = new Coord(5, 5);
-            ground.SetLocation(wizard, new Coord(1, 1));
-            Spells.DimensionDoor.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, companion, otherFree);
-            Assert.Equal(5, ground.LocateCombatant2D(wizard).X);
-            Assert.Equal(5, ground.LocateCombatant2D(companion).X);
+            // Other tests (run reflectively in one process by GlobalEventsTest) depend on the global random state
+            uint originalState = Random.State;
+            try {
+                // Ogres have enough hit points to survive two rounds of 4d6 force damage
+                Monster wizard = Monsters.Ogre;
+                Monster companion = Monsters.Ogre;
+                Monster orc = Monsters.Orc;
+                Battleground2D ground = new Battleground2D(20, 20);
+                ground.AddCombatant(wizard, 1, 1, Team.HEROES);
+                ground.AddCombatant(companion, 1, 2, Team.HEROES);
+                ground.AddCombatant(orc, 10, 10, Team.VILLAINS);
+    
+                // A destination is required
+                Assert.Throws<ArgumentException>(delegate {
+                    Spells.DimensionDoor.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, companion);
+                });
+    
+                // Occupied destination, alone: caster takes 4d6 force damage and stays put
+                Target occupied = new Target();
+                occupied.Location = new Coord(10, 10);
+                Spells.DimensionDoor.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, occupied);
+                Assert.True(wizard.HitPoints < wizard.HitPointsMax);
+                Assert.Equal(companion.HitPointsMax, companion.HitPoints);
+                Assert.Equal(1, ground.LocateCombatant2D(wizard).X);
+    
+                // Occupied destination, with companion: both take damage and stay put
+                int wizardHp = wizard.HitPoints;
+                Spells.DimensionDoor.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, companion, occupied);
+                Assert.True(wizard.HitPoints < wizardHp);
+                Assert.True(companion.HitPoints < companion.HitPointsMax);
+                Assert.Equal(1, ground.LocateCombatant2D(wizard).X);
+                Assert.Equal(1, ground.LocateCombatant2D(companion).X);
+    
+                // Free destination, alone: only the caster teleports
+                Target free = new Target();
+                free.Location = new Coord(15, 15);
+                Spells.DimensionDoor.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, free);
+                Assert.Equal(15, ground.LocateCombatant2D(wizard).X);
+                Assert.Equal(15, ground.LocateCombatant2D(wizard).Y);
+                Assert.Equal(1, ground.LocateCombatant2D(companion).X);
+    
+                // Free destination, with companion: both teleport
+                Target otherFree = new Target();
+                otherFree.Location = new Coord(5, 5);
+                ground.SetLocation(wizard, new Coord(1, 1));
+                Spells.DimensionDoor.Cast(ground, wizard, 10, SpellLevel.FOURTH, 0, companion, otherFree);
+                Assert.Equal(5, ground.LocateCombatant2D(wizard).X);
+                Assert.Equal(5, ground.LocateCombatant2D(companion).X);
+            } finally {
+                Random.State = originalState;
+                Random.FixedRandom = Random.DebugState.Off;
+            }
         }
 
         [Fact]

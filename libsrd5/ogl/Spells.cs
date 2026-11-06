@@ -99,7 +99,10 @@ namespace srd5 {
         DAMAGE_COLD,
         DAMAGE_FIRE,
         DAMAGE_LIGHTNING,
-        DAMAGE_THUNDER
+        DAMAGE_THUNDER,
+        // Fire Shield
+        WARM_SHIELD,
+        CHILL_SHIELD
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, params Combatant[] targets);

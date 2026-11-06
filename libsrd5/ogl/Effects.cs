@@ -199,6 +199,7 @@ namespace srd5 {
         SPELL_BESTOW_CURSE_LOST_TURN,
         SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE,
         SPELL_HASTE,
+        SPELL_HYPNOTIC_PATTERN,
         SPELL_PROTECTION_FROM_ENERGY,
         SPELL_SLEET_STORM,
         SPELL_SLOW,
@@ -211,9 +212,16 @@ namespace srd5 {
         SPELL_TONGUES,
         SPELL_WATER_BREATHING,
         SPELL_WATER_WALK,
-        SPELL_HYPNOTIC_PATTERN,
         // 4th
-        SPELL_PLACEHOLDER_4TH,
+        SPELL_BLACK_TENTACLES,
+        SPELL_CONFUSION,
+        SPELL_DEATH_WARD,
+        SPELL_DOMINATE_BEAST,
+        SPELL_FIRE_SHIELD_WARM,
+        SPELL_FIRE_SHIELD_CHILL,
+        SPELL_PHANTASMAL_KILLER,
+        SPELL_RESILIENT_SPHERE,
+        SPELL_STONESKIN,
         // 5th
         SPELL_PLACEHOLDER_5TH,
         // 6th
@@ -301,7 +309,7 @@ namespace srd5 {
         public static readonly Effect FIRST_SPELL_1ST = SPELL_ANIMAL_FRIENDSHIP;
         public static readonly Effect FIRST_SPELL_2ND = SPELL_ACID_ARRORW_BURN;
         public static readonly Effect FIRST_SPELL_3RD = SPELL_ANIMATE_DEAD;
-        public static readonly Effect FIRST_SPELL_4TH = SPELL_PLACEHOLDER_4TH;
+        public static readonly Effect FIRST_SPELL_4TH = SPELL_BLACK_TENTACLES;
         public static readonly Effect FIRST_SPELL_5TH = SPELL_PLACEHOLDER_5TH;
         public static readonly Effect FIRST_SPELL_6TH = SPELL_PLACEHOLDER_6TH;
         public static readonly Effect FIRST_SPELL_7TH = SPELL_PLACEHOLDER_7TH;
@@ -391,6 +399,12 @@ namespace srd5 {
                     break;
                 case SPELL_ENTANGLE:
                     combatant.AddCondition(ConditionType.RESTRAINED);
+                    break;
+                case SPELL_BLACK_TENTACLES:
+                    combatant.AddCondition(ConditionType.RESTRAINED);
+                    break;
+                case SPELL_CONFUSION:
+                    combatant.AddEffect(CANNOT_TAKE_REACTIONS);
                     break;
                 case SPELL_FAIRIE_FIRE:
                     combatant.AddEffect(ADVANTAGE_ON_BEING_ATTACKED);
@@ -684,6 +698,10 @@ namespace srd5 {
                 case SPELL_WATER_WALK:
                     // TODO: allow walking on liquid surfaces
                     break;
+                case SPELL_FIRE_SHIELD_WARM:
+                case SPELL_FIRE_SHIELD_CHILL:
+                    // Resistance is applied via variant in the spell itself
+                    break;
             }
         }
 
@@ -712,6 +730,12 @@ namespace srd5 {
                     break;
                 case SPELL_ENTANGLE:
                     combatant.RemoveCondition(ConditionType.RESTRAINED);
+                    break;
+                case SPELL_BLACK_TENTACLES:
+                    combatant.RemoveCondition(ConditionType.RESTRAINED);
+                    break;
+                case SPELL_CONFUSION:
+                    combatant.RemoveEffect(CANNOT_TAKE_REACTIONS);
                     break;
                 case SPELL_FAIRIE_FIRE:
                     combatant.RemoveEffect(ADVANTAGE_ON_BEING_ATTACKED);
@@ -864,6 +888,10 @@ namespace srd5 {
                 case SPELL_WATER_BREATHING:
                 case SPELL_WATER_WALK:
                     // TODO: reverse effect-specific mechanics when implemented
+                    break;
+                case SPELL_FIRE_SHIELD_WARM:
+                case SPELL_FIRE_SHIELD_CHILL:
+                    // Resistance applied via variant in spell itself
                     break;
             }
         }

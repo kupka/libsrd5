@@ -1,4 +1,5 @@
 using System;
+using static srd5.Effect;
 
 namespace srd5 {
     public class Spell : GuidClass {
@@ -63,12 +64,30 @@ namespace srd5 {
         public void Cast(Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, params Combatant[] targets) {
             if (targets.Length < 1) throw new Srd5ArgumentException("targets must contain at least one element");
             GlobalEvents.CastSpell(caster, ID);
-            CastEffect(ground, caster, dc, slot, modifier, targets);
+            Combatant[] targetable = filterUntargetable(caster, targets);
+            if (targetable.Length < 1) return;
+            CastEffect(ground, caster, dc, slot, modifier, targetable);
         }
 
         public override bool Equals(object obj) {
             if (!(obj is Spell)) return false;
             return obj.GetHashCode() == this.GetHashCode();
+        }
+
+        /// <summary>
+        /// Removes targets shielded from this spell (e.g. Resilient Sphere blocks every spell except Disintegrate),
+        /// reporting a miss for each one removed. Centralized here so individual spells don't need to duplicate the check.
+        /// </summary>
+        private Combatant[] filterUntargetable(Combatant caster, Combatant[] targets) {
+            Combatant[] targetable = new Combatant[0];
+            foreach (Combatant target in targets) {
+                if (target.HasEffect(SPELL_RESILIENT_SPHERE) && ID != Spells.ID.DISINTEGRATE && !caster.Equals(target)) {
+                    GlobalEvents.AffectBySpell(caster, ID, target, false);
+                    continue;
+                }
+                Utils.Push<Combatant>(ref targetable, target);
+            }
+            return targetable;
         }
 
         public override int GetHashCode() {

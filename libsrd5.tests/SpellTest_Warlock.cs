@@ -16,15 +16,19 @@ namespace srd5 {
 
         [Fact]
         public void PoisonSprayTest() {
+            Random.State = 1; // isolate from whatever random state preceding tests left behind
             Monster hag = Monsters.NightHag;
             Monster badger = Monsters.Badger;
             Battleground ground = createBattleground(hag, badger);
             int hp = badger.HitPoints;
-            Random.State = 1;
-            Spells.PoisonSpray.Cast(ground, hag, 1, SpellLevel.CANTRIP, hag.ProficiencyBonus, badger);
+            Random.FixedRandom = Random.DebugState.Max;
+            Spells.PoisonSpray.Cast(ground, hag, 1, SpellLevel.CANTRIP, 0, badger);
             Assert.Equal(badger.HitPointsMax, badger.HitPoints);
+            Random.State = 1;
+            Random.FixedRandom = Random.DebugState.Avg;
             Spells.PoisonSpray.Cast(ground, hag, 25, SpellLevel.CANTRIP, hag.ProficiencyBonus, badger, badger, badger);
             Assert.True(badger.HitPoints < hp);
+
         }
 
         [Fact]

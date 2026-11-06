@@ -32,11 +32,10 @@ namespace srd5 {
                             });
                             if (ground is Battleground2D battleground2D) {
                                 Coord location = battleground2D.LocateCombatant2D(target);
-                                battleground2D.AddCombatant(Monsters.Zombie, location.X, location.Y);
-                                // TODO: Add logic to put the Zombie under the caster's control
+                                battleground2D.AddCombatant(Monsters.Zombie, location.X, location.Y, ground.GetTeam(caster));
                             } else if (ground is BattleGroundClassic battleGroundClassic) {
                                 ClassicLocation location = battleGroundClassic.LocateClassicCombatant(target);
-                                battleGroundClassic.AddCombatant(Monsters.Zombie, location.Location);
+                                battleGroundClassic.AddCombatant(Monsters.Zombie, location.Location, ground.GetTeam(caster));
                             }
                         } else {
                             GlobalEvents.AffectBySpell(caster, ID.ANIMATE_DEAD, target, false);
@@ -228,13 +227,12 @@ namespace srd5 {
                     for (int i = 0; i < beastAmount; i++) {
                         if (ground is Battleground2D battleground2D) {
                             Coord location = battleground2D.LocateCombatant2D(caster);
-                            battleground2D.AddCombatantNextTo(Monsters.Get(randomBeasts[D20.Value % randomBeasts.Length]), location.X, location.Y);
+                            battleground2D.AddCombatantNextTo(Monsters.Get(randomBeasts[D20.Value % randomBeasts.Length]), location.X, location.Y, ground.GetTeam(caster));
                         } else if (ground is BattleGroundClassic battleGroundClassic) {
                             ClassicLocation location = battleGroundClassic.LocateClassicCombatant(caster);
-                            battleGroundClassic.AddCombatant(Monsters.Get(randomBeasts[D20.Value % randomBeasts.Length]), location.Location);
+                            battleGroundClassic.AddCombatant(Monsters.Get(randomBeasts[D20.Value % randomBeasts.Length]), location.Location, ground.GetTeam(caster));
                         }
                     }
-                    // TODO: Put the beasts under the caster's control
                 };
                 conjure.CastEffect = effect;
                 return conjure;
@@ -627,7 +625,7 @@ namespace srd5 {
                 return new Spell(ID.SENDING, EVOCATION, THIRD, CastingTime.ONE_ACTION, -1, VSM, ONE_ROUND, 0, 0, doNothing);
             }
         }
-        /* TODO */
+
         public static Spell SleetStorm {
             get {
                 return new Spell(ID.SLEET_STORM, CONJURATION, THIRD, CastingTime.ONE_ACTION, 150, VSM, ONE_MINUTE, 40, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {

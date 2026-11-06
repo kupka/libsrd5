@@ -28,7 +28,24 @@ namespace srd5 {
                             && !monster.DC(ID.ANIMAL_FRIENDSHIP, dc, WISDOM, false, true)) {
                         monster.AddEffect(SPELL_ANIMAL_FRIENDSHIP);
                         monster.AddCondition(ConditionType.CHARMED);
+                        Team originalTeam = ground.GetTeam(monster);
+                        ground.SetTeam(monster, ground.GetTeam(caster));
                         GlobalEvents.AffectBySpell(caster, ID.ANIMAL_FRIENDSHIP, target, true);
+
+                        int remainingRounds = (int)ONE_DAY;
+                        caster.AddEndOfTurnEvent(delegate () {
+                            if (!monster.HasEffect(SPELL_ANIMAL_FRIENDSHIP)) {
+                                ground.SetTeam(monster, originalTeam);
+                                return true;
+                            }
+                            if (--remainingRounds < 1) {
+                                monster.RemoveEffect(SPELL_ANIMAL_FRIENDSHIP);
+                                monster.RemoveCondition(ConditionType.CHARMED);
+                                ground.SetTeam(monster, originalTeam);
+                                return true;
+                            }
+                            return false;
+                        });
                     } else {
                         GlobalEvents.AffectBySpell(caster, ID.ANIMAL_FRIENDSHIP, target, false);
                     }
@@ -79,6 +96,8 @@ namespace srd5 {
                 return new Spell(
                     ID.CHARM_PERSON, ENCHANTMENT, FIRST, CastingTime.ONE_ACTION, 30, VS,
                     ONE_HOUR, 0, 20, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                        Combatant[] charmed = new Combatant[0];
+                        Team[] originalTeams = new Team[0];
                         // one target per slot
                         for (int i = 0; i < (int)slot && i < targets.Length; i++) {
                             Combatant target = targets[i];
@@ -91,10 +110,27 @@ namespace srd5 {
                             }
                             // Wisdom save with advantage since we assume a fight
                             if (!target.DC(ID.CHARM_PERSON, dc, WISDOM, true) && target.AddCondition(ConditionType.CHARMED)) {
+                                Utils.Push<Combatant>(ref charmed, target);
+                                Utils.Push<Team>(ref originalTeams, ground.GetTeam(target));
+                                ground.SetTeam(target, ground.GetTeam(caster));
                                 GlobalEvents.AffectBySpell(caster, ID.CHARM_PERSON, target, true);
                             } else {
                                 GlobalEvents.AffectBySpell(caster, ID.CHARM_PERSON, target, false);
                             }
+                        }
+
+                        if (charmed.Length > 0) {
+                            int remainingRounds = (int)ONE_HOUR;
+                            caster.AddEndOfTurnEvent(delegate () {
+                                if (--remainingRounds < 1) {
+                                    for (int i = 0; i < charmed.Length; i++) {
+                                        charmed[i].RemoveCondition(ConditionType.CHARMED);
+                                        ground.SetTeam(charmed[i], originalTeams[i]);
+                                    }
+                                    return true;
+                                }
+                                return false;
+                            });
                         }
                     }
                 );

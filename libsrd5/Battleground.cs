@@ -18,7 +18,7 @@ namespace srd5 {
             Y = y;
         }
 
-        public override int Distance(Location another) {
+        public int Distance(Location another) {
             if (!(another is Coord)) throw new Srd5ArgumentException("another must be a Coord.");
             Coord anotherCoord = (Coord)another;
             double dX = this.X - anotherCoord.X;
@@ -29,8 +29,16 @@ namespace srd5 {
         }
     }
 
-    public abstract class Location {
-        public abstract int Distance(Location another);
+    public interface Location {
+        int Distance(Location another);
+    }
+
+    public class Target : Combatant {
+        public override int ArmorClass { get => throw new NotImplementedException(); internal set => throw new NotImplementedException(); }
+
+        public override int ProficiencyBonus => throw new NotImplementedException();
+
+        public Location Location { get; internal set; }
     }
 
     /// <summary>
@@ -55,7 +63,7 @@ namespace srd5 {
             Location = row;
         }
 
-        public override int Distance(Location another) {
+        public int Distance(Location another) {
             if (!(another is ClassicLocation)) throw new Srd5ArgumentException("another must be a ClassicLocation.");
             ClassicLocation classicAnother = (ClassicLocation)another;
             return Math.Max(Math.Abs((int)classicAnother.Location - (int)this.Location), 5);
@@ -86,16 +94,16 @@ namespace srd5 {
         }
 
 
-        protected override void SetCurrentLocation(Location location) {
+        internal override void SetCurrentLocation(Location location) {
             SetLocation(CurrentCombatant, location);
         }
 
-        protected override void SetLocation(Combatant combatant, Location location) {
+        internal override void SetLocation(Combatant combatant, Location location) {
             locations[Array.IndexOf(combatants, combatant)] = (ClassicLocation)location;
         }
 
-        public void AddCombatant(Combatant combatant, ClassicLocation.Row row) {
-            AddCombatant(combatant);
+        public void AddCombatant(Combatant combatant, ClassicLocation.Row row, Team team = Team.NEUTRAL) {
+            AddCombatant(combatant, team);
             Utils.Push<ClassicLocation>(ref locations, new ClassicLocation(row));
         }
 
@@ -105,6 +113,12 @@ namespace srd5 {
             } else if (LocateClassicCombatant(target).Location == ClassicLocation.Row.FRONT_RIGHT) {
                 SetLocation(target, ClassicLocation.BackRight);
             }
+        }
+
+        public override bool IsOccupied(Location loc) {
+            // Since any number of combatants can occupy the same location
+            // this always returns false.
+            return false;
         }
     }
 
@@ -146,13 +160,13 @@ namespace srd5 {
             return coords[Array.IndexOf(combatants, combatant)];
         }
 
-        public void AddCombatant(Combatant combatant, int x, int y) {
-            AddCombatant(combatant);
+        public void AddCombatant(Combatant combatant, int x, int y, Team team = Team.NEUTRAL) {
+            AddCombatant(combatant, team);
             Utils.Push<Coord>(ref coords, new Coord(x, y));
         }
 
-        public void AddCombatantNextTo(Combatant combatant, int x, int y) {
-            AddCombatant(combatant);
+        public void AddCombatantNextTo(Combatant combatant, int x, int y, Team team = Team.NEUTRAL) {
+            AddCombatant(combatant, team);
             bool occupied = true;
             int i = 0;
             while (occupied) {
@@ -175,11 +189,11 @@ namespace srd5 {
             }
         }
 
-        protected override void SetCurrentLocation(Location location) {
+        internal override void SetCurrentLocation(Location location) {
             SetLocation(CurrentCombatant, location);
         }
 
-        protected override void SetLocation(Combatant combatant, Location location) {
+        internal override void SetLocation(Combatant combatant, Location location) {
             coords[Array.IndexOf(combatants, combatant)] = (Coord)location;
         }
 
@@ -220,12 +234,30 @@ namespace srd5 {
             }
             SetLocation(target, destination);
         }
+
+        /// <summary>
+        /// Returns whether the given tile coordinates are occupied by a combatant.
+        /// </summary>
+        public override bool IsOccupied(Location loc) {
+            int x = ((Coord)loc).X;
+            int y = ((Coord)loc).Y;
+            foreach (Coord coord in coords) {
+                if (coord.X == x && coord.Y == y) return true;
+            }
+            return false;
+        }
     }
 
     public enum TurnPhase {
         MOVE,
         ACTION,
         BONUS_ACTION
+    }
+
+    public enum Team {
+        NEUTRAL,
+        HEROES,
+        VILLAINS
     }
 
     public class CombatantChangedEvent : BattlegroundEvent {
@@ -238,6 +270,7 @@ namespace srd5 {
     public abstract class Battleground {
 
         internal Combatant[] combatants = new Combatant[0];
+        private Team[] teams = new Team[0];
 
         public int Turn { get; internal set; } = 0;
         protected int[] initiativeRolls = new int[0];
@@ -255,12 +288,17 @@ namespace srd5 {
         protected int remainingSpeed = 0;
         protected TurnPhase currentPhase = TurnPhase.MOVE;
 
+        abstract public bool IsOccupied(Location loc);
+
         public virtual void Initialize() {
             if (Turn > 0) return;
-            // Sort Combatants and Coords according to Initiative Rolls
+            // Sort Combatants and Teams according to Initiative Rolls
             int[] backup = new int[initiativeRolls.Length];
             Array.Copy(initiativeRolls, backup, initiativeRolls.Length);
             Array.Sort(backup, combatants, new ReverseComparer());
+            int[] teamsBackup = new int[initiativeRolls.Length];
+            Array.Copy(initiativeRolls, teamsBackup, initiativeRolls.Length);
+            Array.Sort(teamsBackup, teams, new ReverseComparer());
             currentCombatant = 0;
             currentPhase = TurnPhase.MOVE;
             remainingSpeed = CurrentCombatant.Speed;
@@ -279,11 +317,42 @@ namespace srd5 {
         /// Add a combatant to the battlefield and roll initiative
         /// </summary>
         public void AddCombatant(Combatant combatant) {
+            AddCombatant(combatant, Team.NEUTRAL);
+        }
+
+        /// <summary>
+        /// Add a combatant to the battlefield on the given team and roll initiative
+        /// </summary>
+        public void AddCombatant(Combatant combatant, Team team) {
             if (Array.IndexOf(combatants, combatant) > -1) return;
             Utils.Push<Combatant>(ref combatants, combatant);
+            Utils.Push<Team>(ref teams, team);
             int roll = D20.Value + combatant.Dexterity.Modifier;
             Utils.Push<int>(ref initiativeRolls, roll);
             GlobalEvents.RolledInitiative(combatant, roll);
+        }
+
+        public Team GetTeam(Combatant combatant) {
+            return teams[Array.IndexOf(combatants, combatant)];
+        }
+
+        /// <summary>
+        /// Reassigns a combatant already on the battlefield to another team (e.g. a charm effect).
+        /// </summary>
+        public void SetTeam(Combatant combatant, Team team) {
+            int index = Array.IndexOf(combatants, combatant);
+            if (index > -1) teams[index] = team;
+        }
+
+        /// <summary>
+        /// Two combatants are hostile only if they belong to the two opposing, explicitly
+        /// assigned teams. A NEUTRAL combatant is hostile to no one.
+        /// </summary>
+        public bool IsHostile(Combatant a, Combatant b) {
+            if (a.Equals(b)) return false;
+            Team teamA = GetTeam(a), teamB = GetTeam(b);
+            if (teamA == Team.NEUTRAL || teamB == Team.NEUTRAL) return false;
+            return teamA != teamB;
         }
 
         /// <summary>
@@ -507,12 +576,12 @@ namespace srd5 {
         /// <summary>
         /// Set the location of the current active combatant
         /// </summary>
-        protected abstract void SetCurrentLocation(Location location);
+        internal abstract void SetCurrentLocation(Location location);
 
         /// <summary>
         /// Set the location of the combatant
         /// </summary>
-        protected abstract void SetLocation(Combatant combatant, Location location);
+        internal abstract void SetLocation(Combatant combatant, Location location);
 
 
         /// <summary>

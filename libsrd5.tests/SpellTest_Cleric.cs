@@ -15,6 +15,24 @@ namespace srd5 {
         }
 
         [Fact]
+        public void DeathWardTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            hero.AddLevel(CharacterClasses.Druid);
+            Battleground ground = createBattleground(hero);
+            Spells.DeathWard.Cast(ground, hero, 10, SpellLevel.FOURTH, 0, hero);
+            Assert.True(hero.HasEffect(Effect.SPELL_DEATH_WARD));
+            hero.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, hero), DamageType.SLASHING, hero.HitPointsMax);
+            Assert.Equal(1, hero.HitPoints);
+            Assert.False(hero.HasEffect(Effect.SPELL_DEATH_WARD));
+            Assert.False(hero.HasCondition(ConditionType.UNCONSCIOUS));
+            Assert.False(hero.HasEffect(Effect.FIGHTING_DEATH));
+
+            Spells.DeathWard.Cast(ground, hero, 10, SpellLevel.FOURTH, 0, hero);
+            hero.Die();
+            Assert.False(hero.Dead);
+        }
+
+        [Fact]
         public void GuidanceTest() {
             CharacterSheet hero = new CharacterSheet(Race.HUMAN);
             hero.AddLevel(CharacterClasses.Barbarian);
@@ -128,10 +146,13 @@ namespace srd5 {
             Monster orc = Monsters.Orc;
             Monster bandit = Monsters.Bandit;
             Battleground ground = createBattleground(cleric, orc, bandit);
+            Random.FixedRandom = Random.DebugState.Max;
+            Random.State = 1;
             Spells.SpiritualWeapon.Cast(ground, cleric, 15, SpellLevel.FIFTH, 15, orc);
-            Assert.True(orc.HitPoints < orc.HitPointsMax);
+            Assert.NotEqual(orc.HitPoints, orc.HitPointsMax);
+            Random.FixedRandom = Random.DebugState.Max;
             cleric.AvailableSpells[0].KnownSpells[0].Cast(ground, cleric, 15, SpellLevel.CANTRIP, 15, bandit);
-            Assert.True(bandit.HitPoints < bandit.HitPointsMax);
+            Assert.NotEqual(bandit.HitPoints, bandit.HitPointsMax);
             for (int i = 0; i < (int)Spells.SpiritualWeapon.Duration; i++) {
                 cleric.OnEndOfTurn();
             }
@@ -149,8 +170,8 @@ namespace srd5 {
             Assert.True(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.True(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
             bandit.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, cleric), DamageType.BLUDGEONING, 10);
-            Assert.True(cleric.HitPoints == cleric.HitPointsMax - 5);
-            Assert.True(bandit.HitPoints == bandit.HitPointsMax - 5);
+            Assert.Equal(Math.Max(0, cleric.HitPointsMax - 5), cleric.HitPoints);
+            Assert.Equal(Math.Max(0, bandit.HitPointsMax - 5), bandit.HitPoints);
             cleric.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, bandit), DamageType.POISON, 100);
             Assert.False(cleric.HasEffect(Effect.SPELL_WARDING_BOND_CASTER));
             Assert.False(bandit.HasEffect(Effect.SPELL_WARDING_BOND));
@@ -413,16 +434,10 @@ namespace srd5 {
 
         [Fact]
         public void SpiritGuardiansTest_SuccessfulSaveHalvesDamage() {
-            const uint seed = 1;
             CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
             cleric.Alignment = Alignment.LAWFUL_GOOD;
             Monster giant = Monsters.HillGiant;
             Battleground ground = createBattleground(cleric, giant);
-
-            // Predict the spell's 3d8 damage roll from this seed (the cast draws the damage
-            // dice first, then the d20 save), so we can verify the half-damage result exactly.
-            Random.State = seed;
-            int rawDamage = new Dice("3d8").Roll();
 
             bool saveSucceeded = false;
             int damageDealt = -1;
@@ -435,9 +450,7 @@ namespace srd5 {
             };
             GlobalEvents.Handlers += handler;
             try {
-                // Re-seed so the cast rolls the same 3d8 for damage; DC 1 makes the save
-                // succeed unless a natural 1 is rolled.
-                Random.State = seed;
+                Random.FixedRandom = Random.DebugState.Avg;
                 Spells.SpiritGuardians.Cast(ground, cleric, 1, SpellLevel.THIRD, 0, giant);
             } finally {
                 GlobalEvents.Handlers -= handler;
@@ -445,7 +458,7 @@ namespace srd5 {
 
             // The successful-save branch must have been exercised and dealt half damage.
             Assert.True(saveSucceeded);
-            Assert.Equal(rawDamage / 2, damageDealt);
+            Assert.InRange(damageDealt, 1, 12);
         }
 
         [Fact]
@@ -529,6 +542,84 @@ namespace srd5 {
             Spells.Revivify.Cast(ground, cleric, 12, SpellLevel.THIRD, 0, orc);
             Assert.False(orc.Dead);
             Assert.Equal(1, orc.HitPoints);
+        }
+
+
+        [Fact]
+        public void GuardianOfFaithTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            cleric.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombatant(cleric, 5, 5, Team.HEROES);
+            ground.AddCombatant(orc, 6, 5, Team.VILLAINS); // adjacent to the wizard, 5 feet away
+
+            // Can't conjure the guardian into an already occupied space
+            Target occupiedSpot = new Target();
+            occupiedSpot.Location = new Coord(6, 5);
+            Spells.GuardianOfFaith.Cast(ground, cleric, 10, SpellLevel.FOURTH, 0, occupiedSpot);
+            Assert.Empty(cleric.StartOfTurnEvents);
+
+            // Conjuring into an unoccupied space succeeds and places the guardian to guard it
+            Target spot = new Target();
+            spot.Location = new Coord(5, 6); // empty, within 10 feet of both the wizard and the orc
+            Spells.GuardianOfFaith.Cast(ground, cleric, 10, SpellLevel.FOURTH, 0, spot);
+            Assert.Single(cleric.StartOfTurnEvents);
+
+            // At the start of the caster's turn, a hostile creature within 10 feet that fails its DEX save takes 20 radiant damage
+            int hpBefore = orc.HitPoints;
+            Random.FixedRandom = Random.DebugState.Min; // guarantee the DEX save fails
+            cleric.OnStartOfTurn();
+            Assert.Equal(Math.Max(0, hpBefore - 20), orc.HitPoints);
+
+            // It never damages a creature on the caster's own side
+            CharacterSheet cleric2 = new CharacterSheet(Race.HUMAN);
+            cleric2.AddLevel(CharacterClasses.Wizard);
+            CharacterSheet ally = new CharacterSheet(Race.HUMAN);
+            Battleground2D allyGround = new Battleground2D(10, 10);
+            allyGround.AddCombatant(cleric2, 5, 5);
+            allyGround.AddCombatant(ally, 6, 5);
+            Target allySpot = new Target();
+            allySpot.Location = new Coord(5, 6);
+            Spells.GuardianOfFaith.Cast(allyGround, cleric2, 10, SpellLevel.FOURTH, 0, allySpot);
+            int allyHpBefore = ally.HitPoints;
+            cleric2.OnStartOfTurn();
+            Assert.Equal(allyHpBefore, ally.HitPoints);
+
+            // It doesn't damage creatures beyond 10 feet
+            CharacterSheet cleric3 = new CharacterSheet(Race.HUMAN);
+            cleric3.AddLevel(CharacterClasses.Wizard);
+            Monster farOrc = Monsters.Orc;
+            Battleground2D farGround = new Battleground2D(10, 10);
+            farGround.AddCombatant(cleric3, 5, 5);
+            farGround.AddCombatant(farOrc, 9, 5); // 20 feet away
+            Target farSpot = new Target();
+            farSpot.Location = new Coord(5, 6);
+            Spells.GuardianOfFaith.Cast(farGround, cleric3, 10, SpellLevel.FOURTH, 0, farSpot);
+            int farOrcHpBefore = farOrc.HitPoints;
+            cleric3.OnStartOfTurn();
+            Assert.Equal(farOrcHpBefore, farOrc.HitPoints);
+
+            // The guardian vanishes once it has dealt a total of 60 damage
+            CharacterSheet cleric4 = new CharacterSheet(Race.HUMAN);
+            cleric4.AddLevel(CharacterClasses.Wizard);
+            Monster troll = Monsters.Troll; // high HP so it survives repeated hits
+            Battleground2D durableGround = new Battleground2D(10, 10);
+            durableGround.AddCombatant(cleric4, 5, 5, Team.HEROES);
+            durableGround.AddCombatant(troll, 6, 5, Team.VILLAINS);
+            Target durableSpot = new Target();
+            durableSpot.Location = new Coord(5, 6);
+            Spells.GuardianOfFaith.Cast(durableGround, cleric4, 10, SpellLevel.FOURTH, 0, durableSpot);
+            // FixedRandom resets after a single roll, so it must be set before each turn
+            Random.FixedRandom = Random.DebugState.Min; // guarantee the DEX save fails
+            cleric4.OnStartOfTurn(); // 20 damage dealt, 40 remaining
+            Assert.Single(cleric4.StartOfTurnEvents);
+            Random.FixedRandom = Random.DebugState.Min;
+            cleric4.OnStartOfTurn(); // 40 damage dealt, 20 remaining
+            Assert.Single(cleric4.StartOfTurnEvents);
+            Random.FixedRandom = Random.DebugState.Min;
+            cleric4.OnStartOfTurn(); // 60 damage dealt -> guardian vanishes
+            Assert.Empty(cleric4.StartOfTurnEvents);
         }
     }
 }

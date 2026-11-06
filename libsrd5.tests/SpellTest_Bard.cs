@@ -1,7 +1,8 @@
-using System.Data;
 using Xunit;
 
 namespace srd5 {
+    [CollectionDefinition("SingleThreaded", DisableParallelization = true)]
+    [Collection("SingleThreaded")]
     public partial class SpellTest {
         [Fact]
         public void ViciousMockeryTest() {
@@ -18,10 +19,11 @@ namespace srd5 {
             Assert.True(goblin.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
             goblin.OnEndOfTurn();
             Assert.False(goblin.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
-            Random.State = 1;
+            Random.FixedRandom = Random.DebugState.Avg; // low DC guarantees goblin2's save succeeds, negating all damage
             Spells.ViciousMockery.Cast(ground, bard, 1, SpellLevel.CANTRIP, 2, goblin2);
             Assert.True(goblin2.HitPointsMax == goblin2.HitPoints);
             Assert.False(goblin2.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
+
         }
 
         [Fact]

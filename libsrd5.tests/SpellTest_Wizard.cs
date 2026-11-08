@@ -1258,8 +1258,9 @@ namespace srd5 {
 
             // Failing every save, the spell still ends after 1 minute
             Monster orc4 = Monsters.Orc;
+            Battleground orc4Ground = createBattleground(wizard, orc4);
             Random.FixedRandom = Random.DebugState.Min;
-            Spells.HoldMonster.Cast(createBattleground(wizard, orc4), wizard, 15, SpellLevel.FIFTH, 0, orc4);
+            Spells.HoldMonster.Cast(orc4Ground, wizard, 15, SpellLevel.FIFTH, 0, orc4);
             for (int i = 0; i < (int)SpellDuration.ONE_MINUTE - 1; i++) {
                 Random.FixedRandom = Random.DebugState.Min;
                 orc4.OnEndOfTurn();
@@ -1386,6 +1387,17 @@ namespace srd5 {
             giant.OnStartOfTurn();
             Assert.Equal(hpAfterExpiry, giant.HitPoints);
             Assert.Empty(giant.StartOfTurnEvents);
+        }
+
+        [Fact]
+        public void HoldMonsterCharacterTest() {
+            // Player characters are not undead and can be held
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            CharacterSheet fighter = new CharacterSheet(Race.HUMAN);
+            Battleground ground = createBattleground(wizard, fighter);
+            Random.FixedRandom = Random.DebugState.Min;
+            Spells.HoldMonster.Cast(ground, wizard, 15, SpellLevel.FIFTH, 0, fighter);
+            Assert.True(fighter.HasCondition(ConditionType.PARALYZED));
         }
     }
 }

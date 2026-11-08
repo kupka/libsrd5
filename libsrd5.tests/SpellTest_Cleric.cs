@@ -656,6 +656,17 @@ namespace srd5 {
                 Spells.FlameStrike.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, giant);
                 Assert.InRange(fire, 2, 12);
                 Assert.InRange(radiant, 2, 12);
+                // the radiant variant scales the radiant damage instead (9th level = 8d6)
+                giant.AddEffect(Effect.FAIL_DEXERITY_CHECK);
+                giant.HitPoints = giant.HitPointsMax;
+                fire = 0;
+                radiant = 0;
+                Spell radiantStrike = Spells.FlameStrike;
+                Assert.Equal(SpellVariant.DAMAGE_FIRE, radiantStrike.Variant);
+                radiantStrike.Variant = SpellVariant.DAMAGE_RADIANT;
+                radiantStrike.Cast(ground, cleric, 15, SpellLevel.NINTH, 0, giant);
+                Assert.InRange(fire, 4, 24);
+                Assert.InRange(radiant, 8, 48);
             } finally {
                 GlobalEvents.Handlers -= handler;
             }
@@ -706,6 +717,345 @@ namespace srd5 {
             // poisons are neutralized and diseases cured
             Assert.False(orc.HasCondition(ConditionType.POISONED));
             Assert.False(orc.HasEffect(Effect.DEATH_DOG_DISEASE));
+
+            // The spell can't return an undead creature to life
+            Monster zombie = Monsters.Zombie;
+            zombie.TakeDamage(new DamageSource(Spells.ID.POWER_WORD_KILL, cleric), DamageType.TRUE_DAMAGE, zombie.HitPointsMax + 100);
+            Assert.True(zombie.Dead);
+            Spells.RaiseDead.Cast(ground, cleric, 12, SpellLevel.FIFTH, 0, zombie);
+            Assert.True(zombie.Dead);
+        }
+
+
+        private Monster contagionVictim() {
+            Monster orc = Monsters.Orc;
+            orc.HitPointsMax = 100;
+            orc.HitPoints = 100;
+            return orc;
+        }
+
+        [Fact]
+        public void ContagionVariantsTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            cleric.AddLevel(CharacterClasses.Druid);
+            SpellVariant[] variants = { SpellVariant.BLINDING_SICKNESS, SpellVariant.FILTH_FEVER, SpellVariant.FLESH_ROT, SpellVariant.MINDFIRE, SpellVariant.SEIZURE, SpellVariant.SLIMY_DOOM };
+            Effect[] diseases = {
+                Effect.SPELL_CONTAGION_BLINDING_SICKNESS_DISEASE, Effect.SPELL_CONTAGION_FILTH_FEVER_DISEASE, Effect.SPELL_CONTAGION_FLESH_ROT_DISEASE,
+                Effect.SPELL_CONTAGION_MINDFIRE_DISEASE, Effect.SPELL_CONTAGION_SEIZURE_DISEASE, Effect.SPELL_CONTAGION_SLIMY_DOOM_DISEASE
+            };
+            Effect[] disadvantages = {
+                Effect.DISADVANTAGE_WISDOM_SAVES, Effect.DISADVANTAGE_STRENGTH_SAVES, Effect.VULNERABILITY_ANY_DAMAGE,
+                Effect.DISADVANTAGE_INTELLIGENCE_SAVES, Effect.DISADVANTAGE_DEXTERITY_SAVES, Effect.DISADVANTAGE_CONSTITUTION_SAVES
+            };
+            for (int i = 0; i < variants.Length; i++) {
+                Monster orc = contagionVictim();
+                Battleground ground = createBattleground(cleric, orc);
+                Spell contagion = Spells.Contagion;
+                contagion.Variant = variants[i];
+                Random.FixedRandom = Random.DebugState.Max; // natural 20, the touch hits
+                contagion.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, orc);
+                Assert.True(orc.HasEffect(diseases[i]));
+                Assert.True(orc.HasEffect(disadvantages[i]));
+                Assert.True(diseases[i].IsDisease());
+                // The touch deals no damage
+                Assert.Equal(100, orc.HitPoints);
+            }
+
+            // Blinding Sickness also blinds the target
+            Monster blinded = contagionVictim();
+            Battleground blindedGround = createBattleground(cleric, blinded);
+            Random.FixedRandom = Random.DebugState.Max;
+            Spells.Contagion.Cast(blindedGround, cleric, 15, SpellLevel.FIFTH, 0, blinded);
+            Assert.True(blinded.HasCondition(ConditionType.BLINDED));
+
+            // A missed touch has no effect
+            Monster missed = contagionVictim();
+            Battleground missedGround = createBattleground(cleric, missed);
+            Random.FixedRandom = Random.DebugState.Min; // natural 1, the touch misses
+            Spells.Contagion.Cast(missedGround, cleric, 15, SpellLevel.FIFTH, 0, missed);
+            Assert.False(missed.HasEffect(Effect.SPELL_CONTAGION_BLINDING_SICKNESS_DISEASE));
+            Assert.Empty(missed.EndOfTurnEvents);
+        }
+
+        [Fact]
+        public void ContagionFleshRotTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            Monster orc = contagionVictim();
+            Spell contagion = Spells.Contagion;
+            contagion.Variant = SpellVariant.FLESH_ROT;
+            Battleground ground = createBattleground(cleric, orc);
+            Random.FixedRandom = Random.DebugState.Max;
+            contagion.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, orc);
+            // Vulnerable to all damage ...
+            orc.TakeDamage(new DamageSource(Spells.ID.CONTAGION, cleric), DamageType.FIRE, 10);
+            Assert.Equal(80, orc.HitPoints);
+        }
+
+        [Fact]
+        public void ContagionRecoveryTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            Monster orc = contagionVictim();
+            Battleground orcGround = createBattleground(cleric, orc);
+            Random.FixedRandom = Random.DebugState.Max;
+            Spells.Contagion.Cast(orcGround, cleric, 15, SpellLevel.FIFTH, 0, orc);
+            // Three successful saves cure the disease, failures in between don't matter
+            Random.FixedRandom = Random.DebugState.Max;
+            orc.OnEndOfTurn();
+            Random.FixedRandom = Random.DebugState.Min;
+            orc.OnEndOfTurn();
+            Random.FixedRandom = Random.DebugState.Max;
+            orc.OnEndOfTurn();
+            Assert.True(orc.HasEffect(Effect.SPELL_CONTAGION_BLINDING_SICKNESS_DISEASE));
+            Random.FixedRandom = Random.DebugState.Max;
+            orc.OnEndOfTurn();
+            Assert.False(orc.HasEffect(Effect.SPELL_CONTAGION_BLINDING_SICKNESS_DISEASE));
+            Assert.False(orc.HasCondition(ConditionType.BLINDED));
+            Assert.Empty(orc.EndOfTurnEvents);
+
+            // Like a natural disease, the disease can be cured by Lesser Restoration
+            Monster cured = contagionVictim();
+            Battleground ground = createBattleground(cleric, cured);
+            Random.FixedRandom = Random.DebugState.Max;
+            Spells.Contagion.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, cured);
+            Spell lesserRestoration = Spells.LesserRestoration;
+            lesserRestoration.Variant = SpellVariant.DISEASES;
+            lesserRestoration.Cast(ground, cleric, 15, SpellLevel.SECOND, 0, cured);
+            Assert.False(cured.HasEffect(Effect.SPELL_CONTAGION_BLINDING_SICKNESS_DISEASE));
+            cured.OnEndOfTurn();
+            Assert.Empty(cured.EndOfTurnEvents);
+        }
+
+        [Fact]
+        public void ContagionDurationTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            Monster orc = contagionVictim();
+            Spell contagion = Spells.Contagion;
+            contagion.Variant = SpellVariant.SEIZURE;
+            Battleground ground = createBattleground(cleric, orc);
+            Random.FixedRandom = Random.DebugState.Max;
+            contagion.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, orc);
+            // After three failed saves, the disease lasts for the whole duration and no further saves are made
+            for (int i = 0; i < 3; i++) {
+                Random.FixedRandom = Random.DebugState.Min;
+                orc.OnEndOfTurn();
+            }
+            for (int i = 3; i < (int)SpellDuration.SEVEN_DAYS - 1; i++) {
+                orc.OnEndOfTurn();
+            }
+            Assert.True(orc.HasEffect(Effect.SPELL_CONTAGION_SEIZURE_DISEASE));
+            orc.OnEndOfTurn();
+            Assert.False(orc.HasEffect(Effect.SPELL_CONTAGION_SEIZURE_DISEASE));
+            Assert.False(orc.HasEffect(Effect.DISADVANTAGE_DEXTERITY_SAVES));
+            Assert.Empty(orc.EndOfTurnEvents);
+        }
+
+        [Fact]
+        public void ContagionSlimyDoomTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            Monster orc = contagionVictim();
+            Spell contagion = Spells.Contagion;
+            contagion.Variant = SpellVariant.SLIMY_DOOM;
+            Battleground ground = createBattleground(cleric, orc);
+            Random.FixedRandom = Random.DebugState.Max;
+            contagion.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, orc);
+            Assert.False(orc.HasCondition(ConditionType.STUNNED));
+            // Taking damage stuns the creature until the end of its turn
+            orc.TakeDamage(new DamageSource(Spells.ID.CONTAGION, cleric), DamageType.TRUE_DAMAGE, 1);
+            Assert.True(orc.HasCondition(ConditionType.STUNNED));
+            Random.FixedRandom = Random.DebugState.Min;
+            orc.OnEndOfTurn();
+            Assert.False(orc.HasCondition(ConditionType.STUNNED));
+            // Once the disease is gone, damage doesn't stun anymore
+            orc.RemoveEffect(Effect.SPELL_CONTAGION_SLIMY_DOOM_DISEASE);
+            orc.TakeDamage(new DamageSource(Spells.ID.CONTAGION, cleric), DamageType.TRUE_DAMAGE, 1);
+            Assert.False(orc.HasCondition(ConditionType.STUNNED));
+            Assert.Empty(orc.DamageTakenEvents);
+        }
+
+        [Fact]
+        public void DispelEvilAndGoodTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            cleric.AddLevel(CharacterClasses.Druid);
+            toughen(cleric); // survive the critical hits in this test
+            CharacterSheet paladin = new CharacterSheet(Race.HUMAN); // protected by Protection from Evil and Good instead
+            Monster[] otherworldly = { Monsters.Deva, Monsters.EarthElemental, Monsters.Dryad, Monsters.Imp, Monsters.Zombie };
+            Monster aboleth = Monsters.Aboleth;
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(cleric, otherworldly[0], otherworldly[1], otherworldly[2], otherworldly[3], otherworldly[4], aboleth, orc);
+            Spells.DispelEvilandGood.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, cleric);
+            Assert.True(cleric.HasEffect(Effect.SPELL_DISPEL_EVIL_AND_GOOD));
+            paladin.AddEffect(Effect.SPELL_PROTECTION_FROM_EVIL_AND_GOOD);
+
+            // A natural 20 without disadvantage is a critical hit. With disadvantage, the second d20 (10 at state 1) is used and misses.
+            Func<Monster, Combatant, bool> attack = delegate (Monster attacker, Combatant target) {
+                Random.FixedRandom = Random.DebugState.Max;
+                Random.State = 1;
+                return attacker.Attack(weakMeleeAttack, target, 5);
+            };
+            // Celestials, elementals, fey, fiends and undead have disadvantage
+            foreach (Monster attacker in otherworldly) {
+                Assert.False(attack(attacker, cleric));
+                Assert.False(attack(attacker, paladin));
+            }
+            // Aberrations are covered by Protection from Evil and Good only
+            Assert.True(attack(aboleth, cleric));
+            Assert.False(attack(aboleth, paladin));
+            // Other creatures attack as usual
+            Assert.True(attack(orc, cleric));
+
+            // The spell lasts for one minute
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
+                cleric.OnStartOfTurn();
+                cleric.OnEndOfTurn();
+            }
+            Assert.False(cleric.HasEffect(Effect.SPELL_DISPEL_EVIL_AND_GOOD));
+            Assert.True(attack(otherworldly[0], cleric));
+        }
+
+        [Fact]
+        public void GreaterRestorationExhaustionTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            CharacterSheet fighter = new CharacterSheet(Race.HUMAN);
+            Battleground ground = createBattleground(cleric, fighter);
+            Spell restoration = Spells.GreaterRestoration;
+            Assert.Equal(SpellVariant.EXHAUSTION, restoration.Variant);
+            // Reduces the exhaustion level by one
+            fighter.AddCondition(ConditionType.EXHAUSTED_3);
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, fighter);
+            Assert.False(fighter.HasCondition(ConditionType.EXHAUSTED_3));
+            Assert.True(fighter.HasCondition(ConditionType.EXHAUSTED_2));
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, fighter);
+            Assert.True(fighter.HasCondition(ConditionType.EXHAUSTED_1));
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, fighter);
+            Assert.False(fighter.HasCondition(ConditionType.EXHAUSTED_1));
+            // Without exhaustion nothing happens
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, fighter);
+            foreach (ConditionType condition in fighter.Conditions) {
+                Assert.True(condition < ConditionType.EXHAUSTED_1 || condition > ConditionType.EXHAUSTED_6);
+            }
+        }
+
+        [Fact]
+        public void GreaterRestorationCharmTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            CharacterSheet fighter = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc;
+            Monster badger = Monsters.Badger;
+            Battleground ground = createTeamBattleground(cleric, fighter, orc, badger);
+            Spell restoration = Spells.GreaterRestoration;
+            restoration.Variant = SpellVariant.CHARM;
+
+            // A plain charmed condition is removed
+            fighter.AddCondition(ConditionType.CHARMED);
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, fighter);
+            Assert.False(fighter.HasCondition(ConditionType.CHARMED));
+
+            // Dominate Person is ended and the target returns to its team
+            Random.FixedRandom = Random.DebugState.Min;
+            Random.State = 1;
+            Spells.DominatePerson.Cast(ground, cleric, 25, SpellLevel.FIFTH, 0, orc);
+            Assert.Equal(Team.HEROES, ground.GetTeam(orc));
+            // Without a designated attack target, the dominated creature doesn't attack anyone
+            orc.OnStartOfTurn();
+            Assert.Single(orc.StartOfTurnEvents);
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, orc);
+            Assert.False(orc.HasEffect(Effect.SPELL_DOMINATE_PERSON));
+            Assert.False(orc.HasCondition(ConditionType.CHARMED));
+            cleric.OnEndOfTurn();
+            Assert.Equal(Team.VILLAINS, ground.GetTeam(orc));
+
+            // Dominate Beast is ended and the target returns to its team
+            Random.FixedRandom = Random.DebugState.Min;
+            Random.State = 1;
+            Spells.DominateBeast.Cast(ground, cleric, 25, SpellLevel.FOURTH, 0, badger);
+            Assert.Equal(Team.HEROES, ground.GetTeam(badger));
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, badger);
+            Assert.False(badger.HasEffect(Effect.SPELL_DOMINATE_BEAST));
+            cleric.OnEndOfTurn();
+            Assert.Equal(Team.VILLAINS, ground.GetTeam(badger));
+            Assert.Empty(cleric.EndOfTurnEvents);
+        }
+
+        [Fact]
+        public void GreaterRestorationPetrificationAndCurseTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            CharacterSheet fighter = new CharacterSheet(Race.HUMAN);
+            Battleground ground = createBattleground(cleric, fighter);
+            Spell restoration = Spells.GreaterRestoration;
+
+            restoration.Variant = SpellVariant.PETRIFICATION;
+            fighter.AddCondition(ConditionType.PETRIFIED);
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, fighter);
+            Assert.False(fighter.HasCondition(ConditionType.PETRIFIED));
+
+            // One curse is removed, other effects remain
+            restoration.Variant = SpellVariant.CURSE;
+            fighter.AddEffect(Effect.DARKVISION, Effect.CURSE_MUMMY_ROT, Effect.CURSE_WEREWOLF);
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, fighter);
+            Assert.False(fighter.HasEffect(Effect.CURSE_MUMMY_ROT));
+            Assert.True(fighter.HasEffect(Effect.CURSE_WEREWOLF));
+            Assert.True(fighter.HasEffect(Effect.DARKVISION));
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, fighter);
+            Assert.False(fighter.HasEffect(Effect.CURSE_WEREWOLF));
+            // Without a curse nothing happens
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, fighter);
+            Assert.True(fighter.HasEffect(Effect.DARKVISION));
+        }
+
+        [Fact]
+        public void GreaterRestorationAbilityScoreTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(cleric, orc);
+            Spell restoration = Spells.GreaterRestoration;
+            restoration.Variant = SpellVariant.ABILITY_SCORE_REDUCTION;
+            orc.Strength.ValueModifier = -2;
+            orc.Dexterity.ValueModifier = -4;
+            orc.Constitution.ValueModifier = -1;
+            orc.Wisdom.ValueModifier = 2; // increases are not affected
+            // The largest reduction is restored first
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, orc);
+            Assert.Equal(0, orc.Dexterity.ValueModifier);
+            Assert.Equal(-2, orc.Strength.ValueModifier);
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, orc);
+            Assert.Equal(0, orc.Strength.ValueModifier);
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, orc);
+            Assert.Equal(0, orc.Constitution.ValueModifier);
+            // Without any reduction nothing happens
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, orc);
+            Assert.Equal(2, orc.Wisdom.ValueModifier);
+        }
+
+        [Fact]
+        public void GreaterRestorationHitPointMaximumTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(cleric, orc);
+            Spell restoration = Spells.GreaterRestoration;
+            restoration.Variant = SpellVariant.HIT_POINT_MAXIMUM_REDUCTION;
+            int hitPointsMax = orc.HitPointsMax;
+            HitPointMaxiumModifier aid = new HitPointMaxiumModifier(5, HitPointMaxiumModifier.RemovedByEffect.AFTER_8_HOURS);
+            HitPointMaxiumModifier drain = new HitPointMaxiumModifier(-10, HitPointMaxiumModifier.RemovedByEffect.LONG_REST);
+            orc.AddHitPointMaximumModifiers(aid, drain);
+            Assert.Equal(hitPointsMax - 5, orc.HitPointsMax);
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, orc);
+            Assert.Equal(hitPointsMax + 5, orc.HitPointsMax);
+            // Increases of the hit point maximum are not affected
+            restoration.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, orc);
+            Assert.Equal(hitPointsMax + 5, orc.HitPointsMax);
+        }
+
+        [Fact]
+        public void RaiseDeadCharacterTest() {
+            CharacterSheet cleric = new CharacterSheet(Race.HUMAN);
+            CharacterSheet fighter = new CharacterSheet(Race.HUMAN);
+            fighter.AddLevel(CharacterClasses.Barbarian);
+            Battleground ground = createBattleground(cleric, fighter);
+            fighter.TakeDamage(new DamageSource(Spells.ID.POWER_WORD_KILL, cleric), DamageType.TRUE_DAMAGE, fighter.HitPointsMax + 100);
+            Assert.True(fighter.Dead);
+            Spells.RaiseDead.Cast(ground, cleric, 12, SpellLevel.FIFTH, 0, fighter);
+            Assert.False(fighter.Dead);
+            Assert.Equal(1, fighter.HitPoints);
         }
     }
 }

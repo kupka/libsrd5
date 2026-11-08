@@ -392,6 +392,8 @@ namespace srd5 {
         public void CastAreaEffectTest() {
             Battleground2D ground = new Battleground2D(20, 20);
             CharacterSheet hero = new CharacterSheet(Race.TIEFLING, true);
+            // The classic ability scores are rolled from the global random state; fix Wisdom so the spell DC is deterministic
+            hero.Wisdom.BaseValue = 10;
             Combatant currentCombatant = null;
             ground.EventSubscription += delegate (object sender, BattlegroundEvent bgEvent) {
                 if (bgEvent is CombatantChangedEvent @event) {

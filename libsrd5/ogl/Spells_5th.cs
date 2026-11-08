@@ -58,7 +58,7 @@ namespace srd5 {
             }
         }
 
-        /* TODO:
+        /*
         A shimmering barrier extends out from you in a 10-foot radius and moves with you,
         remaining centered on you and hedging out creatures other than undead and
         constructs.
@@ -71,7 +71,13 @@ namespace srd5 {
          */
         public static Spell AntilifeShell {
             get {
-                return new Spell(ID.ANTILIFE_SHELL, ABJURATION, FIFTH, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 10, 0, doNothing);
+                return new Spell(ID.ANTILIFE_SHELL, ABJURATION, FIFTH, CastingTime.ONE_ACTION, 0, VS, ONE_HOUR, 10, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    // The barrier moves with the caster. Creatures other than undead and constructs can't reach
+                    // through it, so their melee attacks against the caster fail (see Combatant.Attack).
+                    // Ranged attacks and attacks with reach weapons still pass the barrier.
+                    // TODO: The spell ends if the caster moves so that an affected creature is forced to pass through the barrier
+                    AddEffectsForDuration(ID.ANTILIFE_SHELL, caster, caster, ONE_HOUR, SPELL_ANTILIFE_SHELL);
+                });
             }
         }
 
@@ -125,7 +131,7 @@ namespace srd5 {
             }
         }
 
-        /* TODO:
+        /*
         After spending the casting time tracing magical pathways within a precious
         gemstone, you touch a Huge or smaller beast or plant.
         The target must have either no Intelligence score or an Intelligence of 3 or less.
@@ -142,7 +148,51 @@ namespace srd5 {
          */
         public static Spell Awaken {
             get {
-                return new Spell(ID.AWAKEN, TRANSMUTATION, FIFTH, CastingTime.EIGHT_HOURS, 0, VSM, INSTANTANEOUS, 0, 0, doNothing);
+                return new Spell(ID.AWAKEN, TRANSMUTATION, FIFTH, CastingTime.EIGHT_HOURS, 0, VSM, INSTANTANEOUS, 0, 1,
+                        delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                            Combatant target = targets[0];
+                            // Only a Huge or smaller beast or plant with an Intelligence of 3 or less can be awakened
+                            if (!(target is Monster monster) || (monster.Type != Monsters.Type.BEAST && monster.Type != Monsters.Type.PLANT)
+                                    || monster.Intelligence.Value > 3 || monster.Size > Size.HUGE) {
+                                GlobalEvents.AffectBySpell(caster, ID.AWAKEN, target, false);
+                                return;
+                            }
+                            GlobalEvents.AffectBySpell(caster, ID.AWAKEN, target, true);
+                            // The awakening itself is permanent
+                            // TODO: The target gains the ability to speak one language the caster knows, plants gain the ability to move and senses
+                            monster.Intelligence.BaseValue = 10;
+                            if (monster.HasEffect(IMMUNITY_CHARMED)) return;
+
+                            // The awakened creature is charmed by the caster for 30 days
+                            monster.AddEffect(SPELL_AWAKEN);
+                            monster.AddCondition(ConditionType.CHARMED);
+                            Team originalTeam = ground.GetTeam(monster);
+                            ground.SetTeam(monster, ground.GetTeam(caster));
+                            bool charmEnded = false;
+                            void endCharm() {
+                                charmEnded = true;
+                                monster.RemoveEffect(SPELL_AWAKEN);
+                                monster.RemoveCondition(ConditionType.CHARMED);
+                                ground.SetTeam(monster, originalTeam);
+                            }
+                            // The charm ends if the caster or the caster's companions harm the creature
+                            monster.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
+                                if (charmEnded) return true;
+                                Combatant attacker = source.Source;
+                                if (attacker == null || Array.IndexOf(ground.combatants, attacker) < 0 || ground.GetTeam(attacker) != ground.GetTeam(caster)) return false;
+                                endCharm();
+                                return true;
+                            });
+                            int remainingRounds = (int)THIRTY_DAYS;
+                            caster.AddEndOfTurnEvent(delegate () {
+                                if (charmEnded) return true;
+                                if (--remainingRounds < 1 || !monster.HasEffect(SPELL_AWAKEN)) {
+                                    endCharm();
+                                    return true;
+                                }
+                                return false;
+                            });
+                        });
             }
         }
 
@@ -167,42 +217,43 @@ namespace srd5 {
          */
         public static Spell Cloudkill {
             get {
-                return new Spell(ID.CLOUDKILL, CONJURATION, FIFTH, CastingTime.ONE_ACTION, 120, VS, TEN_MINUTES, 20, 20, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
-                    // 5d8 poison base + 1d8 for each slot level above 5th
-                    Dice damage = DiceSlotScaling(FIFTH, slot, D8, 5);
-                    GlobalEvents.AffectBySpell(caster, ID.CLOUDKILL, caster, true);
+                return new Spell(ID.CLOUDKILL, CONJURATION, FIFTH, CastingTime.ONE_ACTION, 120, VS, TEN_MINUTES, 20, 20,
+                        delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                            // 5d8 poison base + 1d8 for each slot level above 5th
+                            Dice damage = DiceSlotScaling(FIFTH, slot, D8, 5);
+                            GlobalEvents.AffectBySpell(caster, ID.CLOUDKILL, caster, true);
 
-                    foreach (Combatant target in targets) {
-                        // Mark this creature as being in the cloud
-                        GlobalEvents.AffectBySpell(caster, ID.CLOUDKILL, target, true);
-                        target.AddEffect(SPELL_CLOUDKILL);
-
-                        // Creature is in the area when the cloud appears: CON save for half
-                        target.TakeDamage(new DamageSource(ID.CLOUDKILL, caster), POISON, damage, HALVES_DAMAGE, dc, CONSTITUTION, out _);
-
-                        // At the start of each turn inside the cloud, the creature must save again
-                        target.AddStartOfTurnEvent(delegate () {
-                            if (!target.HasEffect(SPELL_CLOUDKILL)) return true;
-                            target.TakeDamage(new DamageSource(ID.CLOUDKILL, caster), POISON, damage, HALVES_DAMAGE, dc, CONSTITUTION, out _);
-                            return false;
-                        });
-
-                        // TODO: Remove effect when target moves outside the cloud
-                        // TODO: The cloud moves 10 feet away from the caster at the start of each of its turns
-                    }
-
-                    // Duration: cloud lingers for 10 minutes
-                    int remainingRounds = (int)TEN_MINUTES;
-                    caster.AddEndOfTurnEvent(delegate () {
-                        if (--remainingRounds < 1) {
                             foreach (Combatant target in targets) {
-                                target.RemoveEffect(SPELL_CLOUDKILL);
+                                // Mark this creature as being in the cloud
+                                GlobalEvents.AffectBySpell(caster, ID.CLOUDKILL, target, true);
+                                target.AddEffect(SPELL_CLOUDKILL);
+
+                                // Creature is in the area when the cloud appears: CON save for half
+                                target.TakeDamage(new DamageSource(ID.CLOUDKILL, caster), POISON, damage, HALVES_DAMAGE, dc, CONSTITUTION, out _);
+
+                                // At the start of each turn inside the cloud, the creature must save again
+                                target.AddStartOfTurnEvent(delegate () {
+                                    if (!target.HasEffect(SPELL_CLOUDKILL)) return true;
+                                    target.TakeDamage(new DamageSource(ID.CLOUDKILL, caster), POISON, damage, HALVES_DAMAGE, dc, CONSTITUTION, out _);
+                                    return false;
+                                });
+
+                                // TODO: Remove effect when target moves outside the cloud
+                                // TODO: The cloud moves 10 feet away from the caster at the start of each of its turns
                             }
-                            return true;
-                        }
-                        return false;
-                    });
-                });
+
+                            // Duration: cloud lingers for 10 minutes
+                            int remainingRounds = (int)TEN_MINUTES;
+                            caster.AddEndOfTurnEvent(delegate () {
+                                if (--remainingRounds < 1) {
+                                    foreach (Combatant target in targets) {
+                                        target.RemoveEffect(SPELL_CLOUDKILL);
+                                    }
+                                    return true;
+                                }
+                                return false;
+                            });
+                        });
             }
         }
 
@@ -303,7 +354,7 @@ namespace srd5 {
             get {
                 Spell conjure = new Spell(ID.CONJURE_ELEMENTAL, CONJURATION, FIFTH, CastingTime.ONE_MINUTE, 90, VSM, ONE_HOUR, 10, 0);
                 conjure.Variants = new SpellVariant[] { AIR_ELEMENTAL, EARTH_ELEMENTAL, FIRE_ELEMENTAL, WATER_ELEMENTAL };
-                conjure.Variant = EARTH_ELEMENTAL;
+                conjure.Variant = AIR_ELEMENTAL;
                 conjure.CastEffect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     Monsters.ID elemental;
                     switch (conjure.Variant) {
@@ -335,7 +386,7 @@ namespace srd5 {
             }
         }
 
-        /* TODO:
+        /*
         You mentally contact a demigod, the spirit of a long-dead sage, or some other
         mysterious entity from another plane.
         Contacting this extraplanar intelligence can strain or even break your mind.
@@ -355,11 +406,23 @@ namespace srd5 {
          */
         public static Spell ContactOtherPlane {
             get {
-                return new Spell(ID.CONTACT_OTHER_PLANE, DIVINATION, FIFTH, CastingTime.ONE_MINUTE, 0, V, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.CONTACT_OTHER_PLANE, DIVINATION, FIFTH, CastingTime.ONE_MINUTE, 0, V, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    // Contacting the extraplanar intelligence requires a DC 15 Intelligence saving throw
+                    if (caster.DC(ID.CONTACT_OTHER_PLANE, 15, INTELLIGENCE)) {
+                        // Asking the entity up to five questions is done via game logic, not here in the spell code
+                        GlobalEvents.AffectBySpell(caster, ID.CONTACT_OTHER_PLANE, caster, true);
+                        return;
+                    }
+                    // On a failure, the caster takes 6d6 psychic damage and is insane until finishing a long rest
+                    // (or until Greater Restoration is cast on the caster)
+                    GlobalEvents.AffectBySpell(caster, ID.CONTACT_OTHER_PLANE, caster, false);
+                    caster.TakeDamage(new DamageSource(ID.CONTACT_OTHER_PLANE, caster), PSYCHIC, 6 * D6);
+                    caster.AddEffect(SPELL_CONTACT_OTHER_PLANE_INSANITY);
+                });
             }
         }
 
-        /* TODO:
+        /*
         Your touch inflicts disease.
         Make a melee spell attack against a creature within your reach.
         On a hit, you afflict the creature with a disease of your choice from any of the
@@ -396,7 +459,59 @@ namespace srd5 {
          */
         public static Spell Contagion {
             get {
-                return new Spell(ID.CONTAGION, NECROMANCY, FIFTH, CastingTime.ONE_ACTION, 0, VS, SEVEN_DAYS, 0, 0, doNothing);
+                Spell spell = new Spell(ID.CONTAGION, NECROMANCY, FIFTH, CastingTime.ONE_ACTION, 0, VS, SEVEN_DAYS, 0, 1);
+                spell.Variants = new SpellVariant[] { BLINDING_SICKNESS, FILTH_FEVER, FLESH_ROT, MINDFIRE, SEIZURE, SLIMY_DOOM };
+                spell.Variant = BLINDING_SICKNESS;
+                spell.CastEffect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
+                    // The disease effects are in the same order as the variants
+                    Effect[] diseases = {
+                        SPELL_CONTAGION_BLINDING_SICKNESS_DISEASE, SPELL_CONTAGION_FILTH_FEVER_DISEASE, SPELL_CONTAGION_FLESH_ROT_DISEASE,
+                        SPELL_CONTAGION_MINDFIRE_DISEASE, SPELL_CONTAGION_SEIZURE_DISEASE, SPELL_CONTAGION_SLIMY_DOOM_DISEASE
+                    };
+                    Effect disease = diseases[Array.IndexOf(spell.Variants, spell.Variant)];
+
+                    // Melee spell attack that deals no damage, but afflicts the target with the disease on a hit
+                    bool hit = SpellAttack(ID.CONTAGION, ground, caster, NECROTIC, null, modifier, target, 5);
+                    GlobalEvents.AffectBySpell(caster, ID.CONTAGION, target, hit);
+                    if (!hit) return;
+                    target.AddEffect(disease);
+
+                    // Slimy Doom: whenever the creature takes damage, it is stunned until the end of its next turn
+                    if (disease == SPELL_CONTAGION_SLIMY_DOOM_DISEASE) {
+                        target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
+                            if (!target.HasEffect(SPELL_CONTAGION_SLIMY_DOOM_DISEASE)) return true;
+                            target.AddCondition(ConditionType.STUNNED);
+                            target.AddEndOfTurnEvent(delegate () {
+                                target.RemoveCondition(ConditionType.STUNNED);
+                                return true;
+                            });
+                            return false;
+                        });
+                    }
+
+                    // Constitution save at the end of each of the target's turns:
+                    // three successes cure the disease, after three failures it lasts for the whole duration
+                    int successes = 0, failures = 0;
+                    int remainingRounds = (int)SEVEN_DAYS;
+                    target.AddEndOfTurnEvent(delegate () {
+                        if (!target.HasEffect(disease)) return true;
+                        if (failures < 3) {
+                            if (!target.DC(ID.CONTAGION, dc, CONSTITUTION)) {
+                                failures++;
+                            } else if (++successes >= 3) {
+                                target.RemoveEffect(disease);
+                                return true;
+                            }
+                        }
+                        if (--remainingRounds < 1) {
+                            target.RemoveEffect(disease);
+                            return true;
+                        }
+                        return false;
+                    });
+                };
+                return spell;
             }
         }
 
@@ -420,7 +535,7 @@ namespace srd5 {
             }
         }
 
-        /* TODO:
+        /*
         Shimmering energy surrounds and protects you from fey, undead, and creatures
         originating from beyond the Material Plane.
         For the duration, celestials, elementals, fey, fiends, and undead have
@@ -441,7 +556,11 @@ namespace srd5 {
          */
         public static Spell DispelEvilandGood {
             get {
-                return new Spell(ID.DISPEL_EVIL_AND_GOOD, ABJURATION, FIFTH, CastingTime.ONE_ACTION, 0, VSM, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.DISPEL_EVIL_AND_GOOD, ABJURATION, FIFTH, CastingTime.ONE_ACTION, 0, VSM, ONE_MINUTE, 0, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    // Celestials, elementals, fey, fiends and undead have disadvantage on attack rolls against the caster (see Combatant.Attack)
+                    // TODO: The special functions Break Enchantment and Dismissal, which end the spell early
+                    AddEffectsForDuration(ID.DISPEL_EVIL_AND_GOOD, caster, caster, ONE_MINUTE, SPELL_DISPEL_EVIL_AND_GOOD);
+                });
             }
         }
 
@@ -498,14 +617,17 @@ namespace srd5 {
                     ground.SetTeam(target, ground.GetTeam(caster));
 
                     bool spellEnded = false;
-                    // Each time the target takes damage, it makes a new Wisdom saving throw against the spell
-                    target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
-                        if (spellEnded) return true;
-                        if (!target.DC(ID.DOMINATE_PERSON, dc, WISDOM)) return false;
+                    void endSpell() {
                         spellEnded = true;
                         target.RemoveCondition(ConditionType.CHARMED);
                         target.RemoveEffect(SPELL_DOMINATE_PERSON);
                         ground.SetTeam(target, originalTeam);
+                    }
+                    // Each time the target takes damage, it makes a new Wisdom saving throw against the spell
+                    target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
+                        if (spellEnded) return true;
+                        if (!target.DC(ID.DOMINATE_PERSON, dc, WISDOM)) return false;
+                        endSpell();
                         return true;
                     });
 
@@ -527,11 +649,9 @@ namespace srd5 {
                     int remainingRounds = (int)duration;
                     caster.AddEndOfTurnEvent(delegate () {
                         if (spellEnded) return true;
-                        if (--remainingRounds < 1) {
-                            spellEnded = true;
-                            target.RemoveCondition(ConditionType.CHARMED);
-                            target.RemoveEffect(SPELL_DOMINATE_PERSON);
-                            ground.SetTeam(target, originalTeam);
+                        // The spell also ends when its effect was removed otherwise (e.g. by Greater Restoration)
+                        if (--remainingRounds < 1 || !target.HasEffect(SPELL_DOMINATE_PERSON)) {
+                            endSpell();
                             return true;
                         }
                         return false;
@@ -589,11 +709,17 @@ namespace srd5 {
          */
         public static Spell FlameStrike {
             get {
-                return new Spell(ID.FLAME_STRIKE, EVOCATION, FIFTH, CastingTime.ONE_ACTION, 60, VSM, INSTANTANEOUS, 40, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
-                    // 4d6 fire base + 1d6 for each slot level above 5th, plus a flat 4d6 radiant damage
-                    // TODO: The caster may choose to scale the radiant damage instead of the fire damage
-                    Dice fireDamage = DiceSlotScaling(FIFTH, slot, D6, 4);
-                    Dice radiantDamage = new Dice("4d6");
+                Spell spell = new Spell(ID.FLAME_STRIKE, EVOCATION, FIFTH, CastingTime.ONE_ACTION, 60, VSM, INSTANTANEOUS, 10, 0);
+                // The variant determines which damage type (fire or radiant) scales with higher spell slots
+                spell.Variants = new SpellVariant[] { DAMAGE_FIRE, DAMAGE_RADIANT };
+                spell.Variant = DAMAGE_FIRE;
+                spell.CastEffect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    // 4d6 fire and 4d6 radiant base, the chosen damage type gains 1d6 for each slot level above 5th
+                    Dice scaledDamage = DiceSlotScaling(FIFTH, slot, D6, 4);
+                    Dice baseDamage = 4 * D6;
+                    bool scaleRadiant = spell.Variant == DAMAGE_RADIANT;
+                    Dice fireDamage = scaleRadiant ? baseDamage : scaledDamage;
+                    Dice radiantDamage = scaleRadiant ? scaledDamage : baseDamage;
 
                     foreach (Combatant target in targets) {
                         GlobalEvents.AffectBySpell(caster, ID.FLAME_STRIKE, target, true);
@@ -608,7 +734,8 @@ namespace srd5 {
                         target.TakeDamage(new DamageSource(ID.FLAME_STRIKE, caster), FIRE, fire);
                         target.TakeDamage(new DamageSource(ID.FLAME_STRIKE, caster), RADIANT, radiant);
                     }
-                });
+                };
+                return spell;
             }
         }
 
@@ -638,7 +765,7 @@ namespace srd5 {
             }
         }
 
-        /* TODO:
+        /*
         You imbue a creature you touch with positive energy to undo a debilitating effect.
         You can reduce the target's exhaustion level by one, or end one of the following
         effects on the target:
@@ -649,7 +776,63 @@ namespace srd5 {
          */
         public static Spell GreaterRestoration {
             get {
-                return new Spell(ID.GREATER_RESTORATION, ABJURATION, FIFTH, CastingTime.ONE_ACTION, 0, VSM, INSTANTANEOUS, 0, 0, doNothing);
+                Spell spell = new Spell(ID.GREATER_RESTORATION, ABJURATION, FIFTH, CastingTime.ONE_ACTION, 0, VSM, INSTANTANEOUS, 0, 1);
+                spell.Variants = new SpellVariant[] { EXHAUSTION, CHARM, PETRIFICATION, CURSE, ABILITY_SCORE_REDUCTION, HIT_POINT_MAXIMUM_REDUCTION };
+                spell.Variant = EXHAUSTION;
+                spell.CastEffect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
+                    GlobalEvents.AffectBySpell(caster, ID.GREATER_RESTORATION, target, true);
+                    switch (spell.Variant) {
+                        case EXHAUSTION:
+                            for (ConditionType level = ConditionType.EXHAUSTED_6; level >= ConditionType.EXHAUSTED_1; level--) {
+                                if (!target.HasCondition(level)) continue;
+                                target.RemoveCondition(level);
+                                if (level > ConditionType.EXHAUSTED_1) target.AddCondition(level - 1);
+                                return;
+                            }
+                            break;
+                        case CHARM:
+                            Effect[] charmingEffects = { SPELL_ANIMAL_FRIENDSHIP, SPELL_AWAKEN, SPELL_DOMINATE_BEAST, SPELL_DOMINATE_PERSON, SPELL_MODIFY_MEMORY };
+                            target.RemoveCondition(ConditionType.CHARMED);
+                            foreach (Effect effect in charmingEffects) {
+                                if (target.HasEffect(effect)) {
+                                    target.RemoveEffect(effect);
+                                    return;
+                                }
+                            }
+                            break;
+                        case PETRIFICATION:
+                            target.RemoveCondition(ConditionType.PETRIFIED);
+                            break;
+                        case CURSE:
+                            foreach (Effect effect in (Effect[])target.Effects.Clone()) {
+                                if (effect.IsCurse()) {
+                                    target.RemoveEffect(effect);
+                                    return;
+                                }
+                            }
+                            break;
+                        case ABILITY_SCORE_REDUCTION:
+                            Ability mostReduced = null;
+                            foreach (AbilityType type in new AbilityType[] { STRENGTH, DEXTERITY, CONSTITUTION, INTELLIGENCE, WISDOM, CHARISMA }) {
+                                Ability ability = target.GetAbility(type);
+                                if (ability.ValueModifier < 0 && (mostReduced == null || ability.ValueModifier < mostReduced.ValueModifier)) {
+                                    mostReduced = ability;
+                                }
+                            }
+                            if (mostReduced != null) mostReduced.ValueModifier = 0;
+                            break;
+                        case HIT_POINT_MAXIMUM_REDUCTION:
+                            foreach (HitPointMaxiumModifier hitPointModifier in target.HitPointMaxiumModifiers) {
+                                if (hitPointModifier.Amount < 0) {
+                                    target.RemoveHitPointsMaximumModifiers(hitPointModifier);
+                                    return;
+                                }
+                            }
+                            break;
+                    }
+                };
+                return spell;
             }
         }
 
@@ -699,15 +882,14 @@ namespace srd5 {
         }
 
         /*
-        Choose a creature you can see and reach.
-        The target must make a saving throw of Wisdom or be paralyzed for the duration of
-        the spell.
-        This spell has no effect against the undead.
-        At the end of each round, the target can make a new saving throw of Wisdom.
-        If successful, the spell ends for the creature.
-        When you cast this spell using a level 6 or higher location, you can target an
-        additional creature for each level of location beyond the fifth.
-        The creatures must be within 30 feet o f each other when you target them.
+        Choose a creature that you can see within range.
+        The target must succeed on a wisdom saving throw or be paralyzed for the duration.
+        This spell has no effect on undead.
+        At the end of each of its turns, the target can make another wisdom saving throw.
+        On a success, the spell ends on the target.
+        When you cast this spell using a spell slot of 6th level or higher, you can target
+        one additional creature for each slot level above 5th.
+        The creatures must be within 30 feet of each other when you target them.
          */
         public static Spell HoldMonster {
             get {
@@ -715,17 +897,14 @@ namespace srd5 {
                     // one additional target per slot above 5th
                     for (int i = 0; i < (int)slot - 4 && i < targets.Length; i++) {
                         Combatant target = targets[i];
-                        // undead are not affected
-                        if (target is Monster monster && monster.Type == Monsters.Type.UNDEAD) {
+                        if (target is Monster monster && monster.Type == Monsters.Type.UNDEAD || target.HasEffect(IMMUNITY_PARALYZED)) {
                             GlobalEvents.AffectBySpell(caster, ID.HOLD_MONSTER, target, false);
                             continue;
                         }
-                        // Wisdom save
                         if (!target.DC(ID.HOLD_MONSTER, dc, WISDOM) && target.AddCondition(ConditionType.PARALYZED)) {
                             GlobalEvents.AffectBySpell(caster, ID.HOLD_MONSTER, target, true);
                             int remainingRounds = (int)ONE_MINUTE;
                             target.AddEndOfTurnEvent(delegate () {
-                                // repeat the save at the end of each of its turns, the spell ends after 1 minute
                                 bool ended = --remainingRounds < 1 || target.DC(ID.HOLD_MONSTER, dc, WISDOM);
                                 if (ended) {
                                     target.RemoveCondition(ConditionType.PARALYZED);
@@ -769,8 +948,8 @@ namespace srd5 {
                         // Creature is in the area when the swarm appears: CON save for half
                         target.TakeDamage(new DamageSource(ID.INSECT_PLAGUE, caster), PIERCING, damage, HALVES_DAMAGE, dc, CONSTITUTION, out _);
 
-                        // At the start of each turn inside the swarm, the creature must save again
-                        target.AddStartOfTurnEvent(delegate () {
+                        // At the end of each turn inside the swarm, the creature must save again
+                        target.AddEndOfTurnEvent(delegate () {
                             if (!target.HasEffect(SPELL_INSECT_PLAGUE)) return true;
                             target.TakeDamage(new DamageSource(ID.INSECT_PLAGUE, caster), PIERCING, damage, HALVES_DAMAGE, dc, CONSTITUTION, out _);
                             return false;
@@ -845,7 +1024,7 @@ namespace srd5 {
             }
         }
 
-        /* TODO:
+        /*
         You become invisible at the same time that an illusory double of you appears where
         you are standing.
         The double lasts for the duration, but the invisibility ends if you attack or cast
@@ -861,11 +1040,29 @@ namespace srd5 {
          */
         public static Spell Mislead {
             get {
-                return new Spell(ID.MISLEAD, ILLUSION, FIFTH, CastingTime.ONE_ACTION, 0, S, ONE_HOUR, 0, 0, doNothing);
+                return new Spell(ID.MISLEAD, ILLUSION, FIFTH, CastingTime.ONE_ACTION, 0, S, ONE_HOUR, 0, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    // TODO: The illusory double, which can be moved and whose senses can be used, is not simulated
+                    AddEffectsForDuration(ID.MISLEAD, caster, caster, ONE_HOUR, SPELL_MISLEAD);
+                    // The invisibility ends if the caster attacks or casts a spell
+                    EventHandler<GlobalEvents.AttackRolled> attackHandler = delegate (object sender, GlobalEvents.AttackRolled attack) {
+                        if (attack.Attacker.Equals(caster)) caster.RemoveEffect(SPELL_MISLEAD);
+                    };
+                    EventHandler<GlobalEvents.SpellCast> castHandler = delegate (object sender, GlobalEvents.SpellCast cast) {
+                        if (cast.Caster.Equals(caster)) caster.RemoveEffect(SPELL_MISLEAD);
+                    };
+                    GlobalEvents.AttackRolledHandlers += attackHandler;
+                    GlobalEvents.SpellCastHandlers += castHandler;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (caster.HasEffect(SPELL_MISLEAD)) return false;
+                        GlobalEvents.AttackRolledHandlers -= attackHandler;
+                        GlobalEvents.SpellCastHandlers -= castHandler;
+                        return true;
+                    });
+                });
             }
         }
 
-        /* TODO:
+        /*
         You attempt to reshape another creature's memories.
         One creature that you can see must make a wisdom saving throw.
         If you are fighting the creature, it has advantage on the saving throw.
@@ -901,7 +1098,36 @@ namespace srd5 {
          */
         public static Spell ModifyMemory {
             get {
-                return new Spell(ID.MODIFY_MEMORY, ENCHANTMENT, FIFTH, CastingTime.ONE_ACTION, 30, VS, ONE_MINUTE, 0, 0, doNothing);
+                return new Spell(ID.MODIFY_MEMORY, ENCHANTMENT, FIFTH, CastingTime.ONE_ACTION, 30, VS, ONE_MINUTE, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
+                    // Wisdom save with advantage since we assume a fight
+                    if (target.HasEffect(IMMUNITY_CHARMED) || target.DC(ID.MODIFY_MEMORY, dc, WISDOM, true)) {
+                        GlobalEvents.AffectBySpell(caster, ID.MODIFY_MEMORY, target, false);
+                        return;
+                    }
+                    // The target is charmed, incapacitated and unaware of its surroundings
+                    // TODO: Modifying the target's memories is narrative and not simulated
+                    GlobalEvents.AffectBySpell(caster, ID.MODIFY_MEMORY, target, true);
+                    target.AddEffect(SPELL_MODIFY_MEMORY);
+
+                    // The spell ends if the target takes any damage or is targeted by another spell
+                    target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
+                        target.RemoveEffect(SPELL_MODIFY_MEMORY);
+                        return true;
+                    });
+                    EventHandler<GlobalEvents.SpellAffection> spellHandler = delegate (object sender, GlobalEvents.SpellAffection affection) {
+                        if (affection.Target.Equals(target) && affection.Spell != ID.MODIFY_MEMORY) target.RemoveEffect(SPELL_MODIFY_MEMORY);
+                    };
+                    GlobalEvents.SpellAffectionHandlers += spellHandler;
+
+                    int remainingRounds = (int)ONE_MINUTE;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds < 1) target.RemoveEffect(SPELL_MODIFY_MEMORY);
+                        if (target.HasEffect(SPELL_MODIFY_MEMORY)) return false;
+                        GlobalEvents.SpellAffectionHandlers -= spellHandler;
+                        return true;
+                    });
+                });
             }
         }
 
@@ -922,7 +1148,7 @@ namespace srd5 {
             }
         }
 
-        /* TODO:
+        /*
         With this spell, you attempt to bind a celestial, an elemental, a fey, or a fiend
         to your service.
         The creature must be within range for the entire casting of the spell. (Typically,
@@ -948,7 +1174,32 @@ namespace srd5 {
          */
         public static Spell PlanarBinding {
             get {
-                return new Spell(ID.PLANAR_BINDING, ABJURATION, FIFTH, CastingTime.ONE_HOUR, 60, VSM, ONE_DAY, 0, 0, doNothing);
+                return new Spell(ID.PLANAR_BINDING, ABJURATION, FIFTH, CastingTime.ONE_HOUR, 60, VSM, ONE_DAY, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    Combatant target = targets[0];
+                    // Only celestials, elementals, fey and fiends can be bound
+                    bool bindable = target is Monster monster && (monster.Type == Monsters.Type.CELESTIAL || monster.Type == Monsters.Type.ELEMENTAL
+                                                                || monster.Type == Monsters.Type.FEY || monster.Type == Monsters.Type.FIEND);
+                    if (!bindable || target.DC(ID.PLANAR_BINDING, dc, CHARISMA)) {
+                        GlobalEvents.AffectBySpell(caster, ID.PLANAR_BINDING, target, false);
+                        return;
+                    }
+                    // The bound creature serves the caster for the duration
+                    // TODO: If the creature was summoned by another spell, that spell's duration is extended to match
+                    GlobalEvents.AffectBySpell(caster, ID.PLANAR_BINDING, target, true);
+                    target.AddEffect(SPELL_PLANAR_BINDING);
+                    Team originalTeam = ground.GetTeam(target);
+                    ground.SetTeam(target, ground.GetTeam(caster));
+
+                    // Duration in days: 24 hours at 5th level, 10 days at 6th, 30 days at 7th, 180 days at 8th and a year and a day at 9th
+                    int[] days = { 1, 10, 30, 180, 366 };
+                    int remainingRounds = days[slot - FIFTH] * (int)ONE_DAY;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds < 1) target.RemoveEffect(SPELL_PLANAR_BINDING);
+                        if (target.HasEffect(SPELL_PLANAR_BINDING)) return false;
+                        ground.SetTeam(target, originalTeam);
+                        return true;
+                    });
+                });
             }
         }
 
@@ -976,9 +1227,8 @@ namespace srd5 {
             get {
                 return new Spell(ID.RAISE_DEAD, NECROMANCY, FIFTH, CastingTime.ONE_HOUR, 0, VSM, INSTANTANEOUS, 0, 1, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     Combatant target = targets[0];
-                    // Only dead creatures can be targeted
-                    // TODO: Spell does not affect undead or creatures that have been dead for more than 10 days
-                    if (!target.Dead) {
+                    // Only dead creatures can be targeted, and the spell can't return an undead creature to life
+                    if (!target.Dead || (target is Monster monster && monster.Type == Monsters.Type.UNDEAD)) {
                         GlobalEvents.AffectBySpell(caster, ID.RAISE_DEAD, target, false);
                         return;
                     }
@@ -986,14 +1236,8 @@ namespace srd5 {
                     GlobalEvents.AffectBySpell(caster, ID.RAISE_DEAD, target, true);
                     target.Dead = false;
                     target.HitPoints = 1;
-                    // Neutralizes any poisons and cures diseases
-                    // TODO: Magical diseases and curses are not cured
-                    target.RemoveCondition(ConditionType.POISONED);
-                    foreach (Effect effect in (Effect[])target.Effects.Clone()) {
-                        if (effect.IsDisease()) {
-                            target.RemoveEffect(effect);
-                        }
-                    }
+                    // We don't neutralize any poisons or diseases or curses because in this context, everything is magical, so there is nothing to be neutralized.
+
                     // TODO: Missing body parts are not restored
                     // TODO: -4 penalty to attack rolls, saving throws and ability checks, reduced by 1 after each long rest
                 });
@@ -1007,7 +1251,7 @@ namespace srd5 {
         If the target's soul isn't free or willing to do so, the spell fails.
         The magic fashions a new body for the creature to inhabit, which likely causes the
         creature's race to change.
-        The DM rolls a d 100 and consults the following table to determine what form the
+        The DM rolls a d100 and consults the following table to determine what form the
         creature takes when restored to life, or the DM chooses a form.
         The reincarnated creature recalls its former life and experiences.
         It retains the capabilities it had in its original form, except it exchanges its

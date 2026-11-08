@@ -130,10 +130,10 @@ namespace srd5 {
             get {
                 return new Spell(ID.ELDRITCH_BLAST, EVOCATION, CANTRIP, CastingTime.ONE_ACTION, 120, VS, INSTANTANEOUS, 0, 4,
                     delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
-                        Damage damage = new Damage(FORCE, "1d10");
+                        Damage damage = new Damage(FORCE, D10);
                         Dice dice = DiceLevelScaling(caster, D10);
                         for (int i = 0; i < dice.Amount; i++) {
-                            SpellAttack(ID.ELDRITCH_BLAST, ground, caster, FORCE, new Dice("1d10"), modifier, targets[i % targets.Length], 120);
+                            SpellAttack(ID.ELDRITCH_BLAST, ground, caster, FORCE, D10, modifier, targets[i % targets.Length], 120);
                         }
                     }
                 );

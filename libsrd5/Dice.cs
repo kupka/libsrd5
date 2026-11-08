@@ -117,6 +117,14 @@ namespace srd5 {
             return parsed.Roll();
         }
 
+        public static int Roll(Dice dice) {
+            return dice.Roll();
+        }
+
+        public static int Roll(Die die) {
+            return die.Value;
+        }
+
         public override string ToString() {
             return "d" + MaxValue;
         }
@@ -124,6 +132,10 @@ namespace srd5 {
         public static implicit operator Dice(Die die) => new Dice(1, die, 0);
 
         public static Dice operator *(int i, Die die) => new Dice(i, die, 0);
+
+        public static Dice operator -(Die die, int modifier) => new Dice(1, die, -modifier);
+
+        public static Dice operator +(Die die, int modifier) => new Dice(1, die, modifier);
     }
 
     public abstract class DiceRolledEventSource {

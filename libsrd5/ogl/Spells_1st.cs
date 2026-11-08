@@ -808,7 +808,7 @@ namespace srd5 {
                     Combatant target = targets[0];
                     target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
                         if (caster.Equals(source.Source)) {
-                            target.TakeDamage(new DamageSource(DamageSourceType.SPELL, ID.HUNTERS_MARK, null), TRUE_DAMAGE, "1d6");
+                            target.TakeDamage(new DamageSource(DamageSourceType.SPELL, ID.HUNTERS_MARK, null), TRUE_DAMAGE, D6);
                         }
                         return false;
                     });
@@ -936,7 +936,7 @@ namespace srd5 {
                 return new Spell(
                     ID.MAGIC_MISSILE, EVOCATION, FIRST, CastingTime.ONE_ACTION, 120, VS,
                     INSTANTANEOUS, 0, 20, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
-                        Damage damage = new Damage(FORCE, "1d4+1");
+                        Damage damage = new Damage(FORCE, D4 + 1);
                         int missilesTotal = (int)slot + 2;
                         foreach (Combatant possibleTarget in targets) {
                             Combatant target = possibleTarget;

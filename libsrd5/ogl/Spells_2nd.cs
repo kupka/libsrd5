@@ -421,7 +421,7 @@ namespace srd5 {
                                 break;
                             case BEARS_ENDURANCE:
                                 AddEffectsForDuration(ID.ENHANCE_ABILITY, caster, target, spell.Duration, SPELL_ENHANCE_ABILITY, ADVANTAGE_CONSTITUTION_SAVES);
-                                target.AddTemporaryHitpoints(Roll("2d6"), ONE_HOUR, ID.ENHANCE_ABILITY);
+                                target.AddTemporaryHitpoints(Roll(2 * D6), ONE_HOUR, ID.ENHANCE_ABILITY);
                                 break;
                         }
                     }
@@ -1214,7 +1214,7 @@ namespace srd5 {
                     int rays = (int)slot - 2 + 3;
                     for (int i = 0; i < rays; i++) {
                         Combatant target = targets[i % targets.Length];
-                        SpellAttack(ID.SCORCHING_RAY, ground, caster, FIRE, new Dice("2d6"), modifier, target, 120);
+                        SpellAttack(ID.SCORCHING_RAY, ground, caster, FIRE, 2 * D6, modifier, target, 120);
                     }
                 });
             }

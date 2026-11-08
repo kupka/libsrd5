@@ -53,7 +53,7 @@ namespace srd5 {
                         }
 
                         GlobalEvents.AffectBySpell(caster, ID.BLACK_TENTACLES, target, true);
-                        target.TakeDamage(new DamageSource(ID.BLACK_TENTACLES, caster), BLUDGEONING, new Dice("3d6"));
+                        target.TakeDamage(new DamageSource(ID.BLACK_TENTACLES, caster), BLUDGEONING, 3*D6);
                         target.AddEffect(SPELL_BLACK_TENTACLES);
 
                         // At the start of each turn: restrained creatures take automatic 3d6 damage;
@@ -62,12 +62,12 @@ namespace srd5 {
                             if (!target.HasEffect(SPELL_BLACK_TENTACLES)) return true;
                             if (target.HasCondition(ConditionType.RESTRAINED)) {
                                 // Already restrained: automatic 3d6 bludgeoning damage
-                                target.TakeDamage(new DamageSource(ID.BLACK_TENTACLES, caster), BLUDGEONING, new Dice("3d6"));
+                                target.TakeDamage(new DamageSource(ID.BLACK_TENTACLES, caster), BLUDGEONING, 3*D6);
                             } else {
                                 // Escaped restraint: DEX save or take damage and become restrained again
                                 if (!target.DC(ID.BLACK_TENTACLES, dc, DEXTERITY)) {
                                     GlobalEvents.AffectBySpell(caster, ID.BLACK_TENTACLES, target, true);
-                                    target.TakeDamage(new DamageSource(ID.BLACK_TENTACLES, caster), BLUDGEONING, new Dice("3d6"));
+                                    target.TakeDamage(new DamageSource(ID.BLACK_TENTACLES, caster), BLUDGEONING, 3*D6);
                                     target.AddCondition(ConditionType.RESTRAINED);
                                 }
                             }
@@ -78,7 +78,7 @@ namespace srd5 {
                         ActionEffect escape = delegate () {
                             if (!target.DC(ID.BLACK_TENTACLES, dc, DEXTERITY)) {
                                 GlobalEvents.AffectBySpell(caster, ID.BLACK_TENTACLES, target, true);
-                                target.TakeDamage(new DamageSource(ID.BLACK_TENTACLES, caster), BLUDGEONING, new Dice("3d6"));
+                                target.TakeDamage(new DamageSource(ID.BLACK_TENTACLES, caster), BLUDGEONING, 3*D6);
                                 return false;
                             }
                             target.RemoveCondition(ConditionType.RESTRAINED);
@@ -338,7 +338,7 @@ namespace srd5 {
 
                     // If destination is occupied by someone else, caster (and companion) take 4d6 force and spell fails
                     if (ground.IsOccupied(target.Location)) {
-                        Dice damage = new Dice("4d6");
+                        Dice damage = 4*D6;
                         caster.TakeDamage(new DamageSource(ID.DIMENSION_DOOR, caster), FORCE, damage);
                         if (companion != null) companion.TakeDamage(new DamageSource(ID.DIMENSION_DOOR, caster), FORCE, damage);
                         GlobalEvents.AffectBySpell(caster, ID.DIMENSION_DOOR, caster, false);
@@ -418,14 +418,17 @@ namespace srd5 {
                     ground.SetTeam(target, ground.GetTeam(caster));
 
                     bool spellEnded = false;
-                    // Each time the target takes damage, it makes a new Wisdom saving throw against the spell
-                    target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
-                        if (spellEnded) return true;
-                        if (!target.DC(ID.DOMINATE_BEAST, dc, WISDOM)) return false;
+                    void endSpell() {
                         spellEnded = true;
                         target.RemoveCondition(ConditionType.CHARMED);
                         target.RemoveEffect(SPELL_DOMINATE_BEAST);
                         ground.SetTeam(target, originalTeam);
+                    }
+                    // Each time the target takes damage, it makes a new Wisdom saving throw against the spell
+                    target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
+                        if (spellEnded) return true;
+                        if (!target.DC(ID.DOMINATE_BEAST, dc, WISDOM)) return false;
+                        endSpell();
                         return true;
                     });
 
@@ -442,11 +445,9 @@ namespace srd5 {
                     int remainingRounds = (int)ONE_MINUTE;
                     caster.AddEndOfTurnEvent(delegate () {
                         if (spellEnded) return true;
-                        if (--remainingRounds < 1) {
-                            spellEnded = true;
-                            target.RemoveCondition(ConditionType.CHARMED);
-                            target.RemoveEffect(SPELL_DOMINATE_BEAST);
-                            ground.SetTeam(target, originalTeam);
+                        // The spell also ends when its effect was removed otherwise (e.g. by Greater Restoration)
+                        if (--remainingRounds < 1 || !target.HasEffect(SPELL_DOMINATE_BEAST)) {
+                            endSpell();
                             return true;
                         }
                         return false;
@@ -502,7 +503,7 @@ namespace srd5 {
                     }
 
                     GlobalEvents.AffectBySpell(caster, ID.FAITHFUL_HOUND, caster, true);
-                    Attack bite = new Attack(ID.FAITHFUL_HOUND.Name(), modifier + caster.ProficiencyBonus, new Damage(PIERCING, new Dice("4d8")), 5);
+                    Attack bite = new Attack(ID.FAITHFUL_HOUND.Name(), modifier + caster.ProficiencyBonus, new Damage(PIERCING, 4*D8), 5);
 
                     int remainingRounds = (int)EIGHT_HOURS;
                     caster.AddStartOfTurnEvent(delegate () {
@@ -548,7 +549,7 @@ namespace srd5 {
                     EventHandler<EventArgs> eruptionHandler = delegate (object sender, EventArgs args) {
                         if (GlobalEvents.EventTypes.ATTACKED.Equals(sender) && args is GlobalEvents.AttackRolled attack
                             && attack.Hit && attack.Target.Equals(caster) && ground != null && ground.Distance(attack.Attacker, caster) <= 5) {
-                            attack.Attacker.TakeDamage(new DamageSource(ID.FIRE_SHIELD, caster), eruptionDamage, "2d8");
+                            attack.Attacker.TakeDamage(new DamageSource(ID.FIRE_SHIELD, caster), eruptionDamage, 2*D8);
                         }
                     };
                     GlobalEvents.Handlers += eruptionHandler;
@@ -641,7 +642,7 @@ namespace srd5 {
                 return new Spell(ID.ICE_STORM, EVOCATION, FOURTH, CastingTime.ONE_ACTION, 300, VSM, INSTANTANEOUS, 20, 0, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     // 2d8 bludgeoning base + 1d8 for each slot level above 4th, plus a flat 4d6 cold damage
                     Dice bludgeoningDamage = DiceSlotScaling(FOURTH, slot, D8, 2);
-                    Dice coldDamage = new Dice("4d6");
+                    Dice coldDamage = 4*D6;
 
                     foreach (Combatant target in targets) {
                         GlobalEvents.AffectBySpell(caster, ID.ICE_STORM, target, true);

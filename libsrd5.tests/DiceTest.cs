@@ -137,6 +137,13 @@ namespace srd5 {
         public void OperatorTest() {
             Assert.Equal("2d6+3", (2 * D6 + 3).ToString());
             Assert.Equal("5d8-2", (5 * D8 - 2).ToString());
+            Assert.Equal("1d12-1", (D12 - 1).ToString());
+        }
+
+        [Fact]
+        public void RollTest() {
+            int result = Roll(3 * D6);
+            Assert.InRange<int>(result, 3, 18);
         }
     }
 }

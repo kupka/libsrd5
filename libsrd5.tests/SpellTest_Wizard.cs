@@ -4,6 +4,20 @@ using Xunit;
 namespace srd5 {
     public partial class SpellTest {
         [Fact]
+        public void ChillTouchNonMonsterTest() {
+            // Only undead monsters get disadvantage on attacks, other creatures just can't regain hit points
+            CharacterSheet wizard = new CharacterSheet(Race.GNOME, true);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            CharacterSheet barbarian = new CharacterSheet(Race.HALF_ORC, true);
+            barbarian.AddLevel(CharacterClasses.Barbarian);
+            Battleground ground = createBattleground(wizard, barbarian);
+            Random.State = 2; // the damage d8 is rolled first, then the attack d20 rolls an 11 (+100 hits)
+            Spells.ChillTouch.Cast(ground, wizard, 14, SpellLevel.CANTRIP, 100, barbarian);
+            Assert.True(barbarian.HasEffect(Effect.CANNOT_REGAIN_HITPOINTS));
+            Assert.False(barbarian.HasEffect(Effect.DISADVANTAGE_ON_ATTACK));
+        }
+
+        [Fact]
         public void ChillTouchTest() {
             CharacterSheet wizard = new CharacterSheet(Race.GNOME, true);
             wizard.AddLevels(CharacterClasses.Wizard, CharacterClasses.Wizard);
@@ -321,11 +335,45 @@ namespace srd5 {
             Assert.True(Array.IndexOf(hero.Inventory.Bag, club) == 0);
             hero.RemoveEffect(Effect.SPELL_ALTER_SELF_CLAWS);
             Assert.True(hero.Inventory.MainHand == null);
+
+            // Switching weapons during the spell keeps the new weapon when the spell ends
+            Spells.AlterSelf.Cast(hero, 10, SpellLevel.SECOND, 0);
+            hero.Equip(Weapons.Longsword);
+            hero.RemoveEffect(Effect.SPELL_ALTER_SELF_CLAWS);
+            Assert.True(hero.Inventory.MainHand.Is(Weapons.Longsword));
+
+            // Empty hands when the spell ends
+            Spells.AlterSelf.Cast(hero, 10, SpellLevel.SECOND, 0);
+            hero.Unequip(hero.Inventory.MainHand);
+            hero.RemoveEffect(Effect.SPELL_ALTER_SELF_CLAWS);
+            Assert.Null(hero.Inventory.MainHand);
         }
 
         [Fact]
         public void BlindnessDeafnessTest() {
             DefaultSpellTest(Spells.BlindnessDeafness, 12, SpellLevel.THIRD, ConditionType.BLINDED, Effect.SPELL_BLINDNESS_DEAFNESS, Spells.BlindnessDeafness.Duration);
+        }
+
+        [Fact]
+        public void BlindnessDeafnessEffectRemovedEarlyTest() {
+            // If only the spell effect is removed, the conditions still end with the duration
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(wizard, orc);
+            Random.FixedRandom = Random.DebugState.Avg; // D20=13 < DC=25 → orc fails its CON save
+            Spells.BlindnessDeafness.Cast(ground, wizard, 25, SpellLevel.SECOND, 0, orc);
+            Assert.True(orc.HasCondition(ConditionType.BLINDED));
+            orc.RemoveEffect(Effect.SPELL_BLINDNESS_DEAFNESS);
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE - 1; i++) {
+                orc.OnStartOfTurn();
+                orc.OnEndOfTurn();
+            }
+            Assert.True(orc.HasCondition(ConditionType.BLINDED));
+            orc.OnStartOfTurn();
+            orc.OnEndOfTurn();
+            Assert.False(orc.HasCondition(ConditionType.BLINDED));
+            Assert.False(orc.HasCondition(ConditionType.DEAFENED));
+            Assert.Empty(orc.EndOfTurnEvents);
         }
 
         [Fact]
@@ -576,6 +624,23 @@ namespace srd5 {
         }
 
         [Fact]
+        public void BestowCurseLoseTurnSaveSuccessTest() {
+            // A successful WIS save at the start of the turn doesn't cost the turn
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(wizard, orc);
+            Spell curse = Spells.BestowCurse;
+            curse.Variant = SpellVariant.LOSE_TURN_ON_FAILED_WISDOM_SAVE;
+            Random.FixedRandom = Random.DebugState.Avg; // D20=13 < DC=25 → orc fails initial save
+            curse.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
+            Assert.True(orc.HasEffect(Effect.SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE));
+            Random.FixedRandom = Random.DebugState.Max; // natural 20 → save succeeds
+            orc.OnStartOfTurn();
+            Assert.False(orc.HasEffect(Effect.SPELL_BESTOW_CURSE_LOST_TURN));
+        }
+
+        [Fact]
         public void BestowCurseTakeAdditionalDamageTest() {
             // TAKE_ADDITIONAL_DAMAGE variant: fires DamageTakenEvent when target takes damage
             CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
@@ -588,12 +653,21 @@ namespace srd5 {
             Random.FixedRandom = Random.DebugState.Avg; // D20=13 < DC=25 → orc fails initial save
             curse.Cast(ground, wizard, 25, SpellLevel.THIRD, 0, orc);
             Assert.True(orc.HasEffect(Effect.SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE));
-            // Trigger the DamageTakenEvent delegate body by dealing damage
-            orc.TakeDamage(new DamageSource(DamageSourceType.SPELL, wizard, orc), DamageType.FIRE, 1);
+            // Damage dealt by the caster triggers the additional 1d8 necrotic damage
+            orc.TakeDamage(new DamageSource(Spells.ID.FIRE_BOLT, wizard), DamageType.FIRE, 1);
             Assert.True(orc.HitPoints < hpBefore - 1); // should take more than 1 damage
             hpBefore = orc.HitPoints;
+            // Damage dealt by anybody else doesn't
+            orc.TakeDamage(new DamageSource(Spells.ID.FIRE_BOLT, Monsters.Goblin), DamageType.FIRE, 1);
+            Assert.Equal(hpBefore - 1, orc.HitPoints);
+            hpBefore = orc.HitPoints;
+            // ... and so does a weapon attack by the caster
+            Attack dagger = new Attack("Dagger", 0, new Damage(DamageType.PIERCING, "1d4"), 5);
+            orc.TakeDamage(new DamageSource(dagger, wizard), DamageType.PIERCING, 1);
+            Assert.True(orc.HitPoints < hpBefore - 1);
+            hpBefore = orc.HitPoints;
             orc.RemoveEffect(Effect.SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE);
-            orc.TakeDamage(new DamageSource(DamageSourceType.OTHER, wizard, orc), DamageType.FIRE, 1);
+            orc.TakeDamage(new DamageSource(Spells.ID.FIRE_BOLT, wizard), DamageType.FIRE, 1);
             Assert.Equal(hpBefore - 1, orc.HitPoints); // should take exactly one damage
 
         }
@@ -635,6 +709,22 @@ namespace srd5 {
             Spells.DispelMagic.Cast(ground, wizard, 12, SpellLevel.SECOND, 0, orc);
             Assert.False(orc.HasEffect(Effect.SPELL_FEAR));
 
+        }
+
+        [Fact]
+        public void DispelMagicFailedCheckTest() {
+            // Non-spell effects are never touched; a failed check leaves a higher-level spell in place
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            wizard.AvailableSpells[0].AddKnownSpell(Spells.DispelMagic);
+            Monster orc = Monsters.Orc;
+            orc.AddEffect(Effect.ADVANTAGE_DEXTERITY_SAVES); // not a spell effect
+            orc.AddEffect(Effect.SPELL_FEAR); // 3rd-level spell effect
+            Battleground ground = createBattleground(wizard, orc);
+            Random.FixedRandom = Random.DebugState.Min; // natural 1 → the dispel check fails
+            Spells.DispelMagic.Cast(ground, wizard, 12, SpellLevel.SECOND, 0, orc);
+            Assert.True(orc.HasEffect(Effect.ADVANTAGE_DEXTERITY_SAVES));
+            Assert.True(orc.HasEffect(Effect.SPELL_FEAR));
         }
 
         [Fact]
@@ -732,6 +822,28 @@ namespace srd5 {
             // Caster should not have healed (miss means no damage dealt)
             Assert.Equal(hpBefore, wizard.HitPoints);
 
+        }
+
+        [Fact]
+        public void VampiricTouchFollowUpAttackTest() {
+            // The attack granted for the duration can hit and miss on its own
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc; // AC=13
+            orc.HitPointsMax = 100;
+            orc.HitPoints = 100;
+            Battleground ground = createBattleground(wizard, orc);
+            Spells.VampiricTouch.Cast(ground, wizard, 12, SpellLevel.THIRD, 100, orc); // hits
+            AvailableSpells knownSpells = wizard.AvailableSpells[0];
+            Spell attack = knownSpells.KnownSpells[knownSpells.KnownSpells.Length - 1];
+            Assert.Equal(Spells.ID.VAMPIRIC_TOUCH_ATTACK, attack.ID);
+            int orcHitPoints = orc.HitPoints;
+            Random.FixedRandom = Random.DebugState.Min; // 1 + 0 < AC 13 → miss
+            attack.Cast(ground, wizard, 12, SpellLevel.CANTRIP, 0, orc);
+            Assert.Equal(orcHitPoints, orc.HitPoints);
+            Random.FixedRandom = Random.DebugState.Max; // 20 + 0 >= AC 13 → hit
+            attack.Cast(ground, wizard, 12, SpellLevel.CANTRIP, 0, orc);
+            Assert.True(orc.HitPoints < orcHitPoints);
         }
 
         [Fact]
@@ -837,8 +949,65 @@ namespace srd5 {
         }
 
         [Fact]
+        public void BlackTentaclesEscapedSaveSuccessTest() {
+            // A creature that escaped and succeeds its DEX save at the start of its turn stays free
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster troll = Monsters.Troll;
+            Battleground ground = createBattleground(wizard, troll);
+            Random.FixedRandom = Random.DebugState.Avg; // D20=13 < DC=25 → troll fails initial DEX save
+            Spells.BlackTentacles.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, troll);
+            Assert.True(troll.HasCondition(ConditionType.RESTRAINED));
+            troll.RemoveCondition(ConditionType.RESTRAINED); // escaped
+            int hitPoints = troll.HitPoints;
+            Random.FixedRandom = Random.DebugState.Max; // natural 20 → DEX save succeeds
+            troll.OnStartOfTurn();
+            Assert.False(troll.HasCondition(ConditionType.RESTRAINED));
+            Assert.Equal(hitPoints, troll.HitPoints);
+            Assert.True(troll.HasEffect(Effect.SPELL_BLACK_TENTACLES)); // still in the area
+        }
+
+        [Fact]
         public void ConfusionTest() {
             DefaultSpellTest(Spells.Confusion, 25, SpellLevel.FOURTH, null, Effect.SPELL_CONFUSION, Spells.Confusion.Duration);
+        }
+
+        [Fact]
+        public void ConfusionNobodyInReachTest() {
+            // On a 7-8 the target attacks a creature within reach; with nobody in reach it just loses its action
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc; // melee reach 5 ft.
+            Battleground2D ground = new Battleground2D(20, 20);
+            ground.AddCombatant(wizard, 0, 0);
+            ground.AddCombatant(orc, 10, 10); // far out of reach
+            Random.FixedRandom = Random.DebugState.Avg; // D20=13 < DC=25 → orc fails its WIS save
+            Spells.Confusion.Cast(ground, wizard, 25, SpellLevel.FOURTH, 0, orc);
+            Assert.True(orc.HasEffect(Effect.SPELL_CONFUSION));
+            int hitPoints = wizard.HitPoints;
+            Random.State = 3; // next d10 is an 8
+            orc.OnStartOfTurn();
+            Assert.Equal(hitPoints, wizard.HitPoints);
+            Assert.True(orc.HasEffect(Effect.CANNOT_TAKE_ACTIONS));
+        }
+
+        [Fact]
+        public void IceStormFailedSaveTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster troll = Monsters.Troll;
+            Battleground ground = createBattleground(wizard, troll);
+            troll.HitPointsMax = 200;
+            troll.HitPoints = 200;
+            // Rolling the damage dice comes before the save, so Random.FixedRandom can't decide it
+            troll.AddEffect(Effect.FAIL_DEXERITY_CHECK);
+            Spells.IceStorm.Cast(ground, wizard, 15, SpellLevel.FOURTH, 0, troll);
+            Assert.InRange(200 - troll.HitPoints, 6, 40); // full 2d8 bludgeoning + 4d6 cold
+            troll.RemoveEffect(Effect.FAIL_DEXERITY_CHECK);
+            troll.HitPoints = 200;
+            troll.AddEffect(Effect.LEGENDARY_RESISTANCE); // turns a failed save into a success
+            Spells.IceStorm.Cast(ground, wizard, 15, SpellLevel.FOURTH, 0, troll);
+            Assert.InRange(200 - troll.HitPoints, 2, 20); // both halved
         }
 
         [Fact]

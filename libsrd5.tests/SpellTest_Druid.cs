@@ -57,6 +57,34 @@ namespace srd5 {
         }
 
         [Fact]
+        public void InvalidVariantIsIgnoredTest() {
+            Spell contagion = Spells.Contagion;
+            contagion.Variant = SpellVariant.EARTH_ELEMENTAL; // not a Contagion variant
+            Assert.Equal(SpellVariant.BLINDING_SICKNESS, contagion.Variant);
+        }
+
+        [Fact]
+        public void SpellAttackWithoutMissEffectTest() {
+            // With NO_EFFECT, SpellAttack leaves reporting the affection to the calling spell
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(wizard, orc);
+            int affections = 0;
+            EventHandler<GlobalEvents.SpellAffection> handler = delegate (object sender, GlobalEvents.SpellAffection affection) {
+                affections++;
+            };
+            GlobalEvents.SpellAffectionHandlers += handler;
+            Dice damage = D10; // accessing a Die rolls it, so do it before fixing the attack roll
+            try {
+                Random.FixedRandom = Random.DebugState.Max; // natural 20 → hit
+                Assert.True(Spells.SpellAttack(Spells.ID.FIRE_BOLT, ground, wizard, DamageType.FIRE, damage, 0, orc, 5, Spells.DamageMitigation.NO_EFFECT));
+            } finally {
+                GlobalEvents.SpellAffectionHandlers -= handler;
+            }
+            Assert.Equal(0, affections);
+        }
+
+        [Fact]
         public void DiceSlotScalingTest() {
             Dice dice = Spells.DiceSlotScaling(SpellLevel.FIRST, SpellLevel.SECOND, D6, 1, 2, 2);
             Assert.Equal("3d6+2", dice.ToString());
@@ -536,11 +564,14 @@ namespace srd5 {
             Assert.True(bandit.Size == size);
             bandit.AddEffect(Effect.SPELL_ENLARGE);
             Assert.True(bandit.Size > size);
+            Random.FixedRandom = Random.DebugState.Min; // a natural 20 would beat even DC 30
             spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
             Assert.True(bandit.Size == size);
+            Random.FixedRandom = Random.DebugState.Min;
             spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
             Assert.True(bandit.Size < size);
             size = bandit.Size;
+            Random.FixedRandom = Random.DebugState.Min;
             spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
             Assert.True(bandit.Size == size);
             for (int i = 0; i < 10; i++) {
@@ -602,6 +633,23 @@ namespace srd5 {
             }
             Assert.True(location.Distance(ground.LocateCombatant(bandit)) > 0);
             Assert.True(bandit.Speed == speed);
+        }
+
+        [Fact]
+        public void GustofWindSaveSuccessTest() {
+            // A successful STR save at the start of the turn means the target isn't pushed
+            Monster druid = Monsters.Druid;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(20, 20);
+            ground.AddCombatant(druid, 5, 5);
+            ground.AddCombatant(bandit, 5, 7);
+            Spells.GustofWind.Cast(ground, druid, 10, SpellLevel.SECOND, 0, bandit);
+            Random.FixedRandom = Random.DebugState.Max; // natural 20 → STR save succeeds
+            bandit.OnStartOfTurn();
+            Assert.Equal(7, ground.LocateCombatant2D(bandit).Y);
+            Random.FixedRandom = Random.DebugState.Min; // natural 1 → STR save fails, pushed 15 ft. away
+            bandit.OnStartOfTurn();
+            Assert.Equal(10, ground.LocateCombatant2D(bandit).Y);
         }
 
         [Fact]

@@ -68,7 +68,7 @@ namespace srd5 {
                                 int rounds = 2;
                                 caster.AddEndOfTurnEvent(delegate () {
                                     if (--rounds > 0) return false;
-                                    if (undead) target.RemoveEffect(DISADVANTAGE_ON_ATTACK);
+                                    target.RemoveEffect(DISADVANTAGE_ON_ATTACK);
                                     return true;
                                 });
                             }

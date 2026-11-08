@@ -548,6 +548,18 @@ namespace srd5 {
             ground.Push(new Coord(9, 9), ogre, 5); // push southwest
             Assert.Equal(5, ground.LocateCombatant2D(ogre).X);
             Assert.Equal(6, ground.LocateCombatant2D(ogre).Y);
+            ground.Push(new Coord(6, 7), ogre, 20); // push southwest, 20 ft. diagonally = 2 tiles on each axis
+            Assert.Equal(3, ground.LocateCombatant2D(ogre).X);
+            Assert.Equal(4, ground.LocateCombatant2D(ogre).Y);
+        }
+
+        [Fact]
+        public void SetTeamOfUnknownCombatantTest() {
+            BattleGroundClassic ground = new BattleGroundClassic();
+            Monster ogre = Monsters.Ogre;
+            ground.AddCombatant(ogre, ClassicLocation.Row.FRONT_LEFT, Team.VILLAINS);
+            ground.SetTeam(Monsters.Goblin, Team.HEROES); // not on the battleground, ignored
+            Assert.Equal(Team.VILLAINS, ground.GetTeam(ogre));
         }
 
         [Fact]

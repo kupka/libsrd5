@@ -2,6 +2,7 @@ using System;
 using Xunit;
 
 namespace srd5 {
+    [Collection("SingleThreaded")] // creating monsters rolls dice, which must not consume another test's Random.FixedRandom
     public class EffectsTest {
         [Fact]
         public void ResistanceTest() {
@@ -14,6 +15,17 @@ namespace srd5 {
         [Fact]
         public void VulnerabilityTest() {
             Assert.Equal(Effect.VULNERABILITY_SLASHING, Effects.Vulnerability(DamageType.SLASHING));
+        }
+
+        [Fact]
+        public void RugSmotherImmuneToBlindedTest() {
+            Monster golem = Monsters.ClayGolem;
+            golem.AddEffect(Effect.IMMUNITY_BLINDED);
+            golem.AddEffect(Effect.RUG_SMOTHER);
+            Assert.False(golem.HasCondition(ConditionType.BLINDED));
+            Monster orc = Monsters.Orc;
+            orc.AddEffect(Effect.RUG_SMOTHER);
+            Assert.True(orc.HasCondition(ConditionType.BLINDED));
         }
 
         [Fact]

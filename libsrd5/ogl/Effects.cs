@@ -855,7 +855,7 @@ namespace srd5 {
                     break;
                 case SPELL_ALTER_SELF_CLAWS:
                     if (combatant is CharacterSheet hero) {
-                        if (hero.Inventory.MainHand.Is(Weapons.Claws)) {
+                        if (hero.Inventory.MainHand != null && hero.Inventory.MainHand.Is(Weapons.Claws)) {
                             hero.Inventory.MainHand = null;
                         }
                     }

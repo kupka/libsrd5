@@ -6,6 +6,12 @@ namespace srd5 {
     [Collection("SingleThreaded")]
     public class DiceTest {
         [Fact]
+        public void RollDieTest() {
+            Die die = D20;
+            Assert.Equal(die.Value, Roll(die));
+        }
+
+        [Fact]
         public void D2Test() {
             Die die = D2;
             Assert.InRange<int>(die.Value, 1, 2);

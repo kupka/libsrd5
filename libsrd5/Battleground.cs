@@ -220,7 +220,7 @@ namespace srd5 {
                 if (distance == 0) distance = 1;
                 if (targetCoord.Y < sourceCoord.Y) { // push down
                     destination = new Coord(targetCoord.X - distance, targetCoord.Y - distance);
-                } else if (targetCoord.Y > sourceCoord.Y) { // push up
+                } else { // push up 
                     destination = new Coord(targetCoord.X - distance, targetCoord.Y + distance);
                 }
             } else { // push right
@@ -228,7 +228,7 @@ namespace srd5 {
                 if (distance == 0) distance = 1;
                 if (targetCoord.Y < sourceCoord.Y) { // push down
                     destination = new Coord(targetCoord.X + distance, targetCoord.Y - distance);
-                } else if (targetCoord.Y > sourceCoord.Y) { // push up
+                } else { // push up 
                     destination = new Coord(targetCoord.X + distance, targetCoord.Y + distance);
                 }
             }

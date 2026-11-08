@@ -652,11 +652,13 @@ namespace srd5 {
                 giant.HitPoints = giant.HitPointsMax;
                 fire = 0;
                 radiant = 0;
-                Random.FixedRandom = Random.DebugState.Max;
+                // Rolling the damage dice comes before the save, so Random.FixedRandom can't guarantee it
+                giant.AddEffect(Effect.LEGENDARY_RESISTANCE); // turns a failed save into a success
                 Spells.FlameStrike.Cast(ground, cleric, 15, SpellLevel.FIFTH, 0, giant);
                 Assert.InRange(fire, 2, 12);
                 Assert.InRange(radiant, 2, 12);
                 // the radiant variant scales the radiant damage instead (9th level = 8d6)
+                giant.RemoveEffect(Effect.LEGENDARY_RESISTANCE); // still there if the save succeeded on its own
                 giant.AddEffect(Effect.FAIL_DEXERITY_CHECK);
                 giant.HitPoints = giant.HitPointsMax;
                 fire = 0;

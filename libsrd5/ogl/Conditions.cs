@@ -149,13 +149,10 @@ namespace srd5 {
             ActionEffect escapeFromGrapple = () => {
                 // check proficiency or skills
                 bool success = false;
-                int dc = 0;
+                // only called for GRAPPLED_DC10..GRAPPLED_DC20, which are consecutive enum values
+                int dc = (int)type - (int)ConditionType.GRAPPLED_DC12 + 12;
                 int athelicsFavor = combatant.Strength.Modifier;
                 int acrobaticsFavor = combatant.Dexterity.Modifier;
-                // determine grappled condition
-                if (Enum.GetName(typeof(ConditionType), type).IndexOf("GRAPPLED_") == 0) {
-                    dc = (int)type - (int)ConditionType.GRAPPLED_DC12 + 12;
-                }
                 if (combatant.IsProficient(Skill.ATHLETICS)) {
                     athelicsFavor += combatant.ProficiencyBonus;
                 }

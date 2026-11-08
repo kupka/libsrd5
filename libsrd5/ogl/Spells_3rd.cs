@@ -57,7 +57,8 @@ namespace srd5 {
                             if (ground is Battleground2D battleground2D) {
                                 Coord location = battleground2D.LocateCombatant2D(target);
                                 battleground2D.AddCombatant(Monsters.Zombie, location.X, location.Y, ground.GetTeam(caster));
-                            } else if (ground is BattleGroundClassic battleGroundClassic) {
+                            } else {
+                                BattleGroundClassic battleGroundClassic = (BattleGroundClassic)ground;
                                 ClassicLocation location = battleGroundClassic.LocateClassicCombatant(target);
                                 battleGroundClassic.AddCombatant(Monsters.Zombie, location.Location, ground.GetTeam(caster));
                             }
@@ -157,7 +158,7 @@ namespace srd5 {
                             target.AddDamageTakenEvent(delegate (DamageSource source, Damage damage) {
                                 if (!target.HasEffect(SPELL_BESTOW_CURSE_TAKE_ADDITIONAL_DAMAGE)) return true;
                                 if (source.Origin is ID && (ID)source.Origin == ID.BESTOW_CURSE) return false; // prevent recursion
-                                if (source.Origin.Equals(caster)) {
+                                if (caster.Equals(source.Source)) { // the caster hit it with an attack or a spell
                                     target.TakeDamage(new DamageSource(ID.BESTOW_CURSE, caster), NECROTIC, D8);
                                 }
                                 return false;
@@ -1149,7 +1150,7 @@ namespace srd5 {
                         AddEffectsForDuration(ID.SPIRIT_GUARDIANS, caster, target, TEN_MINUTES, SPELL_SPIRIT_GUARDIANS);
 
                         // Apply damage on the initial cast (creature enters the area)
-                        target.TakeDamage(new DamageSource(ID.SPIRIT_GUARDIANS, caster), damageType, 3*D8, HALVES_DAMAGE, dc, WISDOM, out _);
+                        target.TakeDamage(new DamageSource(ID.SPIRIT_GUARDIANS, caster), damageType, 3 * D8, HALVES_DAMAGE, dc, WISDOM, out _);
 
                         // At the start of each of the target's turns while the effect persists, re-apply the damage
                         target.AddStartOfTurnEvent(delegate () {
@@ -1157,7 +1158,7 @@ namespace srd5 {
                             if (!target.HasEffect(SPELL_SPIRIT_GUARDIANS)) return true;
                             // Still in range: deal damage with WIS save for half
                             // TODO: Remove effect when target moves outside the 15-foot radius
-                            target.TakeDamage(new DamageSource(ID.SPIRIT_GUARDIANS, caster), damageType, 3*D8, HALVES_DAMAGE, dc, WISDOM, out _);
+                            target.TakeDamage(new DamageSource(ID.SPIRIT_GUARDIANS, caster), damageType, 3 * D8, HALVES_DAMAGE, dc, WISDOM, out _);
                             return false;
                         });
                     }
@@ -1384,7 +1385,7 @@ namespace srd5 {
                 return new Spell(ID.WIND_WALL, EVOCATION, THIRD, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 50, 20, delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
                     foreach (Combatant target in targets) {
                         GlobalEvents.AffectBySpell(caster, ID.WIND_WALL, target, true);
-                        target.TakeDamage(new DamageSource(ID.WIND_WALL, caster), BLUDGEONING, 3*D8, HALVES_DAMAGE, dc, STRENGTH, out _);
+                        target.TakeDamage(new DamageSource(ID.WIND_WALL, caster), BLUDGEONING, 3 * D8, HALVES_DAMAGE, dc, STRENGTH, out _);
                     }
                 });
             }

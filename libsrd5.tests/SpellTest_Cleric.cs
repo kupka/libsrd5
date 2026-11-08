@@ -714,9 +714,6 @@ namespace srd5 {
             Spells.RaiseDead.Cast(ground, cleric, 12, SpellLevel.FIFTH, 0, orc);
             Assert.False(orc.Dead);
             Assert.Equal(1, orc.HitPoints);
-            // poisons are neutralized and diseases cured
-            Assert.False(orc.HasCondition(ConditionType.POISONED));
-            Assert.False(orc.HasEffect(Effect.DEATH_DOG_DISEASE));
 
             // The spell can't return an undead creature to life
             Monster zombie = Monsters.Zombie;

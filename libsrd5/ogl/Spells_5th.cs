@@ -81,7 +81,7 @@ namespace srd5 {
             }
         }
 
-        /* TODO:
+        /*
         You create a Large hand of shimmering, translucent force in an unoccupied space
         that you can see within range.
         The hand lasts for the spell's duration, and it moves at your command, mimicking
@@ -127,7 +127,138 @@ namespace srd5 {
          */
         public static Spell ArcaneHand {
             get {
-                return new Spell(ID.ARCANE_HAND, EVOCATION, FIFTH, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 0, 0, doNothing);
+                // Note: Since we cannot currently place objects on a Battlefield and move them around,
+                // the hand sort of follows the caster: on casting it can reach a creature within 125 feet
+                // (placed within 120 feet + 5 feet reach), afterwards within 65 feet (moves 60 feet + 5 feet reach).
+                // TODO: The hand is an object with AC 20 and hit points equal to the caster's hit point maximum
+                // TODO: Interposing Hand doesn't restrict the movement of the target yet
+                Spell arcaneHand = new Spell(ID.ARCANE_HAND, EVOCATION, FIFTH, CastingTime.ONE_ACTION, 120, VSM, ONE_MINUTE, 0, 1);
+                arcaneHand.Variants = new SpellVariant[] { CLENCHED_FIST, FORCEFUL_HAND, GRASPING_HAND, CRUSH, INTERPOSING_HAND };
+                arcaneHand.Variant = CLENCHED_FIST;
+                arcaneHand.CastEffect = delegate (Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, Combatant[] targets) {
+                    // The hand has a Strength of 26 (+8)
+                    const int handStrength = 26;
+                    const int handStrengthModifier = 8;
+                    Combatant grasped = null;
+                    // Each interposing command gets a new token, so outdated cover effects can detect that they are no longer active
+                    object interposition = null;
+                    bool spellEnded = false;
+
+                    void releaseGrasp() {
+                        if (grasped != null && grasped.HasCondition(ConditionType.GRAPPLED_DC26))
+                            grasped.RemoveCondition(ConditionType.GRAPPLED_DC26);
+                        grasped = null;
+                    }
+
+                    // The target resists the grapple with either Strength (Athletics) or Dexterity (Acrobatics), whichever is better
+                    bool resistsGrapple(Combatant target, bool disadvantage) {
+                        int athletics = target.Strength.Modifier + (target.IsProficient(Skill.ATHLETICS) ? target.ProficiencyBonus : 0);
+                        int acrobatics = target.Dexterity.Modifier + (target.IsProficient(Skill.ACROBATICS) ? target.ProficiencyBonus : 0);
+                        Skill skill = athletics >= acrobatics ? Skill.ATHLETICS : Skill.ACROBATICS;
+                        return target.DC(ID.ARCANE_HAND, handStrength, skill, false, disadvantage);
+                    }
+
+                    // Half cover: the interposed target's attacks against the caster get -2 (equal to +2 AC)
+                    void interpose(Combatant target) {
+                        object token = new object();
+                        interposition = token;
+                        target.AddAttackModifyingEffect(delegate (ref bool advantage, ref bool disadvantage, ref Attack attack, ref Combatant attacked) {
+                            if (interposition != token) return true; // hand received a different command or the spell ended
+                            if (attacked != caster) return false;
+                            // Use a copy, so the target's attack is not modified permanently
+                            Attack covered = new Attack(attack.Name, attack.AttackBonus - 2, attack.Damage, attack.Reach, attack.RangeNormal, attack.RangeLong);
+                            covered.AddAdditionalDamage(attack.AdditionalDamage);
+                            covered.AddAttackEffect(attack.EffectOnHit);
+                            covered.WithProperties(attack.Properties);
+                            covered.LockedTarget = attack.LockedTarget;
+                            attack = covered;
+                            return false;
+                        });
+                    }
+
+                    void command(ID id, SpellVariant variant, Combatant target, int range, int spellModifier) {
+                        bool holdsTarget = grasped == target && target.HasCondition(ConditionType.GRAPPLED_DC26);
+                        // Any command ends the interposition, and the hand lets go unless it keeps (or crushes) the grasped target
+                        interposition = null;
+                        if (!(variant == CRUSH || (variant == GRASPING_HAND && holdsTarget))) releaseGrasp();
+                        int distance = ground.Distance(caster, target);
+                        if (distance > range) {
+                            GlobalEvents.AffectBySpell(caster, id, target, false);
+                            return;
+                        }
+                        // The hand has advantage on Strength checks against Medium or smaller targets
+                        bool handAdvantage = target.Size <= Size.MEDIUM;
+                        switch (variant) {
+                            case CLENCHED_FIST:
+                                // Melee spell attack made by the hand next to the target: modelled with the hand's reach,
+                                // so it doesn't count as a ranged attack (no disadvantage when the caster is within 5 feet of the target)
+                                // 4d8 force + 2d8 for each slot level above 5th
+                                Attack fist = new Attack(id.Name(), spellModifier + caster.ProficiencyBonus, new Damage(FORCE, DiceSlotScaling(FIFTH, slot, D8, 4, 0, 2)), range);
+                                GlobalEvents.AffectBySpell(caster, id, target, caster.Attack(fist, target, distance, false, true));
+                                break;
+                            case FORCEFUL_HAND:
+                                // Contest: the hand's Strength check against the target's Strength (Athletics), the target wins ties
+                                int handCheck = (handAdvantage ? D20Advantage : D20).Value + handStrengthModifier;
+                                if (target.DC(id, handCheck, Skill.ATHLETICS)) {
+                                    GlobalEvents.AffectBySpell(caster, id, target, false);
+                                } else {
+                                    GlobalEvents.AffectBySpell(caster, id, target, true);
+                                    ground.Push(ground.LocateCombatant(caster), target, 5 + 5 * Math.Max(0, spellModifier));
+                                }
+                                break;
+                            case GRASPING_HAND:
+                                // The hand's advantage is modelled as disadvantage on the target's check against DC 26
+                                if (holdsTarget || target.Size > Size.HUGE || target.HasEffect(IMMUNITY_GRAPPLED) || resistsGrapple(target, handAdvantage)) {
+                                    GlobalEvents.AffectBySpell(caster, id, target, false);
+                                } else {
+                                    GlobalEvents.AffectBySpell(caster, id, target, true);
+                                    target.AddCondition(ConditionType.GRAPPLED_DC26);
+                                    grasped = target;
+                                }
+                                break;
+                            case CRUSH:
+                                // Only possible while the hand is grappling the target
+                                if (!holdsTarget) {
+                                    GlobalEvents.AffectBySpell(caster, id, target, false);
+                                } else {
+                                    // 2d6 + spellcasting ability modifier bludgeoning + 2d6 for each slot level above 5th
+                                    GlobalEvents.AffectBySpell(caster, id, target, true);
+                                    target.TakeDamage(new DamageSource(id, caster), BLUDGEONING, DiceSlotScaling(FIFTH, slot, D6, 2, spellModifier, 2));
+                                }
+                                break;
+                            case INTERPOSING_HAND:
+                            default:
+                                GlobalEvents.AffectBySpell(caster, id, target, true);
+                                interpose(target);
+                                break;
+                        }
+                    }
+
+                    command(ID.ARCANE_HAND, arcaneHand.Variant, targets[0], 125, modifier);
+
+                    // As a bonus action on subsequent turns, the caster can command the hand again
+                    // TODO: This cantrip workaround should be replaced by correctly implementing situative actions
+                    Spell handCantrip = new Spell(ID.ARCANE_HAND_ATTACK, EVOCATION, CANTRIP, CastingTime.BONUS_ACTION, 65, V, INSTANTANEOUS, 0, 1);
+                    handCantrip.Variants = arcaneHand.Variants;
+                    handCantrip.Variant = CLENCHED_FIST;
+                    handCantrip.CastEffect = delegate (Battleground ground2, Combatant caster2, int dc2, SpellLevel slot2, int modifier2, Combatant[] targets2) {
+                        if (spellEnded) return;
+                        command(ID.ARCANE_HAND_ATTACK, handCantrip.Variant, targets2[0], 65, modifier2);
+                    };
+                    caster.AvailableSpells[0].AddKnownSpell(handCantrip);
+                    caster.AvailableSpells[0].AddPreparedSpell(handCantrip);
+                    int remainingRounds = (int)ONE_MINUTE;
+                    caster.AddEndOfTurnEvent(delegate () {
+                        if (--remainingRounds > 0) return false;
+                        spellEnded = true;
+                        interposition = null;
+                        releaseGrasp();
+                        caster.AvailableSpells[0].RemoveKnownSpell(handCantrip);
+                        caster.AvailableSpells[0].RemovePreparedSpell(handCantrip);
+                        return true;
+                    });
+                };
+                return arcaneHand;
             }
         }
 

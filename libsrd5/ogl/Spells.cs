@@ -123,7 +123,13 @@ namespace srd5 {
         PETRIFICATION,
         CURSE,
         ABILITY_SCORE_REDUCTION,
-        HIT_POINT_MAXIMUM_REDUCTION
+        HIT_POINT_MAXIMUM_REDUCTION,
+        // Arcane Hand
+        CLENCHED_FIST,
+        FORCEFUL_HAND,
+        GRASPING_HAND,
+        CRUSH,
+        INTERPOSING_HAND
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, params Combatant[] targets);
@@ -191,6 +197,7 @@ namespace srd5 {
             ANTIPATHY_SYMPATHY,
             ARCANE_EYE,
             ARCANE_HAND,
+            ARCANE_HAND_ATTACK,
             ARCANE_LOCK,
             ARCANE_SWORD,
             ARCANISTS_MAGIC_AURA,

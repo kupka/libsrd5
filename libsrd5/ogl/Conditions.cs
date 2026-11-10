@@ -24,6 +24,7 @@ namespace srd5 {
         GRAPPLED_DC18, // Speed = 0
         GRAPPLED_DC19, // Speed = 0
         GRAPPLED_DC20, // Speed = 0
+        GRAPPLED_DC26, // Speed = 0 
         INCAPACITATED, // Cannot take actions and reactions
         INVISIBLE, // Advantage on attacks, Disadvantage on being attacked
         PARALYZED, // Stunned & takes auto crits
@@ -64,6 +65,7 @@ namespace srd5 {
                 case ConditionType.GRAPPLED_DC18:
                 case ConditionType.GRAPPLED_DC19:
                 case ConditionType.GRAPPLED_DC20:
+                case ConditionType.GRAPPLED_DC26:
                     applyGrappled(combatant, type);
                     break;
             }
@@ -149,8 +151,8 @@ namespace srd5 {
             ActionEffect escapeFromGrapple = () => {
                 // check proficiency or skills
                 bool success = false;
-                // only called for GRAPPLED_DC10..GRAPPLED_DC20, which are consecutive enum values
-                int dc = (int)type - (int)ConditionType.GRAPPLED_DC12 + 12;
+                // only called for GRAPPLED_DCxx conditions, the DC is encoded in the name
+                int dc = int.Parse(Enum.GetName(typeof(ConditionType), type).Substring("GRAPPLED_DC".Length));
                 int athelicsFavor = combatant.Strength.Modifier;
                 int acrobaticsFavor = combatant.Dexterity.Modifier;
                 if (combatant.IsProficient(Skill.ATHLETICS)) {

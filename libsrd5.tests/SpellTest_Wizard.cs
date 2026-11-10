@@ -1342,6 +1342,243 @@ namespace srd5 {
             trollInWall.OnEndOfTurn();
             Assert.Equal(hpAfterExpiry, trollInWall.HitPoints);
         }
+        private static Spell arcaneHandCommand(CharacterSheet wizard) {
+            foreach (Spell spell in wizard.AvailableSpells[0].KnownSpells) {
+                if (spell.ID == Spells.ID.ARCANE_HAND_ATTACK) return spell;
+            }
+            return null;
+        }
+
+        private static int forceDamage(Monster target, System.Action cast) {
+            int damage = 0;
+            EventHandler<EventArgs> handler = delegate (object sender, EventArgs args) {
+                if (GlobalEvents.EventTypes.DAMAGED.Equals(sender) && args is GlobalEvents.DamageReceived dmg && dmg.Victim == target && dmg.DamageType == DamageType.FORCE) {
+                    damage += dmg.Amount;
+                }
+            };
+            GlobalEvents.Handlers += handler;
+            try {
+                cast();
+            } finally {
+                GlobalEvents.Handlers -= handler;
+            }
+            return damage;
+        }
+
+        [Fact]
+        public void ArcaneHandClenchedFistTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster ogre = Monsters.Ogre;
+            Monster orc = Monsters.Orc;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(30, 30);
+            ground.AddCombatant(wizard, 0, 0);
+            ground.AddCombatant(ogre, 1, 0);
+            ground.AddCombatant(orc, 10, 0); // 50 ft
+            ground.AddCombatant(bandit, 20, 0); // 100 ft
+            Spell arcaneHand = Spells.ArcaneHand;
+            Assert.Equal(SpellVariant.CLENCHED_FIST, arcaneHand.Variant);
+            // 4d8 force at 5th level, the d20 rolls a 10, which hits with +100
+            Random.FixedRandom = Random.DebugState.Avg;
+            Assert.InRange(forceDamage(ogre, () => arcaneHand.Cast(ground, wizard, 15, SpellLevel.FIFTH, 100, ogre)), 4, 32);
+            Spell command = arcaneHandCommand(wizard);
+            Assert.NotNull(command);
+            Assert.Equal(CastingTime.BONUS_ACTION, command.CastingTime);
+            // the hand can't reach the bandit 100 ft away with a bonus action
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 100, bandit);
+            Assert.Equal(bandit.HitPointsMax, bandit.HitPoints);
+            // but the orc 50 ft away
+            Random.FixedRandom = Random.DebugState.Avg;
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 100, orc);
+            Assert.NotEqual(orc.HitPointsMax, orc.HitPoints);
+            // the bonus action command ends with the spell
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
+                wizard.OnEndOfTurn();
+            }
+            Assert.Null(arcaneHandCommand(wizard));
+            int hp = ogre.HitPoints;
+            Random.FixedRandom = Random.DebugState.Avg;
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 100, ogre);
+            Assert.Equal(hp, ogre.HitPoints);
+        }
+
+        [Fact]
+        public void ArcaneHandClenchedFistHigherSlotTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster giant = Monsters.HillGiant;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombatant(wizard, 0, 0);
+            ground.AddCombatant(giant, 2, 0);
+            // 9th level: 4d8 + 4 * 2d8 = 12d8
+            Random.FixedRandom = Random.DebugState.Avg;
+            Assert.InRange(forceDamage(giant, () => Spells.ArcaneHand.Cast(ground, wizard, 15, SpellLevel.NINTH, 100, giant)), 12, 96);
+        }
+
+        [Fact]
+        public void ArcaneHandGraspingAndCrushTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster ogre = Monsters.Ogre;
+            Monster orc = Monsters.Orc;
+            Monster tarrasque = Monsters.Tarrasque;
+            Monster fireElemental = Monsters.FireElemental;
+            Battleground2D ground = new Battleground2D(30, 30);
+            ground.AddCombatant(wizard, 0, 0);
+            ground.AddCombatant(ogre, 2, 0);
+            ground.AddCombatant(orc, 0, 2);
+            ground.AddCombatant(tarrasque, 5, 5);
+            ground.AddCombatant(fireElemental, 0, 5);
+            Spell arcaneHand = Spells.ArcaneHand;
+            arcaneHand.Variant = SpellVariant.CRUSH;
+            // nothing to crush yet
+            arcaneHand.Cast(ground, wizard, 15, SpellLevel.FIFTH, 5, ogre);
+            Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
+            Spell command = arcaneHandCommand(wizard);
+            command.Variant = SpellVariant.GRASPING_HAND;
+            // Gargantuan creatures and creatures immune to being grappled can't be grasped
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 5, tarrasque);
+            Assert.False(tarrasque.HasCondition(ConditionType.GRAPPLED_DC26));
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 5, fireElemental);
+            Assert.False(fireElemental.HasCondition(ConditionType.GRAPPLED_DC26));
+            // a natural 20 resists the grapple
+            Random.FixedRandom = Random.DebugState.Max;
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 5, ogre);
+            Assert.False(ogre.HasCondition(ConditionType.GRAPPLED_DC26));
+            // a failed check against DC 26 doesn't
+            ogre.AddEffect(Effect.FAIL_STRENGTH_CHECK);
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 5, ogre);
+            Assert.True(ogre.HasCondition(ConditionType.GRAPPLED_DC26));
+            // grasping the held target again doesn't release it
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 5, ogre);
+            Assert.True(ogre.HasCondition(ConditionType.GRAPPLED_DC26));
+            // crushing only works on the grasped target
+            command.Variant = SpellVariant.CRUSH;
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 5, orc);
+            Assert.Equal(orc.HitPointsMax, orc.HitPoints);
+            Assert.True(ogre.HasCondition(ConditionType.GRAPPLED_DC26));
+            // 2d6 + 5 bludgeoning
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 5, ogre);
+            Assert.InRange(ogre.HitPointsMax - ogre.HitPoints, 7, 17);
+            Assert.True(ogre.HasCondition(ConditionType.GRAPPLED_DC26));
+            // escaping requires a check against DC 26
+            Assert.Contains(Actions.ID.ESCAPE_FROM_GRAPPLE, ogre.ConditionalActionIDs);
+            ogre.DoConditionalAction(Actions.ID.ESCAPE_FROM_GRAPPLE);
+            Assert.True(ogre.HasCondition(ConditionType.GRAPPLED_DC26));
+            // any other command makes the hand let go
+            command.Variant = SpellVariant.CLENCHED_FIST;
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 5, orc);
+            Assert.False(ogre.HasCondition(ConditionType.GRAPPLED_DC26));
+            // a Medium target (the hand's advantage gives the target disadvantage)
+            orc.AddEffect(Effect.FAIL_STRENGTH_CHECK);
+            command.Variant = SpellVariant.GRASPING_HAND;
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 5, orc);
+            Assert.True(orc.HasCondition(ConditionType.GRAPPLED_DC26));
+            // the grasp ends with the spell
+            for (int i = 0; i < (int)SpellDuration.ONE_MINUTE; i++) {
+                wizard.OnEndOfTurn();
+            }
+            Assert.False(orc.HasCondition(ConditionType.GRAPPLED_DC26));
+        }
+
+        [Fact]
+        public void ArcaneHandHigherSlotCrushTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster giant = Monsters.HillGiant;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombatant(wizard, 0, 0);
+            ground.AddCombatant(giant, 2, 0);
+            giant.AddEffect(Effect.FAIL_STRENGTH_CHECK);
+            Spell arcaneHand = Spells.ArcaneHand;
+            arcaneHand.Variant = SpellVariant.GRASPING_HAND;
+            arcaneHand.Cast(ground, wizard, 15, SpellLevel.SEVENTH, 5, giant);
+            Assert.True(giant.HasCondition(ConditionType.GRAPPLED_DC26));
+            // 7th level: 2d6 + 2 * 2d6 + 5 = 6d6 + 5
+            Spell command = arcaneHandCommand(wizard);
+            command.Variant = SpellVariant.CRUSH;
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 5, giant);
+            Assert.InRange(giant.HitPointsMax - giant.HitPoints, 11, 41);
+        }
+
+        [Fact]
+        public void ArcaneHandForcefulHandTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(30, 30);
+            ground.AddCombatant(wizard, 0, 0);
+            ground.AddCombatant(orc, 1, 0);
+            ground.AddCombatant(bandit, 0, 20); // 100 ft
+            Spell arcaneHand = Spells.ArcaneHand;
+            arcaneHand.Variant = SpellVariant.FORCEFUL_HAND;
+            // the orc loses the contest and is pushed 5 + 5 * 3 = 20 ft away from the caster
+            orc.AddEffect(Effect.FAIL_STRENGTH_CHECK);
+            arcaneHand.Cast(ground, wizard, 15, SpellLevel.FIFTH, 3, orc);
+            Assert.Equal(5, ground.LocateCombatant2D(orc).X);
+            Assert.Equal(0, ground.LocateCombatant2D(orc).Y);
+            // a strong Large ogre wins the contest: the hand (no advantage) rolls a 1 + 8, the ogre 2+ (+10)
+            Monster ogre = Monsters.Ogre;
+            ground.AddCombatant(ogre, 0, 2);
+            ogre.Strength.BaseValue = 30;
+            Spell command = arcaneHandCommand(wizard);
+            command.Variant = SpellVariant.FORCEFUL_HAND;
+            Random.State = 1;
+            Random.FixedRandom = Random.DebugState.Min;
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 3, ogre);
+            Assert.Equal(2, ground.LocateCombatant2D(ogre).Y);
+            // the bandit is out of reach
+            bandit.AddEffect(Effect.FAIL_STRENGTH_CHECK);
+            command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 3, bandit);
+            Assert.Equal(20, ground.LocateCombatant2D(bandit).Y);
+        }
+
+        [Fact]
+        public void ArcaneHandInterposingHandTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            Monster orc = Monsters.Orc;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(10, 10);
+            ground.AddCombatant(wizard, 0, 0);
+            ground.AddCombatant(orc, 1, 0);
+            ground.AddCombatant(bandit, 0, 1);
+            Attack greataxe = orc.MeleeAttacks[0];
+            int originalBonus = greataxe.AttackBonus;
+            int rolledBonus = 0;
+            EventHandler<GlobalEvents.AttackRolled> handler = delegate (object sender, GlobalEvents.AttackRolled args) {
+                if (args.Attacker == orc) rolledBonus = args.Attack.AttackBonus;
+            };
+            GlobalEvents.AttackRolledHandlers += handler;
+            try {
+                Spell arcaneHand = Spells.ArcaneHand;
+                arcaneHand.Variant = SpellVariant.INTERPOSING_HAND;
+                arcaneHand.Cast(ground, wizard, 15, SpellLevel.FIFTH, 3, orc);
+                // half cover against the orc's attacks on the caster
+                orc.Attack(greataxe, wizard, 5);
+                Assert.Equal(originalBonus - 2, rolledBonus);
+                Assert.Equal(originalBonus, greataxe.AttackBonus);
+                // but not against other targets
+                orc.Attack(greataxe, bandit, 5);
+                Assert.Equal(originalBonus, rolledBonus);
+                // re-interposing doesn't stack the cover
+                Spell command = arcaneHandCommand(wizard);
+                command.Variant = SpellVariant.INTERPOSING_HAND;
+                command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 3, orc);
+                orc.Attack(greataxe, wizard, 5);
+                Assert.Equal(originalBonus - 2, rolledBonus);
+                // a different command ends the cover
+                command.Variant = SpellVariant.CLENCHED_FIST;
+                command.Cast(ground, wizard, 15, SpellLevel.CANTRIP, 3, bandit);
+                orc.Attack(greataxe, wizard, 5);
+                Assert.Equal(originalBonus, rolledBonus);
+            } finally {
+                GlobalEvents.AttackRolledHandlers -= handler;
+            }
+        }
+
         [Fact]
         public void ConeOfColdTest() {
             CharacterSheet wizard = new CharacterSheet(Race.HUMAN);

@@ -169,6 +169,8 @@ namespace srd5 {
                 case Feat.PRIMAL_PATH:
                     return "Primal Path";
                 case Feat.ABILITY_SCORE_IMPROVEMENT:
+                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT:
+                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT:
                     return "Ability Score Improvement";
                 case Feat.BARBARIAN_EXTRA_ATTACK:
                 case Feat.EXTRA_ATTACK_1:
@@ -1315,6 +1317,10 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "At 3rd level, you choose a path that shapes the nature of your rage. Choose the Path of the Berserker or the Path of the Totem Warrior, both detailed at the end of the class description. Your choice grants you features at 3rd level and again at 6th, 10th, and 14th levels.";
                 case Feat.ABILITY_SCORE_IMPROVEMENT:
                     return "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
+                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT:
+                    return "In addition to the ability score improvements all classes get, when you reach 6th and 14th level you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
+                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT:
+                    return "In addition to the ability score improvements all classes get, when you reach 10th level you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
                 case Feat.BARBARIAN_EXTRA_ATTACK:
                 case Feat.MONK_EXTRA_ATTACK:
                 case Feat.PALADIN_EXTRA_ATTACK:

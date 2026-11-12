@@ -187,6 +187,7 @@ namespace srd5 {
         BEAST_SPELLS,
         ARCHDRUID,
         // Fighter
+        FIGHTER_ABILITY_SCORE_IMPROVEMENT,
         FIGHTER_FIGHTING_STYLE,
         FIGHTER_FIGHTING_STYLE_ARCHERY,
         FIGHTER_FIGHTING_STYLE_DEFENSE,
@@ -311,6 +312,7 @@ namespace srd5 {
         FERAL_SENSES,
         FOE_SLAYER,
         // Rogue
+        ROGUE_ABILITY_SCORE_IMPROVEMENT,
         ROGUE_EXPERTISE_1,
         SNEAK_ATTACK,
         THIEVES_CANT,

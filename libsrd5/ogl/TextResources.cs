@@ -138,7 +138,7 @@ namespace srd5 {
                     return "Infernal Legacy";
                 case Feat.RAGE:
                     return "Rage";
-                case Feat.UNARMORED_DEFENSE:
+                case Feat.BARBARIAN_UNARMORED_DEFENSE:
                     return "Unarmored Defense";
                 case Feat.RECKLESS_ATTACK:
                     return "Reckless Attack";
@@ -185,7 +185,7 @@ namespace srd5 {
                     return "Song of Rest";
                 case Feat.BARD_COLLEGE:
                     return "Bard College";
-                case Feat.BONUS_PROFICIENCIES:
+                case Feat.BARD_BONUS_PROFICIENCIES:
                     return "Bonus Proficiencies";
                 case Feat.CUTTING_WORDS:
                     return "Cutting Words";
@@ -210,12 +210,12 @@ namespace srd5 {
                     return "Divine Domain";
                 case Feat.DOMAIN_SPELLS:
                     return "Domain Spells";
-                case Feat.BONUS_PROFICIENCY:
+                case Feat.DIVINE_DOMAIN_BONUS_PROFICIENCY:
                     return "Bonus Proficiency";
                 case Feat.DISCIPLE_OF_LIFE:
                     return "Disciple of Life";
                 case Feat.CLERIC_CHANNEL_DIVINITY:
-                case Feat.CHANNEL_DIVINITY:
+                case Feat.PALADIN_CHANNEL_DIVINITY:
                     return "Channel Divinity";
                 case Feat.CHANNEL_DIVINITY_TURN_UNDEAD:
                     return "Channel Divinity: Turn Undead";
@@ -272,7 +272,7 @@ namespace srd5 {
                 case Feat.FIGHTING_STYLE_DUELING:
                     return "Fighting Style: Dueling";
                 case Feat.FIGHTER_FIGHTING_STYLE_GREAT_WEAPON_FIGHTING:
-                case Feat.FIGHTING_STYLE_GREAT_WEAPON_FIGHTING:
+                case Feat.PALADIN_FIGHTING_STYLE_GREAT_WEAPON_FIGHTING:
                     return "Fighting Style: Great Weapon Fighting";
                 case Feat.FIGHTING_STYLE_PROTECTION:
                     return "Fighting Style: Protection";
@@ -423,7 +423,7 @@ namespace srd5 {
                     return "Feral Senses";
                 case Feat.FOE_SLAYER:
                     return "Foe Slayer";
-                case Feat.SNEAK_ATTACK:
+                case Feat.ROGUE_SNEAK_ATTACK:
                     return "Sneak Attack";
                 case Feat.THIEVES_CANT:
                     return "Thieves' Cant";
@@ -1097,7 +1097,7 @@ While raging, you gain the following benefits if you aren't wearing heavy armor:
 If you are able to cast spells, you can't cast them or concentrate on them while raging.
 Your rage lasts for 1 minute. It ends early if you are knocked unconscious or if your turn ends and you haven't attacked a hostile creature since your last turn or taken damage since then. You can also end your rage on your turn as a bonus action.
 Once you have raged the number of times available for your barbarian level, you must finish a long rest before you can rage again";
-                case Feat.UNARMORED_DEFENSE:
+                case Feat.BARBARIAN_UNARMORED_DEFENSE:
                     return "While you are not wearing any armor, your Armor Class equals 10 + your Dexterity modifier + your Constitution modifier. You can use a shield and still gain this benefit.";
                 case Feat.RECKLESS_ATTACK:
                     return "Starting at 2nd level, you can throw aside all concern for defense to attack with fierce desperation. When you make your first attack on your turn, you can decide to attack recklessly. Doing so gives you advantage on melee weapon attack rolls using Strength during this turn, but attack rolls against you have advantage until your next turn.";
@@ -1141,7 +1141,7 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Beginning at 2nd level, you can use soothing music or oration to help revitalize your wounded allies during a short rest. If you or any friendly creatures who can hear your performance regain hit points at the end of the short rest by spending one or more Hit Dice, each of those creatures regains an extra 1d6 hit points. \nThe extra hit points increase when you reach certain levels in this class: to 1d8 at 9th level, to 1d10 at 13th level, and to 1d12 at 17th level.";
                 case Feat.BARD_COLLEGE:
                     return "At 3rd level, you delve into the advanced techniques of a bard college of your choice, such as the College of Lore. Your choice grants you features at 3rd level and again at 6th and 14th level.";
-                case Feat.BONUS_PROFICIENCIES:
+                case Feat.BARD_BONUS_PROFICIENCIES:
                     return "When you join the College of Lore at 3rd level, you gain proficiency with three skills of your choice.";
                 case Feat.CUTTING_WORDS:
                     return "Also at 3rd level, you learn how to use your wit to distract, confuse, and otherwise sap the confidence and competence of others.\nWhen a creature that you can see within 60 feet of you makes an attack roll, an ability check, or a damage roll, you can use your reaction to expend one of your uses of Bardic Inspiration, rolling a Bardic Inspiration die and subtracting the number rolled from the creature's roll.\nYou can choose to use this feature after the creature makes its roll, but before the GM determines whether the attack roll or ability check succeeds or fails, or before the creature deals its damage. The creature is immune if it can't hear you or if it's immune to being charmed.";
@@ -1165,7 +1165,7 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Choose one domain related to your deity, such as Life. Each domain is detailed at the end of the class description, and each one provides examples of gods associated with it. Your choice grants you domain spells and other features when you choose it at 1st level. It also grants you additional ways to use Channel Divinity when you gain that feature at 2nd level, and additional benefits at 6th, 8th, and 17th levels.";
                 case Feat.DOMAIN_SPELLS:
                     return "Each domain has a list of spells - its domain spells - that you gain at the cleric levels noted in the domain description. Once you gain a domain spell, you always have it prepared, and it doesn't count against the number of spells you can prepare each day.\nIf you have a domain spell that doesn't appear on the cleric spell list, the spell is nonetheless a cleric spell for you.";
-                case Feat.BONUS_PROFICIENCY:
+                case Feat.DIVINE_DOMAIN_BONUS_PROFICIENCY:
                     return "When you choose this domain at 1st level, you gain proficiency with heavy armor.";
                 case Feat.DISCIPLE_OF_LIFE:
                     return "Also starting at 1st level, your healing spells are more effective. Whenever you use a spell of 1st level or higher to restore hit points to a creature, the creature regains additional hit points equal to 2 + the spell's level.";
@@ -1303,7 +1303,7 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Your blessed touch can heal wounds. You have a pool of healing power that replenishes when you take a long rest. With that pool, you can restore a total number of hit points equal to your paladin level × 5.\nAs an action, you can touch a creature and draw power from the pool to restore a number of hit points to that creature, up to the maximum amount remaining in your pool.\nAlternatively, you can expend 5 hit points from your pool of healing to cure the target of one disease or neutralize one poison affecting it. You can cure multiple diseases and neutralize multiple poisons with a single use of Lay on Hands, expending hit points separately for each one.\nThis feature has no effect on undead and constructs.";
                 case Feat.PALADIN_FIGHTING_STYLE:
                     return "At 2nd level, you adopt a style of fighting as your specialty. Choose one of the following options. You can't take a Fighting Style option more than once, even if you later get to choose again.";
-                case Feat.FIGHTING_STYLE_GREAT_WEAPON_FIGHTING:
+                case Feat.PALADIN_FIGHTING_STYLE_GREAT_WEAPON_FIGHTING:
                     return "When you roll a 1 or 2 on a damage die for an attack you make with a melee weapon that you are wielding with two hands, you can reroll the die and must use the new roll. The weapon must have the two-handed or versatile property for you to gain this benefit.";
                 case Feat.PALADIN_SPELLCASTING:
                     return "By 2nd level, you have learned to draw on divine magic through meditation and prayer to cast spells as a cleric does.";
@@ -1315,7 +1315,7 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "When you reach 3rd level, you swear the oath that binds you as a paladin forever. Up to this time you have been in a preparatory stage, committed to the path but not yet sworn to it. Now you choose an oath, such as the Oath of Devotion.\nYour choice grants you features at 3rd level and again at 7th, 15th, and 20th level. Those features include oath spells and the Channel Divinity feature.";
                 case Feat.OATH_SPELLS:
                     return "Each oath has a list of associated spells. You gain access to these spells at the levels specified in the oath description. Once you gain access to an oath spell, you always have it prepared. Oath spells don't count against the number of spells you can prepare each day.\nIf you gain an oath spell that doesn't appear on the paladin spell list, the spell is nonetheless a paladin spell for you.";
-                case Feat.CHANNEL_DIVINITY:
+                case Feat.PALADIN_CHANNEL_DIVINITY:
                     return "Your oath allows you to channel divine energy to fuel magical effects. Each Channel Divinity option provided by your oath explains how to use it.\nWhen you use your Channel Divinity, you choose which option to use. You must then finish a short or long rest to use your Channel Divinity again.\nSome Channel Divinity effects require saving throws. When you use such an effect from this class, the DC equals your paladin spell save DC.";
                 case Feat.CHANNEL_DIVINITY_SACRED_WEAPON:
                     return "As an action, you can imbue one weapon that you are holding with positive energy, using your Channel Divinity. For 1 minute, you add your Charisma modifier to attack rolls made with that weapon (with a minimum bonus of +1). The weapon also emits bright light in a 20-foot radius and dim light 20 feet beyond that. If the weapon is not already magical, it becomes magical for the duration.\nYou can end this effect on your turn as part of any other action. If you are no longer holding or carrying this weapon, or if you fall unconscious, this effect ends.";
@@ -1389,7 +1389,7 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "At 20th level, you become an unparalleled hunter of your enemies. Once on each of your turns, you can add your Wisdom modifier to the attack roll or the damage roll of an attack you make against one of your favored enemies. You can choose to use this feature before or after the roll, but before any effects of the roll are applied.";
                 case Feat.ROGUE_EXPERTISE:
                     return "At 1st level, choose two of your skill proficiencies, or one of your skill proficiencies and your proficiency with thieves' tools. Your proficiency bonus is doubled for any ability check you make that uses either of the chosen proficiencies.\nAt 6th level, you can choose two more of your proficiencies (in skills or with thieves' tools) to gain this benefit";
-                case Feat.SNEAK_ATTACK:
+                case Feat.ROGUE_SNEAK_ATTACK:
                     return "Beginning at 1st level, you know how to strike subtly and exploit a foe's distraction. Once per turn, you can deal an extra 1d6 damage to one creature you hit with an attack if you have advantage on the attack roll. The attack must use a finesse or a ranged weapon.\nYou don't need advantage on the attack roll if another enemy of the target is within 5 feet of it, that enemy isn't incapacitated, and you don't have disadvantage on the attack roll.\nThe amount of the extra damage increases as you gain levels in this class, as shown in the Sneak Attack column of the Rogue table.";
                 case Feat.THIEVES_CANT:
                     return "During your rogue training you learned thieves' cant, a secret mix of dialect, jargon, and code that allows you to hide messages in seemingly normal conversation. Only another creature that knows thieves' cant understands such messages. It takes four times longer to convey such a message than it does to speak the same idea plainly.\nIn addition, you understand a set of secret signs and symbols used to convey short, simple messages, such as whether an area is dangerous or the territory of a thieves' guild, whether loot is nearby, or whether the people in an area are easy marks or will provide a safe house for thieves on the run.";

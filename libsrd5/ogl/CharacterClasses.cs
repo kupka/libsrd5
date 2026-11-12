@@ -31,7 +31,7 @@ namespace srd5 {
                                 Proficiency.MARTIAL_RANGED_WEAPONS
                             };
                 barbarian.Feats = new Feat[][] {
-                    new Feat[]{ Feat.RAGE, Feat.UNARMORED_DEFENSE },
+                    new Feat[]{ Feat.RAGE, Feat.BARBARIAN_UNARMORED_DEFENSE },
                     new Feat[]{ Feat.RECKLESS_ATTACK, Feat.DANGER_SENSE },
                     new Feat[]{ Feat.FRENZY },
                     new Feat[] { },

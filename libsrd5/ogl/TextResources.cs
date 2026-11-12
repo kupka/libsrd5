@@ -168,69 +168,7 @@ namespace srd5 {
                     return "Frenzy";
                 case Feat.PRIMAL_PATH:
                     return "Primal Path";
-                case Feat.BARBARIAN_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.BARBARIAN_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.BARBARIAN_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.BARBARIAN_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.BARBARIAN_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.BARD_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.BARD_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.BARD_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.BARD_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.BARD_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.CLERIC_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.CLERIC_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.CLERIC_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.CLERIC_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.CLERIC_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.DRUID_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.DRUID_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.DRUID_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.DRUID_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.DRUID_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_6:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_7:
-                case Feat.MONK_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.MONK_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.MONK_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.MONK_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.MONK_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.PALADIN_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.PALADIN_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.PALADIN_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.PALADIN_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.PALADIN_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.RANGER_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.RANGER_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.RANGER_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.RANGER_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.RANGER_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT_6:
-                case Feat.SORCERER_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.SORCERER_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.SORCERER_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.SORCERER_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.SORCERER_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.WARLOCK_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.WARLOCK_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.WARLOCK_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.WARLOCK_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.WARLOCK_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.WIZARD_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.WIZARD_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.WIZARD_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.WIZARD_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.WIZARD_ABILITY_SCORE_IMPROVEMENT_5:
+                case Feat.ABILITY_SCORE_IMPROVEMENT:
                     return "Ability Score Improvement";
                 case Feat.BARBARIAN_EXTRA_ATTACK:
                 case Feat.EXTRA_ATTACK_1:
@@ -1375,57 +1313,8 @@ Once you have raged the number of times available for your barbarian level, you 
                 case Feat.PRIMAL_PATH_IMPROVEMENT_2:
                 case Feat.PRIMAL_PATH_IMPROVEMENT_3:
                     return "At 3rd level, you choose a path that shapes the nature of your rage. Choose the Path of the Berserker or the Path of the Totem Warrior, both detailed at the end of the class description. Your choice grants you features at 3rd level and again at 6th, 10th, and 14th levels.";
-                case Feat.BARBARIAN_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.BARBARIAN_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.BARBARIAN_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.BARBARIAN_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.BARBARIAN_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.BARD_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.BARD_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.BARD_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.BARD_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.BARD_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.CLERIC_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.CLERIC_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.CLERIC_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.CLERIC_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.CLERIC_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.DRUID_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.DRUID_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.DRUID_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.DRUID_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.DRUID_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.MONK_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.MONK_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.MONK_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.MONK_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.MONK_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.PALADIN_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.PALADIN_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.PALADIN_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.PALADIN_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.PALADIN_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.RANGER_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.RANGER_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.RANGER_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.RANGER_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.RANGER_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.SORCERER_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.SORCERER_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.SORCERER_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.SORCERER_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.SORCERER_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.WARLOCK_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.WARLOCK_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.WARLOCK_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.WARLOCK_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.WARLOCK_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.WIZARD_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.WIZARD_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.WIZARD_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.WIZARD_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.WIZARD_ABILITY_SCORE_IMPROVEMENT_5:
-                    return "When you reach 4th level, and again at 8th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
+                case Feat.ABILITY_SCORE_IMPROVEMENT:
+                    return "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
                 case Feat.BARBARIAN_EXTRA_ATTACK:
                 case Feat.MONK_EXTRA_ATTACK:
                 case Feat.PALADIN_EXTRA_ATTACK:
@@ -1612,14 +1501,6 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "At 3rd level, you choose an archetype that you strive to emulate in your combat styles and techniques, such as Champion. The archetype you choose grants you features at 3rd level and again at 7th, 10th, 15th, and 18th level.";
                 case Feat.IMPROVED_CRITICAL:
                     return "Beginning when you choose this archetype at 3rd level, your weapon attacks score a critical hit on a roll of 19 or 20.";
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_6:
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT_7:
-                    return "When you reach 4th level, and again at 6th, 8th, 12th, 14th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
                 case Feat.EXTRA_ATTACK_1:
                 case Feat.EXTRA_ATTACK_2:
                 case Feat.EXTRA_ATTACK_3:
@@ -1808,13 +1689,6 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Starting at 3rd level, you can use the bonus action granted by your Cunning Action to make a Dexterity (Sleight of Hand) check, use your thieves' tools to disarm a trap or open a lock, or take the Use an Object action.";
                 case Feat.SECOND_STORY_WORK:
                     return "When you choose this archetype at 3rd level, you gain the ability to climb faster than normal; climbing no longer costs you extra movement.\nIn addition, when you make a running jump, the distance you cover increases by a number of feet equal to your Dexterity modifier.";
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT_1:
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT_2:
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT_3:
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT_4:
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT_5:
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT_6:
-                    return "When you reach 4th level, and again at 8th, 10th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
                 case Feat.UNCANNY_DODGE:
                     return "Starting at 5th level, when an attacker that you can see hits you with an attack, you can use your reaction to halve the attack's damage against you.";
                 case Feat.ROGUE_EVASION:

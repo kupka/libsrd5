@@ -58,6 +58,12 @@ namespace srd5 {
             Assert.True(frontLeft.Distance(backLeft) == backLeft.Distance(frontLeft));
             Assert.True(backLeft.Distance(frontLeft) < backLeft.Distance(frontRight));
             Assert.True(backLeft.Distance(frontRight) < backLeft.Distance(backRight));
+            // same side rows are within touch range
+            Assert.Equal(5, backLeft.Distance(frontLeft));
+            Assert.Equal(5, backRight.Distance(frontRight));
+            Assert.Equal(5, frontLeft.Distance(frontRight));
+            Assert.Equal(30, backLeft.Distance(frontRight));
+            Assert.Equal(30, backRight.Distance(frontLeft));
             Assert.Throws<Srd5ArgumentException>(delegate {
                 frontLeft.Distance(new Coord(2, 3));
             });
@@ -428,6 +434,35 @@ namespace srd5 {
             Assert.True(ogre.HitPointsMax > ogre.HitPoints);
             Assert.True(ogre2.HitPointsMax == ogre2.HitPoints);
 
+        }
+
+        [Fact]
+        public void ClassicEmptyFrontRowTest() {
+            Monster ogre = Monsters.Ogre;
+            Monster orc = Monsters.Orc;
+            Monster goblin = Monsters.Goblin;
+            Monster bandit = Monsters.Bandit;
+            BattleGroundClassic battle = new BattleGroundClassic();
+            battle.AddCombatant(ogre, ClassicLocation.Row.FRONT_LEFT, Team.HEROES);
+            battle.AddCombatant(orc, ClassicLocation.Row.BACK_LEFT, Team.HEROES);
+            battle.AddCombatant(goblin, ClassicLocation.Row.FRONT_RIGHT, Team.VILLAINS);
+            battle.AddCombatant(bandit, ClassicLocation.Row.BACK_RIGHT, Team.VILLAINS);
+            // front rows populated: back rows are out of melee reach
+            Assert.Equal(5, battle.Distance(ogre, goblin));
+            Assert.Equal(30, battle.Distance(ogre, bandit));
+            Assert.Equal(30, battle.Distance(orc, goblin));
+            Assert.Equal(5, battle.Distance(orc, ogre));
+            // right front row cleared: right back row becomes the front row
+            goblin.Die();
+            Assert.False(battle.IsRowPopulated(ClassicLocation.Row.FRONT_RIGHT));
+            Assert.Equal(5, battle.Distance(ogre, bandit));
+            Assert.Equal(5, battle.Distance(bandit, ogre));
+            Assert.Equal(30, battle.Distance(orc, bandit));
+            // both front rows cleared: both back rows are adjacent
+            ogre.Die();
+            Assert.Equal(5, battle.Distance(orc, bandit));
+            // the actual locations are unchanged
+            Assert.Equal(ClassicLocation.Row.BACK_RIGHT, battle.LocateClassicCombatant(bandit).Location);
         }
 
         [Fact]

@@ -59,6 +59,11 @@ namespace srd5 {
 
         public Row Location { get; internal set; }
 
+        /// <summary>
+        /// True if this location is on the left side (BACK_LEFT or FRONT_LEFT).
+        /// </summary>
+        public bool IsLeft => Location == Row.BACK_LEFT || Location == Row.FRONT_LEFT;
+
         public ClassicLocation(Row row) {
             Location = row;
         }
@@ -66,6 +71,9 @@ namespace srd5 {
         public int Distance(Location another) {
             if (!(another is ClassicLocation)) throw new Srd5ArgumentException("another must be a ClassicLocation.");
             ClassicLocation classicAnother = (ClassicLocation)another;
+            // Front and back row of the same side are adjacent, so touch spells
+            // (range 5 ft) cast from the back row can reach allies in the front row.
+            if (IsLeft == classicAnother.IsLeft) return 5;
             return Math.Max(Math.Abs((int)classicAnother.Location - (int)this.Location), 5);
         }
     }
@@ -119,6 +127,36 @@ namespace srd5 {
             // Since any number of combatants can occupy the same location
             // this always returns false.
             return false;
+        }
+
+        /// <summary>
+        /// Returns true if at least one living combatant stands in the given row.
+        /// </summary>
+        public bool IsRowPopulated(ClassicLocation.Row row) {
+            for (int i = 0; i < combatants.Length; i++) {
+                if (locations[i].Location == row && !combatants[i].Dead) return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns the location used for distance measuring: if a side's front row
+        /// is unpopulated, its back row effectively becomes the front row.
+        /// </summary>
+        public ClassicLocation EffectiveLocation(ClassicLocation location) {
+            if (location.Location == ClassicLocation.Row.BACK_LEFT && !IsRowPopulated(ClassicLocation.Row.FRONT_LEFT))
+                return ClassicLocation.FrontLeft;
+            if (location.Location == ClassicLocation.Row.BACK_RIGHT && !IsRowPopulated(ClassicLocation.Row.FRONT_RIGHT))
+                return ClassicLocation.FrontRight;
+            return location;
+        }
+
+        public override int Distance(Combatant target) {
+            return Distance(CurrentCombatant, target);
+        }
+
+        public override int Distance(Combatant combatant1, Combatant combatant2) {
+            return EffectiveLocation(LocateClassicCombatant(combatant1)).Distance(EffectiveLocation(LocateClassicCombatant(combatant2)));
         }
     }
 
@@ -594,14 +632,14 @@ namespace srd5 {
         /// <summary>
         /// Returns the distance between the current combatant and the target.
         /// </summary>
-        public int Distance(Combatant target) {
+        public virtual int Distance(Combatant target) {
             return GetCurrentLocation().Distance(LocateCombatant(target));
         }
 
         /// <summary>
         /// Returns the distance between two combatants.
         /// </summary>
-        public int Distance(Combatant combatant1, Combatant combatant2) {
+        public virtual int Distance(Combatant combatant1, Combatant combatant2) {
             return LocateCombatant(combatant1).Distance(LocateCombatant(combatant2));
         }
 
@@ -619,4 +657,4 @@ namespace srd5 {
         /// </summar>)
         public abstract void Push(Location source, Combatant target, int distance);
     }
-}
+}

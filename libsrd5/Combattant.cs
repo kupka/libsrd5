@@ -204,8 +204,9 @@ namespace srd5 {
         }
 
         public void AddFeat(Feat feat) {
-            if (Utils.PushUnique<Feat>(ref feats, feat))
-                feat.Apply(this);
+            // feats can be gained more than once, e.g. ability score improvements
+            Utils.Push<Feat>(ref feats, feat);
+            feat.Apply(this);
         }
 
         public void AddFeats(params Feat[] feats) {

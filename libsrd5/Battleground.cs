@@ -59,6 +59,11 @@ namespace srd5 {
 
         public Row Location { get; internal set; }
 
+        /// <summary>
+        /// True if this location is on the left side (BACK_LEFT or FRONT_LEFT).
+        /// </summary>
+        public bool IsLeft => Location == Row.BACK_LEFT || Location == Row.FRONT_LEFT;
+
         public ClassicLocation(Row row) {
             Location = row;
         }
@@ -66,6 +71,9 @@ namespace srd5 {
         public int Distance(Location another) {
             if (!(another is ClassicLocation)) throw new Srd5ArgumentException("another must be a ClassicLocation.");
             ClassicLocation classicAnother = (ClassicLocation)another;
+            // Front and back row of the same side are adjacent, so touch spells
+            // (range 5 ft) cast from the back row can reach allies in the front row.
+            if (IsLeft == classicAnother.IsLeft) return 5;
             return Math.Max(Math.Abs((int)classicAnother.Location - (int)this.Location), 5);
         }
     }

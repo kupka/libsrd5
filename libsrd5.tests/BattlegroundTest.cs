@@ -58,6 +58,12 @@ namespace srd5 {
             Assert.True(frontLeft.Distance(backLeft) == backLeft.Distance(frontLeft));
             Assert.True(backLeft.Distance(frontLeft) < backLeft.Distance(frontRight));
             Assert.True(backLeft.Distance(frontRight) < backLeft.Distance(backRight));
+            // same side rows are within touch range
+            Assert.Equal(5, backLeft.Distance(frontLeft));
+            Assert.Equal(5, backRight.Distance(frontRight));
+            Assert.Equal(5, frontLeft.Distance(frontRight));
+            Assert.Equal(30, backLeft.Distance(frontRight));
+            Assert.Equal(30, backRight.Distance(frontLeft));
             Assert.Throws<Srd5ArgumentException>(delegate {
                 frontLeft.Distance(new Coord(2, 3));
             });

@@ -657,4 +657,4 @@ namespace srd5 {
         /// </summar>)
         public abstract void Push(Location source, Combatant target, int distance);
     }
-}
+}

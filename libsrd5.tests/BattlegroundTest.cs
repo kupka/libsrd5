@@ -437,6 +437,35 @@ namespace srd5 {
         }
 
         [Fact]
+        public void ClassicEmptyFrontRowTest() {
+            Monster ogre = Monsters.Ogre;
+            Monster orc = Monsters.Orc;
+            Monster goblin = Monsters.Goblin;
+            Monster bandit = Monsters.Bandit;
+            BattleGroundClassic battle = new BattleGroundClassic();
+            battle.AddCombatant(ogre, ClassicLocation.Row.FRONT_LEFT, Team.HEROES);
+            battle.AddCombatant(orc, ClassicLocation.Row.BACK_LEFT, Team.HEROES);
+            battle.AddCombatant(goblin, ClassicLocation.Row.FRONT_RIGHT, Team.VILLAINS);
+            battle.AddCombatant(bandit, ClassicLocation.Row.BACK_RIGHT, Team.VILLAINS);
+            // front rows populated: back rows are out of melee reach
+            Assert.Equal(5, battle.Distance(ogre, goblin));
+            Assert.Equal(30, battle.Distance(ogre, bandit));
+            Assert.Equal(30, battle.Distance(orc, goblin));
+            Assert.Equal(5, battle.Distance(orc, ogre));
+            // right front row cleared: right back row becomes the front row
+            goblin.Die();
+            Assert.False(battle.IsRowPopulated(ClassicLocation.Row.FRONT_RIGHT));
+            Assert.Equal(5, battle.Distance(ogre, bandit));
+            Assert.Equal(5, battle.Distance(bandit, ogre));
+            Assert.Equal(30, battle.Distance(orc, bandit));
+            // both front rows cleared: both back rows are adjacent
+            ogre.Die();
+            Assert.Equal(5, battle.Distance(orc, bandit));
+            // the actual locations are unchanged
+            Assert.Equal(ClassicLocation.Row.BACK_RIGHT, battle.LocateClassicCombatant(bandit).Location);
+        }
+
+        [Fact]
         public void ClassicBattlegroundTest() {
             CharacterSheet hero = new CharacterSheet(Race.HILL_DWARF, true);
             hero.AddLevel(CharacterClasses.Barbarian);

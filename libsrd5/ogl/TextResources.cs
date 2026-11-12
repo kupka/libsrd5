@@ -109,26 +109,6 @@ namespace srd5 {
                     return "Naturally Stealthy";
                 case Feat.DRACONIC_ANCESTRY:
                     return "Draconic Ancestry";
-                case Feat.DRACONIC_ANCESTRY_BLACK:
-                    return "Draconic Ancestry (Black)";
-                case Feat.DRACONIC_ANCESTRY_BLUE:
-                    return "Draconic Ancestry (Blue)";
-                case Feat.DRACONIC_ANCESTRY_BRASS:
-                    return "Draconic Ancestry (Brass)";
-                case Feat.DRACONIC_ANCESTRY_BRONZE:
-                    return "Draconic Ancestry (Bronze)";
-                case Feat.DRACONIC_ANCESTRY_COPPER:
-                    return "Draconic Ancestry (Copper)";
-                case Feat.DRACONIC_ANCESTRY_GOLD:
-                    return "Draconic Ancestry (Gold)";
-                case Feat.DRACONIC_ANCESTRY_GREEN:
-                    return "Draconic Ancestry (Green)";
-                case Feat.DRACONIC_ANCESTRY_RED:
-                    return "Draconic Ancestry (Red)";
-                case Feat.DRACONIC_ANCESTRY_SILVER:
-                    return "Draconic Ancestry (Silver)";
-                case Feat.DRACONIC_ANCESTRY_WHITE:
-                    return "Draconic Ancestry (White)";
                 case Feat.DRAGONBORN_BREATH_WEAPON:
                     return "Breath Weapon";
                 case Feat.DRAGONBORN_DAMAGE_RESISTANCE:
@@ -166,187 +146,110 @@ namespace srd5 {
                     return "Danger Sense";
                 case Feat.FRENZY:
                     return "Frenzy";
-                case Feat.PRIMAL_PATH:
-                    return "Primal Path";
                 case Feat.ABILITY_SCORE_IMPROVEMENT:
                 case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT:
                 case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT:
                     return "Ability Score Improvement";
-                case Feat.BARBARIAN_EXTRA_ATTACK:
-                case Feat.EXTRA_ATTACK_1:
-                case Feat.MONK_EXTRA_ATTACK:
-                case Feat.PALADIN_EXTRA_ATTACK:
-                case Feat.RANGER_EXTRA_ATTACK:
+                case Feat.PRIMAL_PATH:
+                    return "Primal Path";
+                case Feat.EXTRA_ATTACK:
+                case Feat.FIGHTER_EXTRA_ATTACK:
                     return "Extra Attack";
                 case Feat.FAST_MOVEMENT:
                     return "Fast Movement";
                 case Feat.MINDLESS_RAGE:
                     return "Mindless Rage";
-                case Feat.PRIMAL_PATH_IMPROVEMENT_1:
-                case Feat.PRIMAL_PATH_IMPROVEMENT_2:
-                case Feat.PRIMAL_PATH_IMPROVEMENT_3:
-                    return "Path feature";
                 case Feat.FERAL_INSTINCT:
                     return "Feral Instinct";
-                case Feat.BRUTAL_CRITICAL_1_DIE:
-                    return "Brutal Critical (1 die)";
+                case Feat.BRUTAL_CRITICAL:
+                    return "Brutal Critical";
                 case Feat.INTIMIDATING_PRESENCE:
                     return "Intimidating Presence";
                 case Feat.RELENTLESS_RAGE:
                     return "Relentless Rage";
-                case Feat.BRUTAL_CRITICAL_2_DICE:
-                    return "Brutal Critical (2 dice)";
                 case Feat.RETALIATION:
                     return "Retaliation";
                 case Feat.PERSISTENT_RAGE:
                     return "Persistent Rage";
-                case Feat.BRUTAL_CRITICAL_3_DICE:
-                    return "Brutal Critical (3 dice)";
                 case Feat.INDOMITABLE_MIGHT:
                     return "Indomitable Might";
                 case Feat.PRIMAL_CHAMPION:
                     return "Primal Champion";
                 case Feat.BARD_SPELLCASTING:
                     return "Spellcasting: Bard";
-                case Feat.BARDIC_INSPIRATION_D6:
-                    return "Bardic Inspiration (d6)";
+                case Feat.BARDIC_INSPIRATION:
+                    return "Bardic Inspiration";
                 case Feat.JACK_OF_ALL_TRADES:
                     return "Jack of All Trades";
-                case Feat.SONG_OF_REST_D6:
-                    return "Song of Rest (d6)";
+                case Feat.SONG_OF_REST:
+                    return "Song of Rest";
                 case Feat.BARD_COLLEGE:
                     return "Bard College";
                 case Feat.BONUS_PROFICIENCIES:
                     return "Bonus Proficiencies";
                 case Feat.CUTTING_WORDS:
                     return "Cutting Words";
-                case Feat.BARD_EXPERTISE_1:
-                case Feat.BARD_EXPERTISE_2:
-                case Feat.ROGUE_EXPERTISE_1:
-                case Feat.ROGUE_EXPERTISE_2:
+                case Feat.BARD_EXPERTISE:
+                case Feat.ROGUE_EXPERTISE:
                     return "Expertise";
-                case Feat.BARDIC_INSPIRATION_D8:
-                    return "Bardic Inspiration (d8)";
                 case Feat.FONT_OF_INSPIRATION:
                     return "Font of Inspiration";
                 case Feat.COUNTERCHARM:
                     return "Countercharm";
-                case Feat.BARD_COLLEGE_IMPROVEMENT_1:
-                case Feat.BARD_COLLEGE_IMPROVEMENT_2:
-                    return "Bard College feature";
                 case Feat.ADDITIONAL_MAGICAL_SECRETS:
                     return "Additional Magical Secrets";
-                case Feat.SONG_OF_REST_D8:
-                    return "Song of Rest (d8)";
-                case Feat.BARDIC_INSPIRATION_D10:
-                    return "Bardic Inspiration (d10)";
-                case Feat.MAGICAL_SECRETS_1:
-                case Feat.MAGICAL_SECRETS_2:
-                case Feat.MAGICAL_SECRETS_3:
+                case Feat.MAGICAL_SECRETS:
                     return "Magical Secrets";
-                case Feat.SONG_OF_REST_D10:
-                    return "Song of Rest (d10)";
                 case Feat.PEERLESS_SKILL:
                     return "Peerless Skill";
-                case Feat.BARDIC_INSPIRATION_D12:
-                    return "Bardic Inspiration (d12)";
-                case Feat.SONG_OF_REST_D12:
-                    return "Song of Rest (d12)";
                 case Feat.SUPERIOR_INSPIRATION:
                     return "Superior Inspiration";
                 case Feat.CLERIC_SPELLCASTING:
                     return "Spellcasting: Cleric";
                 case Feat.DIVINE_DOMAIN:
                     return "Divine Domain";
-                case Feat.DOMAIN_SPELLS_1:
-                case Feat.DOMAIN_SPELLS_2:
-                case Feat.DOMAIN_SPELLS_3:
-                case Feat.DOMAIN_SPELLS_4:
-                case Feat.DOMAIN_SPELLS_5:
+                case Feat.DOMAIN_SPELLS:
                     return "Domain Spells";
                 case Feat.BONUS_PROFICIENCY:
                     return "Bonus Proficiency";
                 case Feat.DISCIPLE_OF_LIFE:
                     return "Disciple of Life";
-                case Feat.CHANNEL_DIVINITY_1_REST:
-                    return "Channel Divinity (1/rest)";
+                case Feat.CLERIC_CHANNEL_DIVINITY:
+                case Feat.CHANNEL_DIVINITY:
+                    return "Channel Divinity";
                 case Feat.CHANNEL_DIVINITY_TURN_UNDEAD:
                     return "Channel Divinity: Turn Undead";
-                case Feat.DIVINE_DOMAIN_IMPROVEMENT_1:
-                case Feat.DIVINE_DOMAIN_IMPROVEMENT_2:
-                case Feat.DIVINE_DOMAIN_IMPROVEMENT_3:
-                case Feat.DIVINE_DOMAIN_IMPROVEMENT_4:
-                    return "Divine Domain feature";
                 case Feat.CHANNEL_DIVINITY_PRESERVE_LIFE:
                     return "Channel Divinity: Preserve Life";
-                case Feat.DESTROY_UNDEAD_CR_1_2_OR_BELOW:
-                    return "Destroy Undead (CR 1/2 or below)";
-                case Feat.CHANNEL_DIVINITY_2_REST:
-                    return "Channel Divinity (2/rest)";
+                case Feat.DESTROY_UNDEAD:
+                    return "Destroy Undead";
                 case Feat.BLESSED_HEALER:
                     return "Blessed Healer";
-                case Feat.DESTROY_UNDEAD_CR_1_OR_BELOW:
-                    return "Destroy Undead (CR 1 or below)";
                 case Feat.DIVINE_STRIKE:
                     return "Divine Strike";
                 case Feat.DIVINE_INTERVENTION:
                     return "Divine Intervention";
-                case Feat.DESTROY_UNDEAD_CR_2_OR_BELOW:
-                    return "Destroy Undead (CR 2 or below)";
-                case Feat.DESTROY_UNDEAD_CR_3_OR_BELOW:
-                    return "Destroy Undead (CR 3 or below)";
-                case Feat.DESTROY_UNDEAD_CR_4_OR_BELOW:
-                    return "Destroy Undead (CR 4 or below)";
                 case Feat.SUPREME_HEALING:
                     return "Supreme Healing";
-                case Feat.CHANNEL_DIVINITY_3_REST:
-                    return "Channel Divinity (3/rest)";
-                case Feat.DIVINE_INTERVENTION_IMPROVEMENT:
-                    return "Divine Intervention Improvement";
                 case Feat.DRUID_SPELLCASTING:
                     return "Spellcasting: Druid";
                 case Feat.DRUIDIC:
                     return "Druidic";
-                case Feat.WILD_SHAPE_CR_1_4_OR_BELOW_NO_FLYING_OR_SWIM_SPEED:
-                    return "Wild Shape (CR 1/4 or below, no flying or swim speed)";
+                case Feat.WILD_SHAPE:
+                    return "Wild Shape";
                 case Feat.DRUID_CIRCLE:
                     return "Druid Circle";
                 case Feat.CIRCLE_OF_THE_LAND:
                     return "Circle of the Land";
-                case Feat.CIRCLE_OF_THE_LAND_ARCTIC:
-                    return "Circle of the Land: Arctic";
-                case Feat.CIRCLE_OF_THE_LAND_COAST:
-                    return "Circle of the Land: Coast";
-                case Feat.CIRCLE_OF_THE_LAND_DESERT:
-                    return "Circle of the Land: Desert";
-                case Feat.CIRCLE_OF_THE_LAND_FOREST:
-                    return "Circle of the Land: Forest";
-                case Feat.CIRCLE_OF_THE_LAND_GRASSLAND:
-                    return "Circle of the Land: Grassland";
-                case Feat.CIRCLE_OF_THE_LAND_MOUNTAIN:
-                    return "Circle of the Land: Mountain";
-                case Feat.CIRCLE_OF_THE_LAND_SWAMP:
-                    return "Circle of the Land: Swamp";
                 case Feat.BONUS_CANTRIP:
                     return "Bonus Cantrip";
                 case Feat.NATURAL_RECOVERY:
                     return "Natural Recovery";
-                case Feat.CIRCLE_SPELLS_1:
-                case Feat.CIRCLE_SPELLS_2:
-                case Feat.CIRCLE_SPELLS_3:
-                case Feat.CIRCLE_SPELLS_4:
+                case Feat.CIRCLE_SPELLS:
                     return "Circle Spells";
-                case Feat.WILD_SHAPE_CR_1_2_OR_BELOW_NO_FLYING_SPEED:
-                    return "Wild Shape (CR 1/2 or below, no flying speed)";
-                case Feat.DRUID_CIRCLE_IMPROVEMENT_1:
-                case Feat.DRUID_CIRCLE_IMPROVEMENT_2:
-                case Feat.DRUID_CIRCLE_IMPROVEMENT_3:
-                    return "Druid Circle feature";
                 case Feat.DRUID_LANDS_STRIDE:
                 case Feat.RANGER_LANDS_STRIDE:
                     return "Land's Stride";
-                case Feat.WILD_SHAPE_CR_1_OR_BELOW:
-                    return "Wild Shape (CR 1 or below)";
                 case Feat.NATURES_WARD:
                     return "Nature's Ward";
                 case Feat.NATURES_SANCTUARY:
@@ -362,59 +265,37 @@ namespace srd5 {
                 case Feat.PALADIN_FIGHTING_STYLE:
                 case Feat.RANGER_FIGHTING_STYLE:
                     return "Fighting Style";
-                case Feat.FIGHTER_FIGHTING_STYLE_ARCHERY:
-                case Feat.RANGER_FIGHTING_STYLE_ARCHERY:
+                case Feat.FIGHTING_STYLE_ARCHERY:
                     return "Fighting Style: Archery";
-                case Feat.FIGHTER_FIGHTING_STYLE_DEFENSE:
                 case Feat.FIGHTING_STYLE_DEFENSE:
-                case Feat.RANGER_FIGHTING_STYLE_DEFENSE:
                     return "Fighting Style: Defense";
-                case Feat.FIGHTER_FIGHTING_STYLE_DUELING:
                 case Feat.FIGHTING_STYLE_DUELING:
-                case Feat.RANGER_FIGHTING_STYLE_DUELING:
                     return "Fighting Style: Dueling";
                 case Feat.FIGHTER_FIGHTING_STYLE_GREAT_WEAPON_FIGHTING:
                 case Feat.FIGHTING_STYLE_GREAT_WEAPON_FIGHTING:
                     return "Fighting Style: Great Weapon Fighting";
-                case Feat.FIGHTER_FIGHTING_STYLE_PROTECTION:
                 case Feat.FIGHTING_STYLE_PROTECTION:
                     return "Fighting Style: Protection";
-                case Feat.FIGHTER_FIGHTING_STYLE_TWO_WEAPON_FIGHTING:
-                case Feat.RANGER_FIGHTING_STYLE_TWO_WEAPON_FIGHTING:
+                case Feat.FIGHTING_STYLE_TWO_WEAPON_FIGHTING:
                     return "Fighting Style: Two-Weapon Fighting";
                 case Feat.SECOND_WIND:
                     return "Second Wind";
-                case Feat.ACTION_SURGE_1_USE:
-                    return "Action Surge (1 use)";
+                case Feat.ACTION_SURGE:
+                    return "Action Surge";
                 case Feat.MARTIAL_ARCHETYPE:
                     return "Martial Archetype";
                 case Feat.IMPROVED_CRITICAL:
                     return "Improved Critical";
                 case Feat.REMARKABLE_ATHLETE:
                     return "Remarkable Athlete";
-                case Feat.MARTIAL_ARCHETYPE_IMPROVEMENT_1:
-                case Feat.MARTIAL_ARCHETYPE_IMPROVEMENT_2:
-                case Feat.MARTIAL_ARCHETYPE_IMPROVEMENT_3:
-                case Feat.MARTIAL_ARCHETYPE_IMPROVEMENT_4:
-                    return "Martial Archetype feature";
-                case Feat.INDOMITABLE_1_USE:
-                    return "Indomitable (1 use)";
+                case Feat.INDOMITABLE:
+                    return "Indomitable";
                 case Feat.ADDITIONAL_FIGHTING_STYLE:
                     return "Additional Fighting Style";
-                case Feat.EXTRA_ATTACK_2:
-                    return "Extra Attack (2)";
-                case Feat.INDOMITABLE_2_USES:
-                    return "Indomitable (2 uses)";
                 case Feat.SUPERIOR_CRITICAL:
                     return "Superior Critical";
-                case Feat.ACTION_SURGE_2_USES:
-                    return "Action Surge (2 uses)";
-                case Feat.INDOMITABLE_3_USES:
-                    return "Indomitable (3 uses)";
                 case Feat.SURVIVOR:
                     return "Survivor";
-                case Feat.EXTRA_ATTACK_3:
-                    return "Extra Attack (3)";
                 case Feat.MONK_UNARMORED_DEFENSE:
                     return "Unarmored Defense";
                 case Feat.MARTIAL_ARTS:
@@ -427,8 +308,7 @@ namespace srd5 {
                     return "Patient Defense";
                 case Feat.STEP_OF_THE_WIND:
                     return "Step of the Wind";
-                case Feat.UNARMORED_MOVEMENT_1:
-                case Feat.UNARMORED_MOVEMENT_2:
+                case Feat.UNARMORED_MOVEMENT:
                     return "Unarmored Movement";
                 case Feat.MONASTIC_TRADITION:
                     return "Monastic Tradition";
@@ -442,10 +322,6 @@ namespace srd5 {
                     return "Stunning Strike";
                 case Feat.KI_EMPOWERED_STRIKES:
                     return "Ki Empowered Strikes";
-                case Feat.MONASTIC_TRADITION_IMPROVEMENT_1:
-                case Feat.MONASTIC_TRADITION_IMPROVEMENT_2:
-                case Feat.MONASTIC_TRADITION_IMPROVEMENT_3:
-                    return "Monastic Tradition feature";
                 case Feat.WHOLENESS_OF_BODY:
                     return "Wholeness of Body";
                 case Feat.MONK_EVASION:
@@ -481,18 +357,12 @@ namespace srd5 {
                     return "Sacred Oath";
                 case Feat.OATH_SPELLS:
                     return "Oath Spells";
-                case Feat.CHANNEL_DIVINITY:
-                    return "Channel Divinity";
                 case Feat.CHANNEL_DIVINITY_SACRED_WEAPON:
                     return "Channel Divinity: Sacred Weapon";
                 case Feat.CHANNEL_DIVINITY_TURN_THE_UNHOLY:
                     return "Channel Divinity: Turn the Unholy";
                 case Feat.AURA_OF_PROTECTION:
                     return "Aura of Protection";
-                case Feat.SACRED_OATH_IMPROVEMENT_1:
-                case Feat.SACRED_OATH_IMPROVEMENT_2:
-                case Feat.SACRED_OATH_IMPROVEMENT_3:
-                    return "Sacred Oath feature";
                 case Feat.AURA_OF_DEVOTION:
                     return "Aura of Devotion";
                 case Feat.AURA_OF_COURAGE:
@@ -503,14 +373,12 @@ namespace srd5 {
                     return "Cleansing Touch";
                 case Feat.PURITY_OF_SPIRIT:
                     return "Purity of Spirit";
-                case Feat.AURA_IMPROVEMENTS:
-                    return "Aura improvements";
                 case Feat.HOLY_NIMBUS:
                     return "Holy Nimbus";
-                case Feat.FAVORED_ENEMY_1_TYPE:
-                    return "Favored Enemy (1 type)";
-                case Feat.NATURAL_EXPLORER_1_TERRAIN_TYPE:
-                    return "Natural Explorer (1 terrain type)";
+                case Feat.FAVORED_ENEMY:
+                    return "Favored Enemy";
+                case Feat.NATURAL_EXPLORER:
+                    return "Natural Explorer";
                 case Feat.RANGER_SPELLCASTING:
                     return "Spellcasting: Ranger";
                 case Feat.RANGER_ARCHETYPE:
@@ -525,14 +393,6 @@ namespace srd5 {
                     return "Hunter's Prey: Horde Breaker";
                 case Feat.PRIMEVAL_AWARENESS:
                     return "Primeval Awareness";
-                case Feat.FAVORED_ENEMY_2_TYPES:
-                    return "Favored Enemy (2 types)";
-                case Feat.NATURAL_EXPLORER_2_TERRAIN_TYPES:
-                    return "Natural Explorer (2 terrain types)";
-                case Feat.RANGER_ARCHETYPE_IMPROVEMENT_1:
-                case Feat.RANGER_ARCHETYPE_IMPROVEMENT_2:
-                case Feat.RANGER_ARCHETYPE_IMPROVEMENT_3:
-                    return "Ranger Archetype feature";
                 case Feat.DEFENSIVE_TACTICS:
                     return "Defensive Tactics";
                 case Feat.DEFENSIVE_TACTICS_ESCAPE_THE_HORDE:
@@ -541,8 +401,6 @@ namespace srd5 {
                     return "Defensive Tactics: Multiattack Defense";
                 case Feat.DEFENSIVE_TACTICS_STEEL_WILL:
                     return "Defensive Tactics: Steel Will";
-                case Feat.NATURAL_EXPLORER_3_TERRAIN_TYPES:
-                    return "Natural Explorer (3 terrain types)";
                 case Feat.HIDE_IN_PLAIN_SIGHT:
                     return "Hide in Plain Sight";
                 case Feat.MULTIATTACK:
@@ -551,8 +409,6 @@ namespace srd5 {
                     return "Multiattack: Volley";
                 case Feat.MULTIATTACK_WHIRLWIND_ATTACK:
                     return "Multiattack: Whirlwind Attack";
-                case Feat.FAVORED_ENEMY_3_ENEMIES:
-                    return "Favored Enemy (3 enemies)";
                 case Feat.VANISH:
                     return "Vanish";
                 case Feat.SUPERIOR_HUNTERS_DEFENSE:
@@ -581,10 +437,6 @@ namespace srd5 {
                     return "Second-Story Work";
                 case Feat.UNCANNY_DODGE:
                     return "Uncanny Dodge";
-                case Feat.ROGUISH_ARCHETYPE_IMPROVEMENT_1:
-                case Feat.ROGUISH_ARCHETYPE_IMPROVEMENT_2:
-                case Feat.ROGUISH_ARCHETYPE_IMPROVEMENT_3:
-                    return "Roguish Archetype feature";
                 case Feat.SUPREME_SNEAK:
                     return "Supreme Sneak";
                 case Feat.RELIABLE_TALENT:
@@ -607,26 +459,6 @@ namespace srd5 {
                     return "Sorcerous Origin";
                 case Feat.DRAGON_ANCESTOR:
                     return "Dragon Ancestor";
-                case Feat.DRAGON_ANCESTOR_BLACK_ACID_DAMAGE:
-                    return "Dragon Ancestor: Black - Acid Damage";
-                case Feat.DRAGON_ANCESTOR_BLUE_LIGHTNING_DAMAGE:
-                    return "Dragon Ancestor: Blue - Lightning Damage";
-                case Feat.DRAGON_ANCESTOR_BRASS_FIRE_DAMAGE:
-                    return "Dragon Ancestor: Brass - Fire Damage";
-                case Feat.DRAGON_ANCESTOR_BRONZE_LIGHTNING_DAMAGE:
-                    return "Dragon Ancestor: Bronze - Lightning Damage";
-                case Feat.DRAGON_ANCESTOR_COPPER_ACID_DAMAGE:
-                    return "Dragon Ancestor: Copper - Acid Damage";
-                case Feat.DRAGON_ANCESTOR_GOLD_FIRE_DAMAGE:
-                    return "Dragon Ancestor: Gold - Fire Damage";
-                case Feat.DRAGON_ANCESTOR_GREEN_POISON_DAMAGE:
-                    return "Dragon Ancestor: Green - Poison Damage";
-                case Feat.DRAGON_ANCESTOR_RED_FIRE_DAMAGE:
-                    return "Dragon Ancestor: Red - Fire Damage";
-                case Feat.DRAGON_ANCESTOR_SILVER_COLD_DAMAGE:
-                    return "Dragon Ancestor: Silver - Cold Damage";
-                case Feat.DRAGON_ANCESTOR_WHITE_COLD_DAMAGE:
-                    return "Dragon Ancestor: White - Cold Damage";
                 case Feat.DRACONIC_RESILIENCE:
                     return "Draconic Resilience";
                 case Feat.FONT_OF_MAGIC:
@@ -635,9 +467,7 @@ namespace srd5 {
                     return "Flexible Casting: Creating Spell Slots";
                 case Feat.FLEXIBLE_CASTING_CONVERTING_SPELL_SLOT:
                     return "Flexible Casting: Converting Spell Slot";
-                case Feat.METAMAGIC_1:
-                case Feat.METAMAGIC_2:
-                case Feat.METAMAGIC_3:
+                case Feat.METAMAGIC:
                     return "Metamagic";
                 case Feat.METAMAGIC_CAREFUL_SPELL:
                     return "Metamagic: Careful Spell";
@@ -655,10 +485,6 @@ namespace srd5 {
                     return "Metamagic: Subtle Spell";
                 case Feat.METAMAGIC_TWINNED_SPELL:
                     return "Metamagic: Twinned Spell";
-                case Feat.SORCEROUS_ORIGIN_IMPROVEMENT_1:
-                case Feat.SORCEROUS_ORIGIN_IMPROVEMENT_2:
-                case Feat.SORCEROUS_ORIGIN_IMPROVEMENT_3:
-                    return "Sorcerous Origin feature";
                 case Feat.ELEMENTAL_AFFINITY:
                     return "Elemental Affinity";
                 case Feat.DRAGON_WINGS:
@@ -715,10 +541,6 @@ namespace srd5 {
                     return "Eldritch Invocation: Sign of Ill Omen";
                 case Feat.ELDRITCH_INVOCATION_THIRSTING_BLADE:
                     return "Eldritch Invocation: Thirsting Blade";
-                case Feat.OTHERWORLDLY_PATRON_IMPROVEMENT_1:
-                case Feat.OTHERWORLDLY_PATRON_IMPROVEMENT_2:
-                case Feat.OTHERWORLDLY_PATRON_IMPROVEMENT_3:
-                    return "Otherworldly Patron feature";
                 case Feat.ELDRITCH_INVOCATION_BEWITCHING_WHISPERS:
                     return "Eldritch Invocation: Bewitching Whispers";
                 case Feat.ELDRITCH_INVOCATION_DREADFUL_WORD:
@@ -755,16 +577,10 @@ namespace srd5 {
                     return "Dark One's Own Luck";
                 case Feat.FIENDISH_RESILIENCE:
                     return "Fiendish Resilience";
-                case Feat.MYSTIC_ARCANUM_6TH_LEVEL:
-                    return "Mystic Arcanum (6th level)";
-                case Feat.MYSTIC_ARCANUM_7TH_LEVEL:
-                    return "Mystic Arcanum (7th level)";
+                case Feat.MYSTIC_ARCANUM:
+                    return "Mystic Arcanum";
                 case Feat.HURL_THROUGH_HELL:
                     return "Hurl Through Hell";
-                case Feat.MYSTIC_ARCANUM_8TH_LEVEL:
-                    return "Mystic Arcanum (8th level)";
-                case Feat.MYSTIC_ARCANUM_9TH_LEVEL:
-                    return "Mystic Arcanum (9th level)";
                 case Feat.ELDRITCH_MASTER:
                     return "Eldritch Master";
                 case Feat.WIZARD_SPELLCASTING:
@@ -777,10 +593,6 @@ namespace srd5 {
                     return "Evocation Savant";
                 case Feat.SCULPT_SPELLS:
                     return "Sculpt Spells";
-                case Feat.ARCANE_TRADITION_IMPROVEMENT_1:
-                case Feat.ARCANE_TRADITION_IMPROVEMENT_2:
-                case Feat.ARCANE_TRADITION_IMPROVEMENT_3:
-                    return "Arcane Tradition feature";
                 case Feat.POTENT_CANTRIP:
                     return "Potent Cantrip";
                 case Feat.EMPOWERED_EVOCATION:
@@ -1191,10 +1003,10 @@ namespace srd5 {
                     return "Your Intelligence score increases by 1.";
                 case Feat.DWARVEN_DARKVISION:
                     return "Accustomed to life underground, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray.";
-                case Feat.ELVEN_DARKVISION:
-                    return "Accustomed to twilit forests and the night sky, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray.";
                 case Feat.HUMAN_ABILITY_INCREASE:
                     return "Your ability scores each increase by 1.";
+                case Feat.ELVEN_DARKVISION:
+                    return "Accustomed to twilit forests and the night sky, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray.";
                 case Feat.DWARVEN_RESILIENCE:
                     return "You have advantage on saving throws against poison, and you have resistance against poison damage.";
                 case Feat.DWARVEN_SMITH:
@@ -1216,7 +1028,7 @@ namespace srd5 {
                 case Feat.HIGH_ELVEN_CANTRIP:
                     return "You know one cantrip of your choice from the wizard spell list. Intelligence is your spellcasting ability for it.";
                 case Feat.TRANCE:
-                    return "Elves do not need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is \"trance.\") While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting this way, you gain the same benefit that a human does from 8 hours of sleep.";
+                    return "Elves don't need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is \"trance.\") While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep.";
                 case Feat.HIGH_ELVEN_EXTRA_LANGUAGE:
                     return "You can speak, read, and write one extra language of your choice.";
                 case Feat.HALFLING_ABILITY_INCREASE:
@@ -1224,7 +1036,7 @@ namespace srd5 {
                 case Feat.HALFLING_LUCKY:
                     return "When you roll a 1 on the d20 for an attack roll, ability check, or saving throw, you can reroll the die and must use the new roll.";
                 case Feat.HALFLING_BRAVE:
-                    return "You have advantage on saving throw against being frightened.";
+                    return "You have advantage on saving throws against being frightened.";
                 case Feat.HALFLING_NIMBLENESS:
                     return "You can move through the space of any creature that is of a size larger than yours.";
                 case Feat.LIGHTFOOT_HALFLING_ABILITY_INCREASE:
@@ -1235,37 +1047,14 @@ namespace srd5 {
                     return "Your Strength score increases by 2, and your Charisma score increases by 1.";
                 case Feat.DRACONIC_ANCESTRY:
                     return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
-                case Feat.DRACONIC_ANCESTRY_BLACK:
-                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
-                case Feat.DRACONIC_ANCESTRY_BLUE:
-                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
-                case Feat.DRACONIC_ANCESTRY_BRASS:
-                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
-                case Feat.DRACONIC_ANCESTRY_BRONZE:
-                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
-                case Feat.DRACONIC_ANCESTRY_COPPER:
-                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
-                case Feat.DRACONIC_ANCESTRY_GOLD:
-                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
-                case Feat.DRACONIC_ANCESTRY_GREEN:
-                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
-                case Feat.DRACONIC_ANCESTRY_RED:
-                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
-                case Feat.DRACONIC_ANCESTRY_SILVER:
-                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
-                case Feat.DRACONIC_ANCESTRY_WHITE:
-                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
                 case Feat.DRAGONBORN_BREATH_WEAPON:
-                    return "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation.\nWhen you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level.\nAfter you use your breath weapon, you cannot use it again until you complete a short or long rest.";
+                    return "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation.\nWhen you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level.\nAfter you use your breath weapon, you can't use it again until you complete a short or long rest.";
                 case Feat.DRAGONBORN_DAMAGE_RESISTANCE:
                     return "You have resistance to the damage type associated with your draconic ancestry.";
                 case Feat.GNOMISH_ABILITY_INCREASE:
                     return "Your Intelligence score increases by 2.";
                 case Feat.GNOMISH_DARKVISION:
-                case Feat.HALF_ELVEN_DARKVISION:
-                case Feat.HALF_ORC_DARKVISION:
-                case Feat.TIEFLING_DARKVISION:
-                    return "You have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You cannot discern color in darkness, only shades of gray.";
+                    return "Accustomed to life underground, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray.";
                 case Feat.GNOMISH_CUNNING:
                     return "You have advantage on all Intelligence, Wisdom, and Charisma saving throws against magic.";
                 case Feat.ROCK_GNOMISH_ABILITY_INCREASE:
@@ -1273,21 +1062,27 @@ namespace srd5 {
                 case Feat.ARTIFICERS_LORE:
                     return "Whenever you make an Intelligence (History) check related to magic items, alchemical objects, or technological devices, you can add twice your proficiency bonus, instead of any proficiency bonus you normally apply.";
                 case Feat.TINKER:
-                    return "You have proficiency with artisan's tools (tinker's tools). Using those tools, you can spend 1 hour and 10 gp worth of materials to construct a Tiny clockwork device (AC 5, 1 hp). The device ceases to function after 24 hours (unless you spend 1 hour repairing it to keep the device functioning), or when you use your action to dismantle it; at that time, you can reclaim the materials used to create it. You can have up to three such devices active at a time.\nWhen you create a device, choose one of the following options:\nClockwork Toy: This toy is a clockwork animal, monster, or person, such as a frog, mouse, bird, dragon, or soldier. When placed on the ground, the toy moves 5 feet across the ground on each of your turns in a random direction. It makes noises as appropriate to the creature it represents.\nFire Starter: The device produces a miniature flame, which you can use to light a candle, torch, or campfire. Using the device requires your action.\nMusic Box: When opened, this music box plays a single song at a moderate volume. The box stops playing when it reaches the song's end or when it is closed.";
+                    return "You have proficiency with artisan's tools (tinker's tools). Using those tools, you can spend 1 hour and 10 gp worth of materials to construct a Tiny clockwork device (AC 5, 1 hp). The device ceases to function after 24 hours (unless you spend 1 hour repairing it to keep the device functioning), or when you use your action to dismantle it; at that time, you can reclaim the materials used to create it. You can have up to three such devices active at a time.\nWhen you create a device, choose one of the following options:\nClockwork Toy. This toy is a clockwork animal, monster, or person, such as a frog, mouse, bird, dragon, or soldier. When placed on the ground, the toy moves 5 feet across the ground on each of your turns in a random direction. It makes noises as appropriate to the creature it represents.\nFire Starter. The device produces a miniature flame, which you can use to light a candle, torch, or campfire. Using the device requires your action.\nMusic Box. When opened, this music box plays a single song at a moderate volume. The box stops playing when it reaches the song's end or when it is closed.";
                 case Feat.HALF_ELVEN_ABILITY_INCREASE:
                     return "Your Charisma score increases by 2, and two other ability scores of your choice increase by 1.";
+                case Feat.HALF_ELVEN_DARKVISION:
+                    return "Thanks to your elf blood, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray.";
                 case Feat.SKILL_VERSATILITY:
                     return "You gain proficiency in two skills of your choice.";
                 case Feat.HALF_ORC_ABILITY_INCREASE:
                     return "Your Strength score increases by 2, and your Constitution score increases by 1.";
+                case Feat.HALF_ORC_DARKVISION:
+                    return "Thanks to your orc blood, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray.";
                 case Feat.MENACING:
                     return "You gain proficiency in the Intimidation skill.";
                 case Feat.RELENTLESS_ENDURANCE:
-                    return "When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead. you cannot use this feature again until you finish a long rest.";
+                    return "When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead. You can't use this feature again until you finish a long rest.";
                 case Feat.SAVAGE_ATTACKS:
                     return "When you score a critical hit with a melee weapon attack, you can roll one of the weapon's damage dice one additional time and add it to the extra damage of the critical hit.";
                 case Feat.TIEFLING_ABILITY_INCREASE:
                     return "Your Intelligence score increases by 1, and your Charisma score increases by 2.";
+                case Feat.TIEFLING_DARKVISION:
+                    return "Thanks to your infernal heritage, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray.";
                 case Feat.HELLISH_RESISTANCE:
                     return "You have resistance to fire damage.";
                 case Feat.INFERNAL_LEGACY:
@@ -1310,21 +1105,11 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "At 2nd level, you gain an uncanny sense of when things nearby aren't as they should be, giving you an edge when you dodge away from danger.\nYou have advantage on Dexterity saving throws against effects that you can see, such as traps and spells. To gain this benefit, you can't be blinded, deafened, or incapacitated.";
                 case Feat.FRENZY:
                     return "You can go into a frenzy when you rage. If you do so, for the duration of your rage you can make a single melee weapon attack as a bonus action on each of your turns after this one. When your rage ends, you suffer one level of exhaustion.";
-                case Feat.PRIMAL_PATH:
-                case Feat.PRIMAL_PATH_IMPROVEMENT_1:
-                case Feat.PRIMAL_PATH_IMPROVEMENT_2:
-                case Feat.PRIMAL_PATH_IMPROVEMENT_3:
-                    return "At 3rd level, you choose a path that shapes the nature of your rage. Choose the Path of the Berserker or the Path of the Totem Warrior, both detailed at the end of the class description. Your choice grants you features at 3rd level and again at 6th, 10th, and 14th levels.";
                 case Feat.ABILITY_SCORE_IMPROVEMENT:
                     return "When you reach 4th level, and again at 8th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
-                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT:
-                    return "When you reach 4th level, and again at 6th, 8th, 12th, 14th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
-                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT:
-                    return "When you reach 4th level, and again at 8th, 10th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
-                case Feat.BARBARIAN_EXTRA_ATTACK:
-                case Feat.MONK_EXTRA_ATTACK:
-                case Feat.PALADIN_EXTRA_ATTACK:
-                case Feat.RANGER_EXTRA_ATTACK:
+                case Feat.PRIMAL_PATH:
+                    return "At 3rd level, you choose a path that shapes the nature of your rage. Choose the Path of the Berserker or the Path of the Totem Warrior, both detailed at the end of the class description. Your choice grants you features at 3rd level and again at 6th, 10th, and 14th levels.";
+                case Feat.EXTRA_ATTACK:
                     return "Beginning at 5th level, you can attack twice, instead of once, whenever you take the Attack action on your turn.";
                 case Feat.FAST_MOVEMENT:
                     return "Starting at 5th level, your speed increases by 10 feet while you aren't wearing heavy armor.";
@@ -1332,16 +1117,14 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Beginning at 6th level, you can't be charmed or frightened while raging. If you are charmed or frightened when you enter your rage, the effect is suspended for the duration of the rage.";
                 case Feat.FERAL_INSTINCT:
                     return "By 7th level, your instincts are so honed that you have advantage on initiative rolls.\nAdditionally, if you are surprised at the beginning of combat and aren't incapacitated, you can act normally on your first turn, but only if you enter your rage before doing anything else on that turn.";
-                case Feat.BRUTAL_CRITICAL_1_DIE:
-                case Feat.BRUTAL_CRITICAL_2_DICE:
-                case Feat.BRUTAL_CRITICAL_3_DICE:
+                case Feat.BRUTAL_CRITICAL:
                     return "Beginning at 9th level, you can roll one additional weapon damage die when determining the extra damage for a critical hit with a melee attack. This increases to two additional dice at 13th level and three additional dice at 17th level.";
                 case Feat.INTIMIDATING_PRESENCE:
                     return "Beginning at 10th level, you can use your action to frighten someone with your menacing presence. When you do so, choose one creature that you can see within 30 feet of you. If the creature can see or hear you, it must succeed on a Wisdom saving throw (DC equal to 8 + your proficiency bonus + your Charisma modifier) or be frightened of you until the end of your next turn. On subsequent turns, you can use your action to extend the duration of this effect on the frightened creature until the end of your next turn. This effect ends if the creature ends its turn out of line of sight or more than 60 feet away from you.\n If the creature succeeds on its saving throw, you can't use this feature on that creature again for 24 hours.";
                 case Feat.RELENTLESS_RAGE:
                     return "Starting at 11th level, your rage can keep you fighting despite grievous wounds. If you drop to 0 hit points while you're raging and don't die outright, you can make a DC 10 Constitution saving throw. If you succeed, you drop to 1 hit point instead.\nEach time you use this feature after the first, the DC increases by 5. When you finish a short or long rest, the DC resets to 10.";
                 case Feat.RETALIATION:
-                    return "Starting at 14th level, when you take damage from a creature that is within 5 feet of you, you can use your reaction to make a melee weapon Attack against that creature.";
+                    return "Starting at 14th level, when you take damage from a creature that is within 5 feet of you, you can use your reaction to make a melee weapon attack against that creature.";
                 case Feat.PERSISTENT_RAGE:
                     return "Beginning at 15th level, your rage is so fierce that it ends early only if you fall unconscious or if you choose to end it.";
                 case Feat.INDOMITABLE_MIGHT:
@@ -1350,28 +1133,19 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "At 20th level, you embody the power of the wilds. Your Strength and Constitution scores increase by 4. Your maximum for those scores is now 24.";
                 case Feat.BARD_SPELLCASTING:
                     return "You have learned to untangle and reshape the fabric of reality in harmony with your wishes and music. Your spells are part of your vast repertoire, magic that you can tune to different situations.";
-                case Feat.BARDIC_INSPIRATION_D6:
-                case Feat.BARDIC_INSPIRATION_D8:
-                case Feat.BARDIC_INSPIRATION_D10:
-                case Feat.BARDIC_INSPIRATION_D12:
+                case Feat.BARDIC_INSPIRATION:
                     return "You can inspire others through stirring words or music. To do so, you use a bonus action on your turn to choose one creature other than yourself within 60 feet of you who can hear you. That creature gains one Bardic Inspiration die, a d6. Once within the next 10 minutes, the creature can roll the die and add the number rolled to one ability check, attack roll, or saving throw it makes. The creature can wait until after it rolls the d20 before deciding to use the Bardic Inspiration die, but must decide before the GM says whether the roll succeeds or fails. Once the Bardic Inspiration die is rolled, it is lost. A creature can have only one Bardic Inspiration die at a time.\nYou can use this feature a number of times equal to your Charisma modifier (a minimum of once). You regain any expended uses when you finish a long rest. \nYour Bardic Inspiration die changes when you reach certain levels in this class. The die becomes a d8 at 5th level, a d10 at 10th level, and a d12 at 15th level.";
                 case Feat.JACK_OF_ALL_TRADES:
                     return "Starting at 2nd level, you can add half your proficiency bonus, rounded down, to any ability check you make that doesn't already include your proficiency bonus.";
-                case Feat.SONG_OF_REST_D6:
-                case Feat.SONG_OF_REST_D8:
-                case Feat.SONG_OF_REST_D10:
-                case Feat.SONG_OF_REST_D12:
+                case Feat.SONG_OF_REST:
                     return "Beginning at 2nd level, you can use soothing music or oration to help revitalize your wounded allies during a short rest. If you or any friendly creatures who can hear your performance regain hit points at the end of the short rest by spending one or more Hit Dice, each of those creatures regains an extra 1d6 hit points. \nThe extra hit points increase when you reach certain levels in this class: to 1d8 at 9th level, to 1d10 at 13th level, and to 1d12 at 17th level.";
                 case Feat.BARD_COLLEGE:
-                case Feat.BARD_COLLEGE_IMPROVEMENT_1:
-                case Feat.BARD_COLLEGE_IMPROVEMENT_2:
                     return "At 3rd level, you delve into the advanced techniques of a bard college of your choice, such as the College of Lore. Your choice grants you features at 3rd level and again at 6th and 14th level.";
                 case Feat.BONUS_PROFICIENCIES:
                     return "When you join the College of Lore at 3rd level, you gain proficiency with three skills of your choice.";
                 case Feat.CUTTING_WORDS:
                     return "Also at 3rd level, you learn how to use your wit to distract, confuse, and otherwise sap the confidence and competence of others.\nWhen a creature that you can see within 60 feet of you makes an attack roll, an ability check, or a damage roll, you can use your reaction to expend one of your uses of Bardic Inspiration, rolling a Bardic Inspiration die and subtracting the number rolled from the creature's roll.\nYou can choose to use this feature after the creature makes its roll, but before the GM determines whether the attack roll or ability check succeeds or fails, or before the creature deals its damage. The creature is immune if it can't hear you or if it's immune to being charmed.";
-                case Feat.BARD_EXPERTISE_1:
-                case Feat.BARD_EXPERTISE_2:
+                case Feat.BARD_EXPERTISE:
                     return "At 3rd level, choose two of your skill proficiencies. Your proficiency bonus is doubled for any ability check you make that uses either of the chosen proficiencies. At 10th level, you can choose another two skill proficiencies to gain this benefit.";
                 case Feat.FONT_OF_INSPIRATION:
                     return "Beginning when you reach 5th level, you regain all of your expended uses of Bardic Inspiration when you finish a short or long rest.";
@@ -1379,9 +1153,7 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "At 6th level, you gain the ability to use musical notes or words of power to disrupt mind-influencing effects. As an action, you can start a performance that lasts until the end of your next turn. During that time, you and any friendly creatures within 30 feet of you have advantage on saving throws against being frightened or charmed. A creature must be able to hear you to gain this benefit. The performance ends early if you are incapacitated or silenced or if you voluntarily end it (no action required).";
                 case Feat.ADDITIONAL_MAGICAL_SECRETS:
                     return "At 6th level, you learn two spells of your choice from any class. A spell you choose must be of a level you can cast, as shown on the Bard table, or a cantrip. The chosen spells count as bard spells for you but don't count against the number of bard spells you know.";
-                case Feat.MAGICAL_SECRETS_1:
-                case Feat.MAGICAL_SECRETS_2:
-                case Feat.MAGICAL_SECRETS_3:
+                case Feat.MAGICAL_SECRETS:
                     return "By 10th level, you have plundered magical knowledge from a wide spectrum of disciplines. Choose two spells from any class, including this one. A spell you choose must be of a level you can cast, as shown on the Bard table, or a cantrip. \nThe chosen spells count as bard spells for you and are included in the number in the Spells Known column of the Bard table. \nYou learn two additional spells from any class at 14th level and again at 18th level.";
                 case Feat.PEERLESS_SKILL:
                     return "Starting at 14th level, when you make an ability check, you can expend one use of Bardic Inspiration. Roll a Bardic Inspiration die and add the number rolled to your ability check. You can choose to do so after you roll the die for the ability check, but before the GM tells you whether you succeed or fail.";
@@ -1390,36 +1162,21 @@ Once you have raged the number of times available for your barbarian level, you 
                 case Feat.CLERIC_SPELLCASTING:
                     return "As a conduit for divine power, you can cast cleric spells.";
                 case Feat.DIVINE_DOMAIN:
-                case Feat.DIVINE_DOMAIN_IMPROVEMENT_1:
-                case Feat.DIVINE_DOMAIN_IMPROVEMENT_2:
-                case Feat.DIVINE_DOMAIN_IMPROVEMENT_3:
-                case Feat.DIVINE_DOMAIN_IMPROVEMENT_4:
-                    return "Choose one domain related to your deity, such as Knowledge, Life, Light, Nature, Tempest, Trickery, or War. Only the Life domain is detailed in the Open Game Licensed SRD. Additional Domains are described in the official rulebooks or products from other publishers.\nYour domain grants you domain spells and other features when you choose it at 1st level. It also grants you additional ways to use Channel Divinity when you gain that feature at 2nd level, and additional benefits at 6th, 8th, and 17th levels.";
-                case Feat.DOMAIN_SPELLS_1:
-                case Feat.DOMAIN_SPELLS_2:
-                case Feat.DOMAIN_SPELLS_3:
-                case Feat.DOMAIN_SPELLS_4:
-                case Feat.DOMAIN_SPELLS_5:
-                    return "Each domain has a list of spells--its domain spells--that you gain at the cleric levels noted in the domain description. Once you gain a domain spell, you always have it prepared, and it doesn't count against the number of spells you can prepare each day.\nIf you have a domain spell that doesn't appear on the cleric spell list, the spell is nonetheless a cleric spell for you.";
+                    return "Choose one domain related to your deity, such as Life. Each domain is detailed at the end of the class description, and each one provides examples of gods associated with it. Your choice grants you domain spells and other features when you choose it at 1st level. It also grants you additional ways to use Channel Divinity when you gain that feature at 2nd level, and additional benefits at 6th, 8th, and 17th levels.";
+                case Feat.DOMAIN_SPELLS:
+                    return "Each domain has a list of spells - its domain spells - that you gain at the cleric levels noted in the domain description. Once you gain a domain spell, you always have it prepared, and it doesn't count against the number of spells you can prepare each day.\nIf you have a domain spell that doesn't appear on the cleric spell list, the spell is nonetheless a cleric spell for you.";
                 case Feat.BONUS_PROFICIENCY:
                     return "When you choose this domain at 1st level, you gain proficiency with heavy armor.";
                 case Feat.DISCIPLE_OF_LIFE:
                     return "Also starting at 1st level, your healing spells are more effective. Whenever you use a spell of 1st level or higher to restore hit points to a creature, the creature regains additional hit points equal to 2 + the spell's level.";
-                case Feat.CHANNEL_DIVINITY_1_REST:
+                case Feat.CLERIC_CHANNEL_DIVINITY:
                     return "At 2nd level, you gain the ability to channel divine energy directly from your deity, using that energy to fuel magical effects. You start with two such effects: Turn Undead and an effect determined by your domain. Some domains grant you additional effects as you advance in levels, as noted in the domain description.\nWhen you use your Channel Divinity, you choose which effect to create. You must then finish a short or long rest to use your Channel Divinity again.\nSome Channel Divinity effects require saving throws. When you use such an effect from this class, the DC equals your cleric spell save DC.\nBeginning at 6th level, you can use your Channel Divinity twice between rests, and beginning at 18th level, you can use it three times between rests. When you finish a short or long rest, you regain your expended uses.";
                 case Feat.CHANNEL_DIVINITY_TURN_UNDEAD:
                     return "As an action, you present your holy symbol and speak a prayer censuring the undead. Each undead that can see or hear you within 30 feet of you must make a Wisdom saving throw. If the creature fails its saving throw, it is turned for 1 minute or until it takes any damage.\nA turned creature must spend its turns trying to move as far away from you as it can, and it can't willingly move to a space within 30 feet of you. It also can't take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevents it from moving. If there's nowhere to move, the creature can use the Dodge action.";
                 case Feat.CHANNEL_DIVINITY_PRESERVE_LIFE:
                     return "Starting at 2nd level, you can use your Channel Divinity to heal the badly injured.\nAs an action, you present your holy symbol and evoke healing energy that can restore a number of hit points equal to five times your cleric level.\nChoose any creatures within 30 feet of you, and divide those hit points among them. This feature can restore a creature to no more than half of its hit point maximum. You can't use this feature on an undead or a construct.";
-                case Feat.DESTROY_UNDEAD_CR_1_2_OR_BELOW:
-                case Feat.DESTROY_UNDEAD_CR_1_OR_BELOW:
-                case Feat.DESTROY_UNDEAD_CR_2_OR_BELOW:
-                case Feat.DESTROY_UNDEAD_CR_3_OR_BELOW:
-                case Feat.DESTROY_UNDEAD_CR_4_OR_BELOW:
-                    return "Starting at 5th level, when an undead fails its saving throw against your Turn Undead feature, the creature is instantly destroyed if its challenge rating is at or below a certain threshold.";
-                case Feat.CHANNEL_DIVINITY_2_REST:
-                case Feat.CHANNEL_DIVINITY_3_REST:
-                    return "Beginning at 6th level, you can use your Channel Divinity twice between rests, and beginning at 18th level, you can use it three times between rests. When you finish a short or long rest, you regain your expended uses.";
+                case Feat.DESTROY_UNDEAD:
+                    return "Starting at 5th level, when an undead fails its saving throw against your Turn Undead feature, the creature is instantly destroyed if its challenge rating is at or below a certain threshold,";
                 case Feat.BLESSED_HEALER:
                     return "Beginning at 6th level, the healing spells you cast on others heal you as well. When you cast a spell of 1st level or higher that restores hit points to a creature other than you, you regain hit points equal to 2 + the spell's level.";
                 case Feat.DIVINE_STRIKE:
@@ -1428,39 +1185,22 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Beginning at 10th level, you can call on your deity to intervene on your behalf when your need is great.\nImploring your deity's aid requires you to use your action. Describe the assistance you seek, and roll percentile dice. If you roll a number equal to or lower than your cleric level, your deity intervenes. The GM chooses the nature of the intervention; the effect of any cleric spell or cleric domain spell would be appropriate.\nIf your deity intervenes, you can't use this feature again for 7 days. Otherwise, you can use it again after you finish a long rest.\nAt 20th level, your call for intervention succeeds automatically, no roll required.";
                 case Feat.SUPREME_HEALING:
                     return "Starting at 17th level, when you would normally roll one or more dice to restore hit points with a spell, you instead use the highest number possible for each die. For example, instead of restoring 2d6 hit points to a creature, you restore 12.";
-                case Feat.DIVINE_INTERVENTION_IMPROVEMENT:
-                    return "At 20th level, your call for intervention succeeds automatically, no roll required.";
                 case Feat.DRUID_SPELLCASTING:
                     return "Drawing on the divine essence of nature itself, you can cast spells to shape that essence to your will.";
                 case Feat.DRUIDIC:
                     return "You know Druidic, the secret language of druids. You can speak the language and use it to leave hidden messages. You and others who know this language automatically spot such a message. Others spot the message's presence with a successful DC 15 Wisdom (Perception) check but can't decipher it without magic.";
-                case Feat.WILD_SHAPE_CR_1_4_OR_BELOW_NO_FLYING_OR_SWIM_SPEED:
-                case Feat.WILD_SHAPE_CR_1_2_OR_BELOW_NO_FLYING_SPEED:
-                case Feat.WILD_SHAPE_CR_1_OR_BELOW:
+                case Feat.WILD_SHAPE:
                     return "Starting at 2nd level, you can use your action to magically assume the shape of a beast that you have seen before. You can use this feature twice. You regain expended uses when you finish a short or long rest.\nYour druid level determines the beasts you can transform into, as shown in the Beast Shapes table. At 2nd level, for example, you can transform into any beast that has a challenge rating of 1/4 or lower that doesn't have a flying or swimming speed.\nYou can stay in a beast shape for a number of hours equal to half your druid level (rounded down). You then revert to your normal form unless you expend another use of this feature. You can revert to your normal form earlier by using a bonus action on your turn. You automatically revert if you fall unconscious, drop to 0 hit points, or die.\nWhile you are transformed, the following rules apply:\n- Your game statistics are replaced by the statistics of the beast, but you retain your alignment, personality, and Intelligence, Wisdom, and Charisma scores. You also retain all of your skill and saving throw proficiencies, in addition to gaining those of the creature. If the creature has the same proficiency as you and the bonus in its stat block is higher than yours, use the creature's bonus instead of yours. If the creature has any legendary or lair actions, you can't use them.\n- When you transform, you assume the beast's hit points and Hit Dice. When you revert to your normal form, you return to the number of hit points you had before you transformed. However, if you revert as a result of dropping to 0 hit points, any excess damage carries over to your normal form. For example, if you take 10 damage in animal form and have only 1 hit point left, you revert and take 9 damage. As long as the excess damage doesn't reduce your normal form to 0 hit points, you aren't knocked unconscious.\n- You can't cast spells, and your ability to speak or take any action that requires hands is limited to the capabilities of your beast form. Transforming doesn't break your concentration on a spell you've already cast, however, or prevent you from taking actions that are part of a spell, such as call lightning, that you've already cast.\n- You retain the benefit of any features from your class, race, or other source and can use them if the new form is physically capable of doing so. However, you can't use any of your special senses, such as darkvision, unless your new form also has that sense.\n- You choose whether your equipment falls to the ground in your space, merges into your new form, or is worn by it. Worn equipment functions as normal, but the GM decides whether it is practical for the new form to wear a piece of equipment, based on the creature's shape and size. Your equipment doesn't change size or shape to match the new form, and any equipment that the new form can't wear must either fall to the ground or merge with it. Equipment that merges with the form has no effect until you leave the form.";
                 case Feat.DRUID_CIRCLE:
-                case Feat.DRUID_CIRCLE_IMPROVEMENT_1:
-                case Feat.DRUID_CIRCLE_IMPROVEMENT_2:
-                case Feat.DRUID_CIRCLE_IMPROVEMENT_3:
                     return "At 2nd level, you choose to identify with a circle of druids, such as the Circle of the Land. Your choice grants you features at 2nd level and again at 6th, 10th, and 14th level.";
                 case Feat.CIRCLE_OF_THE_LAND:
-                case Feat.CIRCLE_OF_THE_LAND_ARCTIC:
-                case Feat.CIRCLE_OF_THE_LAND_COAST:
-                case Feat.CIRCLE_OF_THE_LAND_DESERT:
-                case Feat.CIRCLE_OF_THE_LAND_FOREST:
-                case Feat.CIRCLE_OF_THE_LAND_GRASSLAND:
-                case Feat.CIRCLE_OF_THE_LAND_MOUNTAIN:
-                case Feat.CIRCLE_OF_THE_LAND_SWAMP:
                     return "The Circle of the Land is made up of mystics and sages who safeguard ancient knowledge and rites through a vast oral tradition. These druids meet within sacred circles of trees or standing stones to whisper primal secrets in Druidic. The circle's wisest members preside as the chief priests of communities that hold to the Old Faith and serve as advisors to the rulers of those folk. As a member of this circle, your magic is influenced by the land where you were initiated into the circle's mysterious rites.";
                 case Feat.BONUS_CANTRIP:
                     return "When you choose this circle at 2nd level, you learn one additional druid cantrip of your choice.";
                 case Feat.NATURAL_RECOVERY:
                     return "Starting at 2nd level, you can regain some of your magical energy by sitting in meditation and communing with nature. During a short rest, you choose expended spell slots to recover. The spell slots can have a combined level that is equal to or less than half your druid level (rounded up), and none of the slots can be 6th level or higher. You can't use this feature again until you finish a long rest.\nFor example, when you are a 4th-level druid, you can recover up to two levels worth of spell slots. You can recover either a 2nd-level slot or two 1st-level slots.";
-                case Feat.CIRCLE_SPELLS_1:
-                case Feat.CIRCLE_SPELLS_2:
-                case Feat.CIRCLE_SPELLS_3:
-                case Feat.CIRCLE_SPELLS_4:
-                    return "Your mystical connection to the land infuses you with the ability to cast certain spells. At 3rd, 5th, 7th, and 9th level you gain access to circle spells connected to the land where you became a druid.\nChoose that land--arctic, coast, desert, forest, grassland, mountain, or swamp--and consult the associated list of spells.\nOnce you gain access to a circle spell, you always have it prepared, and it doesn't count against the number of spells you can prepare each day. If you gain access to a spell that doesn't appear on the druid spell list, the spell is nonetheless a druid spell for you.";
+                case Feat.CIRCLE_SPELLS:
+                    return "Your mystical connection to the land infuses you with the ability to cast certain spells. At 3rd, 5th, 7th, and 9th level you gain access to circle spells connected to the land where you became a druid.\nChoose that land - arctic, coast, desert, forest, grassland, mountain, or swamp - and consult the associated list of spells.\nOnce you gain access to a circle spell, you always have it prepared, and it doesn't count against the number of spells you can prepare each day. If you gain access to a spell that doesn't appear on the druid spell list, the spell is nonetheless a druid spell for you.";
                 case Feat.DRUID_LANDS_STRIDE:
                     return "Starting at 6th level, moving through nonmagical difficult terrain costs you no extra movement. You can also pass through nonmagical plants without being slowed by them and without taking damage from them if they have thorns, spines, or a similar hazard.\nIn addition, you have advantage on saving throws against plants that are magically created or manipulated to impede movement, such those created by the entangle spell.";
                 case Feat.NATURES_WARD:
@@ -1475,73 +1215,55 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "At 20th level, you can use your Wild Shape an unlimited number of times.\nAdditionally, you can ignore the verbal and somatic components of your druid spells, as well as any material components that lack a cost and aren't consumed by a spell. You gain this benefit in both your normal shape and your beast shape from Wild Shape.";
                 case Feat.FIGHTER_FIGHTING_STYLE:
                     return "You adopt a particular style of fighting as your specialty. Choose one of the following options. You can't take a Fighting Style option more than once, even if you later get to choose again.";
-                case Feat.FIGHTER_FIGHTING_STYLE_ARCHERY:
-                case Feat.RANGER_FIGHTING_STYLE_ARCHERY:
+                case Feat.FIGHTING_STYLE_ARCHERY:
                     return "You gain a +2 bonus to attack rolls you make with ranged weapons.";
-                case Feat.FIGHTER_FIGHTING_STYLE_DEFENSE:
                 case Feat.FIGHTING_STYLE_DEFENSE:
-                case Feat.RANGER_FIGHTING_STYLE_DEFENSE:
                     return "While you are wearing armor, you gain a +1 bonus to AC.";
-                case Feat.FIGHTER_FIGHTING_STYLE_DUELING:
                 case Feat.FIGHTING_STYLE_DUELING:
-                case Feat.RANGER_FIGHTING_STYLE_DUELING:
                     return "When you are wielding a melee weapon in one hand and no other weapons, you gain a +2 bonus to damage rolls with that weapon.";
                 case Feat.FIGHTER_FIGHTING_STYLE_GREAT_WEAPON_FIGHTING:
                     return "When you roll a 1 or 2 on a damage die for an attack you make with a melee weapon that you are wielding with two hands, you can reroll the die and must use the new roll, even if the new roll is a 1 or a 2. The weapon must have the two-handed or versatile property for you to gain this benefit.";
-                case Feat.FIGHTER_FIGHTING_STYLE_PROTECTION:
                 case Feat.FIGHTING_STYLE_PROTECTION:
                     return "When a creature you can see attacks a target other than you that is within 5 feet of you, you can use your reaction to impose disadvantage on the attack roll. You must be wielding a shield.";
-                case Feat.FIGHTER_FIGHTING_STYLE_TWO_WEAPON_FIGHTING:
-                case Feat.RANGER_FIGHTING_STYLE_TWO_WEAPON_FIGHTING:
+                case Feat.FIGHTING_STYLE_TWO_WEAPON_FIGHTING:
                     return "When you engage in two-weapon fighting, you can add your ability modifier to the damage of the second attack.";
                 case Feat.SECOND_WIND:
                     return "You have a limited well of stamina that you can draw on to protect yourself from harm. On your turn, you can use a bonus action to regain hit points equal to 1d10 + your fighter level. Once you use this feature, you must finish a short or long rest before you can use it again.";
-                case Feat.ACTION_SURGE_1_USE:
-                case Feat.ACTION_SURGE_2_USES:
+                case Feat.ACTION_SURGE:
                     return "Starting at 2nd level, you can push yourself beyond your normal limits for a moment. On your turn, you can take one additional action on top of your regular action and a possible bonus action.\nOnce you use this feature, you must finish a short or long rest before you can use it again. Starting at 17th level, you can use it twice before a rest, but only once on the same turn.";
                 case Feat.MARTIAL_ARCHETYPE:
-                case Feat.MARTIAL_ARCHETYPE_IMPROVEMENT_1:
-                case Feat.MARTIAL_ARCHETYPE_IMPROVEMENT_2:
-                case Feat.MARTIAL_ARCHETYPE_IMPROVEMENT_3:
-                case Feat.MARTIAL_ARCHETYPE_IMPROVEMENT_4:
                     return "At 3rd level, you choose an archetype that you strive to emulate in your combat styles and techniques, such as Champion. The archetype you choose grants you features at 3rd level and again at 7th, 10th, 15th, and 18th level.";
                 case Feat.IMPROVED_CRITICAL:
                     return "Beginning when you choose this archetype at 3rd level, your weapon attacks score a critical hit on a roll of 19 or 20.";
-                case Feat.EXTRA_ATTACK_1:
-                case Feat.EXTRA_ATTACK_2:
-                case Feat.EXTRA_ATTACK_3:
+                case Feat.FIGHTER_EXTRA_ATTACK:
                     return "Beginning at 5th level, you can attack twice, instead of once, whenever you take the Attack action on your turn. The number of attacks increases to three when you reach 11th level in this class and to four when you reach 20th level in this class.";
+                case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT:
+                    return "When you reach 4th level, and again at 6th, 8th, 12th, 14th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
                 case Feat.REMARKABLE_ATHLETE:
                     return "Starting at 7th level, you can add half your proficiency bonus (round up) to any Strength, Dexterity, or Constitution check you make that doesn't already use your proficiency bonus. In addition, when you make a running long jump, the distance you can cover increases by a number of feet equal to your Strength modifier.";
-                case Feat.INDOMITABLE_1_USE:
-                case Feat.INDOMITABLE_2_USES:
-                case Feat.INDOMITABLE_3_USES:
+                case Feat.INDOMITABLE:
                     return "Beginning at 9th level, you can reroll a saving throw that you fail. If you do so, you must use the new roll, and you can't use this feature again until you finish a long rest. You can use this feature twice between long rests starting at 13th level and three times between long rests starting at 17th level.";
                 case Feat.ADDITIONAL_FIGHTING_STYLE:
                     return "At 10th level, you can choose a second option from the Fighting Style class feature.";
                 case Feat.SUPERIOR_CRITICAL:
-                    return "Starting at 15th level, your weapon attacks score a critical hit on a roll of 18-20.";
+                    return "Starting at 15th level, your weapon attacks score a critical hit on a roll of 18 - 20.";
                 case Feat.SURVIVOR:
                     return "At 18th level, you attain the pinnacle of resilience in battle. At the start of each of your turns, you regain hit points equal to 5 + your Constitution modifier if you have no more than half of your hit points left. You don't gain this benefit if you have 0 hit points.";
                 case Feat.MONK_UNARMORED_DEFENSE:
                     return "Beginning at 1st level, while you are wearing no armor and not wielding a shield, your AC equals 10 + your Dexterity modifier + your Wisdom modifier.";
                 case Feat.MARTIAL_ARTS:
-                    return "At 1st level, your practice of martial arts gives you mastery of combat styles that use unarmed strikes and monk weapons, which are shortswords and any simple melee weapons that don't have the two- handed or heavy property.\nYou gain the following benefits while you are unarmed or wielding only monk weapons and you aren't wearing armor or wielding a shield:\n- You can use Dexterity instead of Strength for the attack and damage rolls of your unarmed strikes and monk weapons.\n- You can roll a d4 in place of the normal damage of your unarmed strike or monk weapon. This die changes as you gain monk levels, as shown in the Martial Arts column of Table: The Monk.\n- When you use the Attack action with an unarmed strike or a monk weapon on your turn, you can make one unarmed strike as a bonus action. For example, if you take the Attack action and attack with a quarterstaff, you can also make an unarmed strike as a bonus action, assuming you haven't already taken a bonus action this turn.\nCertain monasteries use specialized forms of the monk weapons. For example, you might use a club that is two lengths of wood connected by a short chain (called a nunchaku) or a sickle with a shorter, straighter blade (called a kama). Whatever name you use for a monk weapon, you can use the game statistics provided for the weapon.";
+                    return "At 1st level, your practice of martial arts gives you mastery of combat styles that use unarmed strikes and monk weapons, which are shortswords and any simple melee weapons that don't have the two- handed or heavy property.\nYou gain the following benefits while you are unarmed or wielding only monk weapons and you aren't wearing armor or wielding a shield:\n- You can use Dexterity instead of Strength for the attack and damage rolls of your unarmed strikes and monk weapons.\n- You can roll a d4 in place of the normal damage of your unarmed strike or monk weapon. This die changes as you gain monk levels, as shown in the Martial Arts column of the Monk table.\n- When you use the Attack action with an unarmed strike or a monk weapon on your turn, you can make one unarmed strike as a bonus action. For example, if you take the Attack action and attack with a quarterstaff, you can also make an unarmed strike as a bonus action, assuming you haven't already taken a bonus action this turn.\nCertain monasteries use specialized forms of the monk weapons. For example, you might use a club that is two lengths of wood connected by a short chain (called a nunchaku) or a sickle with a shorter, straighter blade (called a kama). Whatever name you use for a monk weapon, you can use the game statistics provided for the weapon.";
                 case Feat.KI:
-                    return "Starting at 2nd level, your training allows you to harness the mystic energy of ki. Your access to this energy is represented by a number of ki points. Your monk level determines the number of points you have, as shown in the Ki Points column of Table: The Monk.\nYou can spend these points to fuel various ki features. You start knowing three such features: Flurry of Blows, Patient Defense, and Step of the Wind. You learn more ki features as you gain levels in this class.\nWhen you spend a ki point, it is unavailable until you finish a short or long rest, at the end of which you draw all of your expended ki back into yourself. You must spend at least 30 minutes of the rest meditating to regain your ki points.\nSome of your ki features require your target to make a saving throw to resist the feature's effects. The saving throw DC is calculated as follows:\nKi save DC = 8 + your proficiency bonus + your Wisdom modifier";
+                    return "Starting at 2nd level, your training allows you to harness the mystic energy of ki. Your access to this energy is represented by a number of ki points. Your monk level determines the number of points you have, as shown in the Ki Points column of the Monk table.\nYou can spend these points to fuel various ki features. You start knowing three such features: Flurry of Blows, Patient Defense, and Step of the Wind. You learn more ki features as you gain levels in this class.\nWhen you spend a ki point, it is unavailable until you finish a short or long rest, at the end of which you draw all of your expended ki back into yourself. You must spend at least 30 minutes of the rest meditating to regain your ki points.\nSome of your ki features require your target to make a saving throw to resist the feature's effects. The saving throw DC is calculated as follows:\nKi save DC = 8 + your proficiency bonus + your Wisdom modifier";
                 case Feat.FLURRY_OF_BLOWS:
                     return "Immediately after you take the Attack action on your turn, you can spend 1 ki point to make two unarmed strikes as a bonus action.";
                 case Feat.PATIENT_DEFENSE:
                     return "You can spend 1 ki point to take the Dodge action as a bonus action on your turn.";
                 case Feat.STEP_OF_THE_WIND:
                     return "You can spend 1 ki point to take the Disengage or Dash action as a bonus action on your turn, and your jump distance is doubled for the turn.";
-                case Feat.UNARMORED_MOVEMENT_1:
-                case Feat.UNARMORED_MOVEMENT_2:
-                    return "Starting at 2nd level, your speed increases by 10 feet while you are not wearing armor or wielding a shield. This bonus increases when you reach certain monk levels, as shown in Table: The Monk.\nAt 9th level, you gain the ability to move along vertical surfaces and across liquids on your turn without falling during the move.";
+                case Feat.UNARMORED_MOVEMENT:
+                    return "Starting at 2nd level, your speed increases by 10 feet while you are not wearing armor or wielding a shield. This bonus increases when you reach certain monk levels, as shown in the Monk table.\nAt 9th level, you gain the ability to move along vertical surfaces and across liquids on your turn without falling during the move.";
                 case Feat.MONASTIC_TRADITION:
-                case Feat.MONASTIC_TRADITION_IMPROVEMENT_1:
-                case Feat.MONASTIC_TRADITION_IMPROVEMENT_2:
-                case Feat.MONASTIC_TRADITION_IMPROVEMENT_3:
                     return "When you reach 3rd level, you commit yourself to a monastic tradition, such as the Way of the Open Hand. Your tradition grants you features at 3rd level and again at 6th, 11th, and 17th level.";
                 case Feat.DEFLECT_MISSILES:
                     return "Starting at 3rd level, you can use your reaction to deflect or catch the missile when you are hit by a ranged weapon attack. When you do so, the damage you take from the attack is reduced by 1d10 + your Dexterity modifier + your monk level.\nIf you reduce the damage to 0, you can catch the missile if it is small enough for you to hold in one hand and you have at least one hand free. If you catch a missile in this way, you can spend 1 ki point to make a ranged attack with the weapon or piece of ammunition you just caught, as part of the same reaction. You make this attack with proficiency, regardless of your weapon proficiencies, and the missile counts as a monk weapon for the attack, which has a normal range of 20 feet and a long range of 60 feet.";
@@ -1576,9 +1298,9 @@ Once you have raged the number of times available for your barbarian level, you 
                 case Feat.PERFECT_SELF:
                     return "At 20th level, when you roll for initiative and have no ki points remaining, you regain 4 ki points.";
                 case Feat.DIVINE_SENSE:
-                    return "The presence of strong evil registers on your senses like a noxious odor, and powerful good rings like heavenly music in your ears. As an action, you can open your awareness to detect such forces. Until the end of your next turn, you know the location of any celestial, fiend, or undead within 60 feet of you that is not behind total cover. You know the type (celestial, fiend, or undead) of any being whose presence you sense, but not its identity. Within the same radius, you also detect the presence of any place or object that has been consecrated or desecrated, as with the hallow spell.\nYou can use this feature a number of times equal to 1 + your Charisma modifier. When you finish a long rest, you regain all expended uses.";
+                    return "The presence of strong evil registers on your senses like a noxious odor, and powerful good rings like heavenly music in your ears. As an action, you can open your awareness to detect such forces. Until the end of your next turn, you know the location of any celestial, fiend, or undead within 60 feet of you that is not behind total cover. You know the type (celestial, fiend, or undead) of any being whose presence you sense, but not its identity (the vampire Count Strahd von Zarovich, for instance). Within the same radius, you also detect the presence of any place or object that has been consecrated or desecrated, as with the hallow spell.\nYou can use this feature a number of times equal to 1 + your Charisma modifier. When you finish a long rest, you regain all expended uses.";
                 case Feat.LAY_ON_HANDS:
-                    return "Your blessed touch can heal wounds. You have a pool of healing power that replenishes when you take a long rest. With that pool, you can restore a total number of hit points equal to your paladin level x 5.\nAs an action, you can touch a creature and draw power from the pool to restore a number of hit points to that creature, up to the maximum amount remaining in your pool.\nAlternatively, you can expend 5 hit points from your pool of healing to cure the target of one disease or neutralize one poison affecting it. You can cure multiple diseases and neutralize multiple poisons with a single use of Lay on Hands, expending hit points separately for each one.\nThis feature has no effect on undead and constructs.";
+                    return "Your blessed touch can heal wounds. You have a pool of healing power that replenishes when you take a long rest. With that pool, you can restore a total number of hit points equal to your paladin level × 5.\nAs an action, you can touch a creature and draw power from the pool to restore a number of hit points to that creature, up to the maximum amount remaining in your pool.\nAlternatively, you can expend 5 hit points from your pool of healing to cure the target of one disease or neutralize one poison affecting it. You can cure multiple diseases and neutralize multiple poisons with a single use of Lay on Hands, expending hit points separately for each one.\nThis feature has no effect on undead and constructs.";
                 case Feat.PALADIN_FIGHTING_STYLE:
                     return "At 2nd level, you adopt a style of fighting as your specialty. Choose one of the following options. You can't take a Fighting Style option more than once, even if you later get to choose again.";
                 case Feat.FIGHTING_STYLE_GREAT_WEAPON_FIGHTING:
@@ -1590,9 +1312,6 @@ Once you have raged the number of times available for your barbarian level, you 
                 case Feat.DIVINE_HEALTH:
                     return "By 3rd level, the divine magic flowing through you makes you immune to disease.";
                 case Feat.SACRED_OATH:
-                case Feat.SACRED_OATH_IMPROVEMENT_1:
-                case Feat.SACRED_OATH_IMPROVEMENT_2:
-                case Feat.SACRED_OATH_IMPROVEMENT_3:
                     return "When you reach 3rd level, you swear the oath that binds you as a paladin forever. Up to this time you have been in a preparatory stage, committed to the path but not yet sworn to it. Now you choose an oath, such as the Oath of Devotion.\nYour choice grants you features at 3rd level and again at 7th, 15th, and 20th level. Those features include oath spells and the Channel Divinity feature.";
                 case Feat.OATH_SPELLS:
                     return "Each oath has a list of associated spells. You gain access to these spells at the levels specified in the oath description. Once you gain access to an oath spell, you always have it prepared. Oath spells don't count against the number of spells you can prepare each day.\nIf you gain an oath spell that doesn't appear on the paladin spell list, the spell is nonetheless a paladin spell for you.";
@@ -1614,26 +1333,17 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Beginning at 14th level, you can use your action to end one spell on yourself or on one willing creature that you touch.\nYou can use this feature a number of times equal to your Charisma modifier (a minimum of once). You regain expended uses when you finish a long rest.";
                 case Feat.PURITY_OF_SPIRIT:
                     return "Beginning at 15th level, you are always under the effects of a protection from evil and good spell.";
-                case Feat.AURA_IMPROVEMENTS:
-                    return "At 18th level, the range of your auras increase to 30 feet.";
                 case Feat.HOLY_NIMBUS:
                     return "At 20th level, as an action, you can emanate an aura of sunlight. For 1 minute, bright light shines from you in a 30-foot radius, and dim light shines 30 feet beyond that.\nWhenever an enemy creature starts its turn in the bright light, the creature takes 10 radiant damage.\nIn addition, for the duration, you have advantage on saving throws against spells cast by fiends or undead.";
-                case Feat.FAVORED_ENEMY_1_TYPE:
-                case Feat.FAVORED_ENEMY_2_TYPES:
-                case Feat.FAVORED_ENEMY_3_ENEMIES:
+                case Feat.FAVORED_ENEMY:
                     return "Beginning at 1st level, you have significant experience studying, tracking, hunting, and even talking to a certain type of enemy.\nChoose a type of favored enemy: aberrations, beasts, celestials, constructs, dragons, elementals, fey, fiends, giants, monstrosities, oozes, plants, or undead. Alternatively, you can select two races of humanoid (such as gnolls and orcs) as favored enemies.\nYou have advantage on Wisdom (Survival) checks to track your favored enemies, as well as on Intelligence checks to recall information about them.\nWhen you gain this feature, you also learn one language of your choice that is spoken by your favored enemies, if they speak one at all.\nYou choose one additional favored enemy, as well as an associated language, at 6th and 14th level. As you gain levels, your choices should reflect the types of monsters you have encountered on your adventures.";
-                case Feat.NATURAL_EXPLORER_1_TERRAIN_TYPE:
-                case Feat.NATURAL_EXPLORER_2_TERRAIN_TYPES:
-                case Feat.NATURAL_EXPLORER_3_TERRAIN_TYPES:
+                case Feat.NATURAL_EXPLORER:
                     return "You are particularly familiar with one type of natural environment and are adept at traveling and surviving in such regions. Choose one type of favored terrain: arctic, coast, desert, forest, grassland, mountain, or swamp. When you make an Intelligence or Wisdom check related to your favored terrain, your proficiency bonus is doubled if you are using a skill that you're proficient in.\nWhile traveling for an hour or more in your favored terrain, you gain the following benefits:\n- Difficult terrain doesn't slow your group's travel.\n- Your group can't become lost except by magical means.\n- Even when you are engaged in another activity while traveling (such as foraging, navigating, or tracking), you remain alert to danger.\n- If you are traveling alone, you can move stealthily at a normal pace.\n- When you forage, you find twice as much food as you normally would.\n- While tracking other creatures, you also learn their exact number, their sizes, and how long ago they passed through the area.\nYou choose additional favored terrain types at 6th and 10th level.";
                 case Feat.RANGER_FIGHTING_STYLE:
                     return "At 2nd level, you adopt a particular style of fighting as your specialty. Choose one of the following options. You can't take a Fighting Style option more than once, even if you later get to choose again.";
                 case Feat.RANGER_SPELLCASTING:
                     return "By the time you reach 2nd level, you have learned to use the magical essence of nature to cast spells, much as a druid does.";
                 case Feat.RANGER_ARCHETYPE:
-                case Feat.RANGER_ARCHETYPE_IMPROVEMENT_1:
-                case Feat.RANGER_ARCHETYPE_IMPROVEMENT_2:
-                case Feat.RANGER_ARCHETYPE_IMPROVEMENT_3:
                     return "At 3rd level, you choose an archetype that you strive to emulate, such as the Hunter. Your choice grants you features at 3rd level and again at 7th, 11th, and 15th level.";
                 case Feat.HUNTERS_PREY:
                     return "At 3rd level, you gain one of the following features of your choice.\nColossus Slayer\nGiant Killer\nHorde Breaker";
@@ -1677,8 +1387,7 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "At 18th level, you gain preternatural senses that help you fight creatures you can't see. When you attack a creature you can't see, your inability to see it doesn't impose disadvantage on your attack rolls against it.\nYou are also aware of the location of any invisible creature within 30 feet of you, provided that the creature isn't hidden from you and you aren't blinded or deafened.";
                 case Feat.FOE_SLAYER:
                     return "At 20th level, you become an unparalleled hunter of your enemies. Once on each of your turns, you can add your Wisdom modifier to the attack roll or the damage roll of an attack you make against one of your favored enemies. You can choose to use this feature before or after the roll, but before any effects of the roll are applied.";
-                case Feat.ROGUE_EXPERTISE_1:
-                case Feat.ROGUE_EXPERTISE_2:
+                case Feat.ROGUE_EXPERTISE:
                     return "At 1st level, choose two of your skill proficiencies, or one of your skill proficiencies and your proficiency with thieves' tools. Your proficiency bonus is doubled for any ability check you make that uses either of the chosen proficiencies.\nAt 6th level, you can choose two more of your proficiencies (in skills or with thieves' tools) to gain this benefit";
                 case Feat.SNEAK_ATTACK:
                     return "Beginning at 1st level, you know how to strike subtly and exploit a foe's distraction. Once per turn, you can deal an extra 1d6 damage to one creature you hit with an attack if you have advantage on the attack roll. The attack must use a finesse or a ranged weapon.\nYou don't need advantage on the attack roll if another enemy of the target is within 5 feet of it, that enemy isn't incapacitated, and you don't have disadvantage on the attack roll.\nThe amount of the extra damage increases as you gain levels in this class, as shown in the Sneak Attack column of the Rogue table.";
@@ -1687,10 +1396,7 @@ Once you have raged the number of times available for your barbarian level, you 
                 case Feat.ROGUE_CUNNING_ACTION:
                     return "Starting at 2nd level, your quick thinking and agility allow you to move and act quickly. You can take a bonus action on each of your turns in combat. This action can be used only to take the Dash, Disengage, or Hide action.";
                 case Feat.ROGUISH_ARCHETYPE:
-                case Feat.ROGUISH_ARCHETYPE_IMPROVEMENT_1:
-                case Feat.ROGUISH_ARCHETYPE_IMPROVEMENT_2:
-                case Feat.ROGUISH_ARCHETYPE_IMPROVEMENT_3:
-                    return "At 3rd level, you choose an archetype that you emulate in the exercise of your rogue abilities, such as Thief. Additional archetypes are available in the original source material. Your archetype choice grants you features at 3rd level and then again at 9th, 13th, and 17th level.";
+                    return "At 3rd level, you choose an archetype that you emulate in the exercise of your rogue abilities, such as Thief. Your archetype choice grants you features at 3rd level and then again at 9th, 13th, and 17th level.";
                 case Feat.FAST_HANDS:
                     return "Starting at 3rd level, you can use the bonus action granted by your Cunning Action to make a Dexterity (Sleight of Hand) check, use your thieves' tools to disarm a trap or open a lock, or take the Use an Object action.";
                 case Feat.SECOND_STORY_WORK:
@@ -1701,6 +1407,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Beginning at 7th level, you can nimbly dodge out of the way of certain area effects, such as a red dragon's fiery breath or an ice storm spell. When you are subjected to an effect that allows you to make a Dexterity saving throw to take only half damage, you instead take no damage if you succeed on the saving throw, and only half damage if you fail.";
                 case Feat.SUPREME_SNEAK:
                     return "Starting at 9th level, you have advantage on a Dexterity (Stealth) check if you move no more than half your speed on the same turn.";
+                case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT:
+                    return "When you reach 4th level, and again at 8th, 10th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
                 case Feat.RELIABLE_TALENT:
                     return "By 11th level, you have refined your chosen skills until they approach perfection. Whenever you make an ability check that lets you add your proficiency bonus, you can treat a d20 roll of 9 or lower as a 10.";
                 case Feat.USE_MAGIC_DEVICE:
@@ -1718,21 +1426,8 @@ Once you have raged the number of times available for your barbarian level, you 
                 case Feat.SORCERER_SPELLCASTING:
                     return "An event in your past, or in the life of a parent or ancestor, left an indelible mark on you, infusing you with arcane magic. This font of magic, whatever its origin, fuels your spells.";
                 case Feat.SORCEROUS_ORIGIN:
-                case Feat.SORCEROUS_ORIGIN_IMPROVEMENT_1:
-                case Feat.SORCEROUS_ORIGIN_IMPROVEMENT_2:
-                case Feat.SORCEROUS_ORIGIN_IMPROVEMENT_3:
                     return "Choose a sorcerous origin, which describes the source of your innate magical power, such as Draconic Bloodline.\nYour choice grants you features when you choose it at 1st level and again at 6th, 14th, and 18th level.";
                 case Feat.DRAGON_ANCESTOR:
-                case Feat.DRAGON_ANCESTOR_BLACK_ACID_DAMAGE:
-                case Feat.DRAGON_ANCESTOR_BLUE_LIGHTNING_DAMAGE:
-                case Feat.DRAGON_ANCESTOR_BRASS_FIRE_DAMAGE:
-                case Feat.DRAGON_ANCESTOR_BRONZE_LIGHTNING_DAMAGE:
-                case Feat.DRAGON_ANCESTOR_COPPER_ACID_DAMAGE:
-                case Feat.DRAGON_ANCESTOR_GOLD_FIRE_DAMAGE:
-                case Feat.DRAGON_ANCESTOR_GREEN_POISON_DAMAGE:
-                case Feat.DRAGON_ANCESTOR_RED_FIRE_DAMAGE:
-                case Feat.DRAGON_ANCESTOR_SILVER_COLD_DAMAGE:
-                case Feat.DRAGON_ANCESTOR_WHITE_COLD_DAMAGE:
                     return "At 1st level, you choose one type of dragon as your ancestor. The damage type associated with each dragon is used by features you gain later.\nYou can speak, read, and write Draconic. Additionally, whenever you make a Charisma check when interacting with dragons, your proficiency bonus is doubled if it applies to the check.";
                 case Feat.DRACONIC_RESILIENCE:
                     return "As magic flows through your body, it causes physical traits of your dragon ancestors to emerge. At 1st level, your hit point maximum increases by 1 and increases by 1 again whenever you gain a level in this class.\nAdditionally, parts of your skin are covered by a thin sheen of dragon-like scales. When you aren't wearing armor, your AC equals 13 + your Dexterity modifier.";
@@ -1741,10 +1436,8 @@ Once you have raged the number of times available for your barbarian level, you 
                 case Feat.FLEXIBLE_CASTING_CREATING_SPELL_SLOTS:
                     return "You can transform unexpended sorcery points into one spell slot as a bonus action on your turn. The Creating Spell Slots table shows the cost of creating a spell slot of a given level. You can create spell slots no higher in level than 5th. \nAny spell slot you create with this feature vanishes when you finish a long rest.";
                 case Feat.FLEXIBLE_CASTING_CONVERTING_SPELL_SLOT:
-                    return "As a bonus action on your turn, you can expend one spell slot and gain a number of sorcery points equal to the slot's level..";
-                case Feat.METAMAGIC_1:
-                case Feat.METAMAGIC_2:
-                case Feat.METAMAGIC_3:
+                    return "As a bonus action on your turn, you can expend one spell slot and gain a number of sorcery points equal to the slot's level.";
+                case Feat.METAMAGIC:
                     return "At 3rd level, you gain the ability to twist your spells to suit your needs. You gain two of the following Metamagic options of your choice. You gain another one at 10th and 17th level.\nYou can use only one Metamagic option on a spell when you cast it, unless otherwise noted.";
                 case Feat.METAMAGIC_CAREFUL_SPELL:
                     return "When you cast a spell that forces other creatures to make a saving throw, you can protect some of those creatures from the spell's full force. To do so, you spend 1 sorcery point and choose a number of those creatures up to your Charisma modifier (minimum of one creature). A chosen creature automatically succeeds on its saving throw against the spell.";
@@ -1771,10 +1464,7 @@ Once you have raged the number of times available for your barbarian level, you 
                 case Feat.SORCEROUS_RESTORATION:
                     return "At 20th level, you regain 4 expended sorcery points whenever you finish a short rest.";
                 case Feat.OTHERWORLDLY_PATRON:
-                case Feat.OTHERWORLDLY_PATRON_IMPROVEMENT_1:
-                case Feat.OTHERWORLDLY_PATRON_IMPROVEMENT_2:
-                case Feat.OTHERWORLDLY_PATRON_IMPROVEMENT_3:
-                    return "At 1st level, you have struck a bargain with an otherworldly being of your choice, such as the Fiend. Your choice grants you features at 1st level and again at 6th, 10th, and 14th level.";
+                    return "At 1st level, you have struck a bargain with an otherworldly being of your choice: the Archfey, the Fiend, or the Great Old One, each of which is detailed at the end of the class description. Your choice grants you features at 1st level and again at 6th, 10th, and 14th level.";
                 case Feat.DARK_ONES_BLESSING:
                     return "Starting at 1st level, when you reduce a hostile creature to 0 hit points, you gain temporary hit points equal to your Charisma modifier + your warlock level (minimum of 1).";
                 case Feat.PACT_MAGIC:
@@ -1838,7 +1528,7 @@ Once you have raged the number of times available for your barbarian level, you 
                 case Feat.ELDRITCH_INVOCATION_LIFEDRINKER:
                     return "When you hit a creature with your pact weapon, the creature takes extra necrotic damage equal to your Charisma modifier (minimum 1).";
                 case Feat.ELDRITCH_INVOCATION_CHAINS_OF_CARCERI:
-                    return "You can cast hold monster at will--targeting a celestial, fiend, or elemental--without expending a spell slot or material components. You must finish a long rest before you can use this invocation on the same creature again.";
+                    return "You can cast hold monster at will - targeting a celestial, fiend, or elemental - without expending a spell slot or material components. You must finish a long rest before you can use this invocation on the same creature again.";
                 case Feat.ELDRITCH_INVOCATION_MASTER_OF_MYRIAD_FORMS:
                     return "You can cast alter self at will, without expending a spell slot.";
                 case Feat.ELDRITCH_INVOCATION_VISIONS_OF_DISTANT_REALMS:
@@ -1857,10 +1547,7 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "Starting at 6th level, you can call on your patron to alter fate in your favor. When you make an ability check or a saving throw, you can use this feature to add a d10 to your roll. You can do so after seeing the initial roll but before any of the roll's effects occur.\nOnce you use this feature, you can't use it again until you finish a short or long rest.";
                 case Feat.FIENDISH_RESILIENCE:
                     return "Starting at 10th level, you can choose one damage type when you finish a short or long rest. You gain resistance to that damage type until you choose a different one with this feature. Damage from magical weapons or silver weapons ignores this resistance.";
-                case Feat.MYSTIC_ARCANUM_6TH_LEVEL:
-                case Feat.MYSTIC_ARCANUM_7TH_LEVEL:
-                case Feat.MYSTIC_ARCANUM_8TH_LEVEL:
-                case Feat.MYSTIC_ARCANUM_9TH_LEVEL:
+                case Feat.MYSTIC_ARCANUM:
                     return "At 11th level, your patron bestows upon you a magical secret called an arcanum. Choose one 6th- level spell from the warlock spell list as this arcanum.\nYou can cast your arcanum spell once without expending a spell slot. You must finish a long rest before you can do so again.\nAt higher levels, you gain more warlock spells of your choice that can be cast in this way: one 7th- level spell at 13th level, one 8th-level spell at 15th level, and one 9th-level spell at 17th level. You regain all uses of your Mystic Arcanum when you finish a long rest.";
                 case Feat.HURL_THROUGH_HELL:
                     return "Starting at 14th level, when you hit a creature with an attack, you can use this feature to instantly transport the target through the lower planes. The creature disappears and hurtles through a nightmare landscape.\nAt the end of your next turn, the target returns to the space it previously occupied, or the nearest unoccupied space. If the target is not a fiend, it takes 10d10 psychic damage as it reels from its horrific experience.\nOnce you use this feature, you can't use it again until you finish a long rest.";
@@ -1871,9 +1558,6 @@ Once you have raged the number of times available for your barbarian level, you 
                 case Feat.ARCANE_RECOVERY:
                     return "You have learned to regain some of your magical energy by studying your spellbook. Once per day when you finish a short rest, you can choose expended spell slots to recover. The spell slots can have a combined level that is equal to or less than half your wizard level (rounded up), and none of the slots can be 6th level or higher.\nFor example, if you're a 4th-level wizard, you can recover up to two levels worth of spell slots. You can recover either a 2nd-level spell slot or two 1st-level spell slots.";
                 case Feat.ARCANE_TRADITION:
-                case Feat.ARCANE_TRADITION_IMPROVEMENT_1:
-                case Feat.ARCANE_TRADITION_IMPROVEMENT_2:
-                case Feat.ARCANE_TRADITION_IMPROVEMENT_3:
                     return "When you reach 2nd level, you choose an arcane tradition, shaping your practice of magic through one of eight schools, such as Evocation.\nYour choice grants you features at 2nd level and again at 6th, 10th, and 14th level.";
                 case Feat.EVOCATION_SAVANT:
                     return "Beginning when you select this school at 2nd level, the gold and time you must spend to copy an evocation spell into your spellbook is halved.";
@@ -4791,18 +4475,8 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "exhausted to death";
                 case ConditionType.FRIGHTENED:
                     return "frightened";
-                case ConditionType.GRAPPLED_DC10:
-                case ConditionType.GRAPPLED_DC11:
-                case ConditionType.GRAPPLED_DC12:
                 case ConditionType.GRAPPLED_DC13:
-                case ConditionType.GRAPPLED_DC14:
-                case ConditionType.GRAPPLED_DC15:
                 case ConditionType.GRAPPLED_DC16:
-                case ConditionType.GRAPPLED_DC17:
-                case ConditionType.GRAPPLED_DC18:
-                case ConditionType.GRAPPLED_DC19:
-                case ConditionType.GRAPPLED_DC20:
-                case ConditionType.GRAPPLED_DC26:
                     return "grappled";
                 case ConditionType.INCAPACITATED:
                     return "incapacitated";
@@ -4850,7 +4524,6 @@ Once you have raged the number of times available for your barbarian level, you 
                     return "A frightened creature has disadvantage on ability checks and attack rolls while the source of its fear is within line of sight. The creature can't willingly move closer to the source of its fear.";
                 case ConditionType.GRAPPLED_DC13:
                 case ConditionType.GRAPPLED_DC16:
-                case ConditionType.GRAPPLED_DC26:
                     return "A grappled creature's speed becomes 0, and it can't benefit from any bonus to its speed. The condition ends if the grappler is incapacitated. The condition also ends if an effect removes the grappled creature from the reach of the grappler or grappling effect, such as when a creature is forcefully hurled away by a sphere talent or ability.";
                 case ConditionType.INCAPACITATED:
                     return "An incapacitated creature can't take actions or reactions.";

@@ -1236,25 +1236,25 @@ namespace srd5 {
                 case Feat.DRACONIC_ANCESTRY:
                     return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
                 case Feat.DRACONIC_ANCESTRY_BLACK:
-                    return "Your draconic ancestor is a black dragon. You have resistance to acid damage. Your breath weapon deals acid damage in a 5 by 30 ft. line (Dexterity saving throw).";
+                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
                 case Feat.DRACONIC_ANCESTRY_BLUE:
-                    return "Your draconic ancestor is a blue dragon. You have resistance to lightning damage. Your breath weapon deals lightning damage in a 5 by 30 ft. line (Dexterity saving throw).";
+                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
                 case Feat.DRACONIC_ANCESTRY_BRASS:
-                    return "Your draconic ancestor is a brass dragon. You have resistance to fire damage. Your breath weapon deals fire damage in a 5 by 30 ft. line (Dexterity saving throw).";
+                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
                 case Feat.DRACONIC_ANCESTRY_BRONZE:
-                    return "Your draconic ancestor is a bronze dragon. You have resistance to lightning damage. Your breath weapon deals lightning damage in a 5 by 30 ft. line (Dexterity saving throw).";
+                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
                 case Feat.DRACONIC_ANCESTRY_COPPER:
-                    return "Your draconic ancestor is a copper dragon. You have resistance to acid damage. Your breath weapon deals acid damage in a 5 by 30 ft. line (Dexterity saving throw).";
+                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
                 case Feat.DRACONIC_ANCESTRY_GOLD:
-                    return "Your draconic ancestor is a gold dragon. You have resistance to fire damage. Your breath weapon deals fire damage in a 15 ft. cone (Dexterity saving throw).";
+                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
                 case Feat.DRACONIC_ANCESTRY_GREEN:
-                    return "Your draconic ancestor is a green dragon. You have resistance to poison damage. Your breath weapon deals poison damage in a 15 ft. cone (Constitution saving throw).";
+                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
                 case Feat.DRACONIC_ANCESTRY_RED:
-                    return "Your draconic ancestor is a red dragon. You have resistance to fire damage. Your breath weapon deals fire damage in a 15 ft. cone (Dexterity saving throw).";
+                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
                 case Feat.DRACONIC_ANCESTRY_SILVER:
-                    return "Your draconic ancestor is a silver dragon. You have resistance to cold damage. Your breath weapon deals cold damage in a 15 ft. cone (Constitution saving throw).";
+                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
                 case Feat.DRACONIC_ANCESTRY_WHITE:
-                    return "Your draconic ancestor is a white dragon. You have resistance to cold damage. Your breath weapon deals cold damage in a 15 ft. cone (Constitution saving throw).";
+                    return "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table.";
                 case Feat.DRAGONBORN_BREATH_WEAPON:
                     return "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation.\nWhen you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level.\nAfter you use your breath weapon, you cannot use it again until you complete a short or long rest.";
                 case Feat.DRAGONBORN_DAMAGE_RESISTANCE:
@@ -1316,11 +1316,11 @@ Once you have raged the number of times available for your barbarian level, you 
                 case Feat.PRIMAL_PATH_IMPROVEMENT_3:
                     return "At 3rd level, you choose a path that shapes the nature of your rage. Choose the Path of the Berserker or the Path of the Totem Warrior, both detailed at the end of the class description. Your choice grants you features at 3rd level and again at 6th, 10th, and 14th levels.";
                 case Feat.ABILITY_SCORE_IMPROVEMENT:
-                    return "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
+                    return "When you reach 4th level, and again at 8th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
                 case Feat.FIGHTER_ABILITY_SCORE_IMPROVEMENT:
-                    return "In addition to the ability score improvements all classes get, when you reach 6th and 14th level you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
+                    return "When you reach 4th level, and again at 6th, 8th, 12th, 14th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
                 case Feat.ROGUE_ABILITY_SCORE_IMPROVEMENT:
-                    return "In addition to the ability score improvements all classes get, when you reach 10th level you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
+                    return "When you reach 4th level, and again at 8th, 10th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.";
                 case Feat.BARBARIAN_EXTRA_ATTACK:
                 case Feat.MONK_EXTRA_ATTACK:
                 case Feat.PALADIN_EXTRA_ATTACK:

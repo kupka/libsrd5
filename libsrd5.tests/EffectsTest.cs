@@ -2,6 +2,7 @@ using System;
 using Xunit;
 
 namespace srd5 {
+    [Collection("SingleThreaded")] // creating monsters rolls dice, which must not consume another test's Random.FixedRandom
     public class EffectsTest {
         [Fact]
         public void ResistanceTest() {
@@ -14,6 +15,17 @@ namespace srd5 {
         [Fact]
         public void VulnerabilityTest() {
             Assert.Equal(Effect.VULNERABILITY_SLASHING, Effects.Vulnerability(DamageType.SLASHING));
+        }
+
+        [Fact]
+        public void RugSmotherImmuneToBlindedTest() {
+            Monster golem = Monsters.ClayGolem;
+            golem.AddEffect(Effect.IMMUNITY_BLINDED);
+            golem.AddEffect(Effect.RUG_SMOTHER);
+            Assert.False(golem.HasCondition(ConditionType.BLINDED));
+            Monster orc = Monsters.Orc;
+            orc.AddEffect(Effect.RUG_SMOTHER);
+            Assert.True(orc.HasCondition(ConditionType.BLINDED));
         }
 
         [Fact]
@@ -95,7 +107,10 @@ namespace srd5 {
             Assert.Equal(SpellLevel.SECOND, Effect.SPELL_BLINDNESS_DEAFNESS.SpellLevel());
             Assert.Equal(SpellLevel.THIRD, Effect.SPELL_BESTOW_CURSE_LOSE_TURN_ON_FAILED_WISDOM_SAVE.SpellLevel());
             Assert.Equal(SpellLevel.FOURTH, Effect.SPELL_RESILIENT_SPHERE.SpellLevel());
-            Assert.Equal(SpellLevel.FIFTH, Effect.SPELL_PLACEHOLDER_5TH.SpellLevel());
+            Assert.Equal(SpellLevel.FIFTH, Effect.SPELL_INSECT_PLAGUE.SpellLevel());
+            Assert.Equal(SpellLevel.FOURTH, Effect.SPELL_STONESKIN.SpellLevel());
+            Assert.Equal(SpellLevel.FIFTH, Effect.SPELL_ANTILIFE_SHELL.SpellLevel());
+            Assert.Equal(SpellLevel.FIFTH, Effect.SPELL_PLANAR_BINDING.SpellLevel());
             Assert.Equal(SpellLevel.SIXTH, Effect.SPELL_PLACEHOLDER_6TH.SpellLevel());
             Assert.Equal(SpellLevel.SEVENTH, Effect.SPELL_PLACEHOLDER_7TH.SpellLevel());
             Assert.Equal(SpellLevel.EIGHTH, Effect.SPELL_PLACEHOLDER_8TH.SpellLevel());

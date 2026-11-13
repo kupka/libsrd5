@@ -74,7 +74,8 @@ namespace srd5 {
 
     public class Attack : GuidClass {
         public enum Property {
-            TRIPLE_DICE_ON_CRIT
+            TRIPLE_DICE_ON_CRIT,
+            NO_DAMAGE
         }
 
         public int AttackBonus { get; internal set; }

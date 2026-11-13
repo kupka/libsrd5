@@ -58,6 +58,12 @@ namespace srd5 {
             Assert.True(frontLeft.Distance(backLeft) == backLeft.Distance(frontLeft));
             Assert.True(backLeft.Distance(frontLeft) < backLeft.Distance(frontRight));
             Assert.True(backLeft.Distance(frontRight) < backLeft.Distance(backRight));
+            // same side rows are within touch range
+            Assert.Equal(5, backLeft.Distance(frontLeft));
+            Assert.Equal(5, backRight.Distance(frontRight));
+            Assert.Equal(5, frontLeft.Distance(frontRight));
+            Assert.Equal(30, backLeft.Distance(frontRight));
+            Assert.Equal(30, backRight.Distance(frontLeft));
             Assert.Throws<Srd5ArgumentException>(delegate {
                 frontLeft.Distance(new Coord(2, 3));
             });
@@ -392,6 +398,8 @@ namespace srd5 {
         public void CastAreaEffectTest() {
             Battleground2D ground = new Battleground2D(20, 20);
             CharacterSheet hero = new CharacterSheet(Race.TIEFLING, true);
+            // The classic ability scores are rolled from the global random state; fix Wisdom so the spell DC is deterministic
+            hero.Wisdom.BaseValue = 10;
             Combatant currentCombatant = null;
             ground.EventSubscription += delegate (object sender, BattlegroundEvent bgEvent) {
                 if (bgEvent is CombatantChangedEvent @event) {
@@ -426,6 +434,35 @@ namespace srd5 {
             Assert.True(ogre.HitPointsMax > ogre.HitPoints);
             Assert.True(ogre2.HitPointsMax == ogre2.HitPoints);
 
+        }
+
+        [Fact]
+        public void ClassicEmptyFrontRowTest() {
+            Monster ogre = Monsters.Ogre;
+            Monster orc = Monsters.Orc;
+            Monster goblin = Monsters.Goblin;
+            Monster bandit = Monsters.Bandit;
+            BattleGroundClassic battle = new BattleGroundClassic();
+            battle.AddCombatant(ogre, ClassicLocation.Row.FRONT_LEFT, Team.HEROES);
+            battle.AddCombatant(orc, ClassicLocation.Row.BACK_LEFT, Team.HEROES);
+            battle.AddCombatant(goblin, ClassicLocation.Row.FRONT_RIGHT, Team.VILLAINS);
+            battle.AddCombatant(bandit, ClassicLocation.Row.BACK_RIGHT, Team.VILLAINS);
+            // front rows populated: back rows are out of melee reach
+            Assert.Equal(5, battle.Distance(ogre, goblin));
+            Assert.Equal(30, battle.Distance(ogre, bandit));
+            Assert.Equal(30, battle.Distance(orc, goblin));
+            Assert.Equal(5, battle.Distance(orc, ogre));
+            // right front row cleared: right back row becomes the front row
+            goblin.Die();
+            Assert.False(battle.IsRowPopulated(ClassicLocation.Row.FRONT_RIGHT));
+            Assert.Equal(5, battle.Distance(ogre, bandit));
+            Assert.Equal(5, battle.Distance(bandit, ogre));
+            Assert.Equal(30, battle.Distance(orc, bandit));
+            // both front rows cleared: both back rows are adjacent
+            ogre.Die();
+            Assert.Equal(5, battle.Distance(orc, bandit));
+            // the actual locations are unchanged
+            Assert.Equal(ClassicLocation.Row.BACK_RIGHT, battle.LocateClassicCombatant(bandit).Location);
         }
 
         [Fact]
@@ -546,6 +583,18 @@ namespace srd5 {
             ground.Push(new Coord(9, 9), ogre, 5); // push southwest
             Assert.Equal(5, ground.LocateCombatant2D(ogre).X);
             Assert.Equal(6, ground.LocateCombatant2D(ogre).Y);
+            ground.Push(new Coord(6, 7), ogre, 20); // push southwest, 20 ft. diagonally = 2 tiles on each axis
+            Assert.Equal(3, ground.LocateCombatant2D(ogre).X);
+            Assert.Equal(4, ground.LocateCombatant2D(ogre).Y);
+        }
+
+        [Fact]
+        public void SetTeamOfUnknownCombatantTest() {
+            BattleGroundClassic ground = new BattleGroundClassic();
+            Monster ogre = Monsters.Ogre;
+            ground.AddCombatant(ogre, ClassicLocation.Row.FRONT_LEFT, Team.VILLAINS);
+            ground.SetTeam(Monsters.Goblin, Team.HEROES); // not on the battleground, ignored
+            Assert.Equal(Team.VILLAINS, ground.GetTeam(ogre));
         }
 
         [Fact]

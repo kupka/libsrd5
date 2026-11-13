@@ -100,6 +100,42 @@ namespace srd5 {
         }
 
         [Fact]
+        public void WandOfMagicMissilesChargesLeftTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            Monster shadow = Monsters.Shadow;
+            Battleground ground = createBattleground(hero, shadow);
+            Usable wand = Wands.WandOfMagicMissiles;
+            hero.Inventory.AddToBag(wand);
+            int charges = wand.Charges;
+            hero.Use(wand, 1, ground, shadow);
+            Assert.Equal(charges - 1, wand.Charges);
+            Assert.False(wand.Destroyed);
+            Assert.Single(hero.Inventory.Bag);
+        }
+
+        [Fact]
+        public void ConsumableWithChargesLeftTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            Consumable flask = new Consumable("Flask", ItemType.POTION, delegate (Combatant consumer, Consumable item) {
+                item.Charges--;
+            }, ItemRarity.COMMON, 2);
+            hero.Inventory.AddToBag(flask);
+            hero.Consume(flask);
+            Assert.Equal(1, flask.Charges);
+            Assert.False(flask.Destroyed);
+            Assert.Single(hero.Inventory.Bag);
+        }
+
+        [Fact]
+        public void EquipNonEquippableItemTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            Consumable flask = new Consumable("Flask", ItemType.POTION, delegate (Combatant consumer, Consumable item) { }, ItemRarity.COMMON, 1);
+            hero.Equip(flask); // potions can't be equipped
+            Assert.Null(hero.Inventory.MainHand);
+            Assert.Null(hero.Inventory.OffHand);
+        }
+
+        [Fact]
         public void ItemsWithoutNamesAreNotTheSame() {
             Item a = new Armor(null, 12, 12, 5, Proficiency.LIGHT_ARMOR, new ArmorProperty[0], 1, 2);
             Item b = new Armor(null, 12, 12, 5, Proficiency.LIGHT_ARMOR, new ArmorProperty[0], 1, 2);

@@ -20,6 +20,7 @@ namespace srd5 {
         VULNERABILITY_SLASHING,
         VULNERABILITY_THUNDER,
         VULNERABILITY_TRUE_DAMAGE, // should never be applied
+        VULNERABILITY_ANY_DAMAGE, // vulnerability to every damage type except true damage
         // Resistances against DamageType
         RESISTANCE_ACID,
         RESISTANCE_BLUDGEONING,
@@ -223,7 +224,22 @@ namespace srd5 {
         SPELL_RESILIENT_SPHERE,
         SPELL_STONESKIN,
         // 5th
-        SPELL_PLACEHOLDER_5TH,
+        SPELL_ANTILIFE_SHELL,
+        SPELL_AWAKEN,
+        SPELL_CLOUDKILL,
+        SPELL_CONTACT_OTHER_PLANE_INSANITY,
+        SPELL_CONTAGION_BLINDING_SICKNESS_DISEASE,
+        SPELL_CONTAGION_FILTH_FEVER_DISEASE,
+        SPELL_CONTAGION_FLESH_ROT_DISEASE,
+        SPELL_CONTAGION_MINDFIRE_DISEASE,
+        SPELL_CONTAGION_SEIZURE_DISEASE,
+        SPELL_CONTAGION_SLIMY_DOOM_DISEASE,
+        SPELL_DISPEL_EVIL_AND_GOOD,
+        SPELL_DOMINATE_PERSON,
+        SPELL_INSECT_PLAGUE,
+        SPELL_MISLEAD,
+        SPELL_MODIFY_MEMORY,
+        SPELL_PLANAR_BINDING,
         // 6th
         SPELL_PLACEHOLDER_6TH,
         // 7th
@@ -310,7 +326,7 @@ namespace srd5 {
         public static readonly Effect FIRST_SPELL_2ND = SPELL_ACID_ARRORW_BURN;
         public static readonly Effect FIRST_SPELL_3RD = SPELL_ANIMATE_DEAD;
         public static readonly Effect FIRST_SPELL_4TH = SPELL_BLACK_TENTACLES;
-        public static readonly Effect FIRST_SPELL_5TH = SPELL_PLACEHOLDER_5TH;
+        public static readonly Effect FIRST_SPELL_5TH = SPELL_ANTILIFE_SHELL;
         public static readonly Effect FIRST_SPELL_6TH = SPELL_PLACEHOLDER_6TH;
         public static readonly Effect FIRST_SPELL_7TH = SPELL_PLACEHOLDER_7TH;
         public static readonly Effect FIRST_SPELL_8TH = SPELL_PLACEHOLDER_8TH;
@@ -702,6 +718,36 @@ namespace srd5 {
                 case SPELL_FIRE_SHIELD_CHILL:
                     // Resistance is applied via variant in the spell itself
                     break;
+                case SPELL_CONTACT_OTHER_PLANE_INSANITY:
+                    combatant.AddEffect(CANNOT_TAKE_ACTIONS);
+                    break;
+                case SPELL_CONTAGION_BLINDING_SICKNESS_DISEASE:
+                    combatant.AddEffect(DISADVANTAGE_WISDOM_SAVES);
+                    combatant.AddCondition(ConditionType.BLINDED);
+                    break;
+                case SPELL_CONTAGION_FILTH_FEVER_DISEASE:
+                    combatant.AddEffect(DISADVANTAGE_STRENGTH_SAVES);
+                    break;
+                case SPELL_CONTAGION_FLESH_ROT_DISEASE:
+                    combatant.AddEffect(DISADVANTAGE_CHARISMA_SAVES);
+                    combatant.AddEffect(VULNERABILITY_ANY_DAMAGE);
+                    break;
+                case SPELL_CONTAGION_MINDFIRE_DISEASE:
+                    combatant.AddEffect(DISADVANTAGE_INTELLIGENCE_SAVES);
+                    combatant.AddEffect(SPELL_CONFUSION);
+                    break;
+                case SPELL_CONTAGION_SEIZURE_DISEASE:
+                    combatant.AddEffect(DISADVANTAGE_DEXTERITY_SAVES);
+                    break;
+                case SPELL_CONTAGION_SLIMY_DOOM_DISEASE:
+                    combatant.AddEffect(DISADVANTAGE_CONSTITUTION_SAVES);
+                    break;
+                case SPELL_MISLEAD:
+                    combatant.AddCondition(ConditionType.INVISIBLE);
+                    break;
+                case SPELL_MODIFY_MEMORY:
+                    combatant.AddCondition(ConditionType.CHARMED, ConditionType.INCAPACITATED);
+                    break;
             }
         }
 
@@ -809,7 +855,7 @@ namespace srd5 {
                     break;
                 case SPELL_ALTER_SELF_CLAWS:
                     if (combatant is CharacterSheet hero) {
-                        if (hero.Inventory.MainHand.Is(Weapons.Claws)) {
+                        if (hero.Inventory.MainHand != null && hero.Inventory.MainHand.Is(Weapons.Claws)) {
                             hero.Inventory.MainHand = null;
                         }
                     }
@@ -892,6 +938,35 @@ namespace srd5 {
                 case SPELL_FIRE_SHIELD_WARM:
                 case SPELL_FIRE_SHIELD_CHILL:
                     // Resistance applied via variant in spell itself
+                    break;
+                case SPELL_CONTACT_OTHER_PLANE_INSANITY:
+                    combatant.RemoveEffect(CANNOT_TAKE_ACTIONS);
+                    break;
+                case SPELL_CONTAGION_BLINDING_SICKNESS_DISEASE:
+                    combatant.RemoveEffect(DISADVANTAGE_WISDOM_SAVES);
+                    combatant.RemoveCondition(ConditionType.BLINDED);
+                    break;
+                case SPELL_CONTAGION_FILTH_FEVER_DISEASE:
+                    combatant.RemoveEffect(DISADVANTAGE_STRENGTH_SAVES);
+                    break;
+                case SPELL_CONTAGION_FLESH_ROT_DISEASE:
+                    combatant.RemoveEffect(VULNERABILITY_ANY_DAMAGE);
+                    break;
+                case SPELL_CONTAGION_MINDFIRE_DISEASE:
+                    combatant.RemoveEffect(DISADVANTAGE_INTELLIGENCE_SAVES);
+                    combatant.RemoveEffect(SPELL_CONFUSION);
+                    break;
+                case SPELL_CONTAGION_SEIZURE_DISEASE:
+                    combatant.RemoveEffect(DISADVANTAGE_DEXTERITY_SAVES);
+                    break;
+                case SPELL_CONTAGION_SLIMY_DOOM_DISEASE:
+                    combatant.RemoveEffect(DISADVANTAGE_CONSTITUTION_SAVES);
+                    break;
+                case SPELL_MISLEAD:
+                    combatant.RemoveCondition(ConditionType.INVISIBLE);
+                    break;
+                case SPELL_MODIFY_MEMORY:
+                    combatant.RemoveCondition(ConditionType.CHARMED, ConditionType.INCAPACITATED);
                     break;
             }
         }

@@ -23,6 +23,10 @@ namespace srd5 {
             foreach (Feat feat in Enum.GetValues<Feat>()) {
                 Assert.NotNull(feat.Name());
                 Assert.NotNull(feat.Description());
+                // racial and class feats are listed before the monster feats
+                if (feat == Feat.NONE || feat >= Feat.ABERRANT_GROUND) continue;
+                Assert.DoesNotContain("(Name missing)", feat.Name());
+                Assert.DoesNotContain("(Description missing)", feat.Description());
             }
         }
 

@@ -240,5 +240,47 @@ namespace srd5 {
             Assert.False(orc.Attack(orc.MeleeAttacks[0], ogre, 5));
         }
 
+        [Fact]
+        public void RemoveTemporaryHitpointsOfOtherSourceTest() {
+            Monster ogre = Monsters.Ogre;
+            ogre.AddTemporaryHitpoints(5, SpellDuration.ONE_HOUR, Spells.ID.FALSE_LIFE);
+            ogre.RemoveTemporaryHitpoints(Spells.ID.HEROISM); // different source, temporary hit points stay
+            ogre.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, ogre), DamageType.TRUE_DAMAGE, 5);
+            Assert.Equal(ogre.HitPointsMax, ogre.HitPoints);
+            ogre.AddTemporaryHitpoints(5, SpellDuration.ONE_HOUR, Spells.ID.FALSE_LIFE);
+            ogre.RemoveTemporaryHitpoints(Spells.ID.FALSE_LIFE);
+            ogre.TakeDamage(new DamageSource(DamageSourceType.OTHER, this, ogre), DamageType.TRUE_DAMAGE, 5);
+            Assert.Equal(ogre.HitPointsMax - 5, ogre.HitPoints);
+        }
+
+        [Fact]
+        public void CriticalHitDestroysMirrorImageTest() {
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            Monster hag = Monsters.NightHag;
+            hag.AddEffect(SPELL_MIRROR_IMAGE_3);
+            Attack bite = Attacks.BadgerBite;
+            Random.FixedRandom = Random.DebugState.Max; // natural 20 → critical hit
+            Random.State = 1; // the following d20 rolls a 10 > 5 → the attack targets a duplicate
+            Assert.False(hero.Attack(bite, hag, 5));
+            Assert.False(hag.HasEffect(SPELL_MIRROR_IMAGE_3));
+            Assert.True(hag.HasEffect(SPELL_MIRROR_IMAGE_2));
+            Assert.Equal(hag.HitPointsMax, hag.HitPoints);
+        }
+
+        [Fact]
+        public void ProneTargetOutOfReachTest() {
+            // Attacks against a prone target from more than 5 ft. away have disadvantage instead of advantage
+            CharacterSheet hero = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc; // AC 13
+            orc.AddCondition(ConditionType.PRONE);
+            Attack pike = new Attack("Pike", 0, new Damage(DamageType.PIERCING, "1d10"), 10);
+            Random.FixedRandom = Random.DebugState.Max; // first d20 is a 20 ...
+            Random.State = 1; // ... the second one a 10, which misses AC 13 with disadvantage
+            Assert.False(hero.Attack(pike, orc, 10));
+            Random.FixedRandom = Random.DebugState.Min; // first d20 is a 1 ...
+            Random.State = 2; // ... the second one a 19, which hits with advantage
+            Assert.True(hero.Attack(pike, orc, 5));
+        }
+
     }
 }

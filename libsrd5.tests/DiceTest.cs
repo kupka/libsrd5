@@ -6,6 +6,12 @@ namespace srd5 {
     [Collection("SingleThreaded")]
     public class DiceTest {
         [Fact]
+        public void RollDieTest() {
+            Die die = D20;
+            Assert.Equal(die.Value, Roll(die));
+        }
+
+        [Fact]
         public void D2Test() {
             Die die = D2;
             Assert.InRange<int>(die.Value, 1, 2);
@@ -137,6 +143,13 @@ namespace srd5 {
         public void OperatorTest() {
             Assert.Equal("2d6+3", (2 * D6 + 3).ToString());
             Assert.Equal("5d8-2", (5 * D8 - 2).ToString());
+            Assert.Equal("1d12-1", (D12 - 1).ToString());
+        }
+
+        [Fact]
+        public void RollTest() {
+            int result = Roll(3 * D6);
+            Assert.InRange<int>(result, 3, 18);
         }
     }
 }

@@ -102,7 +102,34 @@ namespace srd5 {
         DAMAGE_THUNDER,
         // Fire Shield
         WARM_SHIELD,
-        CHILL_SHIELD
+        CHILL_SHIELD,
+        // Conjure Elemental
+        AIR_ELEMENTAL,
+        EARTH_ELEMENTAL,
+        FIRE_ELEMENTAL,
+        WATER_ELEMENTAL,
+        // Flame Strike (also uses DAMAGE_FIRE)
+        DAMAGE_RADIANT,
+        // Contagion
+        BLINDING_SICKNESS,
+        FILTH_FEVER,
+        FLESH_ROT,
+        MINDFIRE,
+        SEIZURE,
+        SLIMY_DOOM,
+        // Greater Restoration
+        EXHAUSTION,
+        CHARM,
+        PETRIFICATION,
+        CURSE,
+        ABILITY_SCORE_REDUCTION,
+        HIT_POINT_MAXIMUM_REDUCTION,
+        // Arcane Hand
+        CLENCHED_FIST,
+        FORCEFUL_HAND,
+        GRASPING_HAND,
+        CRUSH,
+        INTERPOSING_HAND
     }
 
     public delegate void SpellCastEffect(Battleground ground, Combatant caster, int dc, SpellLevel slot, int modifier, params Combatant[] targets);
@@ -170,6 +197,7 @@ namespace srd5 {
             ANTIPATHY_SYMPATHY,
             ARCANE_EYE,
             ARCANE_HAND,
+            ARCANE_HAND_ATTACK,
             ARCANE_LOCK,
             ARCANE_SWORD,
             ARCANISTS_MAGIC_AURA,
@@ -531,13 +559,16 @@ namespace srd5 {
 
         internal static bool SpellAttack(ID id, Battleground ground, Combatant caster, DamageType damageType, Dice? dice, int modifier, Combatant target, int range, DamageMitigation missEffect, DamageMitigation dCEffect, int dc, out bool dcResult) {
             int bonus = modifier + caster.ProficiencyBonus;
+            bool ranged = range > 5;
+            // Melee spell attacks (touch) use the range as reach, otherwise the reach check rejects them
+            int reach = ranged ? 0 : range;
             Attack attack;
             if (dice is Dice d)
-                attack = new Attack(id.Name(), bonus, new Damage(damageType, d), 0, range, range);
+                attack = new Attack(id.Name(), bonus, new Damage(damageType, d), reach, range, range);
             else
-                attack = new Attack(id.Name(), bonus, new Damage(damageType, 0), 0, range, range);
+                attack = new Attack(id.Name(), bonus, new Damage(damageType, 0), reach, range, range).WithProperties(Attack.Property.NO_DAMAGE);
             int distance = ground.Distance(caster, target);
-            bool hit = caster.Attack(attack, target, distance, true, true, dCEffect, dc, AbilityType.NONE, out dcResult);
+            bool hit = caster.Attack(attack, target, distance, ranged, true, dCEffect, dc, AbilityType.NONE, out dcResult);
             DamageSource source = new DamageSource(DamageSourceType.SPELL, id, caster);
             if (missEffect == DamageMitigation.NULLIFIES_DAMAGE) {
                 GlobalEvents.AffectBySpell(caster, id, target, hit);

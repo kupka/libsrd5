@@ -40,6 +40,50 @@ namespace srd5 {
             return ground;
         }
 
+        private static readonly Attack weakMeleeAttack = new Attack("Weak Melee Attack", -5, new Damage(DamageType.BLUDGEONING, "1d4"), 5);
+
+        private static void toughen(CharacterSheet sheet) {
+            sheet.AddHitPointMaximumModifiers(new HitPointMaxiumModifier(1000, HitPointMaxiumModifier.RemovedByEffect.LONG_REST));
+            sheet.HitPoints = sheet.HitPointsMax;
+        }
+
+        private BattleGroundClassic createTeamBattleground(Combatant caster, params Combatant[] targets) {
+            BattleGroundClassic ground = new BattleGroundClassic();
+            ground.AddCombatant(caster, ClassicLocation.Row.FRONT_LEFT, Team.HEROES);
+            foreach (Combatant target in targets) {
+                ground.AddCombatant(target, ClassicLocation.Row.FRONT_RIGHT, Team.VILLAINS);
+            }
+            return ground;
+        }
+
+        [Fact]
+        public void InvalidVariantIsIgnoredTest() {
+            Spell contagion = Spells.Contagion;
+            contagion.Variant = SpellVariant.EARTH_ELEMENTAL; // not a Contagion variant
+            Assert.Equal(SpellVariant.BLINDING_SICKNESS, contagion.Variant);
+        }
+
+        [Fact]
+        public void SpellAttackWithoutMissEffectTest() {
+            // With NO_EFFECT, SpellAttack leaves reporting the affection to the calling spell
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc;
+            Battleground ground = createBattleground(wizard, orc);
+            int affections = 0;
+            EventHandler<GlobalEvents.SpellAffection> handler = delegate (object sender, GlobalEvents.SpellAffection affection) {
+                affections++;
+            };
+            GlobalEvents.SpellAffectionHandlers += handler;
+            Dice damage = D10; // accessing a Die rolls it, so do it before fixing the attack roll
+            try {
+                Random.FixedRandom = Random.DebugState.Max; // natural 20 → hit
+                Assert.True(Spells.SpellAttack(Spells.ID.FIRE_BOLT, ground, wizard, DamageType.FIRE, damage, 0, orc, 5, Spells.DamageMitigation.NO_EFFECT));
+            } finally {
+                GlobalEvents.SpellAffectionHandlers -= handler;
+            }
+            Assert.Equal(0, affections);
+        }
+
         [Fact]
         public void DiceSlotScalingTest() {
             Dice dice = Spells.DiceSlotScaling(SpellLevel.FIRST, SpellLevel.SECOND, D6, 1, 2, 2);
@@ -410,7 +454,9 @@ namespace srd5 {
 
         [Fact]
         public void AnimalFriendshipTest() {
-            DefaultSpellTest(Spells.AnimalFriendship, 14, SpellLevel.FIRST, ConditionType.CHARMED, Effect.SPELL_ANIMAL_FRIENDSHIP, (int)SpellDuration.ONE_DAY, Monsters.Type.BEAST);
+            // DC 30: the beasts fail their saves unless they roll a natural 20 (twice, due to disadvantage),
+            // so the result doesn't depend on the random state left by the tests that ran before
+            DefaultSpellTest(Spells.AnimalFriendship, 30, SpellLevel.FIRST, ConditionType.CHARMED, Effect.SPELL_ANIMAL_FRIENDSHIP, (int)SpellDuration.ONE_DAY, Monsters.Type.BEAST);
         }
 
         [Fact]
@@ -476,6 +522,9 @@ namespace srd5 {
                     Assert.False(bandit1.HasEffect(Effect.ADVANTAGE_STRENGTH_SAVES));
                 }
                 Random.FixedRandom = Random.DebugState.Avg;
+                // With advantage, the two d20 are rolled from the random state (19 and 11 at state 2),
+                // so the result doesn't depend on the tests that ran before
+                Random.State = 2;
                 if (bandit1.DC(this, 15, ability)) successesWithAdvantage++;
                 Random.FixedRandom = Random.DebugState.Avg;
                 if (bandit3.DC(this, 15, ability)) successesWithoutAdvantage++;
@@ -515,11 +564,14 @@ namespace srd5 {
             Assert.True(bandit.Size == size);
             bandit.AddEffect(Effect.SPELL_ENLARGE);
             Assert.True(bandit.Size > size);
+            Random.FixedRandom = Random.DebugState.Min; // a natural 20 would beat even DC 30
             spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
             Assert.True(bandit.Size == size);
+            Random.FixedRandom = Random.DebugState.Min;
             spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
             Assert.True(bandit.Size < size);
             size = bandit.Size;
+            Random.FixedRandom = Random.DebugState.Min;
             spell.Cast(bandit, 30, SpellLevel.SECOND, 3);
             Assert.True(bandit.Size == size);
             for (int i = 0; i < 10; i++) {
@@ -581,6 +633,23 @@ namespace srd5 {
             }
             Assert.True(location.Distance(ground.LocateCombatant(bandit)) > 0);
             Assert.True(bandit.Speed == speed);
+        }
+
+        [Fact]
+        public void GustofWindSaveSuccessTest() {
+            // A successful STR save at the start of the turn means the target isn't pushed
+            Monster druid = Monsters.Druid;
+            Monster bandit = Monsters.Bandit;
+            Battleground2D ground = new Battleground2D(20, 20);
+            ground.AddCombatant(druid, 5, 5);
+            ground.AddCombatant(bandit, 5, 7);
+            Spells.GustofWind.Cast(ground, druid, 10, SpellLevel.SECOND, 0, bandit);
+            Random.FixedRandom = Random.DebugState.Max; // natural 20 → STR save succeeds
+            bandit.OnStartOfTurn();
+            Assert.Equal(7, ground.LocateCombatant2D(bandit).Y);
+            Random.FixedRandom = Random.DebugState.Min; // natural 1 → STR save fails, pushed 15 ft. away
+            bandit.OnStartOfTurn();
+            Assert.Equal(10, ground.LocateCombatant2D(bandit).Y);
         }
 
         [Fact]
@@ -819,6 +888,205 @@ namespace srd5 {
             druid.OnEndOfTurn();
             Assert.Equal(Team.VILLAINS, ground.GetTeam(badger));
             Assert.Empty(druid.EndOfTurnEvents);
+        }
+        [Fact]
+        public void InsectPlagueTest() {
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Monster giant = Monsters.HillGiant;
+            Battleground ground = createBattleground(druid, giant);
+
+            Spells.InsectPlague.Cast(ground, druid, 15, SpellLevel.FIFTH, 0, giant);
+            Assert.True(giant.HasEffect(Effect.SPELL_INSECT_PLAGUE));
+            int hpAfterCast = giant.HitPoints;
+            Assert.True(hpAfterCast < giant.HitPointsMax);
+
+            // Starting its turn inside the swarm deals no damage
+            giant.OnStartOfTurn();
+            Assert.Equal(hpAfterCast, giant.HitPoints);
+
+            // Ending its turn inside the swarm deals damage again
+            giant.OnEndOfTurn();
+            Assert.True(giant.HitPoints < hpAfterCast);
+
+            // The swarm disperses after 10 minutes
+            for (int i = 0; i < (int)SpellDuration.TEN_MINUTES; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.False(giant.HasEffect(Effect.SPELL_INSECT_PLAGUE));
+            int hpAfterExpiry = giant.HitPoints;
+            giant.OnEndOfTurn();
+            Assert.Equal(hpAfterExpiry, giant.HitPoints);
+            Assert.Empty(giant.EndOfTurnEvents);
+        }
+
+        [Fact]
+        public void ConjureElementalTest() {
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            Battleground2D ground2D = new Battleground2D(20, 20);
+            ground2D.AddCombatant(druid, 10, 10, Team.HEROES);
+            Spell conjure = Spells.ConjureElemental;
+            SpellVariant[] variants = { SpellVariant.AIR_ELEMENTAL, SpellVariant.EARTH_ELEMENTAL, SpellVariant.FIRE_ELEMENTAL, SpellVariant.WATER_ELEMENTAL };
+            Monsters.ID[] expected = { Monsters.ID.AIR_ELEMENTAL, Monsters.ID.EARTH_ELEMENTAL, Monsters.ID.FIRE_ELEMENTAL, Monsters.ID.WATER_ELEMENTAL };
+            for (int i = 0; i < variants.Length; i++) {
+                conjure.Variant = variants[i];
+                conjure.Cast(ground2D, druid, 12, SpellLevel.FIFTH, 0, druid);
+                Monster elemental = (Monster)ground2D.combatants[ground2D.combatants.Length - 1];
+                Assert.Equal(expected[i], elemental.ID);
+                Assert.Equal(Team.HEROES, ground2D.GetTeam(elemental));
+            }
+            Assert.Equal(5, ground2D.combatants.Length); // 4 elementals + druid
+
+            // Classic battleground
+            BattleGroundClassic ground = createBattleground(druid, []);
+            Spell earth = Spells.ConjureElemental;
+            earth.Variant = SpellVariant.EARTH_ELEMENTAL;
+            earth.Cast(ground, druid, 12, SpellLevel.FIFTH, 0, druid);
+            Assert.Equal(2, ground.combatants.Length);
+            Assert.Equal(Monsters.ID.EARTH_ELEMENTAL, ((Monster)ground.combatants[1]).ID);
+        }
+
+        [Fact]
+        public void AntilifeShellTest() {
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            druid.AddLevel(CharacterClasses.Druid);
+            toughen(druid); // survive the critical hits in this test
+            Monster orc = Monsters.Orc;
+            Monster zombie = Monsters.Zombie;
+            Monster golem = Monsters.ClayGolem;
+            CharacterSheet fighter = new CharacterSheet(Race.HUMAN);
+            toughen(fighter);
+            Battleground ground = createBattleground(druid, orc, zombie, golem, fighter);
+            Attack claw = new Attack("Claw", 100, new Damage(DamageType.SLASHING, "1d4"), 5);
+            Attack pike = new Attack("Pike", 100, new Damage(DamageType.PIERCING, "1d4"), 10);
+            Attack bow = new Attack("Bow", 100, new Damage(DamageType.PIERCING, "1d4"), 80, 320);
+
+            Spells.AntilifeShell.Cast(ground, druid, 15, SpellLevel.FIFTH, 0, druid);
+            Assert.True(druid.HasEffect(Effect.SPELL_ANTILIFE_SHELL));
+
+            // Living creatures can't make melee attacks through the barrier
+            Random.FixedRandom = Random.DebugState.Max;
+            Assert.False(orc.Attack(claw, druid, 5));
+            Random.FixedRandom = Random.DebugState.Max;
+            Assert.False(fighter.Attack(claw, druid, 5));
+            Random.FixedRandom = Random.DebugState.Off;
+            // ... but reach weapons and ranged attacks pass the barrier
+            Random.FixedRandom = Random.DebugState.Max;
+            Assert.True(orc.Attack(pike, druid, 10));
+            Random.FixedRandom = Random.DebugState.Max;
+            Assert.True(orc.Attack(bow, druid, 30, true));
+            // Undead and constructs are not hedged out
+            Random.FixedRandom = Random.DebugState.Max;
+            Assert.True(zombie.Attack(claw, druid, 5));
+            Random.FixedRandom = Random.DebugState.Max;
+            Assert.True(golem.Attack(claw, druid, 5));
+            // Creatures without the shell can be attacked as usual
+            Random.FixedRandom = Random.DebugState.Max;
+            Assert.True(orc.Attack(claw, fighter, 5));
+
+            // The shell lasts for one hour
+            for (int i = 0; i < (int)SpellDuration.ONE_HOUR; i++) {
+                druid.OnStartOfTurn();
+                druid.OnEndOfTurn();
+            }
+            Assert.False(druid.HasEffect(Effect.SPELL_ANTILIFE_SHELL));
+            Random.FixedRandom = Random.DebugState.Max;
+            Assert.True(orc.Attack(claw, druid, 5));
+        }
+
+        [Fact]
+        public void AwakenInvalidTargetsTest() {
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            CharacterSheet fighter = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc; // humanoid
+            Monster smartBadger = Monsters.Badger;
+            smartBadger.Intelligence.BaseValue = 4;
+            Monster gargantuanBadger = Monsters.Badger;
+            gargantuanBadger.Size = Size.GARGANTUAN;
+            BattleGroundClassic ground = createTeamBattleground(druid, fighter, orc, smartBadger, gargantuanBadger);
+            foreach (Combatant target in new Combatant[] { fighter, orc, smartBadger, gargantuanBadger }) {
+                int intelligence = target.Intelligence.Value;
+                Spells.Awaken.Cast(ground, druid, 15, SpellLevel.FIFTH, 0, target);
+                Assert.Equal(intelligence, target.Intelligence.Value);
+                Assert.False(target.HasEffect(Effect.SPELL_AWAKEN));
+            }
+
+            // A creature immune to being charmed is awakened, but not charmed
+            Monster immuneShrieker = Monsters.Shrieker;
+            immuneShrieker.AddEffect(Effect.IMMUNITY_CHARMED);
+            ground.AddCombatant(immuneShrieker, ClassicLocation.Row.FRONT_RIGHT, Team.VILLAINS);
+            Spells.Awaken.Cast(ground, druid, 15, SpellLevel.FIFTH, 0, immuneShrieker);
+            Assert.Equal(10, immuneShrieker.Intelligence.Value);
+            Assert.False(immuneShrieker.HasCondition(ConditionType.CHARMED));
+            Assert.Equal(Team.VILLAINS, ground.GetTeam(immuneShrieker));
+        }
+
+        [Fact]
+        public void AwakenHarmedByCompanionTest() {
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            CharacterSheet companion = new CharacterSheet(Race.HUMAN);
+            Monster orc = Monsters.Orc;
+            Monster badger = Monsters.Badger;
+            badger.HitPointsMax = 100;
+            badger.HitPoints = 100;
+            BattleGroundClassic ground = createTeamBattleground(druid, orc, badger);
+            ground.AddCombatant(companion, ClassicLocation.Row.FRONT_LEFT, Team.HEROES);
+
+            Spells.Awaken.Cast(ground, druid, 15, SpellLevel.FIFTH, 0, badger);
+            Assert.Equal(10, badger.Intelligence.Value);
+            Assert.True(badger.HasCondition(ConditionType.CHARMED));
+            Assert.True(badger.HasEffect(Effect.SPELL_AWAKEN));
+            Assert.Equal(Team.HEROES, ground.GetTeam(badger));
+
+            // Damage from hostile creatures, unknown sources or creatures not on the battleground doesn't end the charm
+            badger.TakeDamage(new DamageSource(Spells.ID.AWAKEN, orc), DamageType.TRUE_DAMAGE, 1);
+            badger.TakeDamage(new DamageSource(), DamageType.TRUE_DAMAGE, 1);
+            badger.TakeDamage(new DamageSource(Spells.ID.AWAKEN, Monsters.Orc), DamageType.TRUE_DAMAGE, 1);
+            Assert.True(badger.HasEffect(Effect.SPELL_AWAKEN));
+
+            // Being harmed by a companion of the caster ends the charm
+            badger.TakeDamage(new DamageSource(Spells.ID.AWAKEN, companion), DamageType.TRUE_DAMAGE, 1);
+            Assert.False(badger.HasEffect(Effect.SPELL_AWAKEN));
+            Assert.False(badger.HasCondition(ConditionType.CHARMED));
+            Assert.Equal(Team.VILLAINS, ground.GetTeam(badger));
+            Assert.Empty(badger.DamageTakenEvents);
+            // The awakened intelligence remains
+            Assert.Equal(10, badger.Intelligence.Value);
+            druid.OnEndOfTurn();
+            Assert.Empty(druid.EndOfTurnEvents);
+        }
+
+        [Fact]
+        public void AwakenDurationTest() {
+            CharacterSheet druid = new CharacterSheet(Race.HUMAN);
+            Monster shrieker = Monsters.Shrieker;
+            Monster badger = Monsters.Badger;
+            BattleGroundClassic ground = createTeamBattleground(druid, shrieker, badger);
+
+            // The charm ends when removed otherwise (e.g. Greater Restoration)
+            Spells.Awaken.Cast(ground, druid, 15, SpellLevel.FIFTH, 0, badger);
+            badger.RemoveEffect(Effect.SPELL_AWAKEN);
+            druid.OnEndOfTurn();
+            Assert.Equal(Team.VILLAINS, ground.GetTeam(badger));
+            Assert.False(badger.HasCondition(ConditionType.CHARMED));
+            Assert.Empty(druid.EndOfTurnEvents);
+            // Damage after the charm has ended removes the remaining damage event
+            badger.TakeDamage(new DamageSource(Spells.ID.AWAKEN, druid), DamageType.TRUE_DAMAGE, 1);
+            Assert.Empty(badger.DamageTakenEvents);
+
+            // The charm lasts for 30 days
+            Spells.Awaken.Cast(ground, druid, 15, SpellLevel.FIFTH, 0, shrieker);
+            for (int i = 0; i < (int)SpellDuration.THIRTY_DAYS - 1; i++) {
+                druid.OnEndOfTurn();
+            }
+            Assert.True(shrieker.HasEffect(Effect.SPELL_AWAKEN));
+            Assert.Equal(Team.HEROES, ground.GetTeam(shrieker));
+            druid.OnEndOfTurn();
+            Assert.False(shrieker.HasEffect(Effect.SPELL_AWAKEN));
+            Assert.False(shrieker.HasCondition(ConditionType.CHARMED));
+            Assert.Equal(Team.VILLAINS, ground.GetTeam(shrieker));
+            Assert.Equal(10, shrieker.Intelligence.Value);
         }
     }
 }

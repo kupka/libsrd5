@@ -498,6 +498,8 @@ namespace srd5 {
                 }
             }
             if (HitPoints < HitPointsMax) HealDamage(HitPointsMax - HitPoints);
+            // The insanity caused by Contact Other Plane lasts until a long rest is finished
+            RemoveEffect(Effect.SPELL_CONTACT_OTHER_PLANE_INSANITY);
             RecalculateAttacks();
         }
 

@@ -204,8 +204,9 @@ namespace srd5 {
         }
 
         public void AddFeat(Feat feat) {
-            if (Utils.PushUnique<Feat>(ref feats, feat))
-                feat.Apply(this);
+            // feats can be gained more than once, e.g. ability score improvements
+            Utils.Push<Feat>(ref feats, feat);
+            feat.Apply(this);
         }
 
         public void AddFeats(params Feat[] feats) {
@@ -266,6 +267,7 @@ namespace srd5 {
         }
 
         public bool IsVulnerable(DamageType type) {
+            if (HasEffect(VULNERABILITY_ANY_DAMAGE)) return true;
             return HasEffect(srd5.Effects.Vulnerability(type));
         }
 
@@ -583,6 +585,8 @@ namespace srd5 {
             if (target.HasEffect(SPELL_RESILIENT_SPHERE)) return false;
             if (target.HasEffect(CANNOT_BE_ATTACKED)) return false;
             if (!ranged && target.HasEffect(CANNOT_BE_MELEE_ATTACKED)) return false;
+            // Antilife Shell hedges out every creature but undead and constructs; only reach and ranged attacks pass the barrier
+            if (!ranged && attack.Reach < 10 && target.HasEffect(SPELL_ANTILIFE_SHELL) && !isUndeadOrConstruct()) return false;
             // check locked target
             if (attack.LockedTarget != null && attack.LockedTarget != target) return false;
             // check range / reach
@@ -658,6 +662,10 @@ namespace srd5 {
             if (HasEffect(AUTOMATIC_CRIT_ON_HIT)) criticalHit = true;
             if (target.HasEffect(AUTOMATIC_CRIT_ON_BEING_HIT_WITHIN_5_FT) && distance <= 5) criticalHit = true;
             GlobalEvents.RolledAttack(this, attack, target, attackRoll.Value, true, criticalHit);
+            if (attack.HasProperty(srd5.Attack.Property.NO_DAMAGE)) {
+                attack.ApplyEffectOnHit(this, target);
+                return true;
+            }
             int bonusDamage = 0;
             int damageDivisor = 1;
             if (HasEffect(SPELL_DIVINE_FAVOR)) bonusDamage += D4.Value;
@@ -728,20 +736,26 @@ namespace srd5 {
                                         || HasCondition(ConditionType.EXHAUSTED_3)
                                         || HasCondition(ConditionType.POISONED)
                                         || HasCondition(ConditionType.PRONE);
-            if (!disadvantage && target.HasEffect(SPELL_PROTECTION_FROM_EVIL_AND_GOOD) && this is Monster monster) {
+            if (!disadvantage && this is Monster monster) {
                 switch (monster.Type) {
                     case ABERRATION:
+                        disadvantage = target.HasEffect(SPELL_PROTECTION_FROM_EVIL_AND_GOOD);
+                        break;
                     case CELESTIAL:
                     case ELEMENTAL:
                     case FEY:
                     case FIEND:
                     case UNDEAD:
-                        disadvantage = true;
+                        disadvantage = target.HasEffect(SPELL_PROTECTION_FROM_EVIL_AND_GOOD) || target.HasEffect(SPELL_DISPEL_EVIL_AND_GOOD);
                         break;
                 }
             }
             disadvantage = disadvantage || (ranged && (distance <= 5 || distance > attack.RangeNormal));
             return disadvantage;
+        }
+
+        private bool isUndeadOrConstruct() {
+            return this is Monster monster && (monster.Type == UNDEAD || monster.Type == CONSTRUCT);
         }
 
         internal void Die() {

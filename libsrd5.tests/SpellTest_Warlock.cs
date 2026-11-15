@@ -40,5 +40,30 @@ namespace srd5 {
         public void SuggestionTest() {
             DefaultSpellTest(Spells.Suggestion, 15, SpellLevel.FOURTH, null, Effect.CANNOT_TAKE_ACTIONS, Spells.Suggestion.Duration);
         }
+
+        [Fact]
+        public void ContactOtherPlaneTest() {
+            CharacterSheet wizard = new CharacterSheet(Race.HUMAN);
+            wizard.AddLevel(CharacterClasses.Wizard);
+            toughen(wizard);
+            int hitPointsMax = wizard.HitPointsMax;
+
+            // Successful save: the questions can be asked without harm
+            Random.FixedRandom = Random.DebugState.Max;
+            Spells.ContactOtherPlane.Cast(wizard, 0, SpellLevel.FIFTH, 0);
+            Assert.Equal(hitPointsMax, wizard.HitPoints);
+            Assert.False(wizard.HasEffect(Effect.SPELL_CONTACT_OTHER_PLANE_INSANITY));
+
+            // Failed save: 6d6 psychic damage and insanity until a long rest
+            Random.FixedRandom = Random.DebugState.Min;
+            Spells.ContactOtherPlane.Cast(wizard, 0, SpellLevel.FIFTH, 0);
+            Assert.InRange(wizard.HitPoints, hitPointsMax - 36, hitPointsMax - 6);
+            Assert.True(wizard.HasEffect(Effect.SPELL_CONTACT_OTHER_PLANE_INSANITY));
+            Assert.True(wizard.HasEffect(Effect.CANNOT_TAKE_ACTIONS));
+            wizard.LongRest();
+            Assert.False(wizard.HasEffect(Effect.SPELL_CONTACT_OTHER_PLANE_INSANITY));
+            Assert.False(wizard.HasEffect(Effect.CANNOT_TAKE_ACTIONS));
+        }
+
     }
 }

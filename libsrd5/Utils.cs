@@ -65,7 +65,7 @@ namespace srd5 {
     public abstract class GuidClass {
         public Guid Guid { get; private set; } = Guid.NewGuid();
 
-        public virtual string Name { get; internal set; }
+        public virtual string Name { get; set; }
 
         public override bool Equals(object obj) {
             if (obj is GuidClass other) {
